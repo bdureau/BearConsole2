@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.altimeter.bdureau.bearconsole.AltimeterConfigActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/alti_name"
+        android:id="@+id/txtAltimeterName"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/txtAltiNameValue"
+        android:layout_alignTop="@+id/txtAltimeterName"
+        android:layout_alignLeft="@+id/spinnerOut3"
+        android:layout_alignStart="@+id/spinnerOut3"
+        android:layout_alignRight="@+id/spinnerOut3"
+        android:layout_alignEnd="@+id/spinnerOut3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/units"
+        android:id="@+id/txtAltiUnit"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtAltimeterName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerUnit"
+
+        android:layout_alignTop="@+id/txtAltiUnit"
+        android:layout_alignBottom="@+id/txtAltiUnit"
+        android:spinnerMode="dropdown"
+        android:layout_alignLeft="@+id/spinnerBipMode"
+        android:layout_alignStart="@+id/spinnerBipMode"
+        android:layout_toStartOf="@+id/butDismiss"
+        android:layout_alignRight="@+id/spinnerBipMode"
+        android:layout_alignEnd="@+id/spinnerBipMode" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bip_mode"
+        android:id="@+id/txtBpMode"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtAltiUnit"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerBipMode"
+        android:layout_alignBottom="@+id/txtBpMode"
+        android:layout_alignTop="@+id/txtBpMode"
+        android:spinnerMode="dropdown"
+        android:layout_alignLeft="@+id/editTxtMainAltitude"
+        android:layout_alignStart="@+id/editTxtMainAltitude"
+        android:layout_toStartOf="@+id/butDismiss"
+        android:layout_alignRight="@+id/butDismiss"
+        android:layout_alignEnd="@+id/butDismiss" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/beep_freq"
+        android:id="@+id/txtBeepFrequency"
+        android:layout_below="@+id/txtBpMode"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:textSize="13sp"
+        android:id="@+id/editTxtBipFreq"
+        android:layout_alignTop="@+id/txtBeepFrequency"
+        android:layout_alignRight="@+id/spinnerOut3"
+        android:layout_alignEnd="@+id/spinnerOut3"
+        android:layout_alignLeft="@+id/spinnerBipMode"
+        android:layout_alignStart="@+id/spinnerBipMode"
+        android:textIsSelectable="false"
+        android:text="100"
+        android:singleLine="true"
+        android:layout_above="@+id/editTxtMainAltitude" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_altitude"
+        android:id="@+id/txtMainAltitude"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtBeepFrequency"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:textSize="13sp"
+        android:ems="10"
+        android:id="@+id/editTxtMainAltitude"
+        android:layout_alignTop="@+id/txtMainAltitude"
+
+        android:layout_toRightOf="@+id/butUpload"
+        android:layout_above="@+id/spinnerOut1"
+        android:textIsSelectable="false"
+        android:text="100"
+        android:singleLine="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/output_1"
+        android:id="@+id/txtOut1"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtMainAltitude"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerOut1"
+        android:layout_alignTop="@+id/txtOut1"
+        android:layout_above="@+id/txtViewDelay1"
+        android:spinnerMode="dropdown"
+        android:layout_alignLeft="@+id/editTxtMainAltitude"
+        android:layout_alignStart="@+id/editTxtMainAltitude"
+        android:layout_alignRight="@+id/spinnerBipMode"
+        android:layout_alignEnd="@+id/spinnerBipMode" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delay1"
+        android:id="@+id/txtViewDelay1"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtOut1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTxtDelay1"
+        android:inputType="number"
+        android:textSize="13sp"
+        android:layout_alignTop="@+id/txtViewDelay1"
+        android:layout_alignLeft="@+id/spinnerOut1"
+        android:layout_alignStart="@+id/spinnerOut1"
+        android:layout_above="@+id/spinnerOut2"
+        android:layout_alignRight="@+id/spinnerOut2"
+        android:layout_alignEnd="@+id/spinnerOut2" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/output_2"
+        android:id="@+id/txtOut2"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtViewDelay1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerOut2"
+        android:layout_alignTop="@+id/txtOut2"
+        android:layout_alignLeft="@+id/spinnerOut1"
+        android:layout_alignStart="@+id/spinnerOut1"
+        android:layout_above="@+id/txtViewDelay2"
+        android:spinnerMode="dropdown"
+        android:layout_alignRight="@+id/spinnerOut1"
+        android:layout_alignEnd="@+id/spinnerOut1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delay2"
+        android:id="@+id/txtViewDelay2"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtOut2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTxtDelay2"
+        android:textSize="13sp"
+        android:layout_alignTop="@+id/txtViewDelay2"
+        android:inputType="number"
+        android:layout_alignLeft="@+id/editTxtDelay1"
+        android:layout_alignStart="@+id/editTxtDelay1"
+        android:layout_alignRight="@+id/editTxtDelay1"
+        android:layout_alignEnd="@+id/editTxtDelay1"
+        android:layout_above="@+id/spinnerOut3" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/output_3"
+        android:id="@+id/txtOut3"
+        android:layout_below="@+id/txtViewDelay2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerOut3"
+        android:spinnerMode="dropdown"
+        android:layout_alignLeft="@+id/spinnerOut2"
+        android:layout_alignStart="@+id/spinnerOut2"
+        android:layout_toStartOf="@+id/butDismiss"
+        android:layout_above="@+id/txtViewDelay3"
+        android:layout_alignTop="@+id/txtOut3"
+        android:layout_alignRight="@+id/butDismiss"
+        android:layout_alignEnd="@+id/butDismiss" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delay3"
+        android:id="@+id/txtViewDelay3"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtOut3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTxtDelay3"
+        android:inputType="number"
+        android:textSize="13sp"
+        android:layout_alignTop="@+id/txtViewDelay3"
+        android:layout_alignLeft="@+id/editTxtDelay2"
+        android:layout_alignStart="@+id/editTxtDelay2"
+        android:layout_alignRight="@+id/editTxtDelay2"
+        android:layout_alignEnd="@+id/editTxtDelay2"
+         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/upload"
+        android:id="@+id/butUpload"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/txtAltiUnit"
+        android:layout_toEndOf="@+id/txtAltiUnit" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dismiss_config"
+        android:id="@+id/butDismiss"
+        android:layout_alignTop="@+id/butUpload"
+        android:layout_alignRight="@+id/editTxtMainAltitude"
+        android:layout_alignEnd="@+id/editTxtMainAltitude" />
+
+
+</RelativeLayout>

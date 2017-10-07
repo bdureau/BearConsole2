@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.altimeter.bdureau.bearconsole.AppConfigActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_config"
+        android:id="@+id/butSave"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dismiss_app_config"
+        android:id="@+id/butDismiss"
+        android:layout_alignTop="@+id/butSave"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/application_langage_config"
+        android:id="@+id/txtViewAppLang"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/graph_color_config"
+        android:id="@+id/txtViewGraphColor"
+        android:layout_below="@+id/txtViewAppLang"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="62dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerLanguage"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/txtViewAppLang"
+        android:layout_toEndOf="@+id/txtViewAppLang"
+        android:layout_above="@+id/txtViewGraphColor"
+        android:focusableInTouchMode="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/application_units_config"
+        android:id="@+id/txtViewUnits"
+        android:layout_below="@+id/txtViewGraphColor"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="38dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/graph_back_color_config"
+        android:id="@+id/txtViewGraphBackColor"
+        android:layout_below="@+id/txtViewUnits"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="45dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerGraphColor"
+        android:layout_toEndOf="@+id/butSave"
+        android:layout_above="@+id/txtViewUnits"
+        android:layout_alignTop="@+id/txtViewGraphColor"
+        android:layout_alignLeft="@+id/spinnerUnits"
+        android:layout_alignStart="@+id/spinnerUnits" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerUnits"
+        android:layout_alignTop="@+id/txtViewUnits"
+        android:layout_toRightOf="@+id/txtViewAppLang"
+        android:layout_toEndOf="@+id/txtViewAppLang"
+        android:layout_above="@+id/txtViewGraphBackColor" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerGraphBackColor"
+        android:layout_alignTop="@+id/txtViewGraphBackColor"
+        android:layout_alignLeft="@+id/spinnerUnits"
+        android:layout_alignStart="@+id/spinnerUnits"
+        android:layout_alignBottom="@+id/txtViewGraphBackColor" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_config"
+        android:id="@+id/butDefault"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/font_size"
+        android:id="@+id/txtViewFontSize"
+        android:layout_below="@+id/txtViewGraphBackColor"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="71dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerFontSize"
+        android:layout_alignTop="@+id/txtViewFontSize"
+        android:layout_alignLeft="@+id/butDefault"
+        android:layout_alignStart="@+id/butDefault"
+        android:layout_alignRight="@+id/butDefault"
+        android:layout_alignEnd="@+id/butDefault"
+        android:layout_alignBottom="@+id/txtViewFontSize" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Baud Rate"
+        android:id="@+id/textViewBaudRate"
+        android:layout_below="@+id/txtViewFontSize"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="41dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerBaudRate"
+        android:layout_alignTop="@+id/textViewBaudRate"
+        android:layout_alignLeft="@+id/butDefault"
+        android:layout_alignBottom="@+id/textViewBaudRate" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connection Type"
+        android:id="@+id/textConnectionType"
+        android:layout_below="@+id/textViewBaudRate"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="41dp" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerConnectionType"
+        android:layout_alignTop="@+id/textConnectionType"
+        android:layout_alignLeft="@+id/butDefault"
+        android:layout_alignBottom="@+id/textConnectionType" />
+</RelativeLayout>

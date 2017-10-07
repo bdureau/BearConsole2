@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="version">1.0.5</string>
+
+    <!-- Application title -->
+    <string name="app_name">Bear Console</string>
+    <!-- Menu -->
+    <string name="help">Aide</string>
+    <string name="about">A propos</string>
+    <string name="action_settings">Configuration application</string>
+
+    <!-- Screen altimeter config-->
+    <string name="altimeter_config">Config Altimètre</string>
+    <string name="beep_freq">Freq bips</string>
+    <string name="main_altitude">Altitude du Main</string>
+    <string name="output_1">Sortie 1</string>
+    <string name="delay1">Retard 1</string>
+    <string name="output_2">Sortie 2</string>
+    <string name="delay2">Retard 2</string>
+    <string name="output_3">Sortie 3</string>
+    <string name="delay3">Retard 3</string>
+    <string name="upload">Charger</string>
+    <string name="dismiss_config">Fermer</string>
+    <string name="units">Unités</string>
+    <string name="alti_name">Nom Alti</string>
+    <string name="bip_mode">Mode Bip </string>
+
+    <!-- Main Screen -->
+    <string name="altimeter_settings">Configuration altimètre</string>
+    <string name="continuity_on_off">Continuité marche/arret</string>
+    <string name="read_flights">chargement vols</string>
+    <string name="reset_settings">Réinit config</string>
+    <string name="disconnect">Connexion/Déconnexion</string>
+
+    <!-- Reset screen -->
+    <string name="dismiss_reset">Fermer</string>
+    <string name="clear_flights">Effacer vols</string>
+    <string name="restore_alti_config">Réinitialiser la config de l\'Alti</string>
+    <string name="those_functions_will_reset_the_altimeter">Ces fonctions réinitialiseront l\'altimètre</string>
+    <string name="Yes">Oui</string>
+    <string name="No">Non</string>
+
+    <!-- bluetooth Selection  -->
+    <string name="select_device_to_use">Selection périférique</string>
+    <string name="show_paired_devices">Montrer Périfériques</string>
+
+
+
+    <!-- Flight graph -->
+    <string name="altitude_time">Altitude / Temps</string>
+    <string name="close">Fermer</string>
+
+    <!-- Reset screen -->
+    <string name="reset_msg1">Vous allez effacer toutes vos données de vol, etes vous certain de vouloir le faire?</string>
+    <string name="reset_msg2">Vous allez réinitialiser la configuration de votre altimètre, etes vous certain de vouloir le faire?</string>
+
+    <!-- bluetooth messages -->
+    <string name="BT_msg1">Périférique Bluetooth non disponible</string>
+    <string name="BT_msg2">Aucun périphérique bluetooth trouvé.</string>
+
+    <!-- main screen msg-->
+    <string name="MS_msg1">Connexion en cours...</string>
+    <string name="MS_msg2">Attendez s\'il vous plait!!!</string>
+    <string name="MS_msg3">La connexion a échouée. Est ce un SPP Bluetooth? Esseyez encore.</string>
+    <string name="MS_msg4">Connecté.</string>
+    <!--Flight list screen -->
+    <string name="title_activity_flight_list">Liste des Vols</string>
+    <string name="Flight_list">Liste des vols</string>
+
+    <!-- About screen -->
+    <string name="about_screen">A propos</string>
+    <string name="bear_console_version">Version Bear Console</string>
+    <string name="dismiss_about">Fermer</string>
+
+    <!-- Messages -->
+    <!-- AltimeterConfigActivity -->
+    <string name="msg1">Seulement un main est autorisé. Merci de revoir votre configuration</string>
+    <string name="msg2">Seulement un Drogue est autorisé. Merci de revoir votre configuration</string>
+    <string name="msg3">La Config a été chargée avec succès</string>
+    <string name="msg4">L\'envoi de la config a échouée</string>
+    <string name="msg5">Chargement de la configuration de l\'Altimètre...</string>
+    <string name="msg6">Attendez s\'il vous plait!!!</string>
+
+    <string name="msg7">Chargement des vols...</string>
+    <string name="msg8">Attendez s\'il vous plait!!!</string>
+
+    <!-- flight views screen -->
+    <string name="Meters_fview">Mètres</string>
+    <string name="Feet_fview">Pieds</string>
+    <string name="Altitude_time">Altitude / Temps</string>
+    <string name="Time_fv">Temps (ms)</string>
+    <string name="Altitude">Altitude</string>
+    <!-- Application preference screen-->
+    <string name="titre_application_pref">Préferences Application</string>
+
+    <!-- Config-->
+    <string name="save_config">Sauve</string>
+    <string name="dismiss_app_config">Fermer</string>
+    <string name="application_langage_config">Langue de l\'Application</string>
+    <string name="graph_color_config">Couleur graphique</string>
+    <string name="application_units_config">Unités Application</string>
+    <string name="graph_back_color_config">Couleur fond du Graph</string>
+    <string name="default_config">Défaut</string>
+    <string name="font_size">Taille police</string>
+</resources>
