@@ -29,7 +29,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 /**
  * Created by BDUREAU on 10/09/2017.
  */
-public class usbConnection  {
+public class UsbConnection {
 
     UsbSerialDevice serialPort;
     UsbDeviceConnection connection;
@@ -43,7 +43,7 @@ public class usbConnection  {
         if (serialPort != null) {
             if (serialPort.open()) { //Set Serial Connection Parameters.
 
-                serialPort.setBaudRate(57600);
+                serialPort.setBaudRate(baudRate);
                 //serialPort.setBaudRate(38400);
                 serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
                 serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);

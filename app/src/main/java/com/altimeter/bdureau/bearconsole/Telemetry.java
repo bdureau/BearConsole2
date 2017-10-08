@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import java.io.IOException;
 import android.content.Intent;
@@ -31,20 +32,28 @@ import org.afree.graphics.geom.Font;
 import android.graphics.Color;
 
 public class Telemetry extends AppCompatActivity {
-    TextView textView;
+   // private TextView textView;
     private CheckBox cbLiftOff, cbApogee, cbMainChute, cbLanded;
-    private TextView txtCurrentAltitude,txtMaxAltitude, txtFlightTime;
+    private TextView txtCurrentAltitude,txtMaxAltitude,  txtMainAltitude, txtLandedAltitude, txtLiftOffAltitude;
+    private TextView txtLandedTime,txtMaxSpeedTime, txtMaxAltitudeTime, txtLiftOffTime, txtMainChuteTime;
     ConsoleApplication myBT ;
     Thread rocketTelemetry;
     ChartView chartView;
     private FlightData myflight=null;
     XYPlot plot;
+    //telemetry var
     private long LiftOffTime = 0;
     private int lastPlotTime =0;
+    private double FEET_IN_METER = 1;
+    /*private boolean hasLiftOff = false;
+    private boolean apogee = false;
+    private boolean mainFired = false;
+    private boolean hasLanded = false;*/
+
 
     boolean telemetry = true;
     Button startTelemetryButton, stopTelemetryButton;
-    //private MyHandler mHandler;
+
     Handler handler = new Handler () {
         @Override
         public void handleMessage(Message msg) {
@@ -55,10 +64,11 @@ public class Telemetry extends AppCompatActivity {
                     if(((String)msg.obj).matches("\\d+(?:\\.\\d+)?"))
                     {
                         if (cbLiftOff.isChecked()&& !cbLanded.isChecked()) {
-                            //myflight= myBT.getFlightData();
+
                             int altitudeTime = (int)(System.currentTimeMillis()-LiftOffTime);
-                            myflight.AddToFlight(altitudeTime,Integer.parseInt((String)msg.obj),"Telemetry" );
-                            //myBT.setFlightData(myflight);
+                            int altitude = (int) (Integer.parseInt((String)msg.obj)* FEET_IN_METER);
+                            myflight.AddToFlight(altitudeTime,altitude,"Telemetry" );
+
                             //plot every seconde
                             if ((altitudeTime - lastPlotTime )>1000) {
                                 lastPlotTime = altitudeTime;
@@ -72,57 +82,72 @@ public class Telemetry extends AppCompatActivity {
                     break;
                 case 2:
                     // Value 2 lift off yes/no
+                    if (!cbLiftOff.isChecked())
                     if(((String)msg.obj).matches("\\d+(?:\\.\\d+)?"))
                         if(Integer.parseInt((String)msg.obj) > 0 || LiftOffTime >0)
                         {
+                            cbLiftOff.setEnabled(true);
                             cbLiftOff.setChecked(true);
+                            cbLiftOff.setEnabled(false);
                             if (LiftOffTime==0)
                                 LiftOffTime= System.currentTimeMillis();
+                            txtLiftOffTime.setText("0 ms");
                         }
-                        else {
-                            cbLiftOff.setChecked(false);
-                        }
+
                     break;
                 case 3:
                     // Value 3 apogee fired yes/no
+                    if(!cbApogee.isChecked())
                     if(((String)msg.obj).matches("\\d+(?:\\.\\d+)?"))
                         if(Integer.parseInt((String)msg.obj) > 0)
                         {
+                            cbApogee.setEnabled(true);
                             cbApogee.setChecked(true);
+                            cbApogee.setEnabled(false);
+                            txtMaxAltitudeTime.setText((int)(System.currentTimeMillis()-LiftOffTime) + " ms");
                         }
-                        else {
-                            cbApogee.setChecked(false);
-                        }
+
                     break;
                 case 4:
                     //Value 4 apogee altitude
-                    txtMaxAltitude.setText(String.valueOf(String.valueOf((String)msg.obj)));
+                    txtMaxAltitude.setText((String)msg.obj);
                     break;
                 case 5:
+                    //value 4 main fired yes/no
+                    if(!cbMainChute.isChecked())
                     if(((String)msg.obj).matches("\\d+(?:\\.\\d+)?"))
                         if(Integer.parseInt((String)msg.obj) > 0)
                         {
+                            txtMainChuteTime.setText((System.currentTimeMillis() - LiftOffTime) + " ms");
+                            cbMainChute.setEnabled(true);
                             cbMainChute.setChecked(true);
+                            cbMainChute.setEnabled(false);
                         }
-                        else
-                        {
-                            cbMainChute.setChecked(false);
-                        }
+
                     break;
                 case 6:
+                    // main altitude
+                    if(((String)msg.obj).matches("\\d+(?:\\.\\d+)?"))
+                    {
+                        if (cbMainChute.isChecked()) {
+                            txtMainAltitude.setText((String) msg.obj);
+                        }
+                    }
+
                     break;
                 case 7:
                     //have we landed
+                    if(!cbLanded.isChecked())
                     if(((String)msg.obj).matches("\\d+(?:\\.\\d+)?"))
                         if(Integer.parseInt((String)msg.obj) > 0)
                         {
+                            cbLanded.setEnabled(true);
                             cbLanded.setChecked(true);
-                            txtFlightTime.setText((System.currentTimeMillis()-LiftOffTime)+"ms");
+                            cbLanded.setEnabled(false);
+                            txtLandedAltitude.setText(txtCurrentAltitude.getText());
+                            txtLandedTime.setText((System.currentTimeMillis()-LiftOffTime)+" ms");
                         }
-                        else
-                        {
-                            cbLanded.setChecked(false);
-                        }
+
                     break;
             }
         }
@@ -134,18 +159,24 @@ public class Telemetry extends AppCompatActivity {
         setContentView(R.layout.activity_telemetry);
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();
-        textView = (TextView) findViewById(R.id.textView);
+        //textView = (TextView) findViewById(R.id.textView);
         cbLiftOff = (CheckBox)findViewById(R.id.checkBoxLiftoff);
         cbApogee = (CheckBox)findViewById(R.id.checkBoxApogee);
         cbMainChute = (CheckBox)findViewById(R.id.checkBoxMainchute);
         cbLanded = (CheckBox)findViewById(R.id.checkBoxLanded);
         txtCurrentAltitude =(TextView)findViewById(R.id.textViewCurrentAltitude);
-        txtMaxAltitude =(TextView)findViewById(R.id.textViewMaxAltitude);
-        txtFlightTime = (TextView)findViewById(R.id.textViewFlightDuration);
-
+        txtMaxAltitude =(TextView)findViewById(R.id.textViewApogeeAltitude);
+        //txtFlightTime = (TextView)findViewById(R.id.text);
+        txtLandedTime = (TextView) findViewById(R.id.textViewLandedTime);
         startTelemetryButton = (Button) findViewById(R.id.buttonStartTelemetry);
         stopTelemetryButton = (Button) findViewById(R.id.buttonStopTelemetry);
-
+        txtMaxSpeedTime = (TextView) findViewById(R.id.textViewMaxSpeedTime);
+        txtMaxAltitudeTime = (TextView) findViewById(R.id.textViewApogeeTime);
+        txtLiftOffTime= (TextView) findViewById(R.id.textViewLiftoffTime);
+        txtMainChuteTime= (TextView) findViewById(R.id.textViewMainChuteTime);
+        txtMainAltitude = (TextView) findViewById(R.id.textViewMainChuteAltitude);
+        txtLandedAltitude = (TextView) findViewById(R.id.textViewLandedAltitude);
+        txtLiftOffAltitude = (TextView) findViewById(R.id.textViewLiftoffAltitude);
         myBT.setHandler(handler);
         stopTelemetryButton.setEnabled(false);
 
@@ -172,6 +203,14 @@ public class Telemetry extends AppCompatActivity {
             //Feet
             myUnits = getResources().getString(R.string.Feet_fview);
 
+        if(myBT.getAppConf().getUnitsValue().equals("Meters"))
+        {
+            FEET_IN_METER =1;
+        }
+        else
+        {
+            FEET_IN_METER = 3.28084;
+        }
         //font
         Font font = new Font("Dialog", Typeface.NORMAL,fontSize);
 
@@ -187,11 +226,8 @@ public class Telemetry extends AppCompatActivity {
         );
 
         // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-
         chart.getTitle().setFont(font);
         // set the background color for the chart...
-
-
         chart.setBackgroundPaintType(new SolidColor(graphBackColor));
 
         // get a reference to the plot for further customisation...
@@ -231,7 +267,6 @@ public class Telemetry extends AppCompatActivity {
         rangeAxis2.setAutoRangeIncludesZero(false);
 
 
-        //plot.setDataset(0, flightData);
         chartView = (ChartView) findViewById(R.id.telemetryChartView);
         chartView.setChart(chart);
     }

@@ -1,8 +1,10 @@
 package com.altimeter.bdureau.bearconsole;
 
+
 /**
- * Created by BDUREAU on 28/06/2016.
- */
+ *   @description: This class has all the flight arrays and methods to add or remove flight data
+ *   @author: boris.dureau@neuf.fr
+ **/
 import java.util.*;
 
 

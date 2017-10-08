@@ -17,7 +17,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
+/**
+ *   @description: This retrieve the flight list
+ *   @author: boris.dureau@neuf.fr
+ **/
 public class FlightListActivity extends AppCompatActivity {
     public static String SELECTED_FLIGHT = "MyFlight";
 
@@ -26,7 +29,7 @@ public class FlightListActivity extends AppCompatActivity {
     List<String> flightNames = null;
     private FlightData myflight = null;
     private ProgressDialog progress;
-   // boolean retrieved =false;
+
     private AdapterView.OnItemClickListener myListClickListener = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
             // Get the flight name
@@ -45,8 +48,6 @@ public class FlightListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //myBT = (BluetoothApplication) getApplication();
-
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();
         //Check the local and force it if needed
@@ -54,32 +55,20 @@ public class FlightListActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_flight_list);
 
-
-
-
         new RetrieveFlights().execute();
-
-
     }
 
     private void getFlights() {
 
         //get flights
-        if (myBT.getConnected())
-            //try {
+        if (myBT.getConnected()) {
                 //clear anything on the connection
-                //msg("Retrieving flight data...");
                 myBT.flush();
                 myBT.clearInput();
                 myBT.getFlightData().ClearFlight();
                 // Send command to retrieve the config
                 myBT.write("a;\n".toString());
                 myBT.flush();
-            /*} catch (IOException e) {
-                e.printStackTrace();
-               // msg("Problem sending the command");
-            }*/
-
 
         try {
             //wait for data to arrive
@@ -87,7 +76,7 @@ public class FlightListActivity extends AppCompatActivity {
         } catch (IOException e) {
            // msg("Failed to retrieve flights");
         }
-        if (myBT.getConnected()) {
+       // if (myBT.getConnected()) {
             String myMessage = "";
             myBT.setDataReady(false);
             myBT.initFlightData();
@@ -101,9 +90,6 @@ public class FlightListActivity extends AppCompatActivity {
                 flightNames = myflight.getAllFlightNames2();
             }
         }
-
-       // retrieved=true;
-
     }
 
     private void msg(String s) {
@@ -113,7 +99,6 @@ public class FlightListActivity extends AppCompatActivity {
 
     private class RetrieveFlights extends AsyncTask<Void, Void, Void>  // UI thread
     {
-
         @Override
         protected void onPreExecute()
         {
@@ -122,7 +107,6 @@ public class FlightListActivity extends AppCompatActivity {
             progress = ProgressDialog.show(FlightListActivity.this,
                     getResources().getString(R.string.msg7),
                     getResources().getString(R.string.msg8));  //show a progress dialog
-            //progress.set
         }
 
         @Override

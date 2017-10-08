@@ -8,6 +8,10 @@ import android.webkit.WebView;
 import android.widget.Button;
 
 import java.util.Locale;
+/**
+ *   @description: This read and display the html help file
+ *   @author: boris.dureau@neuf.fr
+ **/
 
 public class HelpActivity extends AppCompatActivity {
 Button btnDismiss;
@@ -29,7 +33,6 @@ Button btnDismiss;
         webSetting.setJavaScriptEnabled(true);
 
         webView.setWebViewClient(new WebViewClient());
-        //myBT.getAppLocal() == Locale.FRENCH
 
        if ( myBT.getAppLocal().locale==Locale.FRENCH)
            webView.loadUrl("file:///android_asset/help_fr.html");

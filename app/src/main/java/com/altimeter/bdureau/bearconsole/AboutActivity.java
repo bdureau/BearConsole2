@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-/* just an about screen
 
- */
+/**
+*   @description: just an about screen
+*   @author: boris.dureau@neuf.fr
+**/
 public class AboutActivity extends AppCompatActivity {
 
     Button btnDismiss;
@@ -17,7 +19,7 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //myBT = (BluetoothApplication) getApplication();
+
         myBT = (ConsoleApplication) getApplication();
 
         getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);

@@ -51,18 +51,16 @@ public class MainScreenActivity extends AppCompatActivity {
             if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
                 boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
                 if (granted) {
-                    if(myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRate()))){
+                    if(myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRateValue()))){
                         myBT.setConnected(true);
                         EnableUI();
                         myBT.setConnectionType("usb");
                         btnConnectDisconnect.setText("Disconnect");
                     }
                 } else {
-                    //Log.d("SERIAL", "PERM NOT GRANTED");
                     msg("PERM NOT GRANTED");
                 }
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
-            //Log.d("SERIAL","I can connect via usb");
                 msg("I can connect via usb");
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
             if(myBT.getConnectionType().equals("usb"))
@@ -84,9 +82,6 @@ public class MainScreenActivity extends AppCompatActivity {
         //Check the local and force it if needed
         getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
-        //Intent newint = getIntent();
-       // address = newint.getStringExtra(MainActivity.EXTRA_ADDRESS); //receive the address of the bluetooth device
-
         setContentView(R.layout.activity_main_screen);
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_USB_PERMISSION);
@@ -105,7 +100,6 @@ public class MainScreenActivity extends AppCompatActivity {
 
         DisableUI();
         btnConnectDisconnect.setText("Connect");
-       // new ConnectBT().execute(); //Call the class to connect
 
         //commands to be sent to bluetooth
         btnAltiSettings.setOnClickListener(new View.OnClickListener() {
@@ -141,8 +135,6 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.setConnectionType("bluetooth");
                 else
                     myBT.setConnectionType("usb");
-                //myBT.setConnectionType("usb");
-                //myBT.setConnectionType("bluetooth");
 
                 if (myBT.getConnected()) {
                    // msg("disconnecting");
@@ -154,7 +146,6 @@ public class MainScreenActivity extends AppCompatActivity {
                    // msg(myBT.getConnectionType());
                     if (myBT.getConnectionType().equals( "bluetooth")) {
                         address = myBT.getAddress();
-
 
                         if (address != null ) {
                             new ConnectBT().execute(); //Call the class to connect
@@ -204,15 +195,12 @@ public class MainScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (myBT.getConnected())
-                   // try {
-
-                        // Send command to change the continuity
-                        myBT.write("c;\n".toString());
-                        myBT.flush();
-                   /*} catch (IOException e) {
-                        e.printStackTrace();
-                        // msg("Problem sending the command");
-                    }*/
+                {
+                    // Send command to change the continuity
+                    myBT.write("c;\n".toString());
+                    myBT.flush();
+                    myBT.clearInput();
+                }
                 msg("Continuity changed");
             }
         });
@@ -325,7 +313,7 @@ public class MainScreenActivity extends AppCompatActivity {
         client.disconnect();
     }
 
-    /* This is the connection sub class */
+    /* This is the Bluetooth connection sub class */
     private class ConnectBT extends AsyncTask<Void, Void, Void>  // UI thread
     {
         private boolean ConnectSuccess = true; //if it's here, it's almost connected

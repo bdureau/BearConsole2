@@ -106,6 +106,7 @@ public class ChartView extends View
         this.maximumDrawWidth = DEFAULT_MAXIMUM_DRAW_WIDTH;
         this.maximumDrawHeight = DEFAULT_MAXIMUM_DRAW_HEIGHT;
         this.moveTriggerDistance = DEFAULT_MOVE_TRIGGER_DISTANCE;
+
         new SolidColor(Color.BLUE);
         new SolidColor(Color.argb(0, 0, 255, 63));
         new java.util.ArrayList();
@@ -700,7 +701,7 @@ public class ChartView extends View
         this.scaleX = 1.0;
         this.scaleY = 1.0;
 
-        if (drawWidth < this.minimumDrawWidth) {
+       /* if (drawWidth < this.minimumDrawWidth) {
             this.scaleX = drawWidth / this.minimumDrawWidth;
             drawWidth = this.minimumDrawWidth;
         }
@@ -716,7 +717,7 @@ public class ChartView extends View
         else if (drawHeight > this.maximumDrawHeight) {
             this.scaleY = drawHeight / this.maximumDrawHeight;
             drawHeight = this.maximumDrawHeight;
-        }
+        }*/
 
         RectShape chartArea = new RectShape(0.0, 0.0, drawWidth,
                 drawHeight);

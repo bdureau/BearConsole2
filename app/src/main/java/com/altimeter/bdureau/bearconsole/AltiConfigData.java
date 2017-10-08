@@ -1,8 +1,11 @@
 package com.altimeter.bdureau.bearconsole;
 
 /**
- * Created by BDUREAU on 28/06/2016.
- */
+ *
+ *   @description: Altimeter configuration
+ *   @author: boris.dureau@neuf.fr
+ *
+ **/
 public class AltiConfigData {
 
     //Altimeter config variable

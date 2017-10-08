@@ -11,15 +11,15 @@ import org.afree.chart.axis.NumberAxis;
 import org.afree.chart.axis.ValueAxis;
 import org.afree.chart.plot.PlotOrientation;
 import org.afree.chart.plot.XYPlot;
-
 import org.afree.data.category.DefaultCategoryDataset;
 import org.afree.data.xy.XYSeriesCollection;
-
 import org.afree.graphics.SolidColor;
 import org.afree.graphics.geom.Font;
-
-
 import android.graphics.Color;
+/**
+ *   @description: This will display each flight
+ *   @author: boris.dureau@neuf.fr
+ **/
 
 public class FlightViewActivity extends AppCompatActivity {
     String FlightName = null;

@@ -9,9 +9,10 @@ import java.io.InputStream;
 import java.util.UUID;
 
 /**
- * Created by BDUREAU on 09/09/2017.
- */
-public class bluetoothConnection {
+ *   @description: This class has all the methods to deal with your bluetooth connection
+ *   @author: boris.dureau@neuf.fr
+ **/
+public class BluetoothConnection {
     BluetoothDevice device;
     BluetoothAdapter myBluetooth = null;
     BluetoothSocket btSocket = null;
@@ -53,8 +54,7 @@ public class bluetoothConnection {
         return btSocket;
     }
 
-    /*InputStream tmpIn = null;
-            tmpIn=btSocket.getInputStream();*/
+
     public InputStream getInputStream () {
         InputStream tmpIn = null;
         try {

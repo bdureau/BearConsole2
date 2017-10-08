@@ -1,6 +1,9 @@
 package com.altimeter.bdureau.bearconsole;
 
-
+/**
+*   @description: Retrieve altimeter configuration
+*   @author: boris.dureau@neuf.fr
+**/
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -183,48 +186,42 @@ public class AltimeterConfigActivity extends AppCompatActivity {
                 AltiCfg.getOutput3Delay() +","+
                 AltiCfg.getBeepingFrequency() +
                 ";\n";
-        //msg(altiCfgStr);
+
         if(myBT.getConnected())
-           // try  {
+
                 //send back the config
                 myBT.write(altiCfgStr.toString());
 
-                //msg("Config successfully uploaded");
                 msg(getResources().getString(R.string.msg3));
-                //myBT.getBtSocket().getOutputStream().flush();
+
                 myBT.flush();
-           // }
-           /* catch (IOException e) {
-                //msg("Failed to upload config");
-                msg(getResources().getString(R.string.msg4));
-                return false;
-            }*/
+
         return true;
     }
 
     private void readConfig()
     {
         // ask for config
-        if(myBT.getConnected())
+        if(myBT.getConnected()) {
 
-                //msg("Retreiving altimeter config...");
-                myBT.setDataReady(false);
-                //myBT.getBtSocket().getOutputStream().flush();
-                myBT.flush();
-                myBT.clearInput();
+            //msg("Retreiving altimeter config...");
+            myBT.setDataReady(false);
 
-                myBT.write("b;\n".toString());
+            myBT.flush();
+            myBT.clearInput();
 
-                myBT.flush();
+            myBT.write("b;\n".toString());
+
+            myBT.flush();
 
 
-        //get the results
-        //wait for the result to come back
-        try {
-            while (myBT.getInputStream().available() <= 0) ;
-        }
-        catch (IOException e) {
+            //get the results
+            //wait for the result to come back
+            try {
+                while (myBT.getInputStream().available() <= 0) ;
+            } catch (IOException e) {
 
+            }
         }
         //reading the config
         if(myBT.getConnected()) {
@@ -237,8 +234,7 @@ public class AltimeterConfigActivity extends AppCompatActivity {
             if (myMessage.equals( "start alticonfig end") )
             {
                 try {
-                AltiCfg= myBT.getAltiConfigData();
-
+                    AltiCfg= myBT.getAltiConfigData();
 
                 }
                 catch (Exception e) {

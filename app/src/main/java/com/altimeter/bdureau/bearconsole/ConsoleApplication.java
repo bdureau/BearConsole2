@@ -7,21 +7,20 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
-import android.os.Environment;
 import android.os.Handler;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-//import java.io.OutputStream;
+
 import java.util.Locale;
 
 /**
- * Created by BDUREAU on 07/09/2017.
- */
+ *   @description: This is quite a major class used everywhere because it can point to your connection, appconfig
+ *   @author: boris.dureau@neuf.fr
+ **/
 public class ConsoleApplication extends Application {
     private boolean isConnected = false;
     // Store number of flight
@@ -36,34 +35,34 @@ public class ConsoleApplication extends Application {
 
     private double FEET_IN_METER = 1;
     private boolean exit =false;
-    private globalConfig AppConf=null;
+    private GlobalConfig AppConf=null;
     private String address;
     private String myTypeOfConnection ="bluetooth";// "USB";//"bluetooth";
 
-    private bluetoothConnection BTCon = null;
-    private usbConnection UsbCon =null;
+    private BluetoothConnection BTCon = null;
+    private UsbConnection UsbCon =null;
 
     private Handler mHandler;
     public void setHandler(Handler mHandler) {
         this.mHandler = mHandler;
     }
+
     @Override
     public void onCreate() {
 
         super.onCreate();
         AltiCfg = new AltiConfigData();
         MyFlight = new FlightData();
-        AppConf = new globalConfig();
+        AppConf = new GlobalConfig();
         AppConf.ReadConfig();
-        BTCon = new bluetoothConnection();
-        UsbCon = new usbConnection();
-        if (AppConf.getConnectionType().equals("0"))
+        BTCon = new BluetoothConnection();
+        UsbCon = new UsbConnection();
+        /*if (AppConf.getConnectionType().equals("0"))
             //bluetooth
             myTypeOfConnection= "bluetooth";
         else
-            myTypeOfConnection ="usb";
-
-
+            myTypeOfConnection ="usb";*/
+        myTypeOfConnection = AppConf.getConnectionTypeValue();
 
     }
 
@@ -124,20 +123,72 @@ public class ConsoleApplication extends Application {
     public FlightData getFlightData() {
         return MyFlight;
     }
+
+    // connect to the bluetooth adapter
     public boolean connect() {
         boolean state=false;
         if(myTypeOfConnection.equals( "bluetooth")) {
             state = BTCon.connect(address);
+            setConnectionType("bluetooth");
+            if(!isConnectionValid()){
+                Disconnect();
+                state = false;
+            }
         }
         return state;
     }
 
+    // connect to the USB
     public boolean connect(UsbManager usbManager,UsbDevice device, int baudRate) {
         boolean state=false;
         if(myTypeOfConnection.equals( "usb")) {
             state = UsbCon.connect(usbManager, device, baudRate);
+            setConnectionType("usb");
+            if(!isConnectionValid()){
+                Disconnect();
+                state = false;
+            }
         }
         return state;
+    }
+
+    public boolean isConnectionValid() {
+        boolean valid=false;
+        //if(getConnected()) {
+
+            setDataReady(false);
+
+            flush();
+            clearInput();
+
+            write("h;\n".toString());
+
+            //flush();
+
+        appendLog("sent command\n");
+            //get the results
+            //wait for the result to come back
+            try {
+                while (getInputStream().available() <= 0) ;
+            } catch (IOException e) {
+
+            }
+            String myMessage = "";
+            long timeOut = 10000;
+            long startTime = System.currentTimeMillis();
+
+            myMessage =ReadResult();
+        appendLog(myMessage);
+            if (myMessage.equals( "OK") )
+            {
+                valid = true;
+            }
+            else
+            {
+                valid = false;
+            }
+        //}
+        return valid;
     }
     public void Disconnect() {
         if(myTypeOfConnection.equals( "bluetooth")) {
@@ -173,7 +224,8 @@ public class ConsoleApplication extends Application {
     public void initFlightData() {
         MyFlight = new FlightData();
 
-        if(AppConf.getUnits().equals("0"))
+        //if(AppConf.getUnits().equals("0"))
+        if(AppConf.getUnitsValue().equals("Meters"))
         {
             FEET_IN_METER =1;
         }
@@ -229,21 +281,16 @@ public class ConsoleApplication extends Application {
 
 
             while (this.exit==false) {
-                //appendLog("log1");
                 if (getInputStream().available() > 0) {
-                    //appendLog("log2");
                     // Read in the available character
                     char ch = (char) getInputStream().read();
-                    //appendLog("log3");
                     if (ch == '$') {
 
                         // read entire sentence until the end
                         String tempBuff = "";
                         while (ch != ';') {
                             // this is not the end of our command
-                            //appendLog("log4");
                             ch = (char) getInputStream().read();
-                            //appendLog("log5");
                             if (ch != '\r')
                                 if (ch != '\n')
                                     if (ch != ';')
@@ -251,46 +298,36 @@ public class ConsoleApplication extends Application {
                                                 + Character.toString(ch);
                         }
                         if (ch == ';') {
-                           // appendLog("log6");
                             ch = (char) getInputStream().read();
-                           // appendLog("log7");
-                            //appendLog("log7-0:"+tempBuff);
                         }
 
                         Sentence currentSentence = null;
                         if (!tempBuff.isEmpty()) {
-                           // appendLog("log7-1:");
                             currentSentence = readSentence(tempBuff);
 
                             fullBuff = fullBuff + tempBuff;
-                           // appendLog("log7-2:");
                         }
-                        //appendLog("log8:"+ currentSentence.keyword );
+
                         switch (currentSentence.keyword) {
                             case "telemetry":
                                 if (mHandler != null) {
                                     // Value 1 contain the current altitude
-                                    // TelemetryDT.setCurrentAltitude((long)currentSentence.value1);
                                     mHandler.obtainMessage(1, String.valueOf(currentSentence.value1)).sendToTarget();
                                     // Value 2 lift off yes/no
-                                    //TelemetryDT.setLiftOff((long)currentSentence.value2);
                                     mHandler.obtainMessage(2, String.valueOf(currentSentence.value2)).sendToTarget();
 
                                     // Value 3 apogee fired yes/no
-                                    //TelemetryDT.setApogeeFired((long)currentSentence.value3);
                                     mHandler.obtainMessage(3, String.valueOf(currentSentence.value3)).sendToTarget();
 
                                     //Value 4 apogee altitude
                                     mHandler.obtainMessage(4, String.valueOf(currentSentence.value4)).sendToTarget();
-                                    //TelemetryDT.setApogeeAltitude((long)currentSentence.value4);
+
                                     // Value 5 main fired yes/no
                                     mHandler.obtainMessage(5, String.valueOf(currentSentence.value5)).sendToTarget();
-                                    //TelemetryDT.setApogeeFired((long)currentSentence.value5);
+
                                     // Value 6 main altitude
-                                    //TelemetryDT.setMainAltitude((long)currentSentence.value6);
                                     mHandler.obtainMessage(6, String.valueOf(currentSentence.value6)).sendToTarget();
                                     // Value 7 landed
-                                    //TelemetryDT.setApogeeFired((long)currentSentence.value7);
                                     mHandler.obtainMessage(7, String.valueOf(currentSentence.value7)).sendToTarget();
                                 }
                                 break;
@@ -308,9 +345,6 @@ public class ConsoleApplication extends Application {
                                     MyFlight.AddToFlight(currentSentence.value2,
                                             (long) (currentSentence.value3 * FEET_IN_METER), "Flight "
                                                     + currentFlightNbr);
-
-
-                                //appendLog("data "+ currentFlightNbr + " " + currentSentence.value2 + " " + currentSentence.value3 );
 
                                 break;
                             case "alticonfig":
@@ -374,7 +408,8 @@ public class ConsoleApplication extends Application {
                             case "OK":
                                 setDataReady(true);
                                 commandRet = currentSentence.keyword;
-
+                                myMessage = "OK";
+                                exit=true;
                                 break;
                             case "KO":
                                 setDataReady(true);
@@ -497,7 +532,7 @@ public class ConsoleApplication extends Application {
     }
 
 
-    class Sentence {
+    public class Sentence {
 
         public String keyword;
         public long value1;
@@ -524,31 +559,31 @@ public class ConsoleApplication extends Application {
         else if(AppConf.getApplicationLanguage().equals("2")) {
             locale = Locale.ENGLISH;//new Locale("en_US");
         }
-        else if(AppConf.getApplicationLanguage().equals("2"))  {
+        else   {
             locale =Locale.getDefault();
         }
 
 
         Configuration config = new Configuration();
-
         config.locale= locale;
         return config;
 
     }
 
 
-    public globalConfig getAppConf() {
+    public GlobalConfig getAppConf() {
         return AppConf;
     }
 
-    public void setAppConf(globalConfig value) {
+    public void setAppConf(GlobalConfig value) {
         AppConf=value;
     }
 
-    public class globalConfig {
+    public class GlobalConfig {
 
         SharedPreferences appConfig =null;
         SharedPreferences.Editor edit = null;
+        AppConfigData appCfgData = null;
         //application language
         private String applicationLanguage ="0";
         //Graph units
@@ -570,10 +605,12 @@ public class ConsoleApplication extends Application {
         // default baud rate for USB is 57600
         private String baudRate = "9";
 
-        public globalConfig ()
+        public GlobalConfig()
         {
             appConfig  = getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
             edit = appConfig.edit();
+            appCfgData = new AppConfigData();
+
         }
 
         public void ResetDefaultConfig() {
@@ -662,53 +699,57 @@ public class ConsoleApplication extends Application {
         }
 
         public String getApplicationLanguage() {
-
             return applicationLanguage;
         }
 
         public void setApplicationLanguage(String value) {
-
             applicationLanguage=value;
         }
 
+        //return the unit id
         public String getUnits() {
-
             return units;
         }
-
+        public String getUnitsValue ( ) {
+            return appCfgData.getUnitsByNbr(Integer.parseInt(units));
+        }
+        //set the unit by id
         public void setUnits(String value) {
-
             units=value;
         }
         public String getGraphColor() {
-
             return graphColor;
         }
 
         public void setGraphColor(String value) {
-
             graphColor=value;
         }
-        public String getGraphBackColor() {
 
+        public String getGraphBackColor() {
             return graphBackColor;
         }
 
         public void setGraphBackColor(String value) {
-
             graphBackColor=value;
         }
 
+        //get the id of the current connection type
         public String getConnectionType() {
             return connectionType;
         }
+        //get the name of the current connection type
+        public String getConnectionTypeValue (){
+            return appCfgData.getConnectionTypeByNbr(Integer.parseInt(connectionType));
+        }
         public void setConnectionType(String value) {
-
             connectionType=value;
         }
 
         public String getBaudRate() {
             return baudRate;
+        }
+        public String getBaudRateValue() {
+            return appCfgData.getBaudRateByNbr(Integer.parseInt(baudRate));
         }
         public void setBaudRate(String value) {
 
@@ -720,46 +761,46 @@ public class ConsoleApplication extends Application {
         }
         public int ConvertColor(int col) {
 
-            int mycolor=0;
+            int myColor=0;
 
             switch (col) {
 
                 case 0:
-                    mycolor = Color.BLACK;
+                    myColor = Color.BLACK;
                     break;
 
                 case 1:
-                    mycolor = Color.WHITE;
+                    myColor = Color.WHITE;
                     break;
                 case 2:
-                    mycolor = Color.MAGENTA;
+                    myColor = Color.MAGENTA;
                     break;
                 case 3:
-                    mycolor = Color.BLUE;
+                    myColor = Color.BLUE;
                     break;
                 case 4:
-                    mycolor = Color.YELLOW;
+                    myColor = Color.YELLOW;
                     break;
                 case 5:
-                    mycolor = Color.GREEN;
+                    myColor = Color.GREEN;
                     break;
                 case 6:
-                    mycolor = Color.GRAY;
+                    myColor = Color.GRAY;
                     break;
                 case 7:
-                    mycolor = Color.CYAN;
+                    myColor = Color.CYAN;
                     break;
                 case 8:
-                    mycolor =  Color.DKGRAY;
+                    myColor =  Color.DKGRAY;
                     break;
                 case 9:
-                    mycolor =  Color.LTGRAY;
+                    myColor =  Color.LTGRAY;
                     break;
                 case 10:
-                    mycolor =  Color.RED;
+                    myColor =  Color.RED;
                     break;
             }
-            return mycolor;
+            return myColor;
         }
     }
 }
