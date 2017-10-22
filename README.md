@@ -7,7 +7,8 @@ It runs some sort of AT commands and allow configuration of the altimeter as wel
 <img src="/pictures/altimulti_bluetooth.png" width="40%"> <img src="/pictures/altimulti_config.png" width="40%">
 <img src="/pictures/altimulti_flight_graph.png" width="69%">
 <img src="/pictures/altimulti_flight_list.png" width="40%"> <img src="/pictures/altimulti_mainscreen.png" width="40%">
-With 3DR module you can also do telemetry
+
+With 3DR module you can also do telemetry                                         
 <img src="/pictures/altimulti_telemetryV2.jpg" width="40%">
 
 # Getting the app
