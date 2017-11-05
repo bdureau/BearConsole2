@@ -23,6 +23,13 @@ public class AltiConfigData {
     private int minorVersion =0;
     private int majorVersion =0;
     private int beepingFrequency = 440;
+    private int nbrOfMeasuresForApogee=5;
+    private long connectionSpeed= 57600;
+    private int altimeterResolution = 0;
+    private int eepromSize= 512;
+    private int endRecordAltitude =3;
+    private int recordTemperature = 0;
+    private int supersonicDelay=0;
 
 
     public AltiConfigData()
@@ -159,9 +166,36 @@ public class AltiConfigData {
     {
         beepingFrequency = value;
     }
-
     public int getBeepingFrequency()
     {
         return beepingFrequency;
     }
+
+    //Minimum recording Altitude
+    public void setEndRecordAltitude(int value) {endRecordAltitude =value;}
+    public int getEndRecordAltitude(){return endRecordAltitude;}
+
+    // Record temperature
+    public void setRecordTemperature(int value){recordTemperature=value;}
+    public int getRecordTemperature(){return recordTemperature;}
+
+   // supersonic delay
+    public void setSupersonicDelay(int value) {supersonicDelay=value;}
+    public int getSupersonicDelay() {return supersonicDelay;}
+
+    //nbr of measures to do to determine apogee
+    public void setNbrOfMeasuresForApogee (int value) {nbrOfMeasuresForApogee = value;}
+    public int getNbrOfMeasuresForApogee() {return nbrOfMeasuresForApogee;}
+
+    //altimeter baud rate
+    public void setConnectionSpeed(long value) {connectionSpeed = value;}
+    public long getConnectionSpeed() {return connectionSpeed;}
+
+    //Sensor resolution
+    public void setAltimeterResolution(int value) {altimeterResolution = value;}
+    public int getAltimeterResolution() {return altimeterResolution;}
+
+    //eeprom size
+    public void setEepromSize(int value) {eepromSize = value;}
+    public int getEepromSize() {return eepromSize;}
 }

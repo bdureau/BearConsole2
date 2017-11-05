@@ -49,7 +49,8 @@ public class Telemetry extends AppCompatActivity {
     private boolean apogee = false;
     private boolean mainFired = false;
     private boolean hasLanded = false;*/
-
+    int altitudeTime=0;
+    int altitude =0;
 
     boolean telemetry = true;
     Button startTelemetryButton, stopTelemetryButton;
@@ -65,7 +66,7 @@ public class Telemetry extends AppCompatActivity {
                     {
                         if (cbLiftOff.isChecked()&& !cbLanded.isChecked()) {
 
-                            int altitudeTime = (int)(System.currentTimeMillis()-LiftOffTime);
+                            //int altitudeTime = (int)(System.currentTimeMillis()-LiftOffTime);
                             int altitude = (int) (Integer.parseInt((String)msg.obj)* FEET_IN_METER);
                             myflight.AddToFlight(altitudeTime,altitude,"Telemetry" );
 
@@ -113,7 +114,7 @@ public class Telemetry extends AppCompatActivity {
                     txtMaxAltitude.setText((String)msg.obj);
                     break;
                 case 5:
-                    //value 4 main fired yes/no
+                    //value 5 main fired yes/no
                     if(!cbMainChute.isChecked())
                     if(((String)msg.obj).matches("\\d+(?:\\.\\d+)?"))
                         if(Integer.parseInt((String)msg.obj) > 0)
@@ -126,7 +127,7 @@ public class Telemetry extends AppCompatActivity {
 
                     break;
                 case 6:
-                    // main altitude
+                    // value 6 main altitude
                     if(((String)msg.obj).matches("\\d+(?:\\.\\d+)?"))
                     {
                         if (cbMainChute.isChecked()) {
@@ -148,6 +149,15 @@ public class Telemetry extends AppCompatActivity {
                             txtLandedTime.setText((System.currentTimeMillis()-LiftOffTime)+" ms");
                         }
 
+                    break;
+                case 8:
+                    // Value 8 contain the sample time
+                    if(((String)msg.obj).matches("\\d+(?:\\.\\d+)?"))
+                    {
+                        if(Integer.parseInt((String)msg.obj) > 0) {
+                            altitudeTime = Integer.parseInt((String)msg.obj);
+                        }
+                    }
                     break;
             }
         }

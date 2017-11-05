@@ -165,7 +165,7 @@ public class ConsoleApplication extends Application {
 
             //flush();
 
-        appendLog("sent command\n");
+        //appendLog("sent command\n");
             //get the results
             //wait for the result to come back
             try {
@@ -178,7 +178,7 @@ public class ConsoleApplication extends Application {
             long startTime = System.currentTimeMillis();
 
             myMessage =ReadResult();
-        appendLog(myMessage);
+        //appendLog(myMessage);
             if (myMessage.equals( "OK") )
             {
                 valid = true;
@@ -329,6 +329,8 @@ public class ConsoleApplication extends Application {
                                     mHandler.obtainMessage(6, String.valueOf(currentSentence.value6)).sendToTarget();
                                     // Value 7 landed
                                     mHandler.obtainMessage(7, String.valueOf(currentSentence.value7)).sendToTarget();
+                                    // value 8 time
+                                    mHandler.obtainMessage(8, String.valueOf(currentSentence.value8)).sendToTarget();
                                 }
                                 break;
                             case "data":
@@ -393,13 +395,13 @@ public class ConsoleApplication extends Application {
                                 NbrOfFlight = (int) currentSentence.value1;
                                 break;
                             case "start":
-                                appendLog("Start");
+                                //appendLog("Start");
                                 // We are starting reading data
                                 setDataReady(false);
                                 myMessage = "start";
                                 break;
                             case "end":
-                                appendLog("end");
+                                //appendLog("end");
                                 // We have finished reading data
                                 setDataReady(true);
                                 myMessage = myMessage + " " + "end";

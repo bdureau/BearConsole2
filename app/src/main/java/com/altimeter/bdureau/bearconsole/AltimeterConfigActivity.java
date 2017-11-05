@@ -121,7 +121,6 @@ public class AltimeterConfigActivity extends AppCompatActivity {
         //readConfig();
         new RetrieveConfig().execute();
 
-
     }
     // fast way to call Toast
     private void msg(String s)
@@ -184,7 +183,14 @@ public class AltimeterConfigActivity extends AppCompatActivity {
                 AltiCfg.getOutput1Delay() +","+
                 AltiCfg.getOutput2Delay() +","+
                 AltiCfg.getOutput3Delay() +","+
-                AltiCfg.getBeepingFrequency() +
+                AltiCfg.getBeepingFrequency() + ","+
+                AltiCfg.getNbrOfMeasuresForApogee()+ ","+
+                AltiCfg.getEndRecordAltitude()+ ","+
+                AltiCfg.getRecordTemperature()+ ","+
+                AltiCfg.getSupersonicDelay()+ ","+
+                AltiCfg.getConnectionSpeed()+ ","+
+                AltiCfg.getAltimeterResolution()+ ","+
+                AltiCfg.getEepromSize()+
                 ";\n";
 
         if(myBT.getConnected())
