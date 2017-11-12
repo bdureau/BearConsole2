@@ -26,10 +26,17 @@ public class AltimeterConfigActivity extends AppCompatActivity {
     private EditText Freq;
     private EditText MainAltitude;
     private EditText OutDelay1, OutDelay2,OutDelay3;
-    private Spinner dropdownOut1, dropdownOut2, dropdownOut3;
+    private EditText ApogeeMeasures;
+    private Spinner dropdownOut1, dropdownOut2, dropdownOut3, dropdownBaudRate;
+    private Spinner dropdownAltimeterResolution, dropdownEEpromSize;
     private TextView altiName;
     private AltiConfigData AltiCfg = null;
     private ProgressDialog progress;
+    private String[] itemsBaudRate;
+    private String[] itemsAltimeterResolution;
+    private String[] itemsEEpromSize;
+    private String[] itemsBeepOnOff;
+    private Spinner dropdownBeepOnOff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +74,7 @@ public class AltimeterConfigActivity extends AppCompatActivity {
         });
 
 
-        //Bip mode
+        //Beep mode
         dropdownBipMode = (Spinner)findViewById(R.id.spinnerBipMode);
         String[] items = new String[]{"Mode1", "Mode2"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AltimeterConfigActivity.this,
@@ -114,10 +121,50 @@ public class AltimeterConfigActivity extends AppCompatActivity {
         OutDelay3 =(EditText)findViewById(R.id.editTxtDelay3);
 
         MainAltitude= (EditText)findViewById(R.id.editTxtMainAltitude);
-        //her you can set the bip frequency
+        //here you can set the beep frequency
         Freq=(EditText)findViewById(R.id.editTxtBipFreq);
 
+        //baud rate
+        dropdownBaudRate = (Spinner)findViewById(R.id.spinnerBaudRate);
+        itemsBaudRate = new String[]{ "300",
+                "1200",
+                "2400",
+                "4800",
+                "9600",
+                "14400",
+                "19200",
+                "28800",
+                "38400",
+                "57600",
+                "115200",
+                "230400"};
+        ArrayAdapter<String> adapterBaudRate = new ArrayAdapter<String>(AltimeterConfigActivity.this,
+                android.R.layout.simple_spinner_dropdown_item, itemsBaudRate);
+        dropdownBaudRate.setAdapter(adapterBaudRate);
 
+        // nbr of measures to determine apogee
+        ApogeeMeasures = (EditText)findViewById(R.id.editTxtApogeeMeasures);
+
+        // altimeter resolution
+        dropdownAltimeterResolution = (Spinner)findViewById(R.id.spinnerAltimeterResolution);
+        itemsAltimeterResolution = new String[]{"ULTRALOWPOWER", "STANDARD","HIGHRES","ULTRAHIGHRES"};
+        ArrayAdapter<String> adapterAltimeterResolution= new ArrayAdapter<String>(AltimeterConfigActivity.this,
+                android.R.layout.simple_spinner_dropdown_item, itemsAltimeterResolution);
+        dropdownAltimeterResolution.setAdapter(adapterAltimeterResolution);
+
+        //Altimeter external eeprom size
+        dropdownEEpromSize = (Spinner)findViewById(R.id.spinnerEEpromSize);
+        itemsEEpromSize = new String[]{"32", "64","128","256","512", "1024"};
+        ArrayAdapter<String> adapterEEpromSize= new ArrayAdapter<String>(AltimeterConfigActivity.this,
+                android.R.layout.simple_spinner_dropdown_item, itemsEEpromSize);
+        dropdownEEpromSize.setAdapter(adapterEEpromSize);
+
+        // Switch beeping on or off
+        dropdownBeepOnOff= (Spinner)findViewById(R.id.spinnerBeepOnOff);
+        itemsBeepOnOff= new String[]{"Off","On"};
+        ArrayAdapter<String> adapterBeepOnOff = new ArrayAdapter<String>(AltimeterConfigActivity.this,
+                android.R.layout.simple_spinner_dropdown_item, itemsBeepOnOff);
+        dropdownBeepOnOff.setAdapter(adapterBeepOnOff);
         //readConfig();
         new RetrieveConfig().execute();
 
@@ -142,6 +189,7 @@ public class AltimeterConfigActivity extends AppCompatActivity {
         AltiCfg.setBeepingFrequency(Integer.parseInt(Freq.getText().toString()));
         AltiCfg.setBeepingMode((int)dropdownBipMode.getSelectedItemId());
         AltiCfg.setUnits((int)dropdownUnits.getSelectedItemId());
+        AltiCfg.setConnectionSpeed(Integer.parseInt(itemsBaudRate[(int)dropdownBaudRate.getSelectedItemId()]));
 
         if (AltiCfg.getOutput1() == 0)
             nbrOfMain++;
@@ -190,7 +238,8 @@ public class AltimeterConfigActivity extends AppCompatActivity {
                 AltiCfg.getSupersonicDelay()+ ","+
                 AltiCfg.getConnectionSpeed()+ ","+
                 AltiCfg.getAltimeterResolution()+ ","+
-                AltiCfg.getEepromSize()+
+                AltiCfg.getEepromSize()+"," +
+                AltiCfg.getBeepOnOff() +
                 ";\n";
 
         if(myBT.getConnected())
@@ -198,7 +247,7 @@ public class AltimeterConfigActivity extends AppCompatActivity {
                 //send back the config
                 myBT.write(altiCfgStr.toString());
 
-                msg(getResources().getString(R.string.msg3));
+                msg(getResources().getString(R.string.msg3));//+altiCfgStr.toString());
 
                 myBT.flush();
 
@@ -241,7 +290,6 @@ public class AltimeterConfigActivity extends AppCompatActivity {
             {
                 try {
                     AltiCfg= myBT.getAltiConfigData();
-
                 }
                 catch (Exception e) {
                   //  msg("pb ready data");
@@ -250,7 +298,6 @@ public class AltimeterConfigActivity extends AppCompatActivity {
             else
             {
                // msg("data not ready");
-
             }
         }
 
@@ -265,8 +312,6 @@ public class AltimeterConfigActivity extends AppCompatActivity {
             progress = ProgressDialog.show(AltimeterConfigActivity.this,
                     getResources().getString(R.string.msg5),
                     getResources().getString(R.string.msg6));  //show a progress dialog
-           /* progress = ProgressDialog.show(AltimeterConfigActivity.this,
-                    "Retrieving Altimeter config...", "Please wait!!!");*/
         }
 
         @Override
@@ -299,6 +344,14 @@ public class AltimeterConfigActivity extends AppCompatActivity {
             OutDelay3.setText(String.valueOf(AltiCfg.getOutput3Delay()));
             MainAltitude.setText(String.valueOf(AltiCfg.getMainAltitude()));
             Freq.setText(String.valueOf(AltiCfg.getBeepingFrequency()));
+
+            dropdownBaudRate.setSelection(AltiCfg.arrayIndex(itemsBaudRate,String.valueOf(AltiCfg.getConnectionSpeed())));
+
+            ApogeeMeasures.setText(String.valueOf(AltiCfg.getNbrOfMeasuresForApogee()));
+            //ApogeeMeasures.setText(String.valueOf(AltiCfg.getAltimeterResolution()));
+            dropdownAltimeterResolution.setSelection(AltiCfg.getAltimeterResolution());
+            dropdownEEpromSize.setSelection(AltiCfg.arrayIndex(itemsEEpromSize, String.valueOf(AltiCfg.getEepromSize())));
+            dropdownBeepOnOff.setSelection(AltiCfg.arrayIndex(itemsBeepOnOff, String.valueOf(AltiCfg.getBeepOnOff())));
 
             progress.dismiss();
         }

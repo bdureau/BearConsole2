@@ -21,6 +21,11 @@
     <string name="delay3">Delay3</string>
     <string name="upload">Upload</string>
     <string name="dismiss_config">Dismiss</string>
+    <string name="baudRate">Baud Rate</string>
+    <string name="apogeeMeasures">Apogee Measures</string>
+    <string name="altimeterResolution">Altimeter Res</string>
+    <string name="eepromSize">EEprom Size</string>
+    <string name="beepOnOff">Beep On/Off</string>
 
     <!-- Main Screen -->
     <string name="altimeter_settings">Altimeter Settings</string>

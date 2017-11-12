@@ -254,6 +254,103 @@
         android:layout_alignEnd="@+id/editTxtDelay2"
          />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/baudRate"
+        android:id="@+id/txtViewBaudRate"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtViewDelay3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerBaudRate"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/editTxtDelay3"
+        android:layout_alignRight="@+id/editTxtDelay3"
+        android:layout_alignLeft="@+id/editTxtDelay3"
+        android:layout_above="@+id/txtViewApogeeMeasures" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/apogeeMeasures"
+        android:id="@+id/txtViewApogeeMeasures"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtViewBaudRate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTxtApogeeMeasures"
+        android:inputType="number"
+        android:textSize="13sp"
+        android:layout_alignTop="@+id/txtViewApogeeMeasures"
+        android:layout_alignLeft="@+id/editTxtDelay3"
+        android:layout_alignStart="@+id/editTxtDelay3"
+        android:layout_alignRight="@+id/editTxtDelay3"
+        android:layout_alignEnd="@+id/editTxtDelay3"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altimeterResolution"
+        android:id="@+id/txtViewAltimeterResolution"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtViewApogeeMeasures"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerAltimeterResolution"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/editTxtApogeeMeasures"
+        android:layout_alignRight="@+id/editTxtDelay3"
+        android:layout_alignLeft="@+id/editTxtDelay3"
+        android:layout_above="@+id/txtViewEEpromSize" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/eepromSize"
+        android:id="@+id/txtViewEEpromSize"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtViewAltimeterResolution"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerEEpromSize"
+        android:spinnerMode="dropdown"
+        android:layout_alignTop="@+id/txtViewEEpromSize"
+        android:layout_alignLeft="@+id/spinnerAltimeterResolution"
+        android:layout_alignRight="@+id/spinnerAltimeterResolution"
+        android:layout_alignBottom="@+id/txtViewEEpromSize" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/beepOnOff"
+        android:id="@+id/txtViewBeepOnOff"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtViewEEpromSize"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerBeepOnOff"
+        android:spinnerMode="dropdown"
+        android:layout_alignTop="@+id/txtViewBeepOnOff"
+        android:layout_alignLeft="@+id/spinnerAltimeterResolution"
+        android:layout_alignRight="@+id/spinnerAltimeterResolution"
+        android:layout_alignBottom="@+id/txtViewBeepOnOff" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

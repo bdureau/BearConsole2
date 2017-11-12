@@ -381,11 +381,39 @@ public class ConsoleApplication extends Application {
                                 // Value 10 contain the altimeter minor version
                                 AltiCfg.setAltiMinorVersion((int) currentSentence.value10);
 
-
+                                // Value 11 contain the output 1 delay
                                 AltiCfg.setOutput1Delay((int) currentSentence.value11);
+                                // Value 12 contain the output 2 delay
                                 AltiCfg.setOutput2Delay((int) currentSentence.value12);
+                                // Value 13 contain the output 3 delay
                                 AltiCfg.setOutput3Delay((int) currentSentence.value13);
+                                // Value 14 contain the altimeter beeping frequency
                                 AltiCfg.setBeepingFrequency((int) currentSentence.value14);
+                                // Value 15
+                                AltiCfg.setNbrOfMeasuresForApogee((int) currentSentence.value15);
+                                // Value 16 contains the min recording altitude
+                                AltiCfg.setEndRecordAltitude((int) currentSentence.value16);
+                                // Value 17 contains the record temp flag
+                                AltiCfg.setRecordTemperature((int) currentSentence.value17);
+                                // Value 18 contains the supersonic delay flag
+                                AltiCfg.setSupersonicDelay((int) currentSentence.value18);
+                                // Value 19 contains the connection speed
+                                AltiCfg.setConnectionSpeed((int) currentSentence.value19);
+                                // Value 20 contains the altimeter resolution
+                                if ((int) currentSentence.value20 !=-1)
+                                    AltiCfg.setAltimeterResolution((int) currentSentence.value20);
+                                else
+                                    AltiCfg.setAltimeterResolution(0);
+                                // Value 21 contains the eeprom size
+                                if ((int) currentSentence.value21 !=-1)
+                                    AltiCfg.setEepromSize((int) currentSentence.value21);
+                                else
+                                    AltiCfg.setEepromSize(512);
+                                // switch beeps on or off
+                                if ((int) currentSentence.value22 !=-1)
+                                    AltiCfg.setBeepOnOff((int) currentSentence.value22);
+                                else
+                                    AltiCfg.setBeepOnOff(0);
 
                                 //DataReady = true;
                                 myMessage = myMessage + " " + "alticonfig";
@@ -530,6 +558,46 @@ public class ConsoleApplication extends Application {
                 sentence.value14 = Integer.parseInt(tempArray[14]);
             else
                 sentence.value14 = -1;
+        if (tempArray.length > 15)
+            if(tempArray[15].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value15 = Integer.parseInt(tempArray[15]);
+            else
+                sentence.value15 = -1;
+        if (tempArray.length > 16)
+            if(tempArray[16].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value16 = Integer.parseInt(tempArray[16]);
+            else
+                sentence.value16 = -1;
+        if (tempArray.length > 17)
+            if(tempArray[17].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value17 = Integer.parseInt(tempArray[17]);
+            else
+                sentence.value17 = -1;
+        if (tempArray.length > 18)
+            if(tempArray[18].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value18 = Integer.parseInt(tempArray[18]);
+            else
+                sentence.value18 = -1;
+        if (tempArray.length > 19)
+            if(tempArray[19].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value19 = Integer.parseInt(tempArray[19]);
+            else
+                sentence.value19 = -1;
+        if (tempArray.length > 20)
+            if(tempArray[20].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value20 = Integer.parseInt(tempArray[20]);
+            else
+                sentence.value20 = -1;
+        if (tempArray.length > 21)
+            if(tempArray[21].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value21 = Integer.parseInt(tempArray[21]);
+            else
+                sentence.value21 = -1;
+        if (tempArray.length > 22)
+            if(tempArray[22].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value22 = Integer.parseInt(tempArray[22]);
+            else
+                sentence.value22 = -1;
         return sentence;
     }
 
@@ -551,6 +619,14 @@ public class ConsoleApplication extends Application {
         public long value12;
         public long value13;
         public long value14;
+        public long value15;
+        public long value16;
+        public long value17;
+        public long value18;
+        public long value19;
+        public long value20;
+        public long value21;
+        public long value22;
     }
     public Configuration getAppLocal() {
 

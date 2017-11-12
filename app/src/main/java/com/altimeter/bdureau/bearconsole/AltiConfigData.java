@@ -30,6 +30,7 @@ public class AltiConfigData {
     private int endRecordAltitude =3;
     private int recordTemperature = 0;
     private int supersonicDelay=0;
+    private int beepOnOff = 0;
 
 
     public AltiConfigData()
@@ -198,4 +199,20 @@ public class AltiConfigData {
     //eeprom size
     public void setEepromSize(int value) {eepromSize = value;}
     public int getEepromSize() {return eepromSize;}
+
+    // beep on /off
+    public void setBeepOnOff(int value) {beepOnOff = value;}
+    public int getBeepOnOff() {
+        return beepOnOff;
+    }
+
+    //index in an array
+    public int arrayIndex (String stringArray[], String pattern) {
+
+        for (int i =0; i < stringArray.length ; i++) {
+            if(stringArray[i].equals(pattern))
+                return i;
+        }
+        return -1;
+    }
 }
