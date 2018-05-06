@@ -1,5 +1,5 @@
 <resources>
-    <string name="version">1.0.5</string>
+    <string name="version">1.0.6</string>
     <string name="app_name">Bear Console</string>
     <!-- Menu -->
     <string name="help">Help</string>
@@ -19,6 +19,8 @@
     <string name="delay2">Delay2</string>
     <string name="output_3">Output 3</string>
     <string name="delay3">Delay3</string>
+    <string name="output_4">Output 4</string>
+    <string name="delay4">Delay4</string>
     <string name="upload">Upload</string>
     <string name="dismiss_config">Dismiss</string>
     <string name="baudRate">Baud Rate</string>
@@ -26,6 +28,9 @@
     <string name="altimeterResolution">Altimeter Res</string>
     <string name="eepromSize">EEprom Size</string>
     <string name="beepOnOff">Beep On/Off</string>
+    <string name="RecordTemp">Record temp</string>
+    <string name="SupersonicDelay">Supersonic delay</string>
+    <string name="EndRecordAltitude">End of rec alt</string>
 
     <!-- Main Screen -->
     <string name="altimeter_settings">Altimeter Settings</string>

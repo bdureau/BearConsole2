@@ -414,7 +414,16 @@ public class ConsoleApplication extends Application {
                                     AltiCfg.setBeepOnOff((int) currentSentence.value22);
                                 else
                                     AltiCfg.setBeepOnOff(0);
-
+                                if ((int) currentSentence.value23 !=-1)
+                                    AltiCfg.setOutput4((int) currentSentence.value23);
+                                else
+                                    //We do not have a fourth output
+                                    AltiCfg.setOutput4(-1);
+                                // Value 24 contain the output 4 delay
+                                if ((int) currentSentence.value24 !=-1)
+                                    AltiCfg.setOutput4Delay((int) currentSentence.value24);
+                                else
+                                    AltiCfg.setOutput4Delay(-1);
                                 //DataReady = true;
                                 myMessage = myMessage + " " + "alticonfig";
                                 break;
@@ -598,6 +607,16 @@ public class ConsoleApplication extends Application {
                 sentence.value22 = Integer.parseInt(tempArray[22]);
             else
                 sentence.value22 = -1;
+        if (tempArray.length > 23)
+            if(tempArray[23].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value23 = Integer.parseInt(tempArray[23]);
+            else
+                sentence.value23 = -1;
+        if (tempArray.length > 24)
+            if(tempArray[24].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value24 = Integer.parseInt(tempArray[24]);
+            else
+                sentence.value24 = -1;
         return sentence;
     }
 
@@ -627,6 +646,8 @@ public class ConsoleApplication extends Application {
         public long value20;
         public long value21;
         public long value22;
+        public long value23;
+        public long value24;
     }
     public Configuration getAppLocal() {
 

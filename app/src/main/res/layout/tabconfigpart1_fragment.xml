@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_altitude"
+        android:id="@+id/txtMainAltitude"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/editTxtMainAltitude"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/spinnerOut1"
+        android:layout_alignTop="@+id/txtMainAltitude"
+        android:ems="10"
+        android:inputType="number"
+        android:singleLine="true"
+        android:text="100"
+        android:textAlignment="textEnd"
+        android:textIsSelectable="false"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/output_1"
+        android:id="@+id/txtOut1"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtMainAltitude"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:id="@+id/spinnerOut1"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/editTxtDelay1"
+        android:layout_alignTop="@+id/txtOut1"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delay1"
+        android:id="@+id/txtViewDelay1"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtOut1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/editTxtDelay1"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/spinnerOut2"
+        android:layout_alignTop="@+id/txtViewDelay1"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        android:textSize="13sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/output_2"
+        android:id="@+id/txtOut2"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtViewDelay1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:id="@+id/spinnerOut2"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/editTxtDelay2"
+        android:layout_alignTop="@+id/txtOut2"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delay2"
+        android:id="@+id/txtViewDelay2"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtOut2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/editTxtDelay2"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/spinnerOut3"
+        android:layout_alignTop="@+id/txtViewDelay2"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        android:textSize="13sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/output_3"
+        android:id="@+id/txtOut3"
+        android:layout_below="@+id/txtViewDelay2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerOut3"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/editTxtDelay3"
+        android:layout_alignTop="@+id/txtOut3"
+        android:spinnerMode="dropdown" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delay3"
+        android:id="@+id/txtViewDelay3"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtOut3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/editTxtDelay3"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/spinnerOut4"
+        android:layout_alignTop="@+id/txtViewDelay3"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/output_4"
+        android:id="@+id/txtOut4"
+        android:layout_below="@+id/txtViewDelay3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerOut4"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/editTxtDelay4"
+        android:layout_alignTop="@+id/txtOut4"
+        android:spinnerMode="dropdown" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delay4"
+        android:id="@+id/txtViewDelay4"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtOut4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/editTxtDelay4"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/txtViewDelay4"
+        android:layout_marginEnd="42dp"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        android:textSize="13sp" />
+
+
+
+</RelativeLayout>

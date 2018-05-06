@@ -14,12 +14,14 @@ public class AltiConfigData {
     private int output1 =0;
     private int output2 =1;
     private int output3 =2;
+    private int output4 =-1;
     private int supersonicYesNo =0;
     private int mainAltitude = 100;
     private String AltimeterName = "AltiToto";
     private int output1Delay =0;
     private int output2Delay =0;
     private int output3Delay =0;
+    private int output4Delay =-1;
     private int minorVersion =0;
     private int majorVersion =0;
     private int beepingFrequency = 440;
@@ -115,6 +117,16 @@ public class AltiConfigData {
         return output3;
     }
 
+    public void setOutput4(int value)
+    {
+        output4 = value;
+    }
+
+    public int getOutput4()
+    {
+        return output4;
+    }
+
     public void setSupersonicYesNo(int value)
     {
         supersonicYesNo = value;
@@ -129,29 +141,38 @@ public class AltiConfigData {
     {
         output1Delay  = value;
     }
-
     public int getOutput1Delay()
     {
         return output1Delay;
     }
+
     public void setOutput2Delay(int value)
     {
         output2Delay = value;
     }
-
     public int getOutput2Delay()
     {
         return output2Delay;
     }
+
     public void setOutput3Delay(int value)
     {
         output3Delay = value;
     }
-
     public int getOutput3Delay()
     {
         return output3Delay;
     }
+
+    public void setOutput4Delay(int value)
+    {
+        output4Delay = value;
+    }
+    public int getOutput4Delay()
+    {
+        return output4Delay;
+    }
+
     public void setAltimeterName(String value)
     {
         AltimeterName = value;

@@ -33,6 +33,7 @@ public class MainScreenActivity extends AppCompatActivity {
     String address = null;
     Button btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
     Button btnTelemetry;
+    Button btnTest;
     private ProgressDialog progress;
     UsbManager usbManager;
     UsbDevice device;
@@ -98,6 +99,8 @@ public class MainScreenActivity extends AppCompatActivity {
 
         btnReset = (Button) findViewById(R.id.butReset);
 
+        //btnTest = (Button) findViewById(R.id.buttonTest);
+
         DisableUI();
         btnConnectDisconnect.setText("Connect");
 
@@ -106,12 +109,23 @@ public class MainScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(MainScreenActivity.this, AltimeterConfigActivity.class);
-
+               // Intent i = new Intent(MainScreenActivity.this, AltimeterConfigActivity.class);
+                Intent i = new Intent(MainScreenActivity.this, AltimeterTabConfigActivity.class);
                 //Change the activity.
                 startActivity(i);
             }
         });
+
+       /* btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(MainScreenActivity.this, AltimeterTabConfigActivity.class);
+
+                //Change the activity.
+                startActivity(i);
+            }
+        });*/
 
         btnReadFlights.setOnClickListener(new View.OnClickListener() {
             @Override

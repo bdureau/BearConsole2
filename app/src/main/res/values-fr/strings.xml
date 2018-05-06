@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="version">1.0.5</string>
+    <string name="version">1.0.6</string>
 
     <!-- Application title -->
     <string name="app_name">Bear Console</string>
@@ -12,6 +12,9 @@
     <!-- Screen altimeter config-->
     <string name="altimeter_config">Config Altimètre</string>
     <string name="beep_freq">Freq bips</string>
+    <string name="units">Unités</string>
+    <string name="alti_name">Nom Alti</string>
+    <string name="bip_mode">Mode Bip </string>
     <string name="main_altitude">Altitude du Main</string>
     <string name="output_1">Sortie 1</string>
     <string name="delay1">Retard 1</string>
@@ -19,11 +22,19 @@
     <string name="delay2">Retard 2</string>
     <string name="output_3">Sortie 3</string>
     <string name="delay3">Retard 3</string>
+    <string name="output_4">Sortie 4</string>
+    <string name="delay4">Retard 4</string>
     <string name="upload">Charger</string>
     <string name="dismiss_config">Fermer</string>
-    <string name="units">Unités</string>
-    <string name="alti_name">Nom Alti</string>
-    <string name="bip_mode">Mode Bip </string>
+    <string name="baudRate">Baud Rate</string>
+    <string name="apogeeMeasures">Apogee Measures</string>
+    <string name="altimeterResolution">Res Alti</string>
+    <string name="eepromSize">Capacité EEprom</string>
+    <string name="beepOnOff">Bip On/Off</string>
+    <string name="RecordTemp">Enregistrer temp</string>
+    <string name="SupersonicDelay">Mode Supersonic</string>
+    <string name="EndRecordAltitude">Alt fin enr</string>
+
 
     <!-- Main Screen -->
     <string name="altimeter_settings">Configuration altimètre</string>

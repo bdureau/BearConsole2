@@ -40,6 +40,11 @@
             android:label="@string/altimeter_config"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".AltimeterTabConfigActivity"
+            android:label="@string/altimeter_config"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".FlightListActivity"
             android:label="@string/Flight_list"
             android:screenOrientation="portrait" />

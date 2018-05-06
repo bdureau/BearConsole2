@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtAltimeterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="28dp"
+        android:text="@string/alti_name" />
+
+    <TextView
+        android:id="@+id/txtAltiNameValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/txtAltimeterName"
+        android:text="qqqq" />
+
+    <TextView
+        android:id="@+id/txtAltiUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtAltimeterName"
+        android:text="@string/units" />
+
+    <Spinner
+        android:id="@+id/spinnerUnit"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/txtAltiUnit"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/txtBpMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtAltiUnit"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/bip_mode" />
+
+    <Spinner
+        android:id="@+id/spinnerBipMode"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/txtBpMode"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/txtBeepFrequency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txtBpMode"
+        android:layout_marginTop="18dp"
+        android:text="@string/beep_freq" />
+
+    <EditText
+        android:id="@+id/editTxtBipFreq"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/txtBeepFrequency"
+        android:inputType="number"
+        android:singleLine="true"
+        android:text="100"
+        android:textAlignment="textEnd"
+        android:textIsSelectable="false"
+        android:textSize="13sp" />
+
+
+</RelativeLayout>
