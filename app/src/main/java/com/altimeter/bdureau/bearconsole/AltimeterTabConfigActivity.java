@@ -514,7 +514,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             return (int)this.dropdownBeepOnOff.getSelectedItemId();
         }
         public void setBeepOnOff(int BeepOnOff ) {
-            this.dropdownBeepOnOff.setSelection(AltiCfg.arrayIndex(itemsBeepOnOff,String.valueOf(BeepOnOff)));
+            //this.dropdownBeepOnOff.setSelection(AltiCfg.arrayIndex(itemsBeepOnOff,String.valueOf(BeepOnOff)));
+            dropdownBeepOnOff.setSelection(AltiCfg.getBeepOnOff());
         }
 
         public int getRecordTempOnOff() {
@@ -522,13 +523,24 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             return (int)this.dropdownRecordTemp.getSelectedItemId();
         }
 
+        public void setRecordTempOnOff(int RecordTempOnOff ) {
+            this.dropdownRecordTemp.setSelection(RecordTempOnOff);
+        }
+
         public int getSupersonicDelayOnOff() {
             //return Integer.parseInt(itemsSupersonicDelayOnOff[(int)this.dropdownSupersonicDelay.getSelectedItemId()]);
         return (int)this.dropdownSupersonicDelay.getSelectedItemId();
         }
 
+        public void setSupersonicDelayOnOff(int SupersonicDelayOnOff ) {
+            this.dropdownSupersonicDelay.setSelection(SupersonicDelayOnOff);
+        }
+
         public int getEndRecordAltitude() {
             return Integer.parseInt(this.EndRecordAltitude.getText().toString());
+        }
+        public void setEndRecordAltitude(int EndRecordAltitude ) {
+            this.EndRecordAltitude.setText(String.valueOf(EndRecordAltitude));
         }
 
         @Nullable
@@ -738,17 +750,41 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     configPage1.setOutDelay4(AltiCfg.getOutput4Delay());
                 }
                 //Config Tab 2
-                //Tab2Fragment configPage2 = (Tab2Fragment) myAdapter.getItem(1);
+                if(configPage2.isViewCreated()) {
 
-                //Config Tab 3
+                    configPage2.setBaudRate(AltiCfg.getConnectionSpeed());
+                    //dropdownBaudRate.setSelection(AltiCfg.arrayIndex(itemsBaudRate,String.valueOf(AltiCfg.getConnectionSpeed())));
+                    configPage2.setApogeeMeasures(AltiCfg.getNbrOfMeasuresForApogee());
+                    //ApogeeMeasures.setText(String.valueOf(AltiCfg.getNbrOfMeasuresForApogee()));
 
-                //Tab3Fragment configPage3 = (Tab3Fragment) myAdapter.getItem(2);
+                    configPage2.setAltimeterResolution(AltiCfg.getAltimeterResolution());
+                    //dropdownAltimeterResolution.setSelection(AltiCfg.getAltimeterResolution());
+                    configPage2.setEEpromSize(AltiCfg.getEepromSize());
+                    //dropdownEEpromSize.setSelection(AltiCfg.arrayIndex(itemsEEpromSize, String.valueOf(AltiCfg.getEepromSize())));
+                    configPage2.setBeepOnOff(AltiCfg.getBeepOnOff());
+                    //dropdownBeepOnOff.setSelection(AltiCfg.getBeepOnOff());
+                    configPage2.setRecordTempOnOff(AltiCfg.getRecordTemperature());
+                    //dropdownRecordTemp.setSelection(AltiCfg.getRecordTemperature());
+                    configPage2.setSupersonicDelayOnOff(AltiCfg.getSupersonicDelay());
+                    //dropdownSupersonicDelay.setSelection(AltiCfg.getSupersonicDelay());
+                    configPage2.setEndRecordAltitude(AltiCfg.getEndRecordAltitude());
+                    //EndRecordAltitude.setText(String.valueOf(AltiCfg.getEndRecordAltitude()));
+                }
 
-                /*configPage3.setAltiName(AltiCfg.getAltimeterName() + " ver: " +
-                        AltiCfg.getAltiMajorVersion() + "." + AltiCfg.getAltiMinorVersion());*/
-                //configPage3.setDropdownBipMode(AltiCfg.getBeepingMode());
-                /*configPage3.setDropdownUnits(AltiCfg.getUnits());
-                configPage3.setFreq(String.valueOf(AltiCfg.getBeepingFrequency()));*/
+                if(configPage3.isViewCreated()) {
+                    configPage3.setAltiName(AltiCfg.getAltimeterName()+ " ver: " +
+                            AltiCfg.getAltiMajorVersion()+"."+AltiCfg.getAltiMinorVersion());
+                    //altiName.setText(AltiCfg.getAltimeterName()+ " ver: " +
+                           // AltiCfg.getAltiMajorVersion()+"."+AltiCfg.getAltiMinorVersion());
+
+                    configPage3.setDropdownBipMode(AltiCfg.getBeepingMode());
+                    //dropdownBipMode.setSelection(AltiCfg.getBeepingMode());
+                    configPage3.setDropdownUnits(AltiCfg.getUnits());
+                    //dropdownUnits.setSelection(AltiCfg.getUnits());
+                    configPage3.setFreq(AltiCfg.getBeepingFrequency());
+                    //Freq.setText(String.valueOf(AltiCfg.getBeepingFrequency()));
+                }
+
 
             }
             progress.dismiss();

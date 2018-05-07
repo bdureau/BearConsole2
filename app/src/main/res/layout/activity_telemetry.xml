@@ -11,20 +11,19 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Telemetry"
+        android:text="@string/start_telemetry"
         android:id="@+id/buttonStartTelemetry"
         android:onClick="onClickStartTelemetry"         />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop Telemetry"
+        android:text="@string/stop_telemetry"
         android:id="@+id/buttonStopTelemetry"
         android:onClick="onClickStopTelemetry"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/gridLayout" />
 
     <GridLayout
-
         android:columnCount="5"
         android:rowCount="9"
         android:layout_width="fill_parent"
@@ -36,41 +35,44 @@
         android:id="@+id/gridLayout">
 
 
-
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Current Phase"
             android:id="@+id/textViewlblCurrentPhase"
-            android:layout_row="2"
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_column="0"
-            style="@style/Base.DialogWindowTitle.AppCompat"/>
+            android:layout_row="2"
+            android:text="@string/current_phase"
+            android:textSize="13sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Altitude"
+            android:text="@string/altitude"
             android:id="@+id/textViewlblAltitude"
             android:layout_row="2"
             android:layout_column="2"
             style="@style/Base.DialogWindowTitle.AppCompat"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Event Time"
+            android:text="@string/event_time"
             android:id="@+id/textViewlblEventTime"
             android:layout_row="2"
             android:layout_column="4"
             style="@style/Base.DialogWindowTitle.AppCompat"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lift off"
+            android:text="@string/lift_off"
             android:id="@+id/textViewlblLiftoff"
             android:layout_row="3"
             android:layout_column="0"
-            style="@style/Base.DialogWindowTitle.AppCompat"/>
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,7 +80,8 @@
             android:checked="false"
             android:layout_row="3"
             android:layout_column="1"
-            style="@style/Base.DialogWindowTitle.AppCompat"/>
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,7 +90,8 @@
             android:layout_row="3"
             android:layout_column="2"
             style="@style/Base.DialogWindowTitle.AppCompat"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,15 +100,17 @@
             android:layout_row="3"
             android:layout_column="4"
             style="@style/Base.DialogWindowTitle.AppCompat"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Apogee/drogue"
+            android:text="@string/apogee_drogue"
             android:id="@+id/textViewlblApogee"
             android:layout_row="4"
             android:layout_column="0"
-            style="@style/Base.DialogWindowTitle.AppCompat"/>
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,7 +128,8 @@
             android:layout_row="4"
             android:layout_column="2"
             style="@style/Base.DialogWindowTitle.AppCompat"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,15 +138,17 @@
             android:layout_row="4"
             android:layout_column="4"
             style="@style/Base.DialogWindowTitle.AppCompat"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Main chute"
+            android:text="@string/main_chute"
             android:id="@+id/textViewlblMainChute"
             android:layout_row="5"
             android:layout_column="0"
-            style="@style/Base.DialogWindowTitle.AppCompat"/>
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -156,7 +165,8 @@
             android:layout_row="5"
             android:layout_column="2"
             style="@style/Base.DialogWindowTitle.AppCompat"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -165,15 +175,17 @@
             android:layout_gravity="right"
             android:layout_row="5"
             android:layout_column="4"
-            style="@style/Base.DialogWindowTitle.AppCompat"/>
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Landed"
+            android:text="@string/landed"
             android:id="@+id/textViewlblLanded"
             android:layout_row="6"
             android:layout_column="0"
-            style="@style/Base.DialogWindowTitle.AppCompat"/>
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -193,7 +205,8 @@
             android:text=""
             android:singleLine="true"
             style="@style/Base.DialogWindowTitle.AppCompat"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -205,15 +218,17 @@
             android:layout_gravity="right"
             android:text=""
             android:singleLine="true"
-            style="@style/Base.DialogWindowTitle.AppCompat"/>
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Max speed"
+            android:text="@string/max_speed"
             android:id="@+id/textViewlblMaxSpeed"
             android:layout_row="7"
             android:layout_column="0"
-            style="@style/Base.DialogWindowTitle.AppCompat"/>
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -221,7 +236,8 @@
             android:id="@+id/txtCurrentMaxSpeed"
             android:layout_row="7"
             android:layout_column="2"
-            style="@style/Base.DialogWindowTitle.AppCompat"/>
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -234,16 +250,18 @@
             android:layout_gravity="right"
             android:textIsSelectable="false"
             android:singleLine="true"
-            style="@style/Base.DialogWindowTitle.AppCompat"/>
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Current Altitude"
+            android:text="@string/current_altitude"
             android:id="@+id/textViewlblCurrentAltitude"
             android:layout_row="8"
             android:layout_column="0"
-            style="@style/Base.DialogWindowTitle.AppCompat" />
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -251,8 +269,8 @@
             android:id="@+id/textViewCurrentAltitude"
             android:layout_row="8"
             android:layout_column="2"
-            style="@style/Base.DialogWindowTitle.AppCompat" />
-
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:textSize="13sp"/>
 
     </GridLayout>
     <com.altimeter.bdureau.bearconsole.ChartView

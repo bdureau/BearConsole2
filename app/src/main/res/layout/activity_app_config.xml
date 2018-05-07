@@ -26,84 +26,6 @@
         android:layout_alignTop="@+id/butSave"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/application_langage_config"
-        android:id="@+id/txtViewAppLang"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/graph_color_config"
-        android:id="@+id/txtViewGraphColor"
-        android:layout_below="@+id/txtViewAppLang"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="62dp" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerLanguage"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/txtViewAppLang"
-        android:layout_toEndOf="@+id/txtViewAppLang"
-        android:layout_above="@+id/txtViewGraphColor"
-        android:focusableInTouchMode="false" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/application_units_config"
-        android:id="@+id/txtViewUnits"
-        android:layout_below="@+id/txtViewGraphColor"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="38dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/graph_back_color_config"
-        android:id="@+id/txtViewGraphBackColor"
-        android:layout_below="@+id/txtViewUnits"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="45dp" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerGraphColor"
-        android:layout_toEndOf="@+id/butSave"
-        android:layout_above="@+id/txtViewUnits"
-        android:layout_alignTop="@+id/txtViewGraphColor"
-        android:layout_alignLeft="@+id/spinnerUnits"
-        android:layout_alignStart="@+id/spinnerUnits" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerUnits"
-        android:layout_alignTop="@+id/txtViewUnits"
-        android:layout_toRightOf="@+id/txtViewAppLang"
-        android:layout_toEndOf="@+id/txtViewAppLang"
-        android:layout_above="@+id/txtViewGraphBackColor" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerGraphBackColor"
-        android:layout_alignTop="@+id/txtViewGraphBackColor"
-        android:layout_alignLeft="@+id/spinnerUnits"
-        android:layout_alignStart="@+id/spinnerUnits"
-        android:layout_alignBottom="@+id/txtViewGraphBackColor" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -115,54 +37,119 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/application_langage_config"
+        android:id="@+id/txtViewAppLang"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerLanguage"
+        android:layout_alignParentTop="true"
+        android:layout_width="175dp"
+        android:layout_alignTop="@+id/txtViewAppLang"
+        android:layout_alignParentRight="true"
+        android:focusableInTouchMode="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/graph_color_config"
+        android:id="@+id/txtViewGraphColor"
+        android:layout_below="@+id/txtViewAppLang"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerGraphColor"
+        android:layout_width="175dp"
+        android:layout_alignTop="@+id/txtViewGraphColor"
+        android:layout_alignParentRight="true"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/application_units_config"
+        android:id="@+id/txtViewUnits"
+        android:layout_below="@+id/txtViewGraphColor"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerUnits"
+        android:layout_alignTop="@+id/txtViewUnits"
+        android:layout_width="175dp"
+        android:layout_alignParentRight="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/graph_back_color_config"
+        android:id="@+id/txtViewGraphBackColor"
+        android:layout_below="@+id/txtViewUnits"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp" />
+
+
+    <Spinner
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerGraphBackColor"
+        android:layout_alignTop="@+id/txtViewGraphBackColor"
+        android:layout_width="175dp"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/font_size"
         android:id="@+id/txtViewFontSize"
         android:layout_below="@+id/txtViewGraphBackColor"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="71dp" />
+        android:layout_marginTop="18dp" />
 
     <Spinner
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinnerFontSize"
         android:layout_alignTop="@+id/txtViewFontSize"
-        android:layout_alignLeft="@+id/butDefault"
-        android:layout_alignStart="@+id/butDefault"
-        android:layout_alignRight="@+id/butDefault"
-        android:layout_alignEnd="@+id/butDefault"
-        android:layout_alignBottom="@+id/txtViewFontSize" />
+        android:layout_width="175dp"
+        android:layout_alignParentRight="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Baud Rate"
+        android:text="@string/baud_rate"
         android:id="@+id/textViewBaudRate"
         android:layout_below="@+id/txtViewFontSize"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="41dp" />
+        android:layout_marginTop="18dp" />
 
     <Spinner
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinnerBaudRate"
         android:layout_alignTop="@+id/textViewBaudRate"
-        android:layout_alignLeft="@+id/butDefault"
-        android:layout_alignBottom="@+id/textViewBaudRate" />
+        android:layout_width="175dp"
+        android:layout_alignParentRight="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Connection Type"
+        android:text="@string/connection_type"
         android:id="@+id/textConnectionType"
         android:layout_below="@+id/textViewBaudRate"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="41dp" />
+        android:layout_marginTop="18dp" />
     <Spinner
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinnerConnectionType"
         android:layout_alignTop="@+id/textConnectionType"
-        android:layout_alignLeft="@+id/butDefault"
-        android:layout_alignBottom="@+id/textConnectionType" />
+        android:layout_width="175dp"
+        android:layout_alignParentRight="true" />
 </RelativeLayout>

@@ -56,7 +56,7 @@ public class MainScreenActivity extends AppCompatActivity {
                         myBT.setConnected(true);
                         EnableUI();
                         myBT.setConnectionType("usb");
-                        btnConnectDisconnect.setText("Disconnect");
+                        btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
                     }
                 } else {
                     msg("PERM NOT GRANTED");
@@ -67,7 +67,7 @@ public class MainScreenActivity extends AppCompatActivity {
             if(myBT.getConnectionType().equals("usb"))
                 if(myBT.getConnected()) {
                     myBT.Disconnect();
-                    btnConnectDisconnect.setText("Connect");
+                    btnConnectDisconnect.setText(getResources().getString(R.string.connect));
                 }
             }
         }
@@ -102,7 +102,7 @@ public class MainScreenActivity extends AppCompatActivity {
         //btnTest = (Button) findViewById(R.id.buttonTest);
 
         DisableUI();
-        btnConnectDisconnect.setText("Connect");
+        btnConnectDisconnect.setText(R.string.connect);
 
         //commands to be sent to bluetooth
         btnAltiSettings.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +154,7 @@ public class MainScreenActivity extends AppCompatActivity {
                    // msg("disconnecting");
                     Disconnect(); //close connection
                     DisableUI();
-                    btnConnectDisconnect.setText("Connect");
+                    btnConnectDisconnect.setText(R.string.connect);
                 }
                 else {
                    // msg(myBT.getConnectionType());
@@ -165,7 +165,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             new ConnectBT().execute(); //Call the class to connect
                             if (myBT.getConnected()) {
                                 EnableUI();
-                                btnConnectDisconnect.setText("Disconnect");
+                                btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
                             }
                         } else {
                             // choose the bluetooth device
@@ -372,7 +372,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 //isBtConnected = true;
                 myBT.setConnected(true);
                 EnableUI();
-                btnConnectDisconnect.setText("Disconnect");
+                btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
             }
             progress.dismiss();
         }

@@ -27,10 +27,10 @@
     <string name="upload">Charger</string>
     <string name="dismiss_config">Fermer</string>
     <string name="baudRate">Baud Rate</string>
-    <string name="apogeeMeasures">Apogee Measures</string>
+    <string name="apogeeMeasures">Meusures Apogée</string>
     <string name="altimeterResolution">Res Alti</string>
     <string name="eepromSize">Capacité EEprom</string>
-    <string name="beepOnOff">Bip On/Off</string>
+    <string name="beepOnOff">Bip Marche/Arret</string>
     <string name="RecordTemp">Enregistrer temp</string>
     <string name="SupersonicDelay">Mode Supersonic</string>
     <string name="EndRecordAltitude">Alt fin enr</string>
@@ -41,7 +41,9 @@
     <string name="continuity_on_off">Continuité marche/arret</string>
     <string name="read_flights">chargement vols</string>
     <string name="reset_settings">Réinit config</string>
-    <string name="disconnect">Connexion/Déconnexion</string>
+    <string name="disconnect">Déconnecter</string>
+    <string name="connect">Connecter</string>
+    <string name="telemetry">Telemetrie</string>
 
     <!-- Reset screen -->
     <string name="dismiss_reset">Fermer</string>
@@ -72,7 +74,7 @@
     <!-- main screen msg-->
     <string name="MS_msg1">Connexion en cours...</string>
     <string name="MS_msg2">Attendez s\'il vous plait!!!</string>
-    <string name="MS_msg3">La connexion a échouée. Est ce un SPP Bluetooth? Esseyez encore.</string>
+    <string name="MS_msg3">La connexion a échouée. Est-ce un SPP Bluetooth? Essayez encore.</string>
     <string name="MS_msg4">Connecté.</string>
     <!--Flight list screen -->
     <string name="title_activity_flight_list">Liste des Vols</string>
@@ -113,4 +115,19 @@
     <string name="graph_back_color_config">Couleur fond du Graph</string>
     <string name="default_config">Défaut</string>
     <string name="font_size">Taille police</string>
+    <string name="baud_rate">Baud Rate</string>
+    <string name="connection_type">Type de Connexion</string>
+
+    <!-- Telemetry -->
+    <string name="stop_telemetry">Arret Tel</string>
+    <string name="start_telemetry">Démarrer Tel</string>
+    <string name="current_phase">Phase courante</string>
+    <string name="altitude">Altitude</string>
+    <string name="event_time">Heure Evenement</string>
+    <string name="lift_off">Décollage</string>
+    <string name="apogee_drogue">Apogee/drogue</string>
+    <string name="main_chute">Parachute Main</string>
+    <string name="landed">Atterie</string>
+    <string name="max_speed">Vitesse max</string>
+    <string name="current_altitude">Altitude courante</string>
 </resources>
