@@ -1,5 +1,8 @@
 package com.altimeter.bdureau.bearconsole;
-
+/**
+ *   @description:
+ *   @author: boris.dureau@neuf.fr
+ **/
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;

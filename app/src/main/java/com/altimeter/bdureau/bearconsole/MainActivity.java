@@ -1,5 +1,8 @@
 package com.altimeter.bdureau.bearconsole;
-
+/**
+ *   @description:
+ *   @author: boris.dureau@neuf.fr
+ **/
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;

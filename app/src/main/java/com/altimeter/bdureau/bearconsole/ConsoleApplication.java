@@ -1,5 +1,8 @@
 package com.altimeter.bdureau.bearconsole;
-
+/**
+ *   @description:
+ *   @author: boris.dureau@neuf.fr
+ **/
 import android.app.Application;
 
 import android.content.SharedPreferences;

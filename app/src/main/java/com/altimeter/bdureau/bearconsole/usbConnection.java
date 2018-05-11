@@ -25,10 +25,11 @@ import java.io.InputStream;
 //import java.util.HashMap;
 //import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
-
 /**
- * Created by BDUREAU on 10/09/2017.
- */
+ *   @description:
+ *   @author: boris.dureau@neuf.fr
+ **/
+
 public class UsbConnection {
 
     UsbSerialDevice serialPort;

@@ -1,6 +1,7 @@
 package com.altimeter.bdureau.bearconsole;
 /**
  *   @description: Retrieve altimeter configuration and show it in tabs
+ *                  The user can then load it back to the altimeter
  *   @author: boris.dureau@neuf.fr
  **/
 import android.app.AlertDialog;
@@ -74,13 +75,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v)
                 {
-
                     //send back the config to the altimeter and exit if successful
                     sendConfig();
-                   /* if(sendConfig())
-                        finish();*/
-                   // myTest();
-
                 }
             });
         new RetrieveConfig().execute();
@@ -826,9 +822,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     configPage1.setOutDelay2(AltiCfg.getOutput2Delay());
                     configPage1.setOutDelay3(AltiCfg.getOutput3Delay());
                     configPage1.setMainAltitude(AltiCfg.getMainAltitude());
-
                     configPage1.setDropdownOut4(AltiCfg.getOutput4());
-
                     configPage1.setOutDelay4(AltiCfg.getOutput4Delay());
                 }
                 //Config Tab 2
@@ -846,46 +840,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 if(configPage3.isViewCreated()) {
                     configPage3.setAltiName(AltiCfg.getAltimeterName()+ " ver: " +
                             AltiCfg.getAltiMajorVersion()+"."+AltiCfg.getAltiMinorVersion());
-
                     configPage3.setDropdownBipMode(AltiCfg.getBeepingMode());
-
                     configPage3.setDropdownUnits(AltiCfg.getUnits());
-
                     configPage3.setFreq(AltiCfg.getBeepingFrequency());
-
                 }
-
-
             }
             progress.dismiss();
         }
     }
 
-    public void myTest() {
-        if(configPage2.isViewCreated()) {
-            boolean exit = false;
-            if (AltiCfg.getConnectionSpeed() != configPage2.getBaudRate()) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                //You are about to erase all flight data, are you sure you want to do it?
-                builder.setMessage(getResources().getString(R.string.reset_msg1))
-                        .setCancelable(false)
-                        .setPositiveButton(getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {
-                            public void onClick(final DialogInterface dialog, final int id) {
-                                dialog.cancel();
-
-
-                            }
-                        })
-                        .setNegativeButton(getResources().getString(R.string.No), new DialogInterface.OnClickListener() {
-                            public void onClick(final DialogInterface dialog, final int id) {
-                                dialog.cancel();
-
-                            }
-                        });
-                final AlertDialog alert = builder.create();
-                alert.show();
-            }
-        }
-    }
 
 }

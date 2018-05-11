@@ -85,10 +85,10 @@
     <string name="msg4">Failed to upload config</string>
     <string name="msg5">Retrieving Altimeter config...</string>
     <string name="msg6">Please wait!!!</string>
-
     <string name="msg7">Retrieving flights...</string>
     <string name="msg8">Please wait!!!</string>
     <string name="msg9">You have changed the baud rate, the altimeter might not be able to connect. Are you sure?</string>
+
     <!-- flight views screen -->
     <string name="Meters_fview">Meters</string>
     <string name="Feet_fview">Feet</string>

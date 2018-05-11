@@ -2,6 +2,7 @@ package com.altimeter.bdureau.bearconsole;
 
 /**
 *   @description: Retrieve altimeter configuration
+ *   !!!! This is now obsolete and replaced by the tabbed config activity !!!!!
 *   @author: boris.dureau@neuf.fr
 **/
 import android.app.ProgressDialog;

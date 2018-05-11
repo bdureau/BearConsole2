@@ -1,5 +1,9 @@
 package com.altimeter.bdureau.bearconsole;
-
+/**
+ *   @description: Allow the user to reset the altimeter setting to factory default
+ *   as well as clearing the flight list
+ *   @author: boris.dureau@neuf.fr
+ **/
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;

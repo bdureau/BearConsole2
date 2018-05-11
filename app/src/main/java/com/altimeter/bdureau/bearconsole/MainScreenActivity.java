@@ -1,5 +1,8 @@
 package com.altimeter.bdureau.bearconsole;
-
+/**
+ *   @description: Main screen of the altimeter console
+ *   @author: boris.dureau@neuf.fr
+ **/
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
