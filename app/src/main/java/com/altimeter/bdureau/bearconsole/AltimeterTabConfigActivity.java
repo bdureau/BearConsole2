@@ -3,6 +3,8 @@ package com.altimeter.bdureau.bearconsole;
  *   @description: Retrieve altimeter configuration and show it in tabs
  *   @author: boris.dureau@neuf.fr
  **/
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -74,8 +76,10 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 {
 
                     //send back the config to the altimeter and exit if successful
-                    if(sendConfig())
-                        finish();
+                    sendConfig();
+                   /* if(sendConfig())
+                        finish();*/
+                   // myTest();
 
                 }
             });
@@ -148,32 +152,28 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
     }
     private boolean sendConfig()
     {
+        //final boolean exit_no_save = false;
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-       // SectionsPageAdapter myAdapter = (SectionsPageAdapter) mViewPager.getAdapter();
-        //Config Tab 1
-       // Tab1Fragment configPage1 = (Tab1Fragment) myAdapter.getItem(0);
-        //Config Tab 2
-        //Tab2Fragment configPage2 = (Tab2Fragment) myAdapter.getItem(1);
-        //Config Tab 1
-       // Tab3Fragment configPage3 = (Tab3Fragment) myAdapter.getItem(2);
-        //msg(myAdapter.getItem(2).getTag());
-        //msg(myAdapter.getPageTitle(2).toString());
-       // myAdapter.
+        long prevBaudRate = AltiCfg.getConnectionSpeed();
         long nbrOfMain=0;
         long nbrOfDrogue=0;
+        // check if the baud rate has changed
+
         if(configPage1.isViewCreated()) {
-            AltiCfg.setOutput1Delay(configPage1.getOutDelay1()); //   Integer.parseInt(OutDelay1.getText().toString()));
-            AltiCfg.setOutput2Delay(configPage1.getOutDelay2()); //Integer.parseInt(OutDelay2.getText().toString()));
-            AltiCfg.setOutput3Delay(configPage1.getOutDelay3()); //Integer.parseInt(OutDelay3.getText().toString()));
+            AltiCfg.setOutput1Delay(configPage1.getOutDelay1());
+            AltiCfg.setOutput2Delay(configPage1.getOutDelay2());
+            AltiCfg.setOutput3Delay(configPage1.getOutDelay3());
             AltiCfg.setOutput4Delay(configPage1.getOutDelay4());
-            AltiCfg.setOutput1(configPage1.getDropdownOut1());//(int)dropdownOut1.getSelectedItemId());
-            AltiCfg.setOutput2(configPage1.getDropdownOut2());//(int)dropdownOut2.getSelectedItemId());
-            AltiCfg.setOutput3(configPage1.getDropdownOut3());//(int)dropdownOut3.getSelectedItemId());
+            AltiCfg.setOutput1(configPage1.getDropdownOut1());
+            AltiCfg.setOutput2(configPage1.getDropdownOut2());
+            AltiCfg.setOutput3(configPage1.getDropdownOut3());
             AltiCfg.setOutput4(configPage1.getDropdownOut4());
-            AltiCfg.setMainAltitude(configPage1.getMainAltitude()); //Integer.parseInt(MainAltitude.getText().toString()));
+            AltiCfg.setMainAltitude(configPage1.getMainAltitude());
         }
         if(configPage2.isViewCreated()) {
-            AltiCfg.setConnectionSpeed(configPage2.getBaudRate());//Integer.parseInt(itemsBaudRate[(int)dropdownBaudRate.getSelectedItemId()]));
+
+           // AltiCfg.setConnectionSpeed(configPage2.getBaudRate());
             AltiCfg.setNbrOfMeasuresForApogee(configPage2.getApogeeMeasures());
             AltiCfg.setAltimeterResolution(configPage2.getAltimeterResolution());
             AltiCfg.setEepromSize(configPage2.getEEpromSize());
@@ -183,14 +183,11 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             AltiCfg.setRecordTemperature(configPage2.getRecordTempOnOff());
             AltiCfg.setSupersonicDelay(configPage2.getSupersonicDelayOnOff());
         }
-/*AltiCfg.getEndRecordAltitude();
-            AltiCfg.getRecordTemperature();
-            AltiCfg.getSupersonicDelay();*/
+
         if(configPage3.isViewCreated()) {
-            AltiCfg.setBeepingFrequency(configPage3.getFreq());//Integer.parseInt(Freq.getText().toString()));
-            AltiCfg.setBeepingMode(configPage3.getDropdownBipMode());//(int)dropdownBipMode.getSelectedItemId());
-            AltiCfg.setUnits(configPage3.getDropdownUnits());//(int)dropdownUnits.getSelectedItemId());
-           // AltiCfg.setBeepingFrequency(configPage3.getFreq());
+            AltiCfg.setBeepingFrequency(configPage3.getFreq());
+            AltiCfg.setBeepingMode(configPage3.getDropdownBipMode());
+            AltiCfg.setUnits(configPage3.getDropdownUnits());
         }
 
         if (AltiCfg.getOutput1() == 0)
@@ -224,6 +221,47 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             msg(getResources().getString(R.string.msg2));
             return false;
         }
+
+        if(configPage2.isViewCreated()) {
+            if(AltiCfg.getConnectionSpeed() != configPage2.getBaudRate())
+            {
+                //final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                //You are about to change the baud rate, are you sure you want to do it?
+                builder.setMessage(getResources().getString(R.string.msg9))
+                    .setCancelable(false)
+                    .setPositiveButton(getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            dialog.cancel();
+                            AltiCfg.setConnectionSpeed(configPage2.getBaudRate());
+                            sendAltiCfg ();
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(getResources().getString(R.string.No), new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            dialog.cancel();
+
+                        }
+                    });
+                final AlertDialog alert = builder.create();
+                alert.show();
+            }
+            else
+            {
+                sendAltiCfg ();
+                finish();
+            }
+        }
+        else
+        {
+            sendAltiCfg ();
+            finish();
+        }
+
+        return true;
+    }
+
+    private void sendAltiCfg () {
         String altiCfgStr="";
 
         altiCfgStr = "s," +
@@ -252,7 +290,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
 
         altiCfgStr = altiCfgStr +  ";\n";
-       // msg(altiCfgStr.toString());
+        // msg(altiCfgStr.toString());
 
         if(myBT.getConnected())
             //send back the config
@@ -262,9 +300,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
         myBT.flush();
 
-        return true;
+        //return true;
     }
-
 
     public class SectionsPageAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList();
@@ -347,19 +384,34 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             this.OutDelay1.setText(String.valueOf(OutDelay1));
         }
         public int getOutDelay1() {
-            return Integer.parseInt(OutDelay1.getText().toString());
+            int ret;
+            try {ret = Integer.parseInt(OutDelay1.getText().toString());}
+            catch (Exception e) {
+                ret =0;
+            }
+            return ret;
         }
         public void setOutDelay2(int OutDelay2) {
             this.OutDelay2.setText(String.valueOf(OutDelay2));
         }
         public int getOutDelay2() {
-            return Integer.parseInt(OutDelay2.getText().toString());
+            int ret;
+            try {ret = Integer.parseInt(OutDelay2.getText().toString());}
+            catch (Exception e) {
+                ret =0;
+            }
+            return ret;
         }
         public void setOutDelay3(int OutDelay3) {
             this.OutDelay3.setText(String.valueOf(OutDelay3));
         }
         public int getOutDelay3() {
-            return Integer.parseInt(OutDelay3.getText().toString());
+            int ret;
+            try {ret = Integer.parseInt(OutDelay3.getText().toString());}
+            catch (Exception e) {
+                ret =0;
+            }
+            return ret;
         }
         public void setOutDelay4(int OutDelay4) {
             if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32"))  {
@@ -374,8 +426,15 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
         }
         public int getOutDelay4() {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32"))
-                return Integer.parseInt(OutDelay4.getText().toString());
+            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")) {
+                int ret;
+                try {
+                    ret = Integer.parseInt(OutDelay4.getText().toString());
+                } catch (Exception e) {
+                    ret = 0;
+                }
+                return ret;
+            }
             else
                 return -1;
         }
@@ -384,7 +443,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             this.MainAltitude.setText(String.valueOf(MainAltitude));
         }
         public int getMainAltitude() {
-            return Integer.parseInt(MainAltitude.getText().toString());
+            int ret;
+            try {
+                ret = Integer.parseInt(MainAltitude.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
         }
         @Nullable
         @Override
@@ -421,8 +486,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
             OutDelay1 = (EditText)view.findViewById(R.id.editTxtDelay1);
             OutDelay2 = (EditText)view.findViewById(R.id.editTxtDelay2);
-            OutDelay3 =(EditText)view.findViewById(R.id.editTxtDelay3);
-            OutDelay4 =(EditText)view.findViewById(R.id.editTxtDelay4);
+            OutDelay3 = (EditText)view.findViewById(R.id.editTxtDelay3);
+            OutDelay4 = (EditText)view.findViewById(R.id.editTxtDelay4);
 
             MainAltitude= (EditText)view.findViewById(R.id.editTxtMainAltitude);
 
@@ -484,7 +549,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             return ViewCreated;
         }
         public int getApogeeMeasures() {
-            return Integer.parseInt(this.ApogeeMeasures.getText().toString());
+            int ret;
+            try {
+                ret = Integer.parseInt(this.ApogeeMeasures.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
         }
         public void setApogeeMeasures(int apogeeMeasures) {
             ApogeeMeasures.setText( String.valueOf(apogeeMeasures));
@@ -497,30 +568,39 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             this.dropdownAltimeterResolution.setSelection(AltimeterResolution);
         }
         public int getEEpromSize() {
-            return Integer.parseInt(itemsEEpromSize[(int)dropdownEEpromSize.getSelectedItemId()]);
+            int ret;
+            try {
+                ret = Integer.parseInt(itemsEEpromSize[(int)dropdownEEpromSize.getSelectedItemId()]);
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
         }
         public void setEEpromSize(int EEpromSize ) {
             this.dropdownEEpromSize.setSelection(AltiCfg.arrayIndex(itemsEEpromSize, String.valueOf(EEpromSize)));
         }
         public long getBaudRate() {
-            return Integer.parseInt(itemsBaudRate[(int)this.dropdownBaudRate.getSelectedItemId()]);
+            int ret;
+            try {
+                ret = Integer.parseInt(itemsBaudRate[(int)this.dropdownBaudRate.getSelectedItemId()]);
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
         }
         public void setBaudRate(long BaudRate ) {
             this.dropdownBaudRate.setSelection(AltiCfg.arrayIndex(itemsBaudRate,String.valueOf(BaudRate)));
         }
 
         public int getBeepOnOff() {
-            //return Integer.parseInt(itemsBeepOnOff[(int)this.dropdownBeepOnOff.getSelectedItemId()]);
-            return (int)this.dropdownBeepOnOff.getSelectedItemId();
+             return (int)this.dropdownBeepOnOff.getSelectedItemId();
         }
         public void setBeepOnOff(int BeepOnOff ) {
-            //this.dropdownBeepOnOff.setSelection(AltiCfg.arrayIndex(itemsBeepOnOff,String.valueOf(BeepOnOff)));
-            dropdownBeepOnOff.setSelection(AltiCfg.getBeepOnOff());
+            dropdownBeepOnOff.setSelection(BeepOnOff);
         }
 
         public int getRecordTempOnOff() {
-           // return Integer.parseInt(itemsRecordTempOnOff[(int)this.dropdownRecordTemp.getSelectedItemId()]);
-            return (int)this.dropdownRecordTemp.getSelectedItemId();
+             return (int)this.dropdownRecordTemp.getSelectedItemId();
         }
 
         public void setRecordTempOnOff(int RecordTempOnOff ) {
@@ -528,8 +608,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
 
         public int getSupersonicDelayOnOff() {
-            //return Integer.parseInt(itemsSupersonicDelayOnOff[(int)this.dropdownSupersonicDelay.getSelectedItemId()]);
-        return (int)this.dropdownSupersonicDelay.getSelectedItemId();
+            return (int)this.dropdownSupersonicDelay.getSelectedItemId();
         }
 
         public void setSupersonicDelayOnOff(int SupersonicDelayOnOff ) {
@@ -537,7 +616,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
 
         public int getEndRecordAltitude() {
-            return Integer.parseInt(this.EndRecordAltitude.getText().toString());
+            int ret;
+            try {
+                ret = Integer.parseInt(this.EndRecordAltitude.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
         }
         public void setEndRecordAltitude(int EndRecordAltitude ) {
             this.EndRecordAltitude.setText(String.valueOf(EndRecordAltitude));
@@ -610,17 +695,11 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
             if (AltiCfg != null) {
                 dropdownBaudRate.setSelection(AltiCfg.arrayIndex(itemsBaudRate,String.valueOf(AltiCfg.getConnectionSpeed())));
-
                 ApogeeMeasures.setText(String.valueOf(AltiCfg.getNbrOfMeasuresForApogee()));
-
                 dropdownAltimeterResolution.setSelection(AltiCfg.getAltimeterResolution());
                 dropdownEEpromSize.setSelection(AltiCfg.arrayIndex(itemsEEpromSize, String.valueOf(AltiCfg.getEepromSize())));
-                //dropdownBeepOnOff.setSelection(AltiCfg.arrayIndex(itemsBeepOnOff, String.valueOf(AltiCfg.getBeepOnOff())));
                 dropdownBeepOnOff.setSelection(AltiCfg.getBeepOnOff());
-
-                //dropdownRecordTemp.setSelection(AltiCfg.arrayIndex(itemsRecordTempOnOff, String.valueOf(AltiCfg.getRecordTemperature())));
                 dropdownRecordTemp.setSelection(AltiCfg.getRecordTemperature());
-                //dropdownSupersonicDelay.setSelection(AltiCfg.arrayIndex(itemsSupersonicDelayOnOff, String.valueOf(AltiCfg.getSupersonicYesNo())));
                 dropdownSupersonicDelay.setSelection(AltiCfg.getSupersonicDelay());
                 EndRecordAltitude.setText(String.valueOf(AltiCfg.getEndRecordAltitude()));
             }
@@ -642,7 +721,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
 
         public int getFreq() {
-            return Integer.parseInt(this.Freq.getText().toString());
+            int ret;
+            try {
+                ret = Integer.parseInt(this.Freq.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
+
         }
         public void setFreq(int freq) {
             Freq.setText(freq);
@@ -731,11 +817,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             super.onPostExecute(result);
 
             if(AltiCfg!=null) {
-                //Get the adapter and fill all the tabs with values
-                //SectionsPageAdapter myAdapter = (SectionsPageAdapter) mViewPager.getAdapter();
                 //Config Tab 1
-                //Tab1Fragment configPage1 = (Tab1Fragment) myAdapter.getItem(0);
-               // configPage1.dropdownOut1.setSelection(AltiCfg.getOutput1());
                 if(configPage1.isViewCreated()) {
                     configPage1.setDropdownOut1(AltiCfg.getOutput1());
                     configPage1.setDropdownOut2(AltiCfg.getOutput2());
@@ -751,43 +833,58 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
                 //Config Tab 2
                 if(configPage2.isViewCreated()) {
-
                     configPage2.setBaudRate(AltiCfg.getConnectionSpeed());
-                    //dropdownBaudRate.setSelection(AltiCfg.arrayIndex(itemsBaudRate,String.valueOf(AltiCfg.getConnectionSpeed())));
                     configPage2.setApogeeMeasures(AltiCfg.getNbrOfMeasuresForApogee());
-                    //ApogeeMeasures.setText(String.valueOf(AltiCfg.getNbrOfMeasuresForApogee()));
-
                     configPage2.setAltimeterResolution(AltiCfg.getAltimeterResolution());
-                    //dropdownAltimeterResolution.setSelection(AltiCfg.getAltimeterResolution());
                     configPage2.setEEpromSize(AltiCfg.getEepromSize());
-                    //dropdownEEpromSize.setSelection(AltiCfg.arrayIndex(itemsEEpromSize, String.valueOf(AltiCfg.getEepromSize())));
                     configPage2.setBeepOnOff(AltiCfg.getBeepOnOff());
-                    //dropdownBeepOnOff.setSelection(AltiCfg.getBeepOnOff());
                     configPage2.setRecordTempOnOff(AltiCfg.getRecordTemperature());
-                    //dropdownRecordTemp.setSelection(AltiCfg.getRecordTemperature());
                     configPage2.setSupersonicDelayOnOff(AltiCfg.getSupersonicDelay());
-                    //dropdownSupersonicDelay.setSelection(AltiCfg.getSupersonicDelay());
                     configPage2.setEndRecordAltitude(AltiCfg.getEndRecordAltitude());
-                    //EndRecordAltitude.setText(String.valueOf(AltiCfg.getEndRecordAltitude()));
                 }
 
                 if(configPage3.isViewCreated()) {
                     configPage3.setAltiName(AltiCfg.getAltimeterName()+ " ver: " +
                             AltiCfg.getAltiMajorVersion()+"."+AltiCfg.getAltiMinorVersion());
-                    //altiName.setText(AltiCfg.getAltimeterName()+ " ver: " +
-                           // AltiCfg.getAltiMajorVersion()+"."+AltiCfg.getAltiMinorVersion());
 
                     configPage3.setDropdownBipMode(AltiCfg.getBeepingMode());
-                    //dropdownBipMode.setSelection(AltiCfg.getBeepingMode());
+
                     configPage3.setDropdownUnits(AltiCfg.getUnits());
-                    //dropdownUnits.setSelection(AltiCfg.getUnits());
+
                     configPage3.setFreq(AltiCfg.getBeepingFrequency());
-                    //Freq.setText(String.valueOf(AltiCfg.getBeepingFrequency()));
+
                 }
 
 
             }
             progress.dismiss();
+        }
+    }
+
+    public void myTest() {
+        if(configPage2.isViewCreated()) {
+            boolean exit = false;
+            if (AltiCfg.getConnectionSpeed() != configPage2.getBaudRate()) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                //You are about to erase all flight data, are you sure you want to do it?
+                builder.setMessage(getResources().getString(R.string.reset_msg1))
+                        .setCancelable(false)
+                        .setPositiveButton(getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, final int id) {
+                                dialog.cancel();
+
+
+                            }
+                        })
+                        .setNegativeButton(getResources().getString(R.string.No), new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, final int id) {
+                                dialog.cancel();
+
+                            }
+                        });
+                final AlertDialog alert = builder.create();
+                alert.show();
+            }
         }
     }
 

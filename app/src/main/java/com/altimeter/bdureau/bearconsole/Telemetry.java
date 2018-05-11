@@ -308,6 +308,8 @@ public class Telemetry extends AppCompatActivity {
 
     }
    public void onClickStopTelemetry(View view) {
+       myBT.write("h;\n".toString());
+
        myBT.setExit(true);
 
        myflight.ClearFlight();
@@ -321,4 +323,23 @@ public class Telemetry extends AppCompatActivity {
        startTelemetryButton.setEnabled(true);
 
    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        myBT.flush();
+        myBT.clearInput();
+        myBT.write("h;\n".toString());
+        try {
+            while (myBT.getInputStream().available() <= 0) ;
+        } catch (IOException e) {
+
+        }
+        String myMessage = "";
+        long timeOut = 10000;
+        long startTime = System.currentTimeMillis();
+
+        myMessage =myBT.ReadResult();
+    }
 }
