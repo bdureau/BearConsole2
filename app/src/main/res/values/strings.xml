@@ -125,6 +125,18 @@
     <string name="max_speed">Max speed</string>
     <string name="current_altitude">Current Altitude</string>
     <string name="dis">disconnect</string>
+    <string name="title_activity_altimeter_status">AltimeterStatus</string>
+    <string name="altimeter_status">Altimeter status</string>
+    <string name="altimeter_status_disabled">Disabled</string>
+    <string name="altimeter_status_output_1">Output 1</string>
+    <string name="altimeter_status_output_2">Output 2</string>
+    <string name="altimeter_status_output_3">Output 3</string>
+    <string name="altimeter_status_output_4">Output 4</string>
+    <string name="altimeter_status_current_altitude">Current altitude</string>
+    <string name="altimeter_status_battery_voltage">Battery voltage</string>
+    <string name="altimeter_status_link_type">Link type</string>
+    <string name="altimeter_status_bluetooth">Bluetooth</string>
+    <string name="status">Status</string>
 
 
 </resources>

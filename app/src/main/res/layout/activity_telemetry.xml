@@ -8,20 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Telemetry">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/start_telemetry"
-        android:id="@+id/buttonStartTelemetry"
-        android:onClick="onClickStartTelemetry"         />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/stop_telemetry"
-        android:id="@+id/buttonStopTelemetry"
-        android:onClick="onClickStopTelemetry"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/gridLayout" />
+
 
     <GridLayout
         android:columnCount="5"
@@ -29,7 +16,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
 
-        android:layout_below="@+id/buttonStartTelemetry"
+
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/gridLayout">
@@ -281,4 +268,11 @@
 
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dismiss_about"
+        android:id="@+id/butDismiss"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

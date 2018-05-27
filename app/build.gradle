@@ -14,7 +14,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 27
         versionName '1.0.6'
-        versionCode 3
+        versionCode 4
     }
     buildTypes {
         release {
@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compileOnly 'junit:junit:4.12'
     compile files('libs/afreechart-0.0.4.jar')

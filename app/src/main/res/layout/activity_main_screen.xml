@@ -29,6 +29,15 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/telemetry"
+        android:id="@+id/butTelemetry"
+        android:layout_below="@+id/butReadFlight"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/continuity_on_off"
         android:layout_marginTop="28dp"
         android:id="@+id/butContinuityOnOff"
@@ -54,13 +63,13 @@
         android:layout_centerHorizontal="true" />
 
     <Button
+        android:id="@+id/butStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/telemetry"
-        android:id="@+id/butTelemetry"
-        android:layout_below="@+id/butReadFlight"
+        android:layout_above="@+id/butDisconnect"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp" />
+        android:layout_marginBottom="-54dp"
+        android:text="@string/status" />
 
 
 </RelativeLayout>

@@ -35,8 +35,8 @@ import java.util.Map;
 public class MainScreenActivity extends AppCompatActivity {
     String address = null;
     Button btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
-    Button btnTelemetry;
-    Button btnTest;
+    Button btnTelemetry, btnStatus;
+    //Button btnTest;
     private ProgressDialog progress;
     UsbManager usbManager;
     UsbDevice device;
@@ -96,6 +96,7 @@ public class MainScreenActivity extends AppCompatActivity {
         btnAltiSettings = (Button) findViewById(R.id.butAltiSettings);
         btnReadFlights = (Button) findViewById(R.id.butReadFlight);
         btnTelemetry = (Button) findViewById(R.id.butTelemetry);
+        btnStatus = (Button) findViewById(R.id.butStatus);
         btnConnectDisconnect = (Button) findViewById(R.id.butDisconnect);
 
         btnContinuityOnOff = (Button) findViewById(R.id.butContinuityOnOff);
@@ -141,6 +142,13 @@ public class MainScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainScreenActivity.this, Telemetry.class);
+                startActivity(i);
+            }
+        });
+        btnStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainScreenActivity.this, AltimeterStatus.class);
                 startActivity(i);
             }
         });
@@ -232,6 +240,7 @@ public class MainScreenActivity extends AppCompatActivity {
         btnTelemetry.setEnabled(false);
         btnContinuityOnOff.setEnabled(false);
         btnReset.setEnabled(false);
+        btnStatus.setEnabled(false);
     }
     private void EnableUI () {
         btnAltiSettings.setEnabled(true);
@@ -239,6 +248,7 @@ public class MainScreenActivity extends AppCompatActivity {
         btnTelemetry.setEnabled(true);
         btnContinuityOnOff.setEnabled(true);
         btnReset.setEnabled(true);
+        btnStatus.setEnabled(true);
     }
     // fast way to call Toast
     private void msg(String s) {

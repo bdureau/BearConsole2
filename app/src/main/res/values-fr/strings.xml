@@ -130,4 +130,14 @@
     <string name="landed">Atterie</string>
     <string name="max_speed">Vitesse max</string>
     <string name="current_altitude">Altitude courante</string>
+    <string name="altimeter_status">Altimeter status</string>
+    <string name="altimeter_status_disabled">Disabled</string>
+    <string name="altimeter_status_output_1">Output 1</string>
+    <string name="altimeter_status_output_3">Output 3</string>
+    <string name="altimeter_status_output_4">Output 4</string>
+    <string name="altimeter_status_current_altitude">Current altitude</string>
+    <string name="altimeter_status_battery_voltage">Battery voltage</string>
+    <string name="altimeter_status_link_type">Link type</string>
+    <string name="altimeter_status_bluetooth">Bluetooth</string>
+    <string name="status">Status</string>
 </resources>

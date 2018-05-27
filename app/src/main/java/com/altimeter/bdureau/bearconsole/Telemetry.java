@@ -35,7 +35,7 @@ import org.afree.graphics.geom.Font;
 import android.graphics.Color;
 
 public class Telemetry extends AppCompatActivity {
-   // private TextView textView;
+
     private CheckBox cbLiftOff, cbApogee, cbMainChute, cbLanded;
     private TextView txtCurrentAltitude,txtMaxAltitude,  txtMainAltitude, txtLandedAltitude, txtLiftOffAltitude;
     private TextView txtLandedTime,txtMaxSpeedTime, txtMaxAltitudeTime, txtLiftOffTime, txtMainChuteTime;
@@ -48,15 +48,13 @@ public class Telemetry extends AppCompatActivity {
     private long LiftOffTime = 0;
     private int lastPlotTime =0;
     private double FEET_IN_METER = 1;
-    /*private boolean hasLiftOff = false;
-    private boolean apogee = false;
-    private boolean mainFired = false;
-    private boolean hasLanded = false;*/
+
     int altitudeTime=0;
     int altitude =0;
 
     boolean telemetry = true;
-    Button startTelemetryButton, stopTelemetryButton;
+    //Button startTelemetryButton, stopTelemetryButton;
+    Button dismissButton;
 
     Handler handler = new Handler () {
         @Override
@@ -174,15 +172,21 @@ public class Telemetry extends AppCompatActivity {
         myBT = (ConsoleApplication) getApplication();
         //textView = (TextView) findViewById(R.id.textView);
         cbLiftOff = (CheckBox)findViewById(R.id.checkBoxLiftoff);
+        cbLiftOff.setEnabled(false);
         cbApogee = (CheckBox)findViewById(R.id.checkBoxApogee);
+        cbApogee.setEnabled(false);
         cbMainChute = (CheckBox)findViewById(R.id.checkBoxMainchute);
+        cbMainChute.setEnabled(false);
         cbLanded = (CheckBox)findViewById(R.id.checkBoxLanded);
+        cbLanded.setEnabled(false);
+
         txtCurrentAltitude =(TextView)findViewById(R.id.textViewCurrentAltitude);
         txtMaxAltitude =(TextView)findViewById(R.id.textViewApogeeAltitude);
         //txtFlightTime = (TextView)findViewById(R.id.text);
         txtLandedTime = (TextView) findViewById(R.id.textViewLandedTime);
-        startTelemetryButton = (Button) findViewById(R.id.buttonStartTelemetry);
-        stopTelemetryButton = (Button) findViewById(R.id.buttonStopTelemetry);
+        //startTelemetryButton = (Button) findViewById(R.id.buttonStartTelemetry);
+        //stopTelemetryButton = (Button) findViewById(R.id.buttonStopTelemetry);
+        dismissButton = (Button) findViewById(R.id.butDismiss);
         txtMaxSpeedTime = (TextView) findViewById(R.id.textViewMaxSpeedTime);
         txtMaxAltitudeTime = (TextView) findViewById(R.id.textViewApogeeTime);
         txtLiftOffTime= (TextView) findViewById(R.id.textViewLiftoffTime);
@@ -191,7 +195,7 @@ public class Telemetry extends AppCompatActivity {
         txtLandedAltitude = (TextView) findViewById(R.id.textViewLandedAltitude);
         txtLiftOffAltitude = (TextView) findViewById(R.id.textViewLiftoffAltitude);
         myBT.setHandler(handler);
-        stopTelemetryButton.setEnabled(false);
+        //stopTelemetryButton.setEnabled(false);
 
 
         // Read the application config
@@ -282,13 +286,54 @@ public class Telemetry extends AppCompatActivity {
 
         chartView = (ChartView) findViewById(R.id.telemetryChartView);
         chartView.setChart(chart);
+        startTelemetry();
+        dismissButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (telemetry) {
+                    telemetry = false;
+                    myBT.write("h;\n".toString());
+
+                    myBT.setExit(true);
+                    myBT.clearInput();
+                    myBT.flush();
+                }
+                finish();      //exit the activity
+            }
+        });
     }
 
+    public void startTelemetry() {
+        telemetry= true;
+        //startTelemetryButton.setEnabled(false);
+        //stopTelemetryButton.setEnabled(true);
+        lastPlotTime=0;
+        myBT.initFlightData();
+
+        myflight= myBT.getFlightData();
+        LiftOffTime =0;
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                while (true){
+                    if(!telemetry) break;
+                    myBT.ReadResult();
+                }
+            }
+        };
+
+        rocketTelemetry = new Thread(r);
+        rocketTelemetry.start();
+
+    }
     public void onClickStartTelemetry(View view) {
 
         telemetry= true;
-        startTelemetryButton.setEnabled(false);
-        stopTelemetryButton.setEnabled(true);
+        //startTelemetryButton.setEnabled(false);
+        //stopTelemetryButton.setEnabled(true);
         lastPlotTime=0;
         myBT.initFlightData();
 
@@ -317,19 +362,30 @@ public class Telemetry extends AppCompatActivity {
 
        myflight.ClearFlight();
        telemetry =false;
-       stopTelemetryButton.setEnabled(false);
+       //stopTelemetryButton.setEnabled(false);
 
        myBT.clearInput();
        myBT.flush();
 
 
-       startTelemetryButton.setEnabled(true);
+       //startTelemetryButton.setEnabled(true);
 
    }
 
+
     @Override
     protected void onStop() {
+        //msg("On stop");
         super.onStop();
+        if (telemetry) {
+            telemetry = false;
+            myBT.write("h;\n".toString());
+
+            myBT.setExit(true);
+            myBT.clearInput();
+            myBT.flush();
+        }
+
 
         myBT.flush();
         myBT.clearInput();
