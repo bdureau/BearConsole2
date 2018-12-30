@@ -95,7 +95,7 @@
     <string name="msg6">Attendez s\'il vous plait!!!</string>
     <string name="msg7">Chargement des vols...</string>
     <string name="msg8">Attendez s\'il vous plait!!!</string>
-    <string name="msg9">Vous avez changé le baud rate, attention l'altimètre ne pourra peut etre pas se connecter. Etes vous certains?</string>
+    <string name="msg9">Vous avez changé le baud rate, attention l\'altimètre ne pourra peut etre pas se connecter. Etes vous certains?</string>
 
     <!-- flight views screen -->
     <string name="Meters_fview">Mètres</string>
