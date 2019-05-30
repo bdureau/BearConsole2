@@ -56,7 +56,10 @@ public class ResetSettingsActivity extends AppCompatActivity {
 
             }
         });
-
+        if(myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") )
+            btnClearFlights.setVisibility(View.INVISIBLE);
+        else
+            btnClearFlights.setVisibility(View.VISIBLE);
     }
 
     public void clearFlights() {

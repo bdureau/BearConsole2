@@ -36,13 +36,16 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
     private static final String TAG ="AltimeterTabConfigActivity";
     ///private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
+    SectionsPageAdapter adapter;
     Tab1Fragment configPage1 =null;
     Tab2Fragment configPage2 =null;
     Tab3Fragment configPage3 =null;
+    Tab4Fragment configPage4 =null;
     private Button btnDismiss, btnUpload;
     ConsoleApplication myBT ;
     private static AltiConfigData AltiCfg = null;
     private ProgressDialog progress;
+
 
 
     @Override
@@ -50,6 +53,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //get the bluetooth connection pointer
         myBT = (ConsoleApplication) getApplication();
+        readConfig();
         //Check the local and force it if needed
         getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         setContentView(R.layout.activity_altimeter_tab_config);
@@ -79,16 +83,20 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     sendConfig();
                 }
             });
-        new RetrieveConfig().execute();
+       // new RetrieveConfig().execute();
+
     }
     private void setupViewPager(ViewPager viewPager) {
-        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        adapter = new SectionsPageAdapter(getSupportFragmentManager());
         configPage1 = new Tab1Fragment();
         configPage2 = new Tab2Fragment();
         configPage3 = new Tab3Fragment();
+        configPage4 = new Tab4Fragment();
         adapter.addFragment(configPage1, "TAB1");
         adapter.addFragment(configPage2, "TAB2");
         adapter.addFragment(configPage3, "TAB3");
+        adapter.addFragment(configPage4, "TAB4");
+
         viewPager.setAdapter(adapter);
     }
 
@@ -123,7 +131,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             long timeOut = 10000;
             long startTime = System.currentTimeMillis();
 
-            myMessage =myBT.ReadResult();
+            myMessage =myBT.ReadResult(3000);
 
             if (myMessage.equals( "start alticonfig end") )
             {
@@ -186,6 +194,18 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             AltiCfg.setUnits(configPage3.getDropdownUnits());
         }
 
+        if(configPage4.isViewCreated()) {
+            if(AltiCfg.getAltimeterName().equals("AltiServo")){
+                AltiCfg.setServo1OnPos(configPage4.getServo1OnPos());
+                AltiCfg.setServo2OnPos(configPage4.getServo2OnPos());
+                AltiCfg.setServo3OnPos(configPage4.getServo3OnPos());
+                AltiCfg.setServo4OnPos(configPage4.getServo4OnPos());
+                AltiCfg.setServo1OffPos(configPage4.getServo1OffPos());
+                AltiCfg.setServo2OffPos(configPage4.getServo2OffPos());
+                AltiCfg.setServo3OffPos(configPage4.getServo3OffPos());
+                AltiCfg.setServo4OffPos(configPage4.getServo4OffPos());
+            }
+        }
         if (AltiCfg.getOutput1() == 0)
             nbrOfMain++;
         if (AltiCfg.getOutput2() == 0)
@@ -280,9 +300,19 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 AltiCfg.getAltimeterResolution()+ ","+
                 AltiCfg.getEepromSize()+"," +
                 AltiCfg.getBeepOnOff();
-        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")) {
+        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo")) {
             altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4Delay();
+        }
+        if(AltiCfg.getAltimeterName().equals("AltiServo")){
+            altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OnPos();
+            altiCfgStr = altiCfgStr + "," + AltiCfg.getServo2OnPos();
+            altiCfgStr = altiCfgStr + "," + AltiCfg.getServo3OnPos();
+            altiCfgStr = altiCfgStr + "," + AltiCfg.getServo4OnPos();
+            altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OffPos();
+            altiCfgStr = altiCfgStr + "," + AltiCfg.getServo2OffPos();
+            altiCfgStr = altiCfgStr + "," + AltiCfg.getServo3OffPos();
+            altiCfgStr = altiCfgStr + "," + AltiCfg.getServo4OffPos();
         }
 
         altiCfgStr = altiCfgStr +  ";\n";
@@ -359,13 +389,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             this.dropdownOut3.setSelection(Out3);
         }
         public int getDropdownOut4() {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32"))
+            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo"))
                 return (int)this.dropdownOut4.getSelectedItemId();
             else
                 return -1;
         }
         public void setDropdownOut4(int Out4) {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32"))  {
+            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo"))  {
                 this.dropdownOut4.setSelection(Out4);
                 this.dropdownOut4.setVisibility(View.VISIBLE);
                 txtOut4.setVisibility(View.VISIBLE);
@@ -410,7 +440,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             return ret;
         }
         public void setOutDelay4(int OutDelay4) {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32"))  {
+            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo"))  {
                 this.OutDelay4.setText(String.valueOf(OutDelay4));
                 this.OutDelay4.setVisibility(View.VISIBLE);
                 txtViewDelay4.setVisibility(View.VISIBLE);
@@ -422,7 +452,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
         }
         public int getOutDelay4() {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")) {
+            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo")) {
                 int ret;
                 try {
                     ret = Integer.parseInt(OutDelay4.getText().toString());
@@ -493,7 +523,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 dropdownOut1.setSelection(AltiCfg.getOutput1());
                 dropdownOut2.setSelection(AltiCfg.getOutput2());
                 dropdownOut3.setSelection(AltiCfg.getOutput3());
-                if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32"))  {
+                if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo"))  {
                     dropdownOut4.setSelection(AltiCfg.getOutput4());
                     dropdownOut4.setVisibility(View.VISIBLE);
                     txtOut4.setVisibility(View.VISIBLE);
@@ -506,7 +536,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 OutDelay2.setText(String.valueOf(AltiCfg.getOutput2Delay()));
                 OutDelay3.setText(String.valueOf(AltiCfg.getOutput3Delay()));
 
-                if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")) {
+                if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo")) {
                     OutDelay4.setText(String.valueOf(AltiCfg.getOutput4Delay()));
                     OutDelay4.setVisibility(View.VISIBLE);
                     txtViewDelay4.setVisibility(View.VISIBLE);
@@ -540,6 +570,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         private Spinner dropdownSupersonicDelay;
         private EditText EndRecordAltitude;
         private boolean ViewCreated = false;
+        private TextView txtViewRecordTemp,txtViewEEpromSize;
 
         public boolean isViewCreated() {
             return ViewCreated;
@@ -658,12 +689,22 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             dropdownAltimeterResolution.setAdapter(adapterAltimeterResolution);
 
             //Altimeter external eeprom size
+            txtViewEEpromSize = (TextView)view.findViewById(R.id.txtViewEEpromSize);
             dropdownEEpromSize = (Spinner)view.findViewById(R.id.spinnerEEpromSize);
             itemsEEpromSize = new String[]{"32", "64","128","256","512", "1024"};
             ArrayAdapter<String> adapterEEpromSize= new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsEEpromSize);
             dropdownEEpromSize.setAdapter(adapterEEpromSize);
 
+            if (AltiCfg != null) {
+                if (AltiCfg.getAltimeterName().equals("AltiServo")) {
+                    dropdownEEpromSize.setVisibility(View.INVISIBLE);
+                    txtViewEEpromSize.setVisibility(View.INVISIBLE);
+                } else {
+                    dropdownEEpromSize.setVisibility(View.VISIBLE);
+                    txtViewEEpromSize.setVisibility(View.VISIBLE);
+                }
+            }
             // Switch beeping on or off
             // 0 is On and 1 is Off
             dropdownBeepOnOff= (Spinner)view.findViewById(R.id.spinnerBeepOnOff);
@@ -673,12 +714,22 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             dropdownBeepOnOff.setAdapter(adapterBeepOnOff);
 
             // Record temperature on or off
+            txtViewRecordTemp = (TextView) view.findViewById(R.id.txtViewRecordTemp);
             dropdownRecordTemp = (Spinner)view.findViewById(R.id.spinnerRecordTemp);
             itemsRecordTempOnOff= new String[]{"Off","On"};
             ArrayAdapter<String> adapterRecordTemp = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsRecordTempOnOff);
             dropdownRecordTemp.setAdapter(adapterRecordTemp);
 
+            if (AltiCfg != null) {
+                if (AltiCfg.getAltimeterName().equals("AltiServo")) {
+                    dropdownRecordTemp.setVisibility(View.INVISIBLE);
+                    txtViewRecordTemp.setVisibility(View.INVISIBLE);
+                } else {
+                    dropdownRecordTemp.setVisibility(View.VISIBLE);
+                    txtViewRecordTemp.setVisibility(View.VISIBLE);
+                }
+            }
             // supersonic delay on/off
             dropdownSupersonicDelay = (Spinner)view.findViewById(R.id.spinnerSupersonicDelay);
             itemsSupersonicDelayOnOff= new String[]{"Off","On"};
@@ -710,6 +761,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         private Spinner dropdownUnits;
         private Spinner dropdownBipMode;
         private EditText Freq;
+
 
         private boolean ViewCreated = false;
         public boolean isViewCreated() {
@@ -789,6 +841,202 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
 
     }
+
+    public static class Tab4Fragment extends Fragment{
+        private static final String TAG = "Tab4Fragment";
+
+        private EditText servo1OnPos, servo2OnPos, servo3OnPos,servo4OnPos;
+        private EditText servo1OffPos, servo2OffPos, servo3OffPos,servo4OffPos;
+        private TextView txtServo1OnPos, txtServo2OnPos, txtServo3OnPos, txtServo4OnPos;
+        private TextView txtServo1OffPos, txtServo2OffPos, txtServo3OffPos, txtServo4OffPos;
+
+        private boolean ViewCreated = false;
+        public boolean isViewCreated() {
+            return ViewCreated;
+        }
+
+
+        public int getServo1OnPos() {
+            int ret;
+            try {
+                ret = Integer.parseInt(this.servo1OnPos.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
+        }
+        public int getServo2OnPos() {
+            int ret;
+            try {
+                ret = Integer.parseInt(this.servo2OnPos.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
+        }
+        public int getServo3OnPos() {
+            int ret;
+            try {
+                ret = Integer.parseInt(this.servo3OnPos.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
+        }
+        public int getServo4OnPos() {
+            int ret;
+            try {
+                ret = Integer.parseInt(this.servo4OnPos.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
+        }
+
+        public int getServo1OffPos() {
+            int ret;
+            try {
+                ret = Integer.parseInt(this.servo1OffPos.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
+        }
+        public int getServo2OffPos() {
+            int ret;
+            try {
+                ret = Integer.parseInt(this.servo2OffPos.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
+        }
+        public int getServo3OffPos() {
+            int ret;
+            try {
+                ret = Integer.parseInt(this.servo3OffPos.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
+        }
+        public int getServo4OffPos() {
+            int ret;
+            try {
+                ret = Integer.parseInt(this.servo4OffPos.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
+        }
+
+        public void setServo1OnPos(int pos) {
+            this.servo1OnPos.setText(pos);
+        }
+        public void setServo2OnPos(int pos) {
+            this.servo2OnPos.setText(pos);
+        }
+        public void setServo3OnPos(int pos) {
+            this.servo3OnPos.setText(pos);
+        }
+        public void setServo4OnPos(int pos) {
+            this.servo4OnPos.setText(pos);
+        }
+
+        public void setServo1OffPos(int pos) {
+            this.servo1OffPos.setText(pos);
+        }
+        public void setServo2OffPos(int pos) {
+            this.servo2OffPos.setText(pos);
+        }
+        public void setServo3OffPos(int pos) {
+            this.servo3OffPos.setText(pos);
+        }
+        public void setServo4OffPos(int pos) {
+            this.servo4OffPos.setText(pos);
+        }
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate (R.layout.tabconfigpart4_fragment, container,false);
+
+
+            servo1OnPos=(EditText)view.findViewById(R.id.editTxtServo1OnPos);
+            servo2OnPos=(EditText)view.findViewById(R.id.editTxtServo2OnPos);
+            servo3OnPos=(EditText)view.findViewById(R.id.editTxtServo3OnPos);
+            servo4OnPos=(EditText)view.findViewById(R.id.editTxtServo4OnPos);
+
+            txtServo1OnPos=(TextView)view.findViewById(R.id.servo1OnPos);
+            txtServo2OnPos=(TextView)view.findViewById(R.id.servo2OnPos);
+            txtServo3OnPos=(TextView)view.findViewById(R.id.servo3OnPos);
+            txtServo4OnPos=(TextView)view.findViewById(R.id.servo4OnPos);
+
+            servo1OffPos=(EditText)view.findViewById(R.id.editTxtServo1OffPos);
+            servo2OffPos=(EditText)view.findViewById(R.id.editTxtServo2OffPos);
+            servo3OffPos=(EditText)view.findViewById(R.id.editTxtServo3OffPos);
+            servo4OffPos=(EditText)view.findViewById(R.id.editTxtServo4OffPos);
+
+            txtServo1OffPos=(TextView)view.findViewById(R.id.servo1OffPos);
+            txtServo2OffPos=(TextView)view.findViewById(R.id.servo2OffPos);
+            txtServo3OffPos=(TextView)view.findViewById(R.id.servo3OffPos);
+            txtServo4OffPos=(TextView)view.findViewById(R.id.servo4OffPos);
+
+            if (AltiCfg != null) {
+
+                //Freq.setText(String.valueOf(AltiCfg.getBeepingFrequency()));
+                servo1OnPos.setText(String.valueOf(AltiCfg.getServo1OnPos()));
+                servo2OnPos.setText(String.valueOf(AltiCfg.getServo2OnPos()));
+                servo3OnPos.setText(String.valueOf(AltiCfg.getServo3OnPos()));
+                servo4OnPos.setText(String.valueOf(AltiCfg.getServo4OnPos()));
+
+                servo1OffPos.setText(String.valueOf(AltiCfg.getServo1OffPos()));
+                servo2OffPos.setText(String.valueOf(AltiCfg.getServo2OffPos()));
+                servo3OffPos.setText(String.valueOf(AltiCfg.getServo3OffPos()));
+                servo4OffPos.setText(String.valueOf(AltiCfg.getServo4OffPos()));
+            }
+            if(AltiCfg.getAltimeterName().equals("AltiServo")) {
+                servo1OnPos.setVisibility(View.VISIBLE);
+                servo2OnPos.setVisibility(View.VISIBLE);
+                servo3OnPos.setVisibility(View.VISIBLE);
+                servo4OnPos.setVisibility(View.VISIBLE);
+                servo1OffPos.setVisibility(View.VISIBLE);
+                servo2OffPos.setVisibility(View.VISIBLE);
+                servo3OffPos.setVisibility(View.VISIBLE);
+                servo4OffPos.setVisibility(View.VISIBLE);
+
+                txtServo1OnPos.setVisibility(View.VISIBLE);
+                txtServo2OnPos.setVisibility(View.VISIBLE);
+                txtServo3OnPos.setVisibility(View.VISIBLE);
+                txtServo4OnPos.setVisibility(View.VISIBLE);
+                txtServo1OffPos.setVisibility(View.VISIBLE);
+                txtServo2OffPos.setVisibility(View.VISIBLE);
+                txtServo3OffPos.setVisibility(View.VISIBLE);
+                txtServo4OffPos.setVisibility(View.VISIBLE);
+            }
+            else {
+                servo1OnPos.setVisibility(View.INVISIBLE);
+                servo2OnPos.setVisibility(View.INVISIBLE);
+                servo3OnPos.setVisibility(View.INVISIBLE);
+                servo4OnPos.setVisibility(View.INVISIBLE);
+                servo1OffPos.setVisibility(View.INVISIBLE);
+                servo2OffPos.setVisibility(View.INVISIBLE);
+                servo3OffPos.setVisibility(View.INVISIBLE);
+                servo4OffPos.setVisibility(View.INVISIBLE);
+
+                txtServo1OnPos.setVisibility(View.INVISIBLE);
+                txtServo2OnPos.setVisibility(View.INVISIBLE);
+                txtServo3OnPos.setVisibility(View.INVISIBLE);
+                txtServo4OnPos.setVisibility(View.INVISIBLE);
+                txtServo1OffPos.setVisibility(View.INVISIBLE);
+                txtServo2OffPos.setVisibility(View.INVISIBLE);
+                txtServo3OffPos.setVisibility(View.INVISIBLE);
+                txtServo4OffPos.setVisibility(View.INVISIBLE);
+            }
+            ViewCreated = true;
+            return view;
+        }
+
+    }
     private class RetrieveConfig extends AsyncTask<Void, Void, Void>  // UI thread
     {
 
@@ -844,10 +1092,24 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     configPage3.setDropdownUnits(AltiCfg.getUnits());
                     configPage3.setFreq(AltiCfg.getBeepingFrequency());
                 }
+
+
+                //if(AltiCfg.getAltimeterName().equals("AltiServo")) {
+                    if (configPage4.isViewCreated()) {
+                        configPage4.setServo1OnPos(AltiCfg.getServo1OnPos());
+                        configPage4.setServo2OnPos(AltiCfg.getServo2OnPos());
+                        configPage4.setServo3OnPos(AltiCfg.getServo3OnPos());
+                        configPage4.setServo4OnPos(AltiCfg.getServo4OnPos());
+
+                        configPage4.setServo1OffPos(AltiCfg.getServo1OffPos());
+                        configPage4.setServo2OffPos(AltiCfg.getServo2OffPos());
+                        configPage4.setServo3OffPos(AltiCfg.getServo3OffPos());
+                        configPage4.setServo4OffPos(AltiCfg.getServo4OffPos());
+                    }
+                //}
+
             }
             progress.dismiss();
         }
     }
-
-
 }

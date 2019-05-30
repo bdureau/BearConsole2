@@ -132,6 +132,56 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewBatteryVoltage"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fire Altimeter outputs \nMake sure that you do not have \n any real pyro charges!!!"
+        android:id="@+id/txtViewTitle2"
+        android:layout_below="@+id/txtViewLink"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+    <Switch
+        android:id="@+id/switchOutput1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txtViewTitle2"
+        android:layout_marginEnd="61dp"
+        android:layout_marginRight="61dp"
+        android:text="Output 1" />
+    <Switch
+        android:id="@+id/switchOutput2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/switchOutput1"
+        android:layout_marginEnd="61dp"
+        android:layout_marginRight="61dp"
+        android:text="Output 2" />
+
+    <Switch
+        android:id="@+id/switchOutput3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/switchOutput2"
+        android:layout_marginEnd="61dp"
+        android:layout_marginRight="61dp"
+        android:text="Output 3" />
+    <Switch
+        android:id="@+id/switchOutput4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/switchOutput3"
+        android:layout_marginEnd="61dp"
+        android:layout_marginRight="61dp"
+        android:text="Output 4" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

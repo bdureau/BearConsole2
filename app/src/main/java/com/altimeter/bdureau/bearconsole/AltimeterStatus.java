@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,8 @@ public class AltimeterStatus extends AppCompatActivity {
 
     private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
     private TextView txtViewAltitude,txtViewVoltage,txtViewLink;
+    private TextView txtViewOutput4,txtViewBatteryVoltage;
+    private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;
 
     Handler handler = new Handler () {
         @Override
@@ -90,6 +93,10 @@ public class AltimeterStatus extends AppCompatActivity {
                     myBT.clearInput();
                     myBT.flush();
                 }
+                //turn off telemetry
+                myBT.flush();
+                myBT.clearInput();
+                myBT.write("y0;\n".toString());
                 finish();      //exit the  activity
             }
         });
@@ -101,8 +108,89 @@ public class AltimeterStatus extends AppCompatActivity {
         txtViewAltitude =(TextView)findViewById(R.id.txtViewAltitude);
         txtViewVoltage=(TextView)findViewById(R.id.txtViewVoltage);
         txtViewLink=(TextView)findViewById(R.id.txtViewLink);
+        txtViewOutput4=(TextView)findViewById(R.id.txtViewOutput4);
+        txtViewBatteryVoltage=(TextView)findViewById(R.id.txtViewBatteryVoltage);
 
+        if(myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")) {
+            txtViewVoltage.setVisibility(View.VISIBLE);
+            txtViewBatteryVoltage.setVisibility(View.VISIBLE);
+        }
+        else {
+            txtViewVoltage.setVisibility(View.INVISIBLE);
+            txtViewBatteryVoltage.setVisibility(View.INVISIBLE);
+        }
+        if(myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")|| myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+            txtViewOutput4Status.setVisibility(View.VISIBLE);
+            txtViewOutput4.setVisibility(View.VISIBLE);
+        }
+        else {
+            txtViewOutput4Status.setVisibility(View.INVISIBLE);
+            txtViewOutput4.setVisibility(View.INVISIBLE);
+        }
         txtViewLink.setText(myBT.getConnectionType());
+
+        switchOutput1  =(Switch)findViewById(R.id.switchOutput1);
+        switchOutput2  =(Switch)findViewById(R.id.switchOutput2);
+        switchOutput3  =(Switch)findViewById(R.id.switchOutput3);
+        switchOutput4  =(Switch)findViewById(R.id.switchOutput4);
+
+        switchOutput1.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(switchOutput1.isChecked())
+                    myBT.write("k1F;\n".toString());
+                else
+                    myBT.write("k1T;\n".toString());
+
+                myBT.flush();
+                myBT.clearInput();
+            }
+        });
+
+        switchOutput2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(switchOutput2.isChecked())
+                    myBT.write("k2F;\n".toString());
+                else
+                    myBT.write("k2T;\n".toString());
+
+                myBT.flush();
+                myBT.clearInput();
+            }
+        });
+        switchOutput3.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(switchOutput3.isChecked())
+                    myBT.write("k3F;\n".toString());
+                else
+                    myBT.write("k3T;\n".toString());
+
+                myBT.flush();
+                myBT.clearInput();
+            }
+        });
+        switchOutput4.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(switchOutput4.isChecked())
+                    myBT.write("k4F;\n".toString());
+                else
+                    myBT.write("k4T;\n".toString());
+
+                myBT.flush();
+                myBT.clearInput();
+            }
+        });
         myBT.setHandler(handler);
 
         Runnable r = new Runnable() {
@@ -111,7 +199,7 @@ public class AltimeterStatus extends AppCompatActivity {
             public void run() {
                 while (true){
                     if(!status) break;
-                    myBT.ReadResult();
+                    myBT.ReadResult(10000);
                 }
             }
         };
@@ -119,7 +207,7 @@ public class AltimeterStatus extends AppCompatActivity {
         altiStatus = new Thread(r);
         altiStatus.start();
 
-
+       // msg(myBT.getAltiConfigData().getAltimeterName());
     }
 
     @Override
@@ -149,7 +237,7 @@ public class AltimeterStatus extends AppCompatActivity {
         long timeOut = 10000;
         long startTime = System.currentTimeMillis();
 
-        myMessage =myBT.ReadResult();
+        myMessage =myBT.ReadResult(10000);
     }
     private String outputStatus(String msg) {
         String res="";

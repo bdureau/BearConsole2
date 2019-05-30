@@ -33,12 +33,19 @@ public class AltiConfigData {
     private int recordTemperature = 0;
     private int supersonicDelay=0;
     private int beepOnOff = 0;
-
-
+    private int servo1OnPos = 0;
+    private int servo2OnPos = 0;
+    private int servo3OnPos = 0;
+    private int servo4OnPos = 0;
+    private int servo1OffPos = 0;
+    private int servo2OffPos = 0;
+    private int servo3OffPos = 0;
+    private int servo4OffPos = 0;
     public AltiConfigData()
     {
 
     }
+
 
     public void setUnits(int value)
     {
@@ -235,5 +242,72 @@ public class AltiConfigData {
                 return i;
         }
         return -1;
+    }
+
+    //servos positions
+    public void setServo1OnPos(int value)
+    {
+        servo1OnPos = value;
+    }
+    public int getServo1OnPos()
+    {
+        return servo1OnPos;
+    }
+
+    public void setServo2OnPos(int value)
+    {
+        servo2OnPos = value;
+    }
+    public int getServo2OnPos()
+    {
+        return servo2OnPos;
+    }
+
+    public void setServo3OnPos(int value)
+    {
+        servo3OnPos = value;
+    }
+    public int getServo3OnPos()
+    {
+        return servo3OnPos;
+    }
+
+    public void setServo4OnPos(int value) { servo4OnPos = value; }
+    public int getServo4OnPos()
+    {
+        return servo4OnPos;
+    }
+
+    public void setServo1OffPos(int value)
+    {
+        servo1OffPos = value;
+    }
+    public int getServo1OffPos()
+    {
+        return servo1OffPos;
+    }
+
+    public void setServo2OffPos(int value)
+    {
+        servo2OffPos = value;
+    }
+    public int getServo2OffPos()
+    {
+        return servo2OffPos;
+    }
+
+    public void setServo3OffPos(int value)
+    {
+        servo3OffPos = value;
+    }
+    public int getServo3OffPos()
+    {
+        return servo3OffPos;
+    }
+
+    public void setServo4OffPos(int value) { servo4OffPos = value; }
+    public int getServo4OffPos()
+    {
+        return servo4OffPos;
     }
 }

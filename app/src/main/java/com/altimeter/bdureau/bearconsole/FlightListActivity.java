@@ -80,7 +80,7 @@ public class FlightListActivity extends AppCompatActivity {
             String myMessage = "";
             myBT.setDataReady(false);
             myBT.initFlightData();
-            myMessage = myBT.ReadResult();
+            myMessage = myBT.ReadResult(60000);
 
             if (myMessage.equals("start end")) {
 

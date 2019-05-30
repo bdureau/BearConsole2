@@ -141,6 +141,13 @@ public class MainScreenActivity extends AppCompatActivity {
         btnTelemetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //turn on telemetry
+                if(myBT.getConnected()) {
+                    myBT.flush();
+                    myBT.clearInput();
+
+                    myBT.write("y1;\n".toString());
+                }
                 Intent i = new Intent(MainScreenActivity.this, Telemetry.class);
                 startActivity(i);
             }
@@ -148,6 +155,13 @@ public class MainScreenActivity extends AppCompatActivity {
         btnStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //turn on telemetry
+                if(myBT.getConnected()) {
+                    myBT.flush();
+                    myBT.clearInput();
+
+                    myBT.write("y1;\n".toString());
+                }
                 Intent i = new Intent(MainScreenActivity.this, AltimeterStatus.class);
                 startActivity(i);
             }
@@ -244,9 +258,19 @@ public class MainScreenActivity extends AppCompatActivity {
     }
     private void EnableUI () {
         btnAltiSettings.setEnabled(true);
-        btnReadFlights.setEnabled(true);
+        readConfig();
+        //msg(myBT.getAltiConfigData().getAltimeterName());
+        if(myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+            btnReadFlights.setEnabled(false);
+            btnContinuityOnOff.setEnabled(false);
+        }
+        else {
+            btnReadFlights.setEnabled(true);
+            btnContinuityOnOff.setEnabled(true);
+        }
+
         btnTelemetry.setEnabled(true);
-        btnContinuityOnOff.setEnabled(true);
+
         btnReset.setEnabled(true);
         btnStatus.setEnabled(true);
     }
@@ -258,7 +282,54 @@ public class MainScreenActivity extends AppCompatActivity {
     private void Disconnect() {
         myBT.Disconnect();
     }
+    private void readConfig()
+    {
+        // ask for config
+        if(myBT.getConnected()) {
 
+            //msg("Retreiving altimeter config...");
+            myBT.setDataReady(false);
+
+            myBT.flush();
+            myBT.clearInput();
+
+            myBT.write("b;\n".toString());
+
+            myBT.flush();
+
+
+            //get the results
+            //wait for the result to come back
+            try {
+                while (myBT.getInputStream().available() <= 0) ;
+            } catch (IOException e) {
+
+            }
+        }
+        //reading the config
+        if(myBT.getConnected()) {
+            String myMessage = "";
+            long timeOut = 10000;
+            long startTime = System.currentTimeMillis();
+
+            myMessage =myBT.ReadResult(10000);
+
+            if (myMessage.equals( "start alticonfig end") )
+            {
+                try {
+                    //AltiCfg= myBT.getAltiConfigData();
+                }
+                catch (Exception e) {
+                    //  msg("pb ready data");
+                }
+            }
+            else
+            {
+                // msg("data not ready");
+            }
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -374,10 +445,12 @@ public class MainScreenActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             super.onPostExecute(result);
-
+            //msg(myBT.lastData);
             if (!ConnectSuccess) {
+               // msg(myBT.lastReadResult);
+                //msg(myBT.lastData);
                 //Connection Failed. Is it a SPP Bluetooth? Try again.
-                msg(getResources().getString(R.string.MS_msg3));
+                //msg(getResources().getString(R.string.MS_msg3));
                 //finish();
             } else {
                 //Connected.

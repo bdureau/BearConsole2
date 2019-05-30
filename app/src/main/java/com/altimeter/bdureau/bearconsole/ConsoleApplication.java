@@ -10,7 +10,9 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.os.Environment;
 import android.os.Handler;
+import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -50,6 +52,8 @@ public class ConsoleApplication extends Application {
         this.mHandler = mHandler;
     }
 
+    public String lastReadResult;
+    public String lastData;
     @Override
     public void onCreate() {
 
@@ -130,6 +134,7 @@ public class ConsoleApplication extends Application {
     // connect to the bluetooth adapter
     public boolean connect() {
         boolean state=false;
+        appendLog("connect:");
         if(myTypeOfConnection.equals( "bluetooth")) {
             state = BTCon.connect(address);
             setConnectionType("bluetooth");
@@ -159,37 +164,52 @@ public class ConsoleApplication extends Application {
         boolean valid=false;
         //if(getConnected()) {
 
-            setDataReady(false);
-
-            flush();
-            clearInput();
-
-            write("h;\n".toString());
+        setDataReady(false);
+       /* try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        flush();
+        clearInput();
+        //  send 2 commands to get read of the module connection string on some modules
+        write("h;\n".toString());
+        //write("h;".toString());
 
             //flush();
+        flush();
+        clearInput();
+        write("h;\n".toString());
 
-        //appendLog("sent command\n");
+        //appendLog("isConnectionValid: sent command\n");
+
+        String myMessage = "";
+        long timeOut = 10000;
+        long startTime = System.currentTimeMillis();
+        long diffTime = 0;
             //get the results
             //wait for the result to come back
-            try {
-                while (getInputStream().available() <= 0) ;
-            } catch (IOException e) {
+        try {
+            /*while (getInputStream().available() <= 0 || diffTime < timeOut) {
+                diffTime = System.currentTimeMillis() - startTime;}*/
+            while (getInputStream().available() <= 0) ;
+        } catch (IOException e) {
 
-            }
-            String myMessage = "";
-            long timeOut = 10000;
-            long startTime = System.currentTimeMillis();
+        }
 
-            myMessage =ReadResult();
-        //appendLog(myMessage);
-            if (myMessage.equals( "OK") )
-            {
-                valid = true;
-            }
-            else
-            {
-                valid = false;
-            }
+        myMessage =ReadResult(3000);
+
+        //appendLog("isConnectionValid:"+myMessage);
+        if (myMessage.equals( "OK") )
+        {
+            lastReadResult = myMessage;
+            valid = true;
+        }
+        else
+        {
+            lastReadResult = myMessage;
+            valid = false;
+        }
         //}
         return valid;
     }
@@ -240,7 +260,10 @@ public class ConsoleApplication extends Application {
 
     public void appendLog(String text)
     {
-        File logFile = new File("sdcard/debugfile.txt");
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        //File logFile = new File(path+"/debugfile2.txt");
+        File logFile = new File("/mnt/sdcard0/debugfile2.txt");
+        //File logFile = new File("MicroSD/debugfile2.txt");
         if (!logFile.exists())
         {
             try
@@ -271,12 +294,13 @@ public class ConsoleApplication extends Application {
 
     public void setExit(boolean b) {this.exit=b;};
 
-    public String ReadResult() {
+    public String ReadResult(long timeout) {
 
         // Reads in data while data is available
 
         //setDataReady(false);
         this.exit =false;
+        lastData ="";
         String fullBuff = "";
         String myMessage = "";
         lastReceived = System.currentTimeMillis();
@@ -284,9 +308,12 @@ public class ConsoleApplication extends Application {
 
 
             while (this.exit==false) {
+                if ((System.currentTimeMillis()-lastReceived) > timeout)
+                    this.exit= true;
                 if (getInputStream().available() > 0) {
                     // Read in the available character
                     char ch = (char) getInputStream().read();
+                    lastData = lastData+ ch;
                     if (ch == '$') {
 
                         // read entire sentence until the end
@@ -445,6 +472,47 @@ public class ConsoleApplication extends Application {
                                     AltiCfg.setOutput4Delay((int) currentSentence.value24);
                                 else
                                     AltiCfg.setOutput4Delay(-1);
+                                // Value 25 contain
+                                if ((int) currentSentence.value25 !=-1)
+                                    AltiCfg.setServo1OnPos((int) currentSentence.value25);
+                                else
+                                    AltiCfg.setServo1OnPos(-1);
+                                // Value 26 contain
+                                if ((int) currentSentence.value26 !=-1)
+                                    AltiCfg.setServo2OnPos((int) currentSentence.value26);
+                                else
+                                    AltiCfg.setServo2OnPos(-1);
+                                // Value 27 contain
+                                if ((int) currentSentence.value27 !=-1)
+                                    AltiCfg.setServo3OnPos((int) currentSentence.value26);
+                                else
+                                    AltiCfg.setServo3OnPos(-1);
+                                // Value 28 contain
+                                if ((int) currentSentence.value28 !=-1)
+                                    AltiCfg.setServo4OnPos((int) currentSentence.value28);
+                                else
+                                    AltiCfg.setServo4OnPos(-1);
+                                // Value 29 contain
+                                if ((int) currentSentence.value29 !=-1)
+                                    AltiCfg.setServo1OffPos((int) currentSentence.value29);
+                                else
+                                    AltiCfg.setServo1OffPos(-1);
+                                // Value 30 contain
+                                if ((int) currentSentence.value30 !=-1)
+                                    AltiCfg.setServo2OffPos((int) currentSentence.value30);
+                                else
+                                    AltiCfg.setServo2OffPos(-1);
+                                // Value 31 contain
+                                if ((int) currentSentence.value31 !=-1)
+                                    AltiCfg.setServo3OffPos((int) currentSentence.value31);
+                                else
+                                    AltiCfg.setServo3OffPos(-1);
+                                // Value 32 contain
+                                if ((int) currentSentence.value32 !=-1)
+                                    AltiCfg.setServo4OffPos((int) currentSentence.value32);
+                                else
+                                    AltiCfg.setServo4OffPos(-1);
+
                                 //DataReady = true;
                                 myMessage = myMessage + " " + "alticonfig";
                                 break;
@@ -638,6 +706,48 @@ public class ConsoleApplication extends Application {
                 sentence.value24 = Integer.parseInt(tempArray[24]);
             else
                 sentence.value24 = -1;
+        if (tempArray.length > 25)
+            if(tempArray[25].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value25 = Integer.parseInt(tempArray[25]);
+            else
+                sentence.value25 = -1;
+        if (tempArray.length > 26)
+            if(tempArray[26].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value26 = Integer.parseInt(tempArray[26]);
+            else
+                sentence.value26 = -1;
+        if (tempArray.length > 27)
+            if(tempArray[27].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value27 = Integer.parseInt(tempArray[27]);
+            else
+                sentence.value27 = -1;
+        if (tempArray.length > 28)
+            if(tempArray[28].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value28 = Integer.parseInt(tempArray[28]);
+            else
+                sentence.value28 = -1;
+        if (tempArray.length > 29)
+            if(tempArray[29].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value29 = Integer.parseInt(tempArray[29]);
+            else
+                sentence.value29 = -1;
+        if (tempArray.length > 30)
+            if(tempArray[30].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value30 = Integer.parseInt(tempArray[30]);
+            else
+                sentence.value30 = -1;
+
+        if (tempArray.length > 31)
+            if(tempArray[31].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value31 = Integer.parseInt(tempArray[31]);
+            else
+                sentence.value31 = -1;
+        if (tempArray.length > 32)
+            if(tempArray[32].matches("\\d+(?:\\.\\d+)?"))
+                sentence.value32 = Integer.parseInt(tempArray[32]);
+            else
+                sentence.value32 = -1;
+
         return sentence;
     }
 
@@ -669,6 +779,14 @@ public class ConsoleApplication extends Application {
         public long value22;
         public long value23;
         public long value24;
+        public long value25;
+        public long value26;
+        public long value27;
+        public long value28;
+        public long value29;
+        public long value30;
+        public long value31;
+        public long value32;
     }
     public Configuration getAppLocal() {
 

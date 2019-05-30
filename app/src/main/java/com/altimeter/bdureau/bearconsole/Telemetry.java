@@ -300,6 +300,11 @@ public class Telemetry extends AppCompatActivity {
                     myBT.clearInput();
                     myBT.flush();
                 }
+                //turn off telemetry
+                myBT.flush();
+                myBT.clearInput();
+                myBT.write("y0;\n".toString());
+
                 finish();      //exit the activity
             }
         });
@@ -320,7 +325,7 @@ public class Telemetry extends AppCompatActivity {
             public void run() {
                 while (true){
                     if(!telemetry) break;
-                    myBT.ReadResult();
+                    myBT.ReadResult(100000);
                 }
             }
         };
@@ -345,7 +350,7 @@ public class Telemetry extends AppCompatActivity {
             public void run() {
                 while (true){
                     if(!telemetry) break;
-                    myBT.ReadResult();
+                    myBT.ReadResult(100000);
                 }
             }
         };
@@ -399,6 +404,6 @@ public class Telemetry extends AppCompatActivity {
         long timeOut = 10000;
         long startTime = System.currentTimeMillis();
 
-        myMessage =myBT.ReadResult();
+        myMessage =myBT.ReadResult(100000);
     }
 }

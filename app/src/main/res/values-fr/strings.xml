@@ -27,7 +27,7 @@
     <string name="upload">Charger</string>
     <string name="dismiss_config">Fermer</string>
     <string name="baudRate">Baud Rate</string>
-    <string name="apogeeMeasures">Meusures Apogée</string>
+    <string name="apogeeMeasures">Mesures Apogée</string>
     <string name="altimeterResolution">Res Alti</string>
     <string name="eepromSize">Capacité EEprom</string>
     <string name="beepOnOff">Bip Marche/Arret</string>

@@ -260,7 +260,7 @@ public class AltimeterConfigActivity extends AppCompatActivity {
         // ask for config
         if(myBT.getConnected()) {
 
-            //msg("Retreiving altimeter config...");
+            //msg("Retrieving altimeter config...");
             myBT.setDataReady(false);
 
             myBT.flush();
@@ -285,7 +285,7 @@ public class AltimeterConfigActivity extends AppCompatActivity {
             long timeOut = 10000;
             long startTime = System.currentTimeMillis();
 
-            myMessage =myBT.ReadResult();
+            myMessage =myBT.ReadResult(10000);
 
             if (myMessage.equals( "start alticonfig end") )
             {
@@ -318,7 +318,6 @@ public class AltimeterConfigActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
         {
-
             readConfig();
             return null;
         }
@@ -326,9 +325,6 @@ public class AltimeterConfigActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             super.onPostExecute(result);
-
-
-            ///
 
             altiName.setText(AltiCfg.getAltimeterName()+ " ver: " +
                     AltiCfg.getAltiMajorVersion()+"."+AltiCfg.getAltiMinorVersion());

@@ -26,7 +26,8 @@ public class BluetoothConnection {
         try {
             myBluetooth = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
             BluetoothDevice btDevice = myBluetooth.getRemoteDevice(address);//connects to the device's address and checks if it's available
-            setBtSocket(btDevice.createInsecureRfcommSocketToServiceRecord(myUUID));//create a RFCOMM (SPP) connection
+            //setBtSocket(btDevice.createInsecureRfcommSocketToServiceRecord(myUUID));//create a RFCOMM (SPP) connection
+            setBtSocket(btDevice.createRfcommSocketToServiceRecord(myUUID));
             BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
             getBtSocket().connect();//start connection
             state = true;
