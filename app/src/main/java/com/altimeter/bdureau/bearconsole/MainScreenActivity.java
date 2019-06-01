@@ -261,14 +261,19 @@ public class MainScreenActivity extends AppCompatActivity {
         readConfig();
         //msg(myBT.getAltiConfigData().getAltimeterName());
         if(myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-            btnReadFlights.setEnabled(false);
             btnContinuityOnOff.setEnabled(false);
         }
         else {
-            btnReadFlights.setEnabled(true);
             btnContinuityOnOff.setEnabled(true);
         }
 
+        if(myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
+            btnReadFlights.setEnabled(false);
+        }
+        else {
+            btnReadFlights.setEnabled(true);
+        }
         btnTelemetry.setEnabled(true);
 
         btnReset.setEnabled(true);

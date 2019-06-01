@@ -363,7 +363,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         private Spinner dropdownOut1, dropdownOut2, dropdownOut3, dropdownOut4;
         private EditText OutDelay1, OutDelay2,OutDelay3, OutDelay4;
         private EditText MainAltitude;
-        private TextView txtOut4, txtViewDelay4 ;
+        private TextView txtOut3, txtViewDelay3, txtOut4, txtViewDelay4 ;
 
         private boolean ViewCreated = false;
         public boolean isViewCreated() {
@@ -517,12 +517,22 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
             MainAltitude= (EditText)view.findViewById(R.id.editTxtMainAltitude);
 
+            txtOut3 = (TextView)view.findViewById(R.id.txtOut3);
+            txtViewDelay3 = (TextView)view.findViewById(R.id.txtViewDelay3);
             txtOut4 = (TextView)view.findViewById(R.id.txtOut4);
             txtViewDelay4 = (TextView)view.findViewById(R.id.txtViewDelay4);
             if (AltiCfg !=null) {
                 dropdownOut1.setSelection(AltiCfg.getOutput1());
                 dropdownOut2.setSelection(AltiCfg.getOutput2());
-                dropdownOut3.setSelection(AltiCfg.getOutput3());
+                if(!AltiCfg.getAltimeterName().equals("AltiDuo")) {
+                    dropdownOut3.setSelection(AltiCfg.getOutput3());
+                    dropdownOut3.setVisibility(View.VISIBLE);
+                    txtOut3.setVisibility(View.VISIBLE);
+                }
+                else {
+                    dropdownOut3.setVisibility(View.INVISIBLE);
+                    txtOut3.setVisibility(View.INVISIBLE);
+                }
                 if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo"))  {
                     dropdownOut4.setSelection(AltiCfg.getOutput4());
                     dropdownOut4.setVisibility(View.VISIBLE);
@@ -534,8 +544,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
                 OutDelay1.setText(String.valueOf(AltiCfg.getOutput1Delay()));
                 OutDelay2.setText(String.valueOf(AltiCfg.getOutput2Delay()));
-                OutDelay3.setText(String.valueOf(AltiCfg.getOutput3Delay()));
-
+                if(!AltiCfg.getAltimeterName().equals("AltiDuo")) {
+                    OutDelay3.setText(String.valueOf(AltiCfg.getOutput3Delay()));
+                }
+                else {
+                    OutDelay3.setVisibility(View.INVISIBLE);
+                    txtViewDelay3.setVisibility(View.INVISIBLE);
+                }
                 if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo")) {
                     OutDelay4.setText(String.valueOf(AltiCfg.getOutput4Delay()));
                     OutDelay4.setVisibility(View.VISIBLE);
@@ -697,7 +712,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             dropdownEEpromSize.setAdapter(adapterEEpromSize);
 
             if (AltiCfg != null) {
-                if (AltiCfg.getAltimeterName().equals("AltiServo")) {
+                if (AltiCfg.getAltimeterName().equals("AltiServo")||
+                        AltiCfg.getAltimeterName().equals("AltiDuo")) {
                     dropdownEEpromSize.setVisibility(View.INVISIBLE);
                     txtViewEEpromSize.setVisibility(View.INVISIBLE);
                 } else {
@@ -722,7 +738,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             dropdownRecordTemp.setAdapter(adapterRecordTemp);
 
             if (AltiCfg != null) {
-                if (AltiCfg.getAltimeterName().equals("AltiServo")) {
+                if (AltiCfg.getAltimeterName().equals("AltiServo")||
+                        AltiCfg.getAltimeterName().equals("AltiDuo")) {
                     dropdownRecordTemp.setVisibility(View.INVISIBLE);
                     txtViewRecordTemp.setVisibility(View.INVISIBLE);
                 } else {
