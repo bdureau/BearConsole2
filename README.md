@@ -19,9 +19,9 @@ You will need to use Android studio (I am no longer using Eclipse for Android de
 
 # Supported altimeters
 The following altimeters can be used with the BearConsole
-- [AltiDuo] (https://github.com/bdureau/AltiDuo_console) (this has a special firmware)
-- [AltiServo] (https://github.com/bdureau/AltiServo)
-- [Altimulti] (https://github.com/bdureau/RocketFlightLogger)(all versions)
+- [AltiDuo](https://github.com/bdureau/AltiDuo_console) (this has a special firmware)
+- [AltiServo](https://github.com/bdureau/AltiServo)
+- [Altimulti](https://github.com/bdureau/RocketFlightLogger)(all versions)
 
 # Disclamer
 This is a work in progress project, not all Android devices might not be fully supported but if you find any bugs please make sure that you do report them so that I can fix them. 
