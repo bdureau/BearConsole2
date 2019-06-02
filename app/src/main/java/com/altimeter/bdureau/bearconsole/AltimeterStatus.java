@@ -13,7 +13,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.afree.data.xy.XYSeriesCollection;
+//import org.afree.data.xy.XYSeriesCollection;
 
 import java.io.IOException;
 
@@ -86,10 +86,32 @@ public class AltimeterStatus extends AppCompatActivity {
             public void onClick(View v)
             {
                 if (status) {
+
                     status = false;
                     myBT.write("h;\n".toString());
 
                     myBT.setExit(true);
+                    myBT.clearInput();
+                    myBT.flush();
+                }
+                //switch off output
+                if(switchOutput1.isChecked()) {
+                    myBT.write("k1F;\n".toString());
+                    myBT.clearInput();
+                    myBT.flush();
+                }
+                if(switchOutput2.isChecked()) {
+                    myBT.write("k2F;\n".toString());
+                    myBT.clearInput();
+                    myBT.flush();
+                }
+                if(switchOutput3.isChecked()) {
+                    myBT.write("k3F;\n".toString());
+                    myBT.clearInput();
+                    myBT.flush();
+                }
+                if(switchOutput4.isChecked()) {
+                    myBT.write("k4F;\n".toString());
                     myBT.clearInput();
                     myBT.flush();
                 }
@@ -133,6 +155,15 @@ public class AltimeterStatus extends AppCompatActivity {
         switchOutput2  =(Switch)findViewById(R.id.switchOutput2);
         switchOutput3  =(Switch)findViewById(R.id.switchOutput3);
         switchOutput4  =(Switch)findViewById(R.id.switchOutput4);
+        if(!myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo"))
+            switchOutput3.setVisibility(View.VISIBLE);
+        else
+            switchOutput3.setVisibility(View.INVISIBLE);
+        if(myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiServo"))
+            switchOutput4.setVisibility(View.VISIBLE);
+        else
+            switchOutput4.setVisibility(View.INVISIBLE);
 
         switchOutput1.setOnClickListener(new View.OnClickListener()
         {
@@ -140,9 +171,9 @@ public class AltimeterStatus extends AppCompatActivity {
             public void onClick(View v)
             {
                 if(switchOutput1.isChecked())
-                    myBT.write("k1F;\n".toString());
-                else
                     myBT.write("k1T;\n".toString());
+                else
+                    myBT.write("k1F;\n".toString());
 
                 myBT.flush();
                 myBT.clearInput();
@@ -155,9 +186,9 @@ public class AltimeterStatus extends AppCompatActivity {
             public void onClick(View v)
             {
                 if(switchOutput2.isChecked())
-                    myBT.write("k2F;\n".toString());
-                else
                     myBT.write("k2T;\n".toString());
+                else
+                    myBT.write("k2F;\n".toString());
 
                 myBT.flush();
                 myBT.clearInput();
@@ -169,9 +200,9 @@ public class AltimeterStatus extends AppCompatActivity {
             public void onClick(View v)
             {
                 if(switchOutput3.isChecked())
-                    myBT.write("k3F;\n".toString());
-                else
                     myBT.write("k3T;\n".toString());
+                else
+                    myBT.write("k3F;\n".toString());
 
                 myBT.flush();
                 myBT.clearInput();
@@ -183,9 +214,9 @@ public class AltimeterStatus extends AppCompatActivity {
             public void onClick(View v)
             {
                 if(switchOutput4.isChecked())
-                    myBT.write("k4F;\n".toString());
-                else
                     myBT.write("k4T;\n".toString());
+                else
+                    myBT.write("k4F;\n".toString());
 
                 myBT.flush();
                 myBT.clearInput();
