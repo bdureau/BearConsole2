@@ -3,12 +3,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <TextView
+        android:id="@+id/textViewTtitleTab3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elegantTextHeight="true"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_horizontal"
+        android:textSize="36sp"
+        android:text="Altimeter Config" />
     <TextView
         android:id="@+id/txtAltimeterName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/textViewTtitleTab3"
+
         android:layout_alignParentLeft="true"
         android:layout_marginTop="28dp"
         android:text="@string/alti_name" />
@@ -76,6 +85,8 @@
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
         android:textSize="13sp" />
+
+
 
 
 </RelativeLayout>

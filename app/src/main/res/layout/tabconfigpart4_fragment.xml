@@ -4,10 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
+        android:id="@+id/textViewTtitleTab4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elegantTextHeight="true"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_horizontal"
+        android:textSize="36sp"
+        android:text="Servos Config" />
+    <TextView
         android:id="@+id/servo1OffPos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textViewTtitleTab4"
         android:layout_marginTop="18dp"
         android:text="Servo1 off pos" />
 

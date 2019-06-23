@@ -260,19 +260,26 @@
             android:textSize="13sp"/>
 
     </GridLayout>
-    <com.altimeter.bdureau.bearconsole.ChartView
-        android:id="@+id/telemetryChartView"
-        android:layout_below="@+id/gridLayout"
-        android:layout_width="match_parent"
-        android:layout_centerHorizontal="true"
 
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/gridLayout">
+
+        <com.altimeter.bdureau.bearconsole.ChartView
+            android:id="@+id/telemetryChartView"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp" />
+    </FrameLayout>
+
     <Button
+        android:id="@+id/butDismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dismiss_about"
-        android:id="@+id/butDismiss"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="@string/dismiss_about" />
+
 </RelativeLayout>

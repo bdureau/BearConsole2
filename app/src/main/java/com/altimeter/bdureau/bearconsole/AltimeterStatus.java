@@ -24,7 +24,7 @@ public class AltimeterStatus extends AppCompatActivity {
     boolean status = true;
 
     private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
-    private TextView txtViewAltitude,txtViewVoltage,txtViewLink;
+    private TextView txtViewAltitude,txtViewVoltage,txtViewLink, txtTemperature;
     private TextView txtViewOutput4,txtViewBatteryVoltage;
     private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;
 
@@ -33,37 +33,48 @@ public class AltimeterStatus extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 9:
-                    // Value 9 contain the output 1 status
+                    // Value 9 contains the output 1 status
                     txtViewOutput1Status.setText(outputStatus((String)msg.obj));
                     break;
                 case 10:
-                    // Value 10 contain the output 2 status
+                    // Value 10 contains the output 2 status
                     txtViewOutput2Status.setText(outputStatus((String)msg.obj));
                     break;
                 case 11:
-                    // Value 11 contain the output 3 status
+                    // Value 11 contains the output 3 status
                     txtViewOutput3Status.setText(outputStatus((String)msg.obj));
                     break;
                 case 12:
-                    //Value 12 contain the output 4 status
+                    //Value 12 contains the output 4 status
                     txtViewOutput4Status.setText(outputStatus((String)msg.obj));
                     break;
                 case 1:
-                    //Value 1 contain the current altitude
-                    txtViewAltitude.setText((String)msg.obj);
+                    String myUnits;
+                    //Value 1 contains the current altitude
+                    if (myBT.getAppConf().getUnits().equals("0"))
+                        //Meters
+                        myUnits=getResources().getString(R.string.Meters_fview);
+                    else
+                        //Feet
+                        myUnits = getResources().getString(R.string.Feet_fview);
+                    txtViewAltitude.setText((String)msg.obj+ " " +myUnits);
                     break;
                 case 13:
-                    //Value 13 contain the battery voltage
+                    //Value 13 contains the battery voltage
                     String voltage = (String)msg.obj;
                     if(voltage.matches("\\d+(?:\\.\\d+)?")) {
                         double batVolt;
 
                         batVolt =  (3.05*((Double.parseDouble(voltage) * 3300) / 4096)/1000);
-                        txtViewVoltage.setText(String.format("%.2f",batVolt));
+                        txtViewVoltage.setText(String.format("%.2f",batVolt)+ " Volts");
                     }
                     else {
                         txtViewVoltage.setText("NA");
                     }
+                    break;
+                case 14:
+                    //Value 14 contains the temperature
+                    txtTemperature.setText((String) msg.obj + "°C");
                     break;
 
             }
@@ -132,6 +143,7 @@ public class AltimeterStatus extends AppCompatActivity {
         txtViewLink=(TextView)findViewById(R.id.txtViewLink);
         txtViewOutput4=(TextView)findViewById(R.id.txtViewOutput4);
         txtViewBatteryVoltage=(TextView)findViewById(R.id.txtViewBatteryVoltage);
+        txtTemperature = (TextView)findViewById(R.id.txtViewTemperature);
 
         if(myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")) {
             txtViewVoltage.setVisibility(View.VISIBLE);
@@ -179,6 +191,23 @@ public class AltimeterStatus extends AppCompatActivity {
                 myBT.clearInput();
             }
         });
+        switchOutput1.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(switchOutput1.isChecked())
+                    myBT.write("k1T;\n".toString());
+                else
+                    myBT.write("k1F;\n".toString());
+
+                myBT.flush();
+                myBT.clearInput();
+                return false;
+            }
+        });
+       /* switchOutput1.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+        }
+        });*/
+
 
         switchOutput2.setOnClickListener(new View.OnClickListener()
         {

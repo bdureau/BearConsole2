@@ -16,6 +16,9 @@ import org.afree.data.xy.XYSeriesCollection;
 import org.afree.graphics.SolidColor;
 import org.afree.graphics.geom.Font;
 import android.graphics.Color;
+import android.view.View;
+import android.widget.Button;
+
 /**
  *   @description: This will display each flight
  *   @author: boris.dureau@neuf.fr
@@ -25,6 +28,7 @@ public class FlightViewActivity extends AppCompatActivity {
     String FlightName = null;
     ConsoleApplication myBT ;
     private FlightData myflight=null;
+    private Button buttonDismiss;
 
 
  @Override
@@ -37,7 +41,7 @@ public class FlightViewActivity extends AppCompatActivity {
      getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
      setContentView(R.layout.activity_flight_view);
-
+     buttonDismiss =  (Button) findViewById(R.id.butDismiss);
      Intent newint = getIntent();
      FlightName = newint.getStringExtra(FlightListActivity.SELECTED_FLIGHT);
 
@@ -141,6 +145,14 @@ public class FlightViewActivity extends AppCompatActivity {
      plot.setDataset(0, flightData);
      ChartView chartView = (ChartView) findViewById(R.id.chartView1);
      chartView.setChart(chart);
+     buttonDismiss.setOnClickListener(new View.OnClickListener()
+     {
+         @Override
+         public void onClick(View v)
+         {
+             finish();      //exit the activity
+         }
+     });
  }
 
 }

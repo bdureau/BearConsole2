@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class FlightListActivity extends AppCompatActivity {
     List<String> flightNames = null;
     private FlightData myflight = null;
     private ProgressDialog progress;
+    private Button buttonDismiss;
 
     private AdapterView.OnItemClickListener myListClickListener = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
@@ -54,8 +56,16 @@ public class FlightListActivity extends AppCompatActivity {
         getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
         setContentView(R.layout.activity_flight_list);
-
+        buttonDismiss =  (Button) findViewById(R.id.butDismiss);
         new RetrieveFlights().execute();
+        buttonDismiss.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                finish();      //exit the activity
+            }
+        });
     }
 
     private void getFlights() {
@@ -135,6 +145,8 @@ public class FlightListActivity extends AppCompatActivity {
             flightList.setOnItemClickListener(myListClickListener);
 
             progress.dismiss();
+            if (myflight.getNbrOfFlight()==0 )
+                msg("No flights have been recorded");
         }
     }
 

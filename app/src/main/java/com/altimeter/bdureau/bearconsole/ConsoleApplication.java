@@ -361,26 +361,22 @@ public class ConsoleApplication extends Application {
                                     mHandler.obtainMessage(7, String.valueOf(currentSentence.value7)).sendToTarget();
                                     // value 8 time
                                     mHandler.obtainMessage(8, String.valueOf(currentSentence.value8)).sendToTarget();
-                                    // Value 9 contain the output 1 status
+                                    // Value 9 contains the output 1 status
                                     mHandler.obtainMessage(9, String.valueOf(currentSentence.value9)).sendToTarget();
-                                    // Value 10 contain the output 2 status
+                                    // Value 10 contains the output 2 status
                                     mHandler.obtainMessage(10, String.valueOf(currentSentence.value10)).sendToTarget();
-                                    // Value 11 contain the output 3 status
+                                    // Value 11 contains the output 3 status
                                     mHandler.obtainMessage(11, String.valueOf(currentSentence.value11)).sendToTarget();
-                                    // Value 12 contain the output 4 status
+                                    // Value 12 contains the output 4 status
                                     mHandler.obtainMessage(12, String.valueOf(currentSentence.value12)).sendToTarget();
-                                    // Value 13 contain the battery voltage
+                                    // Value 13 contains the battery voltage
                                     mHandler.obtainMessage(13, String.valueOf(currentSentence.value13)).sendToTarget();
-                                    // Value 14 contain the battery voltage
-                                    //mHandler.obtainMessage(14, String.valueOf(currentSentence.value14)).sendToTarget();
+                                    // Value 14 contains the temperature
+                                    mHandler.obtainMessage(14, String.valueOf(currentSentence.value14)).sendToTarget();
 
                                 }
                                 break;
-                           //case "alti_status":
-                              //  if (mHandler != null) {
 
-                               // }
-                              //  break;
                             case "data":
                                 // Value 1 contain the flight number
                                 currentFlightNbr = (int) currentSentence.value1 + 1;

@@ -19,17 +19,18 @@ public class FlightData {
     {
         hm = new HashMap();
         // create one empty flight data collection
-        hm.put("Flight 01", createFlight("Flight 01"));
+        //hm.put("Flight 01", createFlight("Flight 01"));
     }
     //this might be a usefull function that I will write later
     public int getNbrOfFlight()
     {
-        return 1;
+        return hm.entrySet().size();
     }
 
     public String getFlightName(int FlightNumber)
     {
         String flightName = null;
+
         return flightName;
     }
 
@@ -65,6 +66,7 @@ public class FlightData {
         Set set = hm.entrySet();
         // Get an iterator
         Iterator i = set.iterator();
+
 
         // Display elements
         while(i.hasNext()) {

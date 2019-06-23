@@ -10,14 +10,15 @@
     tools:context=".AltimeterStatus">
 
 
-
     <TextView
+        android:id="@+id/txtViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/altimeter_status"
-        android:id="@+id/txtViewTitle"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/altimeter_status"
+        android:textSize="36sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -104,9 +105,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Temperature"
+        android:id="@+id/txtViewCurrentTemperature"
+        android:layout_below="@+id/txtViewCurrentAltitude"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewTemperature"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewCurrentAltitude"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/altimeter_status_battery_voltage"
         android:id="@+id/txtViewBatteryVoltage"
-        android:layout_below="@+id/txtViewCurrentAltitude"
+        android:layout_below="@+id/txtViewTemperature"
         android:layout_alignParentLeft="true"
         />
     <TextView
@@ -115,7 +131,7 @@
         android:id="@+id/txtViewVoltage"
         android:text="0"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/txtViewCurrentAltitude"/>
+        android:layout_below="@+id/txtViewTemperature"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -133,13 +149,15 @@
         android:layout_below="@+id/txtViewBatteryVoltage"/>
 
     <TextView
+        android:id="@+id/txtViewTitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fire Altimeter outputs \nMake sure that you do not have \n any real pyro charges!!!"
-        android:id="@+id/txtViewTitle2"
         android:layout_below="@+id/txtViewLink"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:text="Fire Altimeter outputs \nMake sure that you do not have \n any real pyro charges!!!"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="18sp" />
     <Switch
         android:id="@+id/switchOutput1"
         android:layout_width="wrap_content"
