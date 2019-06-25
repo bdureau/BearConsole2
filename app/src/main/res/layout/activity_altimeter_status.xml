@@ -155,7 +155,7 @@
         android:layout_below="@+id/txtViewLink"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="Fire Altimeter outputs \nMake sure that you do not have \n any real pyro charges!!!"
+        android:text="@string/status_msg1"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="18sp" />
     <Switch

@@ -27,6 +27,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Dismiss" />
+        android:text="@string/dismiss_flight_list_view" />
 
 </RelativeLayout>

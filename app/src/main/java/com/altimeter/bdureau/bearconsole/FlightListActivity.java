@@ -1,6 +1,8 @@
 package com.altimeter.bdureau.bearconsole;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ public class FlightListActivity extends AppCompatActivity {
     List<String> flightNames = null;
     private FlightData myflight = null;
     private ProgressDialog progress;
+
     private Button buttonDismiss;
 
     private AdapterView.OnItemClickListener myListClickListener = new AdapterView.OnItemClickListener() {
@@ -109,14 +112,31 @@ public class FlightListActivity extends AppCompatActivity {
 
     private class RetrieveFlights extends AsyncTask<Void, Void, Void>  // UI thread
     {
+        private  AlertDialog.Builder builder=null;
+        private AlertDialog alert;
         @Override
         protected void onPreExecute()
         {
             //"Retrieving flights..."
             //"Please wait!!!"
-            progress = ProgressDialog.show(FlightListActivity.this,
+           /* progress = ProgressDialog.show(FlightListActivity.this,
                     getResources().getString(R.string.msg7),
                     getResources().getString(R.string.msg8));  //show a progress dialog
+*/
+
+            builder = new AlertDialog.Builder(FlightListActivity.this);
+            //Retrieving flights...
+            builder.setMessage(getResources().getString(R.string.msg7))
+                    .setTitle(getResources().getString(R.string.msg8))
+                    .setCancelable(false)
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            dialog.cancel();
+                            myBT.setExit(true);
+                        }
+                    });
+            alert = builder.create();
+            alert.show();
         }
 
         @Override
@@ -144,7 +164,8 @@ public class FlightListActivity extends AppCompatActivity {
                 flightList.setAdapter(adapter);
             flightList.setOnItemClickListener(myListClickListener);
 
-            progress.dismiss();
+            //progress.dismiss();
+            alert.dismiss();
             if (myflight.getNbrOfFlight()==0 )
                 msg("No flights have been recorded");
         }

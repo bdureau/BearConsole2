@@ -79,6 +79,8 @@
     <!--Flight list screen -->
     <string name="title_activity_flight_list">Liste des Vols</string>
     <string name="Flight_list">Liste des vols</string>
+    <string name="dismiss_flight_list">Fermer</string>
+
 
     <!-- About screen -->
     <string name="about_screen">A propos</string>
@@ -103,6 +105,7 @@
     <string name="Altitude_time">Altitude / Temps</string>
     <string name="Time_fv">Temps (ms)</string>
     <string name="Altitude">Altitude</string>
+    <string name="dismiss_flight_list_view">Fermer</string>
     <!-- Application preference screen-->
     <string name="titre_application_pref">Préferences Application</string>
 
@@ -115,6 +118,7 @@
     <string name="graph_back_color_config">Couleur fond du Graph</string>
     <string name="default_config">Défaut</string>
     <string name="font_size">Taille police</string>
+    <string name="title_activity_settings">Préférences</string>
     <string name="baud_rate">Baud Rate</string>
     <string name="connection_type">Type de Connexion</string>
 
@@ -130,14 +134,21 @@
     <string name="landed">Atterie</string>
     <string name="max_speed">Vitesse max</string>
     <string name="current_altitude">Altitude courante</string>
-    <string name="altimeter_status">Altimeter status</string>
-    <string name="altimeter_status_disabled">Disabled</string>
-    <string name="altimeter_status_output_1">Output 1</string>
-    <string name="altimeter_status_output_3">Output 3</string>
-    <string name="altimeter_status_output_4">Output 4</string>
+    <string name="dis">deconnecter</string>
+
+    <!-- Status -->
+    <string name="title_activity_altimeter_status">Etat de l\'altimètre</string>
+    <string name="altimeter_status">Etat de l\'altimètre</string>
+    <string name="altimeter_status_disabled">Désactivé</string>
+    <string name="altimeter_status_output_1">Sortie 1</string>
+    <string name="altimeter_status_output_2">Sortie 2</string>
+    <string name="altimeter_status_output_3">Sortie 3</string>
+    <string name="altimeter_status_output_4">Sortie 4</string>
     <string name="altimeter_status_current_altitude">Current altitude</string>
-    <string name="altimeter_status_battery_voltage">Battery voltage</string>
-    <string name="altimeter_status_link_type">Link type</string>
+    <string name="altimeter_status_battery_voltage">Tension batterie</string>
+    <string name="altimeter_status_link_type">Type de connexion</string>
     <string name="altimeter_status_bluetooth">Bluetooth</string>
-    <string name="status">Status</string>
+    <string name="status">Statut</string>
+    <string name="status_msg1">Fire Altimeter outputs \nMake sure that you do not have \n any real pyro charges!!!</string>
+
 </resources>

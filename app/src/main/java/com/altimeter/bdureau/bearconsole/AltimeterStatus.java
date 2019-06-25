@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -191,9 +192,11 @@ public class AltimeterStatus extends AppCompatActivity {
                 myBT.clearInput();
             }
         });
-        switchOutput1.setOnLongClickListener(new View.OnLongClickListener() {
+
+
+        switchOutput1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(switchOutput1.isChecked())
                     myBT.write("k1T;\n".toString());
                 else
@@ -201,13 +204,9 @@ public class AltimeterStatus extends AppCompatActivity {
 
                 myBT.flush();
                 myBT.clearInput();
-                return false;
+
             }
         });
-       /* switchOutput1.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-        }
-        });*/
-
 
         switchOutput2.setOnClickListener(new View.OnClickListener()
         {
@@ -221,6 +220,19 @@ public class AltimeterStatus extends AppCompatActivity {
 
                 myBT.flush();
                 myBT.clearInput();
+            }
+        });
+        switchOutput2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(switchOutput2.isChecked())
+                    myBT.write("k2T;\n".toString());
+                else
+                    myBT.write("k2F;\n".toString());
+
+                myBT.flush();
+                myBT.clearInput();
+
             }
         });
         switchOutput3.setOnClickListener(new View.OnClickListener()
@@ -237,6 +249,19 @@ public class AltimeterStatus extends AppCompatActivity {
                 myBT.clearInput();
             }
         });
+        switchOutput3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(switchOutput3.isChecked())
+                    myBT.write("k3T;\n".toString());
+                else
+                    myBT.write("k3F;\n".toString());
+
+                myBT.flush();
+                myBT.clearInput();
+
+            }
+        });
         switchOutput4.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -249,6 +274,19 @@ public class AltimeterStatus extends AppCompatActivity {
 
                 myBT.flush();
                 myBT.clearInput();
+            }
+        });
+        switchOutput4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(switchOutput4.isChecked())
+                    myBT.write("k4T;\n".toString());
+                else
+                    myBT.write("k4F;\n".toString());
+
+                myBT.flush();
+                myBT.clearInput();
+
             }
         });
         myBT.setHandler(handler);

@@ -3,10 +3,12 @@ package com.altimeter.bdureau.bearconsole;
  *   @description: Main screen of the altimeter console
  *   @author: boris.dureau@neuf.fr
  **/
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
@@ -419,14 +421,31 @@ public class MainScreenActivity extends AppCompatActivity {
     /* This is the Bluetooth connection sub class */
     private class ConnectBT extends AsyncTask<Void, Void, Void>  // UI thread
     {
+        private  AlertDialog.Builder builder=null;
+        private AlertDialog alert;
         private boolean ConnectSuccess = true; //if it's here, it's almost connected
 
         @Override
         protected void onPreExecute() {
             //"Connecting...", "Please wait!!!"
-            progress = ProgressDialog.show(MainScreenActivity.this,
+          /*  progress = ProgressDialog.show(MainScreenActivity.this,
                     getResources().getString(R.string.MS_msg1),
                     getResources().getString(R.string.MS_msg2));  //show a progress dialog
+                    */
+            builder = new AlertDialog.Builder(MainScreenActivity.this);
+            //Connecting...
+            builder.setMessage(getResources().getString(R.string.MS_msg1))
+                    .setTitle(getResources().getString(R.string.MS_msg2))
+                    .setCancelable(false)
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            dialog.cancel();
+                            myBT.setExit(true);
+                            myBT.Disconnect();
+                        }
+                    });
+            alert = builder.create();
+            alert.show();
         }
 
         @Override
@@ -452,7 +471,7 @@ public class MainScreenActivity extends AppCompatActivity {
             super.onPostExecute(result);
             //msg(myBT.lastData);
             if (!ConnectSuccess) {
-               // msg(myBT.lastReadResult);
+               //msg(myBT.lastReadResult);
                 //msg(myBT.lastData);
                 //Connection Failed. Is it a SPP Bluetooth? Try again.
                 //msg(getResources().getString(R.string.MS_msg3));
@@ -465,7 +484,8 @@ public class MainScreenActivity extends AppCompatActivity {
                 EnableUI();
                 btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
             }
-            progress.dismiss();
+            //progress.dismiss();
+            alert.dismiss();
         }
     }
 }
