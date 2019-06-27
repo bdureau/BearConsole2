@@ -7,7 +7,7 @@
         android:id="@+id/textViewTtitleTab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Altimeter Outputs"
+        android:text="@string/altimeter_outputs"
         android:elegantTextHeight="true"
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"

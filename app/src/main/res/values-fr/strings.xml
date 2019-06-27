@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="version">1.0.6</string>
+    <string name="version"> pre 2.0.0</string>
 
     <!-- Application title -->
     <string name="app_name">Bear Console</string>
@@ -8,13 +8,11 @@
     <string name="help">Aide</string>
     <string name="about">A propos</string>
     <string name="action_settings">Configuration application</string>
+    <string name="bluetooth_device">Périphériques bluetooth</string>
 
     <!-- Screen altimeter config-->
+    <string name="altimeter_outputs">Sorties de l\'altimètre</string>
     <string name="altimeter_config">Config Altimètre</string>
-    <string name="beep_freq">Freq bips</string>
-    <string name="units">Unités</string>
-    <string name="alti_name">Nom Alti</string>
-    <string name="bip_mode">Mode Bip </string>
     <string name="main_altitude">Altitude du Main</string>
     <string name="output_1">Sortie 1</string>
     <string name="delay1">Retard 1</string>
@@ -24,17 +22,34 @@
     <string name="delay3">Retard 3</string>
     <string name="output_4">Sortie 4</string>
     <string name="delay4">Retard 4</string>
-    <string name="upload">Charger</string>
+    <string name="upload">Sauvegarder</string>
     <string name="dismiss_config">Fermer</string>
+    <!-- Config tab2 -->
+    <string name="altimeter_config_tab2">Altimeter Config</string>
     <string name="baudRate">Baud Rate</string>
-    <string name="apogeeMeasures">Mesures Apogée</string>
-    <string name="altimeterResolution">Res Alti</string>
+    <string name="apogeeMeasures">Nbr Mesures Apogée</string>
+    <string name="altimeterResolution">Resolution Alti</string>
     <string name="eepromSize">Capacité EEprom</string>
     <string name="beepOnOff">Bip Marche/Arret</string>
     <string name="RecordTemp">Enregistrer temp</string>
     <string name="SupersonicDelay">Mode Supersonic</string>
     <string name="EndRecordAltitude">Alt fin enr</string>
-
+    <!-- Config tab3 -->
+    <string name="altimeter_config_tab3">Configuration Altimètre</string>
+    <string name="alti_name">Nom Alti</string>
+    <string name="units">Unités</string>
+    <string name="bip_mode">Mode Bip </string>
+    <string name="beep_freq">Freq bips</string>
+    <!-- Config tab4 -->
+    <string name="servos_config">Configuration des Servos</string>
+    <string name="servo1_off_pos">Servo1 pos min</string>
+    <string name="servo1_on_pos">Servo1 pos max</string>
+    <string name="servo2_off_pos">Servo2 pos min</string>
+    <string name="servo2_on_pos">Servo2 pos max</string>
+    <string name="servo3_off_pos">Servo3 pos min</string>
+    <string name="servo3_on_pos">Servo3 pos max</string>
+    <string name="servo4_off_pos">Servo4 pos min</string>
+    <string name="servo4_on_pos">Servo4 pos max</string>
 
     <!-- Main Screen -->
     <string name="altimeter_settings">Configuration altimètre</string>
@@ -43,7 +58,7 @@
     <string name="reset_settings">Réinit config</string>
     <string name="disconnect">Déconnecter</string>
     <string name="connect">Connecter</string>
-    <string name="telemetry">Telemetrie</string>
+    <string name="telemetry">Télémetrie</string>
 
     <!-- Reset screen -->
     <string name="dismiss_reset">Fermer</string>
@@ -54,8 +69,8 @@
     <string name="No">Non</string>
 
     <!-- bluetooth Selection  -->
-    <string name="select_device_to_use">Selection périférique</string>
-    <string name="show_paired_devices">Montrer Périfériques</string>
+    <string name="select_device_to_use">Selection périphérique</string>
+    <string name="show_paired_devices">Montrer Périphériques</string>
 
 
 
@@ -68,7 +83,7 @@
     <string name="reset_msg2">Vous allez réinitialiser la configuration de votre altimètre, etes vous certain de vouloir le faire?</string>
 
     <!-- bluetooth messages -->
-    <string name="BT_msg1">Périférique Bluetooth non disponible</string>
+    <string name="BT_msg1">Périphérique Bluetooth non disponible</string>
     <string name="BT_msg2">Aucun périphérique bluetooth trouvé.</string>
 
     <!-- main screen msg-->
@@ -110,7 +125,7 @@
     <string name="titre_application_pref">Préferences Application</string>
 
     <!-- Config-->
-    <string name="save_config">Sauve</string>
+    <string name="save_config">Sauvegarder</string>
     <string name="dismiss_app_config">Fermer</string>
     <string name="application_langage_config">Langue de l\'Application</string>
     <string name="graph_color_config">Couleur graphique</string>
@@ -131,10 +146,10 @@
     <string name="lift_off">Décollage</string>
     <string name="apogee_drogue">Apogee/drogue</string>
     <string name="main_chute">Parachute Main</string>
-    <string name="landed">Atterie</string>
+    <string name="landed">Attérie</string>
     <string name="max_speed">Vitesse max</string>
     <string name="current_altitude">Altitude courante</string>
-    <string name="dis">deconnecter</string>
+    <string name="dis">Déconnecter</string>
 
     <!-- Status -->
     <string name="title_activity_altimeter_status">Etat de l\'altimètre</string>
@@ -144,11 +159,16 @@
     <string name="altimeter_status_output_2">Sortie 2</string>
     <string name="altimeter_status_output_3">Sortie 3</string>
     <string name="altimeter_status_output_4">Sortie 4</string>
-    <string name="altimeter_status_current_altitude">Current altitude</string>
+    <string name="altimeter_status_current_altitude">Altitude courante</string>
     <string name="altimeter_status_battery_voltage">Tension batterie</string>
     <string name="altimeter_status_link_type">Type de connexion</string>
     <string name="altimeter_status_bluetooth">Bluetooth</string>
-    <string name="status">Statut</string>
-    <string name="status_msg1">Fire Altimeter outputs \nMake sure that you do not have \n any real pyro charges!!!</string>
+    <string name="status">Etat</string>
+    <string name="status_msg1">Déclanche les sorties de l\'altimètre \nAssurez vous que vous n\'avez pas\n de charges pyrotechniques réelles!!!</string>
+    <string name="temperature">Temperature</string>
+    <string name="switch_output_1">Output 1</string>
+    <string name="switch_output_2">Output 2</string>
+    <string name="switch_output_3">Output 3</string>
+    <string name="switch_output_4">Output 4</string>
 
 </resources>

@@ -11,7 +11,7 @@
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"
         android:textSize="36sp"
-        android:text="Servos Config" />
+        android:text="@string/servos_config" />
     <TextView
         android:id="@+id/servo1OffPos"
         android:layout_width="wrap_content"
@@ -19,7 +19,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textViewTtitleTab4"
         android:layout_marginTop="18dp"
-        android:text="Servo1 off pos" />
+        android:text="@string/servo1_off_pos" />
 
     <EditText
         android:id="@+id/editTxtServo1OffPos"
@@ -41,7 +41,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/servo1OffPos"
         android:layout_marginTop="18dp"
-        android:text="Servo1 on pos" />
+        android:text="@string/servo1_on_pos" />
 
     <EditText
         android:id="@+id/editTxtServo1OnPos"
@@ -63,7 +63,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/servo1OnPos"
-        android:text="Servo2 off pos" />
+        android:text="@string/servo2_off_pos" />
 
     <EditText
         android:id="@+id/editTxtServo2OffPos"
@@ -85,7 +85,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/servo2OffPos"
         android:layout_marginTop="18dp"
-        android:text="Servo2 on pos" />
+        android:text="@string/servo2_on_pos" />
 
     <EditText
         android:id="@+id/editTxtServo2OnPos"
@@ -108,7 +108,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/servo2OnPos"
-        android:text="Servo3 off pos" />
+        android:text="@string/servo3_off_pos" />
 
     <EditText
         android:id="@+id/editTxtServo3OffPos"
@@ -130,7 +130,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/servo3OffPos"
         android:layout_marginTop="18dp"
-        android:text="Servo3 on pos" />
+        android:text="@string/servo3_on_pos" />
 
     <EditText
         android:id="@+id/editTxtServo3OnPos"
@@ -153,7 +153,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/servo3OnPos"
-        android:text="Servo4 off pos" />
+        android:text="@string/servo4_off_pos" />
 
     <EditText
         android:id="@+id/editTxtServo4OffPos"
@@ -175,7 +175,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/servo4OffPos"
         android:layout_marginTop="18dp"
-        android:text="Servo4 on pos" />
+        android:text="@string/servo4_on_pos" />
 
     <EditText
         android:id="@+id/editTxtServo4OnPos"

@@ -1,17 +1,15 @@
 <resources>
-    <string name="version">1.0.6</string>
+    <string name="version"> pre 2.0.0</string>
     <string name="app_name">Bear Console</string>
     <!-- Menu -->
     <string name="help">Help</string>
     <string name="about">About</string>
     <string name="action_settings">Application Settings</string>
+    <string name="bluetooth_device">bluetooth Device</string>
 
     <!-- Screen altimeter config-->
+    <string name="altimeter_outputs">Altimeter Outputs</string>
     <string name="altimeter_config">Altimeter Config</string>
-    <string name="beep_freq">Beep freq</string>
-    <string name="units">Units</string>
-    <string name="alti_name">Alti Name</string>
-    <string name="bip_mode">Beep mode</string>
     <string name="main_altitude">Main altitude</string>
     <string name="output_1">Output 1</string>
     <string name="delay1">Delay1</string>
@@ -23,6 +21,9 @@
     <string name="delay4">Delay4</string>
     <string name="upload">Upload</string>
     <string name="dismiss_config">Dismiss</string>
+
+    <!-- Config tab2 -->
+    <string name="altimeter_config_tab2">Altimeter Config</string>
     <string name="baudRate">Baud Rate</string>
     <string name="apogeeMeasures">Apogee Measures</string>
     <string name="altimeterResolution">Altimeter Res</string>
@@ -31,7 +32,22 @@
     <string name="RecordTemp">Record temp</string>
     <string name="SupersonicDelay">Supersonic delay</string>
     <string name="EndRecordAltitude">End of rec alt</string>
-
+    <!-- Config tab3 -->
+    <string name="altimeter_config_tab3">Altimeter Config</string>
+    <string name="alti_name">Alti Name</string>
+    <string name="units">Units</string>
+    <string name="bip_mode">Beep mode</string>
+    <string name="beep_freq">Beep freq</string>
+    <!-- Config tab4-->
+    <string name="servos_config">Servos Config</string>
+    <string name="servo1_off_pos">Servo1 off pos</string>
+    <string name="servo1_on_pos">Servo1 on pos</string>
+    <string name="servo2_off_pos">Servo2 off pos</string>
+    <string name="servo2_on_pos">Servo2 on pos</string>
+    <string name="servo3_off_pos">Servo3 off pos</string>
+    <string name="servo3_on_pos">Servo3 on pos</string>
+    <string name="servo4_off_pos">Servo4 off pos</string>
+    <string name="servo4_on_pos">Servo4 on pos</string>
     <!-- Main Screen -->
     <string name="altimeter_settings">Altimeter Settings</string>
     <string name="continuity_on_off">Continuity On/Off</string>
@@ -142,6 +158,10 @@
     <string name="altimeter_status_bluetooth">Bluetooth</string>
     <string name="status">Status</string>
     <string name="status_msg1">Fire Altimeter outputs \nMake sure that you do not have \n any real pyro charges!!!</string>
-
+    <string name="temperature">Temperature</string>
+    <string name="switch_output_1">Output 1</string>
+    <string name="switch_output_2">Output 2</string>
+    <string name="switch_output_3">Output 3</string>
+    <string name="switch_output_4">Output 4</string>
 
 </resources>

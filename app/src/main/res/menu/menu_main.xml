@@ -15,7 +15,7 @@
     <item
         android:id="@+id/action_bluetooth"
         android:orderInCategory="100"
-        android:title="bluetooth Device"
+        android:title="@string/bluetooth_device"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_about"

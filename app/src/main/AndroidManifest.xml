@@ -37,10 +37,6 @@
             android:label="Select Bluetooth device"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AltimeterConfigActivity"
-            android:label="@string/altimeter_config"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".AltimeterTabConfigActivity"
             android:label="@string/altimeter_config"
             android:screenOrientation="portrait"

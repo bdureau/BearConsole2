@@ -11,7 +11,7 @@
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"
         android:textSize="36sp"
-        android:text="Altimeter Config" />
+        android:text="@string/altimeter_config_tab2" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

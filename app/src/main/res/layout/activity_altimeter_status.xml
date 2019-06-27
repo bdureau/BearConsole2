@@ -105,7 +105,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Temperature"
+        android:text="@string/temperature"
         android:id="@+id/txtViewCurrentTemperature"
         android:layout_below="@+id/txtViewCurrentAltitude"
         android:layout_alignParentLeft="true"
@@ -167,7 +167,7 @@
         android:layout_below="@+id/txtViewTitle2"
         android:layout_marginEnd="61dp"
         android:layout_marginRight="61dp"
-        android:text="Output 1" />
+        android:text="@string/switch_output_1" />
     <Switch
         android:id="@+id/switchOutput2"
         android:layout_width="wrap_content"
@@ -177,7 +177,7 @@
         android:layout_below="@+id/switchOutput1"
         android:layout_marginEnd="61dp"
         android:layout_marginRight="61dp"
-        android:text="Output 2" />
+        android:text="@string/switch_output_2" />
 
     <Switch
         android:id="@+id/switchOutput3"
@@ -188,7 +188,7 @@
         android:layout_below="@+id/switchOutput2"
         android:layout_marginEnd="61dp"
         android:layout_marginRight="61dp"
-        android:text="Output 3" />
+        android:text="@string/switch_output_3" />
     <Switch
         android:id="@+id/switchOutput4"
         android:layout_width="wrap_content"
@@ -198,7 +198,7 @@
         android:layout_below="@+id/switchOutput3"
         android:layout_marginEnd="61dp"
         android:layout_marginRight="61dp"
-        android:text="Output 4" />
+        android:text="@string/switch_output_4" />
 
     <Button
         android:layout_width="wrap_content"
