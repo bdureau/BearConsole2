@@ -103,12 +103,30 @@ public class FlightData {
         if (!FlightExist(flightName))
         {
             //System.out.println("flight does not exist\n");
-            //if the flight name does not exist let'create uit first
+            //if the flight name does not exist let's create it first
             hm.put(flightName, createFlight(flightName));
         }
 
         flightData = GetFlightData(flightName);
         flightData.getSeries(0).add(X, Y);
+
+    }
+    public void AddToFlight (long X, long Y, String flightName, int serie)
+    {
+
+        //Find out if the flight exist
+        //If it exist append the data to the flight and if not create a new flight
+        XYSeriesCollection  flightData=null;
+        if (!FlightExist(flightName))
+        {
+            //System.out.println("flight does not exist\n");
+            //if the flight name does not exist let's create it first
+            hm.put(flightName, createFlight(flightName));
+        }
+
+        flightData = GetFlightData(flightName);
+        flightData.getSeries(serie).add(X, Y);
+
 
     }
     //not sure that I will be using that one
@@ -124,10 +142,11 @@ public class FlightData {
 
 
     private XYSeriesCollection  createFlight(final String name) {
-
-        final XYSeries series = new XYSeries(name) ;
-
-        return new XYSeriesCollection (series);
+        XYSeriesCollection ret;
+        final XYSeries series = new XYSeries(name+"_1") ;
+        ret = new XYSeriesCollection (series);
+        ret.addSeries(new XYSeries(name+"_2"));
+        return ret; // new XYSeriesCollection (series);
     }
 
 }

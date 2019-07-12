@@ -166,6 +166,7 @@ public class FlightListActivity extends AppCompatActivity {
 
             //progress.dismiss();
             alert.dismiss();
+            msg(String.valueOf(myflight.GetFlightData("Flight 01").getSeriesCount()));
             if (myflight.getNbrOfFlight()==0 )
                 msg("No flights have been recorded");
         }

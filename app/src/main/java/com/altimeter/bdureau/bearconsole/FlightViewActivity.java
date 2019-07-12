@@ -143,6 +143,7 @@ public class FlightViewActivity extends AppCompatActivity {
 
 
      plot.setDataset(0, flightData);
+     //flightData.getSeriesCount();
      ChartView chartView = (ChartView) findViewById(R.id.chartView1);
      chartView.setChart(chart);
      buttonDismiss.setOnClickListener(new View.OnClickListener()
