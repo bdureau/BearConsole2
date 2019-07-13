@@ -91,11 +91,16 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         configPage1 = new Tab1Fragment();
         configPage2 = new Tab2Fragment();
         configPage3 = new Tab3Fragment();
-        configPage4 = new Tab4Fragment();
+
         adapter.addFragment(configPage1, "TAB1");
         adapter.addFragment(configPage2, "TAB2");
         adapter.addFragment(configPage3, "TAB3");
-        adapter.addFragment(configPage4, "TAB4");
+
+        if(myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+            configPage4 = new Tab4Fragment();
+            adapter.addFragment(configPage4, "TAB4");
+        }
+
 
         viewPager.setAdapter(adapter);
     }
@@ -194,8 +199,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             AltiCfg.setUnits(configPage3.getDropdownUnits());
         }
 
+        if(AltiCfg.getAltimeterName().equals("AltiServo")){
         if(configPage4.isViewCreated()) {
-            if(AltiCfg.getAltimeterName().equals("AltiServo")){
+
                 AltiCfg.setServo1OnPos(configPage4.getServo1OnPos());
                 AltiCfg.setServo2OnPos(configPage4.getServo2OnPos());
                 AltiCfg.setServo3OnPos(configPage4.getServo3OnPos());

@@ -45,6 +45,7 @@ public class MainScreenActivity extends AppCompatActivity {
     public final String ACTION_USB_PERMISSION = "com.altimeter.bdureau.bearconsole.USB_PERMISSION";
 
     ConsoleApplication myBT;
+    private AltiConfigData AltiCfg = null;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -320,19 +321,28 @@ public class MainScreenActivity extends AppCompatActivity {
             long startTime = System.currentTimeMillis();
 
             myMessage =myBT.ReadResult(10000);
-
+            if (myMessage.equals("OK")) {
+                myBT.setDataReady(false);
+                myMessage =myBT.ReadResult(10000);
+                /*try {
+                    Thread.sleep(1000);                 //1000 milliseconds is one second.
+                } catch(InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }*/
+            }
             if (myMessage.equals( "start alticonfig end") )
             {
                 try {
-                    //AltiCfg= myBT.getAltiConfigData();
+                    AltiCfg= myBT.getAltiConfigData();
+                    //msg(AltiCfg.getAltimeterName());
                 }
                 catch (Exception e) {
-                    //  msg("pb ready data");
+                      msg("pb ready data");
                 }
             }
             else
             {
-                // msg("data not ready");
+                 msg("data not ready: "+ myMessage);
             }
         }
 
