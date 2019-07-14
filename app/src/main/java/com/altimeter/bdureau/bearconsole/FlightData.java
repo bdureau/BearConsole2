@@ -13,11 +13,12 @@ import org.afree.data.xy.XYSeriesCollection;
 
 public class FlightData {
     // Create a hash map
-    public static HashMap hm;
-
+    //public static HashMap hm;
+    public static HashMap<String,XYSeriesCollection > hm;// = new HashMap<String,XYSeriesCollection>();
     public FlightData ()
     {
-        hm = new HashMap();
+        //hm = new HashMap();
+        hm = new HashMap<String,XYSeriesCollection>();
         // create one empty flight data collection
         //hm.put("Flight 01", createFlight("Flight 01"));
     }
@@ -143,9 +144,9 @@ public class FlightData {
 
     private XYSeriesCollection  createFlight(final String name) {
         XYSeriesCollection ret;
-        final XYSeries series = new XYSeries(name+"_1") ;
+        final XYSeries series = new XYSeries("altitude") ;
         ret = new XYSeriesCollection (series);
-        ret.addSeries(new XYSeries(name+"_2"));
+        ret.addSeries(new XYSeries("temperature"));
         return ret; // new XYSeriesCollection (series);
     }
 

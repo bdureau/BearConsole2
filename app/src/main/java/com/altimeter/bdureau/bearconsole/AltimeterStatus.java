@@ -64,10 +64,11 @@ public class AltimeterStatus extends AppCompatActivity {
                     //Value 13 contains the battery voltage
                     String voltage = (String)msg.obj;
                     if(voltage.matches("\\d+(?:\\.\\d+)?")) {
-                        double batVolt;
+                        /*double batVolt;
 
                         batVolt =  (3.1972*((Double.parseDouble(voltage) * 3300) / 4096)/1000);
-                        txtViewVoltage.setText(String.format("%.2f",batVolt)+ " Volts");
+                        txtViewVoltage.setText(String.format("%.2f",batVolt)+ " Volts");*/
+                        txtViewVoltage.setText(voltage + " Volts");
                     }
                     else {
                         txtViewVoltage.setText("NA");
