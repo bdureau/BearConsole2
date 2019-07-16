@@ -57,7 +57,7 @@ public class FlightData {
         hm =null;
         hm = new HashMap();
         // create one empty flight data collection
-        hm.put("Flight 01", createFlight("Flight 01"));
+        //hm.put("Flight 01", createFlight("Flight 01"));
     }
 
     public XYSeriesCollection  GetFlightData(String flightName)
