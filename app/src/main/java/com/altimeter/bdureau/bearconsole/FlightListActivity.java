@@ -41,7 +41,8 @@ public class FlightListActivity extends AppCompatActivity {
             String currentFlight = ((TextView) v).getText().toString();
 
             // Make an intent to start next activity.
-            Intent i = new Intent(FlightListActivity.this, FlightViewActivity.class);
+            //Intent i = new Intent(FlightListActivity.this, FlightViewActivity.class);
+            Intent i = new Intent(FlightListActivity.this, FlightViewMpActivity.class);
 
             //Change the activity.
             i.putExtra(SELECTED_FLIGHT, currentFlight);

@@ -151,7 +151,8 @@ public class MainScreenActivity extends AppCompatActivity {
 
                     myBT.write("y1;\n".toString());
                 }
-                Intent i = new Intent(MainScreenActivity.this, Telemetry.class);
+                //Intent i = new Intent(MainScreenActivity.this, Telemetry.class);
+                Intent i = new Intent(MainScreenActivity.this, TelemetryMp.class);
                 startActivity(i);
             }
         });
