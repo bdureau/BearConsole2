@@ -39,10 +39,12 @@ public class FlightListActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
             // Get the flight name
             String currentFlight = ((TextView) v).getText().toString();
-
+            Intent i;
             // Make an intent to start next activity.
-            //Intent i = new Intent(FlightListActivity.this, FlightViewActivity.class);
-            Intent i = new Intent(FlightListActivity.this, FlightViewMpActivity.class);
+            if(myBT.getAppConf().getGraphicsLibType().equals("0"))
+                i = new Intent(FlightListActivity.this, FlightViewActivity.class);
+            else
+                i = new Intent(FlightListActivity.this, FlightViewMpActivity.class);
 
             //Change the activity.
             i.putExtra(SELECTED_FLIGHT, currentFlight);

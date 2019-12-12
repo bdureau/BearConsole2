@@ -129,6 +129,7 @@
     <string name="title_activity_settings">Settings</string>
     <string name="baud_rate">Baud Rate</string>
     <string name="connection_type">Connection Type</string>
+    <string name="graphiclib_type">Graphics lib </string>
 
     <!-- Telemetry -->
     <string name="stop_telemetry">Stop Telemetry</string>

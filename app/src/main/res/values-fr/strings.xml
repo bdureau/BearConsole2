@@ -136,6 +136,7 @@
     <string name="title_activity_settings">Préférences</string>
     <string name="baud_rate">Baud Rate</string>
     <string name="connection_type">Type de Connexion</string>
+    <string name="graphiclib_type">Lib graphique</string>
 
     <!-- Telemetry -->
     <string name="stop_telemetry">Arret Tel</string>

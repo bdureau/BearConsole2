@@ -16,7 +16,7 @@ import android.widget.Spinner;
 public class AppConfigActivity extends AppCompatActivity {
     Button btnDismiss, btnSave, bdtDefault;
     private Spinner spAppLanguage, spGraphColor, spAppUnit, spGraphBackColor, spFontSize, spBaudRate;
-    private Spinner spConnectionType;
+    private Spinner spConnectionType, spGraphicsLibType;
     private AppConfigData appConfigData;
 
 
@@ -109,6 +109,11 @@ public class AppConfigActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapterConnectionType = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsConnectionType());
         spConnectionType.setAdapter(adapterConnectionType);
+
+        //Graphics lib type
+        spGraphicsLibType = (Spinner)findViewById(R.id.spinnerGraphicLibType);
+        ArrayAdapter<String> adapterGraphicsLibType = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsGraphicsLib());
+        spGraphicsLibType.setAdapter(adapterGraphicsLibType);
         ReadConfig();
     }
 
@@ -121,6 +126,7 @@ public class AppConfigActivity extends AppCompatActivity {
         spFontSize.setSelection((Integer.parseInt(myBT.getAppConf().getFontSize())-8));
         spBaudRate.setSelection(Integer.parseInt(myBT.getAppConf().getBaudRate()));
         spConnectionType.setSelection(Integer.parseInt(myBT.getAppConf().getConnectionType()));
+        spGraphicsLibType.setSelection(Integer.parseInt(myBT.getAppConf().getGraphicsLibType()));
     }
 
     void SaveConfig() {
@@ -131,6 +137,7 @@ public class AppConfigActivity extends AppCompatActivity {
         myBT.getAppConf().setFontSize(""+(spFontSize.getSelectedItemId()+8)+"");
         myBT.getAppConf().setBaudRate(""+spBaudRate.getSelectedItemId()+"");
         myBT.getAppConf().setConnectionType(""+spConnectionType.getSelectedItemId()+"");
+        myBT.getAppConf().setGraphicsLibType(""+ spGraphicsLibType.getSelectedItemId()+"");
         myBT.getAppConf().SaveConfig();
         finish();
     }

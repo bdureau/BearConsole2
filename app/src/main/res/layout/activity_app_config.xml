@@ -152,4 +152,19 @@
         android:layout_alignTop="@+id/textConnectionType"
         android:layout_width="175dp"
         android:layout_alignParentRight="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/graphiclib_type"
+        android:id="@+id/textGraphicLibType"
+        android:layout_below="@+id/textConnectionType"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp" />
+    <Spinner
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerGraphicLibType"
+        android:layout_alignTop="@+id/textGraphicLibType"
+        android:layout_width="175dp"
+        android:layout_alignParentRight="true" />
 </RelativeLayout>

@@ -35,6 +35,8 @@ public class AppConfigData {
             "230400"};
     private String[] itemsConnectionType = new String[]{ "bluetooth",
             "usb"};
+    private String[] itemsGraphicsLib = new String[] {"AFreeChart",
+            "MPAndroidChart"};
 
     public AppConfigData()
     {
@@ -83,4 +85,6 @@ public class AppConfigData {
     public String getConnectionTypeByNbr (int connectionTypeNbr) {
         return itemsConnectionType[connectionTypeNbr];
     }
+    public String[] getItemsGraphicsLib() {return itemsGraphicsLib;}
+    public String getGraphicsLibTypeByNbr(int graphicsLibNbr) {return itemsGraphicsLib[graphicsLibNbr];}
 }

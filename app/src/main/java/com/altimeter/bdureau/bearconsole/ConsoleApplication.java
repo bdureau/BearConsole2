@@ -1022,6 +1022,7 @@ public class ConsoleApplication extends Application {
         private String connectionType = "0";
         // default baud rate for USB is 57600
         private String baudRate = "9";
+        private String graphicsLibType ="0";
 
         public GlobalConfig() {
             appConfig = getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
@@ -1039,6 +1040,7 @@ public class ConsoleApplication extends Application {
             units = "0";
             baudRate = "9";
             connectionType = "0";
+            graphicsLibType ="0";
             /*edit.clear();
             edit.putString("AppLanguage","0");
             edit.putString("Units", "0");
@@ -1091,6 +1093,11 @@ public class ConsoleApplication extends Application {
                 if (!connectionType.equals(""))
                     setConnectionType(connectionType);
 
+                //Graphics Lib Type
+                String graphicsLibType;
+                graphicsLibType = appConfig.getString("GraphicsLibType","");
+                if (!graphicsLibType.equals(""))
+                    setGraphicsLibType(graphicsLibType);
             } catch (Exception e) {
 
             }
@@ -1104,6 +1111,7 @@ public class ConsoleApplication extends Application {
             edit.putString("FontSize", getFontSize());
             edit.putString("BaudRate", getBaudRate());
             edit.putString("ConnectionType", getConnectionType());
+            edit.putString("GraphicsLibType", getGraphicsLibType());
             edit.commit();
 
         }
@@ -1166,6 +1174,16 @@ public class ConsoleApplication extends Application {
 
         public void setConnectionType(String value) {
             connectionType = value;
+        }
+
+        public String getGraphicsLibType() {
+            return graphicsLibType;
+        }
+        public String getGraphicsLibTypeValue() {
+            return appCfgData.getGraphicsLibTypeByNbr(Integer.parseInt(graphicsLibType));
+        }
+        public void setGraphicsLibType(String value) {
+            graphicsLibType = value;
         }
 
         public String getBaudRate() {
