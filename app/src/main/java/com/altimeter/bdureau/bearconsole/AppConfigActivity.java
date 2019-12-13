@@ -151,6 +151,7 @@ public class AppConfigActivity extends AppCompatActivity {
         spFontSize.setSelection(Integer.parseInt(myBT.getAppConf().getFontSize())-8);
         spBaudRate.setSelection(Integer.parseInt(myBT.getAppConf().getBaudRate()));
         spConnectionType.setSelection(Integer.parseInt(myBT.getAppConf().getConnectionType()));
+        spGraphicsLibType.setSelection(Integer.parseInt(myBT.getAppConf().getGraphicsLibType()));
     }
 
 }
