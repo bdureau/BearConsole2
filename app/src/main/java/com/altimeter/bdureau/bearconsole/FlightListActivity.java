@@ -20,14 +20,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
 /**
- *   @description: This retrieve the flight list
- *   @author: boris.dureau@neuf.fr
+ * @description: This retrieve the flight list
+ * @author: boris.dureau@neuf.fr
  **/
 public class FlightListActivity extends AppCompatActivity {
     public static String SELECTED_FLIGHT = "MyFlight";
 
-    ListView flightList=null;
+    ListView flightList = null;
     ConsoleApplication myBT;
     List<String> flightNames = null;
     private FlightData myflight = null;
@@ -41,7 +42,7 @@ public class FlightListActivity extends AppCompatActivity {
             String currentFlight = ((TextView) v).getText().toString();
             Intent i;
             // Make an intent to start next activity.
-            if(myBT.getAppConf().getGraphicsLibType().equals("0"))
+            if (myBT.getAppConf().getGraphicsLibType().equals("0"))
                 i = new Intent(FlightListActivity.this, FlightViewActivity.class);
             else
                 i = new Intent(FlightListActivity.this, FlightViewMpActivity.class);
@@ -62,13 +63,11 @@ public class FlightListActivity extends AppCompatActivity {
         getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
         setContentView(R.layout.activity_flight_list);
-        buttonDismiss =  (Button) findViewById(R.id.butDismiss);
+        buttonDismiss = (Button) findViewById(R.id.butDismiss);
         new RetrieveFlights().execute();
-        buttonDismiss.setOnClickListener(new View.OnClickListener()
-        {
+        buttonDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 finish();      //exit the activity
             }
         });
@@ -78,21 +77,21 @@ public class FlightListActivity extends AppCompatActivity {
 
         //get flights
         if (myBT.getConnected()) {
-                //clear anything on the connection
-                myBT.flush();
-                myBT.clearInput();
-                myBT.getFlightData().ClearFlight();
-                // Send command to retrieve the config
-                myBT.write("a;\n".toString());
-                myBT.flush();
+            //clear anything on the connection
+            myBT.flush();
+            myBT.clearInput();
+            myBT.getFlightData().ClearFlight();
+            // Send command to retrieve the config
+            myBT.write("a;\n".toString());
+            myBT.flush();
 
-        try {
-            //wait for data to arrive
-            while (myBT.getInputStream().available() <= 0) ;
-        } catch (IOException e) {
-           // msg("Failed to retrieve flights");
-        }
-       // if (myBT.getConnected()) {
+            try {
+                //wait for data to arrive
+                while (myBT.getInputStream().available() <= 0) ;
+            } catch (IOException e) {
+                // msg("Failed to retrieve flights");
+            }
+            // if (myBT.getConnected()) {
             String myMessage = "";
             myBT.setDataReady(false);
             myBT.initFlightData();
@@ -115,11 +114,12 @@ public class FlightListActivity extends AppCompatActivity {
 
     private class RetrieveFlights extends AsyncTask<Void, Void, Void>  // UI thread
     {
-        private  AlertDialog.Builder builder=null;
+        private AlertDialog.Builder builder = null;
         private AlertDialog alert;
+        private Boolean canceled = false;
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             //"Retrieving flights..."
             //"Please wait!!!"
            /* progress = ProgressDialog.show(FlightListActivity.this,
@@ -134,8 +134,9 @@ public class FlightListActivity extends AppCompatActivity {
                     .setCancelable(false)
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
-                            dialog.cancel();
                             myBT.setExit(true);
+                            canceled = true;
+                            dialog.cancel();
                         }
                     });
             alert = builder.create();
@@ -149,30 +150,35 @@ public class FlightListActivity extends AppCompatActivity {
             getFlights();
             return null;
         }
+
         @Override
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             super.onPostExecute(result);
+            if (!canceled) {
+                final ArrayAdapter adapter = new ArrayAdapter(FlightListActivity.this, android.R.layout.simple_list_item_1, flightNames);
+                adapter.sort(new Comparator<String>() {
+                    public int compare(String object1, String object2) {
+                        return object1.compareTo(object2);
+                    }
+                });
 
-            final ArrayAdapter adapter = new ArrayAdapter(FlightListActivity.this, android.R.layout.simple_list_item_1, flightNames);
-            adapter.sort(new Comparator<String>() {
-                public int compare(String object1, String object2) {
-                    return object1.compareTo(object2);
-                }
-            });
-
-            flightList = (ListView) findViewById(R.id.listViewFlightList);
+                flightList = (ListView) findViewById(R.id.listViewFlightList);
 
 
                 flightList.setAdapter(adapter);
-            flightList.setOnItemClickListener(myListClickListener);
-
+                flightList.setOnItemClickListener(myListClickListener);
+            }
             //progress.dismiss();
             alert.dismiss();
-            //msg(String.valueOf(myflight.GetFlightData("Flight 01").getSeriesCount()));
-            //if (myflight.getNbrOfFlight()==0 )
-            if (myflight == null)
+
+            if (canceled)
+                msg("Flight retrieval has been canceled by user");
+
+            if (myflight == null && !canceled)
                 msg("No flights have been recorded");
+
+
         }
     }
 

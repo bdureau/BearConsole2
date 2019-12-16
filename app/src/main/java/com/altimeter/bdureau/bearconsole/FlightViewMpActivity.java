@@ -65,7 +65,7 @@ public class FlightViewMpActivity extends AppCompatActivity {
             myUnits = getResources().getString(R.string.Feet_fview);
 
         //font
-       // Font font = new Font("Dialog", Typeface.NORMAL,fontSize);
+        //Font font = new Font("Dialog", Typeface.NORMAL,fontSize);
 
 
         mChart  = (LineChart) findViewById(R.id.linechart);
@@ -85,14 +85,16 @@ public class FlightViewMpActivity extends AppCompatActivity {
 
         //set1.setFillAlpha(110);
         set1.setDrawValues(false);
+        set1.setDrawCircles(false);
         set1.setLabel("Altitude");
+
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
 
         LineData data = new LineData(dataSets);
         mChart.setData(data);
         Description desc = new Description();
-        desc.setText("test");
+        desc.setText("Altitude/Time");
         mChart.setDescription(desc);
         buttonDismiss.setOnClickListener(new View.OnClickListener()
         {
