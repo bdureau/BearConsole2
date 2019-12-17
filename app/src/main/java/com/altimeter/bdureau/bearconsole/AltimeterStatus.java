@@ -342,13 +342,13 @@ public class AltimeterStatus extends AppCompatActivity {
         String res="";
         switch (msg) {
             case "0":
-                res ="No continuity";
+                res =getResources().getString(R.string.no_continuity);
                 break;
             case "1":
-                res ="Continuity";
+                res =getResources().getString(R.string.continuity);
                 break;
             case "-1":
-                res ="Disabled";
+                res =getResources().getString(R.string.disabled);
                 break;
         }
         return res;

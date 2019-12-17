@@ -164,5 +164,8 @@
     <string name="switch_output_2">Output 2</string>
     <string name="switch_output_3">Output 3</string>
     <string name="switch_output_4">Output 4</string>
+    <string name="no_continuity">No continuity</string>
+    <string name="continuity">Continuity</string>
+    <string name="disabled">Disabled</string>
 
 </resources>

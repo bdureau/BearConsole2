@@ -145,7 +145,7 @@
     <string name="altitude">Altitude</string>
     <string name="event_time">Heure Evenement</string>
     <string name="lift_off">Décollage</string>
-    <string name="apogee_drogue">Apogee/drogue</string>
+    <string name="apogee_drogue">Apogée/drogue</string>
     <string name="main_chute">Parachute Main</string>
     <string name="landed">Attérie</string>
     <string name="max_speed">Vitesse max</string>
@@ -166,10 +166,13 @@
     <string name="altimeter_status_bluetooth">Bluetooth</string>
     <string name="status">Etat</string>
     <string name="status_msg1">Déclanche les sorties de l\'altimètre \nAssurez vous que vous n\'avez pas\n de charges pyrotechniques réelles!!!</string>
-    <string name="temperature">Temperature</string>
-    <string name="switch_output_1">Output 1</string>
-    <string name="switch_output_2">Output 2</string>
-    <string name="switch_output_3">Output 3</string>
-    <string name="switch_output_4">Output 4</string>
+    <string name="temperature">Température</string>
+    <string name="switch_output_1">Sortie 1</string>
+    <string name="switch_output_2">Sortie 2</string>
+    <string name="switch_output_3">Sortie 3</string>
+    <string name="switch_output_4">Sortie 4</string>
+    <string name="no_continuity">Pas de continuité</string>
+    <string name="continuity">Continuité</string>
+    <string name="disabled">Désactivé</string>
 
 </resources>
