@@ -106,10 +106,15 @@ public class MainScreenActivity extends AppCompatActivity {
 
         btnReset = (Button) findViewById(R.id.butReset);
 
-        //btnTest = (Button) findViewById(R.id.buttonTest);
+        if (myBT.getConnected())
+        {
+            EnableUI();
+        }
+        else {
+            DisableUI();
+            btnConnectDisconnect.setText(R.string.connect);
+        }
 
-        DisableUI();
-        btnConnectDisconnect.setText(R.string.connect);
 
         //commands to be sent to bluetooth
         btnAltiSettings.setOnClickListener(new View.OnClickListener() {
@@ -123,16 +128,7 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         });
 
-       /* btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent i = new Intent(MainScreenActivity.this, AltimeterTabConfigActivity.class);
-
-                //Change the activity.
-                startActivity(i);
-            }
-        });*/
 
         btnReadFlights.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,13 +179,11 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.setConnectionType("usb");
 
                 if (myBT.getConnected()) {
-                   // msg("disconnecting");
                     Disconnect(); //close connection
                     DisableUI();
                     btnConnectDisconnect.setText(R.string.connect);
                 }
                 else {
-                   // msg(myBT.getConnectionType());
                     if (myBT.getConnectionType().equals( "bluetooth")) {
                         address = myBT.getAddress();
 
@@ -266,7 +260,6 @@ public class MainScreenActivity extends AppCompatActivity {
     private void EnableUI () {
         btnAltiSettings.setEnabled(true);
         readConfig();
-        //msg(myBT.getAltiConfigData().getAltimeterName());
         if(myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
             btnContinuityOnOff.setEnabled(false);
         }
@@ -285,6 +278,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
         btnReset.setEnabled(true);
         btnStatus.setEnabled(true);
+        btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
     }
     // fast way to call Toast
     private void msg(String s) {
