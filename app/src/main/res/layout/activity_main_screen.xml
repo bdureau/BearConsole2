@@ -33,13 +33,13 @@
         android:id="@+id/butTelemetry"
         android:layout_below="@+id/butReadFlight"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp" />
+        android:layout_marginTop="21dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/continuity_on_off"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="21dp"
         android:id="@+id/butContinuityOnOff"
         android:layout_below="@+id/butTelemetry"
         android:layout_centerHorizontal="true" />
@@ -49,27 +49,39 @@
         android:text="@string/reset_settings"
         android:id="@+id/butReset"
 
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="21dp"
         android:layout_below="@+id/butContinuityOnOff"
         android:layout_centerHorizontal="true" />
+    <Button
+        android:id="@+id/butStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/butReset"
+        android:layout_marginTop="21dp"
+        android:layout_centerHorizontal="true"
+
+        android:text="@string/status" />
+
+    <Button
+        android:id="@+id/butFlashFirmware"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/butStatus"
+        android:layout_marginTop="21dp"
+        android:layout_centerHorizontal="true"
+
+        android:text="Flash firmware" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/disconnect"
         android:id="@+id/butDisconnect"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="21dp"
 
-        android:layout_below="@+id/butReset"
+        android:layout_below="@+id/butFlashFirmware"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:id="@+id/butStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/butDisconnect"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-54dp"
-        android:text="@string/status" />
+
 
 
 </RelativeLayout>

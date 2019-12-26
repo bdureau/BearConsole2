@@ -112,6 +112,9 @@ public class ConsoleApplication extends Application {
         }
     }
 
+    public UsbConnection getUsbCon() {
+        return UsbCon;
+    }
     public boolean getConnected() {
         boolean ret = false;
         if (myTypeOfConnection.equals("bluetooth")) {
@@ -163,6 +166,18 @@ public class ConsoleApplication extends Application {
                 Disconnect();
                 state = false;
             }
+        }
+        return state;
+    }
+    public boolean connectFirmware(UsbManager usbManager, UsbDevice device, int baudRate) {
+        boolean state = false;
+        if (myTypeOfConnection.equals("usb")) {
+            state = UsbCon.connect(usbManager, device, baudRate);
+            setConnectionType("usb");
+            /*if (!isConnectionValid()) {
+                Disconnect();
+                state = false;
+            }*/
         }
         return state;
     }
