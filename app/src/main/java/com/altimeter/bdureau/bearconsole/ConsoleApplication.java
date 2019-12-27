@@ -1110,7 +1110,7 @@ public class ConsoleApplication extends Application {
 
                 //Graphics Lib Type
                 String graphicsLibType;
-                graphicsLibType = appConfig.getString("GraphicsLibType","");
+                graphicsLibType = appConfig.getString("GraphicsLibType","1");
                 if (!graphicsLibType.equals(""))
                     setGraphicsLibType(graphicsLibType);
             } catch (Exception e) {

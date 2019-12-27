@@ -41,7 +41,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services:12.0.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.android.support:multidex:1.0.3'
-    implementation files('libs\\usbserial.jar')
-    implementation files('libs\\physicaloid.aar')
+    implementation files('libs/usbserial.jar')
+    implementation files('libs/physicaloid.aar')
 
 }
