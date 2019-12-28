@@ -175,4 +175,14 @@
     <string name="continuity">Continuité</string>
     <string name="disabled">Désactivé</string>
 
+    <!-- flash firmware -->
+    <string name="msg10">Flash du firmware...</string>
+    <string name="msg11">Attendez SVP!!!</string>
+    <string name="msg12">Chargement: </string>
+    <string name="msg13">Impossible d\'ouvrir</string>
+    <string name="msg14">Chargement: Début\n </string>
+    <string name="msg15">Chargement: Echec\n</string>
+    <string name="msg16">Chargement: Succès\n</string>
+    <string name="msg17">Annulation du chargement\n</string>
+    <string name="msg18">Erreur: </string>
 </resources>

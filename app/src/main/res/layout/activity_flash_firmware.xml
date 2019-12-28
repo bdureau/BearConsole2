@@ -42,7 +42,24 @@
             android:text="AltiServo"
             tools:layout_editor_absoluteX="32dp"
             tools:layout_editor_absoluteY="74dp" />
+
+    <RadioButton
+        android:id="@+id/radioButAltiDuo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AltiDuo"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="74dp" />
     </RadioGroup>
+
+    <Spinner
+        android:id="@+id/spinnerBaud"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/question_radio_group"
+        android:layout_alignParentRight="true"
+        android:spinnerMode="dropdown" />
+
     <Button
         android:id="@+id/btFlash"
         android:layout_width="wrap_content"

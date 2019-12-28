@@ -168,4 +168,14 @@
     <string name="continuity">Continuity</string>
     <string name="disabled">Disabled</string>
 
+    <!-- flash firmware -->
+    <string name="msg10">Flashing firmware...</string>
+    <string name="msg11">Please wait!!!</string>
+    <string name="msg12">Upload: </string>
+    <string name="msg13">Cannot open</string>
+    <string name="msg14">Upload : Start \n</string>
+    <string name="msg15">Upload: Failed\n</string>
+    <string name="msg16">Upload: Successful\n</string>
+    <string name="msg17">Cancel uploading\n</string>
+    <string name="msg18">Error: </string>
 </resources>

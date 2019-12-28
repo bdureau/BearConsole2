@@ -26,7 +26,7 @@ public class AltimeterStatus extends AppCompatActivity {
 
     private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
     private TextView txtViewAltitude,txtViewVoltage,txtViewLink, txtTemperature;
-    private TextView txtViewOutput4,txtViewBatteryVoltage;
+    private TextView txtViewOutput4,txtViewBatteryVoltage, txtViewOutput3;
     private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;
 
     Handler handler = new Handler () {
@@ -143,6 +143,7 @@ public class AltimeterStatus extends AppCompatActivity {
         txtViewAltitude =(TextView)findViewById(R.id.txtViewAltitude);
         txtViewVoltage=(TextView)findViewById(R.id.txtViewVoltage);
         txtViewLink=(TextView)findViewById(R.id.txtViewLink);
+        txtViewOutput3=(TextView)findViewById(R.id.txtViewOutput3);
         txtViewOutput4=(TextView)findViewById(R.id.txtViewOutput4);
         txtViewBatteryVoltage=(TextView)findViewById(R.id.txtViewBatteryVoltage);
         txtTemperature = (TextView)findViewById(R.id.txtViewTemperature);
@@ -155,6 +156,15 @@ public class AltimeterStatus extends AppCompatActivity {
             txtViewVoltage.setVisibility(View.INVISIBLE);
             txtViewBatteryVoltage.setVisibility(View.INVISIBLE);
         }
+        if(!myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")){
+            txtViewOutput3Status.setVisibility(View.VISIBLE);
+            txtViewOutput3.setVisibility(View.VISIBLE);
+        }
+        else {
+            txtViewOutput3Status.setVisibility(View.INVISIBLE);
+            txtViewOutput3.setVisibility(View.INVISIBLE);
+        }
+
         if(myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")|| myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
             txtViewOutput4Status.setVisibility(View.VISIBLE);
             txtViewOutput4.setVisibility(View.VISIBLE);

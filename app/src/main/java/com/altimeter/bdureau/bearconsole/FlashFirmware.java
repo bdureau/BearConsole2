@@ -1,15 +1,22 @@
 package com.altimeter.bdureau.bearconsole;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Handler;
 
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,16 +38,20 @@ public class FlashFirmware extends AppCompatActivity {
 
     Boards mSelectedBoard;
     Button btOpen;
-    RadioButton rdbAltiMulti,rdbAltiMultiV2, rbAltiServo;
+    RadioButton rdbAltiMulti,rdbAltiMultiV2, rbAltiServo, rbAltiDuo;
     TextView tvRead;
-
+    private AlertDialog.Builder builder = null;
+    private AlertDialog alert;
     private ArrayList<Boards> mBoardList;
-
+    private UartConfig uartConfig;
 
     private static final String ASSET_FILE_NAME_ALTIMULTIV2       = "2019-12-26-V1_19_altimultiV2.ino.hex";
     private static final String ASSET_FILE_NAME_ALTIMULTI         = "2019-12-26-V1_19_altimulti.ino.hex";
     private static final String ASSET_FILE_NAME_ALTISERVO         = "2019-12-26-AltiServoV1_0.ino.hex";
+    private static final String ASSET_FILE_NAME_ALTIDUO         = "2019-12-27-AltiDuoV1_5_console.ino.hex";
 
+    private String[] itemsBaudRate;
+    private Spinner dropdownBaudRate;
 
     // fast way to call Toast
     private void msg(String s) {
@@ -59,6 +70,7 @@ public class FlashFirmware extends AppCompatActivity {
         rdbAltiMulti = (RadioButton) findViewById(R.id.radioButAltiMulti);
         rdbAltiMultiV2 = (RadioButton) findViewById(R.id.radioButAltiMultiV2);
         rbAltiServo = (RadioButton) findViewById(R.id.radioButAltiServo);
+        rbAltiDuo = (RadioButton) findViewById(R.id.radioButAltiDuo);
         rdbAltiMulti.setChecked(true);
         mPhysicaloid = new Physicaloid(this);
                 mBoardList = new ArrayList<Boards>();
@@ -69,23 +81,47 @@ public class FlashFirmware extends AppCompatActivity {
         }
 
         mSelectedBoard = mBoardList.get(0);
-        UartConfig uartConfig = new UartConfig(115200, UartConfig.DATA_BITS8, UartConfig.STOP_BITS1, UartConfig.PARITY_NONE, false, false);
+        uartConfig = new UartConfig(115200, UartConfig.DATA_BITS8, UartConfig.STOP_BITS1, UartConfig.PARITY_NONE, false, false);
+
         btOpen.setEnabled(true);
         if(mPhysicaloid.open()) {
             mPhysicaloid.setConfig(uartConfig);
 
         } else {
-            Toast.makeText(this, "Cannot open", Toast.LENGTH_LONG).show();
+            //cannot open
+            Toast.makeText(this, getResources().getString(R.string.msg13), Toast.LENGTH_LONG).show();
             //btOpen.setEnabled(false);
         }
+
+
+        //baud rate
+        dropdownBaudRate = (Spinner)findViewById(R.id.spinnerBaud);
+        itemsBaudRate = new String[]{ "300",
+                "1200",
+                "2400",
+                "4800",
+                "9600",
+                "14400",
+                "19200",
+                "28800",
+                "38400",
+                "57600",
+                "115200",
+                "230400"};
+        ArrayAdapter<String> adapterBaudRate = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, itemsBaudRate);
+        dropdownBaudRate.setAdapter(adapterBaudRate);
+        dropdownBaudRate.setSelection(10);
     }
 
-    @Override
+
+        @Override
     protected void onDestroy() {
         super.onDestroy();
         close();
     }
     public void onClickDismiss(View v) {
+        close();
         finish();
     }
     public void onClickFlash(View v) {
@@ -99,12 +135,28 @@ public class FlashFirmware extends AppCompatActivity {
             assetFileName = ASSET_FILE_NAME_ALTIMULTIV2;
         if (rbAltiServo.isChecked())
             assetFileName =ASSET_FILE_NAME_ALTISERVO;
+        if (rbAltiDuo.isChecked())
+            assetFileName =ASSET_FILE_NAME_ALTIDUO;
 
 
         //tvRead.clearComposingText();
         tvRead.setText("");
         try {
+            builder = new AlertDialog.Builder(FlashFirmware.this);
+            //Retrieving flights...
+            builder.setMessage(getResources().getString(R.string.msg10))
+                    .setTitle(getResources().getString(R.string.msg11))
+                    .setCancelable(false)
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
 
+                            dialog.cancel();
+                            mPhysicaloid.cancelUpload();
+                        }
+                    });
+            alert = builder.create();
+            alert.show();
+            mPhysicaloid.setBaudrate(Integer.parseInt(itemsBaudRate[(int)this.dropdownBaudRate.getSelectedItemId()]));
              mPhysicaloid.upload(mSelectedBoard,getResources().getAssets().open(assetFileName), mUploadCallback);
         } catch (RuntimeException e) {
             //Log.e(TAG, e.toString());
@@ -116,33 +168,44 @@ public class FlashFirmware extends AppCompatActivity {
 
     Physicaloid.UploadCallBack mUploadCallback = new Physicaloid.UploadCallBack() {
 
+
+
         @Override
         public void onUploading(int value) {
-            tvAppend(tvRead, "Upload : "+value+" %\n");
+            //tvAppend(tvRead, "Upload : "+value+" %\n");
+            dialogAppend(getResources().getString(R.string.msg12)+value+" %");
         }
 
         @Override
         public void onPreUpload() {
-            tvAppend(tvRead, "Upload : Start\n");
+            //Upload : Start
+            tvAppend(tvRead, getResources().getString(R.string.msg14));
+
         }
 
         @Override
         public void onPostUpload(boolean success) {
             if(success) {
-                tvAppend(tvRead, "Upload : Successful\n");
+                //Upload : Successful
+                tvAppend(tvRead, getResources().getString(R.string.msg16));
             } else {
-                tvAppend(tvRead, "Upload fail\n");
+                //Upload fail
+                tvAppend(tvRead, getResources().getString(R.string.msg15));
             }
+
+            alert.dismiss();
         }
 
         @Override
+        //Cancel uploading
         public void onCancel() {
-            tvAppend(tvRead, "Cancel uploading\n");
+            tvAppend(tvRead, getResources().getString(R.string.msg17));
         }
 
         @Override
+        //Error  :
         public void onError(UploadErrors err) {
-            tvAppend(tvRead, "Error  : "+err.toString()+"\n");
+            tvAppend(tvRead, getResources().getString(R.string.msg18)+err.toString()+"\n");
         }
     };
     Handler mHandler = new Handler();
@@ -153,9 +216,20 @@ public class FlashFirmware extends AppCompatActivity {
             @Override
             public void run() {
                 ftv.append(ftext);
+
             }
         });
     }
+    private void dialogAppend(CharSequence text) {
+        final CharSequence ftext = text;
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                alert.setMessage(ftext);
+            }
+        });
+    }
+
 
 
     private void close() {
