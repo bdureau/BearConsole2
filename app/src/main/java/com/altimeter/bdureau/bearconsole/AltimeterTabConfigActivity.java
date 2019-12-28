@@ -216,20 +216,36 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             nbrOfMain++;
         if (AltiCfg.getOutput2() == 0)
             nbrOfMain++;
-        if (AltiCfg.getOutput3() == 0)
-            nbrOfMain++;
-        if (AltiCfg.getOutput4() == 0)
-            nbrOfMain++;
 
+        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
+                AltiCfg.getAltimeterName().equals("AltiServo") ||
+                AltiCfg.getAltimeterName().equals("AltiMultiV2")||
+                AltiCfg.getAltimeterName().equals("AltiMulti")) {
+                if (AltiCfg.getOutput3() == 0)
+                    nbrOfMain++;
+            }
+        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
+                AltiCfg.getAltimeterName().equals("AltiServo")) {
+            if (AltiCfg.getOutput4() == 0)
+                nbrOfMain++;
+        }
 
         if (AltiCfg.getOutput1() == 1)
             nbrOfDrogue++;
         if (AltiCfg.getOutput2() == 1)
             nbrOfDrogue++;
-        if (AltiCfg.getOutput3() == 1)
-            nbrOfDrogue++;
-        if (AltiCfg.getOutput4() == 1)
-            nbrOfDrogue++;
+        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
+                AltiCfg.getAltimeterName().equals("AltiServo") ||
+                AltiCfg.getAltimeterName().equals("AltiMultiV2")||
+                AltiCfg.getAltimeterName().equals("AltiMulti")) {
+            if (AltiCfg.getOutput3() == 1)
+                nbrOfDrogue++;
+        }
+        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
+                AltiCfg.getAltimeterName().equals("AltiServo")) {
+            if (AltiCfg.getOutput4() == 1)
+                nbrOfDrogue++;
+        }
 
         if (nbrOfMain > 1)
         {
