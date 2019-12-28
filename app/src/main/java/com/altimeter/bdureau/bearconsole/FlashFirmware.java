@@ -5,13 +5,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Handler;
 
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
@@ -45,10 +42,10 @@ public class FlashFirmware extends AppCompatActivity {
     private ArrayList<Boards> mBoardList;
     private UartConfig uartConfig;
 
-    private static final String ASSET_FILE_NAME_ALTIMULTIV2       = "2019-12-26-V1_19_altimultiV2.ino.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTI         = "2019-12-26-V1_19_altimulti.ino.hex";
-    private static final String ASSET_FILE_NAME_ALTISERVO         = "2019-12-26-AltiServoV1_0.ino.hex";
-    private static final String ASSET_FILE_NAME_ALTIDUO         = "2019-12-27-AltiDuoV1_5_console.ino.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTIV2       = "firmwares/2019-12-28-V1_19_altimultiV2.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTI         = "firmwares/2019-12-28-V1_19_altimulti.ino.hex";
+    private static final String ASSET_FILE_NAME_ALTISERVO         = "firmwares/2019-12-28-AltiServoV1_0.ino.hex";
+    private static final String ASSET_FILE_NAME_ALTIDUO         = "firmwares/2019-12-28-AltiDuoV1_5_console.ino.hex";
 
     private String[] itemsBaudRate;
     private Spinner dropdownBaudRate;

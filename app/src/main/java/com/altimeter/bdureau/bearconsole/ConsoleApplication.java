@@ -13,6 +13,7 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedWriter;
@@ -196,14 +197,10 @@ public class ConsoleApplication extends Application {
         clearInput();
         //  send 2 commands to get read of the module connection string on some modules
         write("h;\n".toString());
-        //write("h;".toString());
 
-        //flush();
         flush();
         clearInput();
         write("h;\n".toString());
-
-        //appendLog("isConnectionValid: sent command\n");
 
         String myMessage = "";
         long timeOut = 10000;
@@ -221,7 +218,6 @@ public class ConsoleApplication extends Application {
 
         myMessage = ReadResult(3000);
 
-        //appendLog("isConnectionValid:"+myMessage);
         if (myMessage.equals("OK")) {
             lastReadResult = myMessage;
             valid = true;
