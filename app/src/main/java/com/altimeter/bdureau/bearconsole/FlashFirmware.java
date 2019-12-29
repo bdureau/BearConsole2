@@ -47,6 +47,10 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTISERVO         = "firmwares/2019-12-28-AltiServoV1_0.ino.hex";
     private static final String ASSET_FILE_NAME_ALTIDUO         = "firmwares/2019-12-28-AltiDuoV1_5_console.ino.hex";
 
+    private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
+    private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
+    private static final String ASSET_FILE_RESET_ALTISERVO = "recover_firmwares/ResetAltiConfigAltiServo.ino.hex";
+
     private String[] itemsBaudRate;
     private Spinner dropdownBaudRate;
 
@@ -121,30 +125,28 @@ public class FlashFirmware extends AppCompatActivity {
         close();
         finish();
     }
-    public void onClickFlash(View v) {
-        String assetFileName;
 
-        assetFileName = ASSET_FILE_NAME_ALTIMULTI;
-
+    public void onClickRecover(View v) {
+       String recoverFileName;
+        recoverFileName = ASSET_FILE_RESET_ALTIMULTI;
         if (rdbAltiMulti.isChecked())
-            assetFileName = ASSET_FILE_NAME_ALTIMULTI;
+            recoverFileName =ASSET_FILE_RESET_ALTIMULTI;
         if (rdbAltiMultiV2.isChecked())
-            assetFileName = ASSET_FILE_NAME_ALTIMULTIV2;
+            recoverFileName =ASSET_FILE_RESET_ALTIMULTI;
         if (rbAltiServo.isChecked())
-            assetFileName =ASSET_FILE_NAME_ALTISERVO;
+            recoverFileName =ASSET_FILE_RESET_ALTISERVO;
         if (rbAltiDuo.isChecked())
-            assetFileName =ASSET_FILE_NAME_ALTIDUO;
+            recoverFileName =ASSET_FILE_RESET_ALTIDUO;
 
-
-        //tvRead.clearComposingText();
         tvRead.setText("");
+        tvRead.setText("After the upload is complete you will be able to flash the real firmware");
         try {
             builder = new AlertDialog.Builder(FlashFirmware.this);
-            //Retrieving flights...
-            builder.setMessage(getResources().getString(R.string.msg10))
+            //Recover firmware...
+            builder.setMessage(getResources().getString(R.string.msg18))
                     .setTitle(getResources().getString(R.string.msg11))
                     .setCancelable(false)
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
 
                             dialog.cancel();
@@ -154,7 +156,46 @@ public class FlashFirmware extends AppCompatActivity {
             alert = builder.create();
             alert.show();
             mPhysicaloid.setBaudrate(Integer.parseInt(itemsBaudRate[(int)this.dropdownBaudRate.getSelectedItemId()]));
-             mPhysicaloid.upload(mSelectedBoard,getResources().getAssets().open(assetFileName), mUploadCallback);
+            mPhysicaloid.upload(mSelectedBoard,getResources().getAssets().open(recoverFileName), mUploadCallback);
+        } catch (RuntimeException e) {
+            //Log.e(TAG, e.toString());
+        } catch (IOException e) {
+            //Log.e(TAG, e.toString());
+        }
+    }
+
+    public void onClickFlash(View v) {
+        String firmwareFileName;
+
+        firmwareFileName = ASSET_FILE_NAME_ALTIMULTI;
+
+        if (rdbAltiMulti.isChecked())
+            firmwareFileName = ASSET_FILE_NAME_ALTIMULTI;
+        if (rdbAltiMultiV2.isChecked())
+            firmwareFileName = ASSET_FILE_NAME_ALTIMULTIV2;
+        if (rbAltiServo.isChecked())
+            firmwareFileName =ASSET_FILE_NAME_ALTISERVO;
+        if (rbAltiDuo.isChecked())
+            firmwareFileName =ASSET_FILE_NAME_ALTIDUO;
+
+        tvRead.setText("");
+        try {
+            builder = new AlertDialog.Builder(FlashFirmware.this);
+            //Flashing firmware...
+            builder.setMessage(getResources().getString(R.string.msg10))
+                    .setTitle(getResources().getString(R.string.msg11))
+                    .setCancelable(false)
+                    .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+
+                            dialog.cancel();
+                            mPhysicaloid.cancelUpload();
+                        }
+                    });
+            alert = builder.create();
+            alert.show();
+            mPhysicaloid.setBaudrate(Integer.parseInt(itemsBaudRate[(int)this.dropdownBaudRate.getSelectedItemId()]));
+             mPhysicaloid.upload(mSelectedBoard,getResources().getAssets().open(firmwareFileName), mUploadCallback);
         } catch (RuntimeException e) {
             //Log.e(TAG, e.toString());
         } catch (IOException e) {
@@ -169,7 +210,7 @@ public class FlashFirmware extends AppCompatActivity {
 
         @Override
         public void onUploading(int value) {
-            //tvAppend(tvRead, "Upload : "+value+" %\n");
+
             dialogAppend(getResources().getString(R.string.msg12)+value+" %");
         }
 
