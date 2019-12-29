@@ -139,7 +139,7 @@ public class FlashFirmware extends AppCompatActivity {
             recoverFileName =ASSET_FILE_RESET_ALTIDUO;
 
         tvRead.setText("");
-        tvRead.setText("After the upload is complete you will be able to flash the real firmware");
+        tvRead.setText(getResources().getString(R.string.after_complete_upload));
         try {
             builder = new AlertDialog.Builder(FlashFirmware.this);
             //Recover firmware...

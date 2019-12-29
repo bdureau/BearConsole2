@@ -132,7 +132,7 @@ public class FlightListActivity extends AppCompatActivity {
             builder.setMessage(getResources().getString(R.string.msg7))
                     .setTitle(getResources().getString(R.string.msg8))
                     .setCancelable(false)
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getString(R.string.flight_list_cancel), new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
                             myBT.setExit(true);
                             canceled = true;
@@ -173,13 +173,10 @@ public class FlightListActivity extends AppCompatActivity {
             alert.dismiss();
 
             if (canceled)
-                msg("Flight retrieval has been canceled by user");
+                msg(getResources().getString(R.string.flight_retrieval_canceled));
 
             if (myflight == null && !canceled)
-                msg("No flights have been recorded");
-
-
+                msg(getResources().getString(R.string.flight_have_been_recorded));
         }
     }
-
 }

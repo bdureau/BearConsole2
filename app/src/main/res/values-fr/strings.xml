@@ -186,9 +186,14 @@
     <string name="msg17">Annulation du chargement\n</string>
     <string name="msg18">Erreur: </string>
     <string name="msg19">Flash firmware de récupération...: </string>
-    <string name="firmware_cancel">Anuler</string>
+    <string name="firmware_cancel">Annuler</string>
     <string name="firmware_dismiss">Quitter</string>
     <string name="recover_firmware">Réparer Firmware</string>
     <string name="flash_firmware">Flash Firmware</string>
     <string name="select_altimeter_model">Choisissez l\'atimétre à flasher:</string>
+    <string name="after_complete_upload">Après que le chargement soit terminé vous pourrez flasher le firmware</string>
+    <string name="flight_list_cancel">Annuler</string>
+    <string name="flight_retrieval_canceled">Le chargement des vols a été annulé</string>
+    <string name="flight_have_been_recorded">Aucun vol n\'a été enregistré</string>
+    <string name="main_screen_actity">Annuler</string>
 </resources>

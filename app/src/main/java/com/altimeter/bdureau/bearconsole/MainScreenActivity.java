@@ -472,7 +472,7 @@ public class MainScreenActivity extends AppCompatActivity {
             builder.setMessage(getResources().getString(R.string.MS_msg1))
                     .setTitle(getResources().getString(R.string.MS_msg2))
                     .setCancelable(false)
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getString(R.string.main_screen_actity), new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
                             dialog.cancel();
                             myBT.setExit(true);

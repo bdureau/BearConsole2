@@ -184,4 +184,9 @@
     <string name="recover_firmware">Recover Firmware</string>
     <string name="flash_firmware">Flash Firmware</string>
     <string name="select_altimeter_model">Select your altimeter model:</string>
+    <string name="after_complete_upload">After the upload is complete you will be able to flash the real firmware</string>
+    <string name="flight_list_cancel">Cancel</string>
+    <string name="flight_retrieval_canceled">Flight retrieval has been canceled by user</string>
+    <string name="flight_have_been_recorded">No flights have been recorded</string>
+    <string name="main_screen_actity">Cancel</string>
 </resources>
