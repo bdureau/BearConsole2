@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole;
+package com.altimeter.bdureau.bearconsole.config;
 
 /**
  *   @description: This class define all the values for the application conf drop down

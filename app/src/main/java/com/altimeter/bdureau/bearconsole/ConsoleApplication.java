@@ -13,8 +13,12 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Environment;
 import android.os.Handler;
-import android.util.Log;
-import android.widget.Toast;
+
+import com.altimeter.bdureau.bearconsole.Flight.FlightData;
+import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
+import com.altimeter.bdureau.bearconsole.config.AppConfigData;
+import com.altimeter.bdureau.bearconsole.connection.BluetoothConnection;
+import com.altimeter.bdureau.bearconsole.connection.UsbConnection;
 
 import java.io.BufferedWriter;
 import java.io.File;

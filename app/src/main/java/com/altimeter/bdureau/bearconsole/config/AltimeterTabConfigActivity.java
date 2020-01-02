@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole;
+package com.altimeter.bdureau.bearconsole.config;
 /**
  *   @description: Retrieve altimeter configuration and show it in tabs
  *                  The user can then load it back to the altimeter
@@ -26,6 +26,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.R;
 
 import java.io.IOException;
 import java.util.ArrayList;

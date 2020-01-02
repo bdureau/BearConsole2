@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole;
+package com.altimeter.bdureau.bearconsole.connection;
 import android.app.Application;
 import android.app.PendingIntent;
 import android.app.Service;

@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole;
+package com.altimeter.bdureau.bearconsole.telemetry;
 /**
  *   @description:
  *   @author: boris.dureau@neuf.fr
@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import android.content.Intent;
 
 import android.graphics.Typeface;
@@ -34,26 +36,37 @@ import org.afree.graphics.geom.Font;
 
 import android.graphics.Color;
 
-public class Telemetry extends AppCompatActivity {
+import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.R;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
+public class TelemetryMp extends AppCompatActivity {
 
     private CheckBox cbLiftOff, cbApogee, cbMainChute, cbLanded;
     private TextView txtCurrentAltitude,txtMaxAltitude,  txtMainAltitude, txtLandedAltitude, txtLiftOffAltitude;
     private TextView txtLandedTime,txtMaxSpeedTime, txtMaxAltitudeTime, txtLiftOffTime, txtMainChuteTime;
     ConsoleApplication myBT ;
     Thread rocketTelemetry;
-    ChartView chartView;
-    private FlightData myflight=null;
-    XYPlot plot;
+
+    private LineChart mChart;
+
+    LineData data;
+    ArrayList<ILineDataSet> dataSets;
     //telemetry var
     private long LiftOffTime = 0;
     private int lastPlotTime =0;
     private double FEET_IN_METER = 1;
-
+    ArrayList<Entry> yValues ;
     int altitudeTime=0;
     int altitude =0;
 
     boolean telemetry = true;
-    //Button startTelemetryButton, stopTelemetryButton;
+
     Button dismissButton;
 
     Handler handler = new Handler () {
@@ -66,18 +79,26 @@ public class Telemetry extends AppCompatActivity {
                     if(((String)msg.obj).matches("\\d+(?:\\.\\d+)?"))
                     {
                         if (cbLiftOff.isChecked()&& !cbLanded.isChecked()) {
-
-                            //int altitudeTime = (int)(System.currentTimeMillis()-LiftOffTime);
                             int altitude = (int) (Integer.parseInt((String)msg.obj)* FEET_IN_METER);
-                            myflight.AddToFlight(altitudeTime,altitude,"Telemetry" );
+
+                            yValues.add(new Entry(altitudeTime, altitude));
 
                             //plot every seconde
                             if ((altitudeTime - lastPlotTime )>1000) {
                                 lastPlotTime = altitudeTime;
-                                XYSeriesCollection flightData;
-                                flightData = myflight.GetFlightData("Telemetry");
-                                plot.setDataset(0, flightData);
 
+                                LineDataSet set1 = new LineDataSet(yValues, "Altitude/Time");
+
+                                set1.setDrawValues(false);
+                                set1.setDrawCircles(false);
+                                set1.setLabel("Altitude");
+
+                                dataSets.clear();
+                                dataSets.add(set1);
+
+                                data = new LineData(dataSets);
+                                mChart.clear();
+                                mChart.setData(data);
                             }
                         }
                     }
@@ -167,10 +188,10 @@ public class Telemetry extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_telemetry);
+        setContentView(R.layout.activity_telemetry_mp);
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();
-        //textView = (TextView) findViewById(R.id.textView);
+
         cbLiftOff = (CheckBox)findViewById(R.id.checkBoxLiftoff);
         cbLiftOff.setEnabled(false);
         cbApogee = (CheckBox)findViewById(R.id.checkBoxApogee);
@@ -182,10 +203,9 @@ public class Telemetry extends AppCompatActivity {
 
         txtCurrentAltitude =(TextView)findViewById(R.id.textViewCurrentAltitude);
         txtMaxAltitude =(TextView)findViewById(R.id.textViewApogeeAltitude);
-        //txtFlightTime = (TextView)findViewById(R.id.text);
+
         txtLandedTime = (TextView) findViewById(R.id.textViewLandedTime);
-        //startTelemetryButton = (Button) findViewById(R.id.buttonStartTelemetry);
-        //stopTelemetryButton = (Button) findViewById(R.id.buttonStopTelemetry);
+
         dismissButton = (Button) findViewById(R.id.butDismiss);
         txtMaxSpeedTime = (TextView) findViewById(R.id.textViewMaxSpeedTime);
         txtMaxAltitudeTime = (TextView) findViewById(R.id.textViewApogeeTime);
@@ -195,8 +215,6 @@ public class Telemetry extends AppCompatActivity {
         txtLandedAltitude = (TextView) findViewById(R.id.textViewLandedAltitude);
         txtLiftOffAltitude = (TextView) findViewById(R.id.textViewLiftoffAltitude);
         myBT.setHandler(handler);
-        //stopTelemetryButton.setEnabled(false);
-
 
         // Read the application config
         myBT.getAppConf().ReadConfig();
@@ -229,63 +247,25 @@ public class Telemetry extends AppCompatActivity {
             FEET_IN_METER = 3.28084;
         }
         //font
-        Font font = new Font("Dialog", Typeface.NORMAL,fontSize);
 
-        AFreeChart chart = ChartFactory.createXYLineChart(
-                getResources().getString(R.string.Altitude_time),
-                getResources().getString(R.string.Time_fv),
-                getResources().getString(R.string.Altitude) + " (" + myUnits + ")",
-                null,
-                PlotOrientation.VERTICAL, // orientation
-                true,                     // include legend
-                true,                     // tooltips?
-                false                     // URLs?
-        );
+        yValues = new ArrayList <>();
+        yValues.add(new Entry(0,0));
+        //yValues.add(new Entry(1,0));
 
-        // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-        chart.getTitle().setFont(font);
-        // set the background color for the chart...
-        chart.setBackgroundPaintType(new SolidColor(graphBackColor));
+        LineDataSet set1 = new LineDataSet(yValues, "Altitude");
+        mChart  = (LineChart) findViewById(R.id.telemetryChartView);
 
-        // get a reference to the plot for further customisation...
-        plot = chart.getXYPlot();
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
+        mChart.setScaleMinima(0,0);
+        dataSets = new ArrayList<>();
+        dataSets.add(set1);
 
-        plot.setDomainGridlinesVisible(false);
-        plot.setRangeGridlinesVisible(false);
-
-        plot.setBackgroundPaintType(new SolidColor(graphBackColor));
-        plot.setOutlinePaintType(new SolidColor(Color.YELLOW));
-        plot.setDomainZeroBaselinePaintType(new SolidColor(Color.GREEN));
-        plot.setRangeZeroBaselinePaintType(new SolidColor(Color.MAGENTA));
-
-        final ValueAxis Xaxis = plot.getDomainAxis();
-        Xaxis.setAutoRange(true);
-        Xaxis.setAxisLinePaintType(new SolidColor(axisColor));
-
-        final ValueAxis YAxis = plot.getRangeAxis();
-        YAxis.setAxisLinePaintType(new SolidColor(axisColor));
-
-
-        Xaxis.setTickLabelFont(font);
-        Xaxis.setLabelFont(font);
-
-        YAxis.setTickLabelFont(font);
-        YAxis.setLabelFont(font);
-
-        //Xaxis label color
-        Xaxis.setLabelPaintType(new SolidColor(labelColor));
-
-        Xaxis.setTickMarkPaintType(new SolidColor(axisColor));
-        Xaxis.setTickLabelPaintType(new SolidColor(nbrColor));
-        //Y axis label color
-        YAxis.setLabelPaintType(new SolidColor(labelColor));
-        YAxis.setTickLabelPaintType(new SolidColor(nbrColor));
-        final NumberAxis rangeAxis2 = new NumberAxis("Range Axis 2");
-        rangeAxis2.setAutoRangeIncludesZero(false);
-
-
-        chartView = (ChartView) findViewById(R.id.telemetryChartView);
-        chartView.setChart(chart);
+        LineData data = new LineData(dataSets);
+        mChart.setData(data);
+        Description desc = new Description();
+        desc.setText("Telemetry");
+        mChart.setDescription(desc);
         startTelemetry();
         dismissButton.setOnClickListener(new View.OnClickListener()
         {
@@ -312,12 +292,10 @@ public class Telemetry extends AppCompatActivity {
 
     public void startTelemetry() {
         telemetry= true;
-        //startTelemetryButton.setEnabled(false);
-        //stopTelemetryButton.setEnabled(true);
+
         lastPlotTime=0;
         myBT.initFlightData();
 
-        myflight= myBT.getFlightData();
         LiftOffTime =0;
         Runnable r = new Runnable() {
 
@@ -342,7 +320,7 @@ public class Telemetry extends AppCompatActivity {
         lastPlotTime=0;
         myBT.initFlightData();
 
-        myflight= myBT.getFlightData();
+        //myflight= myBT.getFlightData();
         LiftOffTime =0;
         Runnable r = new Runnable() {
 
@@ -365,7 +343,7 @@ public class Telemetry extends AppCompatActivity {
 
        myBT.setExit(true);
 
-       myflight.ClearFlight();
+       //myflight.ClearFlight();
        telemetry =false;
        //stopTelemetryButton.setEnabled(false);
 

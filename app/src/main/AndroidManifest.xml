@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".FlashFirmware" />
-        <activity android:name=".FlightViewMpActivity" />
+        <activity android:name=".Flight.FlightViewMpActivity" />
         <activity
             android:name=".MainScreenActivity"
             android:label="@string/app_name"
@@ -39,35 +39,35 @@
             android:label="Select Bluetooth device"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AltimeterTabConfigActivity"
+            android:name=".config.AltimeterTabConfigActivity"
             android:label="@string/altimeter_config"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".FlightListActivity"
+            android:name=".Flight.FlightListActivity"
             android:label="@string/Flight_list"
             android:screenOrientation="portrait" />
-        <activity android:name=".FlightViewActivity" />
+        <activity android:name=".Flight.FlightViewActivity" />
         <activity
-            android:name=".AboutActivity"
+            android:name=".flash.AboutActivity"
             android:label="@string/about_screen"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AppConfigActivity"
+            android:name=".config.AppConfigActivity"
             android:label="@string/titre_application_pref"
             android:screenOrientation="portrait" />
-        <activity android:name=".HelpActivity" />
+        <activity android:name=".flash.HelpActivity" />
         <activity
             android:name=".ResetSettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Telemetry"
+            android:name=".telemetry.Telemetry"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TelemetryMp"
+            android:name=".telemetry.TelemetryMp"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AltimeterStatus"
+            android:name=".telemetry.AltimeterStatus"
             android:screenOrientation="portrait" />
         <!--
            ATTENTION: This was auto-generated to add Google Play services to your project for

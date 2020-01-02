@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole;
+package com.altimeter.bdureau.bearconsole.Flight;
 
 import android.content.Intent;
 
@@ -18,6 +18,9 @@ import org.afree.graphics.geom.Font;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
+
+import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.R;
 
 /**
  *   @description: This will display each flight

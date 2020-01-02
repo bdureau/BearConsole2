@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole;
+package com.altimeter.bdureau.bearconsole.Flight;
 
 /* ===========================================================
  * AFreeChart : a free chart library for Android(tm) platform.

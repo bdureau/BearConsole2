@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole;
+package com.altimeter.bdureau.bearconsole.telemetry;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //import org.afree.data.xy.XYSeriesCollection;
+
+import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.R;
 
 import java.io.IOException;
 
