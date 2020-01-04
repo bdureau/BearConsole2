@@ -31,8 +31,8 @@ public class FlightViewActivity extends AppCompatActivity {
     String FlightName = null;
     ConsoleApplication myBT ;
     private FlightData myflight=null;
-    private Button buttonDismiss;
-
+    private Button buttonDismiss, buttonMap;
+    public static String SELECTED_FLIGHT = "MyFlight";
 
  @Override
  protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,10 @@ public class FlightViewActivity extends AppCompatActivity {
 
      setContentView(R.layout.activity_flight_view);
      buttonDismiss =  (Button) findViewById(R.id.butDismiss);
+     buttonMap = (Button) findViewById(R.id.butMap);
+     if (myBT.getAltiConfigData().getAltimeterName()!= "AltiGPS")
+         buttonMap.setVisibility(View.INVISIBLE);
+
      Intent newint = getIntent();
      FlightName = newint.getStringExtra(FlightListActivity.SELECTED_FLIGHT);
 
@@ -156,6 +160,21 @@ public class FlightViewActivity extends AppCompatActivity {
          public void onClick(View v)
          {
              finish();      //exit the activity
+         }
+     });
+     //FlightViewMapsActivity
+     buttonMap.setOnClickListener(new View.OnClickListener()
+     {
+         @Override
+         public void onClick(View v)
+         {
+             Intent i;
+             // Make an intent to start next activity.
+             i = new Intent(FlightViewActivity.this, FlightViewMapsActivity.class);
+
+             //Change the activity.
+             i.putExtra(SELECTED_FLIGHT, FlightName);
+             startActivity(i);
          }
      });
  }

@@ -44,4 +44,10 @@ dependencies {
     implementation files('libs/usbserial.jar')
     implementation files('libs/physicaloid.aar')
 
+    implementation 'com.google.android.gms:play-services-maps:12.0.1'
+    //implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    //implementation 'com.android.support:appcompat-v7:28.0.0'
+    //implementation 'androidx.appcompat:appcompat:1.1.0'
+    //androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    //androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

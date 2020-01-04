@@ -120,6 +120,7 @@ public class ConsoleApplication extends Application {
     public UsbConnection getUsbCon() {
         return UsbCon;
     }
+
     public boolean getConnected() {
         boolean ret = false;
         if (myTypeOfConnection.equals("bluetooth")) {
@@ -174,6 +175,7 @@ public class ConsoleApplication extends Application {
         }
         return state;
     }
+
     public boolean connectFirmware(UsbManager usbManager, UsbDevice device, int baudRate) {
         boolean state = false;
         if (myTypeOfConnection.equals("usb")) {
@@ -460,21 +462,21 @@ public class ConsoleApplication extends Application {
                                 break;
 
                             case "data":
-                                String flightName="FlightXX";
+                                String flightName = "FlightXX";
                                 // Value 1 contain the flight number
                                 if (currentSentence.length > 1)
                                     if (currentSentence[1].matches("\\d+(?:\\.\\d+)?")) {
                                         //currentFlightNbr = (int) currentSentence.value1 + 1;
                                         currentFlightNbr = Integer.valueOf(currentSentence[1]) + 1;
                                         if (currentFlightNbr < 10)
-                                            flightName= "Flight " + "0" + currentFlightNbr;
+                                            flightName = "Flight " + "0" + currentFlightNbr;
                                         else
-                                            flightName= "Flight " + currentFlightNbr;
+                                            flightName = "Flight " + currentFlightNbr;
                                     }
                                 // Value 2 contain the time
                                 // Value 3 contain the altitude
                                 // To do
-                                int value2 = 0, value3 = 0, value4=0;
+                                int value2 = 0, value3 = 0, value4 = 0, value5 = 0, value6 = 0, value7 = 0;
                                 if (currentSentence.length > 2)
                                     if (currentSentence[2].matches("\\d+(?:\\.\\d+)?"))
                                         value2 = Integer.valueOf(currentSentence[2]);
@@ -485,22 +487,56 @@ public class ConsoleApplication extends Application {
                                         value3 = Integer.valueOf(currentSentence[3]);
                                     else
                                         value3 = 0;
-
-                                     MyFlight.AddToFlight(value2,
-                                                (long) (value3 * FEET_IN_METER), flightName,0);
+                                    //add the altitude
+                                    MyFlight.AddToFlight(value2,
+                                            (long) (value3 * FEET_IN_METER), flightName, 0);
 
                                 }
-                                if (currentSentence.length > 4){
+                                //temperature
+                                if (currentSentence.length > 4) {
                                     if (currentSentence[4].matches("\\d+(?:\\.\\d+)?"))
                                         value4 = Integer.valueOf(currentSentence[4]);
                                     else
                                         value4 = 0;
-
+                                    //add the temperature
                                     MyFlight.AddToFlight(value2,
-                                            (long) (value4 ), flightName, 1);
+                                            (long) (value4), flightName, 1);
                                 }
 
-                                break;
+                                //Alti GPS does a lot more !!!!
+                                //pressure
+                                if (currentSentence.length > 5) {
+                                    if (currentSentence[5].matches("\\d+(?:\\.\\d+)?"))
+                                        value5 = Integer.valueOf(currentSentence[5]);
+                                    else
+                                        value5 = 0;
+                                    //add the temperature
+                                    MyFlight.AddToFlight(value2,
+                                            (long) (value5), flightName, 2);
+                                }
+
+                                //Latitude
+                                if (currentSentence.length > 6) {
+                                    if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
+                                        value6 = Integer.valueOf(currentSentence[6]);
+                                    else
+                                        value6 = 0;
+                                    //add the latitude
+                                    MyFlight.AddToFlight(value2,
+                                        (long) (value6), flightName, 3);
+                                }
+
+                                //longitude
+                                if (currentSentence.length > 7) {
+                                    if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
+                                        value7 = Integer.valueOf(currentSentence[7]);
+                                    else
+                                        value7 = 0;
+                                    //add the longitude
+                                    MyFlight.AddToFlight(value2,
+                                        (long) (value7), flightName, 4);
+                                }
+                            break;
                             case "alticonfig":
 
                                 // Value 1 contain the units
@@ -711,10 +747,17 @@ public class ConsoleApplication extends Application {
                                 //DataReady = true;
                                 myMessage = myMessage + " " + "alticonfig";
                                 break;
-                            case "nbrOfFlight":
+                           /* case "nbrOfFlight":
                                 // Value 1 contains the number of flight
                                 if (currentSentence[1].matches("\\d+(?:\\.\\d+)?"))
                                     NbrOfFlight = Integer.valueOf(currentSentence[1]);
+                                break;*/
+                            case "nbrOfFlight":
+                                // Value 1 contains the number of flight
+                                if (currentSentence.length > 1)
+                                    if (currentSentence[1].matches("\\d+(?:\\.\\d+)?"))
+                                        NbrOfFlight = (Integer.valueOf(currentSentence[1]));
+                                myMessage = myMessage + " " + "nbrOfFlight";
                                 break;
                             case "start":
                                 //appendLog("Start");
@@ -1037,7 +1080,7 @@ public class ConsoleApplication extends Application {
         private String connectionType = "0";
         // default baud rate for USB is 57600
         private String baudRate = "9";
-        private String graphicsLibType ="0";
+        private String graphicsLibType = "0";
 
         public GlobalConfig() {
             appConfig = getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
@@ -1055,7 +1098,7 @@ public class ConsoleApplication extends Application {
             units = "0";
             baudRate = "9";
             connectionType = "0";
-            graphicsLibType ="0";
+            graphicsLibType = "0";
             /*edit.clear();
             edit.putString("AppLanguage","0");
             edit.putString("Units", "0");
@@ -1110,7 +1153,7 @@ public class ConsoleApplication extends Application {
 
                 //Graphics Lib Type
                 String graphicsLibType;
-                graphicsLibType = appConfig.getString("GraphicsLibType","1");
+                graphicsLibType = appConfig.getString("GraphicsLibType", "1");
                 if (!graphicsLibType.equals(""))
                     setGraphicsLibType(graphicsLibType);
             } catch (Exception e) {
@@ -1194,9 +1237,11 @@ public class ConsoleApplication extends Application {
         public String getGraphicsLibType() {
             return graphicsLibType;
         }
+
         public String getGraphicsLibTypeValue() {
             return appCfgData.getGraphicsLibTypeByNbr(Integer.parseInt(graphicsLibType));
         }
+
         public void setGraphicsLibType(String value) {
             graphicsLibType = value;
         }
