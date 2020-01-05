@@ -28,6 +28,7 @@ The following altimeters can be used with the BearConsole
 - [AltiDuo](https://github.com/bdureau/AltiDuo_console) (this has a special firmware)
 - [AltiServo](https://github.com/bdureau/AltiServo)
 - [Altimulti](https://github.com/bdureau/RocketFlightLogger)(all versions)
+- [AltiGPS](https://github.com/bdureau/AltiGPS)
 
 # Getting altimeter boards
 If you need an altimeter board you can can either build it yourself using Arduino compatible hardware or contact me to get a board
