@@ -223,11 +223,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
                 AltiCfg.getAltimeterName().equals("AltiServo") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiV2")||
+                AltiCfg.getAltimeterName().equals("AltiGPS")||
                 AltiCfg.getAltimeterName().equals("AltiMulti")) {
                 if (AltiCfg.getOutput3() == 0)
                     nbrOfMain++;
             }
         if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
+                AltiCfg.getAltimeterName().equals("AltiGPS")||
                 AltiCfg.getAltimeterName().equals("AltiServo")) {
             if (AltiCfg.getOutput4() == 0)
                 nbrOfMain++;
@@ -240,11 +242,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
                 AltiCfg.getAltimeterName().equals("AltiServo") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiV2")||
+                AltiCfg.getAltimeterName().equals("AltiGPS")||
                 AltiCfg.getAltimeterName().equals("AltiMulti")) {
             if (AltiCfg.getOutput3() == 1)
                 nbrOfDrogue++;
         }
         if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
+                AltiCfg.getAltimeterName().equals("AltiGPS")||
                 AltiCfg.getAltimeterName().equals("AltiServo")) {
             if (AltiCfg.getOutput4() == 1)
                 nbrOfDrogue++;
@@ -325,7 +329,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 AltiCfg.getAltimeterResolution()+ ","+
                 AltiCfg.getEepromSize()+"," +
                 AltiCfg.getBeepOnOff();
-        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo")) {
+        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")|| AltiCfg.getAltimeterName().equals("AltiServo")) {
             altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4Delay();
         }
@@ -414,13 +418,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             this.dropdownOut3.setSelection(Out3);
         }
         public int getDropdownOut4() {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo"))
+            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo"))
                 return (int)this.dropdownOut4.getSelectedItemId();
             else
                 return -1;
         }
         public void setDropdownOut4(int Out4) {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo"))  {
+            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo"))  {
                 this.dropdownOut4.setSelection(Out4);
                 this.dropdownOut4.setVisibility(View.VISIBLE);
                 txtOut4.setVisibility(View.VISIBLE);
@@ -465,7 +469,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             return ret;
         }
         public void setOutDelay4(int OutDelay4) {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo"))  {
+            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo"))  {
                 this.OutDelay4.setText(String.valueOf(OutDelay4));
                 this.OutDelay4.setVisibility(View.VISIBLE);
                 txtViewDelay4.setVisibility(View.VISIBLE);
@@ -477,7 +481,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
         }
         public int getOutDelay4() {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo")) {
+            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo")) {
                 int ret;
                 try {
                     ret = Integer.parseInt(OutDelay4.getText().toString());
@@ -558,7 +562,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     dropdownOut3.setVisibility(View.INVISIBLE);
                     txtOut3.setVisibility(View.INVISIBLE);
                 }
-                if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo"))  {
+                if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo"))  {
                     dropdownOut4.setSelection(AltiCfg.getOutput4());
                     dropdownOut4.setVisibility(View.VISIBLE);
                     txtOut4.setVisibility(View.VISIBLE);
@@ -576,7 +580,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     OutDelay3.setVisibility(View.INVISIBLE);
                     txtViewDelay3.setVisibility(View.INVISIBLE);
                 }
-                if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiServo")) {
+                if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo")) {
                     OutDelay4.setText(String.valueOf(AltiCfg.getOutput4Delay()));
                     OutDelay4.setVisibility(View.VISIBLE);
                     txtViewDelay4.setVisibility(View.VISIBLE);

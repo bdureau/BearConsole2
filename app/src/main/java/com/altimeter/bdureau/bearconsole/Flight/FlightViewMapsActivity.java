@@ -89,24 +89,25 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
         for (int i=0; i< flightData.getSeries(3).getItemCount(); i++)   {
 
             double res = (double)flightData.getSeries(3).getY(i);
-            Log.d(TAG, "Res: " +res);
+            //Log.d(TAG, "Res: " +res);
             if(res >0.0d) {
 
-                LatLng c = new LatLng((double) flightData.getSeries(3).getY(i) / 1000, (double) flightData.getSeries(4).getY(i) / 1000);
+                LatLng c = new LatLng((double) flightData.getSeries(3).getY(i) / 100000, (double) flightData.getSeries(4).getY(i) / 100000);
                 //polyline1.add(coor );
                 coord.add(j, c);
                 j++;
-                Log.d(TAG, "Latitude:" + (flightData.getSeries(3).getY(i)));
-                Log.d(TAG, "Longitude:" + (flightData.getSeries(4).getY(i)));
-                Log.d(TAG, "Latitude:" + (double) (flightData.getSeries(3).getY(i)) / (double) 1000);
-                Log.d(TAG, "Longitude:" + (double) (flightData.getSeries(4).getY(i)) / (double) 1000);
+                //Log.d(TAG, "Latitude:" + (flightData.getSeries(3).getY(i)));
+                //Log.d(TAG, "Longitude:" + (flightData.getSeries(4).getY(i)));
+                //Log.d(TAG, "Latitude:" + (double) (flightData.getSeries(3).getY(i)) / (double) 1000);
+                //Log.d(TAG, "Longitude:" + (double) (flightData.getSeries(4).getY(i)) / (double) 1000);
            }
         }
+
+        //Log.d(TAG, "J:"+j);
         polyline1.setPoints(coord);
-        // Position the map's camera near Alice Springs in the center of Australia,
-        // and set the zoom factor so most of Australia shows on the screen.
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng((double)flightData.getSeries(3).getMaxY()/(double)1000,(double)flightData.getSeries(4).getMaxY()/(double)1000), 20));
 
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng((double)flightData.getSeries(3).getMaxY()/(double)100000,(double)flightData.getSeries(4).getMaxY()/(double)100000), 20));
 
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord.get((int)(j/2)),15));
     }
 }

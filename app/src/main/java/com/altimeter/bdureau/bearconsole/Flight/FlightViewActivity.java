@@ -16,6 +16,7 @@ import org.afree.data.xy.XYSeriesCollection;
 import org.afree.graphics.SolidColor;
 import org.afree.graphics.geom.Font;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -46,9 +47,11 @@ public class FlightViewActivity extends AppCompatActivity {
      setContentView(R.layout.activity_flight_view);
      buttonDismiss =  (Button) findViewById(R.id.butDismiss);
      buttonMap = (Button) findViewById(R.id.butMap);
-     if (myBT.getAltiConfigData().getAltimeterName()!= "AltiGPS")
+     Log.d("FVIEW", "Altiname: "+ myBT.getAltiConfigData().getAltimeterName());
+     if (myBT.getAltiConfigData().getAltimeterName().equals( "AltiGPS"))
+         buttonMap.setVisibility(View.VISIBLE);
+     else
          buttonMap.setVisibility(View.INVISIBLE);
-
      Intent newint = getIntent();
      FlightName = newint.getStringExtra(FlightListActivity.SELECTED_FLIGHT);
 
