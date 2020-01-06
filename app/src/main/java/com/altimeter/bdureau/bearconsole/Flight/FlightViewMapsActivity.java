@@ -1,12 +1,13 @@
 package com.altimeter.bdureau.bearconsole.Flight;
 
+/**
+ *   @description: This class display the latitude and longitude on a google map
+ *   @author: boris.dureau@neuf.fr
+ **/
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-//import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
-
-
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlightViewMapsActivity extends FragmentActivity implements OnMapReadyCallback {
-//public class FlightViewMapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+
     private GoogleMap mMap;
     String FlightName = null;
     ConsoleApplication myBT ;
@@ -55,8 +56,7 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -66,44 +66,28 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
         mMap = googleMap;
         XYSeriesCollection flightData;
         flightData = myflight.GetFlightData(FlightName);
-        //flightData.getSeries()
-        // Add a marker in Sydney and move the camera
-       /* LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-23.684, 133.903), 4));
-*/
+
         Log.d(TAG, "nbr of item:" +flightData.getSeries(3).getItemCount());
         Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
                 .clickable(false));
-                /*.add(
-                        new LatLng(-35.016, 143.321),
-                        new LatLng(-34.747, 145.592),
-                        new LatLng(-34.364, 147.891),
-                        new LatLng(-33.501, 150.217),
-                        new LatLng(-32.306, 149.248),
-                        new LatLng(-32.491, 147.309)));*/
+
         List<LatLng> coord;
         coord =  new ArrayList();
         int j=0;
         for (int i=0; i< flightData.getSeries(3).getItemCount(); i++)   {
 
             double res = (double)flightData.getSeries(3).getY(i);
-            //Log.d(TAG, "Res: " +res);
+
             if(res >0.0d) {
 
                 LatLng c = new LatLng((double) flightData.getSeries(3).getY(i) / 100000, (double) flightData.getSeries(4).getY(i) / 100000);
-                //polyline1.add(coor );
+
                 coord.add(j, c);
                 j++;
-                //Log.d(TAG, "Latitude:" + (flightData.getSeries(3).getY(i)));
-                //Log.d(TAG, "Longitude:" + (flightData.getSeries(4).getY(i)));
-                //Log.d(TAG, "Latitude:" + (double) (flightData.getSeries(3).getY(i)) / (double) 1000);
-                //Log.d(TAG, "Longitude:" + (double) (flightData.getSeries(4).getY(i)) / (double) 1000);
+
            }
         }
 
-        //Log.d(TAG, "J:"+j);
         polyline1.setPoints(coord);
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng((double)flightData.getSeries(3).getMaxY()/(double)100000,(double)flightData.getSeries(4).getMaxY()/(double)100000), 20));

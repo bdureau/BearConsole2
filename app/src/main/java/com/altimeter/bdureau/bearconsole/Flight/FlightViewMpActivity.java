@@ -1,12 +1,14 @@
 package com.altimeter.bdureau.bearconsole.Flight;
-
+/**
+ *   @description: This will display each flight using a the MPchart graphics library
+ *   @author: boris.dureau@neuf.fr
+ **/
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.Flight.FlightListActivity;
@@ -42,9 +44,10 @@ public class FlightViewMpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_flight_view_mp);
         buttonDismiss =  (Button) findViewById(R.id.butDismiss);
         buttonMap = (Button) findViewById(R.id.butMap);
-        if (myBT.getAltiConfigData().getAltimeterName()!= "AltiGPS")
+        if (myBT.getAltiConfigData().getAltimeterName().equals( "AltiGPS"))
+            buttonMap.setVisibility(View.VISIBLE);
+        else
             buttonMap.setVisibility(View.INVISIBLE);
-
         Intent newint = getIntent();
         FlightName = newint.getStringExtra(FlightListActivity.SELECTED_FLIGHT);
         myflight= myBT.getFlightData();
