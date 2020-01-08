@@ -69,14 +69,14 @@
             android:screenOrientation="portrait" />
         <activity android:name=".Flight.FlightViewActivity" />
         <activity
-            android:name=".flash.AboutActivity"
+            android:name=".Help.AboutActivity"
             android:label="@string/about_screen"
             android:screenOrientation="portrait" />
         <activity
             android:name=".config.AppConfigActivity"
             android:label="@string/titre_application_pref"
             android:screenOrientation="portrait" />
-        <activity android:name=".flash.HelpActivity" />
+        <activity android:name=".Help.HelpActivity" />
         <activity
             android:name=".ResetSettingsActivity"
             android:screenOrientation="portrait" />

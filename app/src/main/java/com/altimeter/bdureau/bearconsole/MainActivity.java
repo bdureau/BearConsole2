@@ -21,8 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.config.AppConfigActivity;
-import com.altimeter.bdureau.bearconsole.flash.AboutActivity;
-import com.altimeter.bdureau.bearconsole.flash.HelpActivity;
+import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
+import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 
 import java.util.ArrayList;
 import java.util.Set;

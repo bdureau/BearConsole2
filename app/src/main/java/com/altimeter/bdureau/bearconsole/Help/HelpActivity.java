@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole.flash;
+package com.altimeter.bdureau.bearconsole.Help;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
