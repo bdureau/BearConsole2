@@ -32,22 +32,17 @@ android {
 }
 
 dependencies {
-    //implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:support-v13:28.0.0'
-    implementation 'junit:junit:4.12'
+    implementation 'junit:junit:4.13'
     implementation files('libs/afreechart-0.0.4.jar')
-    implementation 'com.google.android.gms:play-services:12.0.1'
+    implementation 'com.google.firebase:firebase-appindexing:19.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation 'com.android.support:multidex:1.0.3'
     implementation files('libs/usbserial.jar')
     implementation files('libs/physicaloid.aar')
-
-    implementation 'com.google.android.gms:play-services-maps:12.0.1'
-    //implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    //implementation 'com.android.support:appcompat-v7:28.0.0'
-    //implementation 'androidx.appcompat:appcompat:1.1.0'
-    //androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    //androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
 }

@@ -6,19 +6,20 @@ package com.altimeter.bdureau.bearconsole.config;
  **/
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+//import com.google.android.material.tabs.TabLayout;
 
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,7 +38,7 @@ import java.util.List;
 
 public class AltimeterTabConfigActivity extends AppCompatActivity {
     private static final String TAG ="AltimeterTabConfigActivity";
-    ///private SectionsPageAdapter mSectionsPageAdapter;
+
     private ViewPager mViewPager;
     SectionsPageAdapter adapter;
     Tab1Fragment configPage1 =null;

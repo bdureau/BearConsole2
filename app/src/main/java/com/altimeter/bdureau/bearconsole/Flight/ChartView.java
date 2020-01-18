@@ -1022,7 +1022,7 @@ public class ChartView extends View
      * Returns an array of the listeners of the given type registered with the
      * panel.
      *
-     * @param listenerType  the listener type.
+     *
      *
      * @return An array of listeners.
      */

@@ -1,11 +1,11 @@
 package com.altimeter.bdureau.bearconsole.connection;
-import android.app.Application;
+/*import android.app.Application;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.IntentFilter;*/
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;

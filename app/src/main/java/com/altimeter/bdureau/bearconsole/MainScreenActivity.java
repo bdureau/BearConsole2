@@ -16,7 +16,8 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,8 +25,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-//import com.felhr.usbserial.UsbSerialDevice;
-//import com.felhr.usbserial.UsbSerialInterface;
 import com.altimeter.bdureau.bearconsole.Flight.FlightListActivity;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.altimeter.bdureau.bearconsole.config.AltimeterTabConfigActivity;
@@ -47,7 +46,7 @@ public class MainScreenActivity extends AppCompatActivity {
     String address = null;
     Button btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
     Button btnTelemetry, btnStatus, btnFlashFirmware;
-    boolean flashFimware =false;
+    //boolean flashFimware =false;
     //Button btnTest;
     private ProgressDialog progress;
     UsbManager usbManager;
