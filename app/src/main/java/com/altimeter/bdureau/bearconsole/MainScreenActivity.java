@@ -46,9 +46,8 @@ public class MainScreenActivity extends AppCompatActivity {
     String address = null;
     Button btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
     Button btnTelemetry, btnStatus, btnFlashFirmware;
-    //boolean flashFimware =false;
-    //Button btnTest;
-    private ProgressDialog progress;
+
+    //private ProgressDialog progress;
     UsbManager usbManager;
     UsbDevice device;
     public final String ACTION_USB_PERMISSION = "com.altimeter.bdureau.bearconsole.USB_PERMISSION";
@@ -67,7 +66,7 @@ public class MainScreenActivity extends AppCompatActivity {
             if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
                 boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
                 if (granted) {
-                    //if (!flashFimware) {
+
                         if (myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRateValue()))) {
                             myBT.setConnected(true);
                             EnableUI();
@@ -75,18 +74,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             myBT.setConnectionType("usb");
                             btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
                         }
-                   /* }
-                    else {
-                        if (myBT.connectFirmware(usbManager, device, Integer.parseInt("115200"))) {
-                            myBT.setConnected(true);
-                            EnableUI();
-                            myBT.setConnectionType("usb");
-                            btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
-                            Intent i = new Intent(MainScreenActivity.this, FlashFirmware.class);
-                            //Change the activity.
-                            startActivity(i);
-                        }
-                    }*/
+
                 } else {
                     msg("PERM NOT GRANTED");
                 }

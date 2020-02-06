@@ -13,8 +13,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import org.afree.data.xy.XYSeriesCollection;
-
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
