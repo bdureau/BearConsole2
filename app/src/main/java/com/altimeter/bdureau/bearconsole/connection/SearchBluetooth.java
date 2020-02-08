@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole;
+package com.altimeter.bdureau.bearconsole.connection;
 /**
  *   @description: Not really the main activity, this will have to be renamed. This is to select the
  *   bluetooth module.
@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.config.AppConfigActivity;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
@@ -28,7 +30,7 @@ import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity {
+public class SearchBluetooth extends AppCompatActivity {
     //widgets
     Button btnPaired;
     ListView devicelist;
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         myBT = (ConsoleApplication) getApplication();
         getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         //
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_search_bluetooth);
 
         //Calling widgets
         btnPaired = (Button)findViewById(R.id.button);
@@ -144,19 +146,19 @@ public class MainActivity extends AppCompatActivity {
 
         //open application settings screen
         if (id == R.id.action_settings) {
-            Intent i= new Intent(MainActivity.this, AppConfigActivity.class);
+            Intent i= new Intent(SearchBluetooth.this, AppConfigActivity.class);
             startActivity(i);
             return true;
         }
         //open help screen
         if (id == R.id.action_help) {
-            Intent i= new Intent(MainActivity.this, HelpActivity.class);
+            Intent i= new Intent(SearchBluetooth.this, HelpActivity.class);
             startActivity(i);
             return true;
         }
         //open about screen
         if (id == R.id.action_about) {
-            Intent i= new Intent(MainActivity.this, AboutActivity.class);
+            Intent i= new Intent(SearchBluetooth.this, AboutActivity.class);
             startActivity(i);
             return true;
         }

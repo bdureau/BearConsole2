@@ -6,7 +6,6 @@ package com.altimeter.bdureau.bearconsole;
 
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,6 +30,7 @@ import com.altimeter.bdureau.bearconsole.config.AltimeterTabConfigActivity;
 import com.altimeter.bdureau.bearconsole.config.AppConfigActivity;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
+import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
 import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatus;
 import com.altimeter.bdureau.bearconsole.telemetry.Telemetry;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryMp;
@@ -222,7 +222,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             }
                         } else {
                             // choose the bluetooth device
-                            Intent i = new Intent(MainScreenActivity.this, MainActivity.class);
+                            Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
                             startActivity(i);
                         }
                     } else {
@@ -396,7 +396,7 @@ public class MainScreenActivity extends AppCompatActivity {
         }
         if (id == R.id.action_bluetooth) {
             // choose the bluetooth device
-            Intent i = new Intent(MainScreenActivity.this, MainActivity.class);
+            Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
             startActivity(i);
             return true;
         }
