@@ -8,6 +8,8 @@ import android.os.Message;
 //import android.support.v7.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.content.Intent;
 
@@ -61,14 +64,21 @@ public class TelemetryMp extends AppCompatActivity {
     //telemetry var
     private long LiftOffTime = 0;
     private int lastPlotTime =0;
+    private int lastSpeakTime = 1000;
     private double FEET_IN_METER = 1;
     ArrayList<Entry> yValues ;
     int altitudeTime=0;
     int altitude =0;
 
     boolean telemetry = true;
+    boolean liftOffSaid = false;
+    boolean apogeeSaid = false;
+    boolean landedSaid = false;
+    boolean mainSaid = false;
 
     Button dismissButton;
+
+    private TextToSpeech mTTS;
 
     Handler handler = new Handler () {
         @Override
@@ -101,6 +111,16 @@ public class TelemetryMp extends AppCompatActivity {
                                 mChart.clear();
                                 mChart.setData(data);
                             }
+                            // Tell altitude every 5 secondes
+                            if ((altitudeTime - lastSpeakTime )>5000 && liftOffSaid) {
+                                if(Locale.getDefault().getLanguage()== "en")
+                                    mTTS.speak("altitude " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                else if(Locale.getDefault().getLanguage()== "fr")
+                                    mTTS.speak("altitude " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
+                                else
+                                    mTTS.speak("altitude " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                lastSpeakTime = altitudeTime;
+                            }
                         }
                     }
                     break;
@@ -116,6 +136,15 @@ public class TelemetryMp extends AppCompatActivity {
                             if (LiftOffTime==0)
                                 LiftOffTime= System.currentTimeMillis();
                             txtLiftOffTime.setText("0 ms");
+                            if(! liftOffSaid ){
+                                if(Locale.getDefault().getLanguage()== "en")
+                                    mTTS.speak("lift off", TextToSpeech.QUEUE_FLUSH,null);
+                                else if(Locale.getDefault().getLanguage()== "fr")
+                                    mTTS.speak("décollage", TextToSpeech.QUEUE_FLUSH,null);
+                                else
+                                    mTTS.speak("lift off", TextToSpeech.QUEUE_FLUSH,null);
+                                liftOffSaid =true;
+                            }
                         }
 
                     break;
@@ -135,6 +164,16 @@ public class TelemetryMp extends AppCompatActivity {
                 case 4:
                     //Value 4 apogee altitude
                     txtMaxAltitude.setText((String)msg.obj);
+                    if(cbApogee.isChecked())
+                        if(! apogeeSaid ) {
+                            if(Locale.getDefault().getLanguage()== "en")
+                                mTTS.speak("apogee " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                            else if(Locale.getDefault().getLanguage()== "fr")
+                                mTTS.speak("apogée à " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
+                            else
+                                mTTS.speak("apogee " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                            apogeeSaid =true;
+                        }
                     break;
                 case 5:
                     //value 5 main fired yes/no
@@ -155,6 +194,16 @@ public class TelemetryMp extends AppCompatActivity {
                     {
                         if (cbMainChute.isChecked()) {
                             txtMainAltitude.setText((String) msg.obj);
+                            if(! mainSaid ) {
+                                if(Locale.getDefault().getLanguage()== "en")
+                                    mTTS.speak("main chute has deployed at " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                else if(Locale.getDefault().getLanguage()== "fr")
+                                    mTTS.speak("déploiement du parachute principal à " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
+                                else
+                                    mTTS.speak("main chute has deployed at " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+
+                                mainSaid = true;
+                            }
                         }
                     }
 
@@ -170,6 +219,15 @@ public class TelemetryMp extends AppCompatActivity {
                             cbLanded.setEnabled(false);
                             txtLandedAltitude.setText(txtCurrentAltitude.getText());
                             txtLandedTime.setText((System.currentTimeMillis()-LiftOffTime)+" ms");
+                            if(! landedSaid ) {
+                                if(Locale.getDefault().getLanguage()== "en")
+                                    mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);
+                                else if(Locale.getDefault().getLanguage()== "fr")
+                                    mTTS.speak("la fusée a attérie", TextToSpeech.QUEUE_FLUSH, null);
+                                else
+                                    mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);
+                                landedSaid = true;
+                            }
                         }
 
                     break;
@@ -219,6 +277,34 @@ public class TelemetryMp extends AppCompatActivity {
 
         // Read the application config
         myBT.getAppConf().ReadConfig();
+
+        //init text to speech
+        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status ==TextToSpeech.SUCCESS ){
+                    int result=0;
+                    if(Locale.getDefault().getLanguage()== "en")
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+                    else if(Locale.getDefault().getLanguage()== "fr")
+                        result = mTTS.setLanguage(Locale.FRENCH);
+                    else
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
+                        Log.e("TTS", "Language not supported");
+                    }else {
+
+                    }
+                } else {
+                    Log.e("TTS","Init failed");
+                }
+            }
+        });
+        mTTS.setPitch(1.0f);
+        mTTS.setSpeechRate(1.0f);
+
         int graphBackColor;//= Color.WHITE;
         graphBackColor =myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getGraphBackColor()));
 

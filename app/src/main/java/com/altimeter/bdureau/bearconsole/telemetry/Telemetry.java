@@ -8,11 +8,14 @@ import android.os.Message;
 //import android.support.v7.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import java.io.IOException;
+import java.util.Locale;
 
 import android.graphics.Typeface;
 
@@ -55,8 +58,14 @@ public class Telemetry extends AppCompatActivity {
     int altitude =0;
 
     boolean telemetry = true;
+    boolean liftOffSaid = false;
+    boolean apogeeSaid = false;
+    boolean landedSaid = false;
+    boolean mainSaid = false;
     //Button startTelemetryButton, stopTelemetryButton;
     Button dismissButton;
+
+    private TextToSpeech mTTS;
 
     Handler handler = new Handler () {
         @Override
@@ -79,7 +88,11 @@ public class Telemetry extends AppCompatActivity {
                                 XYSeriesCollection flightData;
                                 flightData = myflight.GetFlightData("Telemetry");
                                 plot.setDataset(0, flightData);
-
+                                //mTTS.speak("rocket has lift off", TextToSpeech.QUEUE_FLUSH,null);
+                            }
+                            // Tell altitude every 5 secondes
+                            if ((altitudeTime - lastPlotTime )>5000) {
+                                mTTS.speak("altitude " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
                             }
                         }
                     }
@@ -96,6 +109,11 @@ public class Telemetry extends AppCompatActivity {
                             if (LiftOffTime==0)
                                 LiftOffTime= System.currentTimeMillis();
                             txtLiftOffTime.setText("0 ms");
+                            if(! liftOffSaid ){
+                                mTTS.speak("rocket has lift off", TextToSpeech.QUEUE_FLUSH,null);
+                                liftOffSaid =true;
+                            }
+
                         }
 
                     break;
@@ -109,12 +127,19 @@ public class Telemetry extends AppCompatActivity {
                             cbApogee.setChecked(true);
                             cbApogee.setEnabled(false);
                             txtMaxAltitudeTime.setText((int)(System.currentTimeMillis()-LiftOffTime) + " ms");
+
                         }
 
                     break;
                 case 4:
                     //Value 4 apogee altitude
                     txtMaxAltitude.setText((String)msg.obj);
+                    if(cbApogee.isChecked())
+                        if(! apogeeSaid ) {
+                            mTTS.speak("apogee " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                            apogeeSaid =true;
+                        }
+
                     break;
                 case 5:
                     //value 5 main fired yes/no
@@ -135,6 +160,10 @@ public class Telemetry extends AppCompatActivity {
                     {
                         if (cbMainChute.isChecked()) {
                             txtMainAltitude.setText((String) msg.obj);
+                            if(! mainSaid ) {
+                                mTTS.speak("main chute has deployed at " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                mainSaid = true;
+                            }
                         }
                     }
 
@@ -150,6 +179,10 @@ public class Telemetry extends AppCompatActivity {
                             cbLanded.setEnabled(false);
                             txtLandedAltitude.setText(txtCurrentAltitude.getText());
                             txtLandedTime.setText((System.currentTimeMillis()-LiftOffTime)+" ms");
+                            if(! landedSaid ) {
+                                mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);
+                                landedSaid = true;
+                            }
                         }
 
                     break;
@@ -172,7 +205,28 @@ public class Telemetry extends AppCompatActivity {
         setContentView(R.layout.activity_telemetry);
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();
-        //textView = (TextView) findViewById(R.id.textView);
+
+        //init text to speech
+        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status ==TextToSpeech.SUCCESS ){
+                    int result = mTTS.setLanguage(Locale.ENGLISH);
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
+                        Log.e("TTS", "Language not supported");
+                    }else {
+
+                    }
+                } else {
+                    Log.e("TTS","Init failed");
+                }
+            }
+        });
+        mTTS.setPitch(1.0f);
+        mTTS.setSpeechRate(1.0f);
+
+
         cbLiftOff = (CheckBox)findViewById(R.id.checkBoxLiftoff);
         cbLiftOff.setEnabled(false);
         cbApogee = (CheckBox)findViewById(R.id.checkBoxApogee);
@@ -184,10 +238,9 @@ public class Telemetry extends AppCompatActivity {
 
         txtCurrentAltitude =(TextView)findViewById(R.id.textViewCurrentAltitude);
         txtMaxAltitude =(TextView)findViewById(R.id.textViewApogeeAltitude);
-        //txtFlightTime = (TextView)findViewById(R.id.text);
+
         txtLandedTime = (TextView) findViewById(R.id.textViewLandedTime);
-        //startTelemetryButton = (Button) findViewById(R.id.buttonStartTelemetry);
-        //stopTelemetryButton = (Button) findViewById(R.id.buttonStopTelemetry);
+
         dismissButton = (Button) findViewById(R.id.butDismiss);
         txtMaxSpeedTime = (TextView) findViewById(R.id.textViewMaxSpeedTime);
         txtMaxAltitudeTime = (TextView) findViewById(R.id.textViewApogeeTime);
