@@ -52,6 +52,7 @@ public class Telemetry extends AppCompatActivity {
     //telemetry var
     private long LiftOffTime = 0;
     private int lastPlotTime =0;
+    private int lastSpeakTime = 1000;
     private double FEET_IN_METER = 1;
 
     int altitudeTime=0;
@@ -91,8 +92,14 @@ public class Telemetry extends AppCompatActivity {
                                 //mTTS.speak("rocket has lift off", TextToSpeech.QUEUE_FLUSH,null);
                             }
                             // Tell altitude every 5 secondes
-                            if ((altitudeTime - lastPlotTime )>5000) {
-                                mTTS.speak("altitude " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                            if ((altitudeTime - lastSpeakTime )>5000 && liftOffSaid) {
+                                if(Locale.getDefault().getLanguage()== "en")
+                                    mTTS.speak("altitude " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                else if(Locale.getDefault().getLanguage()== "fr")
+                                    mTTS.speak("altitude " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
+                                else
+                                    mTTS.speak("altitude " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                lastSpeakTime = altitudeTime;
                             }
                         }
                     }
@@ -110,10 +117,14 @@ public class Telemetry extends AppCompatActivity {
                                 LiftOffTime= System.currentTimeMillis();
                             txtLiftOffTime.setText("0 ms");
                             if(! liftOffSaid ){
-                                mTTS.speak("rocket has lift off", TextToSpeech.QUEUE_FLUSH,null);
+                                if(Locale.getDefault().getLanguage()== "en")
+                                    mTTS.speak("lift off", TextToSpeech.QUEUE_FLUSH,null);
+                                else if(Locale.getDefault().getLanguage()== "fr")
+                                    mTTS.speak("décollage", TextToSpeech.QUEUE_FLUSH,null);
+                                else
+                                    mTTS.speak("lift off", TextToSpeech.QUEUE_FLUSH,null);
                                 liftOffSaid =true;
                             }
-
                         }
 
                     break;
@@ -134,12 +145,15 @@ public class Telemetry extends AppCompatActivity {
                 case 4:
                     //Value 4 apogee altitude
                     txtMaxAltitude.setText((String)msg.obj);
-                    if(cbApogee.isChecked())
-                        if(! apogeeSaid ) {
+                    if(! apogeeSaid ) {
+                        if(Locale.getDefault().getLanguage()== "en")
                             mTTS.speak("apogee " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
-                            apogeeSaid =true;
-                        }
-
+                        else if(Locale.getDefault().getLanguage()== "fr")
+                            mTTS.speak("apogée à " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
+                        else
+                            mTTS.speak("apogee " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                        apogeeSaid =true;
+                    }
                     break;
                 case 5:
                     //value 5 main fired yes/no
@@ -161,7 +175,13 @@ public class Telemetry extends AppCompatActivity {
                         if (cbMainChute.isChecked()) {
                             txtMainAltitude.setText((String) msg.obj);
                             if(! mainSaid ) {
-                                mTTS.speak("main chute has deployed at " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                if(Locale.getDefault().getLanguage()== "en")
+                                    mTTS.speak("main chute has deployed at " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                else if(Locale.getDefault().getLanguage()== "fr")
+                                    mTTS.speak("déploiement du parachute principal à " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
+                                else
+                                    mTTS.speak("main chute has deployed at " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+
                                 mainSaid = true;
                             }
                         }
@@ -180,7 +200,12 @@ public class Telemetry extends AppCompatActivity {
                             txtLandedAltitude.setText(txtCurrentAltitude.getText());
                             txtLandedTime.setText((System.currentTimeMillis()-LiftOffTime)+" ms");
                             if(! landedSaid ) {
-                                mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);
+                                if(Locale.getDefault().getLanguage()== "en")
+                                    mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);
+                                else if(Locale.getDefault().getLanguage()== "fr")
+                                    mTTS.speak("la fusée a attérie", TextToSpeech.QUEUE_FLUSH, null);
+                                else
+                                    mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);
                                 landedSaid = true;
                             }
                         }
