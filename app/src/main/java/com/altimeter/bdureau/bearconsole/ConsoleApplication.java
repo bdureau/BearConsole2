@@ -459,6 +459,13 @@ public class ConsoleApplication extends Application {
                                             mHandler.obtainMessage(14, String.valueOf(currentSentence[14])).sendToTarget();
                                         else
                                             mHandler.obtainMessage(14, String.valueOf(0)).sendToTarget();
+                                    // Value 15 contains the eeprom
+                                    //mHandler.obtainMessage(14, String.valueOf(currentSentence.value14)).sendToTarget();
+                                    if (currentSentence.length > 15)
+                                        if (currentSentence[15].matches("\\d+(?:\\.\\d+)?"))
+                                            mHandler.obtainMessage(15, String.valueOf(currentSentence[15])).sendToTarget();
+                                        else
+                                            mHandler.obtainMessage(15, String.valueOf(0)).sendToTarget();
                                 }
                                 break;
 
