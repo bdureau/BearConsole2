@@ -1,11 +1,15 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
 /**
- *   @description:
+ *   @description: This will display real time telemetry providing
+ *   that you have a telemetry long range module. This activity display the telemetry
+ *   using the MPAndroidChart library.
+ *
  *   @author: boris.dureau@neuf.fr
+ *
  **/
 import android.os.Handler;
 import android.os.Message;
-//import android.support.v7.app.AppCompatActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -13,7 +17,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ import java.util.Locale;
 import android.content.Intent;
 
 import android.graphics.Typeface;
-//import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import org.afree.chart.ChartFactory;
 import org.afree.chart.AFreeChart;

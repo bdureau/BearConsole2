@@ -1,5 +1,10 @@
 package com.altimeter.bdureau.bearconsole.config;
-
+/**
+ *   @description: In this activity you should be able to choose the application languages and looks and feel.
+ *   Still a lot to do but it is a good start
+ *
+ *   @author: boris.dureau@neuf.fr
+ **/
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,11 +15,6 @@ import android.widget.Spinner;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
-/**
- *   @description: In this activity you should be able to choose the application languages and looks and feel.
- *   Still a lot to do but it is a good start
- *   @author: boris.dureau@neuf.fr
- **/
 
 public class AppConfigActivity extends AppCompatActivity {
     Button btnDismiss, btnSave, bdtDefault;

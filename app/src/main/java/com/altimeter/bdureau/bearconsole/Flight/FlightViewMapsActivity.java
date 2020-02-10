@@ -1,8 +1,11 @@
 package com.altimeter.bdureau.bearconsole.Flight;
 
 /**
- *   @description: This class display the latitude and longitude on a google map
+ *   @description: This class display the latitude and longitude on a google map. This is used when
+ *   retrieving data for the AltiGPS
+ *
  *   @author: boris.dureau@neuf.fr
+ *
  **/
 import android.content.Intent;
 import androidx.fragment.app.FragmentActivity;

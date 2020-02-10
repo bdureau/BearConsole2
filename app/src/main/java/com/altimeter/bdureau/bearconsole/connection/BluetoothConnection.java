@@ -1,5 +1,10 @@
 package com.altimeter.bdureau.bearconsole.connection;
-
+/**
+ *
+ *   @description: This class has all the methods to deal with your bluetooth connection
+ *   @author: boris.dureau@neuf.fr
+ *
+ **/
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -8,10 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
-/**
- *   @description: This class has all the methods to deal with your bluetooth connection
- *   @author: boris.dureau@neuf.fr
- **/
+
 public class BluetoothConnection {
     BluetoothDevice device;
     BluetoothAdapter myBluetooth = null;

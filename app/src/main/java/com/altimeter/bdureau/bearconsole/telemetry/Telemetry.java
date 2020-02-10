@@ -1,11 +1,16 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
 /**
- *   @description:
+ *   @description: This will display real time telemetry providing
+ *   that you have a telemetry long range module. This activity display the telemetry
+ *   using the AFreeChart library. If you are using Android 8 or greater you should
+ *   use the MPAndroidChart otherwise it will crash your application
+ *
  *   @author: boris.dureau@neuf.fr
+ *
  **/
 import android.os.Handler;
 import android.os.Message;
-//import android.support.v7.app.AppCompatActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -236,7 +241,14 @@ public class Telemetry extends AppCompatActivity {
             @Override
             public void onInit(int status) {
                 if(status ==TextToSpeech.SUCCESS ){
-                    int result = mTTS.setLanguage(Locale.ENGLISH);
+                    int result=0;
+                    if(Locale.getDefault().getLanguage()== "en")
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+                    else if(Locale.getDefault().getLanguage()== "fr")
+                        result = mTTS.setLanguage(Locale.FRENCH);
+                    else
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+
 
                     if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
                         Log.e("TTS", "Language not supported");

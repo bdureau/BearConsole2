@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole;
 /**
- * @description:
+ * @description: This class instanciate pretty much everything including the connection
  * @author: boris.dureau@neuf.fr
  **/
 

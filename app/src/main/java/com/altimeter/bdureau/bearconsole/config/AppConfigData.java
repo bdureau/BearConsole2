@@ -2,7 +2,9 @@ package com.altimeter.bdureau.bearconsole.config;
 
 /**
  *   @description: This class define all the values for the application conf drop down
+ *
  *   @author: boris.dureau@neuf.fr
+ *
  **/
 public class AppConfigData {
     private String[] itemsLanguages = new String[]{ "English", "French", "Phone language"};

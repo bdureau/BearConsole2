@@ -1,19 +1,18 @@
 package com.altimeter.bdureau.bearconsole.connection;
-/*import android.app.Application;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;*/
+/**
+ *
+ *   @description: This is the USB connection class. Not that the input strean has been overwritten
+ *   from the USB library to fix a bug
+ *
+ *   @author: boris.dureau@neuf.fr
+ *
+ **/
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
-import android.os.Binder;
-import android.os.IBinder;
 import android.util.Log;
 
-//import com.felhr.usbserial.SerialInputStream;
+
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
@@ -22,13 +21,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-//import java.util.HashMap;
-//import java.util.Map;
+
 import java.util.concurrent.ArrayBlockingQueue;
-/**
- *   @description:
- *   @author: boris.dureau@neuf.fr
- **/
+
 
 public class UsbConnection {
 

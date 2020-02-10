@@ -2,6 +2,7 @@ package com.altimeter.bdureau.bearconsole.Flight;
 /**
  *   @description: This will display each flight using a the MPchart graphics library
  *   @author: boris.dureau@neuf.fr
+ *
  **/
 import android.content.Intent;
 import android.graphics.Color;

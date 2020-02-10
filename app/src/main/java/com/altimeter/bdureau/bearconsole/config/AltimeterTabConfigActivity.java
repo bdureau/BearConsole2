@@ -3,6 +3,7 @@ package com.altimeter.bdureau.bearconsole.config;
  *   @description: Retrieve altimeter configuration and show it in tabs
  *                  The user can then load it back to the altimeter
  *   @author: boris.dureau@neuf.fr
+ *
  **/
 import android.app.AlertDialog;
 import android.content.DialogInterface;

@@ -2,7 +2,8 @@ package com.altimeter.bdureau.bearconsole.config;
 
 /**
  *
- *   @description: Altimeter configuration
+ *   @description: Altimeter configuration class that manages all the data
+ *
  *   @author: boris.dureau@neuf.fr
  *
  **/

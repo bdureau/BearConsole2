@@ -4,6 +4,7 @@ package com.altimeter.bdureau.bearconsole.Flight;
 /**
  *   @description: This class has all the flight arrays and methods to add or remove flight data
  *   @author: boris.dureau@neuf.fr
+ *
  **/
 import java.util.*;
 

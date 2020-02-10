@@ -1,6 +1,7 @@
 package com.altimeter.bdureau.bearconsole;
 /**
- * @description: Main screen of the altimeter console
+ * @description: Main screen of the altimeter console. Here you will find all the buttons.
+ *
  * @author: boris.dureau@neuf.fr
  **/
 
@@ -133,7 +134,6 @@ public class MainScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Intent i = new Intent(MainScreenActivity.this, AltimeterConfigActivity.class);
                 Intent i = new Intent(MainScreenActivity.this, AltimeterTabConfigActivity.class);
                 //Change the activity.
                 startActivity(i);

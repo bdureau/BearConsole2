@@ -1,15 +1,15 @@
 package com.altimeter.bdureau.bearconsole.connection;
 /**
- *   @description: Not really the main activity, this will have to be renamed. This is to select the
- *   bluetooth module.
+ *   @description:  This is to select the bluetooth module.
+ *
  *   @author: boris.dureau@neuf.fr
+ *
  **/
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 
-//import android.support.v7.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.Menu;

@@ -1,5 +1,12 @@
 package com.altimeter.bdureau.bearconsole.Flight;
-
+/**
+ *
+ * @description: This retrieve the flight list from the altimeter and store it in a
+ * FlightData instance
+ *
+ * @author: boris.dureau@neuf.fr
+ *
+ **/
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -24,10 +31,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * @description: This retrieve the flight list
- * @author: boris.dureau@neuf.fr
- **/
+
 public class FlightListActivity extends AppCompatActivity {
     public static String SELECTED_FLIGHT = "MyFlight";
 

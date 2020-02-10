@@ -1,11 +1,17 @@
 package com.altimeter.bdureau.bearconsole;
 
-
+/**
+ *   @description: This is used to flash the altimeter firmware from the Android device using an OTG cable
+ *   so that the store Android application is compatible with altimeter. Currently works with the
+ *   ATMega328 based altimeters
+ *   
+ *   @author: boris.dureau@neuf.fr
+ *
+ **/
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Handler;
 
-//import android.support.v7.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
