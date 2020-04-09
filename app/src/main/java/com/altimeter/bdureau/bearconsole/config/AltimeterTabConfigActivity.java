@@ -59,7 +59,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //get the bluetooth connection pointer
         myBT = (ConsoleApplication) getApplication();
-        readConfig();
+        //readConfig();
+        new RetrieveConfig().execute();
         //Check the local and force it if needed
         getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         setContentView(R.layout.activity_altimeter_tab_config);
@@ -116,17 +117,12 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
     {
         // ask for config
         if(myBT.getConnected()) {
-
             //msg("Retreiving altimeter config...");
             myBT.setDataReady(false);
-
             myBT.flush();
             myBT.clearInput();
-
             myBT.write("b;\n".toString());
-
             myBT.flush();
-
 
             //get the results
             //wait for the result to come back
@@ -1111,7 +1107,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
             if(AltiCfg!=null) {
                 //Config Tab 1
-                if(configPage1.isViewCreated()) {
+               /*if(configPage1.isViewCreated()) {
                     configPage1.setDropdownOut1(AltiCfg.getOutput1());
                     configPage1.setDropdownOut2(AltiCfg.getOutput2());
                     configPage1.setDropdownOut3(AltiCfg.getOutput3());
@@ -1154,9 +1150,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                         configPage4.setServo2OffPos(AltiCfg.getServo2OffPos());
                         configPage4.setServo3OffPos(AltiCfg.getServo3OffPos());
                         configPage4.setServo4OffPos(AltiCfg.getServo4OffPos());
-                    }
-                //}
-
+                    }*/
             }
             progress.dismiss();
         }
