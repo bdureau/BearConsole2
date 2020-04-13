@@ -466,6 +466,12 @@ public class ConsoleApplication extends Application {
                                             mHandler.obtainMessage(15, String.valueOf(currentSentence[15])).sendToTarget();
                                         else
                                             mHandler.obtainMessage(15, String.valueOf(0)).sendToTarget();
+                                    // Value 16 contains the number of flight
+                                    if (currentSentence.length > 16)
+                                        if (currentSentence[16].matches("\\d+(?:\\.\\d+)?"))
+                                            mHandler.obtainMessage(16, String.valueOf(currentSentence[16])).sendToTarget();
+                                        else
+                                            mHandler.obtainMessage(16, String.valueOf(0)).sendToTarget();
                                 }
                                 break;
 

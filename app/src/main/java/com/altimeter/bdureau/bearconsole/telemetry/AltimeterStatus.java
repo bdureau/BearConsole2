@@ -26,7 +26,7 @@ public class AltimeterStatus extends AppCompatActivity {
     boolean recording = false;
 
     private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
-    private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage;
+    private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage,txtNbrOfFlight;
     private TextView txtViewOutput4, txtViewBatteryVoltage, txtViewOutput3;
     private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;
 
@@ -83,6 +83,12 @@ public class AltimeterStatus extends AppCompatActivity {
                     //Value 15 contains the EEprom usage
                     txtEEpromUsage.setText((String) msg.obj + " %");
                     break;
+
+                case 16:
+                    //Value 16 contains the numberof flight
+                    txtNbrOfFlight.setText((String) msg.obj );
+                    break;
+
             }
         }
     };
@@ -178,7 +184,7 @@ public class AltimeterStatus extends AppCompatActivity {
         txtViewBatteryVoltage = (TextView) findViewById(R.id.txtViewBatteryVoltage);
         txtTemperature = (TextView) findViewById(R.id.txtViewTemperature);
         txtEEpromUsage= (TextView) findViewById(R.id.txtViewEEpromUsage);
-
+        txtNbrOfFlight= (TextView) findViewById(R.id.txtViewNbrOfFlight);
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")) {
             txtViewVoltage.setVisibility(View.VISIBLE);
             txtViewBatteryVoltage.setVisibility(View.VISIBLE);

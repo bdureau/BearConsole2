@@ -150,18 +150,34 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/altimeter_status_link_type"
-        android:id="@+id/txtViewLinkType"
+        android:text="Flight"
+        android:id="@+id/txtViewFlight"
         android:layout_below="@+id/txtViewEEpromUsage"
         android:layout_alignParentLeft="true"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/txtViewNbrOfFlight"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewEEpromUsage"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altimeter_status_link_type"
+        android:id="@+id/txtViewLinkType"
+        android:layout_below="@+id/txtViewFlight"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/txtViewLink"
         android:text="@string/altimeter_status_bluetooth"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/txtViewEEpromUsage"/>
+        android:layout_below="@+id/txtViewFlight"/>
 
     <TextView
         android:id="@+id/txtViewTitle2"
