@@ -18,7 +18,7 @@ public class AltiConfigData {
     private int output4 =-1;
     private int supersonicYesNo =0;
     private int mainAltitude = 100;
-    private String AltimeterName = "AltiToto";
+    private String AltimeterName = "AltiToto"; //default stupid name
     private int output1Delay =0;
     private int output2Delay =0;
     private int output3Delay =0;

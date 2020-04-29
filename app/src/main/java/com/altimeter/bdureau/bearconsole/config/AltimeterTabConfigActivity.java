@@ -90,8 +90,6 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     sendConfig();
                 }
             });
-       // new RetrieveConfig().execute();
-
     }
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsPageAdapter(getSupportFragmentManager());
