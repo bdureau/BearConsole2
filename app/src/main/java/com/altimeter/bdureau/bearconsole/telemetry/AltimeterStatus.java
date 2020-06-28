@@ -27,7 +27,7 @@ public class AltimeterStatus extends AppCompatActivity {
 
     private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
     private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage,txtNbrOfFlight;
-    private TextView txtViewOutput4, txtViewBatteryVoltage, txtViewOutput3;
+    private TextView txtViewOutput4, txtViewBatteryVoltage, txtViewOutput3, txtViewEEprom, txtViewFlight;
     private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;
 
     Handler handler = new Handler() {
@@ -185,6 +185,9 @@ public class AltimeterStatus extends AppCompatActivity {
         txtTemperature = (TextView) findViewById(R.id.txtViewTemperature);
         txtEEpromUsage= (TextView) findViewById(R.id.txtViewEEpromUsage);
         txtNbrOfFlight= (TextView) findViewById(R.id.txtViewNbrOfFlight);
+        txtViewEEprom = (TextView) findViewById(R.id.txtViewEEprom);
+        txtViewFlight = (TextView) findViewById(R.id.txtViewFlight);
+
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")) {
             txtViewVoltage.setVisibility(View.VISIBLE);
             txtViewBatteryVoltage.setVisibility(View.VISIBLE);
@@ -206,6 +209,19 @@ public class AltimeterStatus extends AppCompatActivity {
         } else {
             txtViewOutput4Status.setVisibility(View.INVISIBLE);
             txtViewOutput4.setVisibility(View.INVISIBLE);
+        }
+        //hide eeprom
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") || myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+            txtViewEEprom.setVisibility(View.INVISIBLE);
+            txtViewFlight.setVisibility(View.INVISIBLE);
+            txtEEpromUsage.setVisibility(View.INVISIBLE);
+            txtNbrOfFlight.setVisibility(View.INVISIBLE);
+        }
+        else {
+            txtViewEEprom.setVisibility(View.VISIBLE);
+            txtViewFlight.setVisibility(View.VISIBLE);
+            txtEEpromUsage.setVisibility(View.VISIBLE);
+            txtNbrOfFlight.setVisibility(View.VISIBLE);
         }
         txtViewLink.setText(myBT.getConnectionType());
 
