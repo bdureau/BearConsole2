@@ -553,55 +553,55 @@ public class ConsoleApplication extends Application {
                             break;
                             case "alticonfig":
 
-                                // Value 1 contain the units
+                                // Value 1 contains the units
                                 if (currentSentence.length > 1)
                                     if (currentSentence[1].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setUnits(Integer.valueOf(currentSentence[1]));
                                     else
                                         AltiCfg.setUnits(0);
-                                // Value 2 contain beepingMode
+                                // Value 2 contains beepingMode
                                 if (currentSentence.length > 2)
                                     if (currentSentence[2].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setBeepingMode(Integer.valueOf(currentSentence[2]));
                                     else
                                         AltiCfg.setBeepingMode(0);
-                                // Value 3 contain output1
+                                // Value 3 contains output1
                                 if (currentSentence.length > 3)
                                     if (currentSentence[3].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setOutput1(Integer.valueOf(currentSentence[3]));
                                     else
                                         AltiCfg.setOutput1(0);
-                                // Value 4 contain output2
+                                // Value 4 contains output2
                                 if (currentSentence.length > 4)
                                     if (currentSentence[4].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setOutput2(Integer.valueOf(currentSentence[4]));
                                     else
                                         AltiCfg.setOutput2(0);
 
-                                // Value 5 contain output3
+                                // Value 5 contains output3
                                 if (currentSentence.length > 5)
                                     if (currentSentence[5].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setOutput3(Integer.valueOf(currentSentence[5]));
                                     else
                                         AltiCfg.setOutput3(0);
 
-                                // Value 6 contain supersonicYesNo
+                                // Value 6 contains supersonicYesNo
                                 if (currentSentence.length > 6)
                                     if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setSupersonicYesNo(Integer.valueOf(currentSentence[6]));
                                     else
                                         AltiCfg.setSupersonicYesNo(0);
-                                // Value 7 contain mainAltitude
+                                // Value 7 contains mainAltitude
                                 if (currentSentence.length > 7)
                                     if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setMainAltitude(Integer.valueOf(currentSentence[7]));
                                     else
                                         AltiCfg.setMainAltitude(50);
-                                // Value 8 contain AltimeterName
+                                // Value 8 contains AltimeterName
                                 if (currentSentence.length > 8)
                                     AltiCfg.setAltimeterName(currentSentence[8]);
 
-                                // Value 9 contain the altimeter major version
+                                // Value 9 contains the altimeter major version
                                 if (currentSentence.length > 9)
                                     if (currentSentence[9].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setAltiMajorVersion(Integer.valueOf(currentSentence[9]));
@@ -613,19 +613,19 @@ public class ConsoleApplication extends Application {
                                         AltiCfg.setAltiMinorVersion(Integer.valueOf(currentSentence[10]));
                                     else
                                         AltiCfg.setAltiMinorVersion(0);
-                                // Value 11 contain the output 1 delay
+                                // Value 11 contains the output 1 delay
                                 if (currentSentence.length > 11)
                                     if (currentSentence[11].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setOutput1Delay(Integer.valueOf(currentSentence[11]));
                                     else
                                         AltiCfg.setOutput1Delay(0);
-                                // Value 12 contain the output 2 delay
+                                // Value 12 contains the output 2 delay
                                 if (currentSentence.length > 12)
                                     if (currentSentence[12].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setOutput2Delay(Integer.valueOf(currentSentence[12]));
                                     else
                                         AltiCfg.setOutput2Delay(0);
-                                // Value 13 contain the output 3 delay
+                                // Value 13 contains the output 3 delay
                                 if (currentSentence.length > 13)
                                     if (currentSentence[13].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setOutput3Delay(Integer.valueOf(currentSentence[13]));
@@ -637,7 +637,7 @@ public class ConsoleApplication extends Application {
                                         AltiCfg.setBeepingFrequency(Integer.valueOf(currentSentence[14]));
                                     else
                                         AltiCfg.setBeepingFrequency(440);
-                                // Value 15
+                                // Value 15 contains the number of measures for apogee
                                 if (currentSentence.length > 15)
                                     if (currentSentence[15].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setNbrOfMeasuresForApogee(Integer.valueOf(currentSentence[15]));
@@ -681,91 +681,99 @@ public class ConsoleApplication extends Application {
                                         AltiCfg.setEepromSize(Integer.valueOf(currentSentence[21]));
                                     else
                                         AltiCfg.setEepromSize(512);
-                                // switch beeps on or off
+                                // Value 22 contains switch beeps on or off
                                 if (currentSentence.length > 22)
                                     if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
                                         //if ((int) currentSentence.value22 !=-1)
                                         AltiCfg.setBeepOnOff(Integer.valueOf(currentSentence[22]));
                                     else
                                         AltiCfg.setBeepOnOff(0);
+                                // Value 23 contains the 4th output
                                 if (currentSentence.length > 23)
                                     if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
                                         AltiCfg.setOutput4(Integer.valueOf(currentSentence[23]));
                                     else
                                         //We do not have a fourth output
                                         AltiCfg.setOutput4(-1);
-                                // Value 24 contain the output4 delay
+                                // Value 24 contains the output4 delay
                                 if (currentSentence.length > 24)
                                     if (currentSentence[24].matches("\\d+(?:\\.\\d+)?"))
                                         //if ((int) currentSentence.value24 !=-1)
                                         AltiCfg.setOutput4Delay(Integer.valueOf(currentSentence[24]));
                                     else
                                         AltiCfg.setOutput4Delay(-1);
-                                // Value 25 contain
+                                // Value 25 contains liftOff Altitude
                                 if (currentSentence.length > 25)
                                     if (currentSentence[25].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value25 !=-1)
-                                        AltiCfg.setServo1OnPos(Integer.valueOf(currentSentence[25]));
+                                        AltiCfg.setLiftOffAltitude(Integer.valueOf(currentSentence[25]));
                                     else
-                                        AltiCfg.setServo1OnPos(-1);
-                                // Value 26 contain
+                                        //if you cannot read it, set it to 20 meters
+                                        AltiCfg.setLiftOffAltitude(20);
+
+                                // value 26 contains battery type
                                 if (currentSentence.length > 26)
                                     if (currentSentence[26].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value26 !=-1)
-                                        AltiCfg.setServo2OnPos(Integer.valueOf(currentSentence[26]));
+                                        AltiCfg.setBatteryType(Integer.valueOf(currentSentence[26]));
                                     else
-                                        AltiCfg.setServo2OnPos(-1);
-                                // Value 27 contain
+                                        AltiCfg.setBatteryType(0);
+
+
+                                // Value 27 contains the servo 1 On position
                                 if (currentSentence.length > 27)
                                     if (currentSentence[27].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value27 !=-1)
-                                        AltiCfg.setServo3OnPos(Integer.valueOf(currentSentence[27]));
+
+                                        AltiCfg.setServo1OnPos(Integer.valueOf(currentSentence[27]));
                                     else
-                                        AltiCfg.setServo3OnPos(-1);
-                                // Value 28 contain
+                                        AltiCfg.setServo1OnPos(-1);
+                                // Value 28 contains the servo 2 On position
                                 if (currentSentence.length > 28)
                                     if (currentSentence[28].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value28 !=-1)
-                                        AltiCfg.setServo4OnPos(Integer.valueOf(currentSentence[28]));
+                                        AltiCfg.setServo2OnPos(Integer.valueOf(currentSentence[28]));
                                     else
-                                        AltiCfg.setServo4OnPos(-1);
-                                // Value 29 contain
+                                        AltiCfg.setServo2OnPos(-1);
+                                // Value 29 contains the servo 3 On position
                                 if (currentSentence.length > 29)
                                     if (currentSentence[29].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value29 !=-1)
-                                        AltiCfg.setServo1OffPos(Integer.valueOf(currentSentence[29]));
+                                        AltiCfg.setServo3OnPos(Integer.valueOf(currentSentence[29]));
                                     else
-                                        AltiCfg.setServo1OffPos(-1);
-                                // Value 30 contain
+                                        AltiCfg.setServo3OnPos(-1);
+                                // Value 30 contains the servo 4 On position
                                 if (currentSentence.length > 30)
                                     if (currentSentence[30].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value30 !=-1)
-                                        AltiCfg.setServo2OffPos(Integer.valueOf(currentSentence[30]));
+                                        AltiCfg.setServo4OnPos(Integer.valueOf(currentSentence[30]));
                                     else
-                                        AltiCfg.setServo2OffPos(-1);
-                                // Value 31 contain
+                                        AltiCfg.setServo4OnPos(-1);
+                                // Value 31 contains servo 1 off position
                                 if (currentSentence.length > 31)
                                     if (currentSentence[31].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value31 !=-1)
-                                        AltiCfg.setServo3OffPos(Integer.valueOf(currentSentence[31]));
+                                        AltiCfg.setServo1OffPos(Integer.valueOf(currentSentence[31]));
                                     else
-                                        AltiCfg.setServo3OffPos(-1);
-                                // Value 32 contain
+                                        AltiCfg.setServo1OffPos(-1);
+                                // Value 32 contains servo 2 off position
                                 if (currentSentence.length > 32)
                                     if (currentSentence[32].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value32 !=-1)
-                                        AltiCfg.setServo4OffPos(Integer.valueOf(currentSentence[32]));
+                                        AltiCfg.setServo2OffPos(Integer.valueOf(currentSentence[32]));
+                                    else
+                                        AltiCfg.setServo2OffPos(-1);
+                                // Value 33 contains servo 3 off position
+                                if (currentSentence.length > 33)
+                                    if (currentSentence[33].matches("\\d+(?:\\.\\d+)?"))
+                                        AltiCfg.setServo3OffPos(Integer.valueOf(currentSentence[33]));
+                                    else
+                                        AltiCfg.setServo3OffPos(-1);
+                                // Value 34 contains servo 4 off position
+                                if (currentSentence.length > 34)
+                                    if (currentSentence[34].matches("\\d+(?:\\.\\d+)?"))
+                                        AltiCfg.setServo4OffPos(Integer.valueOf(currentSentence[34]));
                                     else
                                         AltiCfg.setServo4OffPos(-1);
+
+
 
                                 //DataReady = true;
                                 myMessage = myMessage + " " + "alticonfig";
                                 break;
-                           /* case "nbrOfFlight":
-                                // Value 1 contains the number of flight
-                                if (currentSentence[1].matches("\\d+(?:\\.\\d+)?"))
-                                    NbrOfFlight = Integer.valueOf(currentSentence[1]);
-                                break;*/
+
                             case "nbrOfFlight":
                                 // Value 1 contains the number of flight
                                 if (currentSentence.length > 1)
@@ -774,13 +782,11 @@ public class ConsoleApplication extends Application {
                                 myMessage = myMessage + " " + "nbrOfFlight";
                                 break;
                             case "start":
-                                //appendLog("Start");
                                 // We are starting reading data
                                 setDataReady(false);
                                 myMessage = "start";
                                 break;
                             case "end":
-                                //appendLog("end");
                                 // We have finished reading data
                                 setDataReady(true);
                                 myMessage = myMessage + " " + "end";

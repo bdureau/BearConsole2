@@ -23,6 +23,13 @@
     <string name="delay4">Retard 4</string>
     <string name="upload">Sauvegarder</string>
     <string name="dismiss_config">Fermer</string>
+    <!-- Config tab1 tooltips -->
+    <string name="main_altitude_tooltip">Enter the altitude for the main chute</string>
+    <string name="OutDelay1_tooltip">Enter the firing delay in ms for the 1st output</string>
+    <string name="OutDelay2_tooltip">Enter the firing delay in ms for the 2nd output</string>
+    <string name="OutDelay3_tooltip">Enter the firing delay in ms for the 3rd output</string>
+    <string name="OutDelay4_tooltip">Enter the firing delay in ms for the 4th output</string>
+
     <!-- Config tab2 -->
     <string name="altimeter_config_tab2">Altimeter Config</string>
     <string name="baudRate">Baud Rate</string>
@@ -33,6 +40,8 @@
     <string name="RecordTemp">Enregistrer temp</string>
     <string name="SupersonicDelay">Mode Supersonic</string>
     <string name="EndRecordAltitude">Alt fin enr</string>
+    <string name="LiftOffAltitude">Alt Décollage</string>
+    <string name="BatteryType">Type de batterie</string>
     <!-- Config tab3 -->
     <string name="altimeter_config_tab3">Configuration Altimètre</string>
     <string name="alti_name">Nom Alti</string>
@@ -195,4 +204,6 @@
     <string name="flight_retrieval_canceled">Le chargement des vols a été annulé</string>
     <string name="flight_have_been_recorded">Aucun vol n\'a été enregistré</string>
     <string name="main_screen_actity">Annuler</string>
+    <string name="title_activity_flight_view_maps">Map</string>
+
 </resources>

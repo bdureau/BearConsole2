@@ -49,10 +49,10 @@ public class FlashFirmware extends AppCompatActivity {
     private ArrayList<Boards> mBoardList;
     private UartConfig uartConfig;
 
-    private static final String ASSET_FILE_NAME_ALTIMULTIV2       = "firmwares/2020-06-28-V1_20.altimultiV2.hex";//"firmwares/2019-12-28-V1_19_altimultiV2.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTI         = "firmwares/2019-12-28-V1_19_altimulti.ino.hex";
-    private static final String ASSET_FILE_NAME_ALTISERVO         = "firmwares/2020-06-28-AltiServoV1_1.hex";//"firmwares/2019-12-28-AltiServoV1_0.ino.hex";
-    private static final String ASSET_FILE_NAME_ALTIDUO         = "firmwares/2019-12-28-AltiDuoV1_5_console.ino.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTIV2       = "firmwares/2020-06-28-V1_20.altimultiV2.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTI         = "firmwares/2020-06-28-V1_20.altimulti.hex";
+    private static final String ASSET_FILE_NAME_ALTISERVO         = "firmwares/2020-06-28-AltiServoV1_1.hex";
+    private static final String ASSET_FILE_NAME_ALTIDUO         = "firmwares/2020-06-28-V1_5.altiDuo.hex";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";

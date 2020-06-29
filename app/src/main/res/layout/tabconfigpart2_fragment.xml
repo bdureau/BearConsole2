@@ -154,4 +154,41 @@
         android:layout_alignParentRight="true"
         android:spinnerMode="dropdown" />
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/LiftOffAltitude"
+        android:id="@+id/txtViewLiftOffAltitude"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtViewSupersonicDelay"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/editTxtLiftOffAltitude"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/txtViewLiftOffAltitude"
+        android:layout_alignParentRight="true"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/txtViewBatteryType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtViewLiftOffAltitude"
+        android:text="@string/BatteryType" />
+
+    <Spinner
+        android:id="@+id/spinnerBatteryType"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/txtViewBatteryType"
+        android:layout_alignParentRight="true"
+        android:spinnerMode="dropdown" />
+
 </RelativeLayout>
