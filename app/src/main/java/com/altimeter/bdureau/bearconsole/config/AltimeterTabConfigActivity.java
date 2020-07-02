@@ -577,7 +577,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             .color(Color.BLACK)
                             .position(ViewTooltip.Position.TOP)
                             //Enter the firing delay in ms for the 1st output
-                            .text("Enter the firing delay in ms for the 1rst output")
+                            .text(getResources().getString(R.string.OutDelay1_tooltip))
                             .show();
                 }
             });
@@ -591,7 +591,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             .color(Color.BLACK)
                             .position(ViewTooltip.Position.TOP)
                             //Enter the firing delay in ms for the 2nd output
-                            .text("Enter the firing delay in ms for the 2nd output")
+                            .text(getResources().getString(R.string.OutDelay2_tooltip))
                             .show();
                 }
             });
@@ -612,7 +612,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             .color(Color.BLACK)
                             .position(ViewTooltip.Position.TOP)
                             //Choose what you want to do with the 1st output
-                            .text("Choose what you want to do with the 1st output")
+                            .text(getResources().getString(R.string.txtOut1_tooltip))
                             .show();
                 }
             });
@@ -625,7 +625,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             .color(Color.BLACK)
                             .position(ViewTooltip.Position.TOP)
                             //Choose what you want to do with the 2nd output
-                            .text("Choose what you want to do with the 2nd output")
+                            .text(getResources().getString(R.string.txtOut2_tooltip))
                             .show();
                 }
             });
@@ -646,7 +646,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                                     .on(v)
                                     .color(Color.BLACK)
                                     .position(ViewTooltip.Position.TOP)
-                                    .text("Choose what you want to do with the 3rd output")
+                                    //Choose what you want to do with the 3rd output
+                                    .text(getResources().getString(R.string.txtOut3_tooltip))
                                     .show();
                         }
                     });
@@ -667,7 +668,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                                     .on(v)
                                     .color(Color.BLACK)
                                     .position(ViewTooltip.Position.TOP)
-                                    .text("Choose what you want to do with the 4th output")
+                                    //Choose what you want to do with the 4th output
+                                    .text(getResources().getString(R.string.txtOut4_tooltip))
                                     .show();
                         }
                     });
@@ -688,7 +690,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                                     .on(v)
                                     .color(Color.BLACK)
                                     .position(ViewTooltip.Position.TOP)
-                                    .text("Enter the firing delay in ms for the 3rd output")
+                                    //Enter the firing delay in ms for the 3rd output
+                                    .text(getResources().getString(R.string.OutDelay3_tooltip))
                                     .show();
                         }
                     });
@@ -709,7 +712,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                                     .on(v)
                                     .color(Color.BLACK)
                                     .position(ViewTooltip.Position.TOP)
-                                    .text("Enter the firing delay in ms for the 4th output")
+                                    //Enter the firing delay in ms for the 4th output
+                                    .text(getResources().getString(R.string.OutDelay4_tooltip))
                                     .show();
                         }
                     });
@@ -890,7 +894,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             .on(v)
                             .color(Color.BLACK)
                             .position(ViewTooltip.Position.TOP)
-                            .text("Choose the altimeter baud rate. Be carefull you might not be able to communicate")
+                            //Choose the altimeter baud rate. Be carefull you might not be able to communicate
+                            .text(getResources().getString(R.string.txtViewBaudRate_tooltip))
                             .show();
                 }
             });
@@ -904,7 +909,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             .on(v)
                             .color(Color.BLACK)
                             .position(ViewTooltip.Position.TOP)
-                            .text("Number of measures to determine the apogee")
+                            //Number of measures to determine the apogee
+                            .text(getResources().getString(R.string.editTxtApogeeMeasures_tooltip))
                             .show();
                 }
             });
@@ -923,7 +929,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             .on(v)
                             .color(Color.BLACK)
                             .position(ViewTooltip.Position.TOP)
-                            .text("Choose the altimeter resolution. The faster you rocket goes the lower it has to be")
+                            //Choose the altimeter resolution. The faster you rocket goes the lower it has to be
+                            .text(getResources().getString(R.string.txtViewAltimeterResolution_tooltip))
                             .show();
                 }
             });
@@ -945,6 +952,19 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     txtViewEEpromSize.setVisibility(View.VISIBLE);
                 }
             }
+            // Tool tip
+            view.findViewById(R.id.txtViewEEpromSize).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewTooltip
+                            .on(v)
+                            .color(Color.BLACK)
+                            .position(ViewTooltip.Position.TOP)
+                            //Choose the altimeter eeprom size depending on which eeprom is used
+                            .text(getResources().getString(R.string.txtViewEEpromSize_tooltip))
+                            .show();
+                }
+            });
             // Switch beeping on or off
             // 0 is On and 1 is Off
             dropdownBeepOnOff= (Spinner)view.findViewById(R.id.spinnerBeepOnOff);
@@ -971,6 +991,20 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     txtViewRecordTemp.setVisibility(View.VISIBLE);
                 }
             }
+
+            // Tool tip
+            txtViewRecordTemp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewTooltip
+                            .on(v)
+                            .color(Color.BLACK)
+                            .position(ViewTooltip.Position.TOP)
+                            //Choose if you want to record the temperature
+                            .text(getResources().getString(R.string.txtViewRecordTemp_tooltip))
+                            .show();
+                }
+            });
             // supersonic delay on/off
             dropdownSupersonicDelay = (Spinner)view.findViewById(R.id.spinnerSupersonicDelay);
             itemsSupersonicDelayOnOff= new String[]{"Off","On"};
@@ -980,16 +1014,54 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
             // nbr of meters to stop recording altitude
             EndRecordAltitude = (EditText)view.findViewById(R.id.editTxtEndRecordAltitude);
-
+            // Tool tip
+            EndRecordAltitude.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewTooltip
+                            .on(v)
+                            .color(Color.BLACK)
+                            .position(ViewTooltip.Position.TOP)
+                            //At which altitude do you consider that we have landed
+                            .text(getResources().getString(R.string.EndRecordAltitude_tooltip))
+                            .show();
+                }
+            });
             // nbr of meters to consider that we have a lift off
             LiftOffAltitude = (EditText)view.findViewById(R.id.editTxtLiftOffAltitude);
 
+            // Tool tip
+            LiftOffAltitude.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewTooltip
+                            .on(v)
+                            .color(Color.BLACK)
+                            .position(ViewTooltip.Position.TOP)
+                            //At which altitude do you consider that we have lift off
+                            .text(getResources().getString(R.string.LiftOffAltitude_tooltip))
+                            .show();
+                }
+            });
             dropdownBatteryType = (Spinner)view.findViewById(R.id.spinnerBatteryType);
             itemsBatteryType = new String[]{"Unknown","2S (7.4 Volts)","9 Volts","3S (11.1 Volts)"};
             ArrayAdapter<String> adapterBatteryType = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsBatteryType);
             dropdownBatteryType.setAdapter(adapterBatteryType);
 
+            // Tool tip
+            view.findViewById(R.id.txtViewBatteryType).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewTooltip
+                            .on(v)
+                            .color(Color.BLACK)
+                            .position(ViewTooltip.Position.TOP)
+                            //Enter battery type used to make sure that we do not discharge it too much
+                            .text(getResources().getString(R.string.txtViewBatteryType_tooltip))
+                            .show();
+                }
+            });
             if (AltiCfg != null) {
                 dropdownBaudRate.setSelection(AltiCfg.arrayIndex(itemsBaudRate,String.valueOf(AltiCfg.getConnectionSpeed())));
                 ApogeeMeasures.setText(String.valueOf(AltiCfg.getNbrOfMeasuresForApogee()));
@@ -1075,11 +1147,37 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     android.R.layout.simple_spinner_dropdown_item, items2);
             dropdownUnits.setAdapter(adapter2);
 
+            // Tool tip
+            view.findViewById(R.id.txtAltiUnit).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewTooltip
+                            .on(v)
+                            .color(Color.BLACK)
+                            .position(ViewTooltip.Position.TOP)
+                            //Choose the altitude units you are familiar with
+                            .text(getResources().getString(R.string.txtAltiUnit_tooltip))
+                            .show();
+                }
+            });
             //Altimeter name
             altiName = (TextView)view.findViewById(R.id.txtAltiNameValue);
             //here you can set the beep frequency
             Freq=(EditText)view.findViewById(R.id.editTxtBipFreq);
 
+            // Tool tip
+            Freq.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewTooltip
+                            .on(v)
+                            .color(Color.BLACK)
+                            .position(ViewTooltip.Position.TOP)
+                            //Choose the beeping frequency in Hz
+                            .text(getResources().getString(R.string.editTxtBipFreq_tooltip))
+                            .show();
+                }
+            });
             if (AltiCfg != null) {
                 altiName.setText(AltiCfg.getAltimeterName()+ " ver: " +
                         AltiCfg.getAltiMajorVersion()+"."+AltiCfg.getAltiMinorVersion());

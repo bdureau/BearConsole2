@@ -1,5 +1,5 @@
 <resources>
-    <string name="version"> pre 2.0.0</string>
+    <string name="version"> pre 2.0.0 candidate 1</string>
     <string name="app_name">Bear Console</string>
     <!-- Menu -->
     <string name="help">Help</string>
@@ -27,6 +27,20 @@
     <string name="OutDelay2_tooltip">Enter the firing delay in ms for the 2nd output</string>
     <string name="OutDelay3_tooltip">Enter the firing delay in ms for the 3rd output</string>
     <string name="OutDelay4_tooltip">Enter the firing delay in ms for the 4th output</string>
+    <string name="txtOut1_tooltip">Choose what you want to do with the 1st output</string>
+    <string name="txtOut2_tooltip">Choose what you want to do with the 2nd output</string>
+    <string name="txtOut3_tooltip">Choose what you want to do with the 3rd output</string>
+    <string name="txtOut4_tooltip">Choose what you want to do with the 4th output</string>
+    <string name="txtViewBaudRate_tooltip">Choose the altimeter baud rate. Be carefull you might not be able to communicate</string>
+    <string name="editTxtApogeeMeasures_tooltip">Number of measures to determine the apogee</string>
+    <string name="txtViewAltimeterResolution_tooltip">Choose the altimeter resolution. The faster you rocket goes the lower it has to be</string>
+    <string name="txtViewEEpromSize_tooltip">Choose the altimeter eeprom size depending on which eeprom is used</string>
+    <string name="txtViewRecordTemp_tooltip">Choose if you want to record the temperature</string>
+    <string name="EndRecordAltitude_tooltip">At which altitude do you consider that we have landed</string>
+    <string name="LiftOffAltitude_tooltip">At which altitude do you consider that we have lift off</string>
+    <string name="txtViewBatteryType_tooltip">Enter battery type used to make sure that we do not discharge it too much</string>
+    <string name="txtAltiUnit_tooltip">Choose the altitude units you are familiar with</string>
+    <string name="editTxtBipFreq_tooltip">Choose the beeping frequency in Hz</string>
 
     <!-- Config tab2 -->
     <string name="altimeter_config_tab2">Altimeter Config</string>
