@@ -25,27 +25,27 @@
     <string name="dismiss_config">Fermer</string>
     <!-- Config tab1 tooltips -->
     <string name="main_altitude_tooltip">Enter the altitude for the main chute</string>
-    <string name="OutDelay1_tooltip">Enter the firing delay in ms for the 1st output</string>
-    <string name="OutDelay2_tooltip">Enter the firing delay in ms for the 2nd output</string>
-    <string name="OutDelay3_tooltip">Enter the firing delay in ms for the 3rd output</string>
-    <string name="OutDelay4_tooltip">Enter the firing delay in ms for the 4th output</string>
-    <string name="txtOut1_tooltip">Choose what you want to do with the 1st output</string>
-    <string name="txtOut2_tooltip">Choose what you want to do with the 2nd output</string>
-    <string name="txtOut3_tooltip">Choose what you want to do with the 3rd output</string>
-    <string name="txtOut4_tooltip">Choose what you want to do with the 4th output</string>
-    <string name="txtViewBaudRate_tooltip">Choose the altimeter baud rate. Be carefull you might not be able to communicate</string>
-    <string name="editTxtApogeeMeasures_tooltip">Number of measures to determine the apogee</string>
-    <string name="txtViewAltimeterResolution_tooltip">Choose the altimeter resolution. The faster you rocket goes the lower it has to be</string>
-    <string name="txtViewEEpromSize_tooltip">Choose the altimeter eeprom size depending on which eeprom is used</string>
-    <string name="txtViewRecordTemp_tooltip">Choose if you want to record the temperature</string>
-    <string name="EndRecordAltitude_tooltip">At which altitude do you consider that we have landed</string>
-    <string name="LiftOffAltitude_tooltip">At which altitude do you consider that we have lift off</string>
-    <string name="txtViewBatteryType_tooltip">Enter battery type used to make sure that we do not discharge it too much</string>
-    <string name="txtAltiUnit_tooltip">Choose the altitude units you are familiar with</string>
-    <string name="editTxtBipFreq_tooltip">Choose the beeping frequency in Hz</string>
+    <string name="OutDelay1_tooltip">Entrer le retard de mise à feux en ms pour la 1ere sortie</string>
+    <string name="OutDelay2_tooltip">Entrer le retard de mise à feux en ms pour la 2eme sortie</string>
+    <string name="OutDelay3_tooltip">Entrer le retard de mise à feux en ms pour la 3eme sortie</string>
+    <string name="OutDelay4_tooltip">Entrer le retard de mise à feux en ms pour la 4eme sortie</string>
+    <string name="txtOut1_tooltip">Choisissez la finction de la 1er sortie</string>
+    <string name="txtOut2_tooltip">Choisissez la finction de la 2eme sortie</string>
+    <string name="txtOut3_tooltip">Choisissez la finction de la 3eme sortie</string>
+    <string name="txtOut4_tooltip">Choisissez la finction de la 4eme sortie</string>
+    <string name="txtViewBaudRate_tooltip">Choisissez la vitesse de communication de l\'altimètre. Attention cela peut comprometre la communication</string>
+    <string name="editTxtApogeeMeasures_tooltip">Nombre de mesures pour déterminer l\'apogée</string>
+    <string name="txtViewAltimeterResolution_tooltip">Choisir la résolution du capteur de pression. Plus la fusée est rapide et plus la résolution doit etre basse </string>
+    <string name="txtViewEEpromSize_tooltip">Choisissez la taille de l\'eeprom de l\'altimètre en fonction de l\'eeprom utilisée</string>
+    <string name="txtViewRecordTemp_tooltip">Choisissez d\'enregistrer ou non la température</string>
+    <string name="EndRecordAltitude_tooltip">Altitude à laquelle on considère que la fusée a attèrie</string>
+    <string name="LiftOffAltitude_tooltip">Altitude à laquelle on considère que la fusée a décollée</string>
+    <string name="txtViewBatteryType_tooltip">Entrer le type de batterie utilisé pour s\'assurer de ne pas trop la décharger</string>
+    <string name="txtAltiUnit_tooltip">Choisiez les unités pour l\'altitude avec lesquelle vous etes familié</string>
+    <string name="editTxtBipFreq_tooltip">Choisissez la fréquence des bip en Hz</string>
 
     <!-- Config tab2 -->
-    <string name="altimeter_config_tab2">Altimeter Config</string>
+    <string name="altimeter_config_tab2">Config de l\'altimètre</string>
     <string name="baudRate">Baud Rate</string>
     <string name="apogeeMeasures">Nbr Mesures Apogée</string>
     <string name="altimeterResolution">Resolution Alti</string>
