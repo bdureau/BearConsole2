@@ -1,0 +1,216 @@
+﻿<resources>
+    <string name="version"> pre 2.0.0 candidate 1</string>
+    <string name="app_name">Bear Console</string>
+    <!-- Menu -->
+    <string name="help">Ayuda</string>
+    <string name="about">Acerca de</string>
+    <string name="action_settings">Configuración de la Aplicación</string>
+    <string name="bluetooth_device">Disposito Bluetooth</string>
+
+    <!-- Screen altimeter config-->
+    <string name="altimeter_outputs">Salidas del Altímetro</string>
+    <string name="altimeter_config">Configuración del Altímetro</string>
+    <string name="main_altitude">Altitud del Paracaídas Principal(main)</string>
+    <string name="output_1">Salida 1</string>
+    <string name="delay1">Retraso1</string>
+    <string name="output_2">Salida 2</string>
+    <string name="delay2">Retraso2</string>
+    <string name="output_3">Salida 3</string>
+    <string name="delay3">Retraso3</string>
+    <string name="output_4">Salida 4</string>
+    <string name="delay4">Retraso4</string>
+    <string name="upload">Carga</string>
+    <string name="dismiss_config">Cancelar</string>
+    <!-- Config tab1 tooltips -->
+    <string name="main_altitude_tooltip">Entre la altitud para el paracaídas principal</string>
+    <string name="OutDelay1_tooltip">Entre el retraso en el disparo en ms para la salida 1</string>
+    <string name="OutDelay2_tooltip">Entre el retraso en el disparo en ms para la salida 2</string>
+    <string name="OutDelay3_tooltip">Entre el retraso en el disparo en ms para la salida 3</string>
+    <string name="OutDelay4_tooltip">Entre el retraso en el disparo en ms para la salida 4</string>
+    <string name="txtOut1_tooltip">Elija qué quiere hacer con la salida 1</string>
+    <string name="txtOut2_tooltip">Elija qué quiere hacer con la salida 2</string>
+    <string name="txtOut3_tooltip">Elija qué quiere hacer con la salida 3</string>
+    <string name="txtOut4_tooltip">Elija qué quiere hacer con la salida 1</string>
+    <string name="txtViewBaudRate_tooltip">Elija velocidad de transferencia de datos. Tenga cuidado podría perder la comunicación</string>
+    <string name="editTxtApogeeMeasures_tooltip">Número de medidas para determinar el apogeo</string>
+    <string name="txtViewAltimeterResolution_tooltip">Elija la resolución del altímetro. Cuanto más rápido vaya el cohete, más baja tiene que ser</string>
+    <string name="txtViewEEpromSize_tooltip">Elija el tamaño de la eeprom del altímetro dependiendo de qué eeprom es usada</string>
+    <string name="txtViewRecordTemp_tooltip">Elija si desea registrar la temperatura</string>
+    <string name="EndRecordAltitude_tooltip">¿A qué altitud considera que hemos aterrizado?</string>
+    <string name="LiftOffAltitude_tooltip">¿A qué altitud considera que hemos despegado?</string>
+    <string name="txtViewBatteryType_tooltip">Añada el tipo de batería utilizada para asegurarse de que no se descargue demasiado</string>
+    <string name="txtAltiUnit_tooltip">Elija la unidad de altitud con la que está familiarizado</string>
+    <string name="editTxtBipFreq_tooltip">Elija la frecuencia de pitido en Hz</string>
+
+    <!-- Config tab2 -->
+    <string name="altimeter_config_tab2">Configuración del altímetro</string>
+    <string name="baudRate">Velocidad de transmisión</string>
+    <string name="apogeeMeasures">Medidas de apogeo</string>
+    <string name="altimeterResolution">Resolución del altímetro</string>
+    <string name="eepromSize">Tamaño de la EEprom</string>
+    <string name="beepOnOff">Pitido On/Off</string>
+    <string name="RecordTemp">Grabar temperatura</string>
+    <string name="SupersonicDelay">Retraso Supersónico</string>
+    <string name="EndRecordAltitude">Fin de grabación de altitud</string>
+    <string name="LiftOffAltitude">Altitud de despegue</string>
+    <string name="BatteryType">Tipo de batería</string>
+    <!-- Config tab3 -->
+    <string name="altimeter_config_tab3">Configuración del altímetro</string>
+    <string name="alti_name">Nombre del altímetro</string>
+    <string name="units">Unidades</string>
+    <string name="bip_mode">Modo de pitido</string>
+    <string name="beep_freq">Frecuencia de pitido</string>
+    <!-- Config tab4-->
+    <string name="servos_config">Configuración de servo</string>
+    <string name="servo1_off_pos">Servo1 off pos</string>
+    <string name="servo1_on_pos">Servo1 on pos</string>
+    <string name="servo2_off_pos">Servo2 off pos</string>
+    <string name="servo2_on_pos">Servo2 on pos</string>
+    <string name="servo3_off_pos">Servo3 off pos</string>
+    <string name="servo3_on_pos">Servo3 on pos</string>
+    <string name="servo4_off_pos">Servo4 off pos</string>
+    <string name="servo4_on_pos">Servo4 on pos</string>
+    <!-- Main Screen -->
+    <string name="altimeter_settings">Configuraciones de altímetro</string>
+    <string name="continuity_on_off">Continuidad On/Off</string>
+    <string name="read_flights">Lectura de vuelos</string>
+    <string name="reset_settings">Restablecer configuración</string>
+    <string name="disconnect">Desconectar</string>
+    <string name="connect">Conectar</string>
+    <string name="telemetry">Telemetría</string>
+
+    <!--connection screen -->
+    <string name="select_device_to_use">Seleccionar dispositivo a usar</string>
+    <string name="show_paired_devices">Mostrar dispositivos vinculados</string>
+
+    <!-- Flight graph-->
+    <string name="altitude_time">Altitud / Tiempo</string>
+    <string name="close">Cerrar</string>
+    <!-- Reset screen -->
+    <string name="dismiss_reset">Descartar</string>
+    <string name="clear_flights">Eliminar vuelos</string>
+    <string name="reset_msg1">Está a punto de borrar todos los datos de vuelos, ¿está seguro de que quiere hacerlo?</string>
+    <string name="reset_msg2">Está a punto de restablecer su configuración de altímetro, ¿está seguro de que desea hacerlo?</string>
+    <string name="Yes">Sí</string>
+    <string name="No">No</string>
+    <!-- bluetooth messages -->
+    <string name="BT_msg1">Dispositivo bluetooth no disponible</string>
+    <string name="BT_msg2">Dispositivos bluetooh vinculados no encontrados</string>
+
+    <!-- main screen msg-->
+    <string name="MS_msg1">Conectando...</string>
+    <string name="MS_msg2">¡¡¡Por favor espere!!!</string>
+    <string name="MS_msg3">La conexión falló. ¿Hay un SPP Bluetooth? Inténtelo de nuevo</string>
+    <string name="MS_msg4">Conectado</string>
+
+    <string name="those_functions_will_reset_the_altimeter">Esas funciones restablecerán el altímetro</string>
+    <string name="restore_alti_config">Restaurar la configuración del altímetro</string>
+
+    <!--Flight list screen -->
+    <string name="Flight_list">Lista de vuelos</string>
+    <string name="title_activity_flight_list">Lista de vuelos</string>
+    <string name="dismiss_flight_list">Descargar</string>
+
+    <!-- About screen -->
+    <string name="about_screen">Acerca de</string>
+    <string name="bear_console_version">Bear Console version</string>
+    <string name="dismiss_about">Descartar</string>
+
+    <!-- Messages -->
+    <!-- AltimeterConfigActivity -->
+    <string name="msg1">Sólo se permite un paracaídas principal (main). Por favor revise su configuración</string>
+    <string name="msg2">Sólo se permite un paracaídas de frenado (drogue). Por favor revise su configuración</string>
+    <string name="msg3">Configuración cargada correctamente</string>
+    <string name="msg4">Error al cargar la configuración</string>
+    <string name="msg5">Recuperando la configuración del altímetro ...</string>
+    <string name="msg6">¡¡¡Por favor espere!!!</string>
+    <string name="msg7">Descargando vuelos ...</string>
+    <string name="msg8">¡¡¡Por favor espere!!!</string>
+    <string name="msg9">Ha cambiado la velocidad de transmisión, es posible que el altímetro no pueda conectarse. ¿Está seguro?</string>
+
+    <!-- flight views screen -->
+    <string name="Meters_fview">Metros</string>
+    <string name="Feet_fview">Pies</string>
+    <string name="Altitude_time">Altitud / Tiempo</string>
+    <string name="Time_fv">Tiempo (ms)</string>
+    <string name="Altitude">Altitud</string>
+    <string name="dismiss_flight_list_view">Descartar</string>
+    <!-- Application preference screen-->
+    <string name="titre_application_pref">Preferencias de la aplicación</string>
+
+
+    <!-- Config-->
+    <string name="save_config">Grabar</string>
+    <string name="dismiss_app_config">Descargar</string>
+    <string name="application_langage_config">Lenguaje de la aplicación</string>
+    <string name="graph_color_config">Color de gráficos</string>
+    <string name="application_units_config">Unidades de la aplicación</string>
+    <string name="graph_back_color_config">Color del fondo del gráfico</string>
+    <string name="default_config">Valor por defecto</string>
+    <string name="font_size">Tamaño de fuente</string>
+    <string name="title_activity_settings">Configuraciones</string>
+    <string name="baud_rate">Velocidad de transferencia</string>
+    <string name="connection_type">Tipo de conexión</string>
+    <string name="graphiclib_type">Librería de gráficos </string>
+
+    <!-- Telemetry -->
+    <string name="stop_telemetry">Parar telemetría</string>
+    <string name="start_telemetry">Empezar telemetría</string>
+    <string name="current_phase">Fase actual</string>
+    <string name="altitude">Altitud</string>
+    <string name="event_time">Hora del evento</string>
+    <string name="lift_off">Despegue</string>
+    <string name="apogee_drogue">Apogeo/paracaidas de frendo (drogue)</string>
+    <string name="main_chute">Paracaídas principal (main)</string>
+    <string name="landed">Aterrizado</string>
+    <string name="max_speed">Velocidad máxima</string>
+    <string name="current_altitude">Altitud actual</string>
+    <string name="dis">Desconectar</string>
+
+    <!-- Status -->
+    <string name="title_activity_altimeter_status">Estado del altímetro</string>
+    <string name="altimeter_status">Estado del altímetro</string>
+    <string name="altimeter_status_disabled">Desconectado</string>
+    <string name="altimeter_status_output_1">Salida 1</string>
+    <string name="altimeter_status_output_2">Salida 2</string>
+    <string name="altimeter_status_output_3">Salida 3</string>
+    <string name="altimeter_status_output_4">Salida 4</string>
+    <string name="altimeter_status_current_altitude">Alitud actual</string>
+    <string name="altimeter_status_battery_voltage">Voltaje de la batería</string>
+    <string name="altimeter_status_link_type">Tipo de enlace</string>
+    <string name="altimeter_status_bluetooth">Bluetooth</string>
+    <string name="status">Estado</string>
+    <string name="status_msg1">Disparar Salidas del Altímetro \n ¡Asegúrese de que no tiene \n ninguna carga pirotécnica real!</string>
+    <string name="temperature">Temperatura</string>
+    <string name="switch_output_1">Salida 1</string>
+    <string name="switch_output_2">Salida 2</string>
+    <string name="switch_output_3">Salida 3</string>
+    <string name="switch_output_4">Salida 4</string>
+    <string name="no_continuity">Sin continuidad</string>
+    <string name="continuity">Continuidad</string>
+    <string name="disabled">Desconectado</string>
+
+    <!-- flash firmware -->
+    <string name="msg10">Actualizando firmware...</string>
+    <string name="msg11">¡¡¡Por favor espere!!!</string>
+    <string name="msg12">Carga: </string>
+    <string name="msg13">No se puede abrir</string>
+    <string name="msg14">Carga: Empieza \n</string>
+    <string name="msg15">Carga: Fallo\n</string>
+    <string name="msg16">Carga: Satisfactoria\n</string>
+    <string name="msg17">Cancelar carga\n</string>
+    <string name="msg18">Error: </string>
+    <string name="msg19">Recuperación del firmware...: </string>
+    <string name="firmware_cancel">Cancelar</string>
+    <string name="firmware_dismiss">Descartar</string>
+    <string name="recover_firmware">Recuperar Firmware</string>
+    <string name="flash_firmware">Actualizar Firmware</string>
+    <string name="select_altimeter_model">Seleccionar modelo de altímetro:</string>
+    <string name="after_complete_upload">Una vez completada la carga, podrá actualizar el firmware real</string>
+    <string name="flight_list_cancel">Cancelar</string>
+    <string name="flight_retrieval_canceled">La recuperación de vuelos ha sido cancelada por el usuario</string>
+    <string name="flight_have_been_recorded">No se han registrado vuelos</string>
+    <string name="main_screen_actity">Cancelar</string>
+    <string name="title_activity_flight_view_maps">Mapa</string>
+
+</resources>
