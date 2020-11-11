@@ -189,6 +189,8 @@
     <string name="no_continuity">Sin continuidad</string>
     <string name="continuity">Continuidad</string>
     <string name="disabled">Desconectado</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
 
     <!-- flash firmware -->
     <string name="msg10">Actualizando firmware...</string>

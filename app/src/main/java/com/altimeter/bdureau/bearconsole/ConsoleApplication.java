@@ -472,6 +472,19 @@ public class ConsoleApplication extends Application {
                                             mHandler.obtainMessage(16, String.valueOf(currentSentence[16])).sendToTarget();
                                         else
                                             mHandler.obtainMessage(16, String.valueOf(0)).sendToTarget();
+
+                                    // Value 17 contains the latitude
+                                    if (currentSentence.length > 17)
+                                        if (currentSentence[17].matches("\\d+(?:\\.\\d+)?"))
+                                            mHandler.obtainMessage(17, String.valueOf(currentSentence[17])).sendToTarget();
+                                        else
+                                            mHandler.obtainMessage(17, String.valueOf(0)).sendToTarget();
+                                    // Value 18 contains the number of flight
+                                    if (currentSentence.length > 18)
+                                        if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
+                                            mHandler.obtainMessage(18, String.valueOf(currentSentence[18])).sendToTarget();
+                                        else
+                                            mHandler.obtainMessage(18, String.valueOf(0)).sendToTarget();
                                 }
                                 break;
 

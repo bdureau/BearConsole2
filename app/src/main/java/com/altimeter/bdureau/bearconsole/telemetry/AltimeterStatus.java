@@ -28,6 +28,7 @@ public class AltimeterStatus extends AppCompatActivity {
     private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
     private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage,txtNbrOfFlight;
     private TextView txtViewOutput4, txtViewBatteryVoltage, txtViewOutput3, txtViewEEprom, txtViewFlight;
+    private TextView txtViewLatitude, txtViewLongitude, txtViewLatitudeValue, txtViewLongitudeValue;
     private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;
 
     Handler handler = new Handler() {
@@ -88,7 +89,14 @@ public class AltimeterStatus extends AppCompatActivity {
                     //Value 16 contains the numberof flight
                     txtNbrOfFlight.setText((String) msg.obj );
                     break;
-
+                case 17:
+                    //Value 17 contains the latitude
+                    txtViewLatitudeValue.setText((String) msg.obj );
+                    break;
+                case 18:
+                    //Value 18 contains the longitude
+                    txtViewLongitudeValue.setText((String) msg.obj );
+                    break;
             }
         }
     };
@@ -187,6 +195,10 @@ public class AltimeterStatus extends AppCompatActivity {
         txtNbrOfFlight= (TextView) findViewById(R.id.txtViewNbrOfFlight);
         txtViewEEprom = (TextView) findViewById(R.id.txtViewEEprom);
         txtViewFlight = (TextView) findViewById(R.id.txtViewFlight);
+        txtViewLatitude = (TextView) findViewById(R.id.txtViewLatitude);
+        txtViewLongitude = (TextView) findViewById(R.id.txtViewLongitude);
+        txtViewLatitudeValue = (TextView) findViewById(R.id.txtViewLatitudeValue);
+        txtViewLongitudeValue = (TextView) findViewById(R.id.txtViewLongitudeValue);
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")) {
             txtViewVoltage.setVisibility(View.VISIBLE);
@@ -222,6 +234,18 @@ public class AltimeterStatus extends AppCompatActivity {
             txtViewFlight.setVisibility(View.VISIBLE);
             txtEEpromUsage.setVisibility(View.VISIBLE);
             txtNbrOfFlight.setVisibility(View.VISIBLE);
+        }
+        //hide GPS
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")){
+            txtViewLatitude.setVisibility(View.VISIBLE);
+            txtViewLongitude.setVisibility(View.VISIBLE);
+            txtViewLatitudeValue.setVisibility(View.VISIBLE);
+            txtViewLongitudeValue.setVisibility(View.VISIBLE);
+        } else {
+            txtViewLatitude.setVisibility(View.INVISIBLE);
+            txtViewLongitude.setVisibility(View.INVISIBLE);
+            txtViewLatitudeValue.setVisibility(View.INVISIBLE);
+            txtViewLongitudeValue.setVisibility(View.INVISIBLE);
         }
         txtViewLink.setText(myBT.getConnectionType());
 

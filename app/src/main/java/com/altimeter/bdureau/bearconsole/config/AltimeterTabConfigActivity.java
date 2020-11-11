@@ -354,7 +354,11 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
         }
 
-        altiCfgStr = altiCfgStr +  ";\n";
+        String cfg = altiCfgStr;
+        cfg = cfg.replace("s","");
+        cfg = cfg.replace(",","");
+        //altiCfgStr = altiCfgStr + "," + generateCheckSum(cfg) +";\n";
+        altiCfgStr = altiCfgStr + ";\n";
         // msg(altiCfgStr.toString());
 
         if(myBT.getConnected())
@@ -368,6 +372,20 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         //return true;
     }
 
+    private Integer generateCheckSum(String value)  {
+
+        byte[] data = value.getBytes();
+        long checksum = 0L;
+
+        for( byte b : data )  {
+            checksum += b;
+        }
+
+        checksum = checksum % 256;
+
+        return new Long( checksum ).intValue();
+
+    }
     public class SectionsPageAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList();
         private final List<String> mFragmentTitleList= new ArrayList();
