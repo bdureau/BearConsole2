@@ -1,19 +1,22 @@
 package com.altimeter.bdureau.bearconsole.config;
 /**
- *   @description: Retrieve altimeter configuration and show it in tabs
- *                  The user can then load it back to the altimeter
- *   @author: boris.dureau@neuf.fr
- *
+ * @description: Retrieve altimeter configuration and show it in tabs
+ * The user can then load it back to the altimeter
+ * @author: boris.dureau@neuf.fr
  **/
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+
 import androidx.annotation.Nullable;
+
 import android.app.ProgressDialog;
 import android.graphics.Color;
 /*import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;*/
 import android.os.AsyncTask;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,6 +24,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,19 +50,18 @@ import com.github.florent37.viewtooltip.ViewTooltip;
 import static android.graphics.Color.GREEN;*/
 
 public class AltimeterTabConfigActivity extends AppCompatActivity {
-    private static final String TAG ="AltimeterTabConfigActivity";
+    private static final String TAG = "AltimeterTabConfigActivity";
 
     private ViewPager mViewPager;
     SectionsPageAdapter adapter;
-    Tab1Fragment configPage1 =null;
-    Tab2Fragment configPage2 =null;
-    Tab3Fragment configPage3 =null;
-    Tab4Fragment configPage4 =null;
+    Tab1Fragment configPage1 = null;
+    Tab2Fragment configPage2 = null;
+    Tab3Fragment configPage3 = null;
+    Tab4Fragment configPage4 = null;
     private Button btnDismiss, btnUpload;
-    ConsoleApplication myBT ;
+    ConsoleApplication myBT;
     private static AltiConfigData AltiCfg = null;
     private ProgressDialog progress;
-
 
 
     @Override
@@ -72,32 +75,29 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         setContentView(R.layout.activity_altimeter_tab_config);
 
-        mViewPager =(ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
 
-        btnDismiss = (Button)findViewById(R.id.butDismiss);
-        btnDismiss.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    finish();      //exit the application configuration activity
-                }
-            });
+        btnDismiss = (Button) findViewById(R.id.butDismiss);
+        btnDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();      //exit the application configuration activity
+            }
+        });
 
-        btnUpload = (Button)findViewById(R.id.butUpload);
-        btnUpload.setOnClickListener(new View.OnClickListener()
-            {
+        btnUpload = (Button) findViewById(R.id.butUpload);
+        btnUpload.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v)
-                {
-                    //send back the config to the altimeter and exit if successful
-                    sendConfig();
-                }
-            });
+            @Override
+            public void onClick(View v) {
+                //send back the config to the altimeter and exit if successful
+                sendConfig();
+            }
+        });
     }
+
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsPageAdapter(getSupportFragmentManager());
         configPage1 = new Tab1Fragment();
@@ -108,7 +108,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         adapter.addFragment(configPage2, "TAB2");
         adapter.addFragment(configPage3, "TAB3");
 
-        if(myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
             configPage4 = new Tab4Fragment();
             adapter.addFragment(configPage4, "TAB4");
         }
@@ -118,65 +118,87 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
     }
 
 
-    private void readConfig()
-    {
+    private void readConfig() {
         // ask for config
-        if(myBT.getConnected()) {
+        if (myBT.getConnected()) {
             //msg("Retreiving altimeter config...");
             myBT.setDataReady(false);
             myBT.flush();
             myBT.clearInput();
-            myBT.write("b;\n".toString());
-            myBT.flush();
+            //switch off the main loop before sending the config
+            myBT.write("m0;\n".toString());
 
-            //get the results
             //wait for the result to come back
             try {
                 while (myBT.getInputStream().available() <= 0) ;
             } catch (IOException e) {
 
             }
-        }
-        //reading the config
-        if(myBT.getConnected()) {
             String myMessage = "";
-            long timeOut = 10000;
-            long startTime = System.currentTimeMillis();
+            myMessage = myBT.ReadResult(3000);
+            if (myMessage.equals("OK")) {
+                myBT.setDataReady(false);
+                myBT.flush();
+                myBT.clearInput();
+                myBT.write("b;\n".toString());
+                myBT.flush();
 
-            myMessage =myBT.ReadResult(3000);
-
-            if (myMessage.equals( "start alticonfig end") )
-            {
+                //get the results
+                //wait for the result to come back
                 try {
-                    AltiCfg= myBT.getAltiConfigData();
+                    while (myBT.getInputStream().available() <= 0) ;
+                } catch (IOException e) {
+
                 }
-                catch (Exception e) {
-                    //  msg("pb ready data");
+                myMessage = myBT.ReadResult(3000);
+                //reading the config
+                if (myMessage.equals("start alticonfig end")) {
+                    try {
+                        AltiCfg = myBT.getAltiConfigData();
+                    } catch (Exception e) {
+                        //  msg("pb ready data");
+                    }
+                } else {
+                    // msg("data not ready");
                 }
-            }
-            else
-            {
-                // msg("data not ready");
+                myBT.setDataReady(false);
+                myBT.flush();
+                myBT.clearInput();
+                //switch on the main loop before sending the config
+                myBT.write("m1;\n".toString());
+
+
+                //wait for the result to come back
+                try {
+                    while (myBT.getInputStream().available() <= 0) ;
+                } catch (IOException e) {
+
+                }
+                myMessage = myBT.ReadResult(3000);
+                myBT.flush();
             }
         }
 
+        //msg(getResources().getString(R.string.msg3));
+
+
+
     }
 
-    private void msg(String s)
-    {
-        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+    private void msg(String s) {
+        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
-    private boolean sendConfig()
-    {
+
+    private boolean sendConfig() {
         //final boolean exit_no_save = false;
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         long prevBaudRate = AltiCfg.getConnectionSpeed();
-        long nbrOfMain=0;
-        long nbrOfDrogue=0;
+        long nbrOfMain = 0;
+        long nbrOfDrogue = 0;
         // check if the baud rate has changed
 
-        if(configPage1.isViewCreated()) {
+        if (configPage1.isViewCreated()) {
             AltiCfg.setOutput1Delay(configPage1.getOutDelay1());
             AltiCfg.setOutput2Delay(configPage1.getOutDelay2());
             AltiCfg.setOutput3Delay(configPage1.getOutDelay3());
@@ -187,14 +209,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             AltiCfg.setOutput4(configPage1.getDropdownOut4());
             AltiCfg.setMainAltitude(configPage1.getMainAltitude());
         }
-        if(configPage2.isViewCreated()) {
+        if (configPage2.isViewCreated()) {
 
-           // AltiCfg.setConnectionSpeed(configPage2.getBaudRate());
+            // AltiCfg.setConnectionSpeed(configPage2.getBaudRate());
             AltiCfg.setNbrOfMeasuresForApogee(configPage2.getApogeeMeasures());
             AltiCfg.setAltimeterResolution(configPage2.getAltimeterResolution());
             AltiCfg.setEepromSize(configPage2.getEEpromSize());
             AltiCfg.setBeepOnOff(configPage2.getBeepOnOff());
-          // msg("ret" +configPage2.getRecordTempOnOff());
+            // msg("ret" +configPage2.getRecordTempOnOff());
             AltiCfg.setEndRecordAltitude(configPage2.getEndRecordAltitude());
             AltiCfg.setRecordTemperature(configPage2.getRecordTempOnOff());
             AltiCfg.setSupersonicDelay(configPage2.getSupersonicDelayOnOff());
@@ -202,14 +224,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             AltiCfg.setBatteryType(configPage2.getBatteryType());
         }
 
-        if(configPage3.isViewCreated()) {
+        if (configPage3.isViewCreated()) {
             AltiCfg.setBeepingFrequency(configPage3.getFreq());
             AltiCfg.setBeepingMode(configPage3.getDropdownBipMode());
             AltiCfg.setUnits(configPage3.getDropdownUnits());
         }
 
-        if(AltiCfg.getAltimeterName().equals("AltiServo")){
-        if(configPage4.isViewCreated()) {
+        if (AltiCfg.getAltimeterName().equals("AltiServo")) {
+            if (configPage4.isViewCreated()) {
 
                 AltiCfg.setServo1OnPos(configPage4.getServo1OnPos());
                 AltiCfg.setServo2OnPos(configPage4.getServo2OnPos());
@@ -226,16 +248,16 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         if (AltiCfg.getOutput2() == 0)
             nbrOfMain++;
 
-        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
+        if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
                 AltiCfg.getAltimeterName().equals("AltiServo") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiV2")||
-                AltiCfg.getAltimeterName().equals("AltiGPS")||
+                AltiCfg.getAltimeterName().equals("AltiMultiV2") ||
+                AltiCfg.getAltimeterName().equals("AltiGPS") ||
                 AltiCfg.getAltimeterName().equals("AltiMulti")) {
-                if (AltiCfg.getOutput3() == 0)
-                    nbrOfMain++;
-            }
-        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
-                AltiCfg.getAltimeterName().equals("AltiGPS")||
+            if (AltiCfg.getOutput3() == 0)
+                nbrOfMain++;
+        }
+        if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
+                AltiCfg.getAltimeterName().equals("AltiGPS") ||
                 AltiCfg.getAltimeterName().equals("AltiServo")) {
             if (AltiCfg.getOutput4() == 0)
                 nbrOfMain++;
@@ -245,104 +267,97 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             nbrOfDrogue++;
         if (AltiCfg.getOutput2() == 1)
             nbrOfDrogue++;
-        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
+        if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
                 AltiCfg.getAltimeterName().equals("AltiServo") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiV2")||
-                AltiCfg.getAltimeterName().equals("AltiGPS")||
+                AltiCfg.getAltimeterName().equals("AltiMultiV2") ||
+                AltiCfg.getAltimeterName().equals("AltiGPS") ||
                 AltiCfg.getAltimeterName().equals("AltiMulti")) {
             if (AltiCfg.getOutput3() == 1)
                 nbrOfDrogue++;
         }
-        if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")||
-                AltiCfg.getAltimeterName().equals("AltiGPS")||
+        if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
+                AltiCfg.getAltimeterName().equals("AltiGPS") ||
                 AltiCfg.getAltimeterName().equals("AltiServo")) {
             if (AltiCfg.getOutput4() == 1)
                 nbrOfDrogue++;
         }
 
-        if (nbrOfMain > 1)
-        {
+        if (nbrOfMain > 1) {
             //Only one main is allowed Please review your config
             msg(getResources().getString(R.string.msg1));
             return false;
         }
-        if (nbrOfDrogue > 1)
-        {
+        if (nbrOfDrogue > 1) {
             //Only one Drogue is allowed Please review your config
             msg(getResources().getString(R.string.msg2));
             return false;
         }
 
-        if(configPage2.isViewCreated()) {
-            if(AltiCfg.getConnectionSpeed() != configPage2.getBaudRate())
-            {
+        if (configPage2.isViewCreated()) {
+            if (AltiCfg.getConnectionSpeed() != configPage2.getBaudRate()) {
                 //final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 //You are about to change the baud rate, are you sure you want to do it?
                 builder.setMessage(getResources().getString(R.string.msg9))
-                    .setCancelable(false)
-                    .setPositiveButton(getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-                            dialog.cancel();
-                            AltiCfg.setConnectionSpeed(configPage2.getBaudRate());
-                            sendAltiCfg ();
-                            finish();
-                        }
-                    })
-                    .setNegativeButton(getResources().getString(R.string.No), new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-                            dialog.cancel();
+                        .setCancelable(false)
+                        .setPositiveButton(getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, final int id) {
+                                dialog.cancel();
+                                AltiCfg.setConnectionSpeed(configPage2.getBaudRate());
+                                sendAltiCfg();
+                                finish();
+                            }
+                        })
+                        .setNegativeButton(getResources().getString(R.string.No), new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, final int id) {
+                                dialog.cancel();
 
-                        }
-                    });
+                            }
+                        });
                 final AlertDialog alert = builder.create();
                 alert.show();
-            }
-            else
-            {
-                sendAltiCfg ();
+            } else {
+                sendAltiCfg();
                 finish();
             }
-        }
-        else
-        {
-            sendAltiCfg ();
+        } else {
+            sendAltiCfg();
             finish();
         }
 
         return true;
     }
 
-    private void sendAltiCfg () {
-        String altiCfgStr="";
+    private void sendAltiCfg() {
+        String altiCfgStr = "";
 
         altiCfgStr = "s," +
-                AltiCfg.getUnits() +","+
-                AltiCfg.getBeepingMode()+","+
-                AltiCfg.getOutput1()+","+
-                AltiCfg.getOutput2()+","+
-                AltiCfg.getOutput3()+","+
-                AltiCfg.getMainAltitude()+","+
-                AltiCfg.getSupersonicYesNo() +","+
-                AltiCfg.getOutput1Delay() +","+
-                AltiCfg.getOutput2Delay() +","+
-                AltiCfg.getOutput3Delay() +","+
-                AltiCfg.getBeepingFrequency() + ","+
-                AltiCfg.getNbrOfMeasuresForApogee()+ ","+
-                AltiCfg.getEndRecordAltitude()+ ","+
-                AltiCfg.getRecordTemperature()+ ","+
-                AltiCfg.getSupersonicDelay()+ ","+
-                AltiCfg.getConnectionSpeed()+ ","+
-                AltiCfg.getAltimeterResolution()+ ","+
-                AltiCfg.getEepromSize()+"," +
+                AltiCfg.getUnits() + "," +
+                AltiCfg.getBeepingMode() + "," +
+                AltiCfg.getOutput1() + "," +
+                AltiCfg.getOutput2() + "," +
+                AltiCfg.getOutput3() + "," +
+                AltiCfg.getMainAltitude() + "," +
+                AltiCfg.getSupersonicYesNo() + "," +
+                AltiCfg.getOutput1Delay() + "," +
+                AltiCfg.getOutput2Delay() + "," +
+                AltiCfg.getOutput3Delay() + "," +
+                AltiCfg.getBeepingFrequency() + "," +
+                AltiCfg.getNbrOfMeasuresForApogee() + "," +
+                AltiCfg.getEndRecordAltitude() + "," +
+                AltiCfg.getRecordTemperature() + "," +
+                AltiCfg.getSupersonicDelay() + "," +
+                AltiCfg.getConnectionSpeed() + "," +
+                AltiCfg.getAltimeterResolution() + "," +
+                AltiCfg.getEepromSize() + "," +
                 AltiCfg.getBeepOnOff();
         //if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")|| AltiCfg.getAltimeterName().equals("AltiServo")) {
-            altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4();
-            altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4Delay();
-       // }
+        altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4();
+        altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4Delay();
+        // }
         altiCfgStr = altiCfgStr + "," + AltiCfg.getLiftOffAltitude();
         altiCfgStr = altiCfgStr + "," + AltiCfg.getBatteryType();
 
-        if(AltiCfg.getAltimeterName().equals("AltiServo")){
+        if (AltiCfg.getAltimeterName().equals("AltiServo")) {
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OnPos();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo2OnPos();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo3OnPos();
@@ -355,46 +370,100 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
 
         String cfg = altiCfgStr;
-        cfg = cfg.replace("s","");
-        cfg = cfg.replace(",","");
+        cfg = cfg.replace("s", "");
+        cfg = cfg.replace(",", "");
         //altiCfgStr = altiCfgStr + "," + generateCheckSum(cfg) +";\n";
         altiCfgStr = altiCfgStr + ";\n";
         // msg(altiCfgStr.toString());
 
-        if(myBT.getConnected())
+        if (myBT.getConnected()) {
+            myBT.setDataReady(false);
+            myBT.flush();
+            myBT.clearInput();
+            //switch off the main loop before sending the config
+            myBT.write("m0;\n".toString());
+
+            //wait for the result to come back
+            try {
+                while (myBT.getInputStream().available() <= 0) ;
+            } catch (IOException e) {
+
+            }
+            String myMessage = "";
+            myMessage = myBT.ReadResult(3000);
+
+            myBT.flush();
+            myBT.clearInput();
+            myBT.setDataReady(false);
+
             //send back the config
             myBT.write(altiCfgStr.toString());
+            myBT.flush();
+            //get the results
+            //wait for the result to come back
+            try {
+                while (myBT.getInputStream().available() <= 0) ;
+            } catch (IOException e) {
 
-        msg(getResources().getString(R.string.msg3));//+altiCfgStr.toString());
+            }
+            myMessage = myBT.ReadResult(3000);
+            if (myMessage.equals("OK")) {
+                msg("Sent OK:" + altiCfgStr.toString());
+            } else {
+                //  msg(myMessage);
+            }
+            if (myMessage.equals("KO")) {
+                msg(getResources().getString(R.string.msg2));
+            }
 
-        myBT.flush();
 
+            myBT.setDataReady(false);
+            myBT.flush();
+            myBT.clearInput();
+            //switch on the main loop before sending the config
+            myBT.write("m1;\n".toString());
+
+
+            //wait for the result to come back
+            try {
+                while (myBT.getInputStream().available() <= 0) ;
+            } catch (IOException e) {
+
+            }
+            myMessage = "";
+            myMessage = myBT.ReadResult(3000);
+            msg(getResources().getString(R.string.msg3));
+
+            myBT.flush();
+        }
         //return true;
     }
 
-    private Integer generateCheckSum(String value)  {
+    private Integer generateCheckSum(String value) {
 
         byte[] data = value.getBytes();
         long checksum = 0L;
 
-        for( byte b : data )  {
+        for (byte b : data) {
             checksum += b;
         }
 
         checksum = checksum % 256;
 
-        return new Long( checksum ).intValue();
+        return new Long(checksum).intValue();
 
     }
+
     public class SectionsPageAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList();
-        private final List<String> mFragmentTitleList= new ArrayList();
+        private final List<String> mFragmentTitleList = new ArrayList();
 
         public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
-        public SectionsPageAdapter (FragmentManager fm){
+
+        public SectionsPageAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -404,112 +473,132 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return super.getPageTitle(position);
         }
+
         @Override
         public Fragment getItem(int position) {
             return mFragmentList.get(position);
         }
+
         @Override
         public int getCount() {
             return mFragmentList.size();
         }
     }
+
     public static class Tab1Fragment extends Fragment {
         private static final String TAG = "Tab1Fragment";
 
 
         private Spinner dropdownOut1, dropdownOut2, dropdownOut3, dropdownOut4;
-        private EditText OutDelay1, OutDelay2,OutDelay3, OutDelay4;
+        private EditText OutDelay1, OutDelay2, OutDelay3, OutDelay4;
         private EditText MainAltitude;
-        private TextView txtOut1, txtOut2, txtOut3, txtViewDelay3, txtOut4, txtViewDelay4 ;
+        private TextView txtOut1, txtOut2, txtOut3, txtViewDelay3, txtOut4, txtViewDelay4;
 
         private boolean ViewCreated = false;
+
         public boolean isViewCreated() {
             return ViewCreated;
         }
 
         public int getDropdownOut1() {
-            return (int)this.dropdownOut1.getSelectedItemId();
+            return (int) this.dropdownOut1.getSelectedItemId();
         }
+
         public void setDropdownOut1(int Out1) {
             this.dropdownOut1.setSelection(Out1);
         }
+
         public int getDropdownOut2() {
-            return (int)this.dropdownOut2.getSelectedItemId();
+            return (int) this.dropdownOut2.getSelectedItemId();
         }
+
         public void setDropdownOut2(int Out2) {
             this.dropdownOut2.setSelection(Out2);
         }
+
         public int getDropdownOut3() {
-            return (int)this.dropdownOut3.getSelectedItemId();
+            return (int) this.dropdownOut3.getSelectedItemId();
         }
+
         public void setDropdownOut3(int Out3) {
             this.dropdownOut3.setSelection(Out3);
         }
+
         public int getDropdownOut4() {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo"))
-                return (int)this.dropdownOut4.getSelectedItemId();
+            if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") || AltiCfg.getAltimeterName().equals("AltiGPS") || AltiCfg.getAltimeterName().equals("AltiServo"))
+                return (int) this.dropdownOut4.getSelectedItemId();
             else
                 return -1;
         }
+
         public void setDropdownOut4(int Out4) {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo"))  {
+            if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") || AltiCfg.getAltimeterName().equals("AltiGPS") || AltiCfg.getAltimeterName().equals("AltiServo")) {
                 this.dropdownOut4.setSelection(Out4);
                 this.dropdownOut4.setVisibility(View.VISIBLE);
                 txtOut4.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 this.dropdownOut4.setVisibility(View.INVISIBLE);
                 txtOut4.setVisibility(View.INVISIBLE);
             }
 
         }
+
         public void setOutDelay1(int OutDelay1) {
             this.OutDelay1.setText(String.valueOf(OutDelay1));
         }
+
         public int getOutDelay1() {
             int ret;
-            try {ret = Integer.parseInt(OutDelay1.getText().toString());}
-            catch (Exception e) {
-                ret =0;
+            try {
+                ret = Integer.parseInt(OutDelay1.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
             }
             return ret;
         }
+
         public void setOutDelay2(int OutDelay2) {
             this.OutDelay2.setText(String.valueOf(OutDelay2));
         }
+
         public int getOutDelay2() {
             int ret;
-            try {ret = Integer.parseInt(OutDelay2.getText().toString());}
-            catch (Exception e) {
-                ret =0;
+            try {
+                ret = Integer.parseInt(OutDelay2.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
             }
             return ret;
         }
+
         public void setOutDelay3(int OutDelay3) {
             this.OutDelay3.setText(String.valueOf(OutDelay3));
         }
+
         public int getOutDelay3() {
             int ret;
-            try {ret = Integer.parseInt(OutDelay3.getText().toString());}
-            catch (Exception e) {
-                ret =0;
+            try {
+                ret = Integer.parseInt(OutDelay3.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
             }
             return ret;
         }
+
         public void setOutDelay4(int OutDelay4) {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo"))  {
+            if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") || AltiCfg.getAltimeterName().equals("AltiGPS") || AltiCfg.getAltimeterName().equals("AltiServo")) {
                 this.OutDelay4.setText(String.valueOf(OutDelay4));
                 this.OutDelay4.setVisibility(View.VISIBLE);
                 txtViewDelay4.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 this.OutDelay4.setVisibility(View.INVISIBLE);
                 txtViewDelay4.setVisibility(View.INVISIBLE);
             }
 
         }
+
         public int getOutDelay4() {
-            if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo")) {
+            if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") || AltiCfg.getAltimeterName().equals("AltiGPS") || AltiCfg.getAltimeterName().equals("AltiServo")) {
                 int ret;
                 try {
                     ret = Integer.parseInt(OutDelay4.getText().toString());
@@ -517,14 +606,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     ret = 0;
                 }
                 return ret;
-            }
-            else
+            } else
                 return -1;
         }
 
         public void setMainAltitude(int MainAltitude) {
             this.MainAltitude.setText(String.valueOf(MainAltitude));
         }
+
         public int getMainAltitude() {
             int ret;
             try {
@@ -534,57 +623,58 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             return ret;
         }
+
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.tabconfigpart1_fragment,container,false);
+            View view = inflater.inflate(R.layout.tabconfigpart1_fragment, container, false);
 
             //Output 1
-            dropdownOut1 = (Spinner)view.findViewById(R.id.spinnerOut1);
+            dropdownOut1 = (Spinner) view.findViewById(R.id.spinnerOut1);
             String[] items3 = new String[]{"Main", "Drogue", "Timer", "Disabled"};
             ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items3);
             dropdownOut1.setAdapter(adapter3);
 
             //Output 2
-            dropdownOut2 = (Spinner)view.findViewById(R.id.spinnerOut2);
+            dropdownOut2 = (Spinner) view.findViewById(R.id.spinnerOut2);
 
             ArrayAdapter<String> adapter4 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items3);
             dropdownOut2.setAdapter(adapter4);
 
             //Output 3
-            dropdownOut3 = (Spinner)view.findViewById(R.id.spinnerOut3);
+            dropdownOut3 = (Spinner) view.findViewById(R.id.spinnerOut3);
 
             ArrayAdapter<String> adapter5 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items3);
             dropdownOut3.setAdapter(adapter5);
 
             //Output 4
-            dropdownOut4 = (Spinner)view.findViewById(R.id.spinnerOut4);
+            dropdownOut4 = (Spinner) view.findViewById(R.id.spinnerOut4);
 
             ArrayAdapter<String> adapter6 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items3);
             dropdownOut4.setAdapter(adapter6);
 
-            OutDelay1 = (EditText)view.findViewById(R.id.editTxtDelay1);
-            OutDelay2 = (EditText)view.findViewById(R.id.editTxtDelay2);
-            OutDelay3 = (EditText)view.findViewById(R.id.editTxtDelay3);
-            OutDelay4 = (EditText)view.findViewById(R.id.editTxtDelay4);
+            OutDelay1 = (EditText) view.findViewById(R.id.editTxtDelay1);
+            OutDelay2 = (EditText) view.findViewById(R.id.editTxtDelay2);
+            OutDelay3 = (EditText) view.findViewById(R.id.editTxtDelay3);
+            OutDelay4 = (EditText) view.findViewById(R.id.editTxtDelay4);
 
-            MainAltitude= (EditText)view.findViewById(R.id.editTxtMainAltitude);
+            MainAltitude = (EditText) view.findViewById(R.id.editTxtMainAltitude);
             // Tool tip
             MainAltitude.setOnClickListener(new View.OnClickListener() {
-                                           @Override
-                                           public void onClick(View v) {
-                                               ViewTooltip
-                                                       .on(v)
-                                                       .color(Color.BLACK)
-                                                       .position(ViewTooltip.Position.TOP)
-                                                       //Enter the altitude for the main chute
-                                                       .text(getResources().getString(R.string.main_altitude_tooltip))
-                                                       .show();
-                                           }
+                @Override
+                public void onClick(View v) {
+                    ViewTooltip
+                            .on(v)
+                            .color(Color.BLACK)
+                            .position(ViewTooltip.Position.TOP)
+                            //Enter the altitude for the main chute
+                            .text(getResources().getString(R.string.main_altitude_tooltip))
+                            .show();
+                }
             });
             // Tool tip
             OutDelay1.setOnClickListener(new View.OnClickListener() {
@@ -614,12 +704,12 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
 
-            txtOut1 = (TextView)view.findViewById(R.id.txtOut1);
-            txtOut2 = (TextView)view.findViewById(R.id.txtOut2);
-            txtOut3 = (TextView)view.findViewById(R.id.txtOut3);
-            txtViewDelay3 = (TextView)view.findViewById(R.id.txtViewDelay3);
-            txtOut4 = (TextView)view.findViewById(R.id.txtOut4);
-            txtViewDelay4 = (TextView)view.findViewById(R.id.txtViewDelay4);
+            txtOut1 = (TextView) view.findViewById(R.id.txtOut1);
+            txtOut2 = (TextView) view.findViewById(R.id.txtOut2);
+            txtOut3 = (TextView) view.findViewById(R.id.txtOut3);
+            txtViewDelay3 = (TextView) view.findViewById(R.id.txtViewDelay3);
+            txtOut4 = (TextView) view.findViewById(R.id.txtOut4);
+            txtViewDelay4 = (TextView) view.findViewById(R.id.txtViewDelay4);
 
             // Tool tip
             txtOut1.setOnClickListener(new View.OnClickListener() {
@@ -648,10 +738,10 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
 
-            if (AltiCfg !=null) {
+            if (AltiCfg != null) {
                 dropdownOut1.setSelection(AltiCfg.getOutput1());
                 dropdownOut2.setSelection(AltiCfg.getOutput2());
-                if(!AltiCfg.getAltimeterName().equals("AltiDuo")) {
+                if (!AltiCfg.getAltimeterName().equals("AltiDuo")) {
                     dropdownOut3.setSelection(AltiCfg.getOutput3());
                     dropdownOut3.setVisibility(View.VISIBLE);
                     txtOut3.setVisibility(View.VISIBLE);
@@ -669,12 +759,11 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                                     .show();
                         }
                     });
-                }
-                else {
+                } else {
                     dropdownOut3.setVisibility(View.INVISIBLE);
                     txtOut3.setVisibility(View.INVISIBLE);
                 }
-                if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo"))  {
+                if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") || AltiCfg.getAltimeterName().equals("AltiGPS") || AltiCfg.getAltimeterName().equals("AltiServo")) {
                     dropdownOut4.setSelection(AltiCfg.getOutput4());
                     dropdownOut4.setVisibility(View.VISIBLE);
                     txtOut4.setVisibility(View.VISIBLE);
@@ -691,14 +780,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                                     .show();
                         }
                     });
-                }
-                else {
+                } else {
                     dropdownOut4.setVisibility(View.INVISIBLE);
                     txtOut4.setVisibility(View.INVISIBLE);
                 }
                 OutDelay1.setText(String.valueOf(AltiCfg.getOutput1Delay()));
                 OutDelay2.setText(String.valueOf(AltiCfg.getOutput2Delay()));
-                if(!AltiCfg.getAltimeterName().equals("AltiDuo")) {
+                if (!AltiCfg.getAltimeterName().equals("AltiDuo")) {
                     OutDelay3.setText(String.valueOf(AltiCfg.getOutput3Delay()));
                     // Tool tip
                     OutDelay3.setOnClickListener(new View.OnClickListener() {
@@ -713,12 +801,11 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                                     .show();
                         }
                     });
-                }
-                else {
+                } else {
                     OutDelay3.setVisibility(View.INVISIBLE);
                     txtViewDelay3.setVisibility(View.INVISIBLE);
                 }
-                if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")||AltiCfg.getAltimeterName().equals("AltiServo")) {
+                if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") || AltiCfg.getAltimeterName().equals("AltiGPS") || AltiCfg.getAltimeterName().equals("AltiServo")) {
                     OutDelay4.setText(String.valueOf(AltiCfg.getOutput4Delay()));
                     OutDelay4.setVisibility(View.VISIBLE);
                     txtViewDelay4.setVisibility(View.VISIBLE);
@@ -735,8 +822,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                                     .show();
                         }
                     });
-                }
-                else {
+                } else {
                     OutDelay4.setVisibility(View.INVISIBLE);
                     txtViewDelay4.setVisibility(View.INVISIBLE);
                 }
@@ -753,7 +839,6 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             return paint;
         }*/
     }
-
 
 
     public static class Tab2Fragment extends Fragment {
@@ -777,11 +862,12 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         private EditText EndRecordAltitude;
         private EditText LiftOffAltitude;
         private boolean ViewCreated = false;
-        private TextView txtViewRecordTemp,txtViewEEpromSize;
+        private TextView txtViewRecordTemp, txtViewEEpromSize;
 
         public boolean isViewCreated() {
             return ViewCreated;
         }
+
         public int getApogeeMeasures() {
             int ret;
             try {
@@ -791,61 +877,68 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             return ret;
         }
+
         public void setApogeeMeasures(int apogeeMeasures) {
-            ApogeeMeasures.setText( String.valueOf(apogeeMeasures));
+            ApogeeMeasures.setText(String.valueOf(apogeeMeasures));
         }
 
         public int getAltimeterResolution() {
-            return (int)this.dropdownAltimeterResolution.getSelectedItemId();
+            return (int) this.dropdownAltimeterResolution.getSelectedItemId();
         }
-        public void setAltimeterResolution(int AltimeterResolution ) {
+
+        public void setAltimeterResolution(int AltimeterResolution) {
             this.dropdownAltimeterResolution.setSelection(AltimeterResolution);
         }
+
         public int getEEpromSize() {
             int ret;
             try {
-                ret = Integer.parseInt(itemsEEpromSize[(int)dropdownEEpromSize.getSelectedItemId()]);
+                ret = Integer.parseInt(itemsEEpromSize[(int) dropdownEEpromSize.getSelectedItemId()]);
             } catch (Exception e) {
                 ret = 0;
             }
             return ret;
         }
-        public void setEEpromSize(int EEpromSize ) {
+
+        public void setEEpromSize(int EEpromSize) {
             this.dropdownEEpromSize.setSelection(AltiCfg.arrayIndex(itemsEEpromSize, String.valueOf(EEpromSize)));
         }
+
         public long getBaudRate() {
             int ret;
             try {
-                ret = Integer.parseInt(itemsBaudRate[(int)this.dropdownBaudRate.getSelectedItemId()]);
+                ret = Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]);
             } catch (Exception e) {
                 ret = 0;
             }
             return ret;
         }
-        public void setBaudRate(long BaudRate ) {
-            this.dropdownBaudRate.setSelection(AltiCfg.arrayIndex(itemsBaudRate,String.valueOf(BaudRate)));
+
+        public void setBaudRate(long BaudRate) {
+            this.dropdownBaudRate.setSelection(AltiCfg.arrayIndex(itemsBaudRate, String.valueOf(BaudRate)));
         }
 
         public int getBeepOnOff() {
-             return (int)this.dropdownBeepOnOff.getSelectedItemId();
+            return (int) this.dropdownBeepOnOff.getSelectedItemId();
         }
-        public void setBeepOnOff(int BeepOnOff ) {
+
+        public void setBeepOnOff(int BeepOnOff) {
             dropdownBeepOnOff.setSelection(BeepOnOff);
         }
 
         public int getRecordTempOnOff() {
-             return (int)this.dropdownRecordTemp.getSelectedItemId();
+            return (int) this.dropdownRecordTemp.getSelectedItemId();
         }
 
-        public void setRecordTempOnOff(int RecordTempOnOff ) {
+        public void setRecordTempOnOff(int RecordTempOnOff) {
             this.dropdownRecordTemp.setSelection(RecordTempOnOff);
         }
 
         public int getSupersonicDelayOnOff() {
-            return (int)this.dropdownSupersonicDelay.getSelectedItemId();
+            return (int) this.dropdownSupersonicDelay.getSelectedItemId();
         }
 
-        public void setSupersonicDelayOnOff(int SupersonicDelayOnOff ) {
+        public void setSupersonicDelayOnOff(int SupersonicDelayOnOff) {
             this.dropdownSupersonicDelay.setSelection(SupersonicDelayOnOff);
         }
 
@@ -858,7 +951,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             return ret;
         }
-        public void setEndRecordAltitude(int EndRecordAltitude ) {
+
+        public void setEndRecordAltitude(int EndRecordAltitude) {
             this.EndRecordAltitude.setText(String.valueOf(EndRecordAltitude));
         }
 
@@ -871,25 +965,27 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             return ret;
         }
-        public void setLiftOffAltitude(int LiftOffAltitude ) {
+
+        public void setLiftOffAltitude(int LiftOffAltitude) {
             this.LiftOffAltitude.setText(String.valueOf(LiftOffAltitude));
         }
 
         public int getBatteryType() {
-            return (int)this.dropdownBatteryType.getSelectedItemId();
+            return (int) this.dropdownBatteryType.getSelectedItemId();
         }
-        public void setBatteryType(int BatteryType ) {
+
+        public void setBatteryType(int BatteryType) {
             dropdownBatteryType.setSelection(BatteryType);
         }
 
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.tabconfigpart2_fragment,container,false);
+            View view = inflater.inflate(R.layout.tabconfigpart2_fragment, container, false);
 
             //baud rate
-            dropdownBaudRate = (Spinner)view.findViewById(R.id.spinnerBaudRate);
-            itemsBaudRate = new String[]{ "300",
+            dropdownBaudRate = (Spinner) view.findViewById(R.id.spinnerBaudRate);
+            itemsBaudRate = new String[]{"300",
                     "1200",
                     "2400",
                     "4800",
@@ -905,7 +1001,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     android.R.layout.simple_spinner_dropdown_item, itemsBaudRate);
             dropdownBaudRate.setAdapter(adapterBaudRate);
             // Tool tip
-            view.findViewById(R.id.txtViewBaudRate ).setOnClickListener(new View.OnClickListener() {
+            view.findViewById(R.id.txtViewBaudRate).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ViewTooltip
@@ -918,7 +1014,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
             // nbr of measures to determine apogee
-            ApogeeMeasures = (EditText)view.findViewById(R.id.editTxtApogeeMeasures);
+            ApogeeMeasures = (EditText) view.findViewById(R.id.editTxtApogeeMeasures);
             // Tool tip
             ApogeeMeasures.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -933,14 +1029,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
             // altimeter resolution
-            dropdownAltimeterResolution = (Spinner)view.findViewById(R.id.spinnerAltimeterResolution);
-            itemsAltimeterResolution = new String[]{"ULTRALOWPOWER", "STANDARD","HIGHRES","ULTRAHIGHRES"};
-            ArrayAdapter<String> adapterAltimeterResolution= new ArrayAdapter<String>(this.getActivity(),
+            dropdownAltimeterResolution = (Spinner) view.findViewById(R.id.spinnerAltimeterResolution);
+            itemsAltimeterResolution = new String[]{"ULTRALOWPOWER", "STANDARD", "HIGHRES", "ULTRAHIGHRES"};
+            ArrayAdapter<String> adapterAltimeterResolution = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsAltimeterResolution);
             dropdownAltimeterResolution.setAdapter(adapterAltimeterResolution);
 
             // Tool tip
-            view.findViewById(R.id.txtViewAltimeterResolution ).setOnClickListener(new View.OnClickListener() {
+            view.findViewById(R.id.txtViewAltimeterResolution).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ViewTooltip
@@ -953,15 +1049,15 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
             //Altimeter external eeprom size
-            txtViewEEpromSize = (TextView)view.findViewById(R.id.txtViewEEpromSize);
-            dropdownEEpromSize = (Spinner)view.findViewById(R.id.spinnerEEpromSize);
-            itemsEEpromSize = new String[]{"32", "64","128","256","512", "1024"};
-            ArrayAdapter<String> adapterEEpromSize= new ArrayAdapter<String>(this.getActivity(),
+            txtViewEEpromSize = (TextView) view.findViewById(R.id.txtViewEEpromSize);
+            dropdownEEpromSize = (Spinner) view.findViewById(R.id.spinnerEEpromSize);
+            itemsEEpromSize = new String[]{"32", "64", "128", "256", "512", "1024"};
+            ArrayAdapter<String> adapterEEpromSize = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsEEpromSize);
             dropdownEEpromSize.setAdapter(adapterEEpromSize);
 
             if (AltiCfg != null) {
-                if (AltiCfg.getAltimeterName().equals("AltiServo")||
+                if (AltiCfg.getAltimeterName().equals("AltiServo") ||
                         AltiCfg.getAltimeterName().equals("AltiDuo")) {
                     dropdownEEpromSize.setVisibility(View.INVISIBLE);
                     txtViewEEpromSize.setVisibility(View.INVISIBLE);
@@ -985,22 +1081,22 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             });
             // Switch beeping on or off
             // 0 is On and 1 is Off
-            dropdownBeepOnOff= (Spinner)view.findViewById(R.id.spinnerBeepOnOff);
-            itemsBeepOnOff= new String[]{"On","Off"};
+            dropdownBeepOnOff = (Spinner) view.findViewById(R.id.spinnerBeepOnOff);
+            itemsBeepOnOff = new String[]{"On", "Off"};
             ArrayAdapter<String> adapterBeepOnOff = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsBeepOnOff);
             dropdownBeepOnOff.setAdapter(adapterBeepOnOff);
 
             // Record temperature on or off
             txtViewRecordTemp = (TextView) view.findViewById(R.id.txtViewRecordTemp);
-            dropdownRecordTemp = (Spinner)view.findViewById(R.id.spinnerRecordTemp);
-            itemsRecordTempOnOff= new String[]{"Off","On"};
+            dropdownRecordTemp = (Spinner) view.findViewById(R.id.spinnerRecordTemp);
+            itemsRecordTempOnOff = new String[]{"Off", "On"};
             ArrayAdapter<String> adapterRecordTemp = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsRecordTempOnOff);
             dropdownRecordTemp.setAdapter(adapterRecordTemp);
 
             if (AltiCfg != null) {
-                if (AltiCfg.getAltimeterName().equals("AltiServo")||
+                if (AltiCfg.getAltimeterName().equals("AltiServo") ||
                         AltiCfg.getAltimeterName().equals("AltiDuo")) {
                     dropdownRecordTemp.setVisibility(View.INVISIBLE);
                     txtViewRecordTemp.setVisibility(View.INVISIBLE);
@@ -1024,14 +1120,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
             // supersonic delay on/off
-            dropdownSupersonicDelay = (Spinner)view.findViewById(R.id.spinnerSupersonicDelay);
-            itemsSupersonicDelayOnOff= new String[]{"Off","On"};
+            dropdownSupersonicDelay = (Spinner) view.findViewById(R.id.spinnerSupersonicDelay);
+            itemsSupersonicDelayOnOff = new String[]{"Off", "On"};
             ArrayAdapter<String> adapterSupersonicDelayOnOff = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsSupersonicDelayOnOff);
             dropdownSupersonicDelay.setAdapter(adapterSupersonicDelayOnOff);
 
             // nbr of meters to stop recording altitude
-            EndRecordAltitude = (EditText)view.findViewById(R.id.editTxtEndRecordAltitude);
+            EndRecordAltitude = (EditText) view.findViewById(R.id.editTxtEndRecordAltitude);
             // Tool tip
             EndRecordAltitude.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1046,7 +1142,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
             // nbr of meters to consider that we have a lift off
-            LiftOffAltitude = (EditText)view.findViewById(R.id.editTxtLiftOffAltitude);
+            LiftOffAltitude = (EditText) view.findViewById(R.id.editTxtLiftOffAltitude);
 
             // Tool tip
             LiftOffAltitude.setOnClickListener(new View.OnClickListener() {
@@ -1061,8 +1157,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             .show();
                 }
             });
-            dropdownBatteryType = (Spinner)view.findViewById(R.id.spinnerBatteryType);
-            itemsBatteryType = new String[]{"Unknown","2S (7.4 Volts)","9 Volts","3S (11.1 Volts)"};
+            dropdownBatteryType = (Spinner) view.findViewById(R.id.spinnerBatteryType);
+            itemsBatteryType = new String[]{"Unknown", "2S (7.4 Volts)", "9 Volts", "3S (11.1 Volts)"};
             ArrayAdapter<String> adapterBatteryType = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsBatteryType);
             dropdownBatteryType.setAdapter(adapterBatteryType);
@@ -1081,7 +1177,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
             if (AltiCfg != null) {
-                dropdownBaudRate.setSelection(AltiCfg.arrayIndex(itemsBaudRate,String.valueOf(AltiCfg.getConnectionSpeed())));
+                dropdownBaudRate.setSelection(AltiCfg.arrayIndex(itemsBaudRate, String.valueOf(AltiCfg.getConnectionSpeed())));
                 ApogeeMeasures.setText(String.valueOf(AltiCfg.getNbrOfMeasuresForApogee()));
                 dropdownAltimeterResolution.setSelection(AltiCfg.getAltimeterResolution());
                 dropdownEEpromSize.setSelection(AltiCfg.arrayIndex(itemsEEpromSize, String.valueOf(AltiCfg.getEepromSize())));
@@ -1096,7 +1192,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             return view;
         }
     }
-    public static class Tab3Fragment extends Fragment{
+
+    public static class Tab3Fragment extends Fragment {
         private static final String TAG = "Tab3Fragment";
 
         private TextView altiName;
@@ -1106,6 +1203,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
 
         private boolean ViewCreated = false;
+
         public boolean isViewCreated() {
             return ViewCreated;
         }
@@ -1120,18 +1218,21 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             return ret;
 
         }
+
         public void setFreq(int freq) {
             Freq.setText(freq);
         }
+
         public void setAltiName(String altiName) {
             this.altiName.setText(altiName);
         }
+
         public String getAltiName() {
             return (String) this.altiName.getText();
         }
 
         public int getDropdownUnits() {
-            return (int)this.dropdownUnits.getSelectedItemId();
+            return (int) this.dropdownUnits.getSelectedItemId();
         }
 
         public void setDropdownUnits(int Units) {
@@ -1139,7 +1240,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
 
         public int getDropdownBipMode() {
-            return (int)this.dropdownBipMode.getSelectedItemId();
+            return (int) this.dropdownBipMode.getSelectedItemId();
         }
 
         public void setDropdownBipMode(int BipMode) {
@@ -1149,17 +1250,17 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate (R.layout.tabconfigpart3_fragment, container,false);
+            View view = inflater.inflate(R.layout.tabconfigpart3_fragment, container, false);
             //Beep mode
-            dropdownBipMode = (Spinner)view.findViewById(R.id.spinnerBipMode);
-            String[] items = new String[]{"Mode1", "Mode2","Off"};
+            dropdownBipMode = (Spinner) view.findViewById(R.id.spinnerBipMode);
+            String[] items = new String[]{"Mode1", "Mode2", "Off"};
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items);
             dropdownBipMode.setAdapter(adapter);
 
 
             //units
-            dropdownUnits = (Spinner)view.findViewById(R.id.spinnerUnit);
+            dropdownUnits = (Spinner) view.findViewById(R.id.spinnerUnit);
             String[] items2 = new String[]{"Meters", "Feet"};
             ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items2);
@@ -1179,9 +1280,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
             //Altimeter name
-            altiName = (TextView)view.findViewById(R.id.txtAltiNameValue);
+            altiName = (TextView) view.findViewById(R.id.txtAltiNameValue);
             //here you can set the beep frequency
-            Freq=(EditText)view.findViewById(R.id.editTxtBipFreq);
+            Freq = (EditText) view.findViewById(R.id.editTxtBipFreq);
 
             // Tool tip
             Freq.setOnClickListener(new View.OnClickListener() {
@@ -1197,8 +1298,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
             if (AltiCfg != null) {
-                altiName.setText(AltiCfg.getAltimeterName()+ " ver: " +
-                        AltiCfg.getAltiMajorVersion()+"."+AltiCfg.getAltiMinorVersion());
+                altiName.setText(AltiCfg.getAltimeterName() + " ver: " +
+                        AltiCfg.getAltiMajorVersion() + "." + AltiCfg.getAltiMinorVersion());
 
                 dropdownBipMode.setSelection(AltiCfg.getBeepingMode());
                 dropdownUnits.setSelection(AltiCfg.getUnits());
@@ -1210,15 +1311,16 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
     }
 
-    public static class Tab4Fragment extends Fragment{
+    public static class Tab4Fragment extends Fragment {
         private static final String TAG = "Tab4Fragment";
 
-        private EditText servo1OnPos, servo2OnPos, servo3OnPos,servo4OnPos;
-        private EditText servo1OffPos, servo2OffPos, servo3OffPos,servo4OffPos;
+        private EditText servo1OnPos, servo2OnPos, servo3OnPos, servo4OnPos;
+        private EditText servo1OffPos, servo2OffPos, servo3OffPos, servo4OffPos;
         private TextView txtServo1OnPos, txtServo2OnPos, txtServo3OnPos, txtServo4OnPos;
         private TextView txtServo1OffPos, txtServo2OffPos, txtServo3OffPos, txtServo4OffPos;
 
         private boolean ViewCreated = false;
+
         public boolean isViewCreated() {
             return ViewCreated;
         }
@@ -1233,6 +1335,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             return ret;
         }
+
         public int getServo2OnPos() {
             int ret;
             try {
@@ -1242,6 +1345,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             return ret;
         }
+
         public int getServo3OnPos() {
             int ret;
             try {
@@ -1251,6 +1355,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             return ret;
         }
+
         public int getServo4OnPos() {
             int ret;
             try {
@@ -1270,6 +1375,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             return ret;
         }
+
         public int getServo2OffPos() {
             int ret;
             try {
@@ -1279,6 +1385,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             return ret;
         }
+
         public int getServo3OffPos() {
             int ret;
             try {
@@ -1288,6 +1395,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             return ret;
         }
+
         public int getServo4OffPos() {
             int ret;
             try {
@@ -1301,12 +1409,15 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         public void setServo1OnPos(int pos) {
             this.servo1OnPos.setText(pos);
         }
+
         public void setServo2OnPos(int pos) {
             this.servo2OnPos.setText(pos);
         }
+
         public void setServo3OnPos(int pos) {
             this.servo3OnPos.setText(pos);
         }
+
         public void setServo4OnPos(int pos) {
             this.servo4OnPos.setText(pos);
         }
@@ -1314,40 +1425,44 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         public void setServo1OffPos(int pos) {
             this.servo1OffPos.setText(pos);
         }
+
         public void setServo2OffPos(int pos) {
             this.servo2OffPos.setText(pos);
         }
+
         public void setServo3OffPos(int pos) {
             this.servo3OffPos.setText(pos);
         }
+
         public void setServo4OffPos(int pos) {
             this.servo4OffPos.setText(pos);
         }
+
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate (R.layout.tabconfigpart4_fragment, container,false);
+            View view = inflater.inflate(R.layout.tabconfigpart4_fragment, container, false);
 
 
-            servo1OnPos=(EditText)view.findViewById(R.id.editTxtServo1OnPos);
-            servo2OnPos=(EditText)view.findViewById(R.id.editTxtServo2OnPos);
-            servo3OnPos=(EditText)view.findViewById(R.id.editTxtServo3OnPos);
-            servo4OnPos=(EditText)view.findViewById(R.id.editTxtServo4OnPos);
+            servo1OnPos = (EditText) view.findViewById(R.id.editTxtServo1OnPos);
+            servo2OnPos = (EditText) view.findViewById(R.id.editTxtServo2OnPos);
+            servo3OnPos = (EditText) view.findViewById(R.id.editTxtServo3OnPos);
+            servo4OnPos = (EditText) view.findViewById(R.id.editTxtServo4OnPos);
 
-            txtServo1OnPos=(TextView)view.findViewById(R.id.servo1OnPos);
-            txtServo2OnPos=(TextView)view.findViewById(R.id.servo2OnPos);
-            txtServo3OnPos=(TextView)view.findViewById(R.id.servo3OnPos);
-            txtServo4OnPos=(TextView)view.findViewById(R.id.servo4OnPos);
+            txtServo1OnPos = (TextView) view.findViewById(R.id.servo1OnPos);
+            txtServo2OnPos = (TextView) view.findViewById(R.id.servo2OnPos);
+            txtServo3OnPos = (TextView) view.findViewById(R.id.servo3OnPos);
+            txtServo4OnPos = (TextView) view.findViewById(R.id.servo4OnPos);
 
-            servo1OffPos=(EditText)view.findViewById(R.id.editTxtServo1OffPos);
-            servo2OffPos=(EditText)view.findViewById(R.id.editTxtServo2OffPos);
-            servo3OffPos=(EditText)view.findViewById(R.id.editTxtServo3OffPos);
-            servo4OffPos=(EditText)view.findViewById(R.id.editTxtServo4OffPos);
+            servo1OffPos = (EditText) view.findViewById(R.id.editTxtServo1OffPos);
+            servo2OffPos = (EditText) view.findViewById(R.id.editTxtServo2OffPos);
+            servo3OffPos = (EditText) view.findViewById(R.id.editTxtServo3OffPos);
+            servo4OffPos = (EditText) view.findViewById(R.id.editTxtServo4OffPos);
 
-            txtServo1OffPos=(TextView)view.findViewById(R.id.servo1OffPos);
-            txtServo2OffPos=(TextView)view.findViewById(R.id.servo2OffPos);
-            txtServo3OffPos=(TextView)view.findViewById(R.id.servo3OffPos);
-            txtServo4OffPos=(TextView)view.findViewById(R.id.servo4OffPos);
+            txtServo1OffPos = (TextView) view.findViewById(R.id.servo1OffPos);
+            txtServo2OffPos = (TextView) view.findViewById(R.id.servo2OffPos);
+            txtServo3OffPos = (TextView) view.findViewById(R.id.servo3OffPos);
+            txtServo4OffPos = (TextView) view.findViewById(R.id.servo4OffPos);
 
             if (AltiCfg != null) {
 
@@ -1362,7 +1477,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 servo3OffPos.setText(String.valueOf(AltiCfg.getServo3OffPos()));
                 servo4OffPos.setText(String.valueOf(AltiCfg.getServo4OffPos()));
             }
-            if(AltiCfg.getAltimeterName().equals("AltiServo")) {
+            if (AltiCfg.getAltimeterName().equals("AltiServo")) {
                 servo1OnPos.setVisibility(View.VISIBLE);
                 servo2OnPos.setVisibility(View.VISIBLE);
                 servo3OnPos.setVisibility(View.VISIBLE);
@@ -1380,8 +1495,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 txtServo2OffPos.setVisibility(View.VISIBLE);
                 txtServo3OffPos.setVisibility(View.VISIBLE);
                 txtServo4OffPos.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 servo1OnPos.setVisibility(View.INVISIBLE);
                 servo2OnPos.setVisibility(View.INVISIBLE);
                 servo3OnPos.setVisibility(View.INVISIBLE);
@@ -1405,12 +1519,12 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
 
     }
+
     private class RetrieveConfig extends AsyncTask<Void, Void, Void>  // UI thread
     {
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             //"Retrieving Altimeter config...", "Please wait!!!"
             progress = ProgressDialog.show(AltimeterTabConfigActivity.this,
                     getResources().getString(R.string.msg5),
@@ -1423,12 +1537,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             readConfig();
             return null;
         }
+
         @Override
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             super.onPostExecute(result);
 
-            if(AltiCfg!=null) {
+            if (AltiCfg != null) {
                 //Config Tab 1
                /*if(configPage1.isViewCreated()) {
                     configPage1.setDropdownOut1(AltiCfg.getOutput1());

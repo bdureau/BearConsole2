@@ -200,7 +200,7 @@ public class AltimeterStatus extends AppCompatActivity {
         txtViewLatitudeValue = (TextView) findViewById(R.id.txtViewLatitudeValue);
         txtViewLongitudeValue = (TextView) findViewById(R.id.txtViewLongitudeValue);
 
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")) {
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")||myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ) {
             txtViewVoltage.setVisibility(View.VISIBLE);
             txtViewBatteryVoltage.setVisibility(View.VISIBLE);
         } else {
