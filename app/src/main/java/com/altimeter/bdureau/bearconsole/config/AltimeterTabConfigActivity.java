@@ -160,6 +160,28 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     }
                 } else {
                     // msg("data not ready");
+                    //try again
+                    myBT.setDataReady(false);
+                    myBT.flush();
+                    myBT.clearInput();
+                    myBT.write("b;\n".toString());
+                    myBT.flush();
+                    //get the results
+                    //wait for the result to come back
+                    try {
+                        while (myBT.getInputStream().available() <= 0) ;
+                    } catch (IOException e) {
+
+                    }
+                    myMessage = myBT.ReadResult(3000);
+                    //reading the config
+                    if (myMessage.equals("start alticonfig end")) {
+                        try {
+                            AltiCfg = myBT.getAltiConfigData();
+                        } catch (Exception e) {
+                            //  msg("pb ready data");
+                        }
+                    }
                 }
                 myBT.setDataReady(false);
                 myBT.flush();
@@ -180,7 +202,6 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
 
         //msg(getResources().getString(R.string.msg3));
-
 
 
     }

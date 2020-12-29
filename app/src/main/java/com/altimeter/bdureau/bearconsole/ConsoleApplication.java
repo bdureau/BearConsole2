@@ -309,7 +309,33 @@ public class ConsoleApplication extends Application {
         this.exit = b;
     }
 
-    ;
+
+    public long calculateSentenceCHK(String currentSentence[]) {
+        long chk =0;
+        String sentence="";
+
+        for (int i=0; i< currentSentence.length-1; i++) {
+            sentence = sentence + currentSentence[i] +",";
+        }
+        //Log.d("calculateSentenceCHK", sentence);
+        chk = generateCheckSum(sentence);
+        return chk;
+    }
+
+    public static Integer generateCheckSum(String value)  {
+
+        byte[] data = value.getBytes();
+        long checksum = 0L;
+
+        for( byte b : data )  {
+            checksum += b;
+        }
+
+        checksum = checksum % 256;
+
+        return new Long( checksum ).intValue();
+
+    }
 
     public String ReadResult(long timeout) {
 
@@ -357,434 +383,447 @@ public class ConsoleApplication extends Application {
                             fullBuff = fullBuff + tempBuff;
                         }
 
-                        //switch (currentSentence.keyword) {
+                        long chk=0;
                         switch (currentSentence[0]) {
                             case "telemetry":
-                                if (mHandler != null) {
-                                    // Value 1 contain the current altitude
-                                    if (currentSentence.length > 1)
-                                        if (currentSentence[1].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(1, String.valueOf(currentSentence[1])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(1, String.valueOf(0)).sendToTarget();
-                                    // Value 2 lift off yes/no
-                                    //mHandler.obtainMessage(2, String.valueOf(currentSentence.value2)).sendToTarget();
-                                    if (currentSentence.length > 2)
-                                        if (currentSentence[2].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(2, String.valueOf(currentSentence[2])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(2, String.valueOf(0)).sendToTarget();
+                                if (currentSentence[currentSentence.length-1].matches("\\d+(?:\\.\\d+)?"))
+                                    chk = Long.valueOf(currentSentence[currentSentence.length-1]);
+                                if (calculateSentenceCHK(currentSentence) == chk) {
+                                    if (mHandler != null) {
+                                        // Value 1 contain the current altitude
+                                        if (currentSentence.length > 1)
+                                            if (currentSentence[1].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(1, String.valueOf(currentSentence[1])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(1, String.valueOf(0)).sendToTarget();
+                                        // Value 2 lift off yes/no
+                                        //mHandler.obtainMessage(2, String.valueOf(currentSentence.value2)).sendToTarget();
+                                        if (currentSentence.length > 2)
+                                            if (currentSentence[2].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(2, String.valueOf(currentSentence[2])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(2, String.valueOf(0)).sendToTarget();
 
-                                    // Value 3 apogee fired yes/no
-                                    //mHandler.obtainMessage(3, String.valueOf(currentSentence.value3)).sendToTarget();
-                                    if (currentSentence.length > 3)
-                                        if (currentSentence[3].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(3, String.valueOf(currentSentence[3])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(3, String.valueOf(0)).sendToTarget();
-                                    //Value 4 apogee altitude
-                                    if (currentSentence.length > 4)
-                                        //mHandler.obtainMessage(4, String.valueOf(currentSentence.value4)).sendToTarget();
-                                        if (currentSentence[4].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(4, String.valueOf(currentSentence[4])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(4, String.valueOf(0)).sendToTarget();
-                                    // Value 5 main fired yes/no
-                                    if (currentSentence.length > 5)
-                                        //mHandler.obtainMessage(5, String.valueOf(currentSentence.value5)).sendToTarget();
-                                        if (currentSentence[5].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(5, String.valueOf(currentSentence[5])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(5, String.valueOf(0)).sendToTarget();
-                                    // Value 6 main altitude
-                                    if (currentSentence.length > 6)
-                                        //mHandler.obtainMessage(6, String.valueOf(currentSentence.value6)).sendToTarget();
-                                        if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(6, String.valueOf(currentSentence[6])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(6, String.valueOf(0)).sendToTarget();
-                                    // Value 7 landed
-                                    if (currentSentence.length > 7)
-                                        //mHandler.obtainMessage(7, String.valueOf(currentSentence.value7)).sendToTarget();
-                                        if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(7, String.valueOf(currentSentence[7])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(7, String.valueOf(0)).sendToTarget();
-                                    // value 8 time
-                                    if (currentSentence.length > 8)
-                                        //                                   mHandler.obtainMessage(8, String.valueOf(currentSentence.value8)).sendToTarget();
-                                        if (currentSentence[8].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(8, String.valueOf(currentSentence[8])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(8, String.valueOf(0)).sendToTarget();
-                                    // Value 9 contains the output 1 status
-                                    //mHandler.obtainMessage(9, String.valueOf(currentSentence.value9)).sendToTarget();
-                                    if (currentSentence.length > 9)
-                                        if (currentSentence[9].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(9, String.valueOf(currentSentence[9])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(9, String.valueOf(0)).sendToTarget();
-                                    // Value 10 contains the output 2 status
-                                    if (currentSentence.length > 10)
-                                        //mHandler.obtainMessage(10, String.valueOf(currentSentence.value10)).sendToTarget();
-                                        if (currentSentence[10].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(10, String.valueOf(currentSentence[10])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(10, String.valueOf(0)).sendToTarget();
-                                    // Value 11 contains the output 3 status
-                                    //mHandler.obtainMessage(11, String.valueOf(currentSentence.value11)).sendToTarget();
-                                    if (currentSentence.length > 11)
-                                        if (currentSentence[11].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(11, String.valueOf(currentSentence[11])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(11, String.valueOf(0)).sendToTarget();
-                                    // Value 12 contains the output 4 status
-                                    if (currentSentence.length > 12)
-                                        //mHandler.obtainMessage(12, String.valueOf(currentSentence.value12)).sendToTarget();
-                                        if (currentSentence[12].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(12, String.valueOf(currentSentence[12])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(12, String.valueOf(0)).sendToTarget();
-                                    // Value 13 contains the battery voltage
-                                    if (currentSentence.length > 13)
-                                        //mHandler.obtainMessage(13, String.valueOf(currentSentence.value13)).sendToTarget();
-                                        if (currentSentence[13].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(13, String.valueOf(currentSentence[13])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(13, String.valueOf(0)).sendToTarget();
-                                    // Value 14 contains the temperature
-                                    //mHandler.obtainMessage(14, String.valueOf(currentSentence.value14)).sendToTarget();
-                                    if (currentSentence.length > 14)
-                                        if (currentSentence[14].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(14, String.valueOf(currentSentence[14])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(14, String.valueOf(0)).sendToTarget();
-                                    // Value 15 contains the eeprom
-                                    //mHandler.obtainMessage(14, String.valueOf(currentSentence.value14)).sendToTarget();
-                                    if (currentSentence.length > 15)
-                                        if (currentSentence[15].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(15, String.valueOf(currentSentence[15])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(15, String.valueOf(0)).sendToTarget();
-                                    // Value 16 contains the number of flight
-                                    if (currentSentence.length > 16)
-                                        if (currentSentence[16].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(16, String.valueOf(currentSentence[16])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(16, String.valueOf(0)).sendToTarget();
+                                        // Value 3 apogee fired yes/no
+                                        //mHandler.obtainMessage(3, String.valueOf(currentSentence.value3)).sendToTarget();
+                                        if (currentSentence.length > 3)
+                                            if (currentSentence[3].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(3, String.valueOf(currentSentence[3])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(3, String.valueOf(0)).sendToTarget();
+                                        //Value 4 apogee altitude
+                                        if (currentSentence.length > 4)
+                                            //mHandler.obtainMessage(4, String.valueOf(currentSentence.value4)).sendToTarget();
+                                            if (currentSentence[4].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(4, String.valueOf(currentSentence[4])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(4, String.valueOf(0)).sendToTarget();
+                                        // Value 5 main fired yes/no
+                                        if (currentSentence.length > 5)
+                                            //mHandler.obtainMessage(5, String.valueOf(currentSentence.value5)).sendToTarget();
+                                            if (currentSentence[5].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(5, String.valueOf(currentSentence[5])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(5, String.valueOf(0)).sendToTarget();
+                                        // Value 6 main altitude
+                                        if (currentSentence.length > 6)
+                                            //mHandler.obtainMessage(6, String.valueOf(currentSentence.value6)).sendToTarget();
+                                            if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(6, String.valueOf(currentSentence[6])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(6, String.valueOf(0)).sendToTarget();
+                                        // Value 7 landed
+                                        if (currentSentence.length > 7)
+                                            //mHandler.obtainMessage(7, String.valueOf(currentSentence.value7)).sendToTarget();
+                                            if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(7, String.valueOf(currentSentence[7])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(7, String.valueOf(0)).sendToTarget();
+                                        // value 8 time
+                                        if (currentSentence.length > 8)
+                                            //                                   mHandler.obtainMessage(8, String.valueOf(currentSentence.value8)).sendToTarget();
+                                            if (currentSentence[8].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(8, String.valueOf(currentSentence[8])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(8, String.valueOf(0)).sendToTarget();
+                                        // Value 9 contains the output 1 status
+                                        //mHandler.obtainMessage(9, String.valueOf(currentSentence.value9)).sendToTarget();
+                                        if (currentSentence.length > 9)
+                                            if (currentSentence[9].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(9, String.valueOf(currentSentence[9])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(9, String.valueOf(0)).sendToTarget();
+                                        // Value 10 contains the output 2 status
+                                        if (currentSentence.length > 10)
+                                            //mHandler.obtainMessage(10, String.valueOf(currentSentence.value10)).sendToTarget();
+                                            if (currentSentence[10].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(10, String.valueOf(currentSentence[10])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(10, String.valueOf(0)).sendToTarget();
+                                        // Value 11 contains the output 3 status
+                                        //mHandler.obtainMessage(11, String.valueOf(currentSentence.value11)).sendToTarget();
+                                        if (currentSentence.length > 11)
+                                            if (currentSentence[11].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(11, String.valueOf(currentSentence[11])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(11, String.valueOf(0)).sendToTarget();
+                                        // Value 12 contains the output 4 status
+                                        if (currentSentence.length > 12)
+                                            //mHandler.obtainMessage(12, String.valueOf(currentSentence.value12)).sendToTarget();
+                                            if (currentSentence[12].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(12, String.valueOf(currentSentence[12])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(12, String.valueOf(0)).sendToTarget();
+                                        // Value 13 contains the battery voltage
+                                        if (currentSentence.length > 13)
+                                            //mHandler.obtainMessage(13, String.valueOf(currentSentence.value13)).sendToTarget();
+                                            if (currentSentence[13].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(13, String.valueOf(currentSentence[13])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(13, String.valueOf(0)).sendToTarget();
+                                        // Value 14 contains the temperature
+                                        //mHandler.obtainMessage(14, String.valueOf(currentSentence.value14)).sendToTarget();
+                                        if (currentSentence.length > 14)
+                                            if (currentSentence[14].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(14, String.valueOf(currentSentence[14])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(14, String.valueOf(0)).sendToTarget();
+                                        // Value 15 contains the eeprom
+                                        //mHandler.obtainMessage(14, String.valueOf(currentSentence.value14)).sendToTarget();
+                                        if (currentSentence.length > 15)
+                                            if (currentSentence[15].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(15, String.valueOf(currentSentence[15])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(15, String.valueOf(0)).sendToTarget();
+                                        // Value 16 contains the number of flight
+                                        if (currentSentence.length > 16)
+                                            if (currentSentence[16].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(16, String.valueOf(currentSentence[16])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(16, String.valueOf(0)).sendToTarget();
 
-                                    // Value 17 contains the latitude
-                                    if (currentSentence.length > 17)
-                                        if (currentSentence[17].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(17, String.valueOf(currentSentence[17])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(17, String.valueOf(0)).sendToTarget();
-                                    // Value 18 contains the number of flight
-                                    if (currentSentence.length > 18)
-                                        if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
-                                            mHandler.obtainMessage(18, String.valueOf(currentSentence[18])).sendToTarget();
-                                        else
-                                            mHandler.obtainMessage(18, String.valueOf(0)).sendToTarget();
+                                        // Value 17 contains the latitude
+                                        if (currentSentence.length > 17)
+                                            if (currentSentence[17].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(17, String.valueOf(currentSentence[17])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(17, String.valueOf(0)).sendToTarget();
+                                        // Value 18 contains the number of flight
+                                        if (currentSentence.length > 18)
+                                            if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(18, String.valueOf(currentSentence[18])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(18, String.valueOf(0)).sendToTarget();
+                                    }
                                 }
                                 break;
 
                             case "data":
+                                if (currentSentence[currentSentence.length-1].matches("\\d+(?:\\.\\d+)?"))
+                                    chk = Long.valueOf(currentSentence[currentSentence.length-1]);
                                 String flightName = "FlightXX";
-                                // Value 1 contain the flight number
-                                if (currentSentence.length > 1)
-                                    if (currentSentence[1].matches("\\d+(?:\\.\\d+)?")) {
-                                        //currentFlightNbr = (int) currentSentence.value1 + 1;
-                                        currentFlightNbr = Integer.valueOf(currentSentence[1]) + 1;
-                                        if (currentFlightNbr < 10)
-                                            flightName = "Flight " + "0" + currentFlightNbr;
+                                if (calculateSentenceCHK(currentSentence) == chk) {
+                                    // Value 1 contain the flight number
+                                    if (currentSentence.length > 1)
+                                        if (currentSentence[1].matches("\\d+(?:\\.\\d+)?")) {
+                                            //currentFlightNbr = (int) currentSentence.value1 + 1;
+                                            currentFlightNbr = Integer.valueOf(currentSentence[1]) + 1;
+                                            if (currentFlightNbr < 10)
+                                                flightName = "Flight " + "0" + currentFlightNbr;
+                                            else
+                                                flightName = "Flight " + currentFlightNbr;
+                                        }
+                                    // Value 2 contain the time
+                                    // Value 3 contain the altitude
+                                    // To do
+                                    int value2 = 0, value3 = 0, value4 = 0, value5 = 0, value6 = 0, value7 = 0;
+                                    if (currentSentence.length > 2)
+                                        if (currentSentence[2].matches("\\d+(?:\\.\\d+)?"))
+                                            value2 = Integer.valueOf(currentSentence[2]);
                                         else
-                                            flightName = "Flight " + currentFlightNbr;
+                                            value2 = 0;
+                                    if (currentSentence.length > 3) {
+                                        if (currentSentence[3].matches("\\d+(?:\\.\\d+)?"))
+                                            value3 = Integer.valueOf(currentSentence[3]);
+                                        else
+                                            value3 = 0;
+                                        //add the altitude
+                                        MyFlight.AddToFlight(value2,
+                                                (long) (value3 * FEET_IN_METER), flightName, 0);
+
                                     }
-                                // Value 2 contain the time
-                                // Value 3 contain the altitude
-                                // To do
-                                int value2 = 0, value3 = 0, value4 = 0, value5 = 0, value6 = 0, value7 = 0;
-                                if (currentSentence.length > 2)
-                                    if (currentSentence[2].matches("\\d+(?:\\.\\d+)?"))
-                                        value2 = Integer.valueOf(currentSentence[2]);
-                                    else
-                                        value2 = 0;
-                                if (currentSentence.length > 3) {
-                                    if (currentSentence[3].matches("\\d+(?:\\.\\d+)?"))
-                                        value3 = Integer.valueOf(currentSentence[3]);
-                                    else
-                                        value3 = 0;
-                                    //add the altitude
-                                    MyFlight.AddToFlight(value2,
-                                            (long) (value3 * FEET_IN_METER), flightName, 0);
+                                    //temperature
+                                    if (currentSentence.length > 4) {
+                                        if (currentSentence[4].matches("\\d+(?:\\.\\d+)?"))
+                                            value4 = Integer.valueOf(currentSentence[4]);
+                                        else
+                                            value4 = 0;
+                                        //add the temperature
+                                        MyFlight.AddToFlight(value2,
+                                                (long) (value4), flightName, 1);
+                                    }
 
-                                }
-                                //temperature
-                                if (currentSentence.length > 4) {
-                                    if (currentSentence[4].matches("\\d+(?:\\.\\d+)?"))
-                                        value4 = Integer.valueOf(currentSentence[4]);
-                                    else
-                                        value4 = 0;
-                                    //add the temperature
-                                    MyFlight.AddToFlight(value2,
-                                            (long) (value4), flightName, 1);
-                                }
+                                    //Alti GPS does a lot more !!!!
+                                    //pressure
+                                    if (currentSentence.length > 5) {
+                                        if (currentSentence[5].matches("\\d+(?:\\.\\d+)?"))
+                                            value5 = Integer.valueOf(currentSentence[5]);
+                                        else
+                                            value5 = 0;
+                                        //add the temperature
+                                        MyFlight.AddToFlight(value2,
+                                                (long) (value5), flightName, 2);
+                                    }
 
-                                //Alti GPS does a lot more !!!!
-                                //pressure
-                                if (currentSentence.length > 5) {
-                                    if (currentSentence[5].matches("\\d+(?:\\.\\d+)?"))
-                                        value5 = Integer.valueOf(currentSentence[5]);
-                                    else
-                                        value5 = 0;
-                                    //add the temperature
-                                    MyFlight.AddToFlight(value2,
-                                            (long) (value5), flightName, 2);
-                                }
+                                    //Latitude
+                                    if (currentSentence.length > 6) {
+                                        if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
+                                            value6 = Integer.valueOf(currentSentence[6]);
+                                        else
+                                            value6 = 0;
+                                        //add the latitude
+                                        MyFlight.AddToFlight(value2,
+                                                (long) (value6), flightName, 3);
+                                    }
 
-                                //Latitude
-                                if (currentSentence.length > 6) {
-                                    if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
-                                        value6 = Integer.valueOf(currentSentence[6]);
-                                    else
-                                        value6 = 0;
-                                    //add the latitude
-                                    MyFlight.AddToFlight(value2,
-                                        (long) (value6), flightName, 3);
-                                }
-
-                                //longitude
-                                if (currentSentence.length > 7) {
-                                    if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
-                                        value7 = Integer.valueOf(currentSentence[7]);
-                                    else
-                                        value7 = 0;
-                                    //add the longitude
-                                    MyFlight.AddToFlight(value2,
-                                        (long) (value7), flightName, 4);
+                                    //longitude
+                                    if (currentSentence.length > 7) {
+                                        if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
+                                            value7 = Integer.valueOf(currentSentence[7]);
+                                        else
+                                            value7 = 0;
+                                        //add the longitude
+                                        MyFlight.AddToFlight(value2,
+                                                (long) (value7), flightName, 4);
+                                    }
                                 }
                             break;
                             case "alticonfig":
+                                if (currentSentence[currentSentence.length-1].matches("\\d+(?:\\.\\d+)?"))
+                                    chk = Long.valueOf(currentSentence[currentSentence.length-1]);
+                                if (calculateSentenceCHK(currentSentence) == chk) {
+                                    // Value 1 contains the units
+                                    if (currentSentence.length > 1)
+                                        if (currentSentence[1].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setUnits(Integer.valueOf(currentSentence[1]));
+                                        else
+                                            AltiCfg.setUnits(0);
+                                    // Value 2 contains beepingMode
+                                    if (currentSentence.length > 2)
+                                        if (currentSentence[2].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setBeepingMode(Integer.valueOf(currentSentence[2]));
+                                        else
+                                            AltiCfg.setBeepingMode(0);
+                                    // Value 3 contains output1
+                                    if (currentSentence.length > 3)
+                                        if (currentSentence[3].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setOutput1(Integer.valueOf(currentSentence[3]));
+                                        else
+                                            AltiCfg.setOutput1(0);
+                                    // Value 4 contains output2
+                                    if (currentSentence.length > 4)
+                                        if (currentSentence[4].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setOutput2(Integer.valueOf(currentSentence[4]));
+                                        else
+                                            AltiCfg.setOutput2(0);
 
-                                // Value 1 contains the units
-                                if (currentSentence.length > 1)
-                                    if (currentSentence[1].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setUnits(Integer.valueOf(currentSentence[1]));
-                                    else
-                                        AltiCfg.setUnits(0);
-                                // Value 2 contains beepingMode
-                                if (currentSentence.length > 2)
-                                    if (currentSentence[2].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setBeepingMode(Integer.valueOf(currentSentence[2]));
-                                    else
-                                        AltiCfg.setBeepingMode(0);
-                                // Value 3 contains output1
-                                if (currentSentence.length > 3)
-                                    if (currentSentence[3].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setOutput1(Integer.valueOf(currentSentence[3]));
-                                    else
-                                        AltiCfg.setOutput1(0);
-                                // Value 4 contains output2
-                                if (currentSentence.length > 4)
-                                    if (currentSentence[4].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setOutput2(Integer.valueOf(currentSentence[4]));
-                                    else
-                                        AltiCfg.setOutput2(0);
+                                    // Value 5 contains output3
+                                    if (currentSentence.length > 5)
+                                        if (currentSentence[5].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setOutput3(Integer.valueOf(currentSentence[5]));
+                                        else
+                                            AltiCfg.setOutput3(0);
 
-                                // Value 5 contains output3
-                                if (currentSentence.length > 5)
-                                    if (currentSentence[5].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setOutput3(Integer.valueOf(currentSentence[5]));
-                                    else
-                                        AltiCfg.setOutput3(0);
+                                    // Value 6 contains supersonicYesNo
+                                    if (currentSentence.length > 6)
+                                        if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setSupersonicYesNo(Integer.valueOf(currentSentence[6]));
+                                        else
+                                            AltiCfg.setSupersonicYesNo(0);
+                                    // Value 7 contains mainAltitude
+                                    if (currentSentence.length > 7)
+                                        if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setMainAltitude(Integer.valueOf(currentSentence[7]));
+                                        else
+                                            AltiCfg.setMainAltitude(50);
+                                    // Value 8 contains AltimeterName
+                                    if (currentSentence.length > 8)
+                                        AltiCfg.setAltimeterName(currentSentence[8]);
 
-                                // Value 6 contains supersonicYesNo
-                                if (currentSentence.length > 6)
-                                    if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setSupersonicYesNo(Integer.valueOf(currentSentence[6]));
-                                    else
-                                        AltiCfg.setSupersonicYesNo(0);
-                                // Value 7 contains mainAltitude
-                                if (currentSentence.length > 7)
-                                    if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setMainAltitude(Integer.valueOf(currentSentence[7]));
-                                    else
-                                        AltiCfg.setMainAltitude(50);
-                                // Value 8 contains AltimeterName
-                                if (currentSentence.length > 8)
-                                    AltiCfg.setAltimeterName(currentSentence[8]);
+                                    // Value 9 contains the altimeter major version
+                                    if (currentSentence.length > 9)
+                                        if (currentSentence[9].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setAltiMajorVersion(Integer.valueOf(currentSentence[9]));
+                                        else
+                                            AltiCfg.setAltiMajorVersion(0);
+                                    // Value 10 contain the altimeter minor version
+                                    if (currentSentence.length > 10)
+                                        if (currentSentence[10].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setAltiMinorVersion(Integer.valueOf(currentSentence[10]));
+                                        else
+                                            AltiCfg.setAltiMinorVersion(0);
+                                    // Value 11 contains the output 1 delay
+                                    if (currentSentence.length > 11)
+                                        if (currentSentence[11].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setOutput1Delay(Integer.valueOf(currentSentence[11]));
+                                        else
+                                            AltiCfg.setOutput1Delay(0);
+                                    // Value 12 contains the output 2 delay
+                                    if (currentSentence.length > 12)
+                                        if (currentSentence[12].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setOutput2Delay(Integer.valueOf(currentSentence[12]));
+                                        else
+                                            AltiCfg.setOutput2Delay(0);
+                                    // Value 13 contains the output 3 delay
+                                    if (currentSentence.length > 13)
+                                        if (currentSentence[13].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setOutput3Delay(Integer.valueOf(currentSentence[13]));
+                                        else
+                                            AltiCfg.setOutput3Delay(0);
+                                    // Value 14 contains the altimeter beeping frequency
+                                    if (currentSentence.length > 14)
+                                        if (currentSentence[14].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setBeepingFrequency(Integer.valueOf(currentSentence[14]));
+                                        else
+                                            AltiCfg.setBeepingFrequency(440);
+                                    // Value 15 contains the number of measures for apogee
+                                    if (currentSentence.length > 15)
+                                        if (currentSentence[15].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setNbrOfMeasuresForApogee(Integer.valueOf(currentSentence[15]));
+                                        else
+                                            AltiCfg.setNbrOfMeasuresForApogee(0);
+                                    // Value 16 contains the min recording altitude
+                                    if (currentSentence.length > 16)
+                                        if (currentSentence[16].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setEndRecordAltitude(Integer.valueOf(currentSentence[16]));
+                                        else
+                                            AltiCfg.setEndRecordAltitude(5);
+                                    // Value 17 contains the record temp flag
+                                    if (currentSentence.length > 17)
+                                        if (currentSentence[17].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setRecordTemperature(Integer.valueOf(currentSentence[17]));
+                                        else
+                                            AltiCfg.setRecordTemperature(0);
+                                    // Value 18 contains the supersonic delay flag
+                                    if (currentSentence.length > 18)
+                                        if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setSupersonicDelay(Integer.valueOf(currentSentence[18]));
+                                        else
+                                            AltiCfg.setSupersonicDelay(0);
+                                    // Value 19 contains the connection speed
+                                    if (currentSentence.length > 19)
+                                        if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setConnectionSpeed(Integer.valueOf(currentSentence[19]));
+                                        else
+                                            AltiCfg.setConnectionSpeed(38400);
+                                    // Value 20 contains the altimeter resolution
+                                    if (currentSentence.length > 20)
+                                        if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
+                                            //if ((int) currentSentence.value20 !=-1)
+                                            AltiCfg.setAltimeterResolution(Integer.valueOf(currentSentence[20]));
+                                        else
+                                            AltiCfg.setAltimeterResolution(0);
+                                    // Value 21 contains the eeprom size
+                                    if (currentSentence.length > 21)
+                                        if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
+                                            //if ((int) currentSentence.value21 !=-1)
+                                            AltiCfg.setEepromSize(Integer.valueOf(currentSentence[21]));
+                                        else
+                                            AltiCfg.setEepromSize(512);
+                                    // Value 22 contains switch beeps on or off
+                                    if (currentSentence.length > 22)
+                                        if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
+                                            //if ((int) currentSentence.value22 !=-1)
+                                            AltiCfg.setBeepOnOff(Integer.valueOf(currentSentence[22]));
+                                        else
+                                            AltiCfg.setBeepOnOff(0);
+                                    // Value 23 contains the 4th output
+                                    if (currentSentence.length > 23)
+                                        if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setOutput4(Integer.valueOf(currentSentence[23]));
+                                        else
+                                            //We do not have a fourth output
+                                            AltiCfg.setOutput4(-1);
+                                    // Value 24 contains the output4 delay
+                                    if (currentSentence.length > 24)
+                                        if (currentSentence[24].matches("\\d+(?:\\.\\d+)?"))
+                                            //if ((int) currentSentence.value24 !=-1)
+                                            AltiCfg.setOutput4Delay(Integer.valueOf(currentSentence[24]));
+                                        else
+                                            AltiCfg.setOutput4Delay(-1);
+                                    // Value 25 contains liftOff Altitude
+                                    if (currentSentence.length > 25)
+                                        if (currentSentence[25].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setLiftOffAltitude(Integer.valueOf(currentSentence[25]));
+                                        else
+                                            //if you cannot read it, set it to 20 meters
+                                            AltiCfg.setLiftOffAltitude(20);
 
-                                // Value 9 contains the altimeter major version
-                                if (currentSentence.length > 9)
-                                    if (currentSentence[9].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setAltiMajorVersion(Integer.valueOf(currentSentence[9]));
-                                    else
-                                        AltiCfg.setAltiMajorVersion(0);
-                                // Value 10 contain the altimeter minor version
-                                if (currentSentence.length > 10)
-                                    if (currentSentence[10].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setAltiMinorVersion(Integer.valueOf(currentSentence[10]));
-                                    else
-                                        AltiCfg.setAltiMinorVersion(0);
-                                // Value 11 contains the output 1 delay
-                                if (currentSentence.length > 11)
-                                    if (currentSentence[11].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setOutput1Delay(Integer.valueOf(currentSentence[11]));
-                                    else
-                                        AltiCfg.setOutput1Delay(0);
-                                // Value 12 contains the output 2 delay
-                                if (currentSentence.length > 12)
-                                    if (currentSentence[12].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setOutput2Delay(Integer.valueOf(currentSentence[12]));
-                                    else
-                                        AltiCfg.setOutput2Delay(0);
-                                // Value 13 contains the output 3 delay
-                                if (currentSentence.length > 13)
-                                    if (currentSentence[13].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setOutput3Delay(Integer.valueOf(currentSentence[13]));
-                                    else
-                                        AltiCfg.setOutput3Delay(0);
-                                // Value 14 contains the altimeter beeping frequency
-                                if (currentSentence.length > 14)
-                                    if (currentSentence[14].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setBeepingFrequency(Integer.valueOf(currentSentence[14]));
-                                    else
-                                        AltiCfg.setBeepingFrequency(440);
-                                // Value 15 contains the number of measures for apogee
-                                if (currentSentence.length > 15)
-                                    if (currentSentence[15].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setNbrOfMeasuresForApogee(Integer.valueOf(currentSentence[15]));
-                                    else
-                                        AltiCfg.setNbrOfMeasuresForApogee(0);
-                                // Value 16 contains the min recording altitude
-                                if (currentSentence.length > 16)
-                                    if (currentSentence[16].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setEndRecordAltitude(Integer.valueOf(currentSentence[16]));
-                                    else
-                                        AltiCfg.setEndRecordAltitude(5);
-                                // Value 17 contains the record temp flag
-                                if (currentSentence.length > 17)
-                                    if (currentSentence[17].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setRecordTemperature(Integer.valueOf(currentSentence[17]));
-                                    else
-                                        AltiCfg.setRecordTemperature(0);
-                                // Value 18 contains the supersonic delay flag
-                                if (currentSentence.length > 18)
-                                    if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setSupersonicDelay(Integer.valueOf(currentSentence[18]));
-                                    else
-                                        AltiCfg.setSupersonicDelay(0);
-                                // Value 19 contains the connection speed
-                                if (currentSentence.length > 19)
-                                    if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setConnectionSpeed(Integer.valueOf(currentSentence[19]));
-                                    else
-                                        AltiCfg.setConnectionSpeed(38400);
-                                // Value 20 contains the altimeter resolution
-                                if (currentSentence.length > 20)
-                                    if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value20 !=-1)
-                                        AltiCfg.setAltimeterResolution(Integer.valueOf(currentSentence[20]));
-                                    else
-                                        AltiCfg.setAltimeterResolution(0);
-                                // Value 21 contains the eeprom size
-                                if (currentSentence.length > 21)
-                                    if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value21 !=-1)
-                                        AltiCfg.setEepromSize(Integer.valueOf(currentSentence[21]));
-                                    else
-                                        AltiCfg.setEepromSize(512);
-                                // Value 22 contains switch beeps on or off
-                                if (currentSentence.length > 22)
-                                    if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value22 !=-1)
-                                        AltiCfg.setBeepOnOff(Integer.valueOf(currentSentence[22]));
-                                    else
-                                        AltiCfg.setBeepOnOff(0);
-                                // Value 23 contains the 4th output
-                                if (currentSentence.length > 23)
-                                    if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setOutput4(Integer.valueOf(currentSentence[23]));
-                                    else
-                                        //We do not have a fourth output
-                                        AltiCfg.setOutput4(-1);
-                                // Value 24 contains the output4 delay
-                                if (currentSentence.length > 24)
-                                    if (currentSentence[24].matches("\\d+(?:\\.\\d+)?"))
-                                        //if ((int) currentSentence.value24 !=-1)
-                                        AltiCfg.setOutput4Delay(Integer.valueOf(currentSentence[24]));
-                                    else
-                                        AltiCfg.setOutput4Delay(-1);
-                                // Value 25 contains liftOff Altitude
-                                if (currentSentence.length > 25)
-                                    if (currentSentence[25].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setLiftOffAltitude(Integer.valueOf(currentSentence[25]));
-                                    else
-                                        //if you cannot read it, set it to 20 meters
-                                        AltiCfg.setLiftOffAltitude(20);
-
-                                // value 26 contains battery type
-                                if (currentSentence.length > 26)
-                                    if (currentSentence[26].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setBatteryType(Integer.valueOf(currentSentence[26]));
-                                    else
-                                        AltiCfg.setBatteryType(0);
-
-
-                                // Value 27 contains the servo 1 On position
-                                if (currentSentence.length > 27)
-                                    if (currentSentence[27].matches("\\d+(?:\\.\\d+)?"))
-
-                                        AltiCfg.setServo1OnPos(Integer.valueOf(currentSentence[27]));
-                                    else
-                                        AltiCfg.setServo1OnPos(-1);
-                                // Value 28 contains the servo 2 On position
-                                if (currentSentence.length > 28)
-                                    if (currentSentence[28].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setServo2OnPos(Integer.valueOf(currentSentence[28]));
-                                    else
-                                        AltiCfg.setServo2OnPos(-1);
-                                // Value 29 contains the servo 3 On position
-                                if (currentSentence.length > 29)
-                                    if (currentSentence[29].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setServo3OnPos(Integer.valueOf(currentSentence[29]));
-                                    else
-                                        AltiCfg.setServo3OnPos(-1);
-                                // Value 30 contains the servo 4 On position
-                                if (currentSentence.length > 30)
-                                    if (currentSentence[30].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setServo4OnPos(Integer.valueOf(currentSentence[30]));
-                                    else
-                                        AltiCfg.setServo4OnPos(-1);
-                                // Value 31 contains servo 1 off position
-                                if (currentSentence.length > 31)
-                                    if (currentSentence[31].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setServo1OffPos(Integer.valueOf(currentSentence[31]));
-                                    else
-                                        AltiCfg.setServo1OffPos(-1);
-                                // Value 32 contains servo 2 off position
-                                if (currentSentence.length > 32)
-                                    if (currentSentence[32].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setServo2OffPos(Integer.valueOf(currentSentence[32]));
-                                    else
-                                        AltiCfg.setServo2OffPos(-1);
-                                // Value 33 contains servo 3 off position
-                                if (currentSentence.length > 33)
-                                    if (currentSentence[33].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setServo3OffPos(Integer.valueOf(currentSentence[33]));
-                                    else
-                                        AltiCfg.setServo3OffPos(-1);
-                                // Value 34 contains servo 4 off position
-                                if (currentSentence.length > 34)
-                                    if (currentSentence[34].matches("\\d+(?:\\.\\d+)?"))
-                                        AltiCfg.setServo4OffPos(Integer.valueOf(currentSentence[34]));
-                                    else
-                                        AltiCfg.setServo4OffPos(-1);
+                                    // value 26 contains battery type
+                                    if (currentSentence.length > 26)
+                                        if (currentSentence[26].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setBatteryType(Integer.valueOf(currentSentence[26]));
+                                        else
+                                            AltiCfg.setBatteryType(0);
 
 
+                                    // Value 27 contains the servo 1 On position
+                                    if (currentSentence.length > 27)
+                                        if (currentSentence[27].matches("\\d+(?:\\.\\d+)?"))
 
+                                            AltiCfg.setServo1OnPos(Integer.valueOf(currentSentence[27]));
+                                        else
+                                            AltiCfg.setServo1OnPos(-1);
+                                    // Value 28 contains the servo 2 On position
+                                    if (currentSentence.length > 28)
+                                        if (currentSentence[28].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServo2OnPos(Integer.valueOf(currentSentence[28]));
+                                        else
+                                            AltiCfg.setServo2OnPos(-1);
+                                    // Value 29 contains the servo 3 On position
+                                    if (currentSentence.length > 29)
+                                        if (currentSentence[29].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServo3OnPos(Integer.valueOf(currentSentence[29]));
+                                        else
+                                            AltiCfg.setServo3OnPos(-1);
+                                    // Value 30 contains the servo 4 On position
+                                    if (currentSentence.length > 30)
+                                        if (currentSentence[30].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServo4OnPos(Integer.valueOf(currentSentence[30]));
+                                        else
+                                            AltiCfg.setServo4OnPos(-1);
+                                    // Value 31 contains servo 1 off position
+                                    if (currentSentence.length > 31)
+                                        if (currentSentence[31].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServo1OffPos(Integer.valueOf(currentSentence[31]));
+                                        else
+                                            AltiCfg.setServo1OffPos(-1);
+                                    // Value 32 contains servo 2 off position
+                                    if (currentSentence.length > 32)
+                                        if (currentSentence[32].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServo2OffPos(Integer.valueOf(currentSentence[32]));
+                                        else
+                                            AltiCfg.setServo2OffPos(-1);
+                                    // Value 33 contains servo 3 off position
+                                    if (currentSentence.length > 33)
+                                        if (currentSentence[33].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServo3OffPos(Integer.valueOf(currentSentence[33]));
+                                        else
+                                            AltiCfg.setServo3OffPos(-1);
+                                    // Value 34 contains servo 4 off position
+                                    if (currentSentence.length > 34)
+                                        if (currentSentence[34].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServo4OffPos(Integer.valueOf(currentSentence[34]));
+                                        else
+                                            AltiCfg.setServo4OffPos(-1);
+                                    myMessage = myMessage + " " + "alticonfig";
+                                }
+                                else
+                                {
+                                    myMessage = myMessage + "KO" + "alticonfig";
+                                }
                                 //DataReady = true;
-                                myMessage = myMessage + " " + "alticonfig";
+
                                 break;
 
                             case "nbrOfFlight":
