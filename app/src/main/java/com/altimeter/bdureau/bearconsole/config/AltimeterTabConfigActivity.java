@@ -393,8 +393,10 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         String cfg = altiCfgStr;
         cfg = cfg.replace("s", "");
         cfg = cfg.replace(",", "");
-        //altiCfgStr = altiCfgStr + "," + generateCheckSum(cfg) +";\n";
-        altiCfgStr = altiCfgStr + ";\n";
+        Log.d("conftab",cfg.toString());
+
+        altiCfgStr = altiCfgStr + "," + generateCheckSum(cfg) +";\n";
+        //altiCfgStr = altiCfgStr + ";\n";
         // msg(altiCfgStr.toString());
 
         if (myBT.getConnected()) {
@@ -403,7 +405,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.clearInput();
             //switch off the main loop before sending the config
             myBT.write("m0;\n".toString());
-
+            Log.d("conftab","switch off main loop");
             //wait for the result to come back
             try {
                 while (myBT.getInputStream().available() <= 0) ;
@@ -412,13 +414,16 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             String myMessage = "";
             myMessage = myBT.ReadResult(3000);
-
+            if (myMessage.equals("OK")) {
+                Log.d("conftab","switch off main loop ok");
+            }
             myBT.flush();
             myBT.clearInput();
             myBT.setDataReady(false);
-
+            msg("Sent :" + altiCfgStr.toString());
             //send back the config
             myBT.write(altiCfgStr.toString());
+            Log.d("conftab",altiCfgStr.toString());
             myBT.flush();
             //get the results
             //wait for the result to come back
@@ -430,6 +435,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myMessage = myBT.ReadResult(3000);
             if (myMessage.equals("OK")) {
                 msg("Sent OK:" + altiCfgStr.toString());
+                Log.d("conftab","config sent succesfully");
+
             } else {
                 //  msg(myMessage);
             }
@@ -443,6 +450,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.clearInput();
             //switch on the main loop before sending the config
             myBT.write("m1;\n".toString());
+            Log.d("conftab","switch on main loop");
 
 
             //wait for the result to come back
@@ -453,14 +461,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             myMessage = "";
             myMessage = myBT.ReadResult(3000);
-            msg(getResources().getString(R.string.msg3));
+            //msg(getResources().getString(R.string.msg3));
 
             myBT.flush();
         }
         //return true;
     }
 
-    private Integer generateCheckSum(String value) {
+    public static Integer generateCheckSum(String value) {
 
         byte[] data = value.getBytes();
         long checksum = 0L;
