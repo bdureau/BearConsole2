@@ -151,7 +151,7 @@ public class ConsoleApplication extends Application {
     // connect to the bluetooth adapter
     public boolean connect() {
         boolean state = false;
-        appendLog("connect:");
+       //appendLog("connect:");
         if (myTypeOfConnection.equals("bluetooth")) {
             state = BTCon.connect(address);
             setConnectionType("bluetooth");
@@ -279,7 +279,7 @@ public class ConsoleApplication extends Application {
         }
     }
 
-    public void appendLog(String text) {
+   /* public void appendLog(String text) {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         //File logFile = new File(path+"/debugfile2.txt");
         File logFile = new File("/mnt/sdcard0/debugfile2.txt");
@@ -303,7 +303,7 @@ public class ConsoleApplication extends Application {
             e.printStackTrace();
         }
     }
-
+*/
 
     public void setExit(boolean b) {
         this.exit = b;
@@ -311,29 +311,29 @@ public class ConsoleApplication extends Application {
 
 
     public long calculateSentenceCHK(String currentSentence[]) {
-        long chk =0;
-        String sentence="";
+        long chk = 0;
+        String sentence = "";
 
-        for (int i=0; i< currentSentence.length-1; i++) {
-            sentence = sentence + currentSentence[i] +",";
+        for (int i = 0; i < currentSentence.length - 1; i++) {
+            sentence = sentence + currentSentence[i] + ",";
         }
         //Log.d("calculateSentenceCHK", sentence);
         chk = generateCheckSum(sentence);
         return chk;
     }
 
-    public static Integer generateCheckSum(String value)  {
+    public static Integer generateCheckSum(String value) {
 
         byte[] data = value.getBytes();
         long checksum = 0L;
 
-        for( byte b : data )  {
+        for (byte b : data) {
             checksum += b;
         }
 
         checksum = checksum % 256;
 
-        return new Long( checksum ).intValue();
+        return new Long(checksum).intValue();
 
     }
 
@@ -383,11 +383,11 @@ public class ConsoleApplication extends Application {
                             fullBuff = fullBuff + tempBuff;
                         }
 
-                        long chk=0;
+                        long chk = 0;
                         switch (currentSentence[0]) {
                             case "telemetry":
-                                if (currentSentence[currentSentence.length-1].matches("\\d+(?:\\.\\d+)?"))
-                                    chk = Long.valueOf(currentSentence[currentSentence.length-1]);
+                                if (currentSentence[currentSentence.length - 1].matches("\\d+(?:\\.\\d+)?"))
+                                    chk = Long.valueOf(currentSentence[currentSentence.length - 1]);
                                 if (calculateSentenceCHK(currentSentence) == chk) {
                                     if (mHandler != null) {
                                         // Value 1 contain the current altitude
@@ -397,7 +397,6 @@ public class ConsoleApplication extends Application {
                                             else
                                                 mHandler.obtainMessage(1, String.valueOf(0)).sendToTarget();
                                         // Value 2 lift off yes/no
-                                        //mHandler.obtainMessage(2, String.valueOf(currentSentence.value2)).sendToTarget();
                                         if (currentSentence.length > 2)
                                             if (currentSentence[2].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(2, String.valueOf(currentSentence[2])).sendToTarget();
@@ -405,7 +404,6 @@ public class ConsoleApplication extends Application {
                                                 mHandler.obtainMessage(2, String.valueOf(0)).sendToTarget();
 
                                         // Value 3 apogee fired yes/no
-                                        //mHandler.obtainMessage(3, String.valueOf(currentSentence.value3)).sendToTarget();
                                         if (currentSentence.length > 3)
                                             if (currentSentence[3].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(3, String.valueOf(currentSentence[3])).sendToTarget();
@@ -413,41 +411,35 @@ public class ConsoleApplication extends Application {
                                                 mHandler.obtainMessage(3, String.valueOf(0)).sendToTarget();
                                         //Value 4 apogee altitude
                                         if (currentSentence.length > 4)
-                                            //mHandler.obtainMessage(4, String.valueOf(currentSentence.value4)).sendToTarget();
                                             if (currentSentence[4].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(4, String.valueOf(currentSentence[4])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(4, String.valueOf(0)).sendToTarget();
                                         // Value 5 main fired yes/no
                                         if (currentSentence.length > 5)
-                                            //mHandler.obtainMessage(5, String.valueOf(currentSentence.value5)).sendToTarget();
                                             if (currentSentence[5].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(5, String.valueOf(currentSentence[5])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(5, String.valueOf(0)).sendToTarget();
                                         // Value 6 main altitude
                                         if (currentSentence.length > 6)
-                                            //mHandler.obtainMessage(6, String.valueOf(currentSentence.value6)).sendToTarget();
                                             if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(6, String.valueOf(currentSentence[6])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(6, String.valueOf(0)).sendToTarget();
                                         // Value 7 landed
                                         if (currentSentence.length > 7)
-                                            //mHandler.obtainMessage(7, String.valueOf(currentSentence.value7)).sendToTarget();
                                             if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(7, String.valueOf(currentSentence[7])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(7, String.valueOf(0)).sendToTarget();
                                         // value 8 time
                                         if (currentSentence.length > 8)
-                                            //                                   mHandler.obtainMessage(8, String.valueOf(currentSentence.value8)).sendToTarget();
                                             if (currentSentence[8].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(8, String.valueOf(currentSentence[8])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(8, String.valueOf(0)).sendToTarget();
                                         // Value 9 contains the output 1 status
-                                        //mHandler.obtainMessage(9, String.valueOf(currentSentence.value9)).sendToTarget();
                                         if (currentSentence.length > 9)
                                             if (currentSentence[9].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(9, String.valueOf(currentSentence[9])).sendToTarget();
@@ -455,13 +447,11 @@ public class ConsoleApplication extends Application {
                                                 mHandler.obtainMessage(9, String.valueOf(0)).sendToTarget();
                                         // Value 10 contains the output 2 status
                                         if (currentSentence.length > 10)
-                                            //mHandler.obtainMessage(10, String.valueOf(currentSentence.value10)).sendToTarget();
                                             if (currentSentence[10].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(10, String.valueOf(currentSentence[10])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(10, String.valueOf(0)).sendToTarget();
                                         // Value 11 contains the output 3 status
-                                        //mHandler.obtainMessage(11, String.valueOf(currentSentence.value11)).sendToTarget();
                                         if (currentSentence.length > 11)
                                             if (currentSentence[11].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(11, String.valueOf(currentSentence[11])).sendToTarget();
@@ -469,27 +459,23 @@ public class ConsoleApplication extends Application {
                                                 mHandler.obtainMessage(11, String.valueOf(0)).sendToTarget();
                                         // Value 12 contains the output 4 status
                                         if (currentSentence.length > 12)
-                                            //mHandler.obtainMessage(12, String.valueOf(currentSentence.value12)).sendToTarget();
                                             if (currentSentence[12].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(12, String.valueOf(currentSentence[12])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(12, String.valueOf(0)).sendToTarget();
                                         // Value 13 contains the battery voltage
                                         if (currentSentence.length > 13)
-                                            //mHandler.obtainMessage(13, String.valueOf(currentSentence.value13)).sendToTarget();
                                             if (currentSentence[13].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(13, String.valueOf(currentSentence[13])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(13, String.valueOf(0)).sendToTarget();
                                         // Value 14 contains the temperature
-                                        //mHandler.obtainMessage(14, String.valueOf(currentSentence.value14)).sendToTarget();
                                         if (currentSentence.length > 14)
                                             if (currentSentence[14].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(14, String.valueOf(currentSentence[14])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(14, String.valueOf(0)).sendToTarget();
                                         // Value 15 contains the eeprom
-                                        //mHandler.obtainMessage(14, String.valueOf(currentSentence.value14)).sendToTarget();
                                         if (currentSentence.length > 15)
                                             if (currentSentence[15].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(15, String.valueOf(currentSentence[15])).sendToTarget();
@@ -519,14 +505,13 @@ public class ConsoleApplication extends Application {
                                 break;
 
                             case "data":
-                                if (currentSentence[currentSentence.length-1].matches("\\d+(?:\\.\\d+)?"))
-                                    chk = Long.valueOf(currentSentence[currentSentence.length-1]);
+                                if (currentSentence[currentSentence.length - 1].matches("\\d+(?:\\.\\d+)?"))
+                                    chk = Long.valueOf(currentSentence[currentSentence.length - 1]);
                                 String flightName = "FlightXX";
                                 if (calculateSentenceCHK(currentSentence) == chk) {
                                     // Value 1 contain the flight number
                                     if (currentSentence.length > 1)
                                         if (currentSentence[1].matches("\\d+(?:\\.\\d+)?")) {
-                                            //currentFlightNbr = (int) currentSentence.value1 + 1;
                                             currentFlightNbr = Integer.valueOf(currentSentence[1]) + 1;
                                             if (currentFlightNbr < 10)
                                                 flightName = "Flight " + "0" + currentFlightNbr;
@@ -597,10 +582,10 @@ public class ConsoleApplication extends Application {
                                                 (long) (value7), flightName, 4);
                                     }
                                 }
-                            break;
+                                break;
                             case "alticonfig":
-                                if (currentSentence[currentSentence.length-1].matches("\\d+(?:\\.\\d+)?"))
-                                    chk = Long.valueOf(currentSentence[currentSentence.length-1]);
+                                if (currentSentence[currentSentence.length - 1].matches("\\d+(?:\\.\\d+)?"))
+                                    chk = Long.valueOf(currentSentence[currentSentence.length - 1]);
                                 if (calculateSentenceCHK(currentSentence) == chk) {
                                     // Value 1 contains the units
                                     if (currentSentence.length > 1)
@@ -719,21 +704,18 @@ public class ConsoleApplication extends Application {
                                     // Value 20 contains the altimeter resolution
                                     if (currentSentence.length > 20)
                                         if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
-                                            //if ((int) currentSentence.value20 !=-1)
                                             AltiCfg.setAltimeterResolution(Integer.valueOf(currentSentence[20]));
                                         else
                                             AltiCfg.setAltimeterResolution(0);
                                     // Value 21 contains the eeprom size
                                     if (currentSentence.length > 21)
                                         if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
-                                            //if ((int) currentSentence.value21 !=-1)
                                             AltiCfg.setEepromSize(Integer.valueOf(currentSentence[21]));
                                         else
                                             AltiCfg.setEepromSize(512);
                                     // Value 22 contains switch beeps on or off
                                     if (currentSentence.length > 22)
                                         if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
-                                            //if ((int) currentSentence.value22 !=-1)
                                             AltiCfg.setBeepOnOff(Integer.valueOf(currentSentence[22]));
                                         else
                                             AltiCfg.setBeepOnOff(0);
@@ -747,7 +729,6 @@ public class ConsoleApplication extends Application {
                                     // Value 24 contains the output4 delay
                                     if (currentSentence.length > 24)
                                         if (currentSentence[24].matches("\\d+(?:\\.\\d+)?"))
-                                            //if ((int) currentSentence.value24 !=-1)
                                             AltiCfg.setOutput4Delay(Integer.valueOf(currentSentence[24]));
                                         else
                                             AltiCfg.setOutput4Delay(-1);
@@ -817,12 +798,9 @@ public class ConsoleApplication extends Application {
                                         else
                                             AltiCfg.setServo4OffPos(-1);
                                     myMessage = myMessage + " " + "alticonfig";
-                                }
-                                else
-                                {
+                                } else {
                                     myMessage = myMessage + "KO" + "alticonfig";
                                 }
-                                //DataReady = true;
 
                                 break;
 
@@ -853,12 +831,10 @@ public class ConsoleApplication extends Application {
                             case "KO":
                                 setDataReady(true);
                                 commandRet = currentSentence[0];
-
                                 break;
                             case "UNKNOWN":
                                 setDataReady(true);
                                 commandRet = currentSentence[0];
-
                                 break;
                             default:
 
@@ -869,7 +845,6 @@ public class ConsoleApplication extends Application {
                 }
             }
         } catch (IOException e) {
-            //lastTempBuf = fullBuff;
             myMessage = myMessage + " " + "error:" + e.getMessage();
         }
         return myMessage;

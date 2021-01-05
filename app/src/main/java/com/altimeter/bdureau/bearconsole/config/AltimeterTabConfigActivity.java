@@ -371,10 +371,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 AltiCfg.getAltimeterResolution() + "," +
                 AltiCfg.getEepromSize() + "," +
                 AltiCfg.getBeepOnOff();
-        //if(AltiCfg.getAltimeterName().equals("AltiMultiSTM32")|| AltiCfg.getAltimeterName().equals("AltiGPS")|| AltiCfg.getAltimeterName().equals("AltiServo")) {
         altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4();
         altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4Delay();
-        // }
+
         altiCfgStr = altiCfgStr + "," + AltiCfg.getLiftOffAltitude();
         altiCfgStr = altiCfgStr + "," + AltiCfg.getBatteryType();
 
@@ -393,11 +392,10 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         String cfg = altiCfgStr;
         cfg = cfg.replace("s", "");
         cfg = cfg.replace(",", "");
-        Log.d("conftab",cfg.toString());
+        Log.d("conftab", cfg.toString());
 
-        altiCfgStr = altiCfgStr + "," + generateCheckSum(cfg) +";\n";
-        //altiCfgStr = altiCfgStr + ";\n";
-        // msg(altiCfgStr.toString());
+        altiCfgStr = altiCfgStr + "," + generateCheckSum(cfg) + ";\n";
+
 
         if (myBT.getConnected()) {
             myBT.setDataReady(false);
@@ -405,7 +403,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.clearInput();
             //switch off the main loop before sending the config
             myBT.write("m0;\n".toString());
-            Log.d("conftab","switch off main loop");
+            Log.d("conftab", "switch off main loop");
             //wait for the result to come back
             try {
                 while (myBT.getInputStream().available() <= 0) ;
@@ -415,7 +413,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             String myMessage = "";
             myMessage = myBT.ReadResult(3000);
             if (myMessage.equals("OK")) {
-                Log.d("conftab","switch off main loop ok");
+                Log.d("conftab", "switch off main loop ok");
             }
             myBT.flush();
             myBT.clearInput();
@@ -423,7 +421,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             msg("Sent :" + altiCfgStr.toString());
             //send back the config
             myBT.write(altiCfgStr.toString());
-            Log.d("conftab",altiCfgStr.toString());
+            Log.d("conftab", altiCfgStr.toString());
             myBT.flush();
             //get the results
             //wait for the result to come back
@@ -434,8 +432,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             myMessage = myBT.ReadResult(3000);
             if (myMessage.equals("OK")) {
-                msg("Sent OK:" + altiCfgStr.toString());
-                Log.d("conftab","config sent succesfully");
+                //msg("Sent OK:" + altiCfgStr.toString());
+                Log.d("conftab", "config sent succesfully");
 
             } else {
                 //  msg(myMessage);
@@ -450,8 +448,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.clearInput();
             //switch on the main loop before sending the config
             myBT.write("m1;\n".toString());
-            Log.d("conftab","switch on main loop");
-
+            Log.d("conftab", "switch on main loop");
 
             //wait for the result to come back
             try {
@@ -461,11 +458,11 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             myMessage = "";
             myMessage = myBT.ReadResult(3000);
-            //msg(getResources().getString(R.string.msg3));
+            msg(getResources().getString(R.string.msg3));
 
             myBT.flush();
         }
-        //return true;
+
     }
 
     public static Integer generateCheckSum(String value) {
