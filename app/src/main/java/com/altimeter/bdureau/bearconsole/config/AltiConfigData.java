@@ -44,6 +44,7 @@ public class AltiConfigData {
     private int servo4OffPos = 0;
     private int liftOffAltitude =20;
     private int batteryType =0;
+    private int servoStayOn =1;
 
     public AltiConfigData()
     {
@@ -321,4 +322,7 @@ public class AltiConfigData {
 
     public void setBatteryType(int value) {batteryType =value;}
     public int getBatteryType(){return batteryType;}
+
+    public void setServoStayOn(int value) {servoStayOn =value;}
+    public int getServoStayOn(){return servoStayOn;}
 }

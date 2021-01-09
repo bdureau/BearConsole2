@@ -62,6 +62,7 @@
     <string name="units">Unités</string>
     <string name="bip_mode">Mode Bip </string>
     <string name="beep_freq">Freq bips</string>
+    <string name="servo_stay_on">Servo Reste ouvert</string>
     <!-- Config tab4 -->
     <string name="servos_config">Configuration des Servos</string>
     <string name="servo1_off_pos">Servo1 pos min</string>

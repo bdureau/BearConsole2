@@ -60,6 +60,7 @@
     <string name="units">Units</string>
     <string name="bip_mode">Beep mode</string>
     <string name="beep_freq">Beep freq</string>
+    <string name="servo_stay_on">Servo Stay On</string>
     <!-- Config tab4-->
     <string name="servos_config">Servos Config</string>
     <string name="servo1_off_pos">Servo1 off pos</string>

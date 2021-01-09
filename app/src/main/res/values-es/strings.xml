@@ -60,6 +60,7 @@
     <string name="units">Unidades</string>
     <string name="bip_mode">Modo de pitido</string>
     <string name="beep_freq">Frecuencia de pitido</string>
+    <string name="servo_stay_on">Servo Stay On</string>
     <!-- Config tab4-->
     <string name="servos_config">Configuración de servo</string>
     <string name="servo1_off_pos">Servo1 off pos</string>

@@ -249,6 +249,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             AltiCfg.setBeepingFrequency(configPage3.getFreq());
             AltiCfg.setBeepingMode(configPage3.getDropdownBipMode());
             AltiCfg.setUnits(configPage3.getDropdownUnits());
+            AltiCfg.setServoStayOn(configPage3.getServoStayOn());
         }
 
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
@@ -262,6 +263,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 AltiCfg.setServo2OffPos(configPage4.getServo2OffPos());
                 AltiCfg.setServo3OffPos(configPage4.getServo3OffPos());
                 AltiCfg.setServo4OffPos(configPage4.getServo4OffPos());
+
             }
         }
         if (AltiCfg.getOutput1() == 0)
@@ -386,6 +388,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo2OffPos();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo3OffPos();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo4OffPos();
+            altiCfgStr = altiCfgStr + "," + AltiCfg.getServoStayOn();
 
         }
 
@@ -1226,6 +1229,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         private Spinner dropdownUnits;
         private Spinner dropdownBipMode;
         private EditText Freq;
+        private Spinner dropdownServoStayOn;
+        private TextView txtServoStayOn;
+
 
 
         private boolean ViewCreated = false;
@@ -1271,6 +1277,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
         public void setDropdownBipMode(int BipMode) {
             this.dropdownBipMode.setSelection(BipMode);
+        }
+
+        public int getServoStayOn() {
+            return (int) this.dropdownServoStayOn.getSelectedItemId();
+        }
+
+        public void setServoStayOn(int ServoStayOn) {
+            this.dropdownBipMode.setSelection(ServoStayOn);
         }
 
         @Nullable
@@ -1323,6 +1337,22 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             .show();
                 }
             });
+
+            dropdownServoStayOn= (Spinner) view.findViewById(R.id.spinnerServoSatyOn);
+            String[] items3 = new String[]{"No", "Yes"};
+            ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this.getActivity(),
+                    android.R.layout.simple_spinner_dropdown_item, items3);
+            dropdownServoStayOn.setAdapter(adapter3);
+
+            txtServoStayOn = (TextView) view.findViewById(R.id.txtServoStayOn);
+            if(AltiCfg.getAltimeterName().equals("AltiServo")) {
+                dropdownServoStayOn.setVisibility(View.VISIBLE);
+                txtServoStayOn.setVisibility(View.VISIBLE);
+            } else {
+                dropdownServoStayOn.setVisibility(View.INVISIBLE);
+                txtServoStayOn.setVisibility(View.INVISIBLE);
+            }
+
             if (AltiCfg != null) {
                 altiName.setText(AltiCfg.getAltimeterName() + " ver: " +
                         AltiCfg.getAltiMajorVersion() + "." + AltiCfg.getAltiMinorVersion());
@@ -1330,6 +1360,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 dropdownBipMode.setSelection(AltiCfg.getBeepingMode());
                 dropdownUnits.setSelection(AltiCfg.getUnits());
                 Freq.setText(String.valueOf(AltiCfg.getBeepingFrequency()));
+                dropdownServoStayOn.setSelection(AltiCfg.getServoStayOn());
             }
             ViewCreated = true;
             return view;

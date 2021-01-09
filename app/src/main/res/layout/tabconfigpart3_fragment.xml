@@ -87,6 +87,21 @@
         android:textSize="13sp" />
 
 
+    <TextView
+        android:id="@+id/txtServoStayOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtBeepFrequency"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/servo_stay_on" />
 
+    <Spinner
+        android:id="@+id/spinnerServoSatyOn"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/txtServoStayOn"
+        android:spinnerMode="dropdown" />
 
 </RelativeLayout>

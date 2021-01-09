@@ -797,6 +797,12 @@ public class ConsoleApplication extends Application {
                                             AltiCfg.setServo4OffPos(Integer.valueOf(currentSentence[34]));
                                         else
                                             AltiCfg.setServo4OffPos(-1);
+                                    //Value 35 contains global servo settings
+                                    if (currentSentence.length > 35)
+                                        if (currentSentence[35].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServoStayOn(Integer.valueOf(currentSentence[35]));
+                                        else
+                                            AltiCfg.setServoStayOn(0);
                                     myMessage = myMessage + " " + "alticonfig";
                                 } else {
                                     myMessage = myMessage + "KO" + "alticonfig";
