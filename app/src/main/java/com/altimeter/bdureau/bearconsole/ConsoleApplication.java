@@ -919,6 +919,8 @@ public class ConsoleApplication extends Application {
         private String baudRate = "9";
         private String graphicsLibType = "0";
 
+        private String allowMultipleDrogueMain = "false";
+
         public GlobalConfig() {
             appConfig = getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
             edit = appConfig.edit();
@@ -936,6 +938,7 @@ public class ConsoleApplication extends Application {
             baudRate = "9";
             connectionType = "0";
             graphicsLibType = "0";
+            allowMultipleDrogueMain = "false";
             /*edit.clear();
             edit.putString("AppLanguage","0");
             edit.putString("Units", "0");
@@ -993,6 +996,12 @@ public class ConsoleApplication extends Application {
                 graphicsLibType = appConfig.getString("GraphicsLibType", "1");
                 if (!graphicsLibType.equals(""))
                     setGraphicsLibType(graphicsLibType);
+
+                String allowMultipleDrogueMain;
+                allowMultipleDrogueMain = appConfig.getString("AllowMultipleDrogueMain", "false");
+                if (!allowMultipleDrogueMain.equals(""))
+                    setAllowMultipleDrogueMain(allowMultipleDrogueMain);
+
             } catch (Exception e) {
 
             }
@@ -1007,6 +1016,7 @@ public class ConsoleApplication extends Application {
             edit.putString("BaudRate", getBaudRate());
             edit.putString("ConnectionType", getConnectionType());
             edit.putString("GraphicsLibType", getGraphicsLibType());
+            edit.putString("AllowMultipleDrogueMain", getAllowMultipleDrogueMain());
             edit.commit();
 
         }
@@ -1092,10 +1102,15 @@ public class ConsoleApplication extends Application {
         }
 
         public void setBaudRate(String value) {
-
             baudRate = value;
         }
 
+        public void setAllowMultipleDrogueMain(String value) {
+            allowMultipleDrogueMain = value;
+        }
+        public String getAllowMultipleDrogueMain() {
+            return appCfgData.getMultipleDrogueMain();
+        }
         public int ConvertFont(int font) {
             return font + 8;
         }

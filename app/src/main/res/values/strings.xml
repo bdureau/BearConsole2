@@ -153,6 +153,7 @@
     <string name="baud_rate">Baud Rate</string>
     <string name="connection_type">Connection Type</string>
     <string name="graphiclib_type">Graphics lib </string>
+    <string name="MultipleMainDrogue" >Multiple Main/drogue</string>
 
     <!-- Telemetry -->
     <string name="stop_telemetry">Stop Telemetry</string>
@@ -215,5 +216,6 @@
     <string name="flight_have_been_recorded">No flights have been recorded</string>
     <string name="main_screen_actity">Cancel</string>
     <string name="title_activity_flight_view_maps">Map</string>
+
 
 </resources>

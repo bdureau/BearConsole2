@@ -153,6 +153,7 @@
     <string name="baud_rate">Velocidad de transferencia</string>
     <string name="connection_type">Tipo de conexión</string>
     <string name="graphiclib_type">Librería de gráficos </string>
+    <string name="MultipleMainDrogue" >Multiple Main/drogue</string>
 
     <!-- Telemetry -->
     <string name="stop_telemetry">Parar telemetría</string>
@@ -215,5 +216,6 @@
     <string name="flight_have_been_recorded">No se han registrado vuelos</string>
     <string name="main_screen_actity">Cancelar</string>
     <string name="title_activity_flight_view_maps">Mapa</string>
+
 
 </resources>

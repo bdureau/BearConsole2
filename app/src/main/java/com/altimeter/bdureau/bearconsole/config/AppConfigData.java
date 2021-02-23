@@ -39,6 +39,7 @@ public class AppConfigData {
             "usb"};
     private String[] itemsGraphicsLib = new String[] {"AFreeChart",
             "MPAndroidChart"};
+    private String allowMultipleDrogueMain = "false";
 
     public AppConfigData()
     {
@@ -89,4 +90,7 @@ public class AppConfigData {
     }
     public String[] getItemsGraphicsLib() {return itemsGraphicsLib;}
     public String getGraphicsLibTypeByNbr(int graphicsLibNbr) {return itemsGraphicsLib[graphicsLibNbr];}
+    public String getMultipleDrogueMain () {
+        return allowMultipleDrogueMain;
+    }
 }
