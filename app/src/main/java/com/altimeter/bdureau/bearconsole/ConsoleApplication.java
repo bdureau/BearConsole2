@@ -1109,7 +1109,7 @@ public class ConsoleApplication extends Application {
             allowMultipleDrogueMain = value;
         }
         public String getAllowMultipleDrogueMain() {
-            return appCfgData.getMultipleDrogueMain();
+            return allowMultipleDrogueMain;//appCfgData.getMultipleDrogueMain();
         }
         public int ConvertFont(int font) {
             return font + 8;

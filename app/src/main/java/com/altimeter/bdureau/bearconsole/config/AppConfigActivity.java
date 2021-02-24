@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
@@ -20,6 +21,7 @@ public class AppConfigActivity extends AppCompatActivity {
     Button btnDismiss, btnSave, bdtDefault;
     private Spinner spAppLanguage, spGraphColor, spAppUnit, spGraphBackColor, spFontSize, spBaudRate;
     private Spinner spConnectionType, spGraphicsLibType;
+    private CheckBox cbAllowMainDrogue;
     private AppConfigData appConfigData;
 
 
@@ -117,6 +119,10 @@ public class AppConfigActivity extends AppCompatActivity {
         spGraphicsLibType = (Spinner)findViewById(R.id.spinnerGraphicLibType);
         ArrayAdapter<String> adapterGraphicsLibType = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsGraphicsLib());
         spGraphicsLibType.setAdapter(adapterGraphicsLibType);
+
+        //AllowMainDrogue
+        cbAllowMainDrogue = (CheckBox) findViewById(R.id.checkBoxAllowMultipleMainDrogue);
+
         ReadConfig();
     }
 
@@ -130,6 +136,11 @@ public class AppConfigActivity extends AppCompatActivity {
         spBaudRate.setSelection(Integer.parseInt(myBT.getAppConf().getBaudRate()));
         spConnectionType.setSelection(Integer.parseInt(myBT.getAppConf().getConnectionType()));
         spGraphicsLibType.setSelection(Integer.parseInt(myBT.getAppConf().getGraphicsLibType()));
+        if (myBT.getAppConf().getAllowMultipleDrogueMain().equals("true") ) {
+            cbAllowMainDrogue.setChecked(true);
+        } else {
+            cbAllowMainDrogue.setChecked(false);
+        }
     }
 
     void SaveConfig() {
@@ -141,6 +152,12 @@ public class AppConfigActivity extends AppCompatActivity {
         myBT.getAppConf().setBaudRate(""+spBaudRate.getSelectedItemId()+"");
         myBT.getAppConf().setConnectionType(""+spConnectionType.getSelectedItemId()+"");
         myBT.getAppConf().setGraphicsLibType(""+ spGraphicsLibType.getSelectedItemId()+"");
+        if (cbAllowMainDrogue.isChecked()) {
+            myBT.getAppConf().setAllowMultipleDrogueMain("true");
+        } else {
+            myBT.getAppConf().setAllowMultipleDrogueMain("false");
+        }
+
         myBT.getAppConf().SaveConfig();
         finish();
     }
@@ -155,6 +172,11 @@ public class AppConfigActivity extends AppCompatActivity {
         spBaudRate.setSelection(Integer.parseInt(myBT.getAppConf().getBaudRate()));
         spConnectionType.setSelection(Integer.parseInt(myBT.getAppConf().getConnectionType()));
         spGraphicsLibType.setSelection(Integer.parseInt(myBT.getAppConf().getGraphicsLibType()));
+        if (myBT.getAppConf().getAllowMultipleDrogueMain().equals("true") ) {
+            cbAllowMainDrogue.setChecked(true);
+        } else {
+            cbAllowMainDrogue.setChecked(false);
+        }
     }
 
 }

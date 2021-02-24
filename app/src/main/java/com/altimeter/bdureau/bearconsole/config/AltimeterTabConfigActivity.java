@@ -304,16 +304,17 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             if (AltiCfg.getOutput4() == 1)
                 nbrOfDrogue++;
         }
-
-        if (nbrOfMain > 1) {
-            //Only one main is allowed Please review your config
-            msg(getResources().getString(R.string.msg1));
-            return false;
-        }
-        if (nbrOfDrogue > 1) {
-            //Only one Drogue is allowed Please review your config
-            msg(getResources().getString(R.string.msg2));
-            return false;
+        if (myBT.getAppConf().getAllowMultipleDrogueMain().equals("false")) {
+            if (nbrOfMain > 1) {
+                //Only one main is allowed Please review your config
+                msg(getResources().getString(R.string.msg1));
+                return false;
+            }
+            if (nbrOfDrogue > 1) {
+                //Only one Drogue is allowed Please review your config
+                msg(getResources().getString(R.string.msg2));
+                return false;
+            }
         }
 
         if (configPage2.isViewCreated()) {
