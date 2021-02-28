@@ -118,8 +118,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
     }
 
 
-    private void readConfig() {
+    private boolean readConfig() {
         // ask for config
+        boolean  success =false;
         if (myBT.getConnected()) {
             //msg("Retreiving altimeter config...");
             myBT.setDataReady(false);
@@ -155,6 +156,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 if (myMessage.equals("start alticonfig end")) {
                     try {
                         AltiCfg = myBT.getAltiConfigData();
+                        success =true;
                     } catch (Exception e) {
                         //  msg("pb ready data");
                     }
@@ -178,6 +180,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     if (myMessage.equals("start alticonfig end")) {
                         try {
                             AltiCfg = myBT.getAltiConfigData();
+                            success = true;
                         } catch (Exception e) {
                             //  msg("pb ready data");
                         }
@@ -203,7 +206,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
         //msg(getResources().getString(R.string.msg3));
 
-
+    return success;
     }
 
     private void msg(String s) {
@@ -1592,7 +1595,17 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
         {
-            readConfig();
+            boolean success = false;
+            success = readConfig();
+            //second attempt
+            if(!success)
+                success = readConfig();
+            //third attempt
+            if(!success)
+                success = readConfig();
+            //fourth and last
+            if(!success)
+                success = readConfig();
             return null;
         }
 

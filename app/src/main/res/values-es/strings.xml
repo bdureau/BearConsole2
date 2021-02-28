@@ -1,5 +1,5 @@
 ﻿<resources>
-    <string name="version"> pre 2.0.0 candidate 1</string>
+    <string name="version"> pre 2.0.0 candidate 2</string>
     <string name="app_name">Bear Console</string>
     <!-- Menu -->
     <string name="help">Ayuda</string>
