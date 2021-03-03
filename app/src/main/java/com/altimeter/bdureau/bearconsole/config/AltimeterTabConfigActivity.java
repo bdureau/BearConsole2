@@ -664,7 +664,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
             //Output 1
             dropdownOut1 = (Spinner) view.findViewById(R.id.spinnerOut1);
-            String[] items3 = new String[]{"Main", "Drogue", "Timer", "Disabled"};
+            String[] items3 = new String[]{"Main", "Drogue", "Timer", "Disabled", "Landing"};
             ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items3);
             dropdownOut1.setAdapter(adapter3);
