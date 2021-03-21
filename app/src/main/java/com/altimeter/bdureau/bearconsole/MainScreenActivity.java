@@ -1,7 +1,6 @@
 package com.altimeter.bdureau.bearconsole;
 /**
  * @description: Main screen of the altimeter console. Here you will find all the buttons.
- *
  * @author: boris.dureau@neuf.fr
  **/
 
@@ -18,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -68,13 +68,13 @@ public class MainScreenActivity extends AppCompatActivity {
                 boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
                 if (granted) {
 
-                        if (myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRateValue()))) {
-                            myBT.setConnected(true);
-                            EnableUI();
-                            btnFlashFirmware.setEnabled(false);
-                            myBT.setConnectionType("usb");
-                            btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
-                        }
+                    if (myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRateValue()))) {
+                        myBT.setConnected(true);
+                        EnableUI();
+                        btnFlashFirmware.setEnabled(false);
+                        myBT.setConnectionType("usb");
+                        btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
+                    }
 
                 } else {
                     msg("PERM NOT GRANTED");
@@ -318,17 +318,11 @@ public class MainScreenActivity extends AppCompatActivity {
     private void readConfig() {
         // ask for config
         if (myBT.getConnected()) {
-
-            //msg("Retreiving altimeter config...");
             myBT.setDataReady(false);
-
             myBT.flush();
             myBT.clearInput();
-
             myBT.write("b;\n".toString());
-
             myBT.flush();
-
 
             //get the results
             //wait for the result to come back
@@ -337,12 +331,11 @@ public class MainScreenActivity extends AppCompatActivity {
             } catch (IOException e) {
 
             }
-        }
-        //reading the config
-        if (myBT.getConnected()) {
+
+            //reading the config
             String myMessage = "";
-            long timeOut = 10000;
-            long startTime = System.currentTimeMillis();
+            //long timeOut = 10000;
+            //long startTime = System.currentTimeMillis();
 
             myMessage = myBT.ReadResult(10000);
             if (myMessage.equals("OK")) {
@@ -362,7 +355,34 @@ public class MainScreenActivity extends AppCompatActivity {
                     msg("pb ready data");
                 }
             } else {
-                msg("data not ready: " + myMessage);
+                //msg("data not ready: " + myMessage);
+                myBT.setDataReady(false);
+                myBT.flush();
+                myBT.clearInput();
+                myBT.write("b;\n".toString());
+                myBT.flush();
+
+                //get the results
+                //wait for the result to come back
+                try {
+                    while (myBT.getInputStream().available() <= 0) ;
+                } catch (IOException e) {
+
+                }
+
+                //reading the config
+                myMessage = "";
+                myMessage = myBT.ReadResult(10000);
+                if (myMessage.equals("start alticonfig end")) {
+                    try {
+                        AltiCfg = myBT.getAltiConfigData();
+                        //msg(AltiCfg.getAltimeterName());
+                    } catch (Exception e) {
+                        msg("pb ready data");
+                    }
+                } else {
+                    msg("data not ready: " + myMessage);
+                }
             }
         }
 
