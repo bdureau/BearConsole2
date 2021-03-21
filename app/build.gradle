@@ -13,7 +13,7 @@ android {
         applicationId 'com.altimeter.bdureau.bearconsole'
         minSdkVersion 19
         targetSdkVersion 29
-        versionName 'Pre 2.0.0 candidate 2'
+        versionName 'Pre 2.0.0 candidate 4'
         versionCode 7
         multiDexEnabled true
     }
