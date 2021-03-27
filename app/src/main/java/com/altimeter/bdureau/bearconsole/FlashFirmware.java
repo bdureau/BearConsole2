@@ -51,8 +51,8 @@ public class FlashFirmware extends AppCompatActivity {
 
     private static final String ASSET_FILE_NAME_ALTIMULTIV2       = "firmwares/2021-03-26-V1_24.altimultiV2.hex";
     private static final String ASSET_FILE_NAME_ALTIMULTI         = "firmwares/2021-03-26-V1_24.altimulti.hex";
-    private static final String ASSET_FILE_NAME_ALTISERVO         = "firmwares/2021-03-21-AltiServoV1_2";
-    private static final String ASSET_FILE_NAME_ALTIDUO         = "firmwares/2021-03-21-V1_7.AltiDuo.hex";
+    private static final String ASSET_FILE_NAME_ALTISERVO         = "firmwares/2021-03-27-AltiServoV1_3";
+    private static final String ASSET_FILE_NAME_ALTIDUO         = "firmwares/2021-03-27-V1_7.AltiDuo.hex";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
