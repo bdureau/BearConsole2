@@ -82,6 +82,7 @@ public class FlightViewMpActivity extends AppCompatActivity {
 
 
         mChart  = (LineChart) findViewById(R.id.linechart);
+        mChart.setBackgroundColor(graphBackColor);
 
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
@@ -100,12 +101,17 @@ public class FlightViewMpActivity extends AppCompatActivity {
         set1.setDrawValues(false);
         set1.setDrawCircles(false);
         set1.setLabel("Altitude");
+        set1.setValueTextSize(fontSize); //test
+
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
 
         LineData data = new LineData(dataSets);
+        data.setValueTextSize(fontSize);//test
+
         mChart.setData(data);
+        //mChart.highlightValue();
         Description desc = new Description();
         desc.setText("Altitude/Time");
         mChart.setDescription(desc);
