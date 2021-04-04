@@ -25,15 +25,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.common.util.IOUtils;
 import com.physicaloid.lib.Boards;
 import com.physicaloid.lib.Physicaloid;
 
+import com.physicaloid.lib.programmer.avr.AVRMem;
+import com.physicaloid.lib.programmer.avr.IntelHexFileToBuf;
 import com.physicaloid.lib.programmer.avr.UploadErrors;
 import com.physicaloid.lib.usb.driver.uart.UartConfig;
 
+import java.io.File;
 import java.io.IOException;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+//import java.util.concurrent.TimeUnit;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 
 public class FlashFirmware extends AppCompatActivity {
@@ -42,7 +51,7 @@ public class FlashFirmware extends AppCompatActivity {
 
     Boards mSelectedBoard;
     Button btOpen;
-    RadioButton rdbAltiMulti,rdbAltiMultiV2, rbAltiServo, rbAltiDuo;
+    RadioButton rdbAltiMulti,rdbAltiMultiV2, rbAltiServo, rbAltiDuo, rbAltiMultiSTM32;
     TextView tvRead;
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
@@ -53,6 +62,7 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTIMULTI         = "firmwares/2021-03-26-V1_24.altimulti.hex";
     private static final String ASSET_FILE_NAME_ALTISERVO         = "firmwares/2021-03-27-AltiServoV1_3.hex";
     private static final String ASSET_FILE_NAME_ALTIDUO         = "firmwares/2021-03-27-V1_7.AltiDuo.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTISTM32  = "firmwares/2021-04-02-V1_24.altimultiSTM32.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
@@ -80,6 +90,7 @@ public class FlashFirmware extends AppCompatActivity {
         rbAltiServo = (RadioButton) findViewById(R.id.radioButAltiServo);
         rbAltiDuo = (RadioButton) findViewById(R.id.radioButAltiDuo);
         rdbAltiMulti.setChecked(true);
+        rbAltiMultiSTM32 = (RadioButton) findViewById(R.id.radioButAltiMultiSTM32);
         mPhysicaloid = new Physicaloid(this);
                 mBoardList = new ArrayList<Boards>();
         for(Boards board : Boards.values()) {
@@ -185,6 +196,8 @@ public class FlashFirmware extends AppCompatActivity {
             firmwareFileName =ASSET_FILE_NAME_ALTISERVO;
         if (rbAltiDuo.isChecked())
             firmwareFileName =ASSET_FILE_NAME_ALTIDUO;
+        if(rbAltiMultiSTM32.isChecked())
+            firmwareFileName = ASSET_FILE_NAME_ALTIMULTISTM32;
 
         tvRead.setText("");
         try {
@@ -202,16 +215,477 @@ public class FlashFirmware extends AppCompatActivity {
                     });
             alert = builder.create();
             alert.show();
-            mPhysicaloid.setBaudrate(Integer.parseInt(itemsBaudRate[(int)this.dropdownBaudRate.getSelectedItemId()]));
-             mPhysicaloid.upload(mSelectedBoard,getResources().getAssets().open(firmwareFileName), mUploadCallback);
+            if(!rbAltiMultiSTM32.isChecked()) {
+                mPhysicaloid.setBaudrate(Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]));
+                mPhysicaloid.upload(mSelectedBoard, getResources().getAssets().open(firmwareFileName), mUploadCallback);
+            }
+            else {
+
+                uploadSTM32 (firmwareFileName);
+            }
+
         } catch (RuntimeException e) {
             //Log.e(TAG, e.toString());
         } catch (IOException e) {
             //Log.e(TAG, e.toString());
         }
     }
+    public String toHexStr(byte[] b, int length) {
+        String str="";
+        for(int i=0; i<length; i++) {
+            str += String.format("%02x ", b[i]);
+        }
+        return str;
+    }
 
 
+    public void uploadSTM32 ( String fileName){
+        boolean failed =false;
+        dialogAppend("Starting ...");
+        CommandInterface cmd;
+
+        cmd = new CommandInterface();
+
+        cmd.open(Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]));
+        int ret = cmd.initChip();
+        if (ret == 1)
+            dialogAppend("Chip has been initiated:" + ret);
+        else {
+            dialogAppend("Chip has not been initiated:" + ret);
+            failed = true;
+        }
+        int bootversion = 0;
+        if (!failed) {
+             bootversion = cmd.cmdGet();
+            //dialogAppend("bootversion:"+ bootversion);
+            tvAppend(tvRead, " bootversion:" + bootversion + "\n");
+            if (bootversion < 20 || bootversion >= 100) {
+                tvAppend(tvRead, " bootversion not good:" + bootversion + "\n");
+                failed =true;
+            }
+        }
+
+        if (!failed) {
+            byte chip_id[]; // = new byte [4];
+            chip_id = cmd.cmdGetID();
+            tvAppend(tvRead, " chip id:" + toHexStr(chip_id, 2) + "\n");
+        }
+
+        if (!failed) {
+            if (bootversion < 0x30) {
+                tvAppend(tvRead,  "Erase 1\n");
+                cmd.cmdEraseMemory();
+            }
+             else {
+                tvAppend(tvRead,  "Erase 2\n");
+                cmd.cmdExtendedEraseMemory();
+            }
+        }
+        if (!failed) {
+            cmd.drain();
+            tvAppend(tvRead, "writeMemory" + "\n");
+            ret = cmd.writeMemory(0x8000000, fileName);
+            tvAppend(tvRead, "writeMemory finish" + "\n\n\n\n");
+            if (ret == 1) {
+                tvAppend(tvRead, "writeMemory success" + "\n\n\n\n");
+            }
+        }
+        cmd.releaseChip();
+    }
+
+    public class CommandInterface {
+        private IntelHexFileToBuf   mIntelHex;
+        private AVRMem mAVRMem;
+
+        public void open (int baudRate) {
+            mPhysicaloid.open();
+            mPhysicaloid.setBaudrate(baudRate);
+            mPhysicaloid.setParity(2); // 2 = parity even
+            mPhysicaloid.setStopBits(1);
+        }
+
+        private byte[] intToBytes(final int data) {
+            return new byte[] {
+                    (byte)((data >> 24) & 0xff),
+                    (byte)((data >> 16) & 0xff),
+                    (byte)((data >> 8) & 0xff),
+                    (byte)((data >> 0) & 0xff),
+            };
+        }
+        private int getFileToBuf(InputStream hexFile) throws FileNotFoundException, IOException, Exception {
+            tvAppend(tvRead,  "int getFileToBuf" + "\n");
+            mIntelHex = new IntelHexFileToBuf();
+            tvAppend(tvRead,  "new IntelHexFileToBuf()" + "\n");
+            mIntelHex.parse(hexFile);
+            tvAppend(tvRead,  "mIntelHex.parse(hexFile)" + "\n");
+            int byteLength = (int) mIntelHex.getByteLength();
+            tvAppend(tvRead,  " mIntelHex.getByteLength()" + "\n");
+            return byteLength;
+        }
+        private int drain() {
+            byte[] buf = new byte[1];
+            int retval = 0;
+            long endTime;
+            long startTime = System.currentTimeMillis();
+            while(true) {
+                retval = mPhysicaloid.read(buf,1);
+                if(retval > 0) {
+
+                }
+                endTime = System.currentTimeMillis();
+                if((endTime - startTime) > 1000) {break;}
+            }
+            return retval;
+        }
+        private int recv(byte[] buf, int length) {
+            int retval=0;
+            int totalRetval=0;
+            long endTime;
+            long startTime = System.currentTimeMillis();
+            byte[] tmpbuf = new byte[length];
+
+            while(true) {
+                retval = mPhysicaloid.read(tmpbuf,length);
+
+                if(retval > 0) {
+                    System.arraycopy(tmpbuf, 0, buf, totalRetval, retval);
+                    totalRetval += retval;
+                    startTime = System.currentTimeMillis();
+                   /* if(DEBUG_SHOW_RECV) {
+                        Log.d(TAG, "recv("+retval+") : " +toHexStr(buf, totalRetval));
+                    }*/
+                }
+                if(totalRetval >= length){break;}
+
+                endTime = System.currentTimeMillis();
+                if((endTime - startTime) > 250) {
+                   // Log.e(TAG,"recv timeout.");
+                    break;
+                }
+            }
+            return totalRetval;
+        }
+        private int _wait_for_ack(String info, long timeout) {
+            long stop = System.currentTimeMillis() + timeout;
+            byte got[] =new byte[1];
+            while (mPhysicaloid.read(got) <1) {
+                //mPhysicaloid.read(got);
+                //tvAppend(tvRead, " vaitting..." );
+                if (System.currentTimeMillis() > stop)
+                        break;
+            }
+            //tvAppend(tvRead, " got!!!:" + toHexStr(got, 1));
+            if (got[0] == 0x79)
+                return 1;
+            else if (got[0] == 0x1F) {
+                tvAppend(tvRead,info+ " This is 0x1F");
+                return -1;
+            }
+            else {
+                tvAppend(tvRead,info + " Not 0x79");
+                return -1;
+            }
+        }
+
+        private void reset() {
+            mPhysicaloid.setDtrRts(false, false);
+            try { Thread.sleep(100); } catch (InterruptedException e) {}
+
+            mPhysicaloid.setDtrRts(true, false);
+            try { Thread.sleep(500); } catch (InterruptedException e) {}
+        }
+
+        private int initChip() {
+            mPhysicaloid.setDtrRts(true, true);
+            //set boot
+            mPhysicaloid.setDtrRts(true, false);
+            reset();
+            long stop = System.currentTimeMillis() + 5000;
+            byte got[] = new byte[10];
+            int i=0;
+            while (System.currentTimeMillis() <= stop) {
+                int retval=0;
+
+                byte buf[]= new byte[32];
+                mPhysicaloid.write(new byte[]{(byte) 0x7f});
+                retval =recv(buf, 32);
+                //retval = mPhysicaloid.read(buf,32);
+                if (retval > 0) {
+                    for (int a=0; a <retval; a++) {
+                        got[i] = buf[a];
+                        i++;
+                    }
+                    //tvAppend(tvRead, retval + " int buf:" + toHexStr(buf, retval));
+                }
+                for (int j = 0; j <(i-1) ; j++ ) {
+                    if (got[j] == 0x79 && got[j+1] == 0x1f) {
+                        return 1;
+                    }
+                }
+
+            }
+            tvAppend(tvRead, " got:" + toHexStr(got, i));
+            return -1;
+        }
+
+        private void releaseChip() {
+            mPhysicaloid.setDtrRts(false, true);
+            reset();
+        }
+
+        private int cmdGeneric(byte [] cmd) {
+
+            mPhysicaloid.write(cmd);
+            mPhysicaloid.write(new byte[]{(byte) (cmd[0] ^ 0xFF)});
+            return _wait_for_ack(toHexStr(cmd,1),50);
+        }
+
+        private int cmdGet () {
+            byte cmd []= new byte[1];
+            byte buf[] =new byte[50];
+            int version = -1;
+            drain();
+            cmd[0]=0x00;
+            if (cmdGeneric(cmd)==1) {
+                //mPhysicaloid.read(buf,1);
+                recv(buf, 1);
+                int len =(int)buf[0];
+                tvAppend(tvRead, "len1:" + len + "\n");
+                //mPhysicaloid.read(buf,1);
+                recv(buf, 1);
+                version = (int)buf[0];
+                //mPhysicaloid.read(buf,len);
+                recv(buf, len);
+                tvAppend(tvRead, "version:" + version + "\n");
+                tvAppend(tvRead, "all stuff" + toHexStr(buf, len) + "\n");
+                _wait_for_ack("0x00 end",500);
+            }
+            return version;
+        }
+
+
+        private int cmdGetVersion () {
+            byte cmd []= new byte[1];
+            byte buf[] =new byte[1];
+            int version = -1;
+            cmd[0]=0x01;
+            if (cmdGeneric(cmd)==1) {
+                //mPhysicaloid.read(buf);
+                recv(buf, 1);
+                version = (int)buf[0];
+                _wait_for_ack("0x01 end",500);
+            }
+            return version;
+        }
+        private byte[] cmdGetID () {
+
+            byte cmd []= new byte[1];
+            byte buf[] =new byte[50];
+            int id = -1;
+            cmd[0]=0x02;
+            if (cmdGeneric(cmd)==1) {
+                recv(buf, 1);
+                int len = (int)buf[0];
+                tvAppend(tvRead, "id all:" + toHexStr(buf, len) + "\n");
+                //mPhysicaloid.read(buf,len+ 1);
+                recv(buf, len+1);
+                tvAppend(tvRead, "id all:" + toHexStr(buf, len));
+                id = (int)buf[0];
+                _wait_for_ack("0x02 end",500);
+            }
+            return buf;
+        }
+
+        private byte [] _encode_addr (int addr) {
+            return new byte[]{
+                    (byte) ((addr >> 24) & 0xff),
+                    (byte) ((addr >> 16) & 0xff),
+                    (byte) ((addr >> 8) & 0xff),
+                    (byte) ((addr >> 0) & 0xff),
+                    (byte) ((byte) ((addr >> 24) & 0xff)^(byte) ((addr >> 16) & 0xff)^(byte) ((addr >> 8) & 0xff)^(byte) ((addr >> 0) & 0xff))
+            };
+        }
+
+        private int cmdReadMemory (int addr, int lng) {
+            byte cmd []= new byte[1];
+            cmd [0]=0x11;
+            if(cmdGeneric(cmd)==1) {
+                mPhysicaloid.write(_encode_addr(addr));
+                _wait_for_ack("0x11 address failed",0);
+                int N = (lng -1) & 0xFF;
+                int crc = N ^ 0xFF;
+                byte cmd2[] = new byte[2];
+                cmd2[0] = (byte) N;
+                cmd2[1] = (byte) crc;
+                mPhysicaloid.write(cmd2);
+                _wait_for_ack("0x11 length failed",0);
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+
+        private int cmdGo (int addr) {
+            byte cmd []= new byte[1];
+            cmd [0]=0x21;
+            if(cmdGeneric(cmd)==1) {
+                mPhysicaloid.write(intToBytes(addr));
+                _wait_for_ack("0x21 go failed",0);
+                return 1;
+            }
+            else {
+                return - 1;
+            }
+        }
+
+        //writeMemory
+        private int cmdWriteMemory (int addr,byte buf[]) {
+            int lng=0;
+            //tvAppend(tvRead, "Write length:" + buf.length + "\n");
+
+            byte cmd []= new byte[1];
+            cmd [0]=0x31;
+            if(cmdGeneric(cmd)==1) {
+                //tvAppend(tvRead, "*** Write memory command"  + "\n");
+                int ret = mPhysicaloid.write(_encode_addr(addr));
+                _wait_for_ack("0x31 address failed",100);
+                lng = (buf.length - 1) & 0xFF;
+                //new byte[]{(byte) (cmd[0] ^ 0xFF)}
+                //mPhysicaloid.write(new byte[]{(byte) (lng ^ 0xFF)});
+                mPhysicaloid.write(new byte[]{(byte) lng });
+                byte crc = (byte) 0xFF;
+                for (byte c : buf) {
+                    crc = (byte) (crc ^ c);
+                    //mPhysicaloid.write(new byte[]{(byte) (c ^ 0xFF )});
+                    mPhysicaloid.write(new byte[]{ c });
+                }
+                //mPhysicaloid.write(new byte[]{(byte) (crc ^ 0xFF )});
+                mPhysicaloid.write(new byte[]{ crc });
+                _wait_for_ack("0x31 programming failed " +
+                        toHexStr(new byte[]{(byte) crc }, 1) + " lng: " +
+                        toHexStr(new byte[]{(byte) lng }, 1),200);
+                return 1;
+            }else{
+                tvAppend(tvRead, "*** Write memory command failed"  + "\n");
+                return -1;
+            }
+
+        }
+
+        private int cmdEraseMemory ( ) {
+
+            byte cmd []= new byte[1];
+            cmd [0]=0x43;
+            if(cmdGeneric(cmd)==1) {
+                cmd[0]= (byte) 0xFF;//-1;//0xFF in unsigned byte
+                mPhysicaloid.write(cmd);
+                cmd[0]= 0x00;
+                mPhysicaloid.write(cmd);
+                _wait_for_ack("0x43 erasing failed", 50);
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+
+        private int cmdExtendedEraseMemory () {
+            byte cmd []= new byte[1];
+            cmd [0]=0x44;
+            if(cmdGeneric(cmd)==1) {
+                cmd[0]= (byte) 0xFF;//-1;//0xFF in unsigned byte
+                mPhysicaloid.write(cmd);
+                mPhysicaloid.write(cmd);
+                cmd[0]= 0x00;
+                mPhysicaloid.write(cmd);
+                _wait_for_ack("0x44 extended erase failed",20000);
+                return 1;
+            }
+            else {
+                return -1;
+            }
+
+        }
+
+        private int cmdWriteProtect () {
+            byte cmd []= new byte[1];
+            cmd [0]=0x63;
+            if(cmdGeneric(cmd)==1) {
+
+            }
+            return 1;
+        }
+
+        private int cmdWriteUnprotect () {
+
+            return 1;
+        }
+
+        private int cmdReadoutProtect () {
+
+            return 1;
+        }
+
+        private int readMemory () {
+
+            return 1;
+        }
+
+        private int writeMemory(int addr, String fileName) {
+            int lng = -1;
+
+            InputStream is=null;
+            byte[] data=null;
+            //InputStream is = null;
+            try {
+                is = getAssets().open(ASSET_FILE_NAME_ALTIMULTISTM32);
+
+                data = IOUtils.toByteArray(is);
+
+                lng = data.length;
+
+            } catch (IOException e) {
+                //e.printStackTrace();
+                tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32+ "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32+ "\n");
+            }
+
+
+            tvAppend(tvRead, "lng:" + lng + "\n");
+            int offs = 0;
+
+           // byte data[] = new byte[(int)lng];
+            //mIntelHex.getHexData(data);
+            //mIntelHex = null;
+
+            while (lng > 256) {
+                byte buf[] = new byte[256];
+                for (int i =0; i< 256; i++) {
+                    buf[i]= data[(i+offs)];
+                }
+                int ret = cmdWriteMemory(addr, buf);
+                if(ret !=1)
+                    tvAppend(tvRead, "error writing to mem:" + lng + "\n");
+                offs = offs + 256;
+                addr = addr + 256;
+                lng = lng - 256;
+                //tvAppend(tvRead, "lng:" + lng + "\n");
+
+            }
+            byte buf2[] = new byte[256];
+            for (int i =0; i< lng; i++) {
+                buf2[i]= data[(i+offs)];
+            }
+            for (int i =lng; i< 256; i++) {
+                buf2[i]= (byte)0xFF;
+            }
+
+            //buf2[lng]=(byte)((byte) 0xFF * (byte) (256-lng));
+            cmdWriteMemory(addr, buf2);
+            return 1;
+        }
+    }
     Physicaloid.UploadCallBack mUploadCallback = new Physicaloid.UploadCallBack() {
 
 

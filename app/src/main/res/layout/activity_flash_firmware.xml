@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/select_altimeter_model"
-        android:id="@+id/textViewAltemeterModelLbl"
+        android:id="@+id/textViewAltimeterModelLbl"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
@@ -17,7 +17,7 @@
         android:id="@+id/question_radio_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewAltemeterModelLbl"
+        android:layout_below="@+id/textViewAltimeterModelLbl"
         tools:layout_editor_absoluteX="88dp"
         tools:layout_editor_absoluteY="91dp">
 
@@ -50,6 +50,14 @@
         android:text="AltiDuo"
         tools:layout_editor_absoluteX="32dp"
         tools:layout_editor_absoluteY="74dp" />
+
+     <RadioButton
+            android:id="@+id/radioButAltiMultiSTM32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AltiMultiSTM32"
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="74dp" />
     </RadioGroup>
 
     <Spinner
