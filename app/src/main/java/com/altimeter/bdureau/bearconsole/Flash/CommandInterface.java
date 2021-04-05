@@ -1,15 +1,16 @@
 package com.altimeter.bdureau.bearconsole.Flash;
-
-//import android.app.AlertDialog;
-//import android.widget.TextView;
-//import android.os.Handler;
+/**
+ *   @description: This is used to flash the STM32 altimeter firmware from the Android device using an OTG cable
+ *   so that the store Android application is compatible with the altimeter.
+ *   Not that this is an Android port of the stm32loader.py done by myself as I could not find anything on the internet!!!
+ *   This has been only tested with STM32F103 chips
+ *
+ *   @author: boris.dureau@neuf.fr
+ *
+ **/
 import com.google.android.gms.common.util.IOUtils;
 import com.physicaloid.lib.Physicaloid;
 
-//import com.physicaloid.lib.programmer.avr.IntelHexFileToBuf;
-
-
-//import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -17,10 +18,10 @@ import static com.physicaloid.misc.Misc.toHexStr;
 
 
 public class CommandInterface {
-    Physicaloid.UploadCallBack mUpCallback;
+    UploadSTM32CallBack mUpCallback;
     Physicaloid mPhysicaloid;
 
-    CommandInterface(Physicaloid.UploadCallBack UpCallback, Physicaloid mPhysi) {
+    CommandInterface(UploadSTM32CallBack UpCallback, Physicaloid mPhysi) {
         mUpCallback = UpCallback;
         mPhysicaloid = mPhysi;
     }
@@ -91,10 +92,12 @@ public class CommandInterface {
             return 1;
         else if (got[0] == 0x1F) {
             //tvAppend(tvRead,info+ " This is 0x1F");
+            mUpCallback.onInfo(info+ " This is 0x1F");
             return -1;
         }
         else {
             //tvAppend(tvRead,info + " Not 0x79");
+            mUpCallback.onInfo(info+ "This is Not 0x79");
             return -1;
         }
     }
@@ -136,6 +139,7 @@ public class CommandInterface {
 
         }
         //tvAppend(tvRead, " got:" + toHexStr(got, i));
+        mUpCallback.onInfo(" got:" + toHexStr(got, i));
         return -1;
     }
 
@@ -165,6 +169,7 @@ public class CommandInterface {
             version = (int)buf[0];
             recv(buf, len);
             //tvAppend(tvRead, "version:" + version + "\n");
+            mUpCallback.onInfo("version:" + version + "\n");
             //tvAppend(tvRead, "all stuff" + toHexStr(buf, len) + "\n");
             _wait_for_ack("0x00 end",500);
         }
@@ -269,6 +274,7 @@ public class CommandInterface {
             return 1;
         }else{
             //tvAppend(tvRead, "*** Write memory command failed"  + "\n");
+            mUpCallback.onInfo("*** Write memory command failed"  + "\n");
             return -1;
         }
 
@@ -339,17 +345,17 @@ public class CommandInterface {
         byte[] data=null;
 
         try {
-
             data = IOUtils.toByteArray(is);
-
             lng = data.length;
 
         } catch (IOException e) {
             //e.printStackTrace();
             //tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32+ "\n");
+            mUpCallback.onInfo("file not found: " +e.getMessage() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             //tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32+ "\n");
+            mUpCallback.onInfo("file not found: " +e.getMessage() + "\n");
         }
 
 
@@ -364,8 +370,9 @@ public class CommandInterface {
                 buf[i]= data[(i+offs)];
             }
             int ret = cmdWriteMemory(addr, buf);
-            /*if(ret !=1)
-                tvAppend(tvRead, "error writing to mem:" + lng + "\n");*/
+            if(ret !=1)
+                mUpCallback.onInfo("error writing to mem:" + lng + "\n");
+                //tvAppend(tvRead, "error writing to mem:" + lng + "\n");
             //mUpCallback.onPreUpload("error writing to mem:" + lng + "\n");
 
             offs = offs + 256;

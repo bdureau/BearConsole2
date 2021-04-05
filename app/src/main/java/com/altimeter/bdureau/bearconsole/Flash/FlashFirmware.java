@@ -2,8 +2,8 @@ package com.altimeter.bdureau.bearconsole.Flash;
 
 /**
  *   @description: This is used to flash the altimeter firmware from the Android device using an OTG cable
- *   so that the store Android application is compatible with altimeter. Currently works with the
- *   ATMega328 based altimeters
+ *   so that the store Android application is compatible with altimeter. This works with the
+ *   ATMega328 based altimeters as well as the STM32 based altimeters
  *
  *   @author: boris.dureau@neuf.fr
  *
@@ -260,7 +260,7 @@ public class FlashFirmware extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             if(rbAltiMultiSTM32.isChecked())
-                uploadSTM32(ASSET_FILE_NAME_ALTIMULTISTM32, mUploadCallback);
+                uploadSTM32(ASSET_FILE_NAME_ALTIMULTISTM32, mUploadSTM32Callback);
             return null;
         }
         @Override
@@ -269,7 +269,7 @@ public class FlashFirmware extends AppCompatActivity {
             alert.dismiss();
         }
     }
-    public void uploadSTM32 ( String fileName, Physicaloid.UploadCallBack UpCallback){
+    public void uploadSTM32 ( String fileName, UploadSTM32CallBack UpCallback){
         boolean failed =false;
         InputStream is=null;
 
@@ -748,6 +748,56 @@ public class FlashFirmware extends AppCompatActivity {
         //Error  :
         public void onError(UploadErrors err) {
                tvAppend(tvRead, getResources().getString(R.string.msg18)+err.toString()+"\n");
+        }
+
+    };
+
+    UploadSTM32CallBack mUploadSTM32Callback = new UploadSTM32CallBack() {
+
+        @Override
+        public void onUploading(int value) {
+
+            dialogAppend(getResources().getString(R.string.msg12)+value+" %");
+        }
+
+        @Override
+        public void onInfo(String value) {
+            tvAppend(tvRead, value);
+        }
+
+        @Override
+        public void onPreUpload() {
+            //Upload : Start
+            tvAppend(tvRead, getResources().getString(R.string.msg14));
+
+        }
+
+        public void info(String value) {
+            tvAppend(tvRead, value);
+        }
+        @Override
+        public void onPostUpload(boolean success) {
+            if(success) {
+                //Upload : Successful
+                tvAppend(tvRead, getResources().getString(R.string.msg16));
+            } else {
+                //Upload fail
+                tvAppend(tvRead, getResources().getString(R.string.msg15));
+            }
+
+            alert.dismiss();
+        }
+
+        @Override
+        //Cancel uploading
+        public void onCancel() {
+            tvAppend(tvRead, getResources().getString(R.string.msg17));
+        }
+
+        @Override
+        //Error  :
+        public void onError(UploadSTM32Errors err) {
+            tvAppend(tvRead, getResources().getString(R.string.msg18)+err.toString()+"\n");
         }
 
     };
