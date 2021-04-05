@@ -35,7 +35,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".Flight.FlightViewMapsActivity"/>
-        <activity android:name=".FlashFirmware" />
+        <activity android:name=".Flash.FlashFirmware" />
         <activity android:name=".Flight.FlightViewMpActivity" />
         <activity
             android:name=".MainScreenActivity"

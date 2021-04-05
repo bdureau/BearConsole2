@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
 import com.altimeter.bdureau.bearconsole.Flight.FlightListActivity;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.altimeter.bdureau.bearconsole.config.AltimeterTabConfigActivity;

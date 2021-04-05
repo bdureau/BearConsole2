@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole;
+package com.altimeter.bdureau.bearconsole.Flash;
 
 /**
  *   @description: This is used to flash the altimeter firmware from the Android device using an OTG cable
@@ -10,6 +10,7 @@ package com.altimeter.bdureau.bearconsole;
  **/
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,24 +26,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.google.android.gms.common.util.IOUtils;
+import com.altimeter.bdureau.bearconsole.R;
+//import com.google.android.gms.common.util.IOUtils;
 import com.physicaloid.lib.Boards;
 import com.physicaloid.lib.Physicaloid;
 
-import com.physicaloid.lib.programmer.avr.AVRMem;
-import com.physicaloid.lib.programmer.avr.IntelHexFileToBuf;
 import com.physicaloid.lib.programmer.avr.UploadErrors;
 import com.physicaloid.lib.usb.driver.uart.UartConfig;
 
-import java.io.File;
 import java.io.IOException;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import static com.physicaloid.misc.Misc.toHexStr;
 //import java.util.concurrent.TimeUnit;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 
 public class FlashFirmware extends AppCompatActivity {
@@ -92,7 +90,7 @@ public class FlashFirmware extends AppCompatActivity {
         rdbAltiMulti.setChecked(true);
         rbAltiMultiSTM32 = (RadioButton) findViewById(R.id.radioButAltiMultiSTM32);
         mPhysicaloid = new Physicaloid(this);
-                mBoardList = new ArrayList<Boards>();
+        mBoardList = new ArrayList<Boards>();
         for(Boards board : Boards.values()) {
             if(board.support>0) {
                 mBoardList.add(board);
@@ -135,7 +133,7 @@ public class FlashFirmware extends AppCompatActivity {
     }
 
 
-        @Override
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         close();
@@ -146,7 +144,7 @@ public class FlashFirmware extends AppCompatActivity {
     }
 
     public void onClickRecover(View v) {
-       String recoverFileName;
+        String recoverFileName;
         recoverFileName = ASSET_FILE_RESET_ALTIMULTI;
         if (rdbAltiMulti.isChecked())
             recoverFileName =ASSET_FILE_RESET_ALTIMULTI;
@@ -200,7 +198,51 @@ public class FlashFirmware extends AppCompatActivity {
             firmwareFileName = ASSET_FILE_NAME_ALTIMULTISTM32;
 
         tvRead.setText("");
-        try {
+        if(!rbAltiMultiSTM32.isChecked()) {
+            try {
+                builder = new AlertDialog.Builder(FlashFirmware.this);
+                //Flashing firmware...
+                builder.setMessage(getResources().getString(R.string.msg10))
+                        .setTitle(getResources().getString(R.string.msg11))
+                        .setCancelable(false)
+                        .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, final int id) {
+
+                                dialog.cancel();
+                                mPhysicaloid.cancelUpload();
+                            }
+                        });
+                alert = builder.create();
+                alert.show();
+
+                mPhysicaloid.setBaudrate(Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]));
+                mPhysicaloid.upload(mSelectedBoard, getResources().getAssets().open(firmwareFileName), mUploadCallback);
+            } catch (RuntimeException e) {
+                //Log.e(TAG, e.toString());
+            } catch (IOException e) {
+                //Log.e(TAG, e.toString());
+            }
+        }
+        else{
+                //uploadSTM32(firmwareFileName);
+            new UploadSTM32().execute();
+        }
+
+
+    }
+    /*public String toHexStr(byte[] b, int length) {
+        String str="";
+        for(int i=0; i<length; i++) {
+            str += String.format("%02x ", b[i]);
+        }
+        return str;
+    }*/
+
+    private class UploadSTM32 extends AsyncTask<Void, Void, Void>  // UI thread
+    {
+
+        @Override
+        protected void onPreExecute() {
             builder = new AlertDialog.Builder(FlashFirmware.this);
             //Flashing firmware...
             builder.setMessage(getResources().getString(R.string.msg10))
@@ -210,41 +252,43 @@ public class FlashFirmware extends AppCompatActivity {
                         public void onClick(final DialogInterface dialog, final int id) {
 
                             dialog.cancel();
-                            mPhysicaloid.cancelUpload();
+
                         }
                     });
             alert = builder.create();
             alert.show();
-            if(!rbAltiMultiSTM32.isChecked()) {
-                mPhysicaloid.setBaudrate(Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]));
-                mPhysicaloid.upload(mSelectedBoard, getResources().getAssets().open(firmwareFileName), mUploadCallback);
-            }
-            else {
-
-                uploadSTM32 (firmwareFileName);
-            }
-
-        } catch (RuntimeException e) {
-            //Log.e(TAG, e.toString());
-        } catch (IOException e) {
-            //Log.e(TAG, e.toString());
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if(rbAltiMultiSTM32.isChecked())
+                uploadSTM32(ASSET_FILE_NAME_ALTIMULTISTM32, mUploadCallback);
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
+        {
+            alert.dismiss();
         }
     }
-    public String toHexStr(byte[] b, int length) {
-        String str="";
-        for(int i=0; i<length; i++) {
-            str += String.format("%02x ", b[i]);
-        }
-        return str;
-    }
-
-
-    public void uploadSTM32 ( String fileName){
+    public void uploadSTM32 ( String fileName, Physicaloid.UploadCallBack UpCallback){
         boolean failed =false;
+        InputStream is=null;
+
+        try {
+            is = getAssets().open(fileName);
+
+        } catch (IOException e) {
+            //e.printStackTrace();
+            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32+ "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32+ "\n");
+        }
+
         dialogAppend("Starting ...");
         CommandInterface cmd;
 
-        cmd = new CommandInterface();
+        cmd = new CommandInterface(UpCallback, mPhysicaloid);
 
         cmd.open(Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]));
         int ret = cmd.initChip();
@@ -256,7 +300,7 @@ public class FlashFirmware extends AppCompatActivity {
         }
         int bootversion = 0;
         if (!failed) {
-             bootversion = cmd.cmdGet();
+            bootversion = cmd.cmdGet();
             //dialogAppend("bootversion:"+ bootversion);
             tvAppend(tvRead, " bootversion:" + bootversion + "\n");
             if (bootversion < 20 || bootversion >= 100) {
@@ -276,7 +320,7 @@ public class FlashFirmware extends AppCompatActivity {
                 tvAppend(tvRead,  "Erase 1\n");
                 cmd.cmdEraseMemory();
             }
-             else {
+            else {
                 tvAppend(tvRead,  "Erase 2\n");
                 cmd.cmdExtendedEraseMemory();
             }
@@ -284,19 +328,24 @@ public class FlashFirmware extends AppCompatActivity {
         if (!failed) {
             cmd.drain();
             tvAppend(tvRead, "writeMemory" + "\n");
-            ret = cmd.writeMemory(0x8000000, fileName);
+            ret = cmd.writeMemory(0x8000000, is);
             tvAppend(tvRead, "writeMemory finish" + "\n\n\n\n");
             if (ret == 1) {
                 tvAppend(tvRead, "writeMemory success" + "\n\n\n\n");
             }
         }
+        if (!failed) {
+            cmd.cmdGo(0x8000000);
+        }
         cmd.releaseChip();
     }
 
-    public class CommandInterface {
-        private IntelHexFileToBuf   mIntelHex;
-        private AVRMem mAVRMem;
+    /*public class CommandInterface {
+        Physicaloid.UploadCallBack mUpCallback;
 
+        CommandInterface(Physicaloid.UploadCallBack UpCallback) {
+            mUpCallback = UpCallback;
+        }
         public void open (int baudRate) {
             mPhysicaloid.open();
             mPhysicaloid.setBaudrate(baudRate);
@@ -312,16 +361,7 @@ public class FlashFirmware extends AppCompatActivity {
                     (byte)((data >> 0) & 0xff),
             };
         }
-        private int getFileToBuf(InputStream hexFile) throws FileNotFoundException, IOException, Exception {
-            tvAppend(tvRead,  "int getFileToBuf" + "\n");
-            mIntelHex = new IntelHexFileToBuf();
-            tvAppend(tvRead,  "new IntelHexFileToBuf()" + "\n");
-            mIntelHex.parse(hexFile);
-            tvAppend(tvRead,  "mIntelHex.parse(hexFile)" + "\n");
-            int byteLength = (int) mIntelHex.getByteLength();
-            tvAppend(tvRead,  " mIntelHex.getByteLength()" + "\n");
-            return byteLength;
-        }
+
         private int drain() {
             byte[] buf = new byte[1];
             int retval = 0;
@@ -351,15 +391,12 @@ public class FlashFirmware extends AppCompatActivity {
                     System.arraycopy(tmpbuf, 0, buf, totalRetval, retval);
                     totalRetval += retval;
                     startTime = System.currentTimeMillis();
-                   /* if(DEBUG_SHOW_RECV) {
-                        Log.d(TAG, "recv("+retval+") : " +toHexStr(buf, totalRetval));
-                    }*/
+
                 }
                 if(totalRetval >= length){break;}
 
                 endTime = System.currentTimeMillis();
                 if((endTime - startTime) > 250) {
-                   // Log.e(TAG,"recv timeout.");
                     break;
                 }
             }
@@ -369,12 +406,9 @@ public class FlashFirmware extends AppCompatActivity {
             long stop = System.currentTimeMillis() + timeout;
             byte got[] =new byte[1];
             while (mPhysicaloid.read(got) <1) {
-                //mPhysicaloid.read(got);
-                //tvAppend(tvRead, " vaitting..." );
                 if (System.currentTimeMillis() > stop)
-                        break;
+                    break;
             }
-            //tvAppend(tvRead, " got!!!:" + toHexStr(got, 1));
             if (got[0] == 0x79)
                 return 1;
             else if (got[0] == 0x1F) {
@@ -396,6 +430,7 @@ public class FlashFirmware extends AppCompatActivity {
         }
 
         private int initChip() {
+            drain();
             mPhysicaloid.setDtrRts(true, true);
             //set boot
             mPhysicaloid.setDtrRts(true, false);
@@ -409,13 +444,11 @@ public class FlashFirmware extends AppCompatActivity {
                 byte buf[]= new byte[32];
                 mPhysicaloid.write(new byte[]{(byte) 0x7f});
                 retval =recv(buf, 32);
-                //retval = mPhysicaloid.read(buf,32);
                 if (retval > 0) {
                     for (int a=0; a <retval; a++) {
                         got[i] = buf[a];
                         i++;
                     }
-                    //tvAppend(tvRead, retval + " int buf:" + toHexStr(buf, retval));
                 }
                 for (int j = 0; j <(i-1) ; j++ ) {
                     if (got[j] == 0x79 && got[j+1] == 0x1f) {
@@ -447,14 +480,11 @@ public class FlashFirmware extends AppCompatActivity {
             drain();
             cmd[0]=0x00;
             if (cmdGeneric(cmd)==1) {
-                //mPhysicaloid.read(buf,1);
                 recv(buf, 1);
                 int len =(int)buf[0];
                 tvAppend(tvRead, "len1:" + len + "\n");
-                //mPhysicaloid.read(buf,1);
                 recv(buf, 1);
                 version = (int)buf[0];
-                //mPhysicaloid.read(buf,len);
                 recv(buf, len);
                 tvAppend(tvRead, "version:" + version + "\n");
                 tvAppend(tvRead, "all stuff" + toHexStr(buf, len) + "\n");
@@ -470,7 +500,6 @@ public class FlashFirmware extends AppCompatActivity {
             int version = -1;
             cmd[0]=0x01;
             if (cmdGeneric(cmd)==1) {
-                //mPhysicaloid.read(buf);
                 recv(buf, 1);
                 version = (int)buf[0];
                 _wait_for_ack("0x01 end",500);
@@ -487,7 +516,6 @@ public class FlashFirmware extends AppCompatActivity {
                 recv(buf, 1);
                 int len = (int)buf[0];
                 tvAppend(tvRead, "id all:" + toHexStr(buf, len) + "\n");
-                //mPhysicaloid.read(buf,len+ 1);
                 recv(buf, len+1);
                 tvAppend(tvRead, "id all:" + toHexStr(buf, len));
                 id = (int)buf[0];
@@ -541,25 +569,21 @@ public class FlashFirmware extends AppCompatActivity {
         //writeMemory
         private int cmdWriteMemory (int addr,byte buf[]) {
             int lng=0;
-            //tvAppend(tvRead, "Write length:" + buf.length + "\n");
 
             byte cmd []= new byte[1];
             cmd [0]=0x31;
             if(cmdGeneric(cmd)==1) {
-                //tvAppend(tvRead, "*** Write memory command"  + "\n");
                 int ret = mPhysicaloid.write(_encode_addr(addr));
                 _wait_for_ack("0x31 address failed",100);
                 lng = (buf.length - 1) & 0xFF;
-                //new byte[]{(byte) (cmd[0] ^ 0xFF)}
-                //mPhysicaloid.write(new byte[]{(byte) (lng ^ 0xFF)});
+
                 mPhysicaloid.write(new byte[]{(byte) lng });
                 byte crc = (byte) 0xFF;
                 for (byte c : buf) {
                     crc = (byte) (crc ^ c);
-                    //mPhysicaloid.write(new byte[]{(byte) (c ^ 0xFF )});
                     mPhysicaloid.write(new byte[]{ c });
                 }
-                //mPhysicaloid.write(new byte[]{(byte) (crc ^ 0xFF )});
+
                 mPhysicaloid.write(new byte[]{ crc });
                 _wait_for_ack("0x31 programming failed " +
                         toHexStr(new byte[]{(byte) crc }, 1) + " lng: " +
@@ -630,14 +654,13 @@ public class FlashFirmware extends AppCompatActivity {
             return 1;
         }
 
-        private int writeMemory(int addr, String fileName) {
+        private int writeMemory(int addr, InputStream is) {
             int lng = -1;
+            int tot = 0;
 
-            InputStream is=null;
             byte[] data=null;
-            //InputStream is = null;
+
             try {
-                is = getAssets().open(ASSET_FILE_NAME_ALTIMULTISTM32);
 
                 data = IOUtils.toByteArray(is);
 
@@ -655,9 +678,7 @@ public class FlashFirmware extends AppCompatActivity {
             tvAppend(tvRead, "lng:" + lng + "\n");
             int offs = 0;
 
-           // byte data[] = new byte[(int)lng];
-            //mIntelHex.getHexData(data);
-            //mIntelHex = null;
+            tot = lng;
 
             while (lng > 256) {
                 byte buf[] = new byte[256];
@@ -667,11 +688,13 @@ public class FlashFirmware extends AppCompatActivity {
                 int ret = cmdWriteMemory(addr, buf);
                 if(ret !=1)
                     tvAppend(tvRead, "error writing to mem:" + lng + "\n");
+                    //mUpCallback.onPreUpload("error writing to mem:" + lng + "\n");
+
                 offs = offs + 256;
                 addr = addr + 256;
                 lng = lng - 256;
-                //tvAppend(tvRead, "lng:" + lng + "\n");
-
+                //dialogAppend(((offs*100)/tot)+"%" );
+                mUpCallback.onUploading((offs*100)/tot);
             }
             byte buf2[] = new byte[256];
             for (int i =0; i< lng; i++) {
@@ -681,14 +704,11 @@ public class FlashFirmware extends AppCompatActivity {
                 buf2[i]= (byte)0xFF;
             }
 
-            //buf2[lng]=(byte)((byte) 0xFF * (byte) (256-lng));
             cmdWriteMemory(addr, buf2);
             return 1;
         }
-    }
+    }*/
     Physicaloid.UploadCallBack mUploadCallback = new Physicaloid.UploadCallBack() {
-
-
 
         @Override
         public void onUploading(int value) {
@@ -703,6 +723,9 @@ public class FlashFirmware extends AppCompatActivity {
 
         }
 
+        public void info(String value) {
+            tvAppend(tvRead, value);
+        }
         @Override
         public void onPostUpload(boolean success) {
             if(success) {
@@ -725,8 +748,9 @@ public class FlashFirmware extends AppCompatActivity {
         @Override
         //Error  :
         public void onError(UploadErrors err) {
-            tvAppend(tvRead, getResources().getString(R.string.msg18)+err.toString()+"\n");
+               tvAppend(tvRead, getResources().getString(R.string.msg18)+err.toString()+"\n");
         }
+
     };
     Handler mHandler = new Handler();
     private void tvAppend(TextView tv, CharSequence text) {

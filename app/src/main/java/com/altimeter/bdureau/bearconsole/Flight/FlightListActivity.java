@@ -39,7 +39,7 @@ public class FlightListActivity extends AppCompatActivity {
     ConsoleApplication myBT;
     List<String> flightNames = null;
     private FlightData myflight = null;
-    private ProgressDialog progress;
+    //private ProgressDialog progress;
 
     private Button buttonDismiss;
 
@@ -127,12 +127,7 @@ public class FlightListActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            //"Retrieving flights..."
-            //"Please wait!!!"
-           /* progress = ProgressDialog.show(FlightListActivity.this,
-                    getResources().getString(R.string.msg7),
-                    getResources().getString(R.string.msg8));  //show a progress dialog
-*/
+
 
             builder = new AlertDialog.Builder(FlightListActivity.this);
             //Retrieving flights...
