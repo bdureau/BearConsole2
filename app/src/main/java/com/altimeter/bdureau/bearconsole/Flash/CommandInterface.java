@@ -241,7 +241,7 @@ public class CommandInterface {
         cmd [0]=0x21;
         if(cmdGeneric(cmd)==1) {
             mPhysicaloid.write(_encode_addr(addr));
-            _wait_for_ack("0x21 go failed",0);
+            _wait_for_ack("0x21 go failed",100);
             return 1;
         }
         else {
