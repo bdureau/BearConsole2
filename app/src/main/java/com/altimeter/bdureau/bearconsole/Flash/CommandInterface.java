@@ -1,15 +1,15 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
-import android.app.AlertDialog;
-import android.widget.TextView;
-import android.os.Handler;
+//import android.app.AlertDialog;
+//import android.widget.TextView;
+//import android.os.Handler;
 import com.google.android.gms.common.util.IOUtils;
 import com.physicaloid.lib.Physicaloid;
 
-import com.physicaloid.lib.programmer.avr.IntelHexFileToBuf;
+//import com.physicaloid.lib.programmer.avr.IntelHexFileToBuf;
 
 
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 

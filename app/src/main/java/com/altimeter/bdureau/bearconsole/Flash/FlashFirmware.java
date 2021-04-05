@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 
 import com.altimeter.bdureau.bearconsole.R;
-//import com.google.android.gms.common.util.IOUtils;
+
 import com.physicaloid.lib.Boards;
 import com.physicaloid.lib.Physicaloid;
 
@@ -40,7 +40,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static com.physicaloid.misc.Misc.toHexStr;
-//import java.util.concurrent.TimeUnit;
 
 
 public class FlashFirmware extends AppCompatActivity {
