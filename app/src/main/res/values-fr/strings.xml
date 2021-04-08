@@ -14,15 +14,27 @@
     <string name="altimeter_config">Config Altimètre</string>
     <string name="main_altitude">Altitude du Main</string>
     <string name="output_1">Sortie 1</string>
-    <string name="delay1">Retard 1</string>
+    <string name="delay1">Retard 1 (ms)</string>
     <string name="output_2">Sortie 2</string>
-    <string name="delay2">Retard 2</string>
+    <string name="delay2">Retard 2 (ms)</string>
     <string name="output_3">Sortie 3</string>
-    <string name="delay3">Retard 3</string>
+    <string name="delay3">Retard 3 (ms)</string>
     <string name="output_4">Sortie 4</string>
-    <string name="delay4">Retard 4</string>
+    <string name="delay4">Retard 4 (ms)</string>
     <string name="upload">Sauvegarder</string>
     <string name="dismiss_config">Fermer</string>
+    <!-- AltimeterConfigActivity Spinners -->
+    <string name="main_config">Main</string>
+    <string name="drogue_config">Drogue</string>
+    <string name="timer_config">Timer</string>
+    <string name="disabled_config">Désactivé</string>
+    <string name="landing_config">Atterrissage</string>
+    <string name="liftoff_config">Décollage</string>
+    <string name="altitude_config">Altitude</string>
+    <string name="altitude1">Altitude 1 (mètres)</string>
+    <string name="altitude2">Altitude2 (mètres)</string>
+    <string name="altitude3">Altitude3 (mètres)</string>
+    <string name="altitude4">Altitude4 (mètres)</string>
     <!-- Config tab1 tooltips -->
     <string name="main_altitude_tooltip">Enter the altitude for the main chute</string>
     <string name="OutDelay1_tooltip">Entrer le retard de mise à feux en ms pour la 1ere sortie</string>

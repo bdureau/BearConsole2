@@ -12,15 +12,27 @@
     <string name="altimeter_config">Altimeter Config</string>
     <string name="main_altitude">Main altitude</string>
     <string name="output_1">Output 1</string>
-    <string name="delay1">Delay1</string>
+    <string name="delay1">Delay 1 (ms)</string>
     <string name="output_2">Output 2</string>
-    <string name="delay2">Delay2</string>
+    <string name="delay2">Delay 2 (ms)</string>
     <string name="output_3">Output 3</string>
-    <string name="delay3">Delay3</string>
+    <string name="delay3">Delay 3 (ms)</string>
     <string name="output_4">Output 4</string>
-    <string name="delay4">Delay4</string>
+    <string name="delay4">Delay 4 (ms)</string>
     <string name="upload">Upload</string>
     <string name="dismiss_config">Dismiss</string>
+    <!-- AltimeterConfigActivity Spinners -->
+    <string name="main_config">Main</string>
+    <string name="drogue_config">Drogue</string>
+    <string name="timer_config">Timer</string>
+    <string name="disabled_config">Disabled</string>
+    <string name="landing_config">Landing</string>
+    <string name="liftoff_config">Liftoff</string>
+    <string name="altitude_config">Altitude</string>
+    <string name="altitude1">Altitude 1 (meters)</string>
+    <string name="altitude2">Altitude 2 (meters)</string>
+    <string name="altitude3">Altitude 3 (meters)</string>
+    <string name="altitude4">Altitude 4 (meters)</string>
     <!-- Config tab1 tooltips -->
     <string name="main_altitude_tooltip">Enter the altitude for the main chute</string>
     <string name="OutDelay1_tooltip">Enter the firing delay in ms for the 1st output</string>
@@ -129,6 +141,7 @@
     <string name="msg8">Please wait!!!</string>
     <string name="msg9">You have changed the baud rate, the altimeter might not be able to connect. Are you sure?</string>
 
+
     <!-- flight views screen -->
     <string name="Meters_fview">Meters</string>
     <string name="Feet_fview">Feet</string>
@@ -154,6 +167,7 @@
     <string name="connection_type">Connection Type</string>
     <string name="graphiclib_type">Graphics lib </string>
     <string name="MultipleMainDrogue" >Multiple Main/drogue</string>
+
 
     <!-- Telemetry -->
     <string name="stop_telemetry">Stop Telemetry</string>

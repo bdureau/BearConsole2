@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -527,7 +528,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         private Spinner dropdownOut1, dropdownOut2, dropdownOut3, dropdownOut4;
         private EditText OutDelay1, OutDelay2, OutDelay3, OutDelay4;
         private EditText MainAltitude;
-        private TextView txtOut1, txtOut2, txtOut3, txtViewDelay3, txtOut4, txtViewDelay4;
+        private TextView txtOut1, txtOut2, txtOut3, txtViewDelay3, txtOut4, txtViewDelay4, txtViewDelay2, txtViewDelay1;
 
         private boolean ViewCreated = false;
 
@@ -666,10 +667,39 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
             //Output 1
             dropdownOut1 = (Spinner) view.findViewById(R.id.spinnerOut1);
-            String[] items3 = new String[]{"Main", "Drogue", "Timer", "Disabled", "Landing", "liftoff"};
+            //String[] items3 = new String[]{"Main", "Drogue", "Timer", "Disabled", "Landing", "Liftoff","Altitude"};
+            String[] items3 = new String[]{getResources().getString(R.string.main_config),
+                    getResources().getString(R.string.drogue_config),
+                    getResources().getString(R.string.timer_config),
+                    getResources().getString(R.string.disabled_config),
+                    getResources().getString(R.string.landing_config),
+                    getResources().getString(R.string.liftoff_config),
+                    getResources().getString(R.string.altitude_config)
+            };
             ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items3);
+
             dropdownOut1.setAdapter(adapter3);
+            dropdownOut1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+            {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                {
+                    String selectedItem = parent.getItemAtPosition(position).toString();
+                    //Altitude
+                    if(selectedItem.equals(getResources().getString(R.string.altitude_config)))
+                    {
+                        // Altitude1
+                        txtViewDelay1.setText(getResources().getString(R.string.altitude1));
+                    } else {
+                        //Delay1
+                        txtViewDelay1.setText(getResources().getString(R.string.delay1));
+                    }
+                } // to close the onItemSelected
+                public void onNothingSelected(AdapterView<?> parent)
+                {
+
+                }
+            });
 
             //Output 2
             dropdownOut2 = (Spinner) view.findViewById(R.id.spinnerOut2);
@@ -677,21 +707,78 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             ArrayAdapter<String> adapter4 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items3);
             dropdownOut2.setAdapter(adapter4);
+            dropdownOut2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+            {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                {
+                    String selectedItem = parent.getItemAtPosition(position).toString();
+                    //Altitude
+                    if(selectedItem.equals(getResources().getString(R.string.altitude_config)))
+                    {
+                        // Altitude2
+                        txtViewDelay2.setText(getResources().getString(R.string.altitude2));
+                    } else {
+                        //Delay2
+                        txtViewDelay2.setText(getResources().getString(R.string.delay2));
+                    }
+                } // to close the onItemSelected
+                public void onNothingSelected(AdapterView<?> parent)
+                {
 
+                }
+            });
             //Output 3
             dropdownOut3 = (Spinner) view.findViewById(R.id.spinnerOut3);
 
             ArrayAdapter<String> adapter5 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items3);
             dropdownOut3.setAdapter(adapter5);
+            dropdownOut3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+            {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                {
+                    String selectedItem = parent.getItemAtPosition(position).toString();
+                    //Altitude
+                    if(selectedItem.equals(getResources().getString(R.string.altitude_config)))
+                    {
+                        // Altitude3
+                        txtViewDelay3.setText(getResources().getString(R.string.altitude3));
+                    } else {
+                        //Delay2
+                        txtViewDelay3.setText(getResources().getString(R.string.delay3));
+                    }
+                } // to close the onItemSelected
+                public void onNothingSelected(AdapterView<?> parent)
+                {
 
+                }
+            });
             //Output 4
             dropdownOut4 = (Spinner) view.findViewById(R.id.spinnerOut4);
 
             ArrayAdapter<String> adapter6 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items3);
             dropdownOut4.setAdapter(adapter6);
+            dropdownOut4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+            {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                {
+                    String selectedItem = parent.getItemAtPosition(position).toString();
+                    //Altitude
+                    if(selectedItem.equals(getResources().getString(R.string.altitude_config)))
+                    {
+                        // Altitude4
+                        txtViewDelay4.setText(getResources().getString(R.string.altitude4));
+                    } else {
+                        //Delay2
+                        txtViewDelay4.setText(getResources().getString(R.string.delay4));
+                    }
+                } // to close the onItemSelected
+                public void onNothingSelected(AdapterView<?> parent)
+                {
 
+                }
+            });
             OutDelay1 = (EditText) view.findViewById(R.id.editTxtDelay1);
             OutDelay2 = (EditText) view.findViewById(R.id.editTxtDelay2);
             OutDelay3 = (EditText) view.findViewById(R.id.editTxtDelay3);
@@ -742,6 +829,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             txtOut1 = (TextView) view.findViewById(R.id.txtOut1);
             txtOut2 = (TextView) view.findViewById(R.id.txtOut2);
             txtOut3 = (TextView) view.findViewById(R.id.txtOut3);
+            txtViewDelay1 = (TextView) view.findViewById(R.id.txtViewDelay1);
+            txtViewDelay2 = (TextView) view.findViewById(R.id.txtViewDelay2);
             txtViewDelay3 = (TextView) view.findViewById(R.id.txtViewDelay3);
             txtOut4 = (TextView) view.findViewById(R.id.txtOut4);
             txtViewDelay4 = (TextView) view.findViewById(R.id.txtViewDelay4);

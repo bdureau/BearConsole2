@@ -21,6 +21,18 @@
     <string name="delay4">Retraso4</string>
     <string name="upload">Carga</string>
     <string name="dismiss_config">Cancelar</string>
+    <!-- AltimeterConfigActivity Spinners -->
+    <string name="main_config">Main</string>
+    <string name="drogue_config">Drogue</string>
+    <string name="timer_config">Timer</string>
+    <string name="disabled_config">Disabled</string>
+    <string name="landing_config">Landing</string>
+    <string name="liftoff_config">Liftoff</string>
+    <string name="altitude_config">Altitude</string>
+    <string name="altitude1">Altitude1</string>
+    <string name="altitude2">Altitude2</string>
+    <string name="altitude3">Altitude3</string>
+    <string name="altitude4">Altitude4</string>
     <!-- Config tab1 tooltips -->
     <string name="main_altitude_tooltip">Entre la altitud para el paracaídas principal</string>
     <string name="OutDelay1_tooltip">Entre el retraso en el disparo en ms para la salida 1</string>
