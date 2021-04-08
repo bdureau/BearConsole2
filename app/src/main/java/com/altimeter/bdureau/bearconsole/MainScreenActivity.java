@@ -287,7 +287,19 @@ public class MainScreenActivity extends AppCompatActivity {
 
     private void EnableUI() {
         btnAltiSettings.setEnabled(true);
-        readConfig();
+        //readConfig();
+        boolean success = false;
+        success = readConfig();
+        //second attempt
+        if(!success)
+            success = readConfig();
+        //third attempt
+        if(!success)
+            success = readConfig();
+        //fourth and last
+        if(!success)
+            success = readConfig();
+
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
             btnContinuityOnOff.setEnabled(false);
         } else {
@@ -316,7 +328,7 @@ public class MainScreenActivity extends AppCompatActivity {
         myBT.Disconnect();
     }
 
-    private void readConfig() {
+    /*private void readConfig() {
         // ask for config
         if (myBT.getConnected()) {
             myBT.setDataReady(false);
@@ -335,18 +347,12 @@ public class MainScreenActivity extends AppCompatActivity {
 
             //reading the config
             String myMessage = "";
-            //long timeOut = 10000;
-            //long startTime = System.currentTimeMillis();
 
             myMessage = myBT.ReadResult(10000);
             if (myMessage.equals("OK")) {
                 myBT.setDataReady(false);
                 myMessage = myBT.ReadResult(10000);
-                /*try {
-                    Thread.sleep(1000);                 //1000 milliseconds is one second.
-                } catch(InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }*/
+
             }
             if (myMessage.equals("start alticonfig end")) {
                 try {
@@ -387,9 +393,98 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         }
 
+     }*/
+
+
+    private boolean readConfig() {
+        // ask for config
+        boolean success = false;
+        if (myBT.getConnected()) {
+            //msg("Retreiving altimeter config...");
+            myBT.setDataReady(false);
+            myBT.flush();
+            myBT.clearInput();
+            //switch off the main loop before sending the config
+            myBT.write("m0;\n".toString());
+
+            //wait for the result to come back
+            try {
+                while (myBT.getInputStream().available() <= 0) ;
+            } catch (IOException e) {
+
+            }
+            String myMessage = "";
+            myMessage = myBT.ReadResult(3000);
+            if (myMessage.equals("OK")) {
+                myBT.setDataReady(false);
+                myBT.flush();
+                myBT.clearInput();
+                myBT.write("b;\n".toString());
+                myBT.flush();
+
+                //get the results
+                //wait for the result to come back
+                try {
+                    while (myBT.getInputStream().available() <= 0) ;
+                } catch (IOException e) {
+
+                }
+                myMessage = myBT.ReadResult(3000);
+                //reading the config
+                if (myMessage.equals("start alticonfig end")) {
+                    try {
+                        AltiCfg = myBT.getAltiConfigData();
+                        success = true;
+                    } catch (Exception e) {
+                        //  msg("pb ready data");
+                    }
+                } else {
+                    // msg("data not ready");
+                    //try again
+                    myBT.setDataReady(false);
+                    myBT.flush();
+                    myBT.clearInput();
+                    myBT.write("b;\n".toString());
+                    myBT.flush();
+                    //get the results
+                    //wait for the result to come back
+                    try {
+                        while (myBT.getInputStream().available() <= 0) ;
+                    } catch (IOException e) {
+
+                    }
+                    myMessage = myBT.ReadResult(3000);
+                    //reading the config
+                    if (myMessage.equals("start alticonfig end")) {
+                        try {
+                            AltiCfg = myBT.getAltiConfigData();
+                            success = true;
+                        } catch (Exception e) {
+                            //  msg("pb ready data");
+                        }
+                    }
+                }
+                myBT.setDataReady(false);
+                myBT.flush();
+                myBT.clearInput();
+                //switch on the main loop before sending the config
+                myBT.write("m1;\n".toString());
+
+
+                //wait for the result to come back
+                try {
+                    while (myBT.getInputStream().available() <= 0) ;
+                } catch (IOException e) {
+
+                }
+                myMessage = myBT.ReadResult(3000);
+                myBT.flush();
+            }
+        }
+        return success;
     }
 
-    @Override
+        @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
