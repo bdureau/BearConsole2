@@ -41,10 +41,10 @@
     <string name="OutDelay2_tooltip">Entrer le retard de mise à feux en ms pour la 2eme sortie</string>
     <string name="OutDelay3_tooltip">Entrer le retard de mise à feux en ms pour la 3eme sortie</string>
     <string name="OutDelay4_tooltip">Entrer le retard de mise à feux en ms pour la 4eme sortie</string>
-    <string name="txtOut1_tooltip">Choisissez la finction de la 1er sortie</string>
-    <string name="txtOut2_tooltip">Choisissez la finction de la 2eme sortie</string>
-    <string name="txtOut3_tooltip">Choisissez la finction de la 3eme sortie</string>
-    <string name="txtOut4_tooltip">Choisissez la finction de la 4eme sortie</string>
+    <string name="txtOut1_tooltip">Choisissez la fonction de la 1er sortie</string>
+    <string name="txtOut2_tooltip">Choisissez la fonction de la 2eme sortie</string>
+    <string name="txtOut3_tooltip">Choisissez la fonction de la 3eme sortie</string>
+    <string name="txtOut4_tooltip">Choisissez la fonction de la 4eme sortie</string>
     <string name="txtViewBaudRate_tooltip">Choisissez la vitesse de communication de l\'altimètre. Attention cela peut comprometre la communication</string>
     <string name="editTxtApogeeMeasures_tooltip">Nombre de mesures pour déterminer l\'apogée</string>
     <string name="txtViewAltimeterResolution_tooltip">Choisir la résolution du capteur de pression. Plus la fusée est rapide et plus la résolution doit etre basse </string>
@@ -68,6 +68,9 @@
     <string name="EndRecordAltitude">Alt fin enr</string>
     <string name="LiftOffAltitude">Alt Décollage</string>
     <string name="BatteryType">Type de batterie</string>
+    <string name="config_unknown">inconnu</string>
+    <string name="config_on">Activé</string>
+    <string name="config_off">Désactivé</string>
     <!-- Config tab3 -->
     <string name="altimeter_config_tab3">Configuration Altimètre</string>
     <string name="alti_name">Nom Alti</string>
@@ -75,6 +78,8 @@
     <string name="bip_mode">Mode Bip </string>
     <string name="beep_freq">Freq bips</string>
     <string name="servo_stay_on">Servo Reste ouvert</string>
+    <string name="unit_meter">Mètres</string>
+    <string name="unit_feet">Pieds</string>
     <!-- Config tab4 -->
     <string name="servos_config">Configuration des Servos</string>
     <string name="servo1_off_pos">Servo1 pos min</string>
@@ -85,7 +90,8 @@
     <string name="servo3_on_pos">Servo3 pos max</string>
     <string name="servo4_off_pos">Servo4 pos min</string>
     <string name="servo4_on_pos">Servo4 pos max</string>
-
+    <string name="config_no">Non</string>
+    <string name="config_yes">Oui</string>
     <!-- Main Screen -->
     <string name="altimeter_settings">Configuration altimètre</string>
     <string name="continuity_on_off">Continuité marche/arret</string>
@@ -235,6 +241,7 @@
     <string name="flight_have_been_recorded">Aucun vol n\'a été enregistré</string>
     <string name="main_screen_actity">Annuler</string>
     <string name="title_activity_flight_view_maps">Map</string>
+    <string name="flight">Vols</string>
 
 
 </resources>

@@ -66,6 +66,9 @@
     <string name="EndRecordAltitude">Fin de grabación de altitud</string>
     <string name="LiftOffAltitude">Altitud de despegue</string>
     <string name="BatteryType">Tipo de batería</string>
+    <string name="config_unknown">unknown</string>
+    <string name="config_on">On</string>
+    <string name="config_off">Off</string>
     <!-- Config tab3 -->
     <string name="altimeter_config_tab3">Configuración del altímetro</string>
     <string name="alti_name">Nombre del altímetro</string>
@@ -73,6 +76,10 @@
     <string name="bip_mode">Modo de pitido</string>
     <string name="beep_freq">Frecuencia de pitido</string>
     <string name="servo_stay_on">Servo Stay On</string>
+    <string name="unit_meter">Meters</string>
+    <string name="unit_feet">Feets</string>
+    <string name="config_no">No</string>
+    <string name="config_yes">Yes</string>
     <!-- Config tab4-->
     <string name="servos_config">Configuración de servo</string>
     <string name="servo1_off_pos">Servo1 off pos</string>
@@ -228,6 +235,7 @@
     <string name="flight_have_been_recorded">No se han registrado vuelos</string>
     <string name="main_screen_actity">Cancelar</string>
     <string name="title_activity_flight_view_maps">Mapa</string>
+    <string name="flight">Flight</string>
 
 
 </resources>

@@ -1206,7 +1206,10 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             // Switch beeping on or off
             // 0 is On and 1 is Off
             dropdownBeepOnOff = (Spinner) view.findViewById(R.id.spinnerBeepOnOff);
-            itemsBeepOnOff = new String[]{"On", "Off"};
+            //On
+            //Off
+            itemsBeepOnOff = new String[]{getResources().getString(R.string.config_on),
+                    getResources().getString(R.string.config_off)};
             ArrayAdapter<String> adapterBeepOnOff = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsBeepOnOff);
             dropdownBeepOnOff.setAdapter(adapterBeepOnOff);
@@ -1214,7 +1217,10 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             // Record temperature on or off
             txtViewRecordTemp = (TextView) view.findViewById(R.id.txtViewRecordTemp);
             dropdownRecordTemp = (Spinner) view.findViewById(R.id.spinnerRecordTemp);
-            itemsRecordTempOnOff = new String[]{"Off", "On"};
+            //Off
+            //on
+            itemsRecordTempOnOff = new String[]{getResources().getString(R.string.config_off),
+                    getResources().getString(R.string.config_on)};
             ArrayAdapter<String> adapterRecordTemp = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsRecordTempOnOff);
             dropdownRecordTemp.setAdapter(adapterRecordTemp);
@@ -1245,7 +1251,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             });
             // supersonic delay on/off
             dropdownSupersonicDelay = (Spinner) view.findViewById(R.id.spinnerSupersonicDelay);
-            itemsSupersonicDelayOnOff = new String[]{"Off", "On"};
+            //Off
+            //On
+            itemsSupersonicDelayOnOff = new String[]{getResources().getString(R.string.config_off), getResources().getString(R.string.config_on)};
             ArrayAdapter<String> adapterSupersonicDelayOnOff = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsSupersonicDelayOnOff);
             dropdownSupersonicDelay.setAdapter(adapterSupersonicDelayOnOff);
@@ -1282,7 +1290,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
             dropdownBatteryType = (Spinner) view.findViewById(R.id.spinnerBatteryType);
-            itemsBatteryType = new String[]{"Unknown", "2S (7.4 Volts)", "9 Volts", "3S (11.1 Volts)"};
+            //"Unknown",
+            itemsBatteryType = new String[]{getResources().getString(R.string.config_unknown),
+                    "2S (7.4 Volts)", "9 Volts", "3S (11.1 Volts)"};
             ArrayAdapter<String> adapterBatteryType = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, itemsBatteryType);
             dropdownBatteryType.setAdapter(adapterBatteryType);
@@ -1388,7 +1398,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.tabconfigpart3_fragment, container, false);
             //Beep mode
             dropdownBipMode = (Spinner) view.findViewById(R.id.spinnerBipMode);
-            String[] items = new String[]{"Mode1", "Mode2", "Off"};
+            //"Mode1", "Mode2", "Off"
+            String[] items = new String[]{"Mode1", "Mode2",
+                    getResources().getString(R.string.config_off)};
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items);
             dropdownBipMode.setAdapter(adapter);
@@ -1396,7 +1408,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
             //units
             dropdownUnits = (Spinner) view.findViewById(R.id.spinnerUnit);
-            String[] items2 = new String[]{"Meters", "Feet"};
+            //"Meters", "Feet"
+            String[] items2 = new String[]{getResources().getString(R.string.unit_meter),
+                    getResources().getString(R.string.unit_feet)};
             ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items2);
             dropdownUnits.setAdapter(adapter2);
@@ -1434,7 +1448,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             });
 
             dropdownServoStayOn= (Spinner) view.findViewById(R.id.spinnerServoSatyOn);
-            String[] items3 = new String[]{"No", "Yes"};
+            //"No", "Yes"
+            String[] items3 = new String[]{getResources().getString(R.string.config_no),
+                    getResources().getString(R.string.config_yes)};
             ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items3);
             dropdownServoStayOn.setAdapter(adapter3);

@@ -66,6 +66,9 @@
     <string name="EndRecordAltitude">End of rec Altitude</string>
     <string name="LiftOffAltitude">Lift Off Altitude</string>
     <string name="BatteryType">Battery Type</string>
+    <string name="config_unknown">unknown</string>
+    <string name="config_on">On</string>
+    <string name="config_off">Off</string>
     <!-- Config tab3 -->
     <string name="altimeter_config_tab3">Altimeter Config</string>
     <string name="alti_name">Alti Name</string>
@@ -73,6 +76,8 @@
     <string name="bip_mode">Beep mode</string>
     <string name="beep_freq">Beep freq</string>
     <string name="servo_stay_on">Servo Stay On</string>
+    <string name="unit_meter">Meters</string>
+    <string name="unit_feet">Feets</string>
     <!-- Config tab4-->
     <string name="servos_config">Servos Config</string>
     <string name="servo1_off_pos">Servo1 off pos</string>
@@ -83,6 +88,8 @@
     <string name="servo3_on_pos">Servo3 on pos</string>
     <string name="servo4_off_pos">Servo4 off pos</string>
     <string name="servo4_on_pos">Servo4 on pos</string>
+    <string name="config_no">No</string>
+    <string name="config_yes">Yes</string>
     <!-- Main Screen -->
     <string name="altimeter_settings">Altimeter Settings</string>
     <string name="continuity_on_off">Continuity On/Off</string>
@@ -230,6 +237,7 @@
     <string name="flight_have_been_recorded">No flights have been recorded</string>
     <string name="main_screen_actity">Cancel</string>
     <string name="title_activity_flight_view_maps">Map</string>
+    <string name="flight">Flight</string>
 
 
 </resources>
