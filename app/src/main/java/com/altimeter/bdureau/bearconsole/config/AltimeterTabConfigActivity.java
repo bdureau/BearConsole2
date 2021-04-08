@@ -133,7 +133,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             try {
                 while (myBT.getInputStream().available() <= 0) ;
             } catch (IOException e) {
-
+                success = false;
             }
             String myMessage = "";
             myMessage = myBT.ReadResult(3000);
@@ -149,7 +149,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 try {
                     while (myBT.getInputStream().available() <= 0) ;
                 } catch (IOException e) {
-
+                    success = false;
                 }
                 myMessage = myBT.ReadResult(3000);
                 //reading the config
@@ -159,6 +159,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                         success =true;
                     } catch (Exception e) {
                         //  msg("pb ready data");
+                        success = false;
                     }
                 } else {
                     // msg("data not ready");
@@ -173,7 +174,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     try {
                         while (myBT.getInputStream().available() <= 0) ;
                     } catch (IOException e) {
-
+                        success = false;
                     }
                     myMessage = myBT.ReadResult(3000);
                     //reading the config
@@ -183,6 +184,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             success = true;
                         } catch (Exception e) {
                             //  msg("pb ready data");
+                            success = false;
                         }
                     }
                 }
@@ -197,7 +199,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 try {
                     while (myBT.getInputStream().available() <= 0) ;
                 } catch (IOException e) {
-
+                    success = false;
                 }
                 myMessage = myBT.ReadResult(3000);
                 myBT.flush();
