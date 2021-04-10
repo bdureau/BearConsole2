@@ -55,11 +55,11 @@ boolean recorverFirmware = false;
     private ArrayList<Boards> mBoardList;
     private UartConfig uartConfig;
 
-    private static final String ASSET_FILE_NAME_ALTIMULTIV2       = "firmwares/2021-03-26-V1_24.altimultiV2.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTI         = "firmwares/2021-03-26-V1_24.altimulti.hex";
-    private static final String ASSET_FILE_NAME_ALTISERVO         = "firmwares/2021-03-27-AltiServoV1_3.hex";
-    private static final String ASSET_FILE_NAME_ALTIDUO         = "firmwares/2021-03-27-V1_7.AltiDuo.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTISTM32  = "firmwares/2021-04-02-V1_24.altimultiSTM32.bin";
+    private static final String ASSET_FILE_NAME_ALTIMULTIV2       = "firmwares/2021-04-09-V1_24.altimultiV2.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTI         = "firmwares/2021-04-09-V1_24.altimulti.hex";
+    private static final String ASSET_FILE_NAME_ALTISERVO         = "firmwares/2021-04-09-AltiServoV1_3.hex";
+    private static final String ASSET_FILE_NAME_ALTIDUO         = "firmwares/2021-04-09-V1_7.AltiDuo.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTISTM32  = "firmwares/2021-04-09-V1_24.altimultiSTM32.bin";
     private static final String ASSET_FILE_NAME_ALTIGPS  = "firmwares/2021-04-05-V1_2RocketGPSLogger.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
