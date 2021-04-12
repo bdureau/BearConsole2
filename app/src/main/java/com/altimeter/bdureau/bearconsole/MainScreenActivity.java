@@ -170,7 +170,7 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.flush();
                     myBT.clearInput();
 
-                    myBT.write("y1;\n".toString());
+                    myBT.write("y1;".toString());
                 }
                 Intent i;
                 if (myBT.getAppConf().getGraphicsLibType().equals("0"))
@@ -188,7 +188,7 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.flush();
                     myBT.clearInput();
 
-                    myBT.write("y1;\n".toString());
+                    myBT.write("y1;".toString());
                 }
                 Intent i = new Intent(MainScreenActivity.this, AltimeterStatus.class);
                 startActivity(i);
@@ -263,7 +263,7 @@ public class MainScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (myBT.getConnected()) {
                     // Send command to change the continuity
-                    myBT.write("c;\n".toString());
+                    myBT.write("c;".toString());
                     myBT.flush();
                     myBT.clearInput();
                 }
@@ -328,72 +328,7 @@ public class MainScreenActivity extends AppCompatActivity {
         myBT.Disconnect();
     }
 
-    /*private void readConfig() {
-        // ask for config
-        if (myBT.getConnected()) {
-            myBT.setDataReady(false);
-            myBT.flush();
-            myBT.clearInput();
-            myBT.write("b;\n".toString());
-            myBT.flush();
 
-            //get the results
-            //wait for the result to come back
-            try {
-                while (myBT.getInputStream().available() <= 0) ;
-            } catch (IOException e) {
-
-            }
-
-            //reading the config
-            String myMessage = "";
-
-            myMessage = myBT.ReadResult(10000);
-            if (myMessage.equals("OK")) {
-                myBT.setDataReady(false);
-                myMessage = myBT.ReadResult(10000);
-
-            }
-            if (myMessage.equals("start alticonfig end")) {
-                try {
-                    AltiCfg = myBT.getAltiConfigData();
-                    //msg(AltiCfg.getAltimeterName());
-                } catch (Exception e) {
-                    msg("pb ready data");
-                }
-            } else {
-                //msg("data not ready: " + myMessage);
-                myBT.setDataReady(false);
-                myBT.flush();
-                myBT.clearInput();
-                myBT.write("b;\n".toString());
-                myBT.flush();
-
-                //get the results
-                //wait for the result to come back
-                try {
-                    while (myBT.getInputStream().available() <= 0) ;
-                } catch (IOException e) {
-
-                }
-
-                //reading the config
-                myMessage = "";
-                myMessage = myBT.ReadResult(10000);
-                if (myMessage.equals("start alticonfig end")) {
-                    try {
-                        AltiCfg = myBT.getAltiConfigData();
-                        //msg(AltiCfg.getAltimeterName());
-                    } catch (Exception e) {
-                        msg("pb ready data");
-                    }
-                } else {
-                    msg("data not ready: " + myMessage);
-                }
-            }
-        }
-
-     }*/
 
 
     private boolean readConfig() {
@@ -405,7 +340,7 @@ public class MainScreenActivity extends AppCompatActivity {
             myBT.flush();
             myBT.clearInput();
             //switch off the main loop before sending the config
-            myBT.write("m0;\n".toString());
+            myBT.write("m0;".toString());
 
             //wait for the result to come back
             try {
@@ -419,7 +354,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.setDataReady(false);
                 myBT.flush();
                 myBT.clearInput();
-                myBT.write("b;\n".toString());
+                myBT.write("b;".toString());
                 myBT.flush();
 
                 //get the results
@@ -444,7 +379,7 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.setDataReady(false);
                     myBT.flush();
                     myBT.clearInput();
-                    myBT.write("b;\n".toString());
+                    myBT.write("b;".toString());
                     myBT.flush();
                     //get the results
                     //wait for the result to come back
@@ -468,7 +403,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.flush();
                 myBT.clearInput();
                 //switch on the main loop before sending the config
-                myBT.write("m1;\n".toString());
+                myBT.write("m1;".toString());
 
 
                 //wait for the result to come back

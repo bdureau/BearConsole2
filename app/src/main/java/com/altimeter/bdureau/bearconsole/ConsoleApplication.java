@@ -203,11 +203,11 @@ public class ConsoleApplication extends Application {
         flush();
         clearInput();
         //  send 2 commands to get read of the module connection string on some modules
-        write("h;\n".toString());
+        write("h;".toString());
 
         flush();
         clearInput();
-        write("h;\n".toString());
+        write("h;".toString());
 
         String myMessage = "";
         long timeOut = 10000;

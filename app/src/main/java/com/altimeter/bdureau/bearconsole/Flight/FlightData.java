@@ -104,7 +104,7 @@ public class FlightData {
         XYSeriesCollection  flightData=null;
         if (!FlightExist(flightName))
         {
-            //System.out.println("flight does not exist\n");
+
             //if the flight name does not exist let's create it first
             hm.put(flightName, createFlight(flightName));
         }
@@ -121,7 +121,7 @@ public class FlightData {
         XYSeriesCollection  flightData=null;
         if (!FlightExist(flightName))
         {
-            //System.out.println("flight does not exist\n");
+
             //if the flight name does not exist let's create it first
             hm.put(flightName, createFlight(flightName));
         }

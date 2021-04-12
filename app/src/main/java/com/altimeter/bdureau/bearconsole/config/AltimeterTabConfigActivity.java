@@ -128,7 +128,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.flush();
             myBT.clearInput();
             //switch off the main loop before sending the config
-            myBT.write("m0;\n".toString());
+            myBT.write("m0;".toString());
 
             //wait for the result to come back
             try {
@@ -142,7 +142,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 myBT.setDataReady(false);
                 myBT.flush();
                 myBT.clearInput();
-                myBT.write("b;\n".toString());
+                myBT.write("b;".toString());
                 myBT.flush();
 
                 //get the results
@@ -168,7 +168,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     myBT.setDataReady(false);
                     myBT.flush();
                     myBT.clearInput();
-                    myBT.write("b;\n".toString());
+                    myBT.write("b;".toString());
                     myBT.flush();
                     //get the results
                     //wait for the result to come back
@@ -193,7 +193,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 myBT.flush();
                 myBT.clearInput();
                 //switch on the main loop before sending the config
-                myBT.write("m1;\n".toString());
+                myBT.write("m1;".toString());
 
 
                 //wait for the result to come back
@@ -404,7 +404,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         cfg = cfg.replace(",", "");
         Log.d("conftab", cfg.toString());
 
-        altiCfgStr = altiCfgStr + "," + generateCheckSum(cfg) + ";\n";
+        altiCfgStr = altiCfgStr + "," + generateCheckSum(cfg) + ";";
 
 
         if (myBT.getConnected()) {
@@ -412,7 +412,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.flush();
             myBT.clearInput();
             //switch off the main loop before sending the config
-            myBT.write("m0;\n".toString());
+            myBT.write("m0;".toString());
             Log.d("conftab", "switch off main loop");
             //wait for the result to come back
             try {
@@ -457,7 +457,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.flush();
             myBT.clearInput();
             //switch on the main loop before sending the config
-            myBT.write("m1;\n".toString());
+            myBT.write("m1;".toString());
             Log.d("conftab", "switch on main loop");
 
             //wait for the result to come back

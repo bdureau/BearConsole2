@@ -164,13 +164,13 @@ public class CommandInterface {
         if (cmdGeneric(cmd)==1) {
             recv(buf, 1);
             int len =(int)buf[0];
-            //tvAppend(tvRead, "len1:" + len + "\n");
+
             recv(buf, 1);
             version = (int)buf[0];
             recv(buf, len);
-            //tvAppend(tvRead, "version:" + version + "\n");
+
             mUpCallback.onInfo("version:" + version + "\n");
-            //tvAppend(tvRead, "all stuff" + toHexStr(buf, len) + "\n");
+
             _wait_for_ack("0x00 end",500);
         }
         return version;

@@ -75,7 +75,7 @@ public class ResetSettingsActivity extends AppCompatActivity {
                      if(myBT.getConnected())
                       //   try  {
                              //erase the config
-                             myBT.write("e;\n".toString());
+                             myBT.write("e;".toString());
                              myBT.flush();
                          //}
                         /* catch (IOException e) {
@@ -105,7 +105,7 @@ public class ResetSettingsActivity extends AppCompatActivity {
                         if(myBT.getConnected())
                             //try  {
                                 //erase the config
-                                myBT.write("d;\n".toString());
+                                myBT.write("d;".toString());
                                 myBT.flush();
                            /* }
                             catch (IOException e) {

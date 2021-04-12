@@ -89,7 +89,7 @@ public class FlightListActivity extends AppCompatActivity {
             myBT.clearInput();
             myBT.getFlightData().ClearFlight();
             // Send command to retrieve the config
-            myBT.write("a;\n".toString());
+            myBT.write("a;".toString());
             myBT.flush();
 
             try {
