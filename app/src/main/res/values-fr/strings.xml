@@ -236,12 +236,15 @@
     <string name="flash_firmware">Flash Firmware</string>
     <string name="select_altimeter_model">Choisissez l\'atimétre à flasher:</string>
     <string name="after_complete_upload">Après que le chargement soit terminé vous pourrez flasher le firmware</string>
+    <string name="detect_firmware">Detect firmware</string>
+    <string name="msg_detect_firmware">Attempting to Detect firmware!!!</string>
+
+    <!-- other -->
     <string name="flight_list_cancel">Annuler</string>
     <string name="flight_retrieval_canceled">Le chargement des vols a été annulé</string>
     <string name="flight_have_been_recorded">Aucun vol n\'a été enregistré</string>
     <string name="main_screen_actity">Annuler</string>
     <string name="title_activity_flight_view_maps">Map</string>
     <string name="flight">Vols</string>
-
 
 </resources>

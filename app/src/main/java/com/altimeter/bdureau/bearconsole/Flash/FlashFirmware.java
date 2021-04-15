@@ -1,21 +1,22 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
 /**
- *   @description: This is used to flash the altimeter firmware from the Android device using an OTG cable
- *   so that the store Android application is compatible with altimeter. This works with the
- *   ATMega328 based altimeters as well as the STM32 based altimeters
- *
- *   @author: boris.dureau@neuf.fr
- *
+ * @description: This is used to flash the altimeter firmware from the Android device using an OTG cable
+ * so that the store Android application is compatible with altimeter. This works with the
+ * ATMega328 based altimeters as well as the STM32 based altimeters
+ * @author: boris.dureau@neuf.fr
  **/
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,6 +38,7 @@ import com.physicaloid.lib.usb.driver.uart.UartConfig;
 import java.io.IOException;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import static com.physicaloid.misc.Misc.toHexStr;
@@ -45,22 +47,22 @@ import static com.physicaloid.misc.Misc.toHexStr;
 public class FlashFirmware extends AppCompatActivity {
     Physicaloid mPhysicaloid;
 
-boolean recorverFirmware = false;
+    boolean recorverFirmware = false;
     Boards mSelectedBoard;
-    Button btOpen;
-    RadioButton rdbAltiMulti,rdbAltiMultiV2, rbAltiServo, rbAltiDuo, rbAltiMultiSTM32, rbAltiGPS;
+    Button btFlash;
+    public RadioButton rbAltiMulti, rbAltiMultiV2, rbAltiServo, rbAltiDuo, rbAltiMultiSTM32, rbAltiGPS;
     TextView tvRead;
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
     private ArrayList<Boards> mBoardList;
     private UartConfig uartConfig;
 
-    private static final String ASSET_FILE_NAME_ALTIMULTIV2       = "firmwares/2021-04-11-V1_24.altimultiV2.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTI         = "firmwares/2021-04-11-V1_24.altimulti.hex";
-    private static final String ASSET_FILE_NAME_ALTISERVO         = "firmwares/2021-04-09-AltiServoV1_3.hex";
-    private static final String ASSET_FILE_NAME_ALTIDUO         = "firmwares/2021-04-09-V1_7.AltiDuo.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTISTM32  = "firmwares/2021-04-11-V1_24.altimultiSTM32.bin";
-    private static final String ASSET_FILE_NAME_ALTIGPS  = "firmwares/2021-04-05-V1_2RocketGPSLogger.bin";
+    private static final String ASSET_FILE_NAME_ALTIMULTIV2 = "firmwares/2021-04-11-V1_24.altimultiV2.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTI = "firmwares/2021-04-11-V1_24.altimulti.hex";
+    private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2021-04-09-AltiServoV1_3.hex";
+    private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2021-04-09-V1_7.AltiDuo.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/2021-04-11-V1_24.altimultiSTM32.bin";
+    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2021-04-05-V1_2RocketGPSLogger.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
@@ -82,19 +84,19 @@ boolean recorverFirmware = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flash_firmware);
 
-        btOpen          = (Button) findViewById(R.id.btFlash);
-        tvRead          = (TextView) findViewById(R.id.tvRead);
-        rdbAltiMulti = (RadioButton) findViewById(R.id.radioButAltiMulti);
-        rdbAltiMultiV2 = (RadioButton) findViewById(R.id.radioButAltiMultiV2);
+        btFlash = (Button) findViewById(R.id.btFlash);
+        tvRead = (TextView) findViewById(R.id.tvRead);
+        rbAltiMulti = (RadioButton) findViewById(R.id.radioButAltiMulti);
+        rbAltiMultiV2 = (RadioButton) findViewById(R.id.radioButAltiMultiV2);
         rbAltiServo = (RadioButton) findViewById(R.id.radioButAltiServo);
         rbAltiDuo = (RadioButton) findViewById(R.id.radioButAltiDuo);
-        rdbAltiMulti.setChecked(true);
+        rbAltiMulti.setChecked(true);
         rbAltiMultiSTM32 = (RadioButton) findViewById(R.id.radioButAltiMultiSTM32);
         rbAltiGPS = (RadioButton) findViewById(R.id.radioButAltiGPS);
         mPhysicaloid = new Physicaloid(this);
         mBoardList = new ArrayList<Boards>();
-        for(Boards board : Boards.values()) {
-            if(board.support>0) {
+        for (Boards board : Boards.values()) {
+            if (board.support > 0) {
                 mBoardList.add(board);
             }
         }
@@ -102,21 +104,21 @@ boolean recorverFirmware = false;
         mSelectedBoard = mBoardList.get(0);
         uartConfig = new UartConfig(115200, UartConfig.DATA_BITS8, UartConfig.STOP_BITS1, UartConfig.PARITY_NONE, false, false);
 
-        btOpen.setEnabled(true);
-        if(mPhysicaloid.open()) {
+        btFlash.setEnabled(true);
+        if (mPhysicaloid.open()) {
             mPhysicaloid.setConfig(uartConfig);
 
 
         } else {
             //cannot open
             Toast.makeText(this, getResources().getString(R.string.msg13), Toast.LENGTH_LONG).show();
-            //btOpen.setEnabled(false);
+            //btFlash.setEnabled(false);
         }
 
 
         //baud rate
-        dropdownBaudRate = (Spinner)findViewById(R.id.spinnerBaud);
-        itemsBaudRate = new String[]{ "300",
+        dropdownBaudRate = (Spinner) findViewById(R.id.spinnerBaud);
+        itemsBaudRate = new String[]{"300",
                 "1200",
                 "2400",
                 "4800",
@@ -132,6 +134,8 @@ boolean recorverFirmware = false;
                 android.R.layout.simple_spinner_dropdown_item, itemsBaudRate);
         dropdownBaudRate.setAdapter(adapterBaudRate);
         dropdownBaudRate.setSelection(10);
+
+
     }
 
 
@@ -140,6 +144,7 @@ boolean recorverFirmware = false;
         super.onDestroy();
         close();
     }
+
     public void onClickDismiss(View v) {
         close();
         finish();
@@ -148,18 +153,18 @@ boolean recorverFirmware = false;
     public void onClickRecover(View v) {
         String recoverFileName;
         recoverFileName = ASSET_FILE_RESET_ALTIMULTI;
-        if (rdbAltiMulti.isChecked())
-            recoverFileName =ASSET_FILE_RESET_ALTIMULTI;
-        if (rdbAltiMultiV2.isChecked())
-            recoverFileName =ASSET_FILE_RESET_ALTIMULTI;
+        if (rbAltiMulti.isChecked())
+            recoverFileName = ASSET_FILE_RESET_ALTIMULTI;
+        if (rbAltiMultiV2.isChecked())
+            recoverFileName = ASSET_FILE_RESET_ALTIMULTI;
         if (rbAltiServo.isChecked())
-            recoverFileName =ASSET_FILE_RESET_ALTISERVO;
+            recoverFileName = ASSET_FILE_RESET_ALTISERVO;
         if (rbAltiDuo.isChecked())
-            recoverFileName =ASSET_FILE_RESET_ALTIDUO;
+            recoverFileName = ASSET_FILE_RESET_ALTIDUO;
         if (rbAltiMultiSTM32.isChecked())
-            recoverFileName =ASSET_FILE_RESET_ALTISTM32;
+            recoverFileName = ASSET_FILE_RESET_ALTISTM32;
         if (rbAltiGPS.isChecked())
-            recoverFileName =ASSET_FILE_RESET_ALTISTM32;
+            recoverFileName = ASSET_FILE_RESET_ALTISTM32;
 
         tvRead.setText("");
         tvRead.setText(getResources().getString(R.string.after_complete_upload));
@@ -186,31 +191,42 @@ boolean recorverFirmware = false;
             } catch (IOException e) {
                 //Log.e(TAG, e.toString());
             }
-        }
-        else {
+        } else {
             recorverFirmware = true;
             new UploadSTM32Asyc().execute();
         }
     }
+
+    public void onClickDetect(View v) {
+       /* String version="";
+        // try to do an assync class!!!!
+        FirmwareInfo firm = new FirmwareInfo(mPhysicaloid);
+        firm.open(38400);
+        version =firm.getFirmwarVersion();
+
+        tvAppend(tvRead, "Firmware version detected: "+ version +"\n");*/
+        new DetectAsyc().execute();
+    }
+
 
     public void onClickFlash(View v) {
         String firmwareFileName;
 
         firmwareFileName = ASSET_FILE_NAME_ALTIMULTI;
 
-        if (rdbAltiMulti.isChecked())
+        if (rbAltiMulti.isChecked())
             firmwareFileName = ASSET_FILE_NAME_ALTIMULTI;
-        if (rdbAltiMultiV2.isChecked())
+        if (rbAltiMultiV2.isChecked())
             firmwareFileName = ASSET_FILE_NAME_ALTIMULTIV2;
         if (rbAltiServo.isChecked())
-            firmwareFileName =ASSET_FILE_NAME_ALTISERVO;
+            firmwareFileName = ASSET_FILE_NAME_ALTISERVO;
         if (rbAltiDuo.isChecked())
-            firmwareFileName =ASSET_FILE_NAME_ALTIDUO;
-        if(rbAltiMultiSTM32.isChecked())
+            firmwareFileName = ASSET_FILE_NAME_ALTIDUO;
+        if (rbAltiMultiSTM32.isChecked())
             firmwareFileName = ASSET_FILE_NAME_ALTIMULTISTM32;
 
         tvRead.setText("");
-        if(!rbAltiMultiSTM32.isChecked()) {
+        if (!rbAltiMultiSTM32.isChecked()) {
             try {
                 builder = new AlertDialog.Builder(FlashFirmware.this);
                 //Flashing firmware...
@@ -234,9 +250,8 @@ boolean recorverFirmware = false;
             } catch (IOException e) {
                 //Log.e(TAG, e.toString());
             }
-        }
-        else{
-                //uploadSTM32(firmwareFileName);
+        } else {
+            //uploadSTM32(firmwareFileName);
             recorverFirmware = false;
             new UploadSTM32Asyc().execute();
         }
@@ -244,8 +259,68 @@ boolean recorverFirmware = false;
 
     }
 
+    private class DetectAsyc extends AsyncTask<Void, Void, Void>  // UI thread
+    {
 
-    private class UploadSTM32Asyc  extends AsyncTask<Void, Void, Void>  // UI thread
+        @Override
+        protected void onPreExecute() {
+            builder = new AlertDialog.Builder(FlashFirmware.this);
+            //Attempting to detect firmware...
+            builder.setMessage(getResources().getString(R.string.detect_firmware))
+                    .setTitle(getResources().getString(R.string.msg_detect_firmware))
+                    .setCancelable(false)
+                    .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+
+                            dialog.cancel();
+
+                        }
+                    });
+            alert = builder.create();
+            alert.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            String version="";
+
+            FirmwareInfo firm = new FirmwareInfo(mPhysicaloid);
+            firm.open(38400);
+            version =firm.getFirmwarVersion();
+
+            tvAppend(tvRead, "Firmware version detected: "+ version +"\n");
+
+            if(version.equals("AltiMulti")) {
+                setRadioButton (rbAltiMulti,true);
+            }
+            if(version.equals("AltiMultiV2")) {
+                setRadioButton (rbAltiMultiV2,true);
+            }
+            if(version.equals("AltiServo")) {
+                setRadioButton (rbAltiServo,true);
+            }
+            if(version.equals("AltiDuo")) {
+                setRadioButton (rbAltiDuo,true);
+            }
+            if(version.equals("AltiMultiSTM32")) {
+                setRadioButton (rbAltiMultiSTM32,true);
+            }
+            if(version.equals("AltiGPS")) {
+                setRadioButton (rbAltiGPS,true);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
+        {
+            alert.dismiss();
+        }
+    }
+
+
+    private class UploadSTM32Asyc extends AsyncTask<Void, Void, Void>  // UI thread
     {
 
         @Override
@@ -265,6 +340,7 @@ boolean recorverFirmware = false;
             alert = builder.create();
             alert.show();
         }
+
         @Override
         protected Void doInBackground(Void... voids) {
             if (!recorverFirmware) {
@@ -277,25 +353,27 @@ boolean recorverFirmware = false;
             }
             return null;
         }
+
         @Override
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             alert.dismiss();
         }
     }
-    public void uploadSTM32 ( String fileName, UploadSTM32CallBack UpCallback){
-        boolean failed =false;
-        InputStream is=null;
+
+    public void uploadSTM32(String fileName, UploadSTM32CallBack UpCallback) {
+        boolean failed = false;
+        InputStream is = null;
 
         try {
             is = getAssets().open(fileName);
 
         } catch (IOException e) {
             //e.printStackTrace();
-            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32+ "\n");
+            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
         } catch (Exception e) {
             e.printStackTrace();
-            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32+ "\n");
+            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
         }
 
         dialogAppend("Starting ...");
@@ -318,7 +396,7 @@ boolean recorverFirmware = false;
             tvAppend(tvRead, " bootversion:" + bootversion + "\n");
             if (bootversion < 20 || bootversion >= 100) {
                 tvAppend(tvRead, " bootversion not good:" + bootversion + "\n");
-                failed =true;
+                failed = true;
             }
         }
 
@@ -330,11 +408,10 @@ boolean recorverFirmware = false;
 
         if (!failed) {
             if (bootversion < 0x30) {
-                tvAppend(tvRead,  "Erase 1\n");
+                tvAppend(tvRead, "Erase 1\n");
                 cmd.cmdEraseMemory();
-            }
-            else {
-                tvAppend(tvRead,  "Erase 2\n");
+            } else {
+                tvAppend(tvRead, "Erase 2\n");
                 cmd.cmdExtendedEraseMemory();
             }
         }
@@ -358,7 +435,7 @@ boolean recorverFirmware = false;
 
         @Override
         public void onUploading(int value) {
-            dialogAppend(getResources().getString(R.string.msg12)+value+" %");
+            dialogAppend(getResources().getString(R.string.msg12) + value + " %");
         }
 
         @Override
@@ -370,9 +447,10 @@ boolean recorverFirmware = false;
         public void info(String value) {
             tvAppend(tvRead, value);
         }
+
         @Override
         public void onPostUpload(boolean success) {
-            if(success) {
+            if (success) {
                 //Upload : Successful
                 tvAppend(tvRead, getResources().getString(R.string.msg16));
             } else {
@@ -392,7 +470,7 @@ boolean recorverFirmware = false;
         @Override
         //Error  :
         public void onError(UploadErrors err) {
-               tvAppend(tvRead, getResources().getString(R.string.msg18)+err.toString()+"\n");
+            tvAppend(tvRead, getResources().getString(R.string.msg18) + err.toString() + "\n");
         }
 
     };
@@ -402,7 +480,7 @@ boolean recorverFirmware = false;
         @Override
         public void onUploading(int value) {
 
-            dialogAppend(getResources().getString(R.string.msg12)+value+" %");
+            dialogAppend(getResources().getString(R.string.msg12) + value + " %");
         }
 
         @Override
@@ -420,9 +498,10 @@ boolean recorverFirmware = false;
         public void info(String value) {
             tvAppend(tvRead, value);
         }
+
         @Override
         public void onPostUpload(boolean success) {
-            if(success) {
+            if (success) {
                 //Upload : Successful
                 tvAppend(tvRead, getResources().getString(R.string.msg16));
             } else {
@@ -442,11 +521,12 @@ boolean recorverFirmware = false;
         @Override
         //Error  :
         public void onError(UploadSTM32Errors err) {
-            tvAppend(tvRead, getResources().getString(R.string.msg18)+err.toString()+"\n");
+            tvAppend(tvRead, getResources().getString(R.string.msg18) + err.toString() + "\n");
         }
 
     };
     Handler mHandler = new Handler();
+
     private void tvAppend(TextView tv, CharSequence text) {
         final TextView ftv = tv;
         final CharSequence ftext = text;
@@ -455,6 +535,17 @@ boolean recorverFirmware = false;
             public void run() {
                 ftv.append(ftext);
 
+            }
+        });
+    }
+
+    private void setRadioButton (RadioButton rb, boolean state) {
+        final RadioButton frb = rb;
+        final boolean fstate = state;
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                frb.setChecked(fstate);
             }
         });
     }
@@ -469,7 +560,7 @@ boolean recorverFirmware = false;
     }
 
     private void close() {
-        if(mPhysicaloid.close()) {
+        if (mPhysicaloid.close()) {
 
         }
     }

@@ -358,11 +358,10 @@ public class CommandInterface {
             mUpCallback.onInfo("file not found: " +e.getMessage() + "\n");
         }
 
-
-        //tvAppend(tvRead, "lng:" + lng + "\n");
         int offs = 0;
 
         tot = lng;
+
 
         while (lng > 256) {
             byte buf[] = new byte[256];

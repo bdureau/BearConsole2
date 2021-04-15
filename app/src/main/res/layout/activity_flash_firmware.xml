@@ -94,11 +94,20 @@
         android:onClick="onClickRecover"
         android:text="@string/recover_firmware" />
 
+    <Button
+        android:id="@+id/btDetect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/btRecover"
+        android:onClick="onClickDetect"
+        android:text="@string/detect_firmware" />
+
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btRecover"
+        android:layout_below="@+id/btDetect"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"

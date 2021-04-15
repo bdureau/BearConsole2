@@ -230,12 +230,15 @@
     <string name="flash_firmware">Actualizar Firmware</string>
     <string name="select_altimeter_model">Seleccionar modelo de altímetro:</string>
     <string name="after_complete_upload">Una vez completada la carga, podrá actualizar el firmware real</string>
+    <string name="detect_firmware">Detect firmware</string>
+    <string name="msg_detect_firmware">Attempting to Detect firmware!!!</string>
+
+    <!-- other -->
     <string name="flight_list_cancel">Cancelar</string>
     <string name="flight_retrieval_canceled">La recuperación de vuelos ha sido cancelada por el usuario</string>
     <string name="flight_have_been_recorded">No se han registrado vuelos</string>
     <string name="main_screen_actity">Cancelar</string>
     <string name="title_activity_flight_view_maps">Mapa</string>
     <string name="flight">Flight</string>
-
 
 </resources>
