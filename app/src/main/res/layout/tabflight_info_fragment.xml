@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textViewTitleFlightInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elegantTextHeight="true"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_horizontal"
+        android:textSize="36sp"
+        android:text="@string/flight_info" />
+
+    <TextView
+        android:id="@+id/apogeeAltitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textViewTitleFlightInfo"
+        android:layout_marginTop="18dp"
+        android:text="@string/apogee_altitude" />
+
+    <TextView
+        android:id="@+id/maxVelociy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/apogeeAltitude"
+        android:layout_marginTop="18dp"
+        android:text="@string/max_velocity" />
+
+    <TextView
+        android:id="@+id/mainAltitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/maxVelociy"
+        android:text="@string/main_alti" />
+
+
+</RelativeLayout>

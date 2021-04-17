@@ -115,9 +115,7 @@ public class MainScreenActivity extends AppCompatActivity {
         btnStatus = (Button) findViewById(R.id.butStatus);
         btnFlashFirmware = (Button) findViewById(R.id.butFlashFirmware);
         btnConnectDisconnect = (Button) findViewById(R.id.butDisconnect);
-
         btnContinuityOnOff = (Button) findViewById(R.id.butContinuityOnOff);
-
         btnReset = (Button) findViewById(R.id.butReset);
 
         if (myBT.getConnected()) {
@@ -128,7 +126,6 @@ public class MainScreenActivity extends AppCompatActivity {
             btnConnectDisconnect.setText(R.string.connect);
             btnFlashFirmware.setEnabled(true);
         }
-
 
         //commands to be sent to bluetooth
         btnAltiSettings.setOnClickListener(new View.OnClickListener() {
@@ -147,13 +144,11 @@ public class MainScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 myBT.getAppConf().ReadConfig();
-
                 Intent i = new Intent(MainScreenActivity.this, FlashFirmware.class);
                 //Change the activity.
                 startActivity(i);
             }
         });
-
 
         btnReadFlights.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +157,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
         btnTelemetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,6 +176,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
         btnStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,13 +184,13 @@ public class MainScreenActivity extends AppCompatActivity {
                 if (myBT.getConnected()) {
                     myBT.flush();
                     myBT.clearInput();
-
                     myBT.write("y1;".toString());
                 }
                 Intent i = new Intent(MainScreenActivity.this, AltimeterStatus.class);
                 startActivity(i);
             }
         });
+
         btnConnectDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,7 +236,6 @@ public class MainScreenActivity extends AppCompatActivity {
                                 usbManager.requestPermission(device, pi);
                                 keep = false;
 
-
                                 if (!keep)
                                     break;
                             }
@@ -252,7 +248,6 @@ public class MainScreenActivity extends AppCompatActivity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent i = new Intent(MainScreenActivity.this, ResetSettingsActivity.class);
                 startActivity(i);
             }
@@ -286,8 +281,7 @@ public class MainScreenActivity extends AppCompatActivity {
     }
 
     private void EnableUI() {
-        btnAltiSettings.setEnabled(true);
-        //readConfig();
+
         boolean success = false;
         success = readConfig();
         //second attempt
@@ -303,19 +297,35 @@ public class MainScreenActivity extends AppCompatActivity {
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
             btnContinuityOnOff.setEnabled(false);
         } else {
-            btnContinuityOnOff.setEnabled(true);
+            //enable it for bT or USB only if full support
+            if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true")))
+                btnContinuityOnOff.setEnabled(true);
+            else
+                btnContinuityOnOff.setEnabled(false);
         }
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
             btnReadFlights.setEnabled(false);
         } else {
-            btnReadFlights.setEnabled(true);
+            //enable it for bT or USB only if full support
+            if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true")))
+                btnReadFlights.setEnabled(true);
+            else
+                btnReadFlights.setEnabled(false);
         }
         btnTelemetry.setEnabled(true);
-
-        btnReset.setEnabled(true);
-        btnStatus.setEnabled(true);
+        //enable it for bT or USB only if full support
+        if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true"))) {
+            btnAltiSettings.setEnabled(true);
+            btnReset.setEnabled(true);
+            btnStatus.setEnabled(true);
+        }
+          else {
+            btnAltiSettings.setEnabled(false);
+            btnReset.setEnabled(false);
+            btnStatus.setEnabled(false);
+        }
         btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
     }
 
@@ -327,8 +337,6 @@ public class MainScreenActivity extends AppCompatActivity {
     private void Disconnect() {
         myBT.Disconnect();
     }
-
-
 
 
     private boolean readConfig() {
@@ -404,7 +412,6 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.clearInput();
                 //switch on the main loop before sending the config
                 myBT.write("m1;".toString());
-
 
                 //wait for the result to come back
                 try {

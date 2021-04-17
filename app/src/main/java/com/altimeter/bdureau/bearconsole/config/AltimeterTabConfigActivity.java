@@ -260,7 +260,6 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
             if (configPage4.isViewCreated()) {
-
                 AltiCfg.setServo1OnPos(configPage4.getServo1OnPos());
                 AltiCfg.setServo2OnPos(configPage4.getServo2OnPos());
                 AltiCfg.setServo3OnPos(configPage4.getServo3OnPos());
@@ -269,7 +268,6 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 AltiCfg.setServo2OffPos(configPage4.getServo2OffPos());
                 AltiCfg.setServo3OffPos(configPage4.getServo3OffPos());
                 AltiCfg.setServo4OffPos(configPage4.getServo4OffPos());
-
             }
         }
         if (AltiCfg.getOutput1() == 0)

@@ -27,7 +27,7 @@ public class AltiConfigData {
     private int majorVersion =0;
     private int beepingFrequency = 440;
     private int nbrOfMeasuresForApogee=5;
-    private long connectionSpeed= 57600;
+    private long connectionSpeed= 38400;
     private int altimeterResolution = 0;
     private int eepromSize= 512;
     private int endRecordAltitude =3;

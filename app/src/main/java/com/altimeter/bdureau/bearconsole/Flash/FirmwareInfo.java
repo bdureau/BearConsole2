@@ -64,19 +64,22 @@ public class FirmwareInfo {
 
     public String getFirmwarVersion() {
         String version = "";
+        //fast reading
+        byte[] cmd0 = "f;".getBytes();
+        lPhysicaloid.write(cmd0, cmd0.length);
         drain();
-
+        drain();
         byte[] cmd = "b;".getBytes();
         lPhysicaloid.write(cmd, cmd.length);
 
-        byte buf[]= new byte[200];
-        int retval=0;
+        byte buf[] = new byte[200];
+        int retval = 0;
 
         //String buffer = "";
-        retval =recv(buf, 200);
+        retval = recv(buf, 200);
 
         if (retval > 0) {
-            String str= null;
+            String str = null;
 
             str = new String(buf);
 

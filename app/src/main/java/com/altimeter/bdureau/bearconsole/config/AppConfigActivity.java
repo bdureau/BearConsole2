@@ -21,7 +21,7 @@ public class AppConfigActivity extends AppCompatActivity {
     Button btnDismiss, btnSave, bdtDefault;
     private Spinner spAppLanguage, spGraphColor, spAppUnit, spGraphBackColor, spFontSize, spBaudRate;
     private Spinner spConnectionType, spGraphicsLibType;
-    private CheckBox cbAllowMainDrogue;
+    private CheckBox cbAllowMainDrogue, cbFullUSBSupport;
     private AppConfigData appConfigData;
 
 
@@ -120,8 +120,11 @@ public class AppConfigActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterGraphicsLibType = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsGraphicsLib());
         spGraphicsLibType.setAdapter(adapterGraphicsLibType);
 
-        //AllowMainDrogue
+        //Allow multiple main and drogue
         cbAllowMainDrogue = (CheckBox) findViewById(R.id.checkBoxAllowMultipleMainDrogue);
+
+        //Allow only telemetry via USB
+        cbFullUSBSupport = (CheckBox) findViewById(R.id.checkBoxFullUSBSupport);
 
         ReadConfig();
     }
@@ -141,6 +144,11 @@ public class AppConfigActivity extends AppCompatActivity {
         } else {
             cbAllowMainDrogue.setChecked(false);
         }
+        if (myBT.getAppConf().getFullUSBSupport().equals("true") ) {
+            cbFullUSBSupport.setChecked(true);
+        } else {
+            cbFullUSBSupport.setChecked(false);
+        }
     }
 
     void SaveConfig() {
@@ -156,6 +164,11 @@ public class AppConfigActivity extends AppCompatActivity {
             myBT.getAppConf().setAllowMultipleDrogueMain("true");
         } else {
             myBT.getAppConf().setAllowMultipleDrogueMain("false");
+        }
+        if (cbFullUSBSupport.isChecked()) {
+            myBT.getAppConf().setFullUSBSupport("true");
+        } else {
+            myBT.getAppConf().setFullUSBSupport("false");
         }
 
         myBT.getAppConf().SaveConfig();
@@ -176,6 +189,11 @@ public class AppConfigActivity extends AppCompatActivity {
             cbAllowMainDrogue.setChecked(true);
         } else {
             cbAllowMainDrogue.setChecked(false);
+        }
+        if (myBT.getAppConf().getFullUSBSupport().equals("true") ) {
+            cbFullUSBSupport.setChecked(true);
+        } else {
+            cbFullUSBSupport.setChecked(false);
         }
     }
 

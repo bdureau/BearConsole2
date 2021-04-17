@@ -179,6 +179,7 @@
     <string name="connection_type">Type de Connexion</string>
     <string name="graphiclib_type">Lib graphique</string>
     <string name="MultipleMainDrogue" >Multiple Main/drogue</string>
+    <string name="FullUSBSupport" >Full USB Support</string>
 
     <!-- Telemetry -->
     <string name="stop_telemetry">Arret Tel</string>
@@ -246,5 +247,12 @@
     <string name="main_screen_actity">Annuler</string>
     <string name="title_activity_flight_view_maps">Map</string>
     <string name="flight">Vols</string>
+    <string name="title_activity_flight_view_tab">FlightViewTabActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="flight_info">Flight Info</string>
+    <string name="apogee_altitude">Apogee Altitude</string>
+    <string name="max_velocity">Max Velocity</string>
+    <string name="main_alti">Main Altitude</string>
 
 </resources>

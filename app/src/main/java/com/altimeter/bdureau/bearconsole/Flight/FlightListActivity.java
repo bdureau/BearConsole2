@@ -52,7 +52,8 @@ public class FlightListActivity extends AppCompatActivity {
             if (myBT.getAppConf().getGraphicsLibType().equals("0"))
                 i = new Intent(FlightListActivity.this, FlightViewActivity.class);
             else
-                i = new Intent(FlightListActivity.this, FlightViewMpActivity.class);
+               // i = new Intent(FlightListActivity.this, FlightViewMpActivity.class);
+                i = new Intent(FlightListActivity.this, FlightViewTabActivity.class);
 
             //Change the activity.
             i.putExtra(SELECTED_FLIGHT, currentFlight);
@@ -81,7 +82,6 @@ public class FlightListActivity extends AppCompatActivity {
     }
 
     private void getFlights() {
-
         //get flights
         if (myBT.getConnected()) {
             //clear anything on the connection
@@ -98,7 +98,7 @@ public class FlightListActivity extends AppCompatActivity {
             } catch (IOException e) {
                 // msg("Failed to retrieve flights");
             }
-            // if (myBT.getConnected()) {
+
             String myMessage = "";
             myBT.setDataReady(false);
             myBT.initFlightData();
@@ -148,7 +148,6 @@ public class FlightListActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
         {
-
             getFlights();
             return null;
         }
@@ -166,12 +165,10 @@ public class FlightListActivity extends AppCompatActivity {
                 });
 
                 flightList = (ListView) findViewById(R.id.listViewFlightList);
-
-
                 flightList.setAdapter(adapter);
                 flightList.setOnItemClickListener(myListClickListener);
             }
-            //progress.dismiss();
+
             alert.dismiss();
 
             if (canceled)

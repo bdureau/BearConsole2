@@ -198,13 +198,6 @@ public class FlashFirmware extends AppCompatActivity {
     }
 
     public void onClickDetect(View v) {
-       /* String version="";
-        // try to do an assync class!!!!
-        FirmwareInfo firm = new FirmwareInfo(mPhysicaloid);
-        firm.open(38400);
-        version =firm.getFirmwarVersion();
-
-        tvAppend(tvRead, "Firmware version detected: "+ version +"\n");*/
         new DetectAsyc().execute();
     }
 

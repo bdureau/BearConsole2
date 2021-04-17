@@ -916,10 +916,11 @@ public class ConsoleApplication extends Application {
         // connection type is bluetooth
         private String connectionType = "0";
         // default baud rate for USB is 57600
-        private String baudRate = "9";
+        private String baudRate = "8";
         private String graphicsLibType = "0";
 
         private String allowMultipleDrogueMain = "false";
+        private String fullUSBSupport= "false";
 
         public GlobalConfig() {
             appConfig = getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
@@ -939,6 +940,7 @@ public class ConsoleApplication extends Application {
             connectionType = "0";
             graphicsLibType = "0";
             allowMultipleDrogueMain = "false";
+            fullUSBSupport = "false";
             /*edit.clear();
             edit.putString("AppLanguage","0");
             edit.putString("Units", "0");
@@ -1002,6 +1004,11 @@ public class ConsoleApplication extends Application {
                 if (!allowMultipleDrogueMain.equals(""))
                     setAllowMultipleDrogueMain(allowMultipleDrogueMain);
 
+                String fullUSBSupport;
+                fullUSBSupport = appConfig.getString("fullUSBSupport", "false");
+                if (!fullUSBSupport.equals(""))
+                    setFullUSBSupport(fullUSBSupport);
+
             } catch (Exception e) {
 
             }
@@ -1017,6 +1024,7 @@ public class ConsoleApplication extends Application {
             edit.putString("ConnectionType", getConnectionType());
             edit.putString("GraphicsLibType", getGraphicsLibType());
             edit.putString("AllowMultipleDrogueMain", getAllowMultipleDrogueMain());
+            edit.putString("fullUSBSupport", getFullUSBSupport());
             edit.commit();
 
         }
@@ -1105,11 +1113,18 @@ public class ConsoleApplication extends Application {
             baudRate = value;
         }
 
+
         public void setAllowMultipleDrogueMain(String value) {
             allowMultipleDrogueMain = value;
         }
         public String getAllowMultipleDrogueMain() {
             return allowMultipleDrogueMain;//appCfgData.getMultipleDrogueMain();
+        }
+        public void setFullUSBSupport(String value) {
+            fullUSBSupport = value;
+        }
+        public String getFullUSBSupport() {
+            return fullUSBSupport;//appCfgData.getMultipleDrogueMain();
         }
         public int ConvertFont(int font) {
             return font + 8;

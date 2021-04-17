@@ -41,6 +41,8 @@ public class AppConfigData {
             "MPAndroidChart"};
     private String allowMultipleDrogueMain = "false";
 
+    private String fullUSBSupport = "false";
+
     public AppConfigData()
     {
 

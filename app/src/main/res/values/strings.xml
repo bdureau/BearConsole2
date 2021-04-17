@@ -173,7 +173,8 @@
     <string name="baud_rate">Baud Rate</string>
     <string name="connection_type">Connection Type</string>
     <string name="graphiclib_type">Graphics lib </string>
-    <string name="MultipleMainDrogue" >Multiple Main/drogue</string>
+    <string name="MultipleMainDrogue">Multiple Main/drogue</string>
+    <string name="FullUSBSupport">Full USB Support</string>
 
 
     <!-- Telemetry -->
@@ -242,7 +243,11 @@
     <string name="main_screen_actity">Cancel</string>
     <string name="title_activity_flight_view_maps">Map</string>
     <string name="flight">Flight</string>
-
-
-
+    <string name="title_activity_flight_view_tab">FlightViewTabActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="flight_info">Flight Info</string>
+    <string name="apogee_altitude">Apogee Altitude</string>
+    <string name="max_velocity">Max Velocity</string>
+    <string name="main_alti">Main Altitude</string>
 </resources>
