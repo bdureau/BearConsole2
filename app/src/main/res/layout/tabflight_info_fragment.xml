@@ -14,22 +14,146 @@
         android:text="@string/flight_info" />
 
     <TextView
-        android:id="@+id/apogeeAltitude"
+        android:id="@+id/flightNbr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textViewTitleFlightInfo"
         android:layout_marginTop="18dp"
+        android:text="@string/flight_nbr" />
+
+    <TextView
+        android:id="@+id/flightNbrValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textViewTitleFlightInfo"
+        android:layout_marginTop="18dp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/nbrOfSamples"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/flightNbr"
+        android:layout_marginTop="18dp"
+        android:text="@string/nbr_of_sample" />
+    <TextView
+        android:id="@+id/nbrOfSamplesValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/flightNbr"
+        android:layout_marginTop="18dp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/apogeeAltitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/nbrOfSamples"
+        android:layout_marginTop="18dp"
         android:text="@string/apogee_altitude" />
+
+    <TextView
+        android:id="@+id/apogeeAltitudeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/nbrOfSamples"
+        android:layout_marginTop="18dp"
+        android:text="m" />
+
+    <TextView
+        android:id="@+id/flightDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/apogeeAltitude"
+        android:layout_marginTop="18dp"
+        android:text="@string/flight_duration" />
+
+    <TextView
+        android:id="@+id/flightDurationValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/apogeeAltitude"
+        android:layout_marginTop="18dp"
+        android:text="secs" />
+
+    <TextView
+        android:id="@+id/burnTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/flightDuration"
+        android:layout_marginTop="18dp"
+        android:text="@string/burn_time" />
+
+    <TextView
+        android:id="@+id/burnTimeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/flightDuration"
+        android:layout_marginTop="18dp"
+        android:text="secs" />
 
     <TextView
         android:id="@+id/maxVelociy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/apogeeAltitude"
+        android:layout_below="@+id/burnTime"
         android:layout_marginTop="18dp"
         android:text="@string/max_velocity" />
+
+    <TextView
+        android:id="@+id/maxVelociyValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/burnTime"
+        android:layout_marginTop="18dp"
+        android:text="Km/h" />
+
+    <TextView
+        android:id="@+id/maxAcceleration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/maxVelociy"
+        android:layout_marginTop="18dp"
+        android:text="@string/max_acceleration" />
+
+    <TextView
+        android:id="@+id/maxAccelerationValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/maxVelociy"
+        android:layout_marginTop="18dp"
+        android:text="G/secs" />
+    <TextView
+        android:id="@+id/timeToApogee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/maxAcceleration"
+        android:layout_marginTop="18dp"
+        android:text="@string/time_to_apogee" />
+
+    <TextView
+        android:id="@+id/timeToApogeeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/maxAcceleration"
+        android:layout_marginTop="18dp"
+        android:text="secs" />
 
     <TextView
         android:id="@+id/mainAltitude"
@@ -37,8 +161,50 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
-        android:layout_below="@+id/maxVelociy"
+        android:layout_below="@+id/timeToApogee"
         android:text="@string/main_alti" />
 
+    <TextView
+        android:id="@+id/mainAltitudeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/timeToApogee"
+        android:text="m" />
 
+    <TextView
+        android:id="@+id/maxDescent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/mainAltitude"
+        android:text="@string/max_descent_speed" />
+
+    <TextView
+        android:id="@+id/maxDescentValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/mainAltitude"
+        android:text="m/secs" />
+
+    <TextView
+        android:id="@+id/landingSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/maxDescent"
+        android:text="@string/landing_speed" />
+    <TextView
+        android:id="@+id/landingSpeedValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/maxDescent"
+        android:text="m/secs" />
 </RelativeLayout>

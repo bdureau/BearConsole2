@@ -248,5 +248,16 @@
     <string name="apogee_altitude">Apogee Altitude</string>
     <string name="max_velocity">Max Velocity</string>
     <string name="main_alti">Main Altitude</string>
+    <string name="flight_duration">Flight duration</string>
+    <string name="burn_time">Burn Time</string>
+    <string name="max_acceleration">Max acceleration</string>
+    <string name="time_to_apogee">Time to Apogee</string>
+    <string name="max_descent_speed">Max descent speed</string>
+    <string name="landing_speed">Landing speed</string>
+    <string name="flight_nbr">Flight nbr</string>
+    <string name="nbr_of_sample">Samples</string>
+    <string name="select_curve">Select Curve</string>
+    <string name="fv_ok">OK</string>
+    <string name="fv_cancel">Cancel</string>
 
 </resources>

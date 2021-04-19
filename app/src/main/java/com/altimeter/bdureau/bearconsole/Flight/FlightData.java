@@ -149,6 +149,8 @@ public class FlightData {
         ret = new XYSeriesCollection (series);
         ret.addSeries(new XYSeries("temperature"));
         ret.addSeries(new XYSeries("pressure"));
+       //ret.addSeries(new XYSeries("speed"));
+        //ret.addSeries(new XYSeries("acceleration"));
         ret.addSeries(new XYSeries("latitude"));
         ret.addSeries(new XYSeries("longitude"));
         return ret; // new XYSeriesCollection (series);

@@ -915,7 +915,7 @@ public class ConsoleApplication extends Application {
         private String fontSize = "10";
         // connection type is bluetooth
         private String connectionType = "0";
-        // default baud rate for USB is 57600
+        // default baud rate for USB is 38400
         private String baudRate = "8";
         private String graphicsLibType = "0";
 
