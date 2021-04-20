@@ -44,6 +44,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 public class FlightViewTabActivity extends AppCompatActivity {
     private static FlightData myflight=null;
     private ViewPager mViewPager;
@@ -52,7 +54,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
     Tab2Fragment flightPage2 = null;
     private Button btnDismiss,buttonMap, butSelectCurves;
     private static ConsoleApplication myBT;
-    private static AltiConfigData AltiCfg = null;
+    //private static AltiConfigData AltiCfg = null;
     //private ProgressDialog progress;
     private static  String curvesNames[] = null;
     private static String currentCurvesNames[] =null;
@@ -67,7 +69,10 @@ public class FlightViewTabActivity extends AppCompatActivity {
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW};
     static Font font;
     private static String FlightName = null;
-
+    private static XYSeries speed;
+    private static XYSeries accel;
+    //private static String myUnits="";
+    private static String[] units= null;
     public static String SELECTED_FLIGHT = "MyFlight";
 
     @Override
@@ -128,12 +133,11 @@ public class FlightViewTabActivity extends AppCompatActivity {
         myflight = myBT.getFlightData();
         // get all the data that we have recorded for the current flight
         allFlightData = myflight.GetFlightData(FlightName);
-
-        XYSeries speed;
+        //calculate speed
         speed =getSpeedSerie(allFlightData.getSeries("altitude"));
         allFlightData.addSeries(speed);
 
-        XYSeries accel;
+        // calculate acceleration
         accel = getAccelSerie(speed);
         allFlightData.addSeries(accel);
         // by default we will display the altitude
@@ -142,24 +146,42 @@ public class FlightViewTabActivity extends AppCompatActivity {
         flightData.addSeries(allFlightData.getSeries("altitude"));
 
         // get a list of all the curves that have been recorded
-        //List allCurves = allFlightData.getSeries();
         int numberOfCurves = allFlightData.getSeries().size();
         curvesNames = new String[numberOfCurves];
+        units = new String[numberOfCurves];
         for (int i = 0; i < numberOfCurves; i++) {
                curvesNames[i] = allFlightData.getSeries(i).getKey().toString();
         }
 
         // Read the application config
         myBT.getAppConf().ReadConfig();
+        if (myBT.getAppConf().getUnits().equals("0")) {
+            //Meters
+            units[0] = "(" + getResources().getString(R.string.Meters_fview) + ")";
+            units[5] = "(m/secs)";
+            units[6] = "(m/secs2)";
+        }
+        else {
+            //Feet
+            units[0] = getResources().getString(R.string.Feet_fview);
+            units[5] = "(feet/secs)";
+            units[6] = "(feet/secs2)";
+        }
+        units[1]="(°C)";
+        units[2]="(mbar)";
+
 
         if (currentCurvesNames == null) {
             //This is the first time so only display the altitude
+            dataSets = new ArrayList<>();
             currentCurvesNames = new String[curvesNames.length];
             currentCurvesNames[0] ="altitude";
             checkedItems = new boolean[curvesNames.length];
             checkedItems[0] = true;
         }
         setupViewPager(mViewPager);
+
+
 
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,15 +194,15 @@ public class FlightViewTabActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int numberOfCurves = flightData.getSeries().size();
-                //currentCurvesNames = new String[numberOfCurves];
+                currentCurvesNames = new String[numberOfCurves];
 
                 for (int i = 0; i < numberOfCurves; i++) {
-                        curvesNames[i] = allFlightData.getSeries(i).getKey().toString();
+                    currentCurvesNames[i] = flightData.getSeries(i).getKey().toString();
                 }
                 // Set up the alert builder
                 AlertDialog.Builder builder = new AlertDialog.Builder(FlightViewTabActivity.this);
-                //builder.setTitle(getResources().getString(R.string.flight_data_title));
-                //checkedItems = new boolean[curvesNames.length];
+
+                checkedItems = new boolean[curvesNames.length];
                 // Add a checkbox list
                 for (int i = 0; i < curvesNames.length; i++) {
                     if (Arrays.asList(currentCurvesNames).contains(curvesNames[i]))
@@ -240,15 +262,18 @@ public class FlightViewTabActivity extends AppCompatActivity {
             double X,Y;
             X = serie.getX(i).doubleValue();
             if(i==0)
-                Y= (serie.getY(i).doubleValue())/(serie.getX(i).doubleValue()/1000);
+                Y= abs(serie.getY(i).doubleValue())/(serie.getX(i).doubleValue()/1000);
             else
-                Y= (serie.getY(i).doubleValue() - serie.getY(i-1).doubleValue())/((serie.getX(i).doubleValue() - serie.getX(i-1).doubleValue())/1000);
+                Y= abs(serie.getY(i).doubleValue() - serie.getY(i-1).doubleValue())/((serie.getX(i).doubleValue() - serie.getX(i-1).doubleValue())/1000);
 
             speed.add(X, Y);
         }
 
         return speed;
     }
+    /*
+    calculate the acceleration curve
+     */
     public XYSeries getAccelSerie (XYSeries serie) {
         XYSeries accel;
         accel = new XYSeries("accel");
@@ -258,7 +283,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             X = serie.getX(i).doubleValue();
             double V = (serie.getY(i).doubleValue() - serie.getY(i-1).doubleValue());
             double T = ((serie.getX(i).doubleValue() - serie.getX(i-1).doubleValue()))/1000;
-            Y=  V/T/(9.806);
+            Y=  abs(V/T/(9.806));
 
             accel.add(X, Y);
         }
@@ -317,51 +342,13 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
             View view = inflater.inflate(R.layout.tabflight_view_mp_fragment, container, false);
 
-            // Read the application config
-            myBT.getAppConf().ReadConfig();
-            XYSeriesCollection flightData;
-            myflight= myBT.getFlightData();
-            flightData = myflight.GetFlightData(FlightName);
-
-            drawGraph();
-
             mChart  = (LineChart) view.findViewById(R.id.linechart);
-            mChart.setBackgroundColor(graphBackColor);
+            //mChart.setBackgroundColor(graphBackColor);
 
             mChart.setDragEnabled(true);
             mChart.setScaleEnabled(true);
-
-            int nbrData = flightData.getSeries(0).getItemCount();
-
-            ArrayList<Entry> yValues = new ArrayList <>();
-
-            for (int i = 0; i < nbrData; i++) {
-                yValues.add(new Entry(flightData.getSeries(0).getX(i).longValue(), flightData.getSeries(0).getY(i).longValue()));
-            }
-
-            LineDataSet set1 = new LineDataSet(yValues, "Altitude/Time");
-
-            set1.setDrawValues(false);
-            set1.setDrawCircles(false);
-            set1.setLabel("Altitude");
-            set1.setValueTextColor(labelColor);
-
-            //set1.setColor(labelColor);
-            set1.setValueTextSize(fontSize); //test
-
-
-            //ArrayList<ILineDataSet>
-                    dataSets = new ArrayList<>();
-            dataSets.add(set1);
-
-            LineData data = new LineData(dataSets);
-            data.setValueTextSize(fontSize);//test
-
-            mChart.setData(data);
-
-            Description desc = new Description();
-            desc.setText("Altitude/Time");
-            mChart.setDescription(desc);
+            drawGraph();
+            drawAllCurves();
 
             return view;
         }
@@ -377,13 +364,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             labelColor= Color.BLACK;
 
             nbrColor=Color.BLACK;
-            String myUnits="";
-            if (myBT.getAppConf().getUnits().equals("0"))
-                //Meters
-                myUnits=getResources().getString(R.string.Meters_fview);
-            else
-                //Feet
-                myUnits = getResources().getString(R.string.Feet_fview);
+
         }
         private void drawAllCurves() {
             dataSets.clear();
@@ -401,13 +382,15 @@ public class FlightViewTabActivity extends AppCompatActivity {
                         yValues.add(new Entry(allFlightData.getSeries(i).getX(k).floatValue(), allFlightData.getSeries(i).getY(k).floatValue()));
                     }
 
-                    LineDataSet set1 = new LineDataSet(yValues, "Altitude/Time");
+                    LineDataSet set1 = new LineDataSet(yValues, "Time");
                     set1.setColor(colors[i]);
 
                     set1.setDrawValues(false);
                     set1.setDrawCircles(false);
-                    set1.setLabel(curvesNames[i]);
+                    set1.setLabel(curvesNames[i] + " " + units[i]);
+                    set1.setValueTextColor(labelColor);
 
+                    set1.setValueTextSize(fontSize);
                     dataSets.add(set1);
 
                 }
@@ -416,11 +399,18 @@ public class FlightViewTabActivity extends AppCompatActivity {
             LineData data = new LineData(dataSets);
             mChart.clear();
             mChart.setData(data);
+            mChart.setBackgroundColor(graphBackColor);
+            Description desc = new Description();
+            desc.setText("time (ms)");
+            mChart.setDescription(desc);
         }
 
 
     }
 
+    /*
+    This is the flight information tab
+     */
     public static class Tab2Fragment extends Fragment {
 
         private TextView nbrOfSamplesValue, flightNbrValue;
@@ -467,26 +457,24 @@ public class FlightViewTabActivity extends AppCompatActivity {
             double apogeeTime = (double) flightData.getSeries(0).getX(pos);
             timeToApogeeValue.setText(apogeeTime/1000 + " secs");
 
-            //calculate the speed
-            XYSeries speed;
-            speed =getSpeedSerie(flightData.getSeries(0));
+            //calculate max speed
             double maxSpeed =speed.getMaxY();
             maxVelociyValue.setText( (long) maxSpeed +" m/secs");
 
             //landing speed
-            double landingSpeed = searchY(speed, flightData.getSeries(0).getMaxX()-3000) ;
-            landingSpeedValue.setText(landingSpeed + " m/secs");
-            double maxDescentSpeed = searchY(speed, apogeeTime +2000);
-            maxDescentValue.setText(maxDescentSpeed+ " m/secs" );
+            double landingSpeed = speed.getY(searchY(speed, flightData.getSeries(0).getMaxX()-3000)).doubleValue() ;
+            landingSpeedValue.setText(String.format("%.2f",landingSpeed )+ " m/secs");
+            //max descente speed
+            double maxDescentSpeed = speed.getY(searchY(speed, apogeeTime +2000)).doubleValue();
+            maxDescentValue.setText(String.format("%.2f",maxDescentSpeed)+ " m/secs" );
 
             //max acceleration value
-            XYSeries accel;
-            accel = getAccelSerie(speed);
             double maxAccel =accel.getMaxY();
             maxAccelerationValue.setText(String.format("%.2f",maxAccel) + " G");
 
             //burntime value
-
+            double burnTime = speed.getX(searchX(speed,maxSpeed)).doubleValue();
+            burnTimeValue.setText(burnTime/1000 + " s");
             //main value
 
 
@@ -500,8 +488,8 @@ public class FlightViewTabActivity extends AppCompatActivity {
         public int searchX (XYSeries serie, double searchVal) {
             int nbrData = serie.getItemCount();
             int pos = -1;
-            for (int i = 0; i < nbrData; i++) {
-                if(serie.getY(i).doubleValue() == searchVal) {
+            for (int i = 1; i < nbrData; i++) {
+                if((searchVal >= serie.getY(i-1).doubleValue()  )&& (searchVal <= serie.getY(i).doubleValue() )) {
                     pos =i;
                     break;
                 }
@@ -515,49 +503,13 @@ public class FlightViewTabActivity extends AppCompatActivity {
         public int searchY (XYSeries serie, double searchVal) {
             int nbrData = serie.getItemCount();
             int pos = -1;
-            for (int i = 0; i < nbrData; i++) {
-                if(serie.getX(i).doubleValue() == searchVal) {
+            for (int i = 1; i < nbrData; i++) {
+                if((searchVal >= serie.getX(i-1).doubleValue()  )&& (searchVal <= serie.getX(i).doubleValue() )) {
                     pos =i;
                     break;
                 }
             }
             return pos;
-        }
-        /*
-        Calculate the speed curve
-         */
-        public XYSeries getSpeedSerie (XYSeries serie) {
-            XYSeries speed;
-            speed = new XYSeries("Speed");
-            int nbrData = serie.getItemCount();
-            for (int i = 1; i < nbrData; i++) {
-                double X,Y;
-                X = serie.getX(i).doubleValue();
-                if(i==0)
-                    Y= (serie.getY(i).doubleValue())/(serie.getX(i).doubleValue()/1000);
-                else
-                    Y= (serie.getY(i).doubleValue() - serie.getY(i-1).doubleValue())/((serie.getX(i).doubleValue() - serie.getX(i-1).doubleValue())/1000);
-
-                speed.add(X, Y);
-            }
-
-            return speed;
-        }
-
-        public XYSeries getAccelSerie (XYSeries serie) {
-            XYSeries accel;
-            accel = new XYSeries("accel");
-            int nbrData = serie.getItemCount();
-            for (int i = 1; i < nbrData; i++) {
-                double X,Y;
-                X = serie.getX(i).doubleValue();
-                double V = (serie.getY(i).doubleValue() - serie.getY(i-1).doubleValue());
-                double T = ((serie.getX(i).doubleValue() - serie.getX(i-1).doubleValue()))/1000;
-                Y=  V/T/(9.806);
-
-                accel.add(X, Y);
-            }
-            return accel;
         }
     }
 }
