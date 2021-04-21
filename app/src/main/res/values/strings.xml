@@ -175,6 +175,24 @@
     <string name="graphiclib_type">Graphics lib </string>
     <string name="MultipleMainDrogue">Multiple Main/drogue</string>
     <string name="FullUSBSupport">Full USB Support</string>
+    <string name="color_black">BLACK</string>
+    <string name="color_white">WHITE</string>
+    <string name="color_magenta">MAGENTA</string>
+    <string name="color_blue">BLUE</string>
+    <string name="color_yellow">YELLOW</string>
+    <string name="color_green">GREEN</string>
+    <string name="color_gray">GRAY</string>
+    <string name="color_cyan">CYAN</string>
+    <string name="color_dkgray">DKGRAY</string>
+    <string name="color_ltgray">LTGRAY</string>
+    <string name="color_red">RED</string>
+
+    <string name="phone_english">English</string>
+    <string name="phone_french">French</string>
+    <string name="phone_language">Phone language</string>
+    <string name="config_unit_meters">Meters</string>
+    <string name="config_unit_feet">Feet</string>
+
 
 
     <!-- Telemetry -->
@@ -261,5 +279,24 @@
     <string name="select_curve">Select Curve</string>
     <string name="fv_ok">OK</string>
     <string name="fv_cancel">Cancel</string>
+
+    <!--units -->
+    <string name="unit_meters">meters</string>
+    <string name="unit_time">time (ms)</string>
+    <string name="unit_feet_per_secs">feet/secs</string>
+    <string name="unit_feet_per_square_secs">feet/secs²</string>
+
+    <!--curves name -->
+    <string name="curve_altitude">altitude</string>
+    <string name="curve_temperature">temperature</string>
+    <string name="curve_pressure">pressure</string>
+    <string name="curve_latitude">latitude</string>
+    <string name="curve_longitude">longitude</string>
+    <string name="curve_speed">speed</string>
+    <string name="curve_accel">acceleration</string>
+    <string name="flight_name">Flight</string>
+
+
+
 
 </resources>

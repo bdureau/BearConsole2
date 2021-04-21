@@ -6,6 +6,7 @@ package com.altimeter.bdureau.bearconsole;
 
 import android.app.Application;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -68,8 +69,8 @@ public class ConsoleApplication extends Application {
 
         super.onCreate();
         AltiCfg = new AltiConfigData();
-        MyFlight = new FlightData();
-        AppConf = new GlobalConfig();
+        MyFlight = new FlightData(this, AltiCfg.getAltimeterName());
+        AppConf = new GlobalConfig(this);
         AppConf.ReadConfig();
         BTCon = new BluetoothConnection();
         UsbCon = new UsbConnection();
@@ -269,10 +270,10 @@ public class ConsoleApplication extends Application {
     }
 
     public void initFlightData() {
-        MyFlight = new FlightData();
+        MyFlight = new FlightData(this, AltiCfg.getAltimeterName());
 
-        //if(AppConf.getUnits().equals("0"))
-        if (AppConf.getUnitsValue().equals("Meters")) {
+        if(AppConf.getUnits().equals("0"))  {//meters
+        //if (AppConf.getUnitsValue().equals("Meters")) {
             FEET_IN_METER = 1;
         } else {
             FEET_IN_METER = 3.28084;
@@ -514,9 +515,11 @@ public class ConsoleApplication extends Application {
                                         if (currentSentence[1].matches("\\d+(?:\\.\\d+)?")) {
                                             currentFlightNbr = Integer.valueOf(currentSentence[1]) + 1;
                                             if (currentFlightNbr < 10)
-                                                flightName = "Flight " + "0" + currentFlightNbr;
+                                                //flight
+                                                flightName = getResources().getString(R.string.flight_name) + " "+ "0" + currentFlightNbr;
                                             else
-                                                flightName = "Flight " + currentFlightNbr;
+                                                //flight
+                                                flightName = getResources().getString(R.string.flight_name) + " " + currentFlightNbr;
                                         }
                                     // Value 2 contain the time
                                     // Value 3 contain the altitude
@@ -893,6 +896,7 @@ public class ConsoleApplication extends Application {
     }
 
     public class GlobalConfig {
+        Context context;
 
         SharedPreferences appConfig = null;
         SharedPreferences.Editor edit = null;
@@ -922,23 +926,24 @@ public class ConsoleApplication extends Application {
         private String allowMultipleDrogueMain = "false";
         private String fullUSBSupport= "false";
 
-        public GlobalConfig() {
+        public GlobalConfig(Context current) {
             appConfig = getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
             edit = appConfig.edit();
-            appCfgData = new AppConfigData();
+            context = current;
+            appCfgData = new AppConfigData(context);
 
         }
 
         public void ResetDefaultConfig() {
 
-            applicationLanguage = "0";
+            applicationLanguage = "0"; // default to english
             graphBackColor = "1";
             graphColor = "0";
             fontSize = "10";
-            units = "0";
-            baudRate = "9";
+            units = "0"; //default to meters
+            baudRate = "8"; // default to 38400 baud
             connectionType = "0";
-            graphicsLibType = "0";
+            graphicsLibType = "1"; //Default to MP android chart lib
             allowMultipleDrogueMain = "false";
             fullUSBSupport = "false";
             /*edit.clear();

@@ -1,7 +1,7 @@
 package com.altimeter.bdureau.bearconsole.Flight;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
+//import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,17 +9,15 @@ import android.os.Bundle;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
-import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
-import com.altimeter.bdureau.bearconsole.config.AltimeterTabConfigActivity;
+//import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
+//import com.altimeter.bdureau.bearconsole.config.AltimeterTabConfigActivity;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
+
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -28,9 +26,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+//import android.view.Menu;
+//import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -50,18 +49,17 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private static FlightData myflight=null;
     private ViewPager mViewPager;
     SectionsPageAdapter adapter;
-    Tab1Fragment flightPage1 = null;
-    Tab2Fragment flightPage2 = null;
+    private Tab1Fragment flightPage1 = null;
+    private Tab2Fragment flightPage2 = null;
     private Button btnDismiss,buttonMap, butSelectCurves;
     private static ConsoleApplication myBT;
-    //private static AltiConfigData AltiCfg = null;
-    //private ProgressDialog progress;
-    private static  String curvesNames[] = null;
+
+    private static String curvesNames[] = null;
     private static String currentCurvesNames[] =null;
-    static boolean[] checkedItems = null;
-    static XYSeriesCollection allFlightData;
-    public static XYSeriesCollection flightData;
-    public static ArrayList<ILineDataSet> dataSets;
+    private static boolean[] checkedItems = null;
+    private XYSeriesCollection allFlightData=null;
+    private static XYSeriesCollection flightData = null;
+    private static ArrayList<ILineDataSet> dataSets;
     static int colors []= {Color.RED, Color.BLUE, Color.BLACK,
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW,Color.RED,
             Color.BLUE, Color.BLACK,
@@ -71,13 +69,15 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private static String FlightName = null;
     private static XYSeries speed;
     private static XYSeries accel;
-    //private static String myUnits="";
+
     private static String[] units= null;
     public static String SELECTED_FLIGHT = "MyFlight";
+    int numberOfCurves =0;
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
     }
 
     @Override
@@ -123,30 +123,46 @@ public class FlightViewTabActivity extends AppCompatActivity {
         buttonMap = (Button) findViewById(R.id.butMap);
         butSelectCurves = (Button) findViewById(R.id.butSelectCurves);
 
-        if (myBT.getAltiConfigData().getAltimeterName().equals( "AltiGPS"))
+        if (myBT.getAltiConfigData().getAltimeterName().equals( "AltiGPS")) {
             buttonMap.setVisibility(View.VISIBLE);
-        else
+            numberOfCurves=7;
+        }
+        else {
             buttonMap.setVisibility(View.INVISIBLE);
+            numberOfCurves=5;
+        }
 
         Intent newint = getIntent();
         FlightName = newint.getStringExtra(FlightListActivity.SELECTED_FLIGHT);
         myflight = myBT.getFlightData();
         // get all the data that we have recorded for the current flight
+        allFlightData=new XYSeriesCollection();
         allFlightData = myflight.GetFlightData(FlightName);
+
         //calculate speed
-        speed =getSpeedSerie(allFlightData.getSeries("altitude"));
+        //altitude
+        speed=null;
+        speed =getSpeedSerie(allFlightData.getSeries(getResources().getString(R.string.curve_altitude)));
+        if (allFlightData.indexOf(speed)>0)
+            Log.d ("numberOfCurves", "Speed index:"+ allFlightData.indexOf(speed));
         allFlightData.addSeries(speed);
 
+
         // calculate acceleration
+        accel= null;
         accel = getAccelSerie(speed);
         allFlightData.addSeries(accel);
+
         // by default we will display the altitude
         // but then the user will be able to change the data
         flightData = new XYSeriesCollection();
-        flightData.addSeries(allFlightData.getSeries("altitude"));
+        //altitude
+        flightData.addSeries(allFlightData.getSeries(getResources().getString(R.string.curve_altitude)));
 
         // get a list of all the curves that have been recorded
-        int numberOfCurves = allFlightData.getSeries().size();
+        //int numberOfCurves = allFlightData.getSeries().size();
+
+        Log.d("numberOfCurves", "numberOfCurves:"+allFlightData.getSeries().size());
         curvesNames = new String[numberOfCurves];
         units = new String[numberOfCurves];
         for (int i = 0; i < numberOfCurves; i++) {
@@ -158,14 +174,29 @@ public class FlightViewTabActivity extends AppCompatActivity {
         if (myBT.getAppConf().getUnits().equals("0")) {
             //Meters
             units[0] = "(" + getResources().getString(R.string.Meters_fview) + ")";
-            units[5] = "(m/secs)";
-            units[6] = "(m/secs2)";
+            if(myBT.getAltiConfigData().getAltimeterName().equals( "AltiGPS")) {
+                units[5] = "(m/secs)";
+                units[6] = "(m/secs²)";
+            } else {
+                units[3] = "(m/secs)";
+                units[4] = "(m/secs²)";
+            }
+
         }
         else {
             //Feet
             units[0] = getResources().getString(R.string.Feet_fview);
-            units[5] = "(feet/secs)";
-            units[6] = "(feet/secs2)";
+            if(myBT.getAltiConfigData().getAltimeterName().equals( "AltiGPS")) {
+                //(feet/secs)
+                units[5] = "(" + getResources().getString(R.string.unit_feet_per_secs) + ")";
+                //(feet/secs²)
+                units[6] = "(" + getResources().getString(R.string.unit_feet_per_square_secs) + ")";
+            } else {
+                //(feet/secs)
+                units[3] = "(" + getResources().getString(R.string.unit_feet_per_secs) + ")";
+                //(feet/secs²)
+                units[4] = "(" + getResources().getString(R.string.unit_feet_per_square_secs) + ")";
+            }
         }
         units[1]="(°C)";
         units[2]="(mbar)";
@@ -175,7 +206,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             //This is the first time so only display the altitude
             dataSets = new ArrayList<>();
             currentCurvesNames = new String[curvesNames.length];
-            currentCurvesNames[0] ="altitude";
+            currentCurvesNames[0] =this.getResources().getString(R.string.curve_altitude);//"altitude";
             checkedItems = new boolean[curvesNames.length];
             checkedItems[0] = true;
         }
@@ -186,6 +217,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                allFlightData=null;
                 finish();      //exit the application configuration activity
             }
         });
@@ -224,9 +256,10 @@ public class FlightViewTabActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // The user clicked OK
                         flightPage1.drawGraph();
-                        flightPage1.drawAllCurves();
+                        flightPage1.drawAllCurves(allFlightData);
                     }
                 });
+                //cancel
                 builder.setNegativeButton(getResources().getString(R.string.fv_cancel), null);
 
                 // Create and show the alert dialog
@@ -256,7 +289,8 @@ public class FlightViewTabActivity extends AppCompatActivity {
     */
     public XYSeries getSpeedSerie (XYSeries serie) {
         XYSeries speed;
-        speed = new XYSeries("speed");
+        //speed
+        speed = new XYSeries(this.getResources().getString(R.string.curve_speed));
         int nbrData = serie.getItemCount();
         for (int i = 1; i < nbrData; i++) {
             double X,Y;
@@ -276,7 +310,8 @@ public class FlightViewTabActivity extends AppCompatActivity {
      */
     public XYSeries getAccelSerie (XYSeries serie) {
         XYSeries accel;
-        accel = new XYSeries("accel");
+        //accell
+        accel = new XYSeries(this.getResources().getString(R.string.curve_accel));
         int nbrData = serie.getItemCount();
         for (int i = 1; i < nbrData; i++) {
             double X,Y;
@@ -291,7 +326,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
     }
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        flightPage1 = new Tab1Fragment();
+        flightPage1 = new Tab1Fragment(allFlightData);
         flightPage2 = new Tab2Fragment();
 
         adapter.addFragment(flightPage1, "TAB1");
@@ -333,8 +368,12 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
     public static class Tab1Fragment extends Fragment {
         private LineChart mChart;
-        private FlightData myflight=null;
+        public XYSeriesCollection allFlightData;
+        //private FlightData myflight=null;
         int graphBackColor, fontSize, axisColor, labelColor, nbrColor;
+        public Tab1Fragment(XYSeriesCollection data) {
+            this.allFlightData =data;
+        }
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -348,7 +387,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             mChart.setDragEnabled(true);
             mChart.setScaleEnabled(true);
             drawGraph();
-            drawAllCurves();
+            drawAllCurves(allFlightData);
 
             return view;
         }
@@ -366,11 +405,13 @@ public class FlightViewTabActivity extends AppCompatActivity {
             nbrColor=Color.BLACK;
 
         }
-        private void drawAllCurves() {
+        private void drawAllCurves(XYSeriesCollection allFlightData) {
             dataSets.clear();
 
             flightData = new XYSeriesCollection();
             for (int i = 0; i < curvesNames.length; i++) {
+                Log.d("drawAllCurves", "i:" +i);
+                Log.d("drawAllCurves", "curvesNames:" +curvesNames[i]);
                 if (checkedItems[i]) {
                     flightData.addSeries(allFlightData.getSeries(curvesNames[i]));
 
@@ -401,11 +442,10 @@ public class FlightViewTabActivity extends AppCompatActivity {
             mChart.setData(data);
             mChart.setBackgroundColor(graphBackColor);
             Description desc = new Description();
-            desc.setText("time (ms)");
+            //time (ms)
+            desc.setText(getResources().getString(R.string.unit_time));
             mChart.setDescription(desc);
         }
-
-
     }
 
     /*
@@ -436,7 +476,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             flightNbrValue = view.findViewById(R.id.flightNbrValue);
 
             XYSeriesCollection flightData;
-            myflight= myBT.getFlightData();
+            //myflight= myBT.getFlightData();
             flightData = myflight.GetFlightData(FlightName);
             int nbrData = flightData.getSeries(0).getItemCount();
 
@@ -474,9 +514,9 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
             //burntime value
             double burnTime = speed.getX(searchX(speed,maxSpeed)).doubleValue();
-            burnTimeValue.setText(burnTime/1000 + " s");
+            burnTimeValue.setText(burnTime/1000 + " secs");
             //main value
-
+            // remain TODO!!!
 
 
             return view;

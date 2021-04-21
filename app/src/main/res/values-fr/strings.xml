@@ -178,8 +178,25 @@
     <string name="baud_rate">Baud Rate</string>
     <string name="connection_type">Type de Connexion</string>
     <string name="graphiclib_type">Lib graphique</string>
-    <string name="MultipleMainDrogue" >Multiple Main/drogue</string>
-    <string name="FullUSBSupport" >Full USB Support</string>
+    <string name="MultipleMainDrogue">Multiple Main/drogue</string>
+    <string name="FullUSBSupport">Support USB complet</string>
+    <string name="color_black">Noir</string>
+    <string name="color_white">Blanc</string>
+    <string name="color_magenta">Magenta</string>
+    <string name="color_blue">Bleu</string>
+    <string name="color_yellow">Jaune</string>
+    <string name="color_green">Vert</string>
+    <string name="color_gray">Gris</string>
+    <string name="color_cyan">Cyan</string>
+    <string name="color_dkgray">Gris foncé</string>
+    <string name="color_ltgray">Gris clair</string>
+    <string name="color_red">Rouge</string>
+
+    <string name="phone_english">anglais</string>
+    <string name="phone_french">français</string>
+    <string name="phone_language">langue du téléphone</string>
+    <string name="config_unit_meters">Mètres</string>
+    <string name="config_unit_feet">Pieds</string>
 
     <!-- Telemetry -->
     <string name="stop_telemetry">Arret Tel</string>
@@ -230,15 +247,15 @@
     <string name="msg16">Chargement: Succès\n</string>
     <string name="msg17">Annulation du chargement\n</string>
     <string name="msg18">Erreur: </string>
-    <string name="msg19">Flash firmware de récupération...: </string>
+    <string name="msg19">Flash un firmware de récupération...: </string>
     <string name="firmware_cancel">Annuler</string>
     <string name="firmware_dismiss">Quitter</string>
     <string name="recover_firmware">Réparer Firmware</string>
     <string name="flash_firmware">Flash Firmware</string>
     <string name="select_altimeter_model">Choisissez l\'atimétre à flasher:</string>
     <string name="after_complete_upload">Après que le chargement soit terminé vous pourrez flasher le firmware</string>
-    <string name="detect_firmware">Detect firmware</string>
-    <string name="msg_detect_firmware">Attempting to Detect firmware!!!</string>
+    <string name="detect_firmware">Détection firmware</string>
+    <string name="msg_detect_firmware">Tentative de détection du firmware!!!</string>
 
     <!-- other -->
     <string name="flight_list_cancel">Annuler</string>
@@ -250,13 +267,13 @@
     <string name="title_activity_flight_view_tab">FlightViewTabActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-    <string name="flight_info">Info Val</string>
+    <string name="flight_info">Info du Vol</string>
     <string name="apogee_altitude">Altitude Apogée</string>
     <string name="max_velocity">Vitesse Max</string>
-    <string name="main_alti">Main Altitude</string>
-    <string name="flight_duration">durée du vol</string>
+    <string name="main_alti">Altitude du Main</string>
+    <string name="flight_duration">Durée du vol</string>
     <string name="burn_time">Temps combustion</string>
-    <string name="max_acceleration">Acceleration Max </string>
+    <string name="max_acceleration">Accélération Max </string>
     <string name="time_to_apogee">Temps pour l\'apogée</string>
     <string name="max_descent_speed">Vitesse de descente Max</string>
     <string name="landing_speed">Vitesse à l\'atterrissage</string>
@@ -264,5 +281,23 @@
     <string name="nbr_of_sample">Echantillons</string>
     <string name="select_curve">Courbes</string>
     <string name="fv_ok">OK</string>
-    <string name="fv_cancel">Annuller</string>
+    <string name="fv_cancel">Annuler</string>
+
+    <!--units -->
+    <string name="unit_meters">mètres</string>
+    <string name="unit_time">temps (ms)</string>
+    <string name="unit_feet_per_secs">pieds/secs</string>
+    <string name="unit_feet_per_square_secs">feet/secs²</string>
+
+    <!--curves name -->
+    <string name="curve_altitude">altitude</string>
+    <string name="curve_temperature">température</string>
+    <string name="curve_pressure">pression</string>
+    <string name="curve_latitude">latitude</string>
+    <string name="curve_longitude">longitude</string>
+    <string name="curve_speed">vitesse</string>
+    <string name="curve_accel">accélération</string>
+    <string name="flight_name">Vol</string>
+
+
 </resources>

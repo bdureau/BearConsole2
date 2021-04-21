@@ -6,6 +6,10 @@ package com.altimeter.bdureau.bearconsole.Flight;
  *   @author: boris.dureau@neuf.fr
  *
  **/
+import android.content.Context;
+
+import com.altimeter.bdureau.bearconsole.R;
+
 import java.util.*;
 
 
@@ -13,15 +17,17 @@ import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
 
 public class FlightData {
+    //context so that we can use the translations
+    private Context context;
+    //pass the altimeter name so that we can do specific
+    private String altimeterName;
     // Create a hash map
-    //public static HashMap hm;
     public static HashMap<String,XYSeriesCollection > hm;// = new HashMap<String,XYSeriesCollection>();
-    public FlightData ()
+    public FlightData (Context current, String name)
     {
-        //hm = new HashMap();
+        this.context = current;
+        this.altimeterName = name;
         hm = new HashMap<String,XYSeriesCollection>();
-        // create one empty flight data collection
-        //hm.put("Flight 01", createFlight("Flight 01"));
     }
     //this might be a usefull function that I will write later
     public int getNbrOfFlight()
@@ -57,8 +63,7 @@ public class FlightData {
     {
         hm =null;
         hm = new HashMap();
-        // create one empty flight data collection
-        //hm.put("Flight 01", createFlight("Flight 01"));
+
     }
 
     public XYSeriesCollection  GetFlightData(String flightName)
@@ -145,14 +150,21 @@ public class FlightData {
 
     private XYSeriesCollection  createFlight(final String name) {
         XYSeriesCollection ret;
-        final XYSeries series = new XYSeries("altitude") ;
+
+        //altitude
+        final XYSeries series = new XYSeries(context.getResources().getString(R.string.curve_altitude)) ;
         ret = new XYSeriesCollection (series);
-        ret.addSeries(new XYSeries("temperature"));
-        ret.addSeries(new XYSeries("pressure"));
-       //ret.addSeries(new XYSeries("speed"));
-        //ret.addSeries(new XYSeries("acceleration"));
-        ret.addSeries(new XYSeries("latitude"));
-        ret.addSeries(new XYSeries("longitude"));
+        //temperature
+        ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_temperature)));
+        //pressure
+        ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_pressure)));
+
+        if(altimeterName.equals("AltiGPS")) {
+            //latitude
+            ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_latitude)));
+            //longitude
+            ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_longitude)));
+        }
         return ret; // new XYSeriesCollection (series);
     }
 

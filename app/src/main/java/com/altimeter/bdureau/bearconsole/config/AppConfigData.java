@@ -1,5 +1,9 @@
 package com.altimeter.bdureau.bearconsole.config;
 
+import android.content.Context;
+
+import com.altimeter.bdureau.bearconsole.R;
+
 /**
  *   @description: This class define all the values for the application conf drop down
  *
@@ -7,19 +11,16 @@ package com.altimeter.bdureau.bearconsole.config;
  *
  **/
 public class AppConfigData {
-    private String[] itemsLanguages = new String[]{ "English", "French", "Phone language"};
-    private String[] itemsColor = new String[]{"BLACK",
-            "WHITE",
-            "MAGENTA",
-            "BLUE",
-            "YELLOW",
-            "GREEN",
-            "GRAY",
-            "CYAN",
-            "DKGRAY",
-            "LTGRAY",
-            "RED"};
-    private String[] itemsUnits = new String[]{"Meters", "Feet"};
+
+    private Context context;
+
+    // cannot initialize those that require translations
+    //"English", "French", "Phone language"
+    private String[] itemsLanguages = null;
+
+    private String[] itemsColor = null;
+    //"Meters", "Feet"
+    private String[] itemsUnits = null;
     private String[] itemsFontSize = new String[]{"8","9", "10", "11", "12","13",
             "14", "15", "16", "17", "18", "19", "20"};
 
@@ -43,9 +44,32 @@ public class AppConfigData {
 
     private String fullUSBSupport = "false";
 
-    public AppConfigData()
+    public AppConfigData(Context current)
     {
+        context = current;
+        itemsLanguages = new String[]{
+                context.getResources().getString(R.string.phone_english),// "English",
+                context.getResources().getString(R.string.phone_french), //"French",
+                context.getResources().getString(R.string.phone_language)//"Phone language"
+        };
+        itemsUnits = new String[]{
+                context.getResources().getString(R.string.config_unit_meters),//"Meters",
+                context.getResources().getString(R.string.config_unit_feet)  //"Feet"
+        };
 
+        itemsColor = new String[]{
+                context.getResources().getString(R.string.color_black), //"BLACK",
+                context.getResources().getString(R.string.color_white), //"WHITE",
+                context.getResources().getString(R.string.color_magenta), //"MAGENTA",
+                context.getResources().getString(R.string.color_blue), //"BLUE",
+                context.getResources().getString(R.string.color_yellow), //"YELLOW",
+                context.getResources().getString(R.string.color_green), //"GREEN",
+                context.getResources().getString(R.string.color_gray), //"GRAY",
+                context.getResources().getString(R.string.color_cyan), //"CYAN",
+                context.getResources().getString(R.string.color_dkgray), //"DKGRAY",
+                context.getResources().getString(R.string.color_ltgray), //"LTGRAY",
+                context.getResources().getString(R.string.color_red) //"RED"
+        };
     }
     public String [] getItemsLanguages() {
         return itemsLanguages;
