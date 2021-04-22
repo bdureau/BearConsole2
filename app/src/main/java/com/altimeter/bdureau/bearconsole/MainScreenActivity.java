@@ -19,6 +19,7 @@ import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -282,7 +283,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
     private void EnableUI() {
 
-        boolean success = false;
+        boolean success;
         success = readConfig();
         //second attempt
         if(!success)
@@ -294,6 +295,7 @@ public class MainScreenActivity extends AppCompatActivity {
         if(!success)
             success = readConfig();
 
+        Log.d("MainScreen","altimeter name: "+ myBT.getAltiConfigData().getAltimeterName() );
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
             btnContinuityOnOff.setEnabled(false);
         } else {
@@ -344,6 +346,7 @@ public class MainScreenActivity extends AppCompatActivity {
         boolean success = false;
         if (myBT.getConnected()) {
             //msg("Retreiving altimeter config...");
+            Log.d("MainScreen", "Retreiving altimeter config...");
             myBT.setDataReady(false);
             myBT.flush();
             myBT.clearInput();
@@ -420,8 +423,12 @@ public class MainScreenActivity extends AppCompatActivity {
 
                 }
                 myMessage = myBT.ReadResult(3000);
-                myBT.flush();
+                if (myMessage.equals("OK")) {
+                    myBT.flush();
+                }
             }
+        } else {
+            Log.d("MainScreen", "Not connected");
         }
         return success;
     }

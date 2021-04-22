@@ -1,204 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.altimeter.bdureau.bearconsole.config.AppConfigActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/container_config"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save_config"
         android:id="@+id/butSave"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_gravity="start|bottom" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dismiss_app_config"
         android:id="@+id/butDismiss"
-        android:layout_alignTop="@+id/butSave"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_gravity="center|bottom" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/default_config"
         android:id="@+id/butDefault"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_gravity="end|bottom" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/application_langage_config"
-        android:id="@+id/txtViewAppLang"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerLanguage"
-        android:layout_alignParentTop="true"
-        android:layout_width="175dp"
-        android:layout_alignTop="@+id/txtViewAppLang"
-        android:layout_alignParentRight="true"
-        android:focusableInTouchMode="false" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/graph_color_config"
-        android:id="@+id/txtViewGraphColor"
-        android:layout_below="@+id/txtViewAppLang"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp" />
-
-    <Spinner
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerGraphColor"
-        android:layout_width="175dp"
-        android:layout_alignTop="@+id/txtViewGraphColor"
-        android:layout_alignParentRight="true"/>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/application_units_config"
-        android:id="@+id/txtViewUnits"
-        android:layout_below="@+id/txtViewGraphColor"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp" />
-
-    <Spinner
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerUnits"
-        android:layout_alignTop="@+id/txtViewUnits"
-        android:layout_width="175dp"
-        android:layout_alignParentRight="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/graph_back_color_config"
-        android:id="@+id/txtViewGraphBackColor"
-        android:layout_below="@+id/txtViewUnits"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp" />
-
-
-    <Spinner
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerGraphBackColor"
-        android:layout_alignTop="@+id/txtViewGraphBackColor"
-        android:layout_width="175dp"
-        android:layout_alignParentRight="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/font_size"
-        android:id="@+id/txtViewFontSize"
-        android:layout_below="@+id/txtViewGraphBackColor"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp" />
-
-    <Spinner
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerFontSize"
-        android:layout_alignTop="@+id/txtViewFontSize"
-        android:layout_width="175dp"
-        android:layout_alignParentRight="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/baud_rate"
-        android:id="@+id/textViewBaudRate"
-        android:layout_below="@+id/txtViewFontSize"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="18dp" />
-
-    <Spinner
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerBaudRate"
-        android:layout_alignTop="@+id/textViewBaudRate"
-        android:layout_width="175dp"
-        android:layout_alignParentRight="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/connection_type"
-        android:id="@+id/textConnectionType"
-        android:layout_below="@+id/textViewBaudRate"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="18dp" />
-    <Spinner
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerConnectionType"
-        android:layout_alignTop="@+id/textConnectionType"
-        android:layout_width="175dp"
-        android:layout_alignParentRight="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/graphiclib_type"
-        android:id="@+id/textGraphicLibType"
-        android:layout_below="@+id/textConnectionType"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="18dp" />
-    <Spinner
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerGraphicLibType"
-        android:layout_alignTop="@+id/textGraphicLibType"
-        android:layout_width="175dp"
-        android:layout_alignParentRight="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/MultipleMainDrogue"
-        android:id="@+id/textAllowMultipleMainDrogue"
-        android:layout_below="@+id/textGraphicLibType"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="18dp" />
-
-    <CheckBox
-        android:id="@+id/checkBoxAllowMultipleMainDrogue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textAllowMultipleMainDrogue"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="-2dp"
-        android:layout_marginRight="158dp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/FullUSBSupport"
-        android:id="@+id/textFullUSBSupport"
-        android:layout_below="@+id/textAllowMultipleMainDrogue"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="18dp" />
-    <CheckBox
-        android:id="@+id/checkBoxFullUSBSupport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textFullUSBSupport"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="-2dp"
-        android:layout_marginRight="158dp" />
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

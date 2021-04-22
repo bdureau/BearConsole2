@@ -158,6 +158,10 @@ public class FlightData {
         ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_temperature)));
         //pressure
         ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_pressure)));
+        //speed
+        ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_speed)));
+        //acceleration
+        ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_accel)));
 
         if(altimeterName.equals("AltiGPS")) {
             //latitude

@@ -1,7 +1,6 @@
 package com.altimeter.bdureau.bearconsole.Flight;
 
 import android.app.AlertDialog;
-//import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,8 +8,7 @@ import android.os.Bundle;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
-//import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
-//import com.altimeter.bdureau.bearconsole.config.AltimeterTabConfigActivity;
+
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -28,8 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-//import android.view.Menu;
-//import android.view.MenuItem;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,10 +40,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.lang.Math.abs;
+//import static java.lang.Math.abs;
 
 public class FlightViewTabActivity extends AppCompatActivity {
-    private static FlightData myflight=null;
+    private  FlightData myflight=null;
     private ViewPager mViewPager;
     SectionsPageAdapter adapter;
     private Tab1Fragment flightPage1 = null;
@@ -142,16 +139,16 @@ public class FlightViewTabActivity extends AppCompatActivity {
         //calculate speed
         //altitude
         speed=null;
-        speed =getSpeedSerie(allFlightData.getSeries(getResources().getString(R.string.curve_altitude)));
-        if (allFlightData.indexOf(speed)>0)
-            Log.d ("numberOfCurves", "Speed index:"+ allFlightData.indexOf(speed));
-        allFlightData.addSeries(speed);
+        //speed =getSpeedSerie(allFlightData.getSeries(getResources().getString(R.string.curve_altitude)));
+        speed = allFlightData.getSeries(getResources().getString(R.string.curve_speed));
+        //allFlightData.addSeries(speed);
 
 
         // calculate acceleration
         accel= null;
-        accel = getAccelSerie(speed);
-        allFlightData.addSeries(accel);
+        //accel = getAccelSerie(speed);
+        accel=allFlightData.getSeries(getResources().getString(R.string.curve_accel));
+        //allFlightData.addSeries(accel);
 
         // by default we will display the altitude
         // but then the user will be able to change the data
@@ -174,29 +171,29 @@ public class FlightViewTabActivity extends AppCompatActivity {
         if (myBT.getAppConf().getUnits().equals("0")) {
             //Meters
             units[0] = "(" + getResources().getString(R.string.Meters_fview) + ")";
-            if(myBT.getAltiConfigData().getAltimeterName().equals( "AltiGPS")) {
+            /*if(myBT.getAltiConfigData().getAltimeterName().equals( "AltiGPS")) {
                 units[5] = "(m/secs)";
                 units[6] = "(m/secs²)";
-            } else {
+            } else {*/
                 units[3] = "(m/secs)";
                 units[4] = "(m/secs²)";
-            }
+            //}
 
         }
         else {
             //Feet
             units[0] = getResources().getString(R.string.Feet_fview);
-            if(myBT.getAltiConfigData().getAltimeterName().equals( "AltiGPS")) {
+            /*if(myBT.getAltiConfigData().getAltimeterName().equals( "AltiGPS")) {
                 //(feet/secs)
                 units[5] = "(" + getResources().getString(R.string.unit_feet_per_secs) + ")";
                 //(feet/secs²)
                 units[6] = "(" + getResources().getString(R.string.unit_feet_per_square_secs) + ")";
-            } else {
+            } else {*/
                 //(feet/secs)
                 units[3] = "(" + getResources().getString(R.string.unit_feet_per_secs) + ")";
                 //(feet/secs²)
                 units[4] = "(" + getResources().getString(R.string.unit_feet_per_square_secs) + ")";
-            }
+           // }
         }
         units[1]="(°C)";
         units[2]="(mbar)";
@@ -287,7 +284,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
     /*
           Calculate the speed curve
     */
-    public XYSeries getSpeedSerie (XYSeries serie) {
+    /*public XYSeries getSpeedSerie (XYSeries serie) {
         XYSeries speed;
         //speed
         speed = new XYSeries(this.getResources().getString(R.string.curve_speed));
@@ -304,11 +301,11 @@ public class FlightViewTabActivity extends AppCompatActivity {
         }
 
         return speed;
-    }
+    }*/
     /*
     calculate the acceleration curve
      */
-    public XYSeries getAccelSerie (XYSeries serie) {
+  /*  public XYSeries getAccelSerie (XYSeries serie) {
         XYSeries accel;
         //accell
         accel = new XYSeries(this.getResources().getString(R.string.curve_accel));
@@ -323,11 +320,11 @@ public class FlightViewTabActivity extends AppCompatActivity {
             accel.add(X, Y);
         }
         return accel;
-    }
+    }*/
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsPageAdapter(getSupportFragmentManager());
         flightPage1 = new Tab1Fragment(allFlightData);
-        flightPage2 = new Tab2Fragment();
+        flightPage2 = new Tab2Fragment(myflight);
 
         adapter.addFragment(flightPage1, "TAB1");
         adapter.addFragment(flightPage2, "TAB2");
@@ -453,9 +450,14 @@ public class FlightViewTabActivity extends AppCompatActivity {
      */
     public static class Tab2Fragment extends Fragment {
 
+        private FlightData myflight;
+
         private TextView nbrOfSamplesValue, flightNbrValue;
         private TextView apogeeAltitudeValue, flightDurationValue, burnTimeValue, maxVelociyValue, maxAccelerationValue;
         private TextView timeToApogeeValue, mainAltitudeValue, maxDescentValue, landingSpeedValue;
+        public Tab2Fragment (FlightData data) {
+            myflight = data;
+        }
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

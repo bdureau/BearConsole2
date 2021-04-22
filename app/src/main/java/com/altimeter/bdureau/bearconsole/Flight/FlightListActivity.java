@@ -26,10 +26,14 @@ import android.widget.Toast;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
+import org.afree.data.xy.XYSeries;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import static java.lang.Math.abs;
 
 
 public class FlightListActivity extends AppCompatActivity {
@@ -110,6 +114,28 @@ public class FlightListActivity extends AppCompatActivity {
 
                 myflight = myBT.getFlightData();
                 flightNames = myflight.getAllFlightNames2();
+
+                for (String flight :flightNames ){
+                    XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_altitude));
+                    int nbrData = serie.getItemCount();
+                    for (int i = 1; i < nbrData; i++) {
+                        double X,Y;
+                        X = serie.getX(i).doubleValue();
+                        Y= abs(serie.getY(i).doubleValue() - serie.getY(i-1).doubleValue())/((serie.getX(i).doubleValue() - serie.getX(i-1).doubleValue())/1000);
+                        myflight.AddToFlight((long) X,  (long) (Y), flight, 3);
+                    }
+                }
+                for (String flight :flightNames ){
+                    XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_speed));
+                    int nbrData = serie.getItemCount();
+                    for (int i = 1; i < nbrData; i++) {
+                        double X,Y;
+                        X = serie.getX(i).doubleValue();
+                        Y= abs(serie.getY(i).doubleValue() - serie.getY(i-1).doubleValue())/((serie.getX(i).doubleValue() - serie.getX(i-1).doubleValue())/1000);
+                        myflight.AddToFlight((long) X,  (long) (Y/(9.806)), flight, 4);
+                    }
+                }
+
             }
         }
     }

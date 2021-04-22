@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:id="@+id/textViewConfigTitleTab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:text="@string/telemetry_config"
+        android:elegantTextHeight="true"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_horizontal"
+        android:textSize="18sp"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_event"
+        android:id="@+id/textAllowTelemetryEvent1"
+        android:layout_below="@+id/textViewConfigTitleTab2"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp" />
+
+    <CheckBox
+        android:id="@+id/checkBoxAllowTelemetryEvent1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textAllowTelemetryEvent1"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-4dp"
+        android:layout_marginRight="94dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/drogue_event"
+        android:id="@+id/textAllowTelemetryEvent2"
+        android:layout_below="@+id/textAllowTelemetryEvent1"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp" />
+    <CheckBox
+        android:id="@+id/checkBoxAllowTelemetryEvent2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textAllowTelemetryEvent2"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginRight="94dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altitude_event"
+        android:id="@+id/textAllowTelemetryEvent3"
+        android:layout_below="@+id/textAllowTelemetryEvent2"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp" />
+    <CheckBox
+        android:id="@+id/checkBoxAllowTelemetryEvent3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textAllowTelemetryEvent3"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginRight="94dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/landing_event"
+        android:id="@+id/textAllowTelemetryEvent4"
+        android:layout_below="@+id/textAllowTelemetryEvent3"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp" />
+    <CheckBox
+        android:id="@+id/checkBoxAllowTelemetryEvent4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textAllowTelemetryEvent4"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginRight="94dp" />
+</RelativeLayout>

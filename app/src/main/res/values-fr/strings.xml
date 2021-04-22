@@ -198,6 +198,17 @@
     <string name="config_unit_meters">Mètres</string>
     <string name="config_unit_feet">Pieds</string>
 
+    <string name="general_config">Configuration principale</string>
+    <string name="telemetry_config">Configuration télémetrie</string>
+    <string name="main_event">Evenement Main</string>
+    <string name="apogee_altitude_event">Altitude de l\'apogée</string>
+    <string name="drogue_altitude">Altitude Drogue</string>
+    <string name="drogue_event">Evenement Drogue</string>
+    <string name="altitude_event">Evenement Altitude</string>
+    <string name="landing_event">Evenement atterrissage</string>
+    <string name="burnout_event">Fin de combustion moteur</string>
+    <string name="warning_event">Attention</string>
+
     <!-- Telemetry -->
     <string name="stop_telemetry">Arret Tel</string>
     <string name="start_telemetry">Démarrer Tel</string>
