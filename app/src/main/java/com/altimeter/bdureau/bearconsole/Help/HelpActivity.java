@@ -26,7 +26,7 @@ Button btnDismiss;
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();
         //Check the local and force it if needed
-        getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
+        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
         setContentView(R.layout.activity_help);
         webView = (WebView)findViewById(R.id.webView);

@@ -142,12 +142,14 @@ public class TelemetryMp extends AppCompatActivity {
                                 LiftOffTime= System.currentTimeMillis();
                             txtLiftOffTime.setText("0 ms");
                             if(! liftOffSaid ){
-                                if(Locale.getDefault().getLanguage()== "en")
-                                    mTTS.speak("lift off", TextToSpeech.QUEUE_FLUSH,null);
-                                else if(Locale.getDefault().getLanguage()== "fr")
-                                    mTTS.speak("décollage", TextToSpeech.QUEUE_FLUSH,null);
-                                else
-                                    mTTS.speak("lift off", TextToSpeech.QUEUE_FLUSH,null);
+                                if (myBT.getAppConf().getLiftOff_event().equals("true")) {
+                                    if (Locale.getDefault().getLanguage() == "en")
+                                        mTTS.speak("lift off", TextToSpeech.QUEUE_FLUSH, null);
+                                    else if (Locale.getDefault().getLanguage() == "fr")
+                                        mTTS.speak("décollage", TextToSpeech.QUEUE_FLUSH, null);
+                                    else
+                                        mTTS.speak("lift off", TextToSpeech.QUEUE_FLUSH, null);
+                                }
                                 liftOffSaid =true;
                             }
                         }
@@ -447,7 +449,6 @@ public class TelemetryMp extends AppCompatActivity {
 
        myBT.clearInput();
        myBT.flush();
-
 
        //startTelemetryButton.setEnabled(true);
 

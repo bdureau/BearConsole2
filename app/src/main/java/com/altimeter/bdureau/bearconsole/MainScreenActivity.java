@@ -101,7 +101,7 @@ public class MainScreenActivity extends AppCompatActivity {
         //get the bluetooth and USB Application pointer
         myBT = (ConsoleApplication) getApplication();
         //Check the local and force it if needed
-        getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
+        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
         setContentView(R.layout.activity_main_screen);
         IntentFilter filter = new IntentFilter();

@@ -72,7 +72,7 @@ public class FlightListActivity extends AppCompatActivity {
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();
         //Check the local and force it if needed
-        getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
+        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
         setContentView(R.layout.activity_flight_list);
         buttonDismiss = (Button) findViewById(R.id.butDismiss);
@@ -126,7 +126,9 @@ public class FlightListActivity extends AppCompatActivity {
                     }
                 }
                 for (String flight :flightNames ){
-                    XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_speed));
+                    //XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_speed));
+
+                    XYSeries serie = myflight.GetFlightData(flight).getSeries(3);
                     int nbrData = serie.getItemCount();
                     for (int i = 1; i < nbrData; i++) {
                         double X,Y;

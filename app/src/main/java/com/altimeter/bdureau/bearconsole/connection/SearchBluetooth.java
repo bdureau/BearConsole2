@@ -46,7 +46,7 @@ public class SearchBluetooth extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //Check the local and force it if needed
         myBT = (ConsoleApplication) getApplication();
-        getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
+        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         //
         setContentView(R.layout.activity_search_bluetooth);
 

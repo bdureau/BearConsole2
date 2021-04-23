@@ -50,7 +50,7 @@ public class AppConfigActivity extends AppCompatActivity {
 
         myBT.getAppConf().ReadConfig();
         //Check the local and force it if needed
-        getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
+        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         // get the data for all the drop down
         appConfigData = new AppConfigData(this);
         setContentView(R.layout.activity_app_config);
@@ -326,7 +326,7 @@ public class AppConfigActivity extends AppCompatActivity {
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsLanguages());
             spAppLanguage.setAdapter(adapter);
-
+            spAppLanguage.setEnabled(false); //disble it for the moment because it is causing troubles
             // graph color
             spGraphColor = (Spinner)view.findViewById(R.id.spinnerGraphColor);
             // String[] itemsColor = new String[]{"Black", "White", "Yellow", "Red", "Green", "Blue"};

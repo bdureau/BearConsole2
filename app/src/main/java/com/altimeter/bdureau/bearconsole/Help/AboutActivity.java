@@ -28,7 +28,7 @@ public class AboutActivity extends AppCompatActivity {
 
         myBT = (ConsoleApplication) getApplication();
 
-        getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
+        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         setContentView(R.layout.activity_about);
 
         btnDismiss = (Button)findViewById(R.id.butDismiss);

@@ -110,7 +110,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         myBT = (ConsoleApplication) getApplication();
 
         //Check the local and force it if needed
-        getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
+        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
         setContentView(R.layout.activity_flight_view_tab);
         mViewPager = (ViewPager) findViewById(R.id.container);
