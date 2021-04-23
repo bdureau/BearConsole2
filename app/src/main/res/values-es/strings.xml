@@ -196,12 +196,14 @@
     <string name="telemetry_config">Telemetry config</string>
     <string name="main_event">Main event</string>
     <string name="apogee_altitude_event">Apogee altitude</string>
-    <string name="drogue_altitude">Drogue altitude</string>
+    <string name="main_altitude_event">Main altitude</string>
     <string name="drogue_event">Drogue event</string>
     <string name="altitude_event">Altitude event</string>
     <string name="landing_event">Landing event</string>
     <string name="burnout_event">Burnout event</string>
     <string name="warning_event">Warning event</string>
+    <string name="liftoff_event">Lift off event</string>
+
     <!-- Telemetry -->
     <string name="stop_telemetry">Parar telemetría</string>
     <string name="start_telemetry">Empezar telemetría</string>

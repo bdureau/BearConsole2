@@ -32,13 +32,14 @@
         android:id="@+id/txtViewAppLang"
         android:layout_below="@+id/textViewConfigTitleTab1"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp"/>
 
     <Spinner
         android:layout_height="wrap_content"
         android:id="@+id/spinnerLanguage"
         android:layout_width="175dp"
-        android:layout_alignBottom="@+id/txtViewAppLang"
+        android:layout_alignBaseline="@+id/txtViewAppLang"
         android:layout_alignParentRight="true"
         android:focusableInTouchMode="false" />
 
@@ -55,7 +56,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/spinnerGraphColor"
         android:layout_width="175dp"
-        android:layout_alignBottom="@+id/txtViewGraphColor"
+        android:layout_alignBaseline="@+id/txtViewGraphColor"
         android:layout_alignParentRight="true"/>
 
 
@@ -72,7 +73,7 @@
     <Spinner
         android:layout_height="wrap_content"
         android:id="@+id/spinnerUnits"
-        android:layout_alignBottom="@+id/txtViewUnits"
+        android:layout_alignBaseline="@+id/txtViewUnits"
         android:layout_width="175dp"
         android:layout_alignParentRight="true"/>
 
@@ -90,7 +91,7 @@
     <Spinner
         android:layout_height="wrap_content"
         android:id="@+id/spinnerGraphBackColor"
-        android:layout_alignBottom="@+id/txtViewGraphBackColor"
+        android:layout_alignBaseline="@+id/txtViewGraphBackColor"
         android:layout_width="175dp"
         android:layout_alignParentRight="true" />
 
@@ -107,7 +108,7 @@
     <Spinner
         android:layout_height="wrap_content"
         android:id="@+id/spinnerFontSize"
-        android:layout_alignBottom="@+id/txtViewFontSize"
+        android:layout_alignBaseline="@+id/txtViewFontSize"
         android:layout_width="175dp"
         android:layout_alignParentRight="true" />
 
@@ -123,7 +124,7 @@
     <Spinner
         android:layout_height="wrap_content"
         android:id="@+id/spinnerBaudRate"
-        android:layout_alignBottom="@+id/textViewBaudRate"
+        android:layout_alignBaseline="@+id/textViewBaudRate"
         android:layout_width="175dp"
         android:layout_alignParentRight="true" />
 
@@ -138,7 +139,7 @@
     <Spinner
         android:layout_height="wrap_content"
         android:id="@+id/spinnerConnectionType"
-        android:layout_alignBottom="@+id/textConnectionType"
+        android:layout_alignBaseline="@+id/textConnectionType"
         android:layout_width="175dp"
         android:layout_alignParentRight="true" />
 
@@ -153,7 +154,7 @@
     <Spinner
         android:layout_height="wrap_content"
         android:id="@+id/spinnerGraphicLibType"
-        android:layout_alignBottom="@+id/textGraphicLibType"
+        android:layout_alignBaseline="@+id/textGraphicLibType"
         android:layout_width="175dp"
         android:layout_alignParentRight="true" />
 
@@ -170,7 +171,7 @@
         android:id="@+id/checkBoxAllowMultipleMainDrogue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textAllowMultipleMainDrogue"
+        android:layout_alignBaseline="@+id/textAllowMultipleMainDrogue"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
         android:layout_marginRight="158dp" />
@@ -186,7 +187,7 @@
         android:id="@+id/checkBoxFullUSBSupport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textFullUSBSupport"
+        android:layout_alignBaseline="@+id/textFullUSBSupport"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
         android:layout_marginRight="158dp" />

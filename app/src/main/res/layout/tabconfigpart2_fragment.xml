@@ -10,7 +10,7 @@
         android:elegantTextHeight="true"
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"
-        android:textSize="36sp"
+        android:textSize="18sp"
         android:text="@string/altimeter_config_tab2" />
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
         android:id="@+id/spinnerBaudRate"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txtViewBaudRate"
+        android:layout_alignBaseline="@+id/txtViewBaudRate"
         android:layout_alignParentRight="true"
         android:spinnerMode="dropdown" />
 
@@ -44,7 +44,7 @@
         android:id="@+id/editTxtApogeeMeasures"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txtViewApogeeMeasures"
+        android:layout_alignBaseline="@+id/txtViewApogeeMeasures"
         android:inputType="number"
         android:textAlignment="textEnd"
         android:layout_alignParentRight="true"
@@ -64,7 +64,7 @@
         android:id="@+id/spinnerAltimeterResolution"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txtViewAltimeterResolution"
+        android:layout_alignBaseline="@+id/txtViewAltimeterResolution"
         android:layout_alignParentRight="true"
         android:spinnerMode="dropdown" />
 
@@ -82,7 +82,7 @@
         android:id="@+id/spinnerEEpromSize"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txtViewEEpromSize"
+        android:layout_alignBaseline="@+id/txtViewEEpromSize"
         android:layout_alignParentRight="true"
         android:spinnerMode="dropdown" />
 
@@ -98,7 +98,7 @@
         android:id="@+id/spinnerBeepOnOff"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txtViewBeepOnOff"
+        android:layout_alignBaseline="@+id/txtViewBeepOnOff"
         android:layout_alignParentRight="true"
         android:spinnerMode="dropdown" />
 
@@ -116,7 +116,7 @@
         android:id="@+id/editTxtEndRecordAltitude"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txtViewEndRecordAltitude"
+        android:layout_alignBaseline="@+id/txtViewEndRecordAltitude"
         android:layout_alignParentRight="true"
         android:inputType="number"
         android:textAlignment="textEnd"
@@ -134,7 +134,7 @@
         android:id="@+id/spinnerRecordTemp"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txtViewRecordTemp"
+        android:layout_alignBaseline="@+id/txtViewRecordTemp"
         android:layout_alignParentRight="true"
         android:spinnerMode="dropdown" />
 
@@ -150,7 +150,7 @@
         android:id="@+id/spinnerSupersonicDelay"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txtViewSupersonicDelay"
+        android:layout_alignBaseline="@+id/txtViewSupersonicDelay"
         android:layout_alignParentRight="true"
         android:spinnerMode="dropdown" />
 
@@ -169,7 +169,7 @@
         android:id="@+id/editTxtLiftOffAltitude"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txtViewLiftOffAltitude"
+        android:layout_alignBaseline="@+id/txtViewLiftOffAltitude"
         android:layout_alignParentRight="true"
         android:inputType="number"
         android:textAlignment="textEnd"
@@ -187,7 +187,7 @@
         android:id="@+id/spinnerBatteryType"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txtViewBatteryType"
+        android:layout_alignBaseline="@+id/txtViewBatteryType"
         android:layout_alignParentRight="true"
         android:spinnerMode="dropdown" />
 

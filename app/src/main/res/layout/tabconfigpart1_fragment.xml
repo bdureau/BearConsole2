@@ -17,7 +17,7 @@
         android:elegantTextHeight="true"
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"
-        android:textSize="36sp"
+        android:textSize="18sp"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1"
         />
@@ -36,7 +36,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/spinnerOut1"
-        android:layout_alignTop="@+id/txtMainAltitude"
+        android:layout_alignBaseline="@+id/txtMainAltitude"
         android:ems="10"
         android:inputType="number"
         android:singleLine="true"
@@ -60,7 +60,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/editTxtDelay1"
-        android:layout_alignTop="@+id/txtOut1"
+        android:layout_alignBaseline="@+id/txtOut1"
         android:spinnerMode="dropdown" />
 
     <TextView
@@ -78,7 +78,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/spinnerOut2"
-        android:layout_alignTop="@+id/txtViewDelay1"
+        android:layout_alignBaseline="@+id/txtViewDelay1"
         android:inputType="number"
         android:textAlignment="textEnd"
         android:textSize="13sp" />
@@ -97,7 +97,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/editTxtDelay2"
-        android:layout_alignTop="@+id/txtOut2"
+        android:layout_alignBaseline="@+id/txtOut2"
         android:spinnerMode="dropdown" />
 
     <TextView
@@ -115,7 +115,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/spinnerOut3"
-        android:layout_alignTop="@+id/txtViewDelay2"
+        android:layout_alignBaseline="@+id/txtViewDelay2"
         android:inputType="number"
         android:textAlignment="textEnd"
         android:textSize="13sp" />
@@ -134,7 +134,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/editTxtDelay3"
-        android:layout_alignTop="@+id/txtOut3"
+        android:layout_alignBaseline="@+id/txtOut3"
         android:spinnerMode="dropdown" />
     <TextView
         android:layout_width="wrap_content"
@@ -151,7 +151,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/spinnerOut4"
-        android:layout_alignTop="@+id/txtViewDelay3"
+        android:layout_alignBaseline="@+id/txtViewDelay3"
         android:inputType="number"
         android:textAlignment="textEnd"
         android:textSize="13sp" />
@@ -171,7 +171,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/editTxtDelay4"
-        android:layout_alignTop="@+id/txtOut4"
+        android:layout_alignBaseline="@+id/txtOut4"
         android:spinnerMode="dropdown" />
     <TextView
         android:layout_width="wrap_content"
@@ -188,13 +188,10 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/txtViewDelay4"
+        android:layout_alignBaseline="@+id/txtViewDelay4"
         android:layout_marginEnd="42dp"
         android:inputType="number"
         android:textAlignment="textEnd"
         android:textSize="13sp" />
-
-
-
 
 </RelativeLayout>

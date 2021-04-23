@@ -10,7 +10,7 @@
         android:elegantTextHeight="true"
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"
-        android:textSize="36sp"
+        android:textSize="18sp"
         android:text="@string/altimeter_config_tab3" />
     <TextView
         android:id="@+id/txtAltimeterName"
@@ -44,7 +44,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/txtAltiUnit"
+        android:layout_alignBaseline="@+id/txtAltiUnit"
         android:spinnerMode="dropdown" />
 
     <TextView
@@ -61,7 +61,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/txtBpMode"
+        android:layout_alignBaseline="@+id/txtBpMode"
         android:spinnerMode="dropdown" />
 
     <TextView
@@ -78,7 +78,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/txtBeepFrequency"
+        android:layout_alignBaseline="@+id/txtBeepFrequency"
         android:inputType="number"
         android:singleLine="true"
         android:text="100"
@@ -101,7 +101,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/txtServoStayOn"
+        android:layout_alignBaseline="@+id/txtServoStayOn"
         android:spinnerMode="dropdown" />
 
 </RelativeLayout>

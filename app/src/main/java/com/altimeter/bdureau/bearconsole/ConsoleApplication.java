@@ -925,6 +925,15 @@ public class ConsoleApplication extends Application {
 
         private String allowMultipleDrogueMain = "false";
         private String fullUSBSupport= "false";
+        private String say_main_event= "false";
+        private String say_apogee_altitude= "false";
+        private String say_main_altitude= "false";
+        private String say_drogue_event= "false";
+        private String say_altitude_event= "false";
+        private String say_landing_event= "false";
+        private String say_burnout_event= "false";
+        private String say_warning_event= "false";
+        private String say_liftoff_event= "false";
 
         public GlobalConfig(Context current) {
             appConfig = getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
@@ -946,6 +955,15 @@ public class ConsoleApplication extends Application {
             graphicsLibType = "1"; //Default to MP android chart lib
             allowMultipleDrogueMain = "false";
             fullUSBSupport = "false";
+            say_main_event= "false";
+            say_apogee_altitude= "false";
+            say_main_altitude= "false";
+            say_drogue_event= "false";
+            say_altitude_event= "false";
+            say_landing_event= "false";
+            say_burnout_event= "false";
+            say_warning_event= "false";
+            say_liftoff_event="false";
             /*edit.clear();
             edit.putString("AppLanguage","0");
             edit.putString("Units", "0");
@@ -957,10 +975,11 @@ public class ConsoleApplication extends Application {
 
         public void ReadConfig() {
             try {
-                String appLang;
-                appLang = appConfig.getString("AppLanguage", "");
-                if (!appLang.equals(""))
-                    setApplicationLanguage(appLang);
+                //Application language
+                String applicationLanguage;
+                applicationLanguage = appConfig.getString("AppLanguage", "");
+                if (!applicationLanguage.equals(""))
+                    setApplicationLanguage(applicationLanguage);
 
                 //Application Units
                 String appUnit;
@@ -1004,15 +1023,62 @@ public class ConsoleApplication extends Application {
                 if (!graphicsLibType.equals(""))
                     setGraphicsLibType(graphicsLibType);
 
+                //Allow multiple drogue and main
                 String allowMultipleDrogueMain;
                 allowMultipleDrogueMain = appConfig.getString("AllowMultipleDrogueMain", "false");
                 if (!allowMultipleDrogueMain.equals(""))
                     setAllowMultipleDrogueMain(allowMultipleDrogueMain);
 
+                //enable full USB support
                 String fullUSBSupport;
                 fullUSBSupport = appConfig.getString("fullUSBSupport", "false");
                 if (!fullUSBSupport.equals(""))
                     setFullUSBSupport(fullUSBSupport);
+
+                String say_main_event;
+                say_main_event = appConfig.getString("say_main_event", "false");
+                if (!say_main_event.equals(""))
+                    setMain_event(say_main_event);
+
+                String say_apogee_altitude;
+                say_apogee_altitude = appConfig.getString("say_apogee_altitude", "false");
+                if (!say_apogee_altitude.equals(""))
+                    setApogee_altitude(say_apogee_altitude);
+
+                String say_main_altitude;
+                say_main_altitude = appConfig.getString("say_main_altitude", "false");
+                if (!say_main_altitude.equals(""))
+                    setMain_altitude(say_main_altitude);
+
+                String say_drogue_event;
+                say_drogue_event = appConfig.getString("say_drogue_event", "false");
+                if (!say_drogue_event.equals(""))
+                    setDrogue_event(say_drogue_event);
+
+                String say_altitude_event;
+                say_altitude_event = appConfig.getString("say_altitude_event", "false");
+                if (!say_altitude_event.equals(""))
+                    setAltitude_event(say_altitude_event);
+
+                String say_landing_event;
+                say_landing_event = appConfig.getString("say_landing_event", "false");
+                if (!say_landing_event.equals(""))
+                    setLanding_event(say_landing_event);
+
+                String say_burnout_event;
+                say_burnout_event = appConfig.getString("say_burnout_event", "false");
+                if (!say_burnout_event.equals(""))
+                    setBurnout_event(say_burnout_event);
+
+                String say_warning_event;
+                say_warning_event = appConfig.getString("say_warning_event", "false");
+                if (!say_warning_event.equals(""))
+                    setWarning_event(say_warning_event);
+
+                String say_liftoff_event;
+                say_liftoff_event = appConfig.getString("say_liftoff_event", "false");
+                if (!say_liftoff_event.equals(""))
+                    setLiftOff_event(say_liftoff_event);
 
             } catch (Exception e) {
 
@@ -1030,6 +1096,16 @@ public class ConsoleApplication extends Application {
             edit.putString("GraphicsLibType", getGraphicsLibType());
             edit.putString("AllowMultipleDrogueMain", getAllowMultipleDrogueMain());
             edit.putString("fullUSBSupport", getFullUSBSupport());
+
+            edit.putString("say_main_event", getMain_event());
+            edit.putString("say_apogee_altitude", getApogee_altitude());
+            edit.putString("say_main_altitude", getMain_altitude());
+            edit.putString("say_drogue_event", getDrogue_event());
+            edit.putString("say_altitude_event", getAltitude_event());
+            edit.putString("say_landing_event", getLanding_event());
+            edit.putString("say_burnout_event", getBurnout_event());
+            edit.putString("say_warning_event", getWarning_event());
+            edit.putString("say_liftoff_event", getLiftOff_event());
             edit.commit();
 
         }
@@ -1131,6 +1207,52 @@ public class ConsoleApplication extends Application {
         public String getFullUSBSupport() {
             return fullUSBSupport;//appCfgData.getMultipleDrogueMain();
         }
+
+        public void setMain_event(String value) { say_main_event = value;  }
+        public String getMain_event() {
+            return say_main_event;
+        }
+
+        public void setApogee_altitude(String value) { say_apogee_altitude = value;  }
+        public String getApogee_altitude() {
+            return say_apogee_altitude;
+        }
+
+        public void setMain_altitude(String value) { say_main_altitude = value;  }
+        public String getMain_altitude() {
+            return say_main_altitude;
+        }
+
+        public void setDrogue_event(String value) { say_drogue_event = value;  }
+        public String getDrogue_event() {
+            return say_drogue_event;
+        }
+
+        public void setAltitude_event(String value) { say_altitude_event = value;  }
+        public String getAltitude_event() {
+            return say_altitude_event;
+        }
+
+        public void setLanding_event(String value) { say_landing_event = value;  }
+        public String getLanding_event() {
+            return say_landing_event;
+        }
+
+        public void setBurnout_event(String value) { say_burnout_event = value;  }
+        public String getBurnout_event() {
+            return say_burnout_event;
+        }
+
+        public void setWarning_event(String value) { say_warning_event = value;  }
+        public String getWarning_event() {
+            return say_warning_event;
+        }
+
+        public void setLiftOff_event(String value) { say_liftoff_event = value;  }
+        public String getLiftOff_event() {
+            return say_liftoff_event;
+        }
+
         public int ConvertFont(int font) {
             return font + 8;
         }
@@ -1144,7 +1266,6 @@ public class ConsoleApplication extends Application {
                 case 0:
                     myColor = Color.BLACK;
                     break;
-
                 case 1:
                     myColor = Color.WHITE;
                     break;

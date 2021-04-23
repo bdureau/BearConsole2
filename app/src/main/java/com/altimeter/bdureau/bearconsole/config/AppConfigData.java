@@ -47,6 +47,8 @@ public class AppConfigData {
     public AppConfigData(Context current)
     {
         context = current;
+        //context.getApplicationContext().getSharedPreferences()
+                //getSharedPreferences
         itemsLanguages = new String[]{
                 context.getResources().getString(R.string.phone_english),// "English",
                 context.getResources().getString(R.string.phone_french), //"French",

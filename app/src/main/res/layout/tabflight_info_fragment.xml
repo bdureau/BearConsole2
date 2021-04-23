@@ -10,7 +10,7 @@
         android:elegantTextHeight="true"
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"
-        android:textSize="36sp"
+        android:textSize="18sp"
         android:text="@string/flight_info" />
 
     <TextView

@@ -116,12 +116,14 @@ public class TelemetryMp extends AppCompatActivity {
                             }
                             // Tell altitude every 5 secondes
                             if ((altitudeTime - lastSpeakTime )>5000 && liftOffSaid) {
-                                if(Locale.getDefault().getLanguage()== "en")
-                                    mTTS.speak("altitude " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
-                                else if(Locale.getDefault().getLanguage()== "fr")
-                                    mTTS.speak("altitude " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
-                                else
-                                    mTTS.speak("altitude " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                if (myBT.getAppConf().getAltitude_event().equals("true")) {
+                                    if (Locale.getDefault().getLanguage() == "en")
+                                        mTTS.speak("altitude " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                    else if (Locale.getDefault().getLanguage() == "fr")
+                                        mTTS.speak("altitude " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
+                                    else
+                                        mTTS.speak("altitude " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                }
                                 lastSpeakTime = altitudeTime;
                             }
                         }
@@ -167,14 +169,17 @@ public class TelemetryMp extends AppCompatActivity {
                 case 4:
                     //Value 4 apogee altitude
                     txtMaxAltitude.setText((String)msg.obj);
-                    if(cbApogee.isChecked())
+                    if(cbApogee.isChecked() )
                         if(! apogeeSaid ) {
-                            if(Locale.getDefault().getLanguage()== "en")
-                                mTTS.speak("apogee " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
-                            else if(Locale.getDefault().getLanguage()== "fr")
-                                mTTS.speak("apogée à " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
-                            else
-                                mTTS.speak("apogee " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                            //first check if say it is enabled
+                            if (myBT.getAppConf().getApogee_altitude().equals("true")) {
+                                if (Locale.getDefault().getLanguage() == "en")
+                                    mTTS.speak("apogee " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                else if (Locale.getDefault().getLanguage() == "fr")
+                                    mTTS.speak("apogée à " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
+                                else
+                                    mTTS.speak("apogee " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                            }
                             apogeeSaid =true;
                         }
                     break;
@@ -198,13 +203,14 @@ public class TelemetryMp extends AppCompatActivity {
                         if (cbMainChute.isChecked()) {
                             txtMainAltitude.setText((String) msg.obj);
                             if(! mainSaid ) {
-                                if(Locale.getDefault().getLanguage()== "en")
-                                    mTTS.speak("main chute has deployed at " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
-                                else if(Locale.getDefault().getLanguage()== "fr")
-                                    mTTS.speak("déploiement du parachute principal à " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
-                                else
-                                    mTTS.speak("main chute has deployed at " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
-
+                                if (myBT.getAppConf().getMain_event().equals("true")) {
+                                    if (Locale.getDefault().getLanguage() == "en")
+                                        mTTS.speak("main chute has deployed at " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                    else if (Locale.getDefault().getLanguage() == "fr")
+                                        mTTS.speak("déploiement du parachute principal à " + (String) msg.obj + " mètres", TextToSpeech.QUEUE_FLUSH, null);
+                                    else
+                                        mTTS.speak("main chute has deployed at " + (String) msg.obj + " meters", TextToSpeech.QUEUE_FLUSH, null);
+                                }
                                 mainSaid = true;
                             }
                         }
@@ -223,12 +229,14 @@ public class TelemetryMp extends AppCompatActivity {
                             txtLandedAltitude.setText(txtCurrentAltitude.getText());
                             txtLandedTime.setText((System.currentTimeMillis()-LiftOffTime)+" ms");
                             if(! landedSaid ) {
-                                if(Locale.getDefault().getLanguage()== "en")
-                                    mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);
-                                else if(Locale.getDefault().getLanguage()== "fr")
-                                    mTTS.speak("la fusée a attérie", TextToSpeech.QUEUE_FLUSH, null);
-                                else
-                                    mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);
+                                if (myBT.getAppConf().getLanding_event().equals("true")) {
+                                    if (Locale.getDefault().getLanguage() == "en")
+                                        mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);
+                                    else if (Locale.getDefault().getLanguage() == "fr")
+                                        mTTS.speak("la fusée a attérie", TextToSpeech.QUEUE_FLUSH, null);
+                                    else
+                                        mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);
+                                }
                                 landedSaid = true;
                             }
                         }

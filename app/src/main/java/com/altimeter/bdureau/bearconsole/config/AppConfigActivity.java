@@ -104,6 +104,16 @@ public class AppConfigActivity extends AppCompatActivity {
         myBT.getAppConf().setGraphicsLibType(""+appConfigPage1.getGraphicsLibType()+"");
         myBT.getAppConf().setAllowMultipleDrogueMain(appConfigPage1.getAllowMainDrogue());
         myBT.getAppConf().setFullUSBSupport(appConfigPage1.getFullUSBSupport());
+        //page2
+        myBT.getAppConf().setAltitude_event(appConfigPage2.getAltitudeEvent());
+        myBT.getAppConf().setApogee_altitude(appConfigPage2.getApogeeAltitude());
+        myBT.getAppConf().setBurnout_event(appConfigPage2.getBurnoutEvent());
+        myBT.getAppConf().setMain_altitude(appConfigPage2.getMainAltitude());
+        myBT.getAppConf().setDrogue_event(appConfigPage2.getDrogueEvent());
+        myBT.getAppConf().setLanding_event(appConfigPage2.getLandingEvent());
+        myBT.getAppConf().setWarning_event(appConfigPage2.getWarningEvent());
+        myBT.getAppConf().setMain_event(appConfigPage2.getMainEvent());
+        myBT.getAppConf().setLiftOff_event(appConfigPage2.getLiftOffEvent());
         myBT.getAppConf().SaveConfig();
         finish();
     }
@@ -129,13 +139,59 @@ public class AppConfigActivity extends AppCompatActivity {
         } else {
             appConfigPage1.setFullUSBSupport(false);
         }
+        //config page 2
+        if (myBT.getAppConf().getAltitude_event().equals("true") ) {
+            appConfigPage2.setAltitudeEvent(true);
+        } else {
+            appConfigPage2.setAltitudeEvent(false);
+        }
+        if (myBT.getAppConf().getApogee_altitude().equals("true") ) {
+            appConfigPage2.setApogeeAltitude(true);
+        } else {
+            appConfigPage2.setApogeeAltitude(false);
+        }
+        if (myBT.getAppConf().getBurnout_event().equals("true") ) {
+            appConfigPage2.setBurnoutEvent(true);
+        }else {
+            appConfigPage2.setBurnoutEvent(false);
+        }
+        if (myBT.getAppConf().getMain_altitude().equals("true")) {
+            appConfigPage2.setMainAltitude(true);
+        }else {
+            appConfigPage2.setMainAltitude(false);
+        }
+        if (myBT.getAppConf().getDrogue_event().equals("true")) {
+            appConfigPage2.setDrogueEvent(true);
+        }else {
+            appConfigPage2.setDrogueEvent(false);
+        }
+        if (myBT.getAppConf().getLanding_event().equals("true")) {
+            appConfigPage2.setLandingEvent(true);
+        }else {
+            appConfigPage2.setLandingEvent(false);
+        }
+        if (myBT.getAppConf().getMain_event().equals("true")) {
+            appConfigPage2.setMainEvent(true);
+        }else {
+            appConfigPage2.setMainEvent(false);
+        }
+        if (myBT.getAppConf().getWarning_event().equals("true")) {
+            appConfigPage2.setWarningEvent(true);
+        }else {
+            appConfigPage2.setWarningEvent(false);
+        }
+        if (myBT.getAppConf().getLiftOff_event().equals("true")) {
+            appConfigPage2.setLiftOffEvent(true);
+        }else {
+            appConfigPage2.setLiftOffEvent(false);
+        }
     }
 
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new AppConfigActivity.SectionsPageAdapter(getSupportFragmentManager());
         appConfigPage1 = new AppConfigActivity.Tab1Fragment(myBT);
-        appConfigPage2 = new AppConfigActivity.Tab2Fragment();
+        appConfigPage2 = new AppConfigActivity.Tab2Fragment(myBT);
 
         adapter.addFragment(appConfigPage1, "TAB1");
         adapter.addFragment(appConfigPage2, "TAB2");
@@ -335,17 +391,169 @@ public class AppConfigActivity extends AppCompatActivity {
             } else {
                 cbFullUSBSupport.setChecked(false);
             }
+
             return view;
         }
 
     }
     public static class Tab2Fragment extends Fragment {
+        private CheckBox cbMainEvent, cbDrogueEvent, cbAltitudeEvent, cbLandingEvent;
+        private CheckBox cbBurnoutEvent, cbWarningEvent, cbApogeeAltitude, cbMainAltitude;
+        private CheckBox cbLiftOffEvent;
+        private ConsoleApplication BT;
+
+        public Tab2Fragment(ConsoleApplication lBT) {
+            BT = lBT;
+        }
+
+        public String getMainEvent() {
+            if(cbMainEvent.isChecked())
+                return "true";
+            else
+                return "false";
+        }
+        public void setMainEvent(boolean value){
+            cbMainEvent.setChecked(value);
+        }
+
+        public String getDrogueEvent() {
+            if(cbDrogueEvent.isChecked())
+                return "true";
+            else
+                return "false";
+        }
+        public void setDrogueEvent(boolean value){
+            cbDrogueEvent.setChecked(value);
+        }
+
+        public String getAltitudeEvent() {
+            if(cbAltitudeEvent.isChecked())
+                return "true";
+            else
+                return "false";
+        }
+        public void setAltitudeEvent(boolean value){
+            cbAltitudeEvent.setChecked(value);
+        }
+
+        public String getLandingEvent() {
+            if(cbLandingEvent.isChecked())
+                return "true";
+            else
+                return "false";
+        }
+        public void setLandingEvent(boolean value){
+            cbLandingEvent.setChecked(value);
+        }
+        public String getBurnoutEvent() {
+            if(cbBurnoutEvent.isChecked())
+                return "true";
+            else
+                return "false";
+        }
+        public void setBurnoutEvent(boolean value){
+            cbBurnoutEvent.setChecked(value);
+        }
+        public String getWarningEvent() {
+            if(cbWarningEvent.isChecked())
+                return "true";
+            else
+                return "false";
+        }
+        public void setWarningEvent(boolean value){
+            cbWarningEvent.setChecked(value);
+        }
+
+        public String getApogeeAltitude() {
+            if(cbApogeeAltitude.isChecked())
+                return "true";
+            else
+                return "false";
+        }
+        public void setApogeeAltitude(boolean value){
+            cbApogeeAltitude.setChecked(value);
+        }
+        public String getMainAltitude(){
+            if(cbMainAltitude.isChecked())
+                return "true";
+            else
+                return "false";
+        }
+        public void setMainAltitude(boolean value){
+            cbMainAltitude.setChecked(value);
+        }
+        //cbLiftOffEnvent
+        public String getLiftOffEvent(){
+            if(cbLiftOffEvent.isChecked())
+                return "true";
+            else
+                return "false";
+        }
+        public void setLiftOffEvent(boolean value){
+            cbLiftOffEvent.setChecked(value);
+        }
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
             View view = inflater.inflate(R.layout.activity_app_config_part2, container, false);
+            cbMainEvent = (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent1);
+            cbDrogueEvent = (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent2);
+            cbAltitudeEvent= (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent3);
+            cbLandingEvent= (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent4);
+            cbBurnoutEvent= (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent5);
+            cbWarningEvent= (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent6);
+            cbApogeeAltitude= (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent7);
+            cbMainAltitude = (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent8);
+            cbLiftOffEvent= (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent9);
+
+            if (BT.getAppConf().getMain_event().equals("true") ) {
+                cbMainEvent.setChecked(true);
+            } else {
+                cbMainEvent.setChecked(false);
+            }
+            if (BT.getAppConf().getDrogue_event().equals("true") ) {
+                cbDrogueEvent.setChecked(true);
+            } else {
+                cbDrogueEvent.setChecked(false);
+            }
+            if (BT.getAppConf().getAltitude_event().equals("true") ) {
+                cbAltitudeEvent.setChecked(true);
+            } else {
+                cbAltitudeEvent.setChecked(false);
+            }
+            if (BT.getAppConf().getLanding_event().equals("true") ) {
+                cbLandingEvent.setChecked(true);
+            } else {
+                cbLandingEvent.setChecked(false);
+            }
+            if (BT.getAppConf().getBurnout_event().equals("true") ) {
+                cbBurnoutEvent.setChecked(true);
+            } else {
+                cbBurnoutEvent.setChecked(false);
+            }
+            if (BT.getAppConf().getWarning_event().equals("true") ) {
+                cbWarningEvent.setChecked(true);
+            } else {
+                cbWarningEvent.setChecked(false);
+            }
+            if (BT.getAppConf().getApogee_altitude().equals("true") ) {
+                cbApogeeAltitude.setChecked(true);
+            } else {
+                cbApogeeAltitude.setChecked(false);
+            }
+            if (BT.getAppConf().getMain_altitude().equals("true") ) {
+                cbMainAltitude.setChecked(true);
+            } else {
+                cbMainAltitude.setChecked(false);
+            }
+            //cbLiftOffEvent
+            if (BT.getAppConf().getLiftOff_event().equals("true") ) {
+                cbLiftOffEvent.setChecked(true);
+            } else {
+                cbLiftOffEvent.setChecked(false);
+            }
             return view;
         }
     }

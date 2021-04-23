@@ -91,4 +91,84 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
         android:layout_marginRight="94dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/burnout_event"
+        android:id="@+id/textAllowTelemetryEvent5"
+        android:layout_below="@+id/textAllowTelemetryEvent4"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp" />
+    <CheckBox
+        android:id="@+id/checkBoxAllowTelemetryEvent5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textAllowTelemetryEvent5"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginRight="94dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/warning_event"
+        android:id="@+id/textAllowTelemetryEvent6"
+        android:layout_below="@+id/textAllowTelemetryEvent5"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp" />
+    <CheckBox
+        android:id="@+id/checkBoxAllowTelemetryEvent6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textAllowTelemetryEvent6"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginRight="94dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/apogee_altitude_event"
+        android:id="@+id/textAllowTelemetryEvent7"
+        android:layout_below="@+id/textAllowTelemetryEvent6"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp" />
+    <CheckBox
+        android:id="@+id/checkBoxAllowTelemetryEvent7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textAllowTelemetryEvent7"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginRight="94dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_altitude_event"
+        android:id="@+id/textAllowTelemetryEvent8"
+        android:layout_below="@+id/textAllowTelemetryEvent7"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp" />
+    <CheckBox
+        android:id="@+id/checkBoxAllowTelemetryEvent8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textAllowTelemetryEvent8"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginRight="94dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/liftoff_event"
+        android:id="@+id/textAllowTelemetryEvent9"
+        android:layout_below="@+id/textAllowTelemetryEvent8"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp" />
+    <CheckBox
+        android:id="@+id/checkBoxAllowTelemetryEvent9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textAllowTelemetryEvent9"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginRight="94dp" />
 </RelativeLayout>
