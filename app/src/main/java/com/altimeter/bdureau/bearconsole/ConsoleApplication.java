@@ -935,6 +935,8 @@ public class ConsoleApplication extends Application {
         private String say_warning_event= "false";
         private String say_liftoff_event= "false";
 
+        private String telemetryVoice = "0";
+
         public GlobalConfig(Context current) {
             appConfig = getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
             edit = appConfig.edit();
@@ -964,6 +966,7 @@ public class ConsoleApplication extends Application {
             say_burnout_event= "false";
             say_warning_event= "false";
             say_liftoff_event="false";
+            telemetryVoice ="0";
             /*edit.clear();
             edit.putString("AppLanguage","0");
             edit.putString("Units", "0");
@@ -1080,6 +1083,10 @@ public class ConsoleApplication extends Application {
                 if (!say_liftoff_event.equals(""))
                     setLiftOff_event(say_liftoff_event);
 
+                String telemetryVoice;
+                telemetryVoice = appConfig.getString("telemetryVoice", "0");
+                if(!telemetryVoice.equals(""))
+                    setTelemetryVoice(telemetryVoice);
             } catch (Exception e) {
 
             }
@@ -1106,6 +1113,7 @@ public class ConsoleApplication extends Application {
             edit.putString("say_burnout_event", getBurnout_event());
             edit.putString("say_warning_event", getWarning_event());
             edit.putString("say_liftoff_event", getLiftOff_event());
+            edit.putString("telemetryVoice", getTelemetryVoice());
             edit.commit();
 
         }
@@ -1253,6 +1261,10 @@ public class ConsoleApplication extends Application {
             return say_liftoff_event;
         }
 
+        public void setTelemetryVoice(String value) {telemetryVoice =value;}
+        public String getTelemetryVoice() {
+            return telemetryVoice;
+        }
         public int ConvertFont(int font) {
             return font + 8;
         }

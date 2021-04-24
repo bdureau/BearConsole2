@@ -264,7 +264,7 @@
     <string name="firmware_dismiss">Quitter</string>
     <string name="recover_firmware">Réparer Firmware</string>
     <string name="flash_firmware">Flash Firmware</string>
-    <string name="select_altimeter_model">Choisissez l\'atimétre à flasher:</string>
+    <string name="select_altimeter_model">Choisissez l\'altimétre à flasher:</string>
     <string name="after_complete_upload">Après que le chargement soit terminé vous pourrez flasher le firmware</string>
     <string name="detect_firmware">Détection firmware</string>
     <string name="msg_detect_firmware">Tentative de détection du firmware!!!</string>
@@ -294,12 +294,14 @@
     <string name="select_curve">Courbes</string>
     <string name="fv_ok">OK</string>
     <string name="fv_cancel">Annuler</string>
+    <string name="telemetry_voice">Voix télémetrie</string>
+    <string name="test_telemetry_voice">Tester la voix</string>
 
     <!--units -->
     <string name="unit_meters">mètres</string>
     <string name="unit_time">temps (ms)</string>
     <string name="unit_feet_per_secs">pieds/secs</string>
-    <string name="unit_feet_per_square_secs">feet/secs²</string>
+    <string name="unit_feet_per_square_secs">pieds/secs²</string>
 
     <!--curves name -->
     <string name="curve_altitude">altitude</string>
@@ -311,5 +313,7 @@
     <string name="curve_accel">accélération</string>
     <string name="flight_name">Vol</string>
 
-
+    <string name="select_bluetooth_device">Select Bluetooth device</string>
+    <string name="telemetry_screen">Telemetry</string>
+    <string name="status_screen">Status</string>
 </resources>

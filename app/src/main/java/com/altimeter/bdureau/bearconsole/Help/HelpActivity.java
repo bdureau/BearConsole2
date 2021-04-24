@@ -37,7 +37,8 @@ Button btnDismiss;
 
         webView.setWebViewClient(new WebViewClient());
 
-       if ( myBT.getAppLocal().locale==Locale.FRENCH)
+        if (Locale.getDefault().getLanguage()=="fr")
+       //if ( myBT.getAppLocal().locale==Locale.FRENCH)
            webView.loadUrl("file:///android_asset/help_fr.html");
        else
            webView.loadUrl("file:///android_asset/help.html");

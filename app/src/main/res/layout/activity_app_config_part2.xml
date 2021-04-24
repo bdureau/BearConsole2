@@ -38,7 +38,7 @@
         android:id="@+id/checkBoxAllowTelemetryEvent1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textAllowTelemetryEvent1"
+        android:layout_alignBaseline="@+id/textAllowTelemetryEvent1"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-4dp"
         android:layout_marginRight="94dp" />
@@ -55,7 +55,7 @@
         android:id="@+id/checkBoxAllowTelemetryEvent2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textAllowTelemetryEvent2"
+        android:layout_alignBaseline="@+id/textAllowTelemetryEvent2"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
         android:layout_marginRight="94dp" />
@@ -71,7 +71,7 @@
         android:id="@+id/checkBoxAllowTelemetryEvent3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textAllowTelemetryEvent3"
+        android:layout_alignBaseline="@+id/textAllowTelemetryEvent3"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
         android:layout_marginRight="94dp" />
@@ -87,7 +87,7 @@
         android:id="@+id/checkBoxAllowTelemetryEvent4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textAllowTelemetryEvent4"
+        android:layout_alignBaseline="@+id/textAllowTelemetryEvent4"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
         android:layout_marginRight="94dp" />
@@ -103,7 +103,7 @@
         android:id="@+id/checkBoxAllowTelemetryEvent5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textAllowTelemetryEvent5"
+        android:layout_alignBaseline="@+id/textAllowTelemetryEvent5"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
         android:layout_marginRight="94dp" />
@@ -119,7 +119,7 @@
         android:id="@+id/checkBoxAllowTelemetryEvent6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textAllowTelemetryEvent6"
+        android:layout_alignBaseline="@+id/textAllowTelemetryEvent6"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
         android:layout_marginRight="94dp" />
@@ -135,7 +135,7 @@
         android:id="@+id/checkBoxAllowTelemetryEvent7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textAllowTelemetryEvent7"
+        android:layout_alignBaseline="@+id/textAllowTelemetryEvent7"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
         android:layout_marginRight="94dp" />
@@ -151,7 +151,7 @@
         android:id="@+id/checkBoxAllowTelemetryEvent8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textAllowTelemetryEvent8"
+        android:layout_alignBaseline="@+id/textAllowTelemetryEvent8"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
         android:layout_marginRight="94dp" />
@@ -167,8 +167,33 @@
         android:id="@+id/checkBoxAllowTelemetryEvent9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textAllowTelemetryEvent9"
+        android:layout_alignBaseline="@+id/textAllowTelemetryEvent9"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
         android:layout_marginRight="94dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/telemetry_voice"
+        android:id="@+id/txtViewTelemetryVoice"
+        android:layout_below="@+id/textAllowTelemetryEvent9"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp"/>
+
+    <Spinner
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerTelemetryVoice"
+        android:layout_width="175dp"
+        android:layout_alignBaseline="@+id/txtViewTelemetryVoice"
+        android:layout_alignParentRight="true"
+        android:focusableInTouchMode="false" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtViewTelemetryVoice"
+        android:text="@string/test_telemetry_voice"
+        android:id="@+id/butTestVoice"
+        android:layout_marginTop="18dp"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

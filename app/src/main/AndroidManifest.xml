@@ -56,7 +56,7 @@
         </activity>
         <activity
             android:name=".connection.SearchBluetooth"
-            android:label="Select Bluetooth device"
+            android:label="@string/select_bluetooth_device"
             android:screenOrientation="portrait" />
         <activity
             android:name=".config.AltimeterTabConfigActivity"
@@ -78,15 +78,18 @@
         <activity android:name=".Help.HelpActivity" />
         <activity
             android:name=".ResetSettingsActivity"
+            android:label="@string/reset_settings"
             android:screenOrientation="portrait" />
         <activity
             android:name=".telemetry.Telemetry"
             android:screenOrientation="portrait" />
         <activity
             android:name=".telemetry.TelemetryMp"
+            android:label="@string/telemetry_screen"
             android:screenOrientation="portrait" />
         <activity
             android:name=".telemetry.AltimeterStatus"
+            android:label="@string/status_screen"
             android:screenOrientation="portrait" />
         <!--
            ATTENTION: This was auto-generated to add Google Play services to your project for

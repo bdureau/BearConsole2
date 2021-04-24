@@ -288,6 +288,8 @@
     <string name="select_curve">Select Curve</string>
     <string name="fv_ok">OK</string>
     <string name="fv_cancel">Cancel</string>
+    <string name="telemetry_voice">Telemetry voice</string>
+    <string name="test_telemetry_voice">Test Voice</string>
 
     <!--units -->
     <string name="unit_meters">meters</string>
@@ -305,6 +307,8 @@
     <string name="curve_accel">acceleration</string>
     <string name="flight_name">Flight</string>
 
-
+    <string name="select_bluetooth_device">Select Bluetooth device</string>
+    <string name="telemetry_screen">Telemetry</string>
+    <string name="status_screen">Status</string>
 
 </resources>

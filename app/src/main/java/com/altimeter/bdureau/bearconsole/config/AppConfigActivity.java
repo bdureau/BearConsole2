@@ -6,13 +6,18 @@ package com.altimeter.bdureau.bearconsole.config;
  *   @author: boris.dureau@neuf.fr
  **/
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +32,14 @@ import com.altimeter.bdureau.bearconsole.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class AppConfigActivity extends AppCompatActivity {
     Button btnDismiss, btnSave, bdtDefault;
     private ViewPager mViewPager;
     SectionsPageAdapter adapter;
+    private TextToSpeech mTTS;
 
     private Tab1Fragment appConfigPage1 = null;
     private Tab2Fragment appConfigPage2 = null;
@@ -91,6 +98,44 @@ public class AppConfigActivity extends AppCompatActivity {
             }
         });
 
+        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status ==TextToSpeech.SUCCESS ){
+                    int result=0;
+
+                    if(Locale.getDefault().getLanguage()== "en")
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+                    else if(Locale.getDefault().getLanguage()== "fr")
+                        result = mTTS.setLanguage(Locale.FRENCH);
+                    else
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+
+                    String[] itemsVoices ;
+                    String items="";
+                    for (Voice tmpVoice : mTTS.getVoices()) {
+                        if(tmpVoice.getName().startsWith(Locale.getDefault().getLanguage())) {
+                            if(items.equals(""))
+                                items =tmpVoice.getName();
+                            else
+                                items = items + "," + tmpVoice.getName();
+                            Log.d("Voice", tmpVoice.getName());
+                        }
+                    }
+
+                    itemsVoices = items.split(",");
+
+                    appConfigPage2.setVoices(itemsVoices);
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
+                        Log.e("TTS", "Language not supported");
+                    }else {
+
+                    }
+                } else {
+                    Log.e("TTS","Init failed");
+                }
+            }
+        }, "com.google.android.tts");
     }
 
     private void SaveConfig(){
@@ -114,6 +159,7 @@ public class AppConfigActivity extends AppCompatActivity {
         myBT.getAppConf().setWarning_event(appConfigPage2.getWarningEvent());
         myBT.getAppConf().setMain_event(appConfigPage2.getMainEvent());
         myBT.getAppConf().setLiftOff_event(appConfigPage2.getLiftOffEvent());
+        myBT.getAppConf().setTelemetryVoice(""+appConfigPage2.getTelemetryVoice()+"");
         myBT.getAppConf().SaveConfig();
         finish();
     }
@@ -185,6 +231,8 @@ public class AppConfigActivity extends AppCompatActivity {
         }else {
             appConfigPage2.setLiftOffEvent(false);
         }
+        appConfigPage2.setTelemetryVoice(Integer.parseInt(myBT.getAppConf().getTelemetryVoice()));
+
     }
 
 
@@ -315,6 +363,8 @@ public class AppConfigActivity extends AppCompatActivity {
             cbFullUSBSupport.setChecked(value);
         }
 
+
+
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -326,7 +376,7 @@ public class AppConfigActivity extends AppCompatActivity {
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsLanguages());
             spAppLanguage.setAdapter(adapter);
-            spAppLanguage.setEnabled(false); //disble it for the moment because it is causing troubles
+            spAppLanguage.setEnabled(false); //disable it for the moment because it is causing troubles
             // graph color
             spGraphColor = (Spinner)view.findViewById(R.id.spinnerGraphColor);
             // String[] itemsColor = new String[]{"Black", "White", "Yellow", "Red", "Green", "Blue"};
@@ -401,6 +451,10 @@ public class AppConfigActivity extends AppCompatActivity {
         private CheckBox cbBurnoutEvent, cbWarningEvent, cbApogeeAltitude, cbMainAltitude;
         private CheckBox cbLiftOffEvent;
         private ConsoleApplication BT;
+        private Button btnTestVoice;
+        private TextToSpeech mTTS;
+        private Spinner spTelemetryVoice;
+        private int nbrVoices = 0;
 
         public Tab2Fragment(ConsoleApplication lBT) {
             BT = lBT;
@@ -482,7 +536,7 @@ public class AppConfigActivity extends AppCompatActivity {
         public void setMainAltitude(boolean value){
             cbMainAltitude.setChecked(value);
         }
-        //cbLiftOffEnvent
+        //cbLiftOffEvent
         public String getLiftOffEvent(){
             if(cbLiftOffEvent.isChecked())
                 return "true";
@@ -492,6 +546,22 @@ public class AppConfigActivity extends AppCompatActivity {
         public void setLiftOffEvent(boolean value){
             cbLiftOffEvent.setChecked(value);
         }
+        public void setVoices(String itemsVoices[]){
+            nbrVoices = itemsVoices.length;
+            ArrayAdapter<String> adapterVoice = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, itemsVoices);
+            spTelemetryVoice.setAdapter(adapterVoice);
+            if(Integer.parseInt(BT.getAppConf().getTelemetryVoice()) < nbrVoices)
+                spTelemetryVoice.setSelection(Integer.parseInt(BT.getAppConf().getTelemetryVoice()));
+        };
+        public void setTelemetryVoice (int value) {
+            if(value < nbrVoices)
+                this.spTelemetryVoice.setSelection(value);
+        }
+        public int getTelemetryVoice() {
+            return (int) this.spTelemetryVoice.getSelectedItemId();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -507,6 +577,7 @@ public class AppConfigActivity extends AppCompatActivity {
             cbApogeeAltitude= (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent7);
             cbMainAltitude = (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent8);
             cbLiftOffEvent= (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent9);
+            spTelemetryVoice = (Spinner)view.findViewById(R.id.spinnerTelemetryVoice);
 
             if (BT.getAppConf().getMain_event().equals("true") ) {
                 cbMainEvent.setChecked(true);
@@ -554,6 +625,63 @@ public class AppConfigActivity extends AppCompatActivity {
             } else {
                 cbLiftOffEvent.setChecked(false);
             }
+
+
+
+
+            btnTestVoice = (Button)view.findViewById(R.id.butTestVoice);
+            btnTestVoice.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    //init text to speech
+                    mTTS = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+                        @Override
+                        public void onInit(int status) {
+                            if(status ==TextToSpeech.SUCCESS ){
+                                int result=0;
+
+                                if(Locale.getDefault().getLanguage()== "en")
+                                    result = mTTS.setLanguage(Locale.ENGLISH);
+                                else if(Locale.getDefault().getLanguage()== "fr")
+                                    result = mTTS.setLanguage(Locale.FRENCH);
+                                else
+                                    result = mTTS.setLanguage(Locale.ENGLISH);
+
+                                if(!BT.getAppConf().getTelemetryVoice().equals("")) {
+                                    Log.d("Voice",BT.getAppConf().getTelemetryVoice() );
+
+                                    for (Voice tmpVoice : mTTS.getVoices()) {
+                                        Log.d("Voice",tmpVoice.getName());
+                                        if (tmpVoice.getName().equals(spTelemetryVoice.getSelectedItem().toString())) {
+                                            mTTS.setVoice(tmpVoice);
+                                            Log.d("Voice", "Found voice");
+                                            break;
+                                        }
+                                    }
+                                }
+                                mTTS.setPitch(1.0f);
+                                mTTS.setSpeechRate(1.0f);
+                                if(Locale.getDefault().getLanguage()== "en")
+                                    mTTS.speak("Bearaltimiter altimeters are the best", TextToSpeech.QUEUE_FLUSH, null);
+
+                                if(Locale.getDefault().getLanguage()== "fr")
+                                    mTTS.speak("Les altimètres Bearaltimeter sont les meilleurs", TextToSpeech.QUEUE_FLUSH, null);
+
+                                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
+                                    Log.e("TTS", "Language not supported");
+                                }else {
+
+                                }
+                            } else {
+                                Log.e("TTS","Init failed");
+                            }
+                        }
+                    });
+
+                }
+            });
             return view;
         }
     }

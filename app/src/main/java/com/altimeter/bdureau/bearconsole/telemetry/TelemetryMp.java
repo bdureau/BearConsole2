@@ -13,6 +13,7 @@ import android.os.Message;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -297,6 +298,7 @@ public class TelemetryMp extends AppCompatActivity {
             public void onInit(int status) {
                 if(status ==TextToSpeech.SUCCESS ){
                     int result=0;
+
                     if(Locale.getDefault().getLanguage()== "en")
                         result = mTTS.setLanguage(Locale.ENGLISH);
                     else if(Locale.getDefault().getLanguage()== "fr")
@@ -304,6 +306,27 @@ public class TelemetryMp extends AppCompatActivity {
                     else
                         result = mTTS.setLanguage(Locale.ENGLISH);
 
+                    if(!myBT.getAppConf().getTelemetryVoice().equals("")) {
+                        Log.d("Voice",myBT.getAppConf().getTelemetryVoice() );
+                        String[] itemsVoices ;
+                        String items="";
+                        int i = 0;
+                        for (Voice tmpVoice : mTTS.getVoices()) {
+
+                            if(tmpVoice.getName().startsWith(Locale.getDefault().getLanguage())) {
+                                Log.d("Voice",tmpVoice.getName());
+                                if (myBT.getAppConf().getTelemetryVoice().equals( i + "")) {
+                                    mTTS.setVoice(tmpVoice);
+                                    Log.d("Voice", "Found voice");
+                                    break;
+                                }
+                                i++;
+                            }
+                        }
+
+
+
+                    }
 
                     if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
                         Log.e("TTS", "Language not supported");
