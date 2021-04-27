@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import androidx.annotation.Nullable;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 /*import android.graphics.LinearGradient;
 import android.graphics.Paint;
@@ -26,6 +27,8 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,6 +41,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
+import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
+import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
 import java.io.IOException;
@@ -1787,5 +1793,35 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             progress.dismiss();
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_application_config, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+        //open help screen
+        if (id == R.id.action_help) {
+            Intent i = new Intent(AltimeterTabConfigActivity.this, HelpActivity.class);
+            i.putExtra("help_file", "help_config_alti");
+            startActivity(i);
+            return true;
+        }
+
+        if (id == R.id.action_about) {
+            Intent i = new Intent(AltimeterTabConfigActivity.this, AboutActivity.class);
+            startActivity(i);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

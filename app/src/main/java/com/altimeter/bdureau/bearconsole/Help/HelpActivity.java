@@ -1,6 +1,9 @@
 package com.altimeter.bdureau.bearconsole.Help;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -32,16 +35,22 @@ Button btnDismiss;
         webView = (WebView)findViewById(R.id.webView);
 
         WebSettings webSetting = webView.getSettings();
+
         webSetting.setBuiltInZoomControls(true);
         webSetting.setJavaScriptEnabled(true);
 
         webView.setWebViewClient(new WebViewClient());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        webView.getSettings().setAllowFileAccess(true);
+
+        Intent newint = getIntent();
+        String FileName = newint.getStringExtra("help_file");
 
         if (Locale.getDefault().getLanguage()=="fr")
-       //if ( myBT.getAppLocal().locale==Locale.FRENCH)
-           webView.loadUrl("file:///android_asset/help_fr.html");
+            webView.loadUrl("file:///android_asset/help/"+ FileName + "_fr.html");
        else
-           webView.loadUrl("file:///android_asset/help.html");
+            webView.loadUrl("file:///android_asset/help/"+ FileName + ".html");
 
 
         btnDismiss = (Button)findViewById(R.id.butClose);

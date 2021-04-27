@@ -286,72 +286,71 @@ public class MainScreenActivity extends AppCompatActivity {
         boolean success;
         success = readConfig();
         //second attempt
-        if(!success)
+        if (!success)
             success = readConfig();
         //third attempt
-        if(!success)
+        if (!success)
             success = readConfig();
         //fourth and last
-        if(!success)
+        if (!success)
             success = readConfig();
 
         /*
         supported firmware
         AltiMultiSTM32
-AltiServo
-AltiMultiV2
-AltiGPS
-AltiMulti
-AltiDuo
+        AltiServo
+        AltiMultiV2
+        AltiGPS
+        AltiMulti
+        AltiDuo
          */
-       if( myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
-               myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
-               myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiV2") ||
-               myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ||
-               myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
-               myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti")  ) {
-           Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
-           if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-               btnContinuityOnOff.setEnabled(false);
-           } else {
-               //enable it for bT or USB only if full support
-               if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true")))
-                   btnContinuityOnOff.setEnabled(true);
-               else
-                   btnContinuityOnOff.setEnabled(false);
-           }
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiV2") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti")) {
+            Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
+            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+                btnContinuityOnOff.setEnabled(false);
+            } else {
+                //enable it for bT or USB only if full support
+                if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true")))
+                    btnContinuityOnOff.setEnabled(true);
+                else
+                    btnContinuityOnOff.setEnabled(false);
+            }
 
-           if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
-                   myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
-               btnReadFlights.setEnabled(false);
-           } else {
-               //enable it for bT or USB only if full support
-               if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true")))
-                   btnReadFlights.setEnabled(true);
-               else
-                   btnReadFlights.setEnabled(false);
-           }
-           btnTelemetry.setEnabled(true);
-           //enable it for bT or USB only if full support
-           if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true"))) {
-               btnAltiSettings.setEnabled(true);
-               btnReset.setEnabled(true);
-               btnStatus.setEnabled(true);
-           } else {
-               btnAltiSettings.setEnabled(false);
-               btnReset.setEnabled(false);
-               btnStatus.setEnabled(false);
-           }
-           msg(getResources().getString(R.string.MS_msg4));
-           btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
-           btnFlashFirmware.setEnabled(false);
-       }
-       else {
-           msg("Unsupported firmware");
+            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
+                    myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
+                btnReadFlights.setEnabled(false);
+            } else {
+                //enable it for bT or USB only if full support
+                if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true")))
+                    btnReadFlights.setEnabled(true);
+                else
+                    btnReadFlights.setEnabled(false);
+            }
+            btnTelemetry.setEnabled(true);
+            //enable it for bT or USB only if full support
+            if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true"))) {
+                btnAltiSettings.setEnabled(true);
+                btnReset.setEnabled(true);
+                btnStatus.setEnabled(true);
+            } else {
+                btnAltiSettings.setEnabled(false);
+                btnReset.setEnabled(false);
+                btnStatus.setEnabled(false);
+            }
+            msg(getResources().getString(R.string.MS_msg4));
+            btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
+            btnFlashFirmware.setEnabled(false);
+        } else {
+            msg("Unsupported firmware");
 
-           myBT.Disconnect();
-           //myBT.setConnected(false);
-       }
+            myBT.Disconnect();
+            //myBT.setConnected(false);
+        }
     }
 
     // fast way to call Toast
@@ -456,7 +455,7 @@ AltiDuo
         return success;
     }
 
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -479,6 +478,7 @@ AltiDuo
         //open help screen
         if (id == R.id.action_help) {
             Intent i = new Intent(MainScreenActivity.this, HelpActivity.class);
+            i.putExtra("help_file", "help");
             startActivity(i);
             return true;
         }
@@ -596,7 +596,7 @@ AltiDuo
                 //finish();
             } else {
                 //Connected.
-               // msg(getResources().getString(R.string.MS_msg4));
+                // msg(getResources().getString(R.string.MS_msg4));
                 //isBtConnected = true;
                 myBT.setConnected(true);
                 EnableUI();

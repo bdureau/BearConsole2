@@ -13,12 +13,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -28,6 +31,8 @@ import android.widget.Spinner;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
+import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
+import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
 import java.util.ArrayList;
@@ -684,5 +689,35 @@ public class AppConfigActivity extends AppCompatActivity {
             });
             return view;
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_application_config, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+        //open help screen
+        if (id == R.id.action_help) {
+            Intent i = new Intent(AppConfigActivity.this, HelpActivity.class);
+            i.putExtra("help_file", "help_config_application");
+            startActivity(i);
+            return true;
+        }
+
+        if (id == R.id.action_about) {
+            Intent i = new Intent(AppConfigActivity.this, AboutActivity.class);
+            startActivity(i);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

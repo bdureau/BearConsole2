@@ -2,8 +2,13 @@ package com.altimeter.bdureau.bearconsole.Flash;
 /**
  *   @description: This is used to flash the STM32 altimeter firmware from the Android device using an OTG cable
  *   so that the store Android application is compatible with the altimeter.
- *   Not that this is an Android port of the stm32loader.py done by myself as I could not find anything on the internet!!!
- *   This has been only tested with STM32F103 chips
+ *   Note that this is an Android port of the stm32loader.py (stm32flash) done by myself
+ *   as I could not find anything on the internet!!!
+ *   It uses the Physicaloid library but should be easy to use with any other USB library
+ *   It could also be written in pure Java so that it could be integrated with the Arduino env
+ *   This has been only tested with STM32F103 chips. Feel free to re-use it for your own projet
+ *   Please make sure that you do report any bugs so that I can fix them
+ *   So far it is reliable enough for me
  *
  *   @author: boris.dureau@neuf.fr
  *
