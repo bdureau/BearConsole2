@@ -171,14 +171,14 @@
     <string name="application_langage_config">Langue de l\'Application</string>
     <string name="graph_color_config">Couleur graphique</string>
     <string name="application_units_config">Unités Application</string>
-    <string name="graph_back_color_config">Couleur fond du Graph</string>
+    <string name="graph_back_color_config">Couleur fond du graph</string>
     <string name="default_config">Défaut</string>
     <string name="font_size">Taille police</string>
     <string name="title_activity_settings">Préférences</string>
     <string name="baud_rate">Baud Rate</string>
     <string name="connection_type">Type de Connexion</string>
     <string name="graphiclib_type">Lib graphique</string>
-    <string name="MultipleMainDrogue">Multiple Main/drogue</string>
+    <string name="MultipleMainDrogue">Autoriser plusieurs Main/drogue</string>
     <string name="FullUSBSupport">Support USB complet</string>
     <string name="color_black">Noir</string>
     <string name="color_white">Blanc</string>
@@ -199,7 +199,7 @@
     <string name="config_unit_feet">Pieds</string>
 
     <string name="general_config">Configuration principale</string>
-    <string name="telemetry_config">Configuration télémetrie</string>
+    <string name="telemetry_config">Configuration télémétrie</string>
     <string name="main_event">Evenement Main</string>
     <string name="apogee_altitude_event">Altitude de l\'apogée</string>
     <string name="main_altitude_event">Altitude Main</string>
@@ -208,7 +208,7 @@
     <string name="landing_event">Evenement atterrissage</string>
     <string name="burnout_event">Fin de combustion moteur</string>
     <string name="warning_event">Attention</string>
-    <string name="liftoff_event">Lift off event</string>
+    <string name="liftoff_event">Evenement décollage</string>
 
     <!-- Telemetry -->
     <string name="stop_telemetry">Arret Tel</string>
@@ -314,6 +314,6 @@
     <string name="flight_name">Vol</string>
 
     <string name="select_bluetooth_device">Select Bluetooth device</string>
-    <string name="telemetry_screen">Telemetry</string>
-    <string name="status_screen">Status</string>
+    <string name="telemetry_screen">Telemetrie</string>
+    <string name="status_screen">Etats</string>
 </resources>

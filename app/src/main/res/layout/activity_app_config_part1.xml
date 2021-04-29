@@ -174,7 +174,7 @@
         android:layout_alignBaseline="@+id/textAllowMultipleMainDrogue"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
-        android:layout_marginRight="158dp" />
+        android:layout_marginRight="0dp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -190,5 +190,5 @@
         android:layout_alignBaseline="@+id/textFullUSBSupport"
         android:layout_alignParentRight="true"
         android:layout_marginTop="-2dp"
-        android:layout_marginRight="158dp" />
+        android:layout_marginRight="0dp" />
 </RelativeLayout>

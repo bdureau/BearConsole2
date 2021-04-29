@@ -1,41 +1,46 @@
-<h1>Configure altimeter</h1>
-<p>The altimeter configuration can be up to 4 differents screens depending of the altimeter you are connected to.
-    When opening these screen you are connected to the altimeter and retrieving the altimiter configuration stored on the board memory</p>
-<p><strong>Altimeter Outputs</strong></p>
-<p>Each output of the altimeter can be configured and assigned a functionnality. Fonctionnalities are event driven. The
-    following events are available:</p>
-<p>- Lift off (fire at lift off)</p>
-<p>- Timer (fire X miliseconds after liftoff)</p>
-<p>- Altitude (fire at the specified altidude)</p>
-<p>- Apogee (fire at apogee)</p>
-<p>- Main (fire X meters before landing)</p>
-<p>- Landing (fire on landing)</p>
-<p>Note that for each events you can also have a delay in miliseconds</p>
+<h1>Configuration altimètre</h1>
+<p>La configuration de l'altimetre peu aller jusqu'à 4 ecrans, tout dépend de l'altimetre auquel vous etes connecté.
+    Lorsque vous ouvrez chaque ecran vous etes connecté à l'altimètre et consultez la configuration stockée dans la memoire de l'altimètre</p>
+<p><strong>Sorties de l'altimètre</strong></p>
+<p>Vous pouvez configurer chaque sortie de l'altimètre et lui assigner une fonction qui est liée à un evenement. Les evenements suivant sont
+  disponible:</p>
+<p>- Décollage (allume la charge ou déplace le servo au décollage)</p>
+<p>- Timer (allume la charge ou déplace le servo  X milisecondes après le décollage)</p>
+<p>- Altitude (allume la charge ou déplace le servo  à l'altidude spécifiée)</p>
+<p>- Apogée (allume la charge ou déplace le servo à l'apogée)</p>
+<p>- Main (allume la charge ou déplace le servo X metres avant l'atterrissage)</p>
+<p>- Atterrissage (allume la charge ou déplace le servo à l'atterrissage)</p>
+<p>A noter que chaque evenement peut etre retardé de X milisecondes</p>
 <p> </p>
-<p><strong>Altimeter config</strong></p>
+<p><strong>Configuration altimètre</strong></p>
 <p>- Baud Rate
-    Allow to change the altimeter communication spped (reboot required)</p>
-<p>-Apogee measures
-    The number of measures required to detect apogee</p>
-<p>- Altimeter Res
-    The altimeter resolution(be carefull changing it will reduce the number of measures do not do it if you use the altimeter to deploy parachutes)</p>
-<p>- EEprom size
-    Allow you to change the on board memory size</p>
-<p>- Beep ON/Off
-    You can turn the continuity beep</p>
-<p>- End of rec altitude
-    At which altitude do you stop recording</p>
-<p>- Record temp</p>
-<p>- Supersonic delay</p>
-<p>- Lift Off Altitude</p>
-<p>- Battery type</p>
+    Permet de changer la vitesse de communication de l'altimètre(reboot necessaire)</p>
+<p>- Nombre de mesures pour l'apogée
+    Le nombre de mesures necessaires pour detecter l'apogée</p>
+<p>- Res Altimètre
+    La résolution de l'altimètre (attention si vous la changer cela peu réduire le nombre de mesures ne pas le faire si l'altimetre doit déployer des parachutes)</p>
+<p>- Capacité EEprom
+    Permet de changer la taille de l'EEprom sur la carte</p>
+<p>- Beep Marche/Arret
+    Vous pouvez activer ou désactiver le bipage de la continuité</p>
+<p>- Altitude de fin enregistrement
+    A quelle altitude on arrete d'enregistrer le vol</p>
+<p>- Enregistrement de la temperature
+Permet ou non l'enregistrement de la temperature</p>
+<p>- Retard Supersonic
+Ignore les mesures pendant les premieres secondes du vol</p>
+<p>- Altidude du décollage
+Altitude à partir de laquelle on considère que le décollage a eu lieu</p>
+<p>- Type de batterie
+Cela permet pour certain altimètres de prévenir lorsque la tension de la batterie chute</p>
 <p> </p>
 <p> </p>
-<p><strong>Altimeter config (page 2)</strong></p>
-<p>Allow to choose the altimeter units, the beep mode and the beep frequency</p>
-<p><strong>Servo config</strong></p>
-<p>This is only available when connected to the altiServo, It will allow to choose the servo start ans stop position</p>
-<p> </p>
-<p> </p>
-<p> </p>
-<p> </p>
+<p><strong>Configuration altimètre (page 2)</strong></p>
+<p>Permet de choisir les unités de l'altimetre</p>
+<p>Mode de bipage et fréquence des bips</p>
+<p><strong>Configuration des servos</strong></p>
+<p>Cet ecran est uniquement disponible lorsque vous etes connecté à l'altiServo cela permet de choisir les positions min et max de chaque servo</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
