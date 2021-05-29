@@ -986,7 +986,7 @@ public class ConsoleApplication extends Application {
 
                 //Application Units
                 String appUnit;
-                appUnit = appConfig.getString("Units", "");
+                appUnit = appConfig.getString("Units", "0");
                 if (!appUnit.equals(""))
                     setUnits(appUnit);
 

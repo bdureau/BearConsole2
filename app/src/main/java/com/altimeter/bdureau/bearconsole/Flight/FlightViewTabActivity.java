@@ -420,7 +420,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                         yValues.add(new Entry(allFlightData.getSeries(i).getX(k).floatValue(), allFlightData.getSeries(i).getY(k).floatValue()));
                     }
 
-                    LineDataSet set1 = new LineDataSet(yValues, "Time");
+                    LineDataSet set1 = new LineDataSet(yValues, getResources().getString(R.string.flight_time));
                     set1.setColor(colors[i]);
 
                     set1.setDrawValues(false);
@@ -493,7 +493,8 @@ public class FlightViewTabActivity extends AppCompatActivity {
             flightDurationValue.setText(flightDuration +" secs");
             //apogee altitude
             double apogeeAltitude = flightData.getSeries(0).getMaxY();
-            apogeeAltitudeValue.setText(apogeeAltitude +" m");
+            apogeeAltitudeValue.setText(apogeeAltitude +" " +myBT.getAppConf().getUnitsValue());
+
             //apogee time
             int pos = searchX (flightData.getSeries(0),apogeeAltitude);
             double apogeeTime = (double) flightData.getSeries(0).getX(pos);
@@ -501,14 +502,14 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
             //calculate max speed
             double maxSpeed =speed.getMaxY();
-            maxVelociyValue.setText( (long) maxSpeed +" m/secs");
+            maxVelociyValue.setText( (long) maxSpeed +" " +myBT.getAppConf().getUnitsValue() +"/secs");
 
             //landing speed
             double landingSpeed = speed.getY(searchY(speed, flightData.getSeries(0).getMaxX()-3000)).doubleValue() ;
-            landingSpeedValue.setText(String.format("%.2f",landingSpeed )+ " m/secs");
+            landingSpeedValue.setText(String.format("%.2f",landingSpeed )+ " " +myBT.getAppConf().getUnitsValue() +"/secs");
             //max descente speed
             double maxDescentSpeed = speed.getY(searchY(speed, apogeeTime +2000)).doubleValue();
-            maxDescentValue.setText(String.format("%.2f",maxDescentSpeed)+ " m/secs" );
+            maxDescentValue.setText(String.format("%.2f",maxDescentSpeed)+ " " +myBT.getAppConf().getUnitsValue() +"/secs" );
 
             //max acceleration value
             double maxAccel =accel.getMaxY();
@@ -519,7 +520,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             burnTimeValue.setText(burnTime/1000 + " secs");
             //main value
             // remain TODO!!!
-
+            mainAltitudeValue.setText(" " +myBT.getAppConf().getUnitsValue() );
 
             return view;
         }

@@ -312,5 +312,6 @@
     <string name="select_bluetooth_device">Select Bluetooth device</string>
     <string name="telemetry_screen">Telemetry</string>
     <string name="status_screen">Status</string>
+    <string name="flight_time">Time</string>
 
 </resources>

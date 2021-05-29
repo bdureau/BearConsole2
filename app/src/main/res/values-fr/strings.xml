@@ -219,7 +219,7 @@
     <string name="lift_off">Décollage</string>
     <string name="apogee_drogue">Apogée/drogue</string>
     <string name="main_chute">Parachute Main</string>
-    <string name="landed">Attérie</string>
+    <string name="landed">Atterri</string>
     <string name="max_speed">Vitesse max</string>
     <string name="current_altitude">Altitude courante</string>
     <string name="dis">Déconnecter</string>
@@ -313,7 +313,8 @@
     <string name="curve_accel">accélération</string>
     <string name="flight_name">Vol</string>
 
-    <string name="select_bluetooth_device">Select Bluetooth device</string>
-    <string name="telemetry_screen">Telemetrie</string>
+    <string name="select_bluetooth_device">Choisir l\'apareil Bluetooth</string>
+    <string name="telemetry_screen">Télémetrie</string>
     <string name="status_screen">Etats</string>
+    <string name="flight_time">Temps</string>
 </resources>

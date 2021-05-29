@@ -312,7 +312,7 @@ public class Telemetry extends AppCompatActivity {
             //Feet
             myUnits = getResources().getString(R.string.Feet_fview);
 
-        if(myBT.getAppConf().getUnitsValue().equals("Meters"))
+        if(myBT.getAppConf().getUnitsValue().equals(getResources().getString(R.string.Meters_fview)))
         {
             FEET_IN_METER =1;
         }
