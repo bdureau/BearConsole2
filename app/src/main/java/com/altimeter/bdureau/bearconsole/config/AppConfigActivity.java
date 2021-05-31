@@ -31,7 +31,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
-import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
+//import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
@@ -164,6 +164,7 @@ public class AppConfigActivity extends AppCompatActivity {
         myBT.getAppConf().setLiftOff_event(appConfigPage2.getLiftOffEvent());
         myBT.getAppConf().setTelemetryVoice("" + appConfigPage2.getTelemetryVoice() + "");
         myBT.getAppConf().SaveConfig();
+        invalidateOptionsMenu();
         finish();
     }
 

@@ -455,13 +455,37 @@ public class MainScreenActivity extends AppCompatActivity {
         return success;
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+      /*  if(myBT.getConnectionType().equals("1")) //if usb
+            //menu.getItem(R.id.action_bluetooth).setEnabled(false);
+            menu.findItem(R.id.action_bluetooth).setEnabled(false);
+        else
+            //menu.getItem(R.id.action_bluetooth).setEnabled(true);
+        menu.findItem(R.id.action_bluetooth).setEnabled(false);*/
         return true;
     }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
 
+        myBT.getAppConf().ReadConfig();
+        //msg(myBT.getConnectionType());
+        //Log.d("MainScreen", "myBT.getConnectionType():" +myBT.getConnectionType());
+        if(myBT.getAppConf().getConnectionType().equals("1")) {
+        //if(myBT.getConnectionType().equals("usb")) { //if usb
+
+            //menu.getItem(R.id.action_bluetooth).setEnabled(false);
+            menu.findItem(R.id.action_bluetooth).setEnabled(false);
+        }
+        else
+            //menu.getItem(R.id.action_bluetooth).setEnabled(true);
+            menu.findItem(R.id.action_bluetooth).setEnabled(true);
+        return true;
+
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

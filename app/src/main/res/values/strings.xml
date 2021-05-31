@@ -219,6 +219,10 @@
     <string name="current_altitude">Current Altitude</string>
     <string name="dis">disconnect</string>
     <string name="tel_telemetry">Telemetry</string>
+    <string name="telemetry_apogee">apogee</string>
+    <string name="rocket_has_landed">rocket has landed</string>
+    <string name="main_deployed">main chute has deployed at</string>
+
 
     <!-- Status -->
     <string name="title_activity_altimeter_status">AltimeterStatus</string>

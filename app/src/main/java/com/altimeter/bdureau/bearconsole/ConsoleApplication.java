@@ -980,7 +980,7 @@ public class ConsoleApplication extends Application {
             try {
                 //Application language
                 String applicationLanguage;
-                applicationLanguage = appConfig.getString("AppLanguage", "");
+                applicationLanguage = appConfig.getString("AppLanguage", "0");
                 if (!applicationLanguage.equals(""))
                     setApplicationLanguage(applicationLanguage);
 
@@ -992,31 +992,31 @@ public class ConsoleApplication extends Application {
 
                 //Graph color
                 String graphColor;
-                graphColor = appConfig.getString("GraphColor", "");
+                graphColor = appConfig.getString("GraphColor", "0");
                 if (!graphColor.equals(""))
                     setGraphColor(graphColor);
 
                 //Graph Background color
                 String graphBackColor;
-                graphBackColor = appConfig.getString("GraphBackColor", "");
+                graphBackColor = appConfig.getString("GraphBackColor", "1");
                 if (!graphBackColor.equals(""))
                     setGraphBackColor(graphBackColor);
 
                 //Font size
                 String fontSize;
-                fontSize = appConfig.getString("FontSize", "");
+                fontSize = appConfig.getString("FontSize", "10");
                 if (!fontSize.equals(""))
                     setFontSize(fontSize);
 
                 //Baud rate
                 String baudRate;
-                baudRate = appConfig.getString("BaudRate", "");
+                baudRate = appConfig.getString("BaudRate", "8");
                 if (!baudRate.equals(""))
                     setBaudRate(baudRate);
 
                 //Connection type
                 String connectionType;
-                connectionType = appConfig.getString("ConnectionType", "");
+                connectionType = appConfig.getString("ConnectionType", "0");
                 if (!connectionType.equals(""))
                     setConnectionType(connectionType);
 

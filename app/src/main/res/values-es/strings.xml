@@ -217,6 +217,10 @@
     <string name="max_speed">Velocidad máxima</string>
     <string name="current_altitude">Altitud actual</string>
     <string name="dis">Desconectar</string>
+    <string name="tel_telemetry">Telemetry</string>
+    <string name="telemetry_apogee">apogee</string>
+    <string name="rocket_has_landed">rocket has landed</string>
+    <string name="main_deployed">main chute has deployed at</string>
 
     <!-- Status -->
     <string name="title_activity_altimeter_status">Estado del altímetro</string>

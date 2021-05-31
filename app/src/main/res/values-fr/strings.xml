@@ -223,6 +223,10 @@
     <string name="max_speed">Vitesse max</string>
     <string name="current_altitude">Altitude courante</string>
     <string name="dis">Déconnecter</string>
+    <string name="tel_telemetry">Télémetrie</string>
+    <string name="telemetry_apogee">Apogée à</string>
+    <string name="rocket_has_landed">la fusée a atterri</string>
+    <string name="main_deployed">déploiement du parachute principal à</string>
 
     <!-- Status -->
     <string name="title_activity_altimeter_status">Etat de l\'altimètre</string>
