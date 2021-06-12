@@ -489,18 +489,24 @@ public class ConsoleApplication extends Application {
                                             else
                                                 mHandler.obtainMessage(16, String.valueOf(0)).sendToTarget();
 
-                                        // Value 17 contains the latitude
+                                        // Value 17 contains the drogue altitude
                                         if (currentSentence.length > 17)
                                             if (currentSentence[17].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(17, String.valueOf(currentSentence[17])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(17, String.valueOf(0)).sendToTarget();
-                                        // Value 18 contains the number of flight
+                                        // Value 18 contains the latitude
                                         if (currentSentence.length > 18)
                                             if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(18, String.valueOf(currentSentence[18])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(18, String.valueOf(0)).sendToTarget();
+                                        // Value 19 contains the number of flight
+                                        if (currentSentence.length > 19)
+                                            if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(19, String.valueOf(currentSentence[19])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(19, String.valueOf(0)).sendToTarget();
                                     }
                                 }
                                 break;
