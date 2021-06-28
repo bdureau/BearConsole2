@@ -255,9 +255,13 @@ public class Telemetry extends AppCompatActivity {
                 if(status ==TextToSpeech.SUCCESS ){
                     int result=0;
                     if(Locale.getDefault().getLanguage()== "en")
-                        result = mTTS.setLanguage(Locale.ENGLISH);
+                        //result = mTTS.setLanguage(Locale.ENGLISH);
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
                     else if(Locale.getDefault().getLanguage()== "fr")
-                        result = mTTS.setLanguage(Locale.FRENCH);
+                        //result = mTTS.setLanguage(Locale.FRENCH);
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if(Locale.getDefault().getLanguage()== "tr")
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
                     else
                         result = mTTS.setLanguage(Locale.ENGLISH);
 
