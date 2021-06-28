@@ -1,0 +1,322 @@
+<resources>
+    <string name="version"> pre 2.0.0 candidate 4</string>
+    <string name="app_name">Bear Console</string>
+    <!-- Menu -->
+    <string name="help">Yardim</string>
+    <string name="about">Hakkinda</string>
+    <string name="action_settings">Uygulama Ayarlari</string>
+    <string name="bluetooth_device">Bluetooth Cihazlar</string>
+
+    <!-- Screen altimeter config-->
+    <string name="altimeter_outputs">Altimetre Çikislari</string>
+    <string name="altimeter_config">Altimetre Ayarlari</string>
+    <string name="main_altitude">Ana Irtifa</string>
+    <string name="output_1">Çikis 1</string>
+    <string name="delay1">Bekleme 1 (ms)</string>
+    <string name="output_2">Çikis 2</string>
+    <string name="delay2">Bekleme 2 (ms)</string>
+    <string name="output_3">Çikis 3</string>
+    <string name="delay3">Bekleme 3 (ms)</string>
+    <string name="output_4">Çikis 4</string>
+    <string name="delay4">Bekleme 4 (ms)</string>
+    <string name="upload">Yükle</string>
+    <string name="dismiss_config">Reddet</string>
+    <!-- AltimeterConfigActivity Spinners -->
+    <string name="main_config">Ana</string>
+    <string name="drogue_config">Sürüklenme</string>
+    <string name="timer_config">Zamanlayici</string>
+    <string name="disabled_config">Devre Disi</string>
+    <string name="landing_config">Inis</string>
+    <string name="liftoff_config">Kalkis</string>
+    <string name="altitude_config">Irtifa</string>
+    <string name="altitude1">Irtifa 1 (metre)</string>
+    <string name="altitude2">Irtifa 2 (metre)</string>
+    <string name="altitude3">Irtifa 3 (metre)</string>
+    <string name="altitude4">Irtifa 4 (metre)</string>
+    <!-- Config tab1 tooltips -->
+    <string name="main_altitude_tooltip">Ana parasüt irtifasini giriniz</string>
+    <string name="OutDelay1_tooltip">1. çikis için ms cinsinden atesleme beklemesini giriniz</string>
+    <string name="OutDelay2_tooltip">2. çikis için ms cinsinden atesleme beklemesini giriniz</string>
+    <string name="OutDelay3_tooltip">3. çikis için ms cinsinden atesleme beklemesini giriniz</string>
+    <string name="OutDelay4_tooltip">4. çikis için ms cinsinden atesleme beklemesini giriniz</string>
+    <string name="txtOut1_tooltip">1. çikis ile ne yapmak istediginizi seçiniz</string>
+    <string name="txtOut2_tooltip">2. çikis ile ne yapmak istediginizi seçiniz</string>
+    <string name="txtOut3_tooltip">3. çikis ile ne yapmak istediginizi seçiniz</string>
+    <string name="txtOut4_tooltip">4. çikis ile ne yapmak istediginizi seçiniz</string>
+    <string name="txtViewBaudRate_tooltip">Altimetre Baud Rate seçiniz. Dikkatli olun, tekrar baglanamayabilirsiniz</string>
+    <string name="editTxtApogeeMeasures_tooltip">Zirveyi belirlemek için yapilacak ölçüm sayisi</string>
+    <string name="txtViewAltimeterResolution_tooltip">Altimetre çözünürlügünü belirleyiniz. Roketiniz hizliysa bu deger az olmalidir</string>
+    <string name="txtViewEEpromSize_tooltip">Altimetrede kullanilan EEprom\'a göre boyutunu seçiniz</string>
+    <string name="txtViewRecordTemp_tooltip">Sicakligi ölçmek istiyorsaniz seçiniz</string>
+    <string name="EndRecordAltitude_tooltip">Inis için kabul edilecek olan irtifa degeri</string>
+    <string name="LiftOffAltitude_tooltip">Kalkis için kabul edilecek olan irtifa degeri</string>
+    <string name="txtViewBatteryType_tooltip">Fazla desarj edilmemesi için, kullanilan batarya türünü giriniz</string>
+    <string name="txtAltiUnit_tooltip">Kullanacaginiz irtifa birimini seçiniz</string>
+    <string name="editTxtBipFreq_tooltip">Hz biriminde "Bip Sesi" frekansini seçiniz</string>
+
+    <!-- Config tab2 -->
+    <string name="altimeter_config_tab2">Altimetre Ayarlari</string>
+    <string name="baudRate">Baud Rate</string>
+    <string name="apogeeMeasures">Zirve Ölçümleri</string>
+    <string name="altimeterResolution">Altimetre Çözünürlügü</string>
+    <string name="eepromSize">EEprom Boyutu</string>
+    <string name="beepOnOff">Bip Sesi Aç/Kapat</string>
+    <string name="RecordTemp">Sicakligi Kaydet</string>
+    <string name="SupersonicDelay">Supersonic Bekleme</string>
+    <string name="EndRecordAltitude">Irtifa Kaydi Sonu</string>
+    <string name="LiftOffAltitude">Kalkis Irtifasi</string>
+    <string name="BatteryType">Batarya Türü</string>
+    <string name="config_unknown">Bilinmeyen</string>
+    <string name="config_on">Açik</string>
+    <string name="config_off">Kapali</string>
+    <!-- Config tab3 -->
+    <string name="altimeter_config_tab3">Altimetre Ayarlari</string>
+    <string name="alti_name">Altimetre Ismi</string>
+    <string name="units">Birimler</string>
+    <string name="bip_mode">Bip Sesi Modu</string>
+    <string name="beep_freq">Bip Sesi Frekansi</string>
+    <string name="servo_stay_on">Servo Açik Kal</string>
+    <string name="unit_meter">Metre</string>
+    <string name="unit_feet">Feet</string>
+    <!-- Config tab4-->
+    <string name="servos_config">Servo Ayarlari</string>
+    <string name="servo1_off_pos">Servo1 Kapali Pozisyonu</string>
+    <string name="servo1_on_pos">Servo1 Açik Pozisyonu</string>
+    <string name="servo2_off_pos">Servo2 Kapali Pozisyonu</string>
+    <string name="servo2_on_pos">Servo2 Açik Pozisyonu</string>
+    <string name="servo3_off_pos">Servo3 Kapali Pozisyonu</string>
+    <string name="servo3_on_pos">Servo3 Açik Pozisyonu</string>
+    <string name="servo4_off_pos">Servo4 Kapali Pozisyonu</string>
+    <string name="servo4_on_pos">Servo4 Açik Pozisyonu</string>
+    <string name="config_no">Hayir</string>
+    <string name="config_yes">Evet</string>
+    <!-- Main Screen -->
+    <string name="altimeter_settings">Altimetre Ayarlari</string>
+    <string name="continuity_on_off">Süreklilik Açik/Kapali</string>
+    <string name="read_flights">Uçuslari Oku</string>
+    <string name="reset_settings">Ayarlari Sifirla</string>
+    <string name="disconnect">Baglantiyi Kes</string>
+    <string name="connect">Baglan</string>
+    <string name="telemetry">Telemetri</string>
+
+    <!--connection screen -->
+    <string name="select_device_to_use">Kullanilacak Cihazi Seçiniz</string>
+    <string name="show_paired_devices">Eslesmis Cihazlari Göster</string>
+
+    <!-- Flight graph-->
+    <string name="altitude_time">Irtifa / Zaman</string>
+    <string name="close">Kapat</string>
+    <!-- Reset screen -->
+    <string name="dismiss_reset">Reddet</string>
+    <string name="clear_flights">Uçuslari Temizle</string>
+    <string name="reset_msg1">Tüm uçus verilerini silmek üzeresiniz, emin misiniz?</string>
+    <string name="reset_msg2">Tüm altimetre ayarlarini sifirlamak üzeresiniz, emin misiniz?</string>
+    <string name="Yes">Evet</string>
+    <string name="No">Hayir</string>
+    <!-- bluetooth messages -->
+    <string name="BT_msg1">Bluetooth Cihaz Bulunamadi</string>
+    <string name="BT_msg2">Eslestirilmis Bluetooth Cihaz Bulunamadi</string>
+
+    <!-- main screen msg-->
+    <string name="MS_msg1">Baglaniyor...</string>
+    <string name="MS_msg2">Lütfen Bekleyin!!!</string>
+    <string name="MS_msg3">Baglanti Hatasi. SPP Bluetooth mu? Tekrar Deneyin</string>
+    <string name="MS_msg4">Baglandi</string>
+
+    <string name="those_functions_will_reset_the_altimeter">Bu fonsiyonlar altimetreyi resetler</string>
+    <string name="restore_alti_config">Altimetre ayarlarini temizle</string>
+
+    <!--Flight list screen -->
+    <string name="Flight_list">Uçus Listesi</string>
+    <string name="title_activity_flight_list">Uçus Listesi</string>
+    <string name="dismiss_flight_list">Reddet</string>
+
+    <!-- About screen -->
+    <string name="about_screen">Hakkinda</string>
+    <string name="bear_console_version">Bear Console Versiyon</string>
+    <string name="dismiss_about">Reddet</string>
+
+    <!-- Messages -->
+    <!-- AltimeterConfigActivity -->
+    <string name="msg1">Sadece bir ana parasüt kullanilabilir. Lütfen ayarlari tekrar gözden geçiriniz</string>
+    <string name="msg2">Sadece bir sürüklenme parasütü kullanilabilir. Lütfen ayarlari tekrar gözden geçiriniz</string>
+    <string name="msg3">Ayarlar basariyla yüklendi</string>
+    <string name="msg4">Ayarlar yüklenemedi</string>
+    <string name="msg5">Altimetre ayarlari aliniyor...</string>
+    <string name="msg6">Lütfen Bekleyiniz!!!</string>
+    <string name="msg7">Uçuslar Aliniyor...</string>
+    <string name="msg8">Lütfen Bekleyiniz!!!</string>
+    <string name="msg9">Baud Rate degistirdiniz, altimetre baglanamayabilir. Emin misiniz?</string>
+
+
+    <!-- flight views screen -->
+    <string name="Meters_fview">Metre</string>
+    <string name="Feet_fview">Feet</string>
+    <string name="Altitude_time">Irtifa / Zaman</string>
+    <string name="Time_fv">Zaman (ms)</string>
+    <string name="Altitude">Irtifa</string>
+    <string name="dismiss_flight_list_view">Reddet</string>
+    <!-- Application preference screen-->
+    <string name="titre_application_pref">Uygulama Ayarlari</string>
+
+
+    <!-- Config-->
+    <string name="save_config">Kaydet</string>
+    <string name="dismiss_app_config">Reddet</string>
+    <string name="application_langage_config">Uygulama Dili</string>
+    <string name="graph_color_config">Grafik Rengi</string>
+    <string name="application_units_config">Uygulama Birimleri</string>
+    <string name="graph_back_color_config">Grafik Arkaplan Rengi</string>
+    <string name="default_config">Varsayilan</string>
+    <string name="font_size">Font Boyutu</string>
+    <string name="title_activity_settings">Ayarlar</string>
+    <string name="baud_rate">Baud Rate</string>
+    <string name="connection_type">Baglanti Tipi</string>
+    <string name="graphiclib_type">Grafik Kütüphanesi</string>
+    <string name="MultipleMainDrogue">Çoklu Ana/Sürüklenme</string>
+    <string name="FullUSBSupport">Tam USB Destegi</string>
+    <string name="color_black">Siyah</string>
+    <string name="color_white">Beyaz</string>
+    <string name="color_magenta">Eflatun</string>
+    <string name="color_blue">Mavi</string>
+    <string name="color_yellow">Sari</string>
+    <string name="color_green">Yesil</string>
+    <string name="color_gray">Gri</string>
+    <string name="color_cyan">Camgöbegi</string>
+    <string name="color_dkgray">Koyu Gri</string>
+    <string name="color_ltgray">Açik Gri</string>
+    <string name="color_red">Kirmizi</string>
+
+    <string name="phone_english">Ingilizce</string>
+    <string name="phone_french">Fransizca</string>
+    <string name="phone_language">Telefon Dili</string>
+    <string name="config_unit_meters">Metre</string>
+    <string name="config_unit_feet">Feet</string>
+
+    <string name="general_config">Genel</string>
+    <string name="telemetry_config">Telemetri Ayarlari</string>
+    <string name="main_event">Ana parasüt Olayi</string>
+    <string name="apogee_altitude_event">Zirve Irtifasi</string>
+    <string name="main_altitude_event">Ana Parasüt Irtifasi</string>
+    <string name="drogue_event">Sürüklenme Parasütü Irtifasi</string>
+    <string name="altitude_event">Irtifa Olayi</string>
+    <string name="landing_event">Inis Olayi</string>
+    <string name="burnout_event">Burnout Olayi</string>
+    <string name="warning_event">Uyari Olayi</string>
+    <string name="liftoff_event">Kalkis Olayi</string>
+
+    <!-- Telemetry -->
+    <string name="stop_telemetry">Telemetriyi Durdur</string>
+    <string name="start_telemetry">Telemetriyi Baslat</string>
+    <string name="current_phase">Anlik Evre</string>
+    <string name="altitude">Irtifa</string>
+    <string name="event_time">Olay Zamani</string>
+    <string name="lift_off">Kalkis</string>
+    <string name="apogee_drogue">Zirve/Sürüklenme</string>
+    <string name="main_chute">Ana Parasüt</string>
+    <string name="landed">Indi</string>
+    <string name="max_speed">Maksimum Hiz</string>
+    <string name="current_altitude">Anlik Irtifa</string>
+    <string name="dis">Baglantiyi Kes</string>
+    <string name="tel_telemetry">Telemetri</string>
+    <string name="telemetry_apogee">Zirve</string>
+    <string name="rocket_has_landed">Roket inis yapti</string>
+    <string name="main_deployed">Ana parasüt su irtifada çikti</string>
+
+
+    <!-- Status -->
+    <string name="title_activity_altimeter_status">AltimetreDurumu</string>
+    <string name="altimeter_status">Altimetre Durumu</string>
+    <string name="altimeter_status_disabled">Devre Disi</string>
+    <string name="altimeter_status_output_1">Çikis 1</string>
+    <string name="altimeter_status_output_2">Çikis 2</string>
+    <string name="altimeter_status_output_3">Çikis 3</string>
+    <string name="altimeter_status_output_4">Çikis 4</string>
+    <string name="altimeter_status_current_altitude">Anlik Irtifa</string>
+    <string name="altimeter_status_battery_voltage">Batarya Voltaji</string>
+    <string name="altimeter_status_link_type">Baglanti Türü</string>
+    <string name="altimeter_status_bluetooth">Bluetooth</string>
+    <string name="status">Durum</string>
+    <string name="status_msg1">Altimetre Çikislarini Atesle \nGerçek ayrilma barutlarinin \n takili olmadigina emin olun!!!</string>
+    <string name="temperature">Sicaklik</string>
+    <string name="switch_output_1">Çikis 1</string>
+    <string name="switch_output_2">Çikis 2</string>
+    <string name="switch_output_3">Çikis 3</string>
+    <string name="switch_output_4">Çikis 4</string>
+    <string name="no_continuity">Süreklilik Yok</string>
+    <string name="continuity">Süreklilik Var</string>
+    <string name="disabled">Devre Disi</string>
+    <string name="latitude">Enlem</string>
+    <string name="longitude">Boylam</string>
+
+    <!-- flash firmware -->
+    <string name="msg10">Yazilim Atiliyor...</string>
+    <string name="msg11">Lütfen Bekleyin!!!</string>
+    <string name="msg12">Yükle: </string>
+    <string name="msg13">Açilamiyor</string>
+    <string name="msg14">Yükle : Basla \n</string>
+    <string name="msg15">Yükle: Basarisiz\n</string>
+    <string name="msg16">Yükle: Basarili\n</string>
+    <string name="msg17">Yüklemeyi Iptal Et\n</string>
+    <string name="msg18">Hata: </string>
+    <string name="msg19">Kurtarilan Yazilim Atiliyor...: </string>
+    <string name="firmware_cancel">Iptal</string>
+    <string name="firmware_dismiss">Reddet</string>
+    <string name="recover_firmware">Yazilimi Kurtar</string>
+    <string name="flash_firmware">Yazilim At</string>
+    <string name="select_altimeter_model">Altimetre Modelinizi Seçiniz:</string>
+    <string name="after_complete_upload">Yükleme bittiktan sonra gerçek yazilimi atabilirsiniz</string>
+    <string name="detect_firmware">Yazilimi Belirle</string>
+    <string name="msg_detect_firmware">Yazilim Belirlenmeye Çalisiliyor!!!</string>
+
+    <!--- other -->
+    <string name="flight_list_cancel">Iptal</string>
+    <string name="flight_retrieval_canceled">Uçus verisi alimi kullanici tarafindan durduruldu</string>
+    <string name="flight_have_been_recorded">Kayitli uçus verisi bulunamadi</string>
+    <string name="main_screen_actity">Iptal</string>
+    <string name="title_activity_flight_view_maps">Harita</string>
+    <string name="flight">Uçus</string>
+    <string name="title_activity_flight_view_tab">UçuzIzleSekmesi</string>
+    <string name="tab_text_1">Sekme 1</string>
+    <string name="tab_text_2">Sekme 2</string>
+    <string name="flight_info">Uçus Bilgisi</string>
+    <string name="apogee_altitude">Zirve Irtifasi</string>
+    <string name="max_velocity">Maksimum Hiz</string>
+    <string name="main_alti">Ana Parasüt Irtifasi</string>
+    <string name="flight_duration">Uçus Süresi</string>
+    <string name="burn_time">Yanma Süresi</string>
+    <string name="max_acceleration">Maksimum Ivme</string>
+    <string name="time_to_apogee">Zirve Süresi</string>
+    <string name="max_descent_speed">Maksimum Inis Süresi</string>
+    <string name="landing_speed">Yere Inis Hizi</string>
+    <string name="flight_nbr">Uçus Numarasi</string>
+    <string name="nbr_of_sample">Örnekler</string>
+    <string name="select_curve">Grafigi Seçiniz</string>
+    <string name="fv_ok">Tamam</string>
+    <string name="fv_cancel">Iptal</string>
+    <string name="telemetry_voice">Telemetry Sesi</string>
+    <string name="test_telemetry_voice">Sesi Test Et</string>
+
+    <!--units -->
+    <string name="unit_meters">metre</string>
+    <string name="unit_time">zaman (ms)</string>
+    <string name="unit_feet_per_secs">feet/sn</string>
+    <string name="unit_feet_per_square_secs">feet/sn²</string>
+
+    <!--curves name -->
+    <string name="curve_altitude">irtifa</string>
+    <string name="curve_temperature">sicaklik</string>
+    <string name="curve_pressure">basinç</string>
+    <string name="curve_latitude">enlem</string>
+    <string name="curve_longitude">boylam</string>
+    <string name="curve_speed">hiz</string>
+    <string name="curve_accel">ivme</string>
+    <string name="flight_name">Uçus</string>
+
+
+    <string name="select_bluetooth_device">Bluetooth Cihazini Seçiniz</string>
+    <string name="telemetry_screen">Telemetri</string>
+    <string name="status_screen">Durum</string>
+    <string name="flight_time">Zaman</string>
+
+</resources>
