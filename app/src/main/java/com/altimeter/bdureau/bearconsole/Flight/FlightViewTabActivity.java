@@ -516,8 +516,13 @@ public class FlightViewTabActivity extends AppCompatActivity {
             maxAccelerationValue.setText(String.format("%.2f",maxAccel) + " G");
 
             //burntime value
-            double burnTime = speed.getX(searchX(speed,maxSpeed)).doubleValue();
-            burnTimeValue.setText(burnTime/1000 + " secs");
+            double burnTime =0;
+            if(searchX(speed,maxSpeed)!=-1)
+                burnTime = speed.getX(searchX(speed,maxSpeed)).doubleValue();
+            if (burnTime!=0)
+                burnTimeValue.setText(burnTime/1000 + " secs");
+            else
+                burnTimeValue.setText("N/A");
             //main value
             // remain TODO!!!
             mainAltitudeValue.setText(" " +myBT.getAppConf().getUnitsValue() );
