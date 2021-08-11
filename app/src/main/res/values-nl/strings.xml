@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="version">pre 2.0.0 kandidaat 4</string>
+    <string name="app_name">Bear Console</string>
+    <!-- Menu -->
+    <string name="help">Over</string>
+    <string name="about">About</string>
+    <string name="action_settings">Applicatie instellingen</string>
+    <string name="bluetooth_device">Bluetooth-apparaat</string>
+
+    <!-- Screen altimeter config-->
+    <string name="altimeter_outputs">Hoogtemeteruitgangen</string>
+    <string name="altimeter_config">Hoogtemeterconfiguratie</string>
+    <string name="main_altitude">Hoofdhoogte:</string>
+    <string name="output_1">Uitgang 1</string>
+    <string name="delay1">Vertraging 1 (ms)</string>
+    <string name="output_2">Uitgang 2</string>
+    <string name="delay2">Vertraging 2 (ms)</string>
+    <string name="output_3">Uitgang 3</string>
+    <string name="delay3">Vertraging 3 (ms)</string>
+    <string name="output_4">Uitgang 4</string>
+    <string name="delay4">Vertraging 4 (ms)</string>
+    <string name="upload">Uploaden</string>
+    <string name="dismiss_config">Afwijzen</string>
+    <!-- AltimeterConfigActivity Spinners -->
+    <string name="main_config">Hoofd</string>
+    <string name="drogue_config">Drogue</string>
+    <string name="timer_config">Timer</string>
+    <string name="disabled_config">Uitgeschakeld</string>
+    <string name="landing_config">Geland</string>
+    <string name="liftoff_config">Lancering</string>
+    <string name="altitude_config">Hoogte</string>
+    <string name="altitude1">Hoogte 1 (meter)</string>
+    <string name="altitude2">Hoogte 2 (meter)</string>
+    <string name="altitude3">Hoogte 3 (meter)</string>
+    <string name="altitude4">Hoogte 4 (meter)</string>
+    <!-- Config tab1 tooltips -->
+    <string name="main_altitude_tooltip">Voer de hoogte in voor de hoofdparachute</string>
+    <string name="OutDelay1_tooltip">Voer de ontstekingsvertraging in ms in voor de 1e uitgang</string>
+    <string name="OutDelay2_tooltip">Voer de ontstekingsvertraging in ms in voor de 2e uitgang</string>
+    <string name="OutDelay3_tooltip">Voer de ontstekingsvertraging in ms in voor de 3e uitgang</string>
+    <string name="OutDelay4_tooltip">Voer de ontstekingsvertraging in ms in voor de 4e uitgang</string>
+    <string name="txtOut1_tooltip">Kies wat je wilt doen met de 1e uitgang</string>
+    <string name="txtOut2_tooltip">Kies wat je met de 2e uitgang wilt doen</string>
+    <string name="txtOut3_tooltip">Kies wat je wilt doen met de 3e uitgang</string>
+    <string name="txtOut4_tooltip">Kies wat je wilt doen met de 4e uitgang</string>
+    <string name="txtViewBaudRate_tooltip">Kies de baudrate van de hoogtemeter. Pas op communiceren is wellicht niet mogelijk.</string>
+    <string name="editTxtApogeeMeasures_tooltip">Aantal metingen om het hoogtepunt te bepalen</string>
+    <string name="txtViewAltimeterResolution_tooltip">Kies de resolutie van de hoogtemeter. Hoe sneller je raket gaat, hoe lager hij moet zijn</string>
+    <string name="txtViewEEpromSize_tooltip">Kies de hoogtemeter eeprom grote afhankelijk van welke eeprom er is gebruikt</string>
+    <string name="txtViewRecordTemp_tooltip">Kies of je de temperatuur wilt registreren</string>
+    <string name="EndRecordAltitude_tooltip">Op welke hoogte er vanuit gaan dat we zijn geland?</string>
+    <string name="LiftOffAltitude_tooltip">Op welke hoogte er vanuit gaan dat we zijn opgestegen?</string>
+    <string name="txtViewBatteryType_tooltip">Voer het batterijtype in dat wordt gebruikt om ervoor te zorgen dat we deze niet te veel ontladen</string>
+    <string name="txtAltiUnit_tooltip">Kies de hoogte-eenheden waarmee u bekend bent</string>
+    <string name="editTxtBipFreq_tooltip">Kies de piepfrequentie in Hz</string>
+
+    <!-- Config tab2 -->
+    <string name="altimeter_config_tab2">Hoogtemeterconfiguratie</string>
+    <string name="baudRate">Baudrate</string>
+    <string name="apogeeMeasures">Apogee-meetingen</string>
+    <string name="altimeterResolution">Hoogtemeter Res</string>
+    <string name="eepromSize">EEprom-grootte:</string>
+    <string name="beepOnOff">Piep aan/uit</string>
+    <string name="RecordTemp">Vastleggen temperatuur</string>
+    <string name="SupersonicDelay">Supersonische vertraging</string>
+    <string name="EndRecordAltitude">Einde van opname Hoogte</string>
+    <string name="LiftOffAltitude">Lancering Hoogte</string>
+    <string name="BatteryType">batterij type</string>
+    <string name="config_unknown">onbekend</string>
+    <string name="config_on">Aan</string>
+    <string name="config_off">Uit</string>
+    <!-- Config tab3 -->
+    <string name="altimeter_config_tab3">Hoogtemeterconfiguratie</string>
+    <string name="alti_name">Alti-naam</string>
+    <string name="units">Eenheden</string>
+    <string name="bip_mode">Piepmodus</string>
+    <string name="beep_freq">Piepfrequentie</string>
+    <string name="servo_stay_on">Servo Blijf Aan</string>
+    <string name="unit_meter">Meter</string>
+    <string name="unit_feet">Voeten</string>
+    <!-- Config tab4-->
+    <string name="servos_config">Servoconfiguratie</string>
+    <string name="servo1_off_pos">Servo1 uit pos</string>
+    <string name="servo1_on_pos">Servo1 op pos</string>
+    <string name="servo2_off_pos">Servo2 uit pos</string>
+    <string name="servo2_on_pos">Servo2 op pos</string>
+    <string name="servo3_off_pos">Servo3 uit poss</string>
+    <string name="servo3_on_pos">Servo3 op pos</string>
+    <string name="servo4_off_pos">Servo4 uit pos</string>
+    <string name="servo4_on_pos">Servo4 op pos</string>
+    <string name="config_no">Nee</string>
+    <string name="config_yes">Ja</string>
+    <!-- Main Screen -->
+    <string name="altimeter_settings">Hoogtemeterinstellingen</string>
+    <string name="continuity_on_off">Continuïteit aan/uit</string>
+    <string name="read_flights">Vluchten inlezen</string>
+    <string name="reset_settings">Reset instellingen</string>
+    <string name="disconnect">Verbinding verbreken</string>
+    <string name="connect">Aansluiten</string>
+    <string name="telemetry">Telemetrie</string>
+
+    <!--connection screen -->
+    <string name="select_device_to_use">Selecteer apparaat om te gebruiken</string>
+    <string name="show_paired_devices">Gekoppelde apparaten weergeven</string>
+
+    <!-- Flight graph-->
+    <string name="altitude_time">Hoogte / Tijd</string>
+    <string name="close">Dichtbij</string>
+    <!-- Reset screen -->
+    <string name="dismiss_reset">Afwijzen</string>
+    <string name="clear_flights">Vluchten wissen</string>
+    <string name="reset_msg1">U staat op het punt alle vluchtgegevens te wissen, weet u zeker dat u dit wilt doen?</string>
+    <string name="reset_msg2">U staat op het punt uw hoogtemeterconfiguratie opnieuw in te stellen, weet u zeker dat u dit wilt doen?</string>
+    <string name="Yes">Ja</string>
+    <string name="No">Nee</string>
+    <!-- bluetooth messages -->
+    <string name="BT_msg1">Bluetooth-apparaat niet beschikbaar</string>
+    <string name="BT_msg2">Geen gekoppelde Bluetooth-apparaten gevonden.</string>
+
+    <!-- main screen msg-->
+    <string name="MS_msg1">Verbinden...</string>
+    <string name="MS_msg2">Wacht alsjeblieft!!!</string>
+    <string name="MS_msg3">Verbinding mislukt. Is het een SPP Bluetooth? Probeer het opnieuw.</string>
+    <string name="MS_msg4">Verbonden.</string>
+
+    <string name="those_functions_will_reset_the_altimeter">Deze functies resetten de hoogtemeter</string>
+    <string name="restore_alti_config">Alti-configuratie herstellen</string>
+
+    <!--Flight list screen -->
+    <string name="Flight_list">Vluchtlijst</string>
+    <string name="title_activity_flight_list">Vluchtlijst</string>
+    <string name="dismiss_flight_list">Afwijzen</string>
+
+    <!-- About screen -->
+    <string name="about_screen">Over</string>
+    <string name="bear_console_version">Bear Console-versie</string>
+    <string name="dismiss_about">Afwijzen</string>
+
+    <!-- Messages -->
+    <!-- AltimeterConfigActivity -->
+    <string name="msg1">Er is slechts één hoofdparachute toegestaan. Controleer uw configuratie a.u.b.</string>
+    <string name="msg2">Slechts één Drogue is toegestaan. Controleer uw configuratie a.u.b.</string>
+    <string name="msg3">Configuratie succesvol geüpload</string>
+    <string name="msg4">Kan configuratie niet uploaden</string>
+    <string name="msg5">Hoogtemeterconfiguratie ophalen...</string>
+    <string name="msg6">Wacht alsjeblieft!!!</string>
+    <string name="msg7">Vluchten ophalen...</string>
+    <string name="msg8">Wacht alsjeblieft!!!</string>
+    <string name="msg9">U hebt de baudrate gewijzigd, de hoogtemeter kan mogelijk geen verbinding maken. Weet je het zeker?</string>
+
+
+    <!-- flight views screen -->
+    <string name="Meters_fview">Meter</string>
+    <string name="Feet_fview">Voeten</string>
+    <string name="Altitude_time">Hoogte / Tijd</string>
+    <string name="Time_fv">Tijd (ms)</string>
+    <string name="Altitude">Hoogte</string>
+    <string name="dismiss_flight_list_view">Afwijzen</string>
+    <!-- Application preference screen-->
+    <string name="titre_application_pref">Programma voorkeuren</string>
+
+
+    <!-- Config-->
+    <string name="save_config">Opslaan</string>
+    <string name="dismiss_app_config">Afwijzen</string>
+    <string name="application_langage_config">Programma taal</string>
+    <string name="graph_color_config">Grafiek kleur</string>
+    <string name="application_units_config">Programma-eenheden</string>
+    <string name="graph_back_color_config">Grafiek terug kleur</string>
+    <string name="default_config">Standaard</string>
+    <string name="font_size">Lettertypegrootte</string>
+    <string name="title_activity_settings">Instellingen</string>
+    <string name="baud_rate">Baudrate</string>
+    <string name="connection_type">Connectie type</string>
+    <string name="graphiclib_type">Grafische bibliotheek</string>
+    <string name="MultipleMainDrogue">Meerdere hoofd/drag</string>
+    <string name="FullUSBSupport">Volledige USB-ondersteuning</string>
+    <string name="color_black">ZWART</string>
+    <string name="color_white">WIT</string>
+    <string name="color_magenta">MAGENTA</string>
+    <string name="color_blue">BLAUW</string>
+    <string name="color_yellow">GEEL</string>
+    <string name="color_green">GROEN</string>
+    <string name="color_gray">GRIJS</string>
+    <string name="color_cyan">CYAAN</string>
+    <string name="color_dkgray">DKGRIJS</string>
+    <string name="color_ltgray">LGRIJS</string>
+    <string name="color_red">ROOD</string>
+
+    <string name="phone_english">Engels</string>
+    <string name="phone_french">Frans</string>
+    <string name="phone_language">Telefoontaal</string>
+    <string name="config_unit_meters">Meter</string>
+    <string name="config_unit_feet">Voeten</string>
+
+    <string name="general_config">Algemeen</string>
+    <string name="telemetry_config">Telemetrieconfiguratie</string>
+    <string name="main_event">Hoofdevenement</string>
+    <string name="apogee_altitude_event">Apogee hoogte</string>
+    <string name="main_altitude_event">Hoofdhoogte:</string>
+    <string name="drogue_event">Drogue-evenement</string>
+    <string name="altitude_event">Hoogte evenement</string>
+    <string name="landing_event">landingsgebeurtenis</string>
+    <string name="burnout_event">Burn-out evenement</string>
+    <string name="warning_event">Waarschuwingsgebeurtenis</string>
+    <string name="liftoff_event">Lift-off evenement</string>
+
+    <!-- Telemetry -->
+    <string name="stop_telemetry">Telemetrie stoppen</string>
+    <string name="start_telemetry">Telemetrie starten</string>
+    <string name="current_phase">Huidige fase</string>
+    <string name="altitude">Hoogte</string>
+    <string name="event_time">Evenement Tijd</string>
+    <string name="lift_off">Lancering</string>
+    <string name="apogee_drogue">Apogee/drogue</string>
+    <string name="main_chute">Hoofdparachute</string>
+    <string name="landed">Geland</string>
+    <string name="max_speed">Maximale snelheid</string>
+    <string name="current_altitude">Huidige hoogte</string>
+    <string name="dis">Verbinding verbreken</string>
+    <string name="tel_telemetry">Telemetrie</string>
+    <string name="telemetry_apogee">hoogtepunt</string>
+    <string name="rocket_has_landed">raket is geland</string>
+    <string name="main_deployed">hoofdparachute is ingezet bij</string>
+
+
+    <!-- Status -->
+    <string name="title_activity_altimeter_status">Hoogtemeterstatus</string>
+    <string name="altimeter_status">Hoogtemeterstatus</string>
+    <string name="altimeter_status_disabled">Gehandicapt</string>
+    <string name="altimeter_status_output_1">Uitgang 1</string>
+    <string name="altimeter_status_output_2">Uitgang 2</string>
+    <string name="altimeter_status_output_3">Uitgang 3</string>
+    <string name="altimeter_status_output_4">Uitgang 4</string>
+    <string name="altimeter_status_current_altitude">Huidige hoogte</string>
+    <string name="altimeter_status_battery_voltage">Batterij voltage</string>
+    <string name="altimeter_status_link_type">Linktype</string>
+    <string name="altimeter_status_bluetooth">Bluetooth</string>
+    <string name="status">Toestand</string>
+    <string name="status_msg1">Vuurhoogtemeter uitgangen \nZorg ervoor dat je \n geen echte pyroladingen hebt!!!</string>
+    <string name="temperature">Temperatuur</string>
+    <string name="switch_output_1">Uitgang 1</string>
+    <string name="switch_output_2">Uitgang 2</string>
+    <string name="switch_output_3">Uitgang 3</string>
+    <string name="switch_output_4">Uitgang 4</string>
+    <string name="no_continuity">Geen continuïteit</string>
+    <string name="continuity">Continuïteit</string>
+    <string name="disabled">Gehandicapt</string>
+    <string name="latitude">Breedtegraad</string>
+    <string name="longitude">Lengtegraad</string>
+
+    <!-- flash firmware -->
+    <string name="msg10">Flashing firmware...</string>
+    <string name="msg11">Wacht alsjeblieft!!!</string>
+    <string name="msg12">Uploaden: </string>
+    <string name="msg13">Kan niet openen</string>
+    <string name="msg14">Uploaden : Start \n</string>
+    <string name="msg15">Uploaden: mislukt\n</string>
+    <string name="msg16">Uploaden: succesvol\n</string>
+    <string name="msg17">Uploaden annuleren\n</string>
+    <string name="msg18">Fout: </string>
+    <string name="msg19">Flashing recover firmware...: </string>
+    <string name="firmware_cancel">Annuleren</string>
+    <string name="firmware_dismiss">Afwijzen</string>
+    <string name="recover_firmware">Firmware herstellen</string>
+    <string name="flash_firmware">Flash Firmware</string>
+    <string name="select_altimeter_model">Selecteer uw hoogtemetermodel:</string>
+    <string name="after_complete_upload">Nadat het uploaden is voltooid, kunt u de echte firmware flashen</string>
+    <string name="detect_firmware">Detecteren firmware</string>
+    <string name="msg_detect_firmware">Poging om firmware te detecteren!!!</string>
+
+    <!--- other -->
+    <string name="flight_list_cancel">Annuleren</string>
+    <string name="flight_retrieval_canceled">Het ophalen van de vlucht is geannuleerd door de gebruiker</string>
+    <string name="flight_have_been_recorded">Er zijn geen vluchten geregistreerd</string>
+    <string name="main_screen_actity">Annuleren</string>
+    <string name="title_activity_flight_view_maps">Kaart</string>
+    <string name="flight">Vlucht</string>
+    <string name="title_activity_flight_view_tab">FlightViewTabActiviteit</string>
+    <string name="tab_text_1">Tabblad 1</string>
+    <string name="tab_text_2">Tabblad 2</string>
+    <string name="flight_info">Vluchtinformatie</string>
+    <string name="apogee_altitude">Apogee Hoogte</string>
+    <string name="max_velocity">Maximale snelheid</string>
+    <string name="main_alti">Hoofdhoogte</string>
+    <string name="flight_duration">Vlucht duur</string>
+    <string name="burn_time">Brandtijd</string>
+    <string name="max_acceleration">Max acceleratie</string>
+    <string name="time_to_apogee">Tijd tot Apogee</string>
+    <string name="max_descent_speed">Maximale daalsnelheid</string>
+    <string name="landing_speed">Landingssnelheid</string>
+    <string name="flight_nbr">Vluchtnummer</string>
+    <string name="nbr_of_sample">Samples</string>
+    <string name="select_curve">Selecteer Curve</string>
+    <string name="fv_ok">OK</string>
+    <string name="fv_cancel">Annuleren</string>
+    <string name="telemetry_voice">Telemetrische stem</string>
+    <string name="test_telemetry_voice">Stem testen</string>
+
+    <!--units -->
+    <string name="unit_meters">meter</string>
+    <string name="unit_time">tijd (ms)</string>
+    <string name="unit_feet_per_secs">voeten/sec</string>
+    <string name="unit_feet_per_square_secs">voet/s²</string>
+
+    <!--curves name -->
+    <string name="curve_altitude">hoogte</string>
+    <string name="curve_temperature">temperatuur</string>
+    <string name="curve_pressure">druk</string>
+    <string name="curve_latitude">breedtegraad</string>
+    <string name="curve_longitude">Lengtegraad</string>
+    <string name="curve_speed">snelheid</string>
+    <string name="curve_accel">versnelling</string>
+    <string name="flight_name">Vlucht</string>
+
+
+    <string name="select_bluetooth_device">Selecteer Bluetooth-apparaat</string>
+    <string name="telemetry_screen">Telemetrie</string>
+    <string name="status_screen">Toestand</string>
+    <string name="flight_time">Tijd</string>
+
+</resources>
