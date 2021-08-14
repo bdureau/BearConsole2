@@ -679,6 +679,8 @@ public class AppConfigActivity extends AppCompatActivity {
                                     //result = mTTS.setLanguage(Locale.FRENCH);
                                 else if (Locale.getDefault().getLanguage() == "tr")
                                     result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                                else if (Locale.getDefault().getLanguage() == "nl")
+                                    result = mTTS.setLanguage(getResources().getConfiguration().locale);
                                 else
                                     result = mTTS.setLanguage(Locale.ENGLISH);
 
@@ -706,6 +708,8 @@ public class AppConfigActivity extends AppCompatActivity {
                                     mTTS.speak("Les altimètres Bearaltimeter sont les meilleurs", TextToSpeech.QUEUE_FLUSH, null);
                                 if (Locale.getDefault().getLanguage() == "tr")
                                     mTTS.speak("Roket inis yapti", TextToSpeech.QUEUE_FLUSH, null);
+                                if (Locale.getDefault().getLanguage() == "nl")
+                                    mTTS.speak("De Bearaltimeter-hoogtemeters zijn de beste", TextToSpeech.QUEUE_FLUSH, null);
                                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                                     Log.e("TTS", "Language not supported");
                                 } else {
