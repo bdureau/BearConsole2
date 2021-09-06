@@ -1,0 +1,322 @@
+<resources>
+    <string name="version"> pre 2.0.0 candidate 4</string>
+    <string name="app_name">Bear Console</string>
+    <!-- Menu -->
+    <string name="help">Help</string>
+    <string name="about">About</string>
+    <string name="action_settings">Muvelet beallitasok</string>
+    <string name="bluetooth_device">bluetooth eszkoz</string>
+
+    <!-- Screen altimeter config-->
+    <string name="altimeter_outputs">Altimeter kimenetek</string>
+    <string name="altimeter_config">Altimeter beallitasok</string>
+    <string name="main_altitude">Csucsmagassag</string>
+    <string name="output_1">Kimenet 1</string>
+    <string name="delay1">Idozites 1 (ms)</string>
+    <string name="output_2">Kimenet 2</string>
+    <string name="delay2">Idozites 2 (ms)</string>
+    <string name="output_3">Kimenet 3</string>
+    <string name="delay3">Idozites 3 (ms)</string>
+    <string name="output_4">Kimenet 4</string>
+    <string name="delay4">Idozites 4 (ms)</string>
+    <string name="upload">Feltoltes</string>
+    <string name="dismiss_config">Elvetes</string>
+    <!-- AltimeterConfigActivity Spinners -->
+    <string name="main_config">Foernyo</string>
+    <string name="drogue_config">Fekernyo</string>
+    <string name="timer_config">Idozites</string>
+    <string name="disabled_config">Tiltas</string>
+    <string name="landing_config">Landolas</string>
+    <string name="liftoff_config">Felbocsajtas</string>
+    <string name="altitude_config">Magassag</string>
+    <string name="altitude1">Magassag 1 (meter)</string>
+    <string name="altitude2">Magassag 2 (meter)</string>
+    <string name="altitude3">Magassag 3 (meter)</string>
+    <string name="altitude4">Magassag 4 (meter)</string>
+    <!-- Config tab1 tooltips -->
+    <string name="main_altitude_tooltip">Add meg a foernyo nyitasi magassagot</string>
+    <string name="OutDelay1_tooltip">Add meg az idozitest ms-ban az elso kimenethez</string>
+    <string name="OutDelay2_tooltip">Add meg az idozitest ms-ban a masodik kimenethez</string>
+    <string name="OutDelay3_tooltip">Add meg az idozitest ms-ban a harmadik kimenethez</string>
+    <string name="OutDelay4_tooltip">Add meg az idozitest ms-ban a negyedik kimenethez</string>
+    <string name="txtOut1_tooltip">Valaszd ki mit csinaljon az elso kimenet</string>
+    <string name="txtOut2_tooltip">Valaszd ki mit csinaljon a masodik kimenet</string>
+    <string name="txtOut3_tooltip">Valaszd ki mit csinaljon a harmadik kimenet</string>
+    <string name="txtOut4_tooltip">Valaszd ki mit csinaljon a negyedik kimenet</string>
+    <string name="txtViewBaudRate_tooltip">Valaszd ki a magassagmero atviteli sebesseget (baud rate). Ovatosan, mert nem biztos hogy lehetseges lesz kesobb a kommunikacio</string>
+    <string name="editTxtApogeeMeasures_tooltip">Meresek szama a csucsmagassag meghatarozasahoz</string>
+    <string name="txtViewAltimeterResolution_tooltip">Hatarozd meg a magassagmeres felbontasat. Minel gyorsabban megy a raketa, annal alacsonyabbnak kell lennie</string>
+    <string name="txtViewEEpromSize_tooltip">Hatarozd meg a magassagmero eeprom meretet attol fuggoen, hogy milyen eepromot hasznalsz</string>
+    <string name="txtViewRecordTemp_tooltip">Valaszd ki ha rogziteni akarod a homersekletet</string>
+    <string name="EndRecordAltitude_tooltip">Milyen magassagon landolunk At which altitude do you consider that we have landed</string>
+    <string name="LiftOffAltitude_tooltip">At which altitude do you consider that we have lift off</string>
+    <string name="txtViewBatteryType_tooltip">Add meg az akkucella tipusat, hogy nehogy nagyon lemer�tsuk</string>
+    <string name="txtAltiUnit_tooltip">Valaszd ki a magassag mertekegyseget</string>
+    <string name="editTxtBipFreq_tooltip">Add meg a sipolas frekvenciajat Hz-ben</string>
+
+    <!-- Config tab2 -->
+    <string name="altimeter_config_tab2">Altimeter beallitasok</string>
+    <string name="baudRate">atviteli sebesseg (Baud Rate)</string>
+    <string name="apogeeMeasures">Apogee Measures</string>
+    <string name="altimeterResolution">Magassagmeres felbontas</string>
+    <string name="eepromSize">EEprom merete</string>
+    <string name="beepOnOff">Csipogo On/Off</string>
+    <string name="RecordTemp">Homerseklet meres</string>
+    <string name="SupersonicDelay">Szuperszonikus kesleltetes</string>
+    <string name="EndRecordAltitude">Magassagmeres rogzitesenek befejezese</string>
+    <string name="LiftOffAltitude">Inditas magassaga</string>
+    <string name="BatteryType">Akku cella tipusa</string>
+    <string name="config_unknown">ismeretlen</string>
+    <string name="config_on">On</string>
+    <string name="config_off">Off</string>
+    <!-- Config tab3 -->
+    <string name="altimeter_config_tab3">Altimeter beallitasok</string>
+    <string name="alti_name">Alti Name</string>
+    <string name="units">Mertekegysegek</string>
+    <string name="bip_mode">Csipogas modja</string>
+    <string name="beep_freq">Csipogas frekvenciaja</string>
+    <string name="servo_stay_on">Servo Stay On</string>
+    <string name="unit_meter">Meter</string>
+    <string name="unit_feet">Lab/Feet</string>
+    <!-- Config tab4-->
+    <string name="servos_config">Szervok beallitasai</string>
+    <string name="servo1_off_pos">Szervo1 off pozicio</string>
+    <string name="servo1_on_pos">Szervo1 on pozicio</string>
+    <string name="servo2_off_pos">Szervo2 off pozicio</string>
+    <string name="servo2_on_pos">Szervo2 on pozicio</string>
+    <string name="servo3_off_pos">Szervo3 off pozicio</string>
+    <string name="servo3_on_pos">Szervo3 on pozicio</string>
+    <string name="servo4_off_pos">Szervo4 off pozicio</string>
+    <string name="servo4_on_pos">Szervo4 on pozicio</string>
+    <string name="config_no">Nem</string>
+    <string name="config_yes">Igen</string>
+    <!-- Main Screen -->
+    <string name="altimeter_settings">Altimeter beallitasok</string>
+    <string name="continuity_on_off">Szakadasvizsgalat On/Off</string>
+    <string name="read_flights">Read Flights</string>
+    <string name="reset_settings">Beallitasok visszaallitasa (Reset)</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="connect">Connect</string>
+    <string name="telemetry">Telemetria</string>
+
+    <!--connection screen -->
+    <string name="select_device_to_use">Valaszd ki a hasznalni kivant eszkozt</string>
+    <string name="show_paired_devices">Parositott eszkozok megjelenitese</string>
+
+    <!-- Flight graph-->
+    <string name="altitude_time">Magassag / Ido</string>
+    <string name="close">Bezaras</string>
+    <!-- Reset screen -->
+    <string name="dismiss_reset">Elvetes</string>
+    <string name="clear_flights">elozo repulesek adatainak torlese</string>
+    <string name="reset_msg1">Torolni fogod az osszes elozo repulesi adatot, biztos vagy benne?</string>
+    <string name="reset_msg2">Resetelni fogod a magassagmero beallitasait, biztos vagy benne?</string>
+    <string name="Yes">Igen</string>
+    <string name="No">Nem</string>
+    <!-- bluetooth messages -->
+    <string name="BT_msg1">Bluetooth eszkoz nem elerheto</string>
+    <string name="BT_msg2">Nem talalhato parositott Bluetooth eszkoz.</string>
+
+    <!-- main screen msg-->
+    <string name="MS_msg1">Kapcsolodas...</string>
+    <string name="MS_msg2">Kerlek varj!!!</string>
+    <string name="MS_msg3">A kapcsolat nem sikerult. Ez egy SPP Bluetooth? Probald ujra.</string>
+    <string name="MS_msg4">Kapcsolodva.</string>
+
+    <string name="those_functions_will_reset_the_altimeter">Ezek a funkciok resetelik a magassagmerot</string>
+    <string name="restore_alti_config">Alti config visszaallitasa</string>
+
+    <!--Flight list screen -->
+    <string name="Flight_list">Repulesek listaja</string>
+    <string name="title_activity_flight_list">Repulesek listaja</string>
+    <string name="dismiss_flight_list">Elvetes</string>
+
+    <!-- About screen -->
+    <string name="about_screen">About</string>
+    <string name="bear_console_version">Bear Console verzio</string>
+    <string name="dismiss_about">Elvetes</string>
+
+    <!-- Messages -->
+    <!-- AltimeterConfigActivity -->
+    <string name="msg1">Csak egy foernyo engedelyezett. Kerlek ellenorizd a beallitasokat</string>
+    <string name="msg2">Csak egy fekernyo engedelyezett. Kerlek ellenorizd a beallitasokat</string>
+    <string name="msg3">Beallitasok sikeresen feltoltve</string>
+    <string name="msg4">A beallitasok feltoltese sikertelen</string>
+    <string name="msg5">Altimeter konfiguracio lekerese...</string>
+    <string name="msg6">Kerlek varj!!!</string>
+    <string name="msg7">Repulesek visszakeres�se...</string>
+    <string name="msg8">Kerlek varj!!!</string>
+    <string name="msg9">Modositottad az atviteli sebesseget (baud rate), a magassagmero esetleg nem tud csatlakozni. Biztos vagy benne?</string>
+
+
+    <!-- flight views screen -->
+    <string name="Meters_fview">Meter</string>
+    <string name="Feet_fview">Feet/lab</string>
+    <string name="Altitude_time">Magassag / Ido</string>
+    <string name="Time_fv">Ido (ms)</string>
+    <string name="Altitude">Magassag</string>
+    <string name="dismiss_flight_list_view">Elvetes</string>
+    <!-- Application preference screen-->
+    <string name="titre_application_pref">Program beallitasok</string>
+
+
+    <!-- Config-->
+    <string name="save_config">Mentes</string>
+    <string name="dismiss_app_config">Elvetes</string>
+    <string name="application_langage_config">Program nyelv</string>
+    <string name="graph_color_config">grafikon szine</string>
+    <string name="application_units_config">Mertekegyseg</string>
+    <string name="graph_back_color_config">Grafikon hatter szine</string>
+    <string name="default_config">Alapertelmezett</string>
+    <string name="font_size">Betu meret</string>
+    <string name="title_activity_settings">Beallitasok</string>
+    <string name="baud_rate">Atviteli sebesseg (Baud Rate)</string>
+    <string name="connection_type">Csatlakozas tipusa</string>
+    <string name="graphiclib_type">Grafikus konyvtar </string>
+    <string name="MultipleMainDrogue">Tobb fo/fekernyo</string>
+    <string name="FullUSBSupport">Teljes USB tamogatas</string>
+    <string name="color_black">FEKETE</string>
+    <string name="color_white">FEHER</string>
+    <string name="color_magenta">MAGENTA</string>
+    <string name="color_blue">KEK</string>
+    <string name="color_yellow">SARGA</string>
+    <string name="color_green">ZOLD</string>
+    <string name="color_gray">SZURKE</string>
+    <string name="color_cyan">VILAGOSKEK</string>
+    <string name="color_dkgray">SOTETSZURKE</string>
+    <string name="color_ltgray">VILAGOSSZURKE</string>
+    <string name="color_red">PIROS</string>
+
+    <string name="phone_english">Angol</string>
+    <string name="phone_french">Francia</string>
+    <string name="phone_language">telefon nyelv</string>
+    <string name="config_unit_meters">Meter</string>
+    <string name="config_unit_feet">Feet/lab</string>
+
+    <string name="general_config">Altalanos</string>
+    <string name="telemetry_config">Telemetria beallitas</string>
+    <string name="main_event">Foernyo nyitas</string>
+    <string name="apogee_altitude_event">Csucsmagassag</string>
+    <string name="main_altitude_event">Csucsmagassag</string>
+    <string name="drogue_event">Fekernyo nyitas</string>
+    <string name="altitude_event">Csucsmagassag</string>
+    <string name="landing_event">Landolas</string>
+    <string name="burnout_event">Motor kiegese</string>
+    <string name="warning_event">Warning event</string>
+    <string name="liftoff_event">Felloves</string>
+
+    <!-- Telemetry -->
+    <string name="stop_telemetry">Telemetria leallitas</string>
+    <string name="start_telemetry">Telemetria inditas</string>
+    <string name="current_phase">Aktualis fazis</string>
+    <string name="altitude">Magassag</string>
+    <string name="event_time">Esemeny idotartama</string>
+    <string name="lift_off">Felloves</string>
+    <string name="apogee_drogue">Csucsmagassag/fekernyo</string>
+    <string name="main_chute">Foernyo</string>
+    <string name="landed">Leszallt</string>
+    <string name="max_speed">Max sebesseg</string>
+    <string name="current_altitude">Jelenlegi magassag</string>
+    <string name="dis">szetkapcsolodas</string>
+    <string name="tel_telemetry">Telemetria</string>
+    <string name="telemetry_apogee">Csucsmagassag</string>
+    <string name="rocket_has_landed">a raketa landolt</string>
+    <string name="main_deployed">a foernyo kinyilt</string>
+
+
+    <!-- Status -->
+    <string name="title_activity_altimeter_status">MagassagmeroStatus</string>
+    <string name="altimeter_status">Magassagmero status</string>
+    <string name="altimeter_status_disabled">Tiltva</string>
+    <string name="altimeter_status_output_1">Kimenet 1</string>
+    <string name="altimeter_status_output_2">Kimenet 2</string>
+    <string name="altimeter_status_output_3">Kimenet 3</string>
+    <string name="altimeter_status_output_4">Kimenet 4</string>
+    <string name="altimeter_status_current_altitude">Jelenlegi magassag</string>
+    <string name="altimeter_status_battery_voltage">Aramforras feszultsege</string>
+    <string name="altimeter_status_link_type">kapcsolat tipusa</string>
+    <string name="altimeter_status_bluetooth">Bluetooth</string>
+    <string name="status">Status</string>
+    <string name="status_msg1">Altimeter kimenetek gyujtasa \nEllenorizd hogy nincs bekotve \n egyetlen piro toltet sem!!!</string>
+    <string name="temperature">Homerseklet</string>
+    <string name="switch_output_1">Kimenet 1</string>
+    <string name="switch_output_2">Kimenet 2</string>
+    <string name="switch_output_3">Kimenet 3</string>
+    <string name="switch_output_4">Kimenet 4</string>
+    <string name="no_continuity">Szakadas</string>
+    <string name="continuity">Folytonos</string>
+    <string name="disabled">Tiltva</string>
+    <string name="latitude">Szelesseg</string>
+    <string name="longitude">Hosszusag</string>
+
+    <!-- flash firmware -->
+    <string name="msg10">firmware frissites...</string>
+    <string name="msg11">Kerlek varj!!!</string>
+    <string name="msg12">Feltoltes: </string>
+    <string name="msg13">Nem lehet megnyitni</string>
+    <string name="msg14">Feltoltes : Start \n</string>
+    <string name="msg15">Feltoltes: sikertelen\n</string>
+    <string name="msg16">Feltoltes: Sikeres\n</string>
+    <string name="msg17">A feltoltes megszakitasa\n</string>
+    <string name="msg18">Hiba: </string>
+    <string name="msg19">recover firmware egetese...: </string>
+    <string name="firmware_cancel">Torles</string>
+    <string name="firmware_dismiss">Elvetes</string>
+    <string name="recover_firmware">Recover Firmware</string>
+    <string name="flash_firmware">Firmware egetes</string>
+    <string name="select_altimeter_model">Valaszd ki a magassagmero tipusat:</string>
+    <string name="after_complete_upload">A feltoltes befejezese utan lehet beegetni a valos firmware-t</string>
+    <string name="detect_firmware">firmware detektalasa</string>
+    <string name="msg_detect_firmware">Firmware eszlelesi kiserlet!!!</string>
+
+    <!--- other -->
+    <string name="flight_list_cancel">Torles</string>
+    <string name="flight_retrieval_canceled">Repulesi lista torolve a felhasznalo altal</string>
+    <string name="flight_have_been_recorded">Nincsenek rogzitett repulesek</string>
+    <string name="main_screen_actity">Torles</string>
+    <string name="title_activity_flight_view_maps">Map</string>
+    <string name="flight">Repules</string>
+    <string name="title_activity_flight_view_tab">RepulesiNezetFulTevekenyseg</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="flight_info">Repules Info</string>
+    <string name="apogee_altitude">Csucsmagassag</string>
+    <string name="max_velocity">Max sebesseg</string>
+    <string name="main_alti">Main Altitude</string>
+    <string name="flight_duration">Repules idotartama</string>
+    <string name="burn_time">Motor egesi ido</string>
+    <string name="max_acceleration">Max gyorsulas</string>
+    <string name="time_to_apogee">Csucsmagassag eleresehez szukseges ido</string>
+    <string name="max_descent_speed">Max ereszkedesi sebesseg</string>
+    <string name="landing_speed">Leszallasi sebesseg</string>
+    <string name="flight_nbr">Repules szama</string>
+    <string name="nbr_of_sample">Samples</string>
+    <string name="select_curve">Valaszd ki a kivant gorbet</string>
+    <string name="fv_ok">OK</string>
+    <string name="fv_cancel">Torles</string>
+    <string name="telemetry_voice">Telemetria hang</string>
+    <string name="test_telemetry_voice">Teszt hang</string>
+
+    <!--units -->
+    <string name="unit_meters">meter</string>
+    <string name="unit_time">ido (ms)</string>
+    <string name="unit_feet_per_secs">lab(feet)/sec</string>
+    <string name="unit_feet_per_square_secs">lab(feet)/sec�</string>
+
+    <!--curves name -->
+    <string name="curve_altitude">magassag</string>
+    <string name="curve_temperature">homerseklet</string>
+    <string name="curve_pressure">nyomas</string>
+    <string name="curve_latitude">szelesseg</string>
+    <string name="curve_longitude">hosszusag</string>
+    <string name="curve_speed">sebesseg</string>
+    <string name="curve_accel">gyorsulas</string>
+    <string name="flight_name">Repules</string>
+
+
+    <string name="select_bluetooth_device">Valaszd ki a Bluetooth eszkozt</string>
+    <string name="telemetry_screen">Telemetria</string>
+    <string name="status_screen">Statusz</string>
+    <string name="flight_time">Ido</string>
+
+</resources>
