@@ -110,11 +110,15 @@ public class AppConfigActivity extends AppCompatActivity {
                         result = mTTS.setLanguage(Locale.FRENCH);
                     else if (Locale.getDefault().getLanguage() == "tr")
                         result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage() == "es")
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
                     else if (Locale.getDefault().getLanguage() == "nl")
                         result = mTTS.setLanguage(getResources().getConfiguration().locale);
                     else if (Locale.getDefault().getLanguage() == "it")
                         result = mTTS.setLanguage(getResources().getConfiguration().locale);
                     else if (Locale.getDefault().getLanguage() == "hu")
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage() == "ru")
                         result = mTTS.setLanguage(getResources().getConfiguration().locale);
                     else
                         result = mTTS.setLanguage(Locale.ENGLISH);
@@ -684,6 +688,8 @@ public class AppConfigActivity extends AppCompatActivity {
                                     result = mTTS.setLanguage(getResources().getConfiguration().locale);
                                 else if (Locale.getDefault().getLanguage() == "fr")
                                     result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                                else if (Locale.getDefault().getLanguage() == "es")
+                                    result = mTTS.setLanguage(getResources().getConfiguration().locale);
                                     //result = mTTS.setLanguage(Locale.FRENCH);
                                 else if (Locale.getDefault().getLanguage() == "tr")
                                     result = mTTS.setLanguage(getResources().getConfiguration().locale);
@@ -692,6 +698,8 @@ public class AppConfigActivity extends AppCompatActivity {
                                 else if (Locale.getDefault().getLanguage() == "it")
                                     result = mTTS.setLanguage(getResources().getConfiguration().locale);
                                 else if (Locale.getDefault().getLanguage() == "hu")
+                                    result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                                else if (Locale.getDefault().getLanguage() == "ru")
                                     result = mTTS.setLanguage(getResources().getConfiguration().locale);
                                 else
                                     result = mTTS.setLanguage(Locale.ENGLISH);
@@ -715,13 +723,20 @@ public class AppConfigActivity extends AppCompatActivity {
                                 mTTS.setSpeechRate(1.0f);
                                 if (Locale.getDefault().getLanguage() == "en")
                                     mTTS.speak("Bearaltimeter altimeters are the best", TextToSpeech.QUEUE_FLUSH, null);
-
                                 if (Locale.getDefault().getLanguage() == "fr")
                                     mTTS.speak("Les altimètres Bearaltimeter sont les meilleurs", TextToSpeech.QUEUE_FLUSH, null);
+                                if (Locale.getDefault().getLanguage() == "es")
+                                    mTTS.speak("Los altimietros Bearaltimeter son los mejores", TextToSpeech.QUEUE_FLUSH, null);
+                                if (Locale.getDefault().getLanguage() == "it")
+                                    mTTS.speak("Gli altimetri Bearaltimeter sono i migliori", TextToSpeech.QUEUE_FLUSH, null);
                                 if (Locale.getDefault().getLanguage() == "tr")
                                     mTTS.speak("Roket inis yapti", TextToSpeech.QUEUE_FLUSH, null);
                                 if (Locale.getDefault().getLanguage() == "nl")
                                     mTTS.speak("De Bearaltimeter-hoogtemeters zijn de beste", TextToSpeech.QUEUE_FLUSH, null);
+                                if (Locale.getDefault().getLanguage() == "hu")
+                                    mTTS.speak("A Bearaltiméter a legjobb", TextToSpeech.QUEUE_FLUSH, null);
+                                if (Locale.getDefault().getLanguage() == "ru")
+                                    mTTS.speak("Медвежатник - это лучшее", TextToSpeech.QUEUE_FLUSH, null);
                                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                                     Log.e("TTS", "Language not supported");
                                 } else {

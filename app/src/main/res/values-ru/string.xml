@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="version"> pre 2.0.0 candidate 4</string>
+    <string name="app_name">Bear Console</string>
+    <!-- Menu -->
+    <string name="help">Помощь - Help</string>
+    <string name="about">О приложении - About</string>
+    <string name="action_settings">Настройки приложения - Application Settings</string>
+    <string name="bluetooth_device">Устройство Bluetooth - bluetooth Device</string>
+
+    <!-- Screen altimeter config-->
+    <string name="altimeter_outputs">Выходные данные альтиметра - Altimeter Outputs</string>
+    <string name="altimeter_config">Конфигурации альтиметра - Altimeter Config</string>
+    <string name="main_altitude">Основная высота - Main altitude</string>
+    <string name="output_1">Выходные данные 1 - Output 1</string>
+    <string name="delay1">Задержка 1 (мс) - Delay 1 (ms)</string>
+    <string name="output_2">Выходные данные 2 - Output 2</string>
+    <string name="delay2">Задержка 2 (мс) - Delay 2 (ms)</string>
+    <string name="output_3">Выходные данные 3 - Output 3</string>
+    <string name="delay3">Задержка 3 (мс) - Delay 3 (ms)</string>
+    <string name="output_4">Выходные данные 4 - Output 4</string>
+    <string name="delay4">Задержка 4 (мс) - Delay 4 (ms)</string>
+    <string name="upload">Загрузка - Upload</string>
+    <string name="dismiss_config">Отклонить - Dismiss</string>
+    <!-- AltimeterConfigActivity Spinners -->
+    <string name="main_config">Основное ?? - Main</string>
+    <string name="drogue_config">Тормозной парашют - Drogue</string>
+    <string name="timer_config">Таймер - Timer</string>
+    <string name="disabled_config">Отключено - Disabled</string>
+    <string name="landing_config">Посадка - Landing</string>
+    <string name="liftoff_config">Отрыв - Liftoff</string>
+    <string name="altitude_config">Высота - Altitude</string>
+    <string name="altitude1">Высота 1 (метры) - Altitude 1 (meters)</string>
+    <string name="altitude2">Высота 2 (метры) - Altitude 2 (meters)</string>
+    <string name="altitude3">Высота 3 (метры) - Altitude 3 (meters)</string>
+    <string name="altitude4">Высота 4 (метры) - Altitude 4 (meters)</string>
+    <!-- Config tab1 tooltips -->
+    <string name="main_altitude_tooltip">Введите высоту для основного парашюта - Enter the altitude for the main chute</string>
+    <string name="OutDelay1_tooltip">Введите задержку зажигания в мс для 1ого чего??? - Enter the firing delay in ms for the 1st output</string>
+    <string name="OutDelay2_tooltip">Введите задержку зажигания в мс для 2ого чего??? - Enter the firing delay in ms for the 2nd output</string>
+    <string name="OutDelay3_tooltip">Введите задержку зажигания в мс для 3его чего??? - Enter the firing delay in ms for the 3rd output</string>
+    <string name="OutDelay4_tooltip">Введите задержку зажигания в мс для 4ого чего??? - Enter the firing delay in ms for the 4th output</string>
+    <string name="txtOut1_tooltip">Выберите, что Вы хотите сделать с 1ым чем??? - Choose what you want to do with the 1st output</string>
+    <string name="txtOut2_tooltip">Выберите, что Вы хотите сделать со 2ым чем??? - Choose what you want to do with the 2nd output</string>
+    <string name="txtOut3_tooltip">Выберите, что Вы хотите сделать с 3им чем??? - Choose what you want to do with the 3rd output</string>
+    <string name="txtOut4_tooltip">Выберите, что Вы хотите сделать с 4ым чем??? - Choose what you want to do with the 4th output</string>
+    <string name="txtViewBaudRate_tooltip">Выберите скорость передачи данных альтиметра. Осторожно, возможно соединение не будет поддерживаться - Choosethealtimeterbaudrate. Be carefull you might not be able to communicate</string>
+    <string name="editTxtApogeeMeasures_tooltip">Количество измерений для определения апогея - Number of measures to determine the apogee</string>
+    <string name="txtViewAltimeterResolution_tooltip">Выберите разрешение альтиметра. Чем быстрее Ваша ракета, тем ниже должно быть разрешение - Choosethealtimeterresolution. The faster you rocket goes the lower it has to be</string>
+    <string name="txtViewEEpromSize_tooltip">Выберите размер eepom альтиметра на основе того, какой eepom используется - Choose the altimeter eeprom size depending on which eeprom is used</string>
+    <string name="txtViewRecordTemp_tooltip">Выберите, если Вы хотите проводить измерения температуры - Choose if you want to record the temperature</string>
+    <string name="EndRecordAltitude_tooltip">Достижение какой высоты означает приземление - At which altitude do you consider that we have landed</string>
+    <string name="LiftOffAltitude_tooltip">Достижение какой высоты означает отрыв - At which altitude do you consider that we have lift off</string>
+    <string name="txtViewBatteryType_tooltip">Выберите тип батареи, чтобы полностью не потерять заряд - Enter battery type used to make sure that we do not discharge it too much</string>
+    <string name="txtAltiUnit_tooltip">Выберите удобные Вам единицы измерения высоты - Choose the altitude units you are familiar with</string>
+    <string name="editTxtBipFreq_tooltip">Выберите частоту звукового сигнала в Гц - Choose the beeping frequency in Hz</string>
+
+    <!-- Config tab2 -->
+    <string name="altimeter_config_tab2">Конфигурации альтиметра - Altimeter Config</string>
+    <string name="baudRate">Скорость передачи данных - Baud Rate</string>
+    <string name="apogeeMeasures">Измерение апогея - Apogee Measures</string>
+    <string name="altimeterResolution">Разрешение альтиметра - Altimeter Res</string>
+    <string name="eepromSize">Размер EEprom - EEprom Size</string>
+    <string name="beepOnOff">Сигнал ВКЛ/ВЫКЛ - Beep On/Off</string>
+    <string name="RecordTemp">Запись температуры - Record temp</string>
+    <string name="SupersonicDelay">Задержка из-за сверхзвука - Supersonic delay</string>
+    <string name="EndRecordAltitude">Конец записи альтиметра ??? - End of rec Altitude</string>
+    <string name="LiftOffAltitude">Высота отрыва - Lift Off Altitude</string>
+    <string name="BatteryType">Тип батареи - Battery Type</string>
+    <string name="config_unknown">неизвестно - unknown</string>
+    <string name="config_on">ВКЛ - On</string>
+    <string name="config_off">ВЫКЛ - Off</string>
+    <!-- Config tab3 -->
+    <string name="altimeter_config_tab3">Конфигурации альтиметра - Altimeter Config</string>
+    <string name="alti_name">Имя ??? - Alti Name</string>
+    <string name="units">Единицы - Units</string>
+    <string name="bip_mode">Тип звукового сигнала - Beep mode</string>
+    <string name="beep_freq">Частота зукового сигнала - Beep freq</string>
+    <string name="servo_stay_on">Сервопривод ??? - Servo Stay On</string>
+    <string name="unit_meter">Метры - Meters</string>
+    <string name="unit_feet">Футы - Feets</string>
+    <!-- Config tab4-->
+    <string name="servos_config">Конфигурации сервопривода - Servos Config</string>
+    <string name="servo1_off_pos">Сервопривод 1 позиция ВЫКЛ - Servo1 off pos</string>
+    <string name="servo1_on_pos">Сервопривод 1 позиция ВКЛ - Servo1 on pos</string>
+    <string name="servo2_off_pos">Сервопривод 2 позиция ВЫКЛ - Servo2 off pos</string>
+    <string name="servo2_on_pos">Сервопривод 2 позиция ВКЛ - Servo2 on pos</string>
+    <string name="servo3_off_pos">Сервопривод 3 позиция ВЫКЛ - Servo3 off pos</string>
+    <string name="servo3_on_pos">Сервопривод 3 позиция ВКЛ - Servo3 on pos</string>
+    <string name="servo4_off_pos">Сервопривод 4 позиция ВЫКЛ - Servo4 off pos</string>
+    <string name="servo4_on_pos">Сервопривод 4 позиция ВКЛ - Servo4 on pos</string>
+    <string name="config_no">Нет - No</string>
+    <string name="config_yes">Да - Yes</string>
+    <!-- Main Screen -->
+    <string name="altimeter_settings">Настройки альтиметра - Altimeter Settings</string>
+    <string name="continuity_on_off">Цепь ВКЛ/ВЫКЛ ?? - Continuity On/Off</string>
+    <string name="read_flights">Считать полёты - Read Flights</string>
+    <string name="reset_settings">Сброс настроек - Reset settings</string>
+    <string name="disconnect">Разорвать соединение - Disconnect</string>
+    <string name="connect">Установить соединение - Connect</string>
+    <string name="telemetry">Телеметрия - Telemetry</string>
+
+    <!--connection screen -->
+    <string name="select_device_to_use">Выбрать устройство - Select Device to use</string>
+    <string name="show_paired_devices">Показать подключенные устройства - Show Paired Devices</string>
+
+    <!-- Flight graph-->
+    <string name="altitude_time">Высота / Время - Altitude / Time</string>
+    <string name="close">Закрыть - Close</string>
+    <!-- Reset screen -->
+    <string name="dismiss_reset">Отклонить - Dismiss</string>
+    <string name="clear_flights">Очистить данные о полётах - Clear Flights</string>
+    <string name="reset_msg1">Вы хотите удалить все данные о полётах. Вы уверены? - You are about to erase all flight data, are you sure you want to do it?</string>
+    <string name="reset_msg2">Вы хотите сбросить конфигурации альтиметра. Вы уверены? - You are about to reset your altimeter config, are you sure you want to do it?</string>
+    <string name="Yes">Да - Yes</string>
+    <string name="No">Нет - No</string>
+    <!-- bluetooth messages -->
+    <string name="BT_msg1">Устройство Bluetooth не доступно - Bluetooth Device Not Available</string>
+    <string name="BT_msg2">Не обнаружено подключенных Bluetooth устройств - No Paired Bluetooth Devices Found.</string>
+
+    <!-- main screen msg-->
+    <string name="MS_msg1">Соединение... - Connecting...</string>
+    <string name="MS_msg2">Пожалуйста подождите!!! - Please wait!!!</string>
+    <string name="MS_msg3">Соединение разорвано. Это SPP Bluetooth? Попробуйте снова. - Connection Failed. Is it a SPP Bluetooth? Try again.</string>
+    <string name="MS_msg4">Соединение установлено - Connected.</string>
+
+    <string name="those_functions_will_reset_the_altimeter">Those functions will reset the altimeter</string>
+    <string name="restore_alti_config">Восстановить конфигурацию альтиметра - Restore Alti config</string>
+
+    <!--Flight list screen -->
+    <string name="Flight_list">Перечень полётов - Flight List</string>
+    <string name="title_activity_flight_list">Перечень полётов??? - Flight List</string>
+    <string name="dismiss_flight_list">Отклонить - Dismiss</string>
+
+    <!-- About screen -->
+    <string name="about_screen">О приложении - About</string>
+    <string name="bear_console_version">Версия Bear Console - Bear Console version</string>
+    <string name="dismiss_about">Отклонить - Dismiss</string>
+
+    <!-- Messages -->
+    <!-- AltimeterConfigActivity -->
+    <string name="msg1">Допустима только одна основная конфигурация. Пожалуйста, обновите Вашу конфигурацию ??? - Only one main is allowed. Please review your config</string>
+    <string name="msg2">Допустим только один тормозной парашют. Пожалуйста, обновите Вашу конфигурацию ??? - Only one Drogue is allowed. Please review your config</string>
+    <string name="msg3">Конфигурация успешно загружена - Config successfully uploaded</string>
+    <string name="msg4">Не удалось загрузить конфигурацию - Failed to upload config</string>
+    <string name="msg5">Получение конфигурации альтиметра... - Retrieving Altimeter config...</string>
+    <string name="msg6">Пожалуйста, подождите!!! - Please wait!!!</string>
+    <string name="msg7">Получение данных полётов... - Retrieving flights...</string>
+    <string name="msg8">Пожалуйста, подождите!!! - Please wait!!!</string>
+    <string name="msg9">Вы изменили скорость передачи данных, возможно, альтиметр не сможет выполнить подключение. Вы уверены? - You have changed the baud rate, the altimeter might not be able to connect. Are you sure?</string>
+
+
+    <!-- flight views screen -->
+    <string name="Meters_fview">Метры - Meters</string>
+    <string name="Feet_fview">Футы - Feet</string>
+    <string name="Altitude_time">Высота / Время - Altitude / Time</string>
+    <string name="Time_fv">Время (мс) - Time (ms)</string>
+    <string name="Altitude">Высота - Altitude</string>
+    <string name="dismiss_flight_list_view">Отклонить - Dismiss</string>
+    <!-- Application preference screen-->
+    <string name="titre_application_pref">Настройки приложения - Application preferences</string>
+
+
+    <!-- Config-->
+    <string name="save_config">Сохранить - Save</string>
+    <string name="dismiss_app_config">Отклонить - Dismiss</string>
+    <string name="application_langage_config">Язык приложения - Application langage</string>
+    <string name="graph_color_config">Цвет графика - Graph color</string>
+    <string name="application_units_config">Единицы измерения - Application Units</string>
+    <string name="graph_back_color_config">Цвет фона - Graph back color</string>
+    <string name="default_config">По умолчанию - Default</string>
+    <string name="font_size">Размер шрифта - Font Size</string>
+    <string name="title_activity_settings">Установки - Settings</string>
+    <string name="baud_rate">Скорость передачи - Baud Rate</string>
+    <string name="connection_type">Тип соединения - Connection Type</string>
+    <string name="graphiclib_type">Библиотека графиков - Graphics lib </string>
+    <string name="MultipleMainDrogue">Основной / тормозной парашюты - Multiple Main/drogue</string>
+    <string name="FullUSBSupport">Полная поддержка USB - Full USB Support</string>
+    <string name="color_black">ЧЁРНЫЙ - BLACK</string>
+    <string name="color_white">БЕЛЫЙ - WHITE</string>
+    <string name="color_magenta">ПУРПУРНЫЙ - MAGENTA</string>
+    <string name="color_blue">СИНИЙ - BLUE</string>
+    <string name="color_yellow">ЖЁЛТЫЙ - YELLOW</string>
+    <string name="color_green">ЗЕЛЁНЫЙ - GREEN</string>
+    <string name="color_gray">СЕРЫЙ - GRAY</string>
+    <string name="color_cyan">ГОЛУБОЙ - CYAN</string>
+    <string name="color_dkgray">ТмнСЕРЫЙ - DKGRAY</string>
+    <string name="color_ltgray">СвтСЕРЫЙ - LTGRAY</string>
+    <string name="color_red">КРАСНЫЙ - RED</string>
+
+    <string name="phone_english">English</string>
+    <string name="phone_french">French</string>
+    <string name="phone_language">Язык телефона - Phone language</string>
+    <string name="config_unit_meters">Метры - Meters</string>
+    <string name="config_unit_feet">Футы - Feet</string>
+
+    <string name="general_config">Общее - General</string>
+    <string name="telemetry_config">Конфигурации телеметрии - Telemetry config</string>
+    <string name="main_event">Основное событие??? - Main event</string>
+    <string name="apogee_altitude_event">Высота апогея (масло??)- Apogee altitude</string>
+    <string name="main_altitude_event">Основная высота ??? - Main altitude</string>
+    <string name="drogue_event">Раскрытие тормозного парашюта - Drogue event</string>
+    <string name="altitude_event">Событие высоты ??? - Altitude event</string>
+    <string name="landing_event">Посадка??? - Landing event</string>
+    <string name="burnout_event">Выгорание топлива/двигателя ??? - Burnout event</string>
+    <string name="warning_event">Что???? - Warning event</string>
+    <string name="liftoff_event">Хм??? - Lift off event</string>
+
+    <!-- Telemetry -->
+    <string name="stop_telemetry">Остановить телеметрию?? - Stop Telemetry</string>
+    <string name="start_telemetry">Старт телеметрии?? - Start Telemetry</string>
+    <string name="current_phase">Текузая фаза - Current Phase</string>
+    <string name="altitude">Высота - Altitude</string>
+    <string name="event_time">Время какого-то события ??? - Event Time</string>
+    <string name="lift_off">Отрыв - Lift off</string>
+    <string name="apogee_drogue">Апогей/тормозной парашют - Apogee/drogue</string>
+    <string name="main_chute">Основной парашют - Main chute</string>
+    <string name="landed">Посадка - Landed</string>
+    <string name="max_speed">Максимальная скорость - Max speed</string>
+    <string name="current_altitude">Текущая высота - Current Altitude</string>
+    <string name="dis"> disconnect</string>
+    <string name="tel_telemetry">Телеметрия - Telemetry</string>
+    <string name="telemetry_apogee">апогей - apogee</string>
+    <string name="rocket_has_landed">ракета приземлилась - rocket has landed</string>
+    <string name="main_deployed">основной парашют раскрылся в - main chute has deployed at</string>
+
+
+    <!-- Status -->
+    <string name="title_activity_altimeter_status">Статус альтиметра ?? - AltimeterStatus</string>
+    <string name="altimeter_status">Статус альтиметра - Altimeter status</string>
+    <string name="altimeter_status_disabled">Отключено - Disabled</string>
+    <string name="altimeter_status_output_1">Выход 1 - Output 1</string>
+    <string name="altimeter_status_output_2">Выход 2 - Output 2</string>
+    <string name="altimeter_status_output_3">Выход 3 - Output 3</string>
+    <string name="altimeter_status_output_4">Выход 4 - Output 4</string>
+    <string name="altimeter_status_current_altitude">Текущая высота - Current altitude</string>
+    <string name="altimeter_status_battery_voltage">Напряжение батареи - Battery voltage</string>
+    <string name="altimeter_status_link_type">Тип соединения - Link type</string>
+    <string name="altimeter_status_bluetooth">Bluetooth - Bluetooth</string>
+    <string name="status">Статус - Status</string>
+    <string name="status_msg1">Fire Altimeter outputs \nMake sure that you do not have \n any real pyro charges!!!</string>
+    <string name="temperature">Температура - Temperature</string>
+    <string name="switch_output_1">Выход 1 - Output 1</string>
+    <string name="switch_output_2">Выход 2 - Output 2</string>
+    <string name="switch_output_3">Выход 3 - Output 3</string>
+    <string name="switch_output_4">Выход 4 - Output 4</string>
+    <string name="no_continuity">Нет соединения ??? Цепь разомкнута - No continuity</string>
+    <string name="continuity">Цепь - Continuity</string>
+    <string name="disabled">Отключено - Disabled</string>
+    <string name="latitude">Широта - Latitude</string>
+    <string name="longitude">Долгота - Longitude</string>
+
+    <!-- flash firmware -->
+    <string name="msg10">Прошивка... - Flashing firmware...</string>
+    <string name="msg11">Пожалуйста, подождите!!! - Please wait!!!</string>
+    <string name="msg12">Загрузка: ?? - Upload: </string>
+    <string name="msg13">Невозможно открыть - Cannot open</string>
+    <string name="msg14">Загрузка: Старт \n - Upload : Start \n</string>
+    <string name="msg15">Загрузка: Ошибка \n - Upload: Failed\n</string>
+    <string name="msg16">Загрузка: Успешно \n - Upload: Successful\n</string>
+    <string name="msg17">Отменить загрузку \n - Cancel uploading\n</string>
+    <string name="msg18">Ошибка: - Error: </string>
+    <string name="msg19">Прошивка??? - Flashing recover firmware...: </string>
+    <string name="firmware_cancel">Отмена - Cancel</string>
+    <string name="firmware_dismiss">Отклонить - Dismiss</string>
+    <string name="recover_firmware">Восстановить прошивку - Recover Firmware</string>
+    <string name="flash_firmware">Прошить прошивку ??? - Flash Firmware</string>
+    <string name="select_altimeter_model">Выберите модель Вашего альтиметра: - Select your altimeter model:</string>
+    <string name="after_complete_upload">После окончания загрузки Вы сможете прошить прошивку в реальное утсройство????? - After the upload is complete you will be able to flash the real firmware</string>
+    <string name="detect_firmware">Определить прошивку ?? - Detect firmware</string>
+    <string name="msg_detect_firmware">Попытка определить прошивку!!! ???- Attempting to Detect firmware!!!</string>
+
+    <!--- other -->
+    <string name="flight_list_cancel">Отмена - Cancel</string>
+    <string name="flight_retrieval_canceled">Получение полётов было отменено пользователем ??- Flight retrieval has been canceled by user</string>
+    <string name="flight_have_been_recorded">Нет записей полётов - No flights have been recorded</string>
+    <string name="main_screen_actity">Отмена - Cancel</string>
+    <string name="title_activity_flight_view_maps">Карта - Map</string>
+    <string name="flight">Полёт - Flight</string>
+    <string name="title_activity_flight_view_tab">Посмотреть полёт вкладка ??? - FlightViewTabActivity</string>
+    <string name="tab_text_1">Вкладка 1 ?? - Tab 1</string>
+    <string name="tab_text_2">Вкладка 2 ?? -Tab 2</string>
+    <string name="flight_info">Информация о полёте ?? - Flight Info</string>
+    <string name="apogee_altitude">Высота апогея (масло??) - Apogee Altitude</string>
+    <string name="max_velocity">Максимальная скорость - Max Velocity</string>
+    <string name="main_alti">Основная высота ?? - Main Altitude</string>
+    <string name="flight_duration">Продолжительность полёта - Flight duration</string>
+    <string name="burn_time">Время работы двигателя ?? - Burn Time</string>
+    <string name="max_acceleration">Максимальное ускорение - Max acceleration</string>
+    <string name="time_to_apogee">Время до апогея - Time to Apogee</string>
+    <string name="max_descent_speed">Максимальная скорость снижения - Max descent speed</string>
+    <string name="landing_speed">Скорость при посадке - Landing speed</string>
+    <string name="flight_nbr">Полёт nbr ?? - Flight nbr</string>
+    <string name="nbr_of_sample">Образцы ?? - Samples</string>
+    <string name="select_curve">Выбрать кривую - Select Curve</string>
+    <string name="fv_ok">ОК - OK</string>
+    <string name="fv_cancel">Отмена - Cancel</string>
+    <string name="telemetry_voice">Голос телеметрии ??- Telemetry voice</string>
+    <string name="test_telemetry_voice">Тест голоса - Test Voice</string>
+
+    <!--units -->
+    <string name="unit_meters">метры - meters</string>
+    <string name="unit_time">время (мс) - time (ms)</string>
+    <string name="unit_feet_per_secs">футы/сек - feet/secs</string>
+    <string name="unit_feet_per_square_secs">фут/сек² - feet/secs²</string>
+
+    <!--curves name -->
+    <string name="curve_altitude">высота - altitude</string>
+    <string name="curve_temperature">температура - temperature</string>
+    <string name="curve_pressure">давление - pressure</string>
+    <string name="curve_latitude">широта - latitude</string>
+    <string name="curve_longitude">долгота - longitude</string>
+    <string name="curve_speed">скорость - speed</string>
+    <string name="curve_accel">ускорение - acceleration</string>
+    <string name="flight_name">Полёт - Flight</string>
+
+
+    <string name="select_bluetooth_device">Выбрать устройство Bluetooth - Select Bluetooth device</string>
+    <string name="telemetry_screen">Телеметрия - Telemetry</string>
+    <string name="status_screen">Статус - Status</string>
+    <string name="flight_time">Время - Time</string>
+
+</resources>

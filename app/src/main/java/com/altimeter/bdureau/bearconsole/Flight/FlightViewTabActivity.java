@@ -1,9 +1,12 @@
 package com.altimeter.bdureau.bearconsole.Flight;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
@@ -24,6 +27,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 
@@ -36,6 +40,10 @@ import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
 import org.afree.graphics.geom.Font;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +77,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
     private static String[] units= null;
     public static String SELECTED_FLIGHT = "MyFlight";
-    int numberOfCurves =0;
+    public static int numberOfCurves =0;
 
     @Override
     protected void onDestroy() {
@@ -99,7 +107,15 @@ public class FlightViewTabActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 23) {
+            int REQUEST_CODE_ASK_PERMISSIONS = 123;
+            int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_CODE_ASK_PERMISSIONS);
 
+            }
+        }
         // recovering the instance state
         if (savedInstanceState != null) {
             currentCurvesNames = savedInstanceState.getStringArray("CURRENT_CURVES_NAMES_KEY");
@@ -324,7 +340,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsPageAdapter(getSupportFragmentManager());
         flightPage1 = new Tab1Fragment(allFlightData);
-        flightPage2 = new Tab2Fragment(myflight);
+        flightPage2 = new Tab2Fragment(myflight, allFlightData);
 
         adapter.addFragment(flightPage1, "TAB1");
         adapter.addFragment(flightPage2, "TAB2");
@@ -451,13 +467,18 @@ public class FlightViewTabActivity extends AppCompatActivity {
     public static class Tab2Fragment extends Fragment {
 
         private FlightData myflight;
-
+        XYSeriesCollection allFlightData;
         private TextView nbrOfSamplesValue, flightNbrValue;
         private TextView apogeeAltitudeValue, flightDurationValue, burnTimeValue, maxVelociyValue, maxAccelerationValue;
         private TextView timeToApogeeValue, mainAltitudeValue, maxDescentValue, landingSpeedValue;
-        public Tab2Fragment (FlightData data) {
+        public Tab2Fragment (FlightData data, XYSeriesCollection data2) {
+
             myflight = data;
+            this.allFlightData =data2;
         }
+
+        private Button buttonExportToCsv;
+        int nbrSeries ;
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -465,6 +486,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
             View view = inflater.inflate(R.layout.tabflight_info_fragment, container, false);
 
+            buttonExportToCsv= (Button) view.findViewById(R.id.butExportToCsv);
             apogeeAltitudeValue = view.findViewById(R.id.apogeeAltitudeValue);
             flightDurationValue = view.findViewById(R.id.flightDurationValue);
             burnTimeValue = view.findViewById(R.id.burnTimeValue);
@@ -481,7 +503,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             //myflight= myBT.getFlightData();
             flightData = myflight.GetFlightData(FlightName);
             int nbrData = flightData.getSeries(0).getItemCount();
-
+            nbrSeries=flightData.getSeriesCount();
             // flight nbr
             flightNbrValue.setText(FlightName + "");
 
@@ -527,7 +549,68 @@ public class FlightViewTabActivity extends AppCompatActivity {
             // remain TODO!!!
             mainAltitudeValue.setText(" " +myBT.getAppConf().getUnitsValue() );
 
+            buttonExportToCsv.setOnClickListener(new View.OnClickListener()
+            {
+
+                @Override
+                public void onClick(View v)
+                {
+                    //XYSeriesCollection Data= allFlightData;
+
+                   for (int j =0; j<numberOfCurves; j++) {
+                        //saveData(j);      //export the data to a csv file
+                        saveData(j, allFlightData);
+                    }
+                    //saveData(0, allFlightData);      //export the data to a csv file
+                }
+            });
+
             return view;
+        }
+        private void saveData(int nbr,XYSeriesCollection Data){
+
+
+            String csv_data = "time,altitude\n";/// your csv data as string;
+            int nbrData = Data.getSeries(nbr).getItemCount();
+            for ( int i = 0; i < nbrData; i++) {
+
+                csv_data = csv_data + (double) Data.getSeries(nbr).getX(i) +"," + (double) Data.getSeries(nbr).getY(i)+"\n";
+
+            }
+            File root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
+            //if you want to create a sub-dir
+            root = new File(root, "BearConsoleFlights");
+            root.mkdir();
+
+            // select the name for your file
+            root = new File(root , FlightName +Data.getSeries(nbr).getDescription() +".csv");
+
+            try {
+                FileOutputStream fout = new FileOutputStream(root);
+                fout.write(csv_data.getBytes());
+
+                fout.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+
+                boolean bool = false;
+                try {
+                    // try to create the file
+                    bool = root.createNewFile();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+                if (bool){
+                    // call the method again
+                    saveData(nbr, Data);
+                }else {
+                    throw new IllegalStateException("Failed to create flight files");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         /*

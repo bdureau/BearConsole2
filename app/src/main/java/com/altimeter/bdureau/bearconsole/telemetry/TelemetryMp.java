@@ -314,13 +314,13 @@ public class TelemetryMp extends AppCompatActivity {
                         result = mTTS.setLanguage(getResources().getConfiguration().locale);
                     else if (Locale.getDefault().getLanguage() == "nl")
                         result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage() == "tr")
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
                     else if (Locale.getDefault().getLanguage() == "es")
                         result = mTTS.setLanguage(getResources().getConfiguration().locale);
                     else if (Locale.getDefault().getLanguage() == "it")
                         result = mTTS.setLanguage(getResources().getConfiguration().locale);
                     else if (Locale.getDefault().getLanguage() == "hu")
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage() == "ru")
                         result = mTTS.setLanguage(getResources().getConfiguration().locale);
                     else
                         result = mTTS.setLanguage(Locale.ENGLISH);

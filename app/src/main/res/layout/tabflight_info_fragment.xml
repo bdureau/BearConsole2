@@ -207,4 +207,12 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/maxDescent"
         android:text="m/secs" />
+    <Button
+        android:id="@+id/butExportToCsv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/landingSpeed"
+        android:text="Export to CSV" />
+
 </RelativeLayout>
