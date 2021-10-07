@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+
+    <TextView
+        android:id="@+id/textTelemetryConfigTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Configure telemetry module"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+    <TextView
+        android:id="@+id/textBaud"
+        android:layout_below="@+id/textTelemetryConfigTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Baud"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerBaudRate"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBaseline="@+id/textBaud"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="100dp"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/textAirSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textBaud"
+        android:text="Air speed"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerAirSpeed"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBaseline="@+id/textAirSpeed"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="100dp"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/textNetID"
+        android:layout_below="@+id/textAirSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Net ID"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerNetID"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBaseline="@+id/textNetID"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="100dp"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/textTXPower"
+        android:layout_below="@+id/textNetID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TX Power"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerTXPower"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textTXPower"
+
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="100dp"
+        android:spinnerMode="dropdown" />
+
+    <CheckBox
+        android:id="@+id/checkBoxECC"
+        android:layout_below="@+id/spinnerTXPower"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ECC" />
+
+    <TextView
+        android:id="@+id/textMavlink"
+        android:layout_below="@+id/checkBoxECC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mavlink"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerMavLink"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textMavlink"
+
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="100dp"
+        android:spinnerMode="dropdown" />
+
+    <CheckBox
+        android:id="@+id/checkBoxOpResend"
+        style="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinnerMavLink"
+        android:text="Op Resend"
+         />
+
+    <Button
+        android:id="@+id/btRetrieveConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+
+        android:layout_centerHorizontal="true"
+        android:onClick="onClickRetrieveConfig"
+        android:text="Retrieve config" />
+
+    <Button
+        android:id="@+id/butDismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="onClickDismiss"
+        android:text="@string/dismiss_app_config" />
+
+    <Button
+        android:id="@+id/btSaveConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onClickSaveConfig"
+        android:text="Save Config" />
+
+</RelativeLayout>

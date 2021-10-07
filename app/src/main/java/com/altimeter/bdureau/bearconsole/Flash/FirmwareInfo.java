@@ -6,7 +6,7 @@ public class FirmwareInfo {
     //UploadSTM32CallBack mUpCallback;
     Physicaloid lPhysicaloid;
 
-    FirmwareInfo(/*UploadSTM32CallBack UpCallback,*/ Physicaloid mPhysi) {
+    public FirmwareInfo(/*UploadSTM32CallBack UpCallback,*/ Physicaloid mPhysi) {
         // mUpCallback = UpCallback;
         lPhysicaloid = mPhysi;
     }

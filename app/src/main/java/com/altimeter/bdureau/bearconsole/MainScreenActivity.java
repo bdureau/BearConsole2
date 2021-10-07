@@ -33,6 +33,7 @@ import com.altimeter.bdureau.bearconsole.config.AltimeterTabConfigActivity;
 import com.altimeter.bdureau.bearconsole.config.AppConfigActivity;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
+import com.altimeter.bdureau.bearconsole.config.Config3DR;
 import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
 import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatus;
 import com.altimeter.bdureau.bearconsole.telemetry.Telemetry;
@@ -514,6 +515,12 @@ public class MainScreenActivity extends AppCompatActivity {
         }
         if (id == R.id.action_about) {
             Intent i = new Intent(MainScreenActivity.this, AboutActivity.class);
+            startActivity(i);
+            return true;
+        }
+
+        if (id == R.id.action_mod3dr_settings) {
+            Intent i = new Intent(MainScreenActivity.this, Config3DR.class);
             startActivity(i);
             return true;
         }
