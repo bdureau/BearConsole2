@@ -171,7 +171,6 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                         success = false;
                     }
                 } else {
-                    // msg("data not ready");
                     //try again
                     myBT.setDataReady(false);
                     myBT.flush();

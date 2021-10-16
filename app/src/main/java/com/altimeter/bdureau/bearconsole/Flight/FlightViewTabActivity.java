@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
@@ -297,6 +298,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             }
         });
     }
+
     /*
           Calculate the speed curve
     */
@@ -476,7 +478,9 @@ public class FlightViewTabActivity extends AppCompatActivity {
             myflight = data;
             this.allFlightData =data2;
         }
-
+        public void msg(String s) {
+            Toast.makeText(getActivity().getApplicationContext(), s, Toast.LENGTH_LONG).show();
+        }
         private Button buttonExportToCsv;
         int nbrSeries ;
         @Nullable
@@ -555,13 +559,13 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v)
                 {
-                    //XYSeriesCollection Data= allFlightData;
-
+                    //export the data to a csv file
                    for (int j =0; j<numberOfCurves; j++) {
-                        //saveData(j);      //export the data to a csv file
+                       Log.d("Flight win", "Saving curve:" +j);
                         saveData(j, allFlightData);
                     }
-                    //saveData(0, allFlightData);      //export the data to a csv file
+                   msg("flight curves saved");
+
                 }
             });
 
@@ -584,13 +588,14 @@ public class FlightViewTabActivity extends AppCompatActivity {
             root.mkdir();
 
             // select the name for your file
-            root = new File(root , FlightName +Data.getSeries(nbr).getDescription() +".csv");
-
+            root = new File(root , FlightName +"-"+Data.getSeries(nbr).getKey().toString() +".csv");
+            Log.d("Flight win", FlightName +Data.getSeries(nbr).getKey().toString() +".csv" );
             try {
+                Log.d("Flight win", "attempt to write" );
                 FileOutputStream fout = new FileOutputStream(root);
                 fout.write(csv_data.getBytes());
-
                 fout.close();
+                Log.d("Flight win", "write done" );
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
 
@@ -606,6 +611,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                     // call the method again
                     saveData(nbr, Data);
                 }else {
+                    Log.d("Flight win", "Failed to create flight files" );
                     throw new IllegalStateException("Failed to create flight files");
                 }
             } catch (IOException e) {
