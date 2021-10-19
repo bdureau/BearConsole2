@@ -73,6 +73,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
                     if (myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRateValue()))) {
                         myBT.setConnected(true);
+                        Log.d("Flight win", "about to enableUI");
                         EnableUI();
                         btnFlashFirmware.setEnabled(false);
                         myBT.setConnectionType("usb");

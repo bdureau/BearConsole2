@@ -11,11 +11,71 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Configure telemetry module"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:elegantTextHeight="true"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_horizontal"
+        android:textSize="18sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/textversion"
+        android:layout_below="@+id/textTelemetryConfigTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Version:"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:id="@+id/textversionentry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textTelemetryConfigTitle"
+        android:layout_marginTop="18dp"
+        android:layout_toRightOf="@id/textversion"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/textRSSI"
+        android:layout_below="@+id/textversion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RSSI:"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:id="@+id/textRSSIentry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textversion"
+        android:layout_marginTop="18dp"
+        android:layout_toRightOf="@id/textRSSI"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/textFormat"
+        android:layout_below="@+id/textRSSI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Format:"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:id="@+id/textFormatentry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textRSSI"
+        android:layout_marginTop="18dp"
+        android:layout_toRightOf="@id/textFormat"
+        android:text="" />
+
     <TextView
         android:id="@+id/textBaud"
-        android:layout_below="@+id/textTelemetryConfigTitle"
+        android:layout_below="@+id/textFormat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Baud"
@@ -23,33 +83,32 @@
 
     <Spinner
         android:id="@+id/spinnerBaudRate"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-
         android:layout_alignBaseline="@+id/textBaud"
-        android:layout_alignParentLeft="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="100dp"
-        android:spinnerMode="dropdown" />
+        android:layout_toRightOf="@id/textMaxWindow"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd" />
 
     <TextView
         android:id="@+id/textAirSpeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textBaud"
-        android:text="Air speed"
-        android:layout_marginTop="18dp" />
+        android:layout_below="@+id/textFormat"
+
+
+        android:layout_marginTop="18dp"
+        android:layout_toRightOf="@id/spinnerBaudRate"
+        android:text="Air speed" />
 
     <Spinner
         android:id="@+id/spinnerAirSpeed"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-
         android:layout_alignBaseline="@+id/textAirSpeed"
-        android:layout_alignParentLeft="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="100dp"
-        android:spinnerMode="dropdown" />
+        android:layout_toEndOf="@id/textAirSpeed"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd"/>
 
     <TextView
         android:id="@+id/textNetID"
@@ -61,31 +120,30 @@
 
     <Spinner
         android:id="@+id/spinnerNetID"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-
         android:layout_alignBaseline="@+id/textNetID"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="100dp"
-        android:spinnerMode="dropdown" />
+        android:layout_alignStart="@id/spinnerBaudRate"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd"/>
 
     <TextView
         android:id="@+id/textTXPower"
-        android:layout_below="@+id/textNetID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TX Power"
-        android:layout_marginTop="18dp" />
+        android:layout_below="@+id/textAirSpeed"
+        android:layout_marginTop="18dp"
+        android:layout_toRightOf="@id/spinnerNetID"
+        android:text="TX Power" />
 
     <Spinner
         android:id="@+id/spinnerTXPower"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textTXPower"
-
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="100dp"
-        android:spinnerMode="dropdown" />
+        android:layout_alignStart="@id/spinnerAirSpeed"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd"/>
 
     <CheckBox
         android:id="@+id/checkBoxECC"
@@ -93,6 +151,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ECC" />
+
+    <CheckBox
+        android:id="@+id/checkBoxOpResend"
+        style="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinnerTXPower"
+        android:layout_centerInParent="true"
+        android:text="Op Resend" />
+
+    <CheckBox
+        android:id="@+id/checkBoxRTSCTS"
+        style="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinnerTXPower"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="0dp"
+        android:text="RTS CTS" />
 
     <TextView
         android:id="@+id/textMavlink"
@@ -104,22 +181,124 @@
 
     <Spinner
         android:id="@+id/spinnerMavLink"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textMavlink"
+        android:layout_alignStart="@id/spinnerBaudRate"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd"/>
 
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="100dp"
-        android:spinnerMode="dropdown" />
-
-    <CheckBox
-        android:id="@+id/checkBoxOpResend"
-        style="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox"
+    <TextView
+        android:id="@+id/textLBTRSSI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinnerMavLink"
-        android:text="Op Resend"
-         />
+        android:layout_below="@+id/checkBoxECC"
+        android:layout_alignRight="@id/textAirSpeed"
+        android:layout_marginTop="18dp"
+        android:text="LBT RSSI" />
+
+    <Spinner
+        android:id="@+id/spinnerLBTRSSI"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textLBTRSSI"
+        android:layout_alignStart="@id/spinnerAirSpeed"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd"/>
+
+
+    <TextView
+        android:id="@+id/textMinFreq"
+        android:layout_below="@+id/textMavlink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Min Freq"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerMinFreq"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textMinFreq"
+
+        android:layout_alignStart="@id/spinnerBaudRate"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd"/>
+
+    <TextView
+        android:id="@+id/textMaxFreq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textMinFreq"
+
+        android:layout_marginTop="18dp"
+        android:text="Max Freq" />
+
+    <Spinner
+        android:id="@+id/spinnerMaxFreq"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textMaxFreq"
+
+        android:layout_alignStart="@id/spinnerBaudRate"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd"/>
+
+    <TextView
+        android:id="@+id/textNbrOfChannel"
+        android:layout_below="@+id/textMaxFreq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="# of channels"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerNbrOfChannel"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textNbrOfChannel"
+
+        android:layout_alignStart="@id/spinnerBaudRate"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd"/>
+
+    <TextView
+        android:id="@+id/textDutyCycle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textMaxFreq"
+        android:layout_alignStart="@id/textAirSpeed"
+        android:layout_marginTop="18dp"
+        android:text="Duty Cycle" />
+
+    <Spinner
+        android:id="@+id/spinnerDutyCycle"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textDutyCycle"
+        android:layout_alignStart="@id/spinnerAirSpeed"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd"/>
+
+
+
+    <TextView
+        android:id="@+id/textMaxWindow"
+        android:layout_below="@+id/textDutyCycle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Max Win (ms)"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerMaxWindow"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textMaxWindow"
+
+        android:layout_toRightOf="@id/textMaxWindow"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd"/>
 
     <Button
         android:id="@+id/btRetrieveConfig"

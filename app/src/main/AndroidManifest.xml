@@ -24,7 +24,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".config.Config3DR"></activity>
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -38,8 +38,20 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".Flight.FlightViewMapsActivity" />
+        <activity
+            android:name=".config.Config3DR"
+            android:screenOrientation="portrait">
+        <intent-filter>
+            <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+        </intent-filter>
+
+        <meta-data
+            android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+            android:resource="@xml/device_filter" />
+        </activity>
         <activity android:name=".Flash.FlashFirmware"
             android:screenOrientation="portrait" />
+
         <activity android:name=".Flight.FlightViewMpActivity" />
         <activity android:name=".Flight.FlightViewTabActivity"
             android:screenOrientation="portrait" />

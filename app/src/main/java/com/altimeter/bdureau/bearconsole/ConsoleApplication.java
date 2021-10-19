@@ -178,18 +178,15 @@ public class ConsoleApplication extends Application {
         return state;
     }
 
-    public boolean connectFirmware(UsbManager usbManager, UsbDevice device, int baudRate) {
+    /*public boolean connectFirmware(UsbManager usbManager, UsbDevice device, int baudRate) {
         boolean state = false;
         if (myTypeOfConnection.equals("usb")) {
             state = UsbCon.connect(usbManager, device, baudRate);
             setConnectionType("usb");
-            /*if (!isConnectionValid()) {
-                Disconnect();
-                state = false;
-            }*/
+
         }
         return state;
-    }
+    }*/
 
     public boolean isConnectionValid() {
         boolean valid = false;
@@ -280,31 +277,6 @@ public class ConsoleApplication extends Application {
         }
     }
 
-   /* public void appendLog(String text) {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-        //File logFile = new File(path+"/debugfile2.txt");
-        File logFile = new File("/mnt/sdcard0/debugfile2.txt");
-        //File logFile = new File("MicroSD/debugfile2.txt");
-        if (!logFile.exists()) {
-            try {
-                logFile.createNewFile();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        try {
-            //BufferedWriter for performance, true to set append to file flag
-            BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
-            buf.append(text);
-            buf.newLine();
-            buf.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-*/
 
     public void setExit(boolean b) {
         this.exit = b;
