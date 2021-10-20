@@ -113,7 +113,6 @@ public class FlashFirmware extends AppCompatActivity {
         if (mPhysicaloid.open()) {
             mPhysicaloid.setConfig(uartConfig);
 
-
         } else {
             //cannot open
             Toast.makeText(this, getResources().getString(R.string.msg13), Toast.LENGTH_LONG).show();
@@ -123,7 +122,7 @@ public class FlashFirmware extends AppCompatActivity {
 
         //baud rate
         dropdownBaudRate = (Spinner) findViewById(R.id.spinnerBaud);
-        itemsBaudRate = new String[]{"300",
+        itemsBaudRate = new String[]{
                 "1200",
                 "2400",
                 "4800",
@@ -135,6 +134,8 @@ public class FlashFirmware extends AppCompatActivity {
                 "57600",
                 "115200",
                 "230400"};
+
+
         ArrayAdapter<String> adapterBaudRate = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item, itemsBaudRate);
         dropdownBaudRate.setAdapter(adapterBaudRate);
