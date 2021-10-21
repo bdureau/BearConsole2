@@ -40,6 +40,8 @@ public class Config3DR extends AppCompatActivity {
     private Button btRetrieveConfig, btSaveConfig;
     ModuleInfo mInfo;
     ConsoleApplication myBT;
+    int currentBaudRate =0;
+    boolean connectingDone = false;
 
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
@@ -284,26 +286,37 @@ public class Config3DR extends AppCompatActivity {
         boolean success = false;
         Log.d("Flight win", "retrieving config");
 
-        //if (!mPhysicaloid.isOpened())
-        //    mPhysicaloid.open();
-        baud = Connect(itemsBaudRate, 38400);
 
-        if(baud > 0) {
+        connectingDone =false;
+       // baud = Connect(itemsBaudRate, 0);
+        new connectRetrieveAsyc().execute();
+
+
+
+        /*if(currentBaudRate > 0) {
             new getAllConfigAsyc().execute();
+            //currentBaudRate = baud;
         }
         else {
-            msg("Failed to connect. \nPlease unplug USB and plug it back\n Then try again");
-            //new getAllConfigAsyc().execute();
-        }
+            msg("Failed to connect. \nPlease unplug USB and plug it back\n Restart the application\n Then try again");
+
+        }*/
 
     }
 
     public void onClickSaveConfig(View v) {
         int baud = 0;
-        baud = Connect(itemsBaudRate, 38400);
+        //baud = Connect(itemsBaudRate, currentBaudRate);
 
         //saveAllConfig();
-        new saveAllConfigAsyc().execute();
+        /*if(baud > 0) {
+            new saveAllConfigAsyc().execute();
+        }
+        else {
+            msg("Failed to connect. \nPlease unplug USB and plug it back\n Restart the application\n Then try again");
+
+        }*/
+        new connectSaveAsyc().execute();
     }
 
     private void close() {
@@ -481,13 +494,7 @@ public class Config3DR extends AppCompatActivity {
             alert.show();
         }
 
-        @Override
-        protected void onCancelled() {
-            //dialogAppend("Cancelling running AT0 to exit AT mode");
-            //value = mInfo.runCommand("ATO");
-            //Log.d("Flight win", "ATO:" + value);
-            cancelled = true;
-        }
+
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -528,6 +535,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATI3[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -539,6 +548,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATI4[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
             /*dialogAppend("running ATI5");
             value = mInfo.runCommand("ATI5");
@@ -556,6 +567,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATI6[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
             if(!cancelled) {
                 //RSSI
@@ -568,6 +581,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATI7[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
             if(!cancelled) {
                 //format
@@ -582,6 +597,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS0[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -597,6 +614,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS1[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -612,6 +631,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS2[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -628,6 +649,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS3[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -643,6 +666,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS4[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -663,6 +688,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS5[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -679,6 +706,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS6[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -698,6 +727,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS7[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -713,6 +744,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS8[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -728,6 +761,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS9[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -743,6 +778,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS10[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -758,6 +795,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS11[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -774,6 +813,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS12[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -788,6 +829,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS13[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -807,6 +850,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS14[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -822,6 +867,8 @@ public class Config3DR extends AppCompatActivity {
                     if (ATS15[1].trim().equals("ERROR"))
                         error++;
                 }
+                else
+                    error++;
             }
             if(cancelled) {
                 dialogAppend("Cancelling retrieve");
@@ -839,7 +886,7 @@ public class Config3DR extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             alert.dismiss();
-            if(!cancelled) {
+            if(!cancelled & error == 0) {
                 EnableUI();
                 btSaveConfig.setEnabled(true);
             }
@@ -918,6 +965,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS1[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -931,6 +980,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS2[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -944,6 +995,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS3[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -957,6 +1010,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS4[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -973,6 +1028,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS5[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -986,6 +1043,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS6[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -1001,6 +1060,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS7[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -1014,6 +1075,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS8[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -1027,6 +1090,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS9[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -1040,6 +1105,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS10[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -1053,6 +1120,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS11[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -1066,6 +1135,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS12[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -1077,6 +1148,8 @@ public class Config3DR extends AppCompatActivity {
                 if(ATS13[1].length()>1) {
                     Log.d("Flight win", "ATS13?:" + ATS13[1]);
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -1094,6 +1167,8 @@ public class Config3DR extends AppCompatActivity {
                     if (!ATS14[1].trim().equals("OK"))
                         error++;
                 }
+                else
+                    error++;
             }
 
             if(!cancelled) {
@@ -1134,7 +1209,7 @@ public class Config3DR extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             alert.dismiss();
-            if(!cancelled) {
+            if(!cancelled & error == 0) {
                 DisableUI();
                 btSaveConfig.setEnabled(false);
             }
@@ -1144,15 +1219,31 @@ public class Config3DR extends AppCompatActivity {
     public int Connect(String[] baudrate, int brate) {
         int baud = 0;
 
+        builder = new AlertDialog.Builder(Config3DR.this);
+        //Recover firmware...
+        builder.setMessage("Attempting connecting to the 3DR module")
+                .setTitle("Connecting")
+                .setCancelable(false)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        //cancelled = true;
+                        dialog.cancel();
+                    }
+                });
+        alert = builder.create();
+        alert.show();
+
         if (brate == 0) {
             for (String rate : baudrate) {
                 if (!mPhysicaloid.isOpened()) {
                     mPhysicaloid.open();
                 }
                 mPhysicaloid.setBaudrate(Integer.valueOf(rate));
+                dialogAppend("Attempt connecting at:" +rate);
                 if (mInfo.ATMode()) {
                     baud = Integer.valueOf(rate);
                     Log.d("Flight win", "Success:" + rate);
+                    dialogAppend("Connection successfull at:" +rate);
                     break;
                 } else {
                     Log.d("Flight win", "Failed:" + rate);
@@ -1173,7 +1264,159 @@ public class Config3DR extends AppCompatActivity {
                 baud = 0;
             }
         }
+        alert.dismiss();
         return baud;
+    }
+
+    private class connectRetrieveAsyc extends AsyncTask<Void, Void, Void>  // UI thread
+    {
+
+        @Override
+        protected void onPreExecute() {
+            builder = new AlertDialog.Builder(Config3DR.this);
+            //Recover firmware...
+            builder.setMessage("Attempting connecting to the 3DR module")
+                    .setTitle("Connecting")
+                    .setCancelable(false)
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            //cancelled = true;
+                            dialog.cancel();
+                        }
+                    });
+            alert = builder.create();
+            alert.show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            if (currentBaudRate == 0) {
+                for (String rate : itemsBaudRate) {
+                    if (!mPhysicaloid.isOpened()) {
+                        mPhysicaloid.open();
+                    }
+                    mPhysicaloid.setBaudrate(Integer.valueOf(rate));
+                    dialogAppend("Attempt connecting at:" + rate);
+                    if (mInfo.ATMode()) {
+                        currentBaudRate = Integer.valueOf(rate);
+                        Log.d("Flight win", "Success:" + rate);
+                        dialogAppend("Connection successfull at:" + rate);
+                        break;
+                    } else {
+                        Log.d("Flight win", "Failed:" + rate);
+
+                    }
+                }
+            } else {
+                if (!mPhysicaloid.isOpened()) {
+                    if (mPhysicaloid.open()) {
+                        mPhysicaloid.setBaudrate(currentBaudRate);
+                    }
+                }
+                if (mInfo.ATMode()) {
+                    //baud = brate;
+                } else {
+                    Log.d("Flight win", "Failed:" + currentBaudRate);
+                    currentBaudRate = 0;
+                }
+
+            }
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
+            {
+                alert.dismiss();
+                connectingDone =true;
+                if(currentBaudRate > 0) {
+                    new getAllConfigAsyc().execute();
+                    //currentBaudRate = baud;
+                }
+                else {
+                    msg("Failed to connect. \nPlease unplug USB and plug it back\n Restart the application\n Then try again");
+
+                }
+
+            }
+        }
+
+    private class connectSaveAsyc extends AsyncTask<Void, Void, Void>  // UI thread
+    {
+
+        @Override
+        protected void onPreExecute() {
+            builder = new AlertDialog.Builder(Config3DR.this);
+            //Recover firmware...
+            builder.setMessage("Attempting connecting to the 3DR module")
+                    .setTitle("Connecting")
+                    .setCancelable(false)
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            //cancelled = true;
+                            dialog.cancel();
+                        }
+                    });
+            alert = builder.create();
+            alert.show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            if (currentBaudRate == 0) {
+                for (String rate : itemsBaudRate) {
+                    if (!mPhysicaloid.isOpened()) {
+                        mPhysicaloid.open();
+                    }
+                    mPhysicaloid.setBaudrate(Integer.valueOf(rate));
+                    dialogAppend("Attempt connecting at:" + rate);
+                    if (mInfo.ATMode()) {
+                        currentBaudRate = Integer.valueOf(rate);
+                        Log.d("Flight win", "Success:" + rate);
+                        dialogAppend("Connection successfull at:" + rate);
+                        break;
+                    } else {
+                        Log.d("Flight win", "Failed:" + rate);
+
+                    }
+                }
+            } else {
+                if (!mPhysicaloid.isOpened()) {
+                    if (mPhysicaloid.open()) {
+                        mPhysicaloid.setBaudrate(currentBaudRate);
+                    }
+                }
+                if (mInfo.ATMode()) {
+                    //baud = brate;
+                } else {
+                    Log.d("Flight win", "Failed:" + currentBaudRate);
+                    currentBaudRate = 0;
+                }
+
+            }
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
+        {
+            alert.dismiss();
+            connectingDone =true;
+            if(currentBaudRate > 0) {
+                //new getAllConfigAsyc().execute();
+                new saveAllConfigAsyc().execute();
+                //currentBaudRate = baud;
+            }
+            else {
+                msg("Failed to connect. \nPlease unplug USB and plug it back\n Restart the application\n Then try again");
+
+            }
+
+        }
     }
 
     public class ModuleInfo {
