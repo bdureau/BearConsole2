@@ -319,4 +319,6 @@
     <string name="status_screen">Status</string>
     <string name="flight_time">Time</string>
 
+    <!--telemetry module config -->
+
 </resources>

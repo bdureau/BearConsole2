@@ -41,7 +41,7 @@ public class Config3DR extends AppCompatActivity {
     ModuleInfo mInfo;
     ConsoleApplication myBT;
     int currentBaudRate =0;
-    boolean connectingDone = false;
+    //boolean connectingDone = false;
 
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
@@ -280,14 +280,14 @@ public class Config3DR extends AppCompatActivity {
     }
 
     public void onClickRetrieveConfig(View v) {
-        int baud = 0;
+        //int baud = 0;
 
         // go to AT mode
-        boolean success = false;
+        //boolean success = false;
         Log.d("Flight win", "retrieving config");
 
 
-        connectingDone =false;
+       // connectingDone =false;
        // baud = Connect(itemsBaudRate, 0);
         new connectRetrieveAsyc().execute();
 
@@ -305,17 +305,7 @@ public class Config3DR extends AppCompatActivity {
     }
 
     public void onClickSaveConfig(View v) {
-        int baud = 0;
-        //baud = Connect(itemsBaudRate, currentBaudRate);
 
-        //saveAllConfig();
-        /*if(baud > 0) {
-            new saveAllConfigAsyc().execute();
-        }
-        else {
-            msg("Failed to connect. \nPlease unplug USB and plug it back\n Restart the application\n Then try again");
-
-        }*/
         new connectSaveAsyc().execute();
     }
 
@@ -325,145 +315,6 @@ public class Config3DR extends AppCompatActivity {
         }
     }
 
-    public void saveAllConfig() {
-        String value = "";
-        long error = 0;
-
-        //serial speed
-        value = mInfo.runCommand("ATS1=" + dropdownBaudRate.getSelectedItem().toString().substring(0, 2));
-        String ATS1[] = value.split("\n");
-        Log.d("Flight win", "ATS1?:" + value);
-        Log.d("Flight win", "ATS1=" + dropdownBaudRate.getSelectedItem());
-        if (!ATS1[1].trim().equals("OK"))
-            error++;
-        //air speed
-        value = mInfo.runCommand("ATS2=" + dropdownAirSpeed.getSelectedItem());
-        String ATS2[] = value.split("\n");
-        Log.d("Flight win", "ATS2?:" + value);
-        Log.d("Flight win", "ATS2?:" + dropdownAirSpeed.getSelectedItem());
-
-        if (!ATS2[1].trim().equals("OK"))
-            error++;
-
-        //net id
-        value = mInfo.runCommand("ATS3=" + dropdownNetID.getSelectedItem());
-        String ATS3[] = value.split("\n");
-        Log.d("Flight win", "ATS3?:" + value);
-        Log.d("Flight win", "ATS3?:" + dropdownNetID.getSelectedItem());
-        if (!ATS3[1].trim().equals("OK"))
-            error++;
-
-        //TX power
-        value = mInfo.runCommand("ATS4=" + dropdownTXPower.getSelectedItem());
-        String ATS4[] = value.split("\n");
-        Log.d("Flight win", "ATS4?:" + value);
-        Log.d("Flight win", "ATS4?:" + dropdownTXPower.getSelectedItem());
-        if (!ATS4[1].trim().equals("OK"))
-            error++;
-
-        //ECC
-        if (checkBoxECC.isChecked())
-            value = mInfo.runCommand("ATS5=1");
-        else
-            value = mInfo.runCommand("ATS5=0");
-        String ATS5[] = value.split("\n");
-        Log.d("Flight win", "ATS5?:" + value);
-        if (!ATS5[1].trim().equals("OK"))
-            error++;
-
-        //Mav Link
-        value = mInfo.runCommand("ATS6=" + dropdownMavLink.getSelectedItem());
-        String ATS6[] = value.split("\n");
-        Log.d("Flight win", "ATS6?:" + value);
-        Log.d("Flight win", "ATS6?:" + dropdownMavLink.getSelectedItem());
-        if (!ATS6[1].trim().equals("OK"))
-            error++;
-
-        //OPPRESEND
-        if (checkBoxOpResend.isChecked())
-            value = mInfo.runCommand("ATS7=1");
-        else
-            value = mInfo.runCommand("ATS7=0");
-        String ATS7[] = value.split("\n");
-        Log.d("Flight win", "ATS7?:" + value);
-        if (!ATS7[1].trim().equals("OK"))
-            error++;
-
-        //MIN_FREQ
-        value = mInfo.runCommand("ATS8=" + dropdownMinFreq.getSelectedItem());
-        String ATS8[] = value.split("\n");
-        Log.d("Flight win", "ATS8?:" + value);
-        Log.d("Flight win", "ATS8?:" + dropdownMinFreq.getSelectedItem());
-        if (!ATS8[1].trim().equals("OK"))
-            error++;
-
-        //MAX_FREQ
-        value = mInfo.runCommand("ATS9=" + dropdownMaxFreq.getSelectedItem());
-        String ATS9[] = value.split("\n");
-        Log.d("Flight win", "ATS9?:" + value);
-        Log.d("Flight win", "ATS9?:" + dropdownMaxFreq.getSelectedItem());
-        if (!ATS9[1].trim().equals("OK"))
-            error++;
-
-        //NUM_CHANNELS
-        value = mInfo.runCommand("ATS10=" + dropdownNbrOfChannel.getSelectedItem());
-        String ATS10[] = value.split("\n");
-        Log.d("Flight win", "ATS10?:" + value);
-        Log.d("Flight win", "ATS10?:" + dropdownNbrOfChannel.getSelectedItem());
-        if (!ATS10[1].trim().equals("OK"))
-            error++;
-
-        //DUTY_CYCLE
-        value = mInfo.runCommand("ATS11=" + dropdownDutyCycle.getSelectedItem());
-        String ATS11[] = value.split("\n");
-        Log.d("Flight win", "ATS11?:" + value);
-        Log.d("Flight win", "ATS11?:" + dropdownDutyCycle.getSelectedItem());
-        if (!ATS11[1].trim().equals("OK"))
-            error++;
-
-        //LBT_RSSI
-        value = mInfo.runCommand("ATS12=" + dropdownLBTRSSI.getSelectedItem());
-        String ATS12[] = value.split("\n");
-        Log.d("Flight win", "ATS12?:" + value);
-        Log.d("Flight win", "ATS12?:" + dropdownLBTRSSI.getSelectedItem());
-        if (!ATS12[1].trim().equals("OK"))
-            error++;
-
-        //MANCHESTER
-        /*value = mInfo.runCommand("ATS13?");
-        String ATS13[] = value.split("\n");
-        Log.d("Flight win", "ATS13?:" + value);
-        Log.d("Flight win", "ATS13?:" + ATS13[1]);*/
-        //RTSCTS
-        if (checkBoxRTSCTS.isChecked())
-            value = mInfo.runCommand("ATS14=1");
-        else
-            value = mInfo.runCommand("ATS14=0");
-
-        String ATS14[] = value.split("\n");
-        Log.d("Flight win", "ATS14?:" + value);
-        Log.d("Flight win", "ATS14?:" + ATS14[1]);
-        if (!ATS14[1].trim().equals("OK"))
-            error++;
-
-        //MAX_WINDOW
-        value = mInfo.runCommand("ATS15=" + dropdownMaxWindow.getSelectedItem());
-        String ATS15[] = value.split("\n");
-        Log.d("Flight win", "ATS15?:" + value);
-        Log.d("Flight win", "ATS15?:" + dropdownMaxWindow.getSelectedItem());
-        if (!ATS15[1].trim().equals("OK"))
-            error++;
-
-        if (error == 0) {
-            value = mInfo.runCommand("AT&W");
-            Log.d("Flight win", "ATS15?:" + value);
-        }
-        //Exit AT mode
-        value = mInfo.runCommand("ATO");
-        Log.d("Flight win", "ATS15?:" + value);
-        DisableUI();
-        btSaveConfig.setEnabled(false);
-    }
 
     /*
     GetAllConfig
@@ -1216,7 +1067,7 @@ public class Config3DR extends AppCompatActivity {
         }
     }
 
-    public int Connect(String[] baudrate, int brate) {
+    /*public int Connect(String[] baudrate, int brate) {
         int baud = 0;
 
         builder = new AlertDialog.Builder(Config3DR.this);
@@ -1266,7 +1117,7 @@ public class Config3DR extends AppCompatActivity {
         }
         alert.dismiss();
         return baud;
-    }
+    }*/
 
     private class connectRetrieveAsyc extends AsyncTask<Void, Void, Void>  // UI thread
     {
@@ -1330,7 +1181,7 @@ public class Config3DR extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
             {
                 alert.dismiss();
-                connectingDone =true;
+                //connectingDone =true;
                 if(currentBaudRate > 0) {
                     new getAllConfigAsyc().execute();
                     //currentBaudRate = baud;
@@ -1405,7 +1256,7 @@ public class Config3DR extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             alert.dismiss();
-            connectingDone =true;
+            //connectingDone =true;
             if(currentBaudRate > 0) {
                 //new getAllConfigAsyc().execute();
                 new saveAllConfigAsyc().execute();
