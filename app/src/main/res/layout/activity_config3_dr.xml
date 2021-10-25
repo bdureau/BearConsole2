@@ -10,7 +10,7 @@
         android:id="@+id/textTelemetryConfigTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Configure telemetry module"
+        android:text="@string/configure_telemetry_module"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -27,7 +27,7 @@
         android:layout_below="@+id/textTelemetryConfigTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Version:"
+        android:text="@string/m3DR_version"
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -44,7 +44,7 @@
         android:layout_below="@+id/textversion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RSSI:"
+        android:text="@string/rssi"
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -61,7 +61,7 @@
         android:layout_below="@+id/textRSSI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Format:"
+        android:text="@string/format"
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -78,7 +78,7 @@
         android:layout_below="@+id/textFormat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Baud"
+        android:text="@string/baud"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -99,7 +99,7 @@
 
         android:layout_marginTop="18dp"
         android:layout_toRightOf="@id/spinnerBaudRate"
-        android:text="Air speed" />
+        android:text="@string/air_speed" />
 
     <Spinner
         android:id="@+id/spinnerAirSpeed"
@@ -115,7 +115,7 @@
         android:layout_below="@+id/textAirSpeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Net ID"
+        android:text="@string/net_id"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -134,7 +134,7 @@
         android:layout_below="@+id/textAirSpeed"
         android:layout_marginTop="18dp"
         android:layout_toRightOf="@id/spinnerNetID"
-        android:text="TX Power" />
+        android:text="@string/tx_power" />
 
     <Spinner
         android:id="@+id/spinnerTXPower"
@@ -150,7 +150,7 @@
         android:layout_below="@+id/spinnerTXPower"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ECC" />
+        android:text="@string/ecc" />
 
     <CheckBox
         android:id="@+id/checkBoxOpResend"
@@ -159,7 +159,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/spinnerTXPower"
         android:layout_centerInParent="true"
-        android:text="Op Resend" />
+        android:text="@string/op_resend" />
 
     <CheckBox
         android:id="@+id/checkBoxRTSCTS"
@@ -169,14 +169,14 @@
         android:layout_below="@+id/spinnerTXPower"
         android:layout_alignParentRight="true"
         android:layout_marginTop="0dp"
-        android:text="RTS CTS" />
+        android:text="@string/rts_cts" />
 
     <TextView
         android:id="@+id/textMavlink"
         android:layout_below="@+id/checkBoxECC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mavlink"
+        android:text="@string/mavlink"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -195,7 +195,7 @@
         android:layout_below="@+id/checkBoxECC"
         android:layout_alignRight="@id/textAirSpeed"
         android:layout_marginTop="18dp"
-        android:text="LBT RSSI" />
+        android:text="@string/lbt_rssi" />
 
     <Spinner
         android:id="@+id/spinnerLBTRSSI"
@@ -212,7 +212,7 @@
         android:layout_below="@+id/textMavlink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Min Freq"
+        android:text="@string/min_freq"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -232,7 +232,7 @@
         android:layout_below="@+id/textMinFreq"
 
         android:layout_marginTop="18dp"
-        android:text="Max Freq" />
+        android:text="@string/max_freq" />
 
     <Spinner
         android:id="@+id/spinnerMaxFreq"
@@ -249,7 +249,7 @@
         android:layout_below="@+id/textMaxFreq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="# of channels"
+        android:text="@string/nbr_of_channels"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -269,7 +269,7 @@
         android:layout_below="@+id/textMaxFreq"
         android:layout_alignStart="@id/textAirSpeed"
         android:layout_marginTop="18dp"
-        android:text="Duty Cycle" />
+        android:text="@string/duty_cycle" />
 
     <Spinner
         android:id="@+id/spinnerDutyCycle"
@@ -287,7 +287,7 @@
         android:layout_below="@+id/textDutyCycle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Max Win (ms)"
+        android:text="@string/max_win_ms"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -309,7 +309,7 @@
 
         android:layout_centerHorizontal="true"
         android:onClick="onClickRetrieveConfig"
-        android:text="Retrieve config" />
+        android:text="@string/retrieve_config" />
 
     <Button
         android:id="@+id/butDismiss"
@@ -326,6 +326,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:onClick="onClickSaveConfig"
-        android:text="Save Config" />
+        android:text="@string/m3DR_save_config" />
 
 </RelativeLayout>

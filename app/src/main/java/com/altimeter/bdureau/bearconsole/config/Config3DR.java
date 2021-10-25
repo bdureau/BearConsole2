@@ -41,7 +41,6 @@ public class Config3DR extends AppCompatActivity {
     ModuleInfo mInfo;
     ConsoleApplication myBT;
     int currentBaudRate =0;
-    //boolean connectingDone = false;
 
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
@@ -258,18 +257,6 @@ public class Config3DR extends AppCompatActivity {
         return -1;
     }
 
-    //index in an array
-    public int arrayIndexPartial(String stringArray[], String pattern) {
-
-        for (int i = 0; i < stringArray.length; i++) {
-            if (stringArray[i].substring(0, 2).equals(pattern)) {
-                Log.d("Flight win", pattern + ":" + i);
-                return i;
-            }
-        }
-        return -1;
-    }
-
     public void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
@@ -280,27 +267,10 @@ public class Config3DR extends AppCompatActivity {
     }
 
     public void onClickRetrieveConfig(View v) {
-        //int baud = 0;
-
         // go to AT mode
-        //boolean success = false;
         Log.d("Flight win", "retrieving config");
 
-
-       // connectingDone =false;
-       // baud = Connect(itemsBaudRate, 0);
         new connectRetrieveAsyc().execute();
-
-
-
-        /*if(currentBaudRate > 0) {
-            new getAllConfigAsyc().execute();
-            //currentBaudRate = baud;
-        }
-        else {
-            msg("Failed to connect. \nPlease unplug USB and plug it back\n Restart the application\n Then try again");
-
-        }*/
 
     }
 
@@ -330,15 +300,13 @@ public class Config3DR extends AppCompatActivity {
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(Config3DR.this);
             //Recover firmware...
-            builder.setMessage("Loading 3DR module configuration")
-                    .setTitle("Retrieving config")
+            builder.setMessage(getResources().getString(R.string.m3DR_load_cfg))
+                    .setTitle(getResources().getString(R.string.m3DR_retrieving_cfg))
                     .setCancelable(false)
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
-
                             cancelled = true;
                             dialog.cancel();
-
                         }
                     });
             alert = builder.create();
@@ -350,7 +318,7 @@ public class Config3DR extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             if(!cancelled) {
-                dialogAppend("running ATI");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATI");
                 value = mInfo.runCommand("ATI");
                 Log.d("Flight win", "ATI:" + value);
 
@@ -365,7 +333,7 @@ public class Config3DR extends AppCompatActivity {
             }
 
             if(!cancelled) {
-                dialogAppend("running ATI2");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATI2");
                 value = mInfo.runCommand("ATI2");
                 String ATI2[] = value.split("\n");
                 Log.d("Flight win", "ATI2:" + value);
@@ -378,7 +346,7 @@ public class Config3DR extends AppCompatActivity {
             }
 
             if(!cancelled) {
-                dialogAppend("running ATI3");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATI3");
                 value = mInfo.runCommand("ATI3");
                 Log.d("Flight win", "ATI3:" + value);
                 String ATI3[] = value.split("\n");
@@ -391,7 +359,7 @@ public class Config3DR extends AppCompatActivity {
             }
 
             if(!cancelled) {
-                dialogAppend("running ATI4");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATI4");
                 value = mInfo.runCommand("ATI4");
                 Log.d("Flight win", "ATI4:" + value);
                 String ATI4[] = value.split("\n");
@@ -410,7 +378,7 @@ public class Config3DR extends AppCompatActivity {
                 error++;*/
 
             if(!cancelled) {
-                dialogAppend("running ATI6");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATI6");
                 value = mInfo.runCommand("ATI6");
                 Log.d("Flight win", "ATI6:" + value);
                 String ATI6[] = value.split("\n");
@@ -423,7 +391,7 @@ public class Config3DR extends AppCompatActivity {
             }
             if(!cancelled) {
                 //RSSI
-                dialogAppend("running ATI7");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATI7");
                 value = mInfo.runCommand("ATI7");
                 Log.d("Flight win", "ATI7:" + value);
                 String ATI7[] = value.split("\n");
@@ -437,7 +405,7 @@ public class Config3DR extends AppCompatActivity {
             }
             if(!cancelled) {
                 //format
-                dialogAppend("running ATS0");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS0");
                 value = mInfo.runCommand("ATS0?");
                 Log.d("Flight win", "ATS0?:" + value);
                 String ATS0[] = value.split("\n");
@@ -454,7 +422,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //serial speed
-                dialogAppend("running ATS1");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS1");
                 value = mInfo.runCommand("ATS1?");
                 Log.d("Flight win", "ATS1?:" + value);
                 String ATS1[] = value.split("\n");
@@ -471,7 +439,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //air speed
-                dialogAppend("running ATS2");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS2");
                 value = mInfo.runCommand("ATS2?");
                 String ATS2[] = value.split("\n");
                 Log.d("Flight win", "ATS2?:" + value);
@@ -488,7 +456,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //net id
-                dialogAppend("running ATS3");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS3");
                 value = mInfo.runCommand("ATS3?");
                 String ATS3[] = value.split("\n");
                 Log.d("Flight win", "ATS3?:" + value);
@@ -506,7 +474,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //TX power
-                dialogAppend("running ATS4");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS4");
                 value = mInfo.runCommand("ATS4?");
                 String ATS4[] = value.split("\n");
                 Log.d("Flight win", "ATS4?:" + value);
@@ -523,7 +491,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //ECC
-                dialogAppend("running ATS5");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS5");
                 value = mInfo.runCommand("ATS5?");
                 String ATS5[] = value.split("\n");
                 Log.d("Flight win", "ATS5?:" + value);
@@ -545,7 +513,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //Mav Link
-                dialogAppend("running ATS6");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS6");
                 value = mInfo.runCommand("ATS6?");
                 String ATS6[] = value.split("\n");
                 Log.d("Flight win", "ATS6?:" + value);
@@ -563,7 +531,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //OPPRESEND
-                dialogAppend("running ATS7");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS7");
                 value = mInfo.runCommand("ATS7?");
                 String ATS7[] = value.split("\n");
                 Log.d("Flight win", "ATS7?:" + value);
@@ -584,7 +552,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //MIN_FREQ
-                dialogAppend("running ATS8");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS8");
                 value = mInfo.runCommand("ATS8?");
                 String ATS8[] = value.split("\n");
                 Log.d("Flight win", "ATS8?:" + value);
@@ -601,7 +569,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //MAX_FREQ
-                dialogAppend("running ATS9");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS9");
                 value = mInfo.runCommand("ATS9?");
                 String ATS9[] = value.split("\n");
                 Log.d("Flight win", "ATS9?:" + value);
@@ -618,7 +586,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //NUM_CHANNELS
-                dialogAppend("running ATS10");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS10");
                 value = mInfo.runCommand("ATS10?");
                 String ATS10[] = value.split("\n");
                 Log.d("Flight win", "ATS10?:" + value);
@@ -635,7 +603,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //DUTY_CYCLE
-                dialogAppend("running ATS11");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS11");
                 value = mInfo.runCommand("ATS11?");
                 String ATS11[] = value.split("\n");
                 Log.d("Flight win", "ATS11?:" + value);
@@ -652,7 +620,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //LBT_RSSI
-                dialogAppend("running ATS12");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS12");
                 value = mInfo.runCommand("ATS12?");
                 String ATS12[] = value.split("\n");
                 Log.d("Flight win", "ATS12?:" + value);
@@ -670,7 +638,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //MANCHESTER
-                dialogAppend("running ATS13");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS13");
                 value = mInfo.runCommand("ATS13?");
                 String ATS13[] = value.split("\n");
                 Log.d("Flight win", "ATS13?:" + value);
@@ -686,7 +654,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //RTSCTS
-                dialogAppend("running ATS14");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS14");
                 value = mInfo.runCommand("ATS14?");
                 String ATS14[] = value.split("\n");
                 Log.d("Flight win", "ATS14?:" + value);
@@ -707,7 +675,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //MAX_WINDOW
-                dialogAppend("running ATS15");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS15");
                 value = mInfo.runCommand("ATS15?");
                 String ATS15[] = value.split("\n");
                 Log.d("Flight win", "ATS15?:" + value);
@@ -722,13 +690,12 @@ public class Config3DR extends AppCompatActivity {
                     error++;
             }
             if(cancelled) {
-                dialogAppend("Cancelling retrieve");
+                dialogAppend(getResources().getString(R.string.m3DR_cancel_retrieve));
             }
             //Exit AT mode
-            dialogAppend("running AT0 to exit AT mode");
+            dialogAppend(getResources().getString(R.string.m3DR_run_at0));
             value = mInfo.runCommand("ATO");
             Log.d("Flight win", "ATO:" + value);
-
 
             return null;
         }
@@ -756,11 +723,11 @@ public class Config3DR extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(Config3DR.this);
-            //Recover firmware...
-            builder.setMessage("Running Saving commands")
-                    .setTitle("Saving config")
+            //Running Saving commands
+            builder.setMessage(getResources().getString(R.string.m3DR_run_save))
+                    .setTitle(getResources().getString(R.string.m3DR_save_cfg))
                     .setCancelable(false)
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
 
                             cancelled = true;
@@ -807,7 +774,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //serial speed
-                dialogAppend("running ATS1");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS1");
                 value = mInfo.runCommand("ATS1=" + baudRate);
                 String ATS1[] = value.split("\n");
                 Log.d("Flight win", "ATS1?:" + value);
@@ -822,7 +789,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //air speed
-                dialogAppend("running ATS2");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS2");
                 value = mInfo.runCommand("ATS2=" + airSpeed);
                 String ATS2[] = value.split("\n");
                 Log.d("Flight win", "ATS2?:" + value);
@@ -837,7 +804,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //net id
-                dialogAppend("running ATS3");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS3");
                 value = mInfo.runCommand("ATS3=" + netID);
                 String ATS3[] = value.split("\n");
                 Log.d("Flight win", "ATS3?:" + value);
@@ -852,7 +819,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //TX power
-                dialogAppend("running ATS4");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS4");
                 value = mInfo.runCommand("ATS4=" + txPower);
                 String ATS4[] = value.split("\n");
                 Log.d("Flight win", "ATS4?:" + value);
@@ -867,7 +834,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //ECC
-                dialogAppend("running ATS5");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS5");
                 if (boxECC)
                     value = mInfo.runCommand("ATS5=1");
                 else
@@ -885,7 +852,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //Mav Link
-                dialogAppend("running ATS6");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS6");
                 value = mInfo.runCommand("ATS6=" + mavLink);
                 String ATS6[] = value.split("\n");
                 Log.d("Flight win", "ATS6?:" + value);
@@ -900,7 +867,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //OPPRESEND
-                dialogAppend("running ATS7");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS7");
                 if (opResend)
                     value = mInfo.runCommand("ATS7=1");
                 else
@@ -917,7 +884,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //MIN_FREQ
-                dialogAppend("running ATS8");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS8");
                 value = mInfo.runCommand("ATS8=" + minFreq);
                 String ATS8[] = value.split("\n");
                 Log.d("Flight win", "ATS8?:" + value);
@@ -932,7 +899,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //MAX_FREQ
-                dialogAppend("running ATS9");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS9");
                 value = mInfo.runCommand("ATS9=" + maxFreq);
                 String ATS9[] = value.split("\n");
                 Log.d("Flight win", "ATS9?:" + value);
@@ -947,7 +914,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //NUM_CHANNELS
-                dialogAppend("running ATS10");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS10");
                 value = mInfo.runCommand("ATS10=" + nbrOfChannel);
                 String ATS10[] = value.split("\n");
                 Log.d("Flight win", "ATS10?:" + value);
@@ -962,7 +929,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //DUTY_CYCLE
-                dialogAppend("running ATS11");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS11");
                 value = mInfo.runCommand("ATS11=" + dutyCycle);
                 String ATS11[] = value.split("\n");
                 Log.d("Flight win", "ATS11?:" + value);
@@ -977,7 +944,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //LBT_RSSI
-                dialogAppend("running ATS12");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS12");
                 value = mInfo.runCommand("ATS12=" + LBTRSSI);
                 String ATS12[] = value.split("\n");
                 Log.d("Flight win", "ATS12?:" + value);
@@ -992,7 +959,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //MANCHESTER
-                dialogAppend("running ATS13");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS13");
                 value = mInfo.runCommand("ATS13?");
                 String ATS13[] = value.split("\n");
                 Log.d("Flight win", "ATS13?:" + value);
@@ -1005,7 +972,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //RTSCTS
-                dialogAppend("running ATS14");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS14");
                 if (RTSCTS)
                     value = mInfo.runCommand("ATS14=1");
                 else
@@ -1024,7 +991,7 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 //MAX_WINDOW
-                dialogAppend("running ATS15");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS15");
                 value = mInfo.runCommand("ATS15=" + maxWindow);
                 String ATS15[] = value.split("\n");
                 Log.d("Flight win", "ATS15?:" + value);
@@ -1039,11 +1006,11 @@ public class Config3DR extends AppCompatActivity {
 
             if(!cancelled) {
                 if (error == 0) {
-                    dialogAppend("No error saving the data\n Running AT&W");
+                    dialogAppend(getResources().getString(R.string.m3DR_no_errors));
                     value = mInfo.runCommand("AT&W");
                     Log.d("Flight win", "AT&W:" + value);
                 } else {
-                    dialogAppend("We have an error\n not saving\n Please try again");
+                    dialogAppend(getResources().getString(R.string.m3DR_we_have_errors));
                 }
             }
             else {
@@ -1125,13 +1092,13 @@ public class Config3DR extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(Config3DR.this);
-            //Recover firmware...
-            builder.setMessage("Attempting connecting to the 3DR module")
-                    .setTitle("Connecting")
+            //
+            builder.setMessage(getResources().getString(R.string.m3DR_attempt_con))
+                    .setTitle(getResources().getString(R.string.m3DR_connecting))
                     .setCancelable(false)
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
-                            //cancelled = true;
+
                             dialog.cancel();
                         }
                     });
@@ -1149,11 +1116,11 @@ public class Config3DR extends AppCompatActivity {
                         mPhysicaloid.open();
                     }
                     mPhysicaloid.setBaudrate(Integer.valueOf(rate));
-                    dialogAppend("Attempt connecting at:" + rate);
+                    dialogAppend(getResources().getString(R.string.m3DR_attempt_con2) + rate);
                     if (mInfo.ATMode()) {
                         currentBaudRate = Integer.valueOf(rate);
                         Log.d("Flight win", "Success:" + rate);
-                        dialogAppend("Connection successfull at:" + rate);
+                        dialogAppend(getResources().getString(R.string.m3DR_connect_ok) + rate);
                         break;
                     } else {
                         Log.d("Flight win", "Failed:" + rate);
@@ -1167,7 +1134,7 @@ public class Config3DR extends AppCompatActivity {
                     }
                 }
                 if (mInfo.ATMode()) {
-                    //baud = brate;
+
                 } else {
                     Log.d("Flight win", "Failed:" + currentBaudRate);
                     currentBaudRate = 0;
@@ -1181,13 +1148,13 @@ public class Config3DR extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
             {
                 alert.dismiss();
-                //connectingDone =true;
+
                 if(currentBaudRate > 0) {
                     new getAllConfigAsyc().execute();
-                    //currentBaudRate = baud;
+
                 }
                 else {
-                    msg("Failed to connect. \nPlease unplug USB and plug it back\n Restart the application\n Then try again");
+                    msg(getResources().getString(R.string.m3DR_failed_con));
 
                 }
 
@@ -1200,13 +1167,13 @@ public class Config3DR extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(Config3DR.this);
-            //Recover firmware...
-            builder.setMessage("Attempting connecting to the 3DR module")
-                    .setTitle("Connecting")
+            //.
+            builder.setMessage(getResources().getString(R.string.m3DR_attempt_con))
+                    .setTitle(getResources().getString(R.string.m3DR_connecting))
                     .setCancelable(false)
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
-                            //cancelled = true;
+
                             dialog.cancel();
                         }
                     });
@@ -1224,11 +1191,11 @@ public class Config3DR extends AppCompatActivity {
                         mPhysicaloid.open();
                     }
                     mPhysicaloid.setBaudrate(Integer.valueOf(rate));
-                    dialogAppend("Attempt connecting at:" + rate);
+                    dialogAppend(getResources().getString(R.string.m3DR_attempt_con2) + rate);
                     if (mInfo.ATMode()) {
                         currentBaudRate = Integer.valueOf(rate);
                         Log.d("Flight win", "Success:" + rate);
-                        dialogAppend("Connection successfull at:" + rate);
+                        dialogAppend(getResources().getString(R.string.m3DR_connect_ok) + rate);
                         break;
                     } else {
                         Log.d("Flight win", "Failed:" + rate);
@@ -1263,8 +1230,7 @@ public class Config3DR extends AppCompatActivity {
                 //currentBaudRate = baud;
             }
             else {
-                msg("Failed to connect. \nPlease unplug USB and plug it back\n Restart the application\n Then try again");
-
+                msg(getResources().getString(R.string.m3DR_failed_con));
             }
 
         }
@@ -1548,7 +1514,6 @@ public class Config3DR extends AppCompatActivity {
             @Override
             public void run() {
                 checkBoxRTSCTS.setSelected(findex);
-                //checkBoxRTSCTS.setChecked(true);
             }
         });
     }

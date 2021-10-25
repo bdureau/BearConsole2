@@ -313,12 +313,47 @@
     <string name="curve_accel">acceleration</string>
     <string name="flight_name">Flight</string>
 
-
     <string name="select_bluetooth_device">Select Bluetooth device</string>
     <string name="telemetry_screen">Telemetry</string>
     <string name="status_screen">Status</string>
     <string name="flight_time">Time</string>
 
     <!--telemetry module config -->
+    <string name="m3DR_load_cfg">Loading 3DR module configuration</string>
+    <string name="m3DR_retrieving_cfg">Retrieving config</string>
+    <string name="m3DR_no_errors">No error saving the data\n Running AT&amp;W</string>
+    <string name="m3DR_we_have_errors">We have an error\n not saving\n Please try again</string>
+    <string name="m3DR_saving_cancelled">Saving has been cancelled</string>
+    <string name="m3DR_run_command">Running command </string>
+    <string name="m3DR_cancel_retrieve">Cancelling retrieve</string>
+    <string name="m3DR_run_at0">Running command AT0 to exit AT mode</string>
+    <string name="m3DR_run_save">Running Saving commands</string>
+    <string name="m3DR_save_cfg">Saving config</string>
+    <string name="m3DR_Cancel">Cancel</string>
+    <string name="m3DR_attempt_con">Attempting connecting to the 3DR module</string>
+    <string name="m3DR_attempt_con2">Attempt connecting at:</string>
+    <string name="m3DR_connect_ok">Connection successfull at:</string>
+    <string name="m3DR_failed_con">Failed to connect.\n Please unplug USB and plug it back\n Restart the application\n Then try again</string>
+    <string name="m3DR_connecting">Connecting</string>
+    <string name="configure_telemetry_module">Configure telemetry module</string>
+    <string name="m3DR_version">Version:</string>
+    <string name="rssi">RSSI:</string>
+    <string name="format">Format:</string>
+    <string name="baud">Baud</string>
+    <string name="air_speed">Air speed</string>
+    <string name="net_id">Net ID</string>
+    <string name="tx_power">TX Power</string>
+    <string name="ecc">ECC</string>
+    <string name="op_resend">Op Resend</string>
+    <string name="rts_cts">RTS CTS</string>
+    <string name="mavlink">Mavlink</string>
+    <string name="lbt_rssi">LBT RSSI</string>
+    <string name="min_freq">Min Freq</string>
+    <string name="max_freq">Max Freq</string>
+    <string name="nbr_of_channels"># of channels</string>
+    <string name="duty_cycle">Duty Cycle</string>
+    <string name="max_win_ms">Max Win (ms)</string>
+    <string name="retrieve_config">Retrieve config</string>
+    <string name="m3DR_save_config">Save Config</string>
 
 </resources>
