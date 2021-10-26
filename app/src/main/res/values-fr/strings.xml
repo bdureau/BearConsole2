@@ -357,8 +357,8 @@
     <string name="nbr_of_channels"># de canneaux</string>
     <string name="duty_cycle">Duty Cycle</string>
     <string name="max_win_ms">Max Win (ms)</string>
-    <string name="retrieve_config">Récupération config</string>
-    <string name="m3DR_save_config">Sauvegarde Config</string>
+    <string name="retrieve_config">Charger cfg</string>
+    <string name="m3DR_save_config">Sauver Cfg</string>
 
 
 </resources>

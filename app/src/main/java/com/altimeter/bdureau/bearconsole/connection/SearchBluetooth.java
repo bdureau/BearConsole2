@@ -153,6 +153,7 @@ public class SearchBluetooth extends AppCompatActivity {
         //open help screen
         if (id == R.id.action_help) {
             Intent i= new Intent(SearchBluetooth.this, HelpActivity.class);
+            i.putExtra("help_file", "help_bluetooth");
             startActivity(i);
             return true;
         }

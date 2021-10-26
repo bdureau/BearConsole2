@@ -1,0 +1,27 @@
+<h1>3DR module configuration</h1>
+<p>In order to do long range telemetry you will need to replace your bluetooth module by
+    a 3DR telemetry module.</p>
+<p></p>
+<p>Note that your Android device battery must be strong enought to power the 3DR module. Consider using
+    an external battery if you have a powerfull module</p>
+<p></p>
+<p>You will need to configure the module so that it works with your altimeter board.</p>
+<p>Note that those modules usually come pre-set to work at 57600 bauds. However your altimeter board
+by default will work at 38400 bauds so will need to make sure that you are connecting at the correct speed.</p>
+<p></p>
+<p>Note that 3DR modules comes in pair so you will need to configure both the transmitter and receiver</p>
+<p></p>
+<p><span style="color: #ff0000;">CAUTION: make sure that you do not unplug the module while doing the following</span></p>
+<p></p>
+<p><strong>Retrieving the module configuration</strong></p>
+<p>Plug the module in your Android device using an OTG cable or any USB adaptor that can work with
+micro USB or type C USB</p>
+<p>Then click on [retrieve cfg] this will try to connect to the module using various baudrates until it connects.
+It will the retrieve the module config so that you can change it</p>
+<p></p>
+<p><strong>Saving the module configuration</strong></p>
+<p>Change the settings that you want to change. Make sure that you have selected a baudrate that will
+work with your board and click [Save cfg]. This will save the configuration.
+    If any error occur while saving it will abort the save</p>
+<p></p>
+<p>Note that you will need to repeat the same step for each module</p>
