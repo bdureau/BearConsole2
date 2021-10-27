@@ -133,7 +133,7 @@ public class SearchBluetooth extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_application_config, menu);
         return true;
     }
 
@@ -145,11 +145,11 @@ public class SearchBluetooth extends AppCompatActivity {
         int id = item.getItemId();
 
         //open application settings screen
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             Intent i= new Intent(SearchBluetooth.this, AppConfigActivity.class);
             startActivity(i);
             return true;
-        }
+        }*/
         //open help screen
         if (id == R.id.action_help) {
             Intent i= new Intent(SearchBluetooth.this, HelpActivity.class);

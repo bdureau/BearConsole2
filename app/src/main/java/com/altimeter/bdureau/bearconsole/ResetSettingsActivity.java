@@ -16,7 +16,7 @@ import android.widget.Button;
 
 public class ResetSettingsActivity extends AppCompatActivity {
 
-    Button btnClearAltiConfig, btnClearFlights, btnDismiss;
+    Button btnClearAltiConfig, btnClearFlights, btnClearLastFlight, btnDismiss;
     ConsoleApplication myBT ;
 
     @Override
@@ -36,6 +36,16 @@ public class ResetSettingsActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 finish();      //exit the application configuration activity
+            }
+        });
+
+        btnClearLastFlight = (Button)findViewById(R.id.butDeleteLastFlight);
+        btnClearLastFlight.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                deleteLastFlight();      //delete last flight
             }
         });
 
@@ -111,6 +121,31 @@ public class ResetSettingsActivity extends AppCompatActivity {
                             catch (IOException e) {
 
                             }*/
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.No), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+    public void deleteLastFlight() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //You are about to erase your last flight data, are you sure you want to do it?
+        builder.setMessage(getResources().getString(R.string.reset_msg3))
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                        //clear altimeter config
+                        if(myBT.getConnected())
+                            //erase the config
+                            myBT.write("x;".toString());
+                            myBT.flush();
+
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.No), new DialogInterface.OnClickListener() {

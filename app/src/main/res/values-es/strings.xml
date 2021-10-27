@@ -111,6 +111,7 @@
     <string name="clear_flights">Eliminar vuelos</string>
     <string name="reset_msg1">Está a punto de borrar todos los datos de vuelos, ¿está seguro de que quiere hacerlo?</string>
     <string name="reset_msg2">Está a punto de restablecer su configuración de altímetro, ¿está seguro de que desea hacerlo?</string>
+    <string name="reset_msg3">You are about to erase your last flight, are you sure you want to do it?</string>
     <string name="Yes">Sí</string>
     <string name="No">No</string>
     <!-- bluetooth messages -->

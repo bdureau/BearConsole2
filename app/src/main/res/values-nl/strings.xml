@@ -112,6 +112,7 @@
     <string name="clear_flights">Vluchten wissen</string>
     <string name="reset_msg1">U staat op het punt alle vluchtgegevens te wissen, weet u zeker dat u dit wilt doen?</string>
     <string name="reset_msg2">U staat op het punt uw hoogtemeterconfiguratie opnieuw in te stellen, weet u zeker dat u dit wilt doen?</string>
+    <string name="reset_msg3">You are about to erase your last flight, are you sure you want to do it?</string>
     <string name="Yes">Ja</string>
     <string name="No">Nee</string>
     <!-- bluetooth messages -->

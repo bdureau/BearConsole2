@@ -111,6 +111,7 @@
     <string name="clear_flights">elozo repulesek adatainak torlese</string>
     <string name="reset_msg1">Torolni fogod az osszes elozo repulesi adatot, biztos vagy benne?</string>
     <string name="reset_msg2">Resetelni fogod a magassagmero beallitasait, biztos vagy benne?</string>
+    <string name="reset_msg3">You are about to erase your last flight, are you sure you want to do it?</string>
     <string name="Yes">Igen</string>
     <string name="No">Nem</string>
     <!-- bluetooth messages -->

@@ -111,6 +111,7 @@
     <string name="clear_flights">Uçuşları Temizle</string>
     <string name="reset_msg1">Tüm uçuş verilerini silmek üzeresiniz, emin misiniz?</string>
     <string name="reset_msg2">Tüm altimetre ayarlarını sıfırlamak üzeresiniz, emin misiniz?</string>
+    <string name="reset_msg3">You are about to erase your last flight, are you sure you want to do it?</string>
     <string name="Yes">Evet</string>
     <string name="No">Hayır</string>
     <!-- bluetoothmessages -->

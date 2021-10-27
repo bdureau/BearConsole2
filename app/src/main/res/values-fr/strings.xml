@@ -122,6 +122,7 @@
     <!-- Reset screen -->
     <string name="reset_msg1">Vous allez effacer toutes vos données de vol, etes vous certain de vouloir le faire?</string>
     <string name="reset_msg2">Vous allez réinitialiser la configuration de votre altimètre, etes vous certain de vouloir le faire?</string>
+    <string name="reset_msg3">You are about to erase your last flight, are you sure you want to do it?</string>
 
     <!-- bluetooth messages -->
     <string name="BT_msg1">Périphérique Bluetooth non disponible</string>

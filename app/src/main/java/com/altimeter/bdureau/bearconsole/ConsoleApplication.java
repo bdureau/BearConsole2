@@ -149,6 +149,14 @@ public class ConsoleApplication extends Application {
         return MyFlight;
     }
 
+    public int getNbrOfFlight() {
+        return NbrOfFlight;
+    }
+
+    public void setNbrOfFlight(int value) {
+        NbrOfFlight=value;
+    }
+
     // connect to the bluetooth adapter
     public boolean connect() {
         boolean state = false;

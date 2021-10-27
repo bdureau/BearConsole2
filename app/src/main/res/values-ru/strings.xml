@@ -112,6 +112,7 @@
     <string name="clear_flights">Очистить данные о полётах - Clear Flights</string>
     <string name="reset_msg1">Вы хотите удалить все данные о полётах. Вы уверены? - You are about to erase all flight data, are you sure you want to do it?</string>
     <string name="reset_msg2">Вы хотите сбросить конфигурации альтиметра. Вы уверены? - You are about to reset your altimeter config, are you sure you want to do it?</string>
+    <string name="reset_msg3">You are about to erase your last flight, are you sure you want to do it?</string>
     <string name="Yes">Да - Yes</string>
     <string name="No">Нет - No</string>
     <!-- bluetooth messages -->
