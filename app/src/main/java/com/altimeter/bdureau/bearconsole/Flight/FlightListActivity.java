@@ -14,6 +14,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,6 +31,7 @@ import org.afree.data.xy.XYSeries;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class FlightListActivity extends AppCompatActivity {
     ConsoleApplication myBT;
     List<String> flightNames = null;
     private FlightData myflight = null;
-    //private ProgressDialog progress;
+    private AlertDialog alert;
 
     private Button buttonDismiss;
 
@@ -85,64 +87,6 @@ public class FlightListActivity extends AppCompatActivity {
         });
     }
 
-    /*private void getFlights() {
-        //get flights
-        if (myBT.getConnected()) {
-            //clear anything on the connection
-            myBT.flush();
-            myBT.clearInput();
-            myBT.getFlightData().ClearFlight();
-            // Send command to retrieve the config
-            myBT.write("a;".toString());
-            myBT.flush();
-
-            try {
-                //wait for data to arrive
-                while (myBT.getInputStream().available() <= 0) ;
-            } catch (IOException e) {
-                // msg("Failed to retrieve flights");
-            }
-
-            String myMessage = "";
-            myBT.setDataReady(false);
-            myBT.initFlightData();
-            myMessage = myBT.ReadResult(60000);
-
-            if (myMessage.equals("start end")) {
-
-                flightNames = new ArrayList<String>();
-
-                myflight = myBT.getFlightData();
-                flightNames = myflight.getAllFlightNames2();
-
-                for (String flight : flightNames) {
-                    XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_altitude));
-                    int nbrData = serie.getItemCount();
-                    for (int i = 1; i < nbrData; i++) {
-                        double X, Y;
-                        X = serie.getX(i).doubleValue();
-                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000);
-                        myflight.AddToFlight((long) X, (long) (Y), flight, 3);
-                    }
-                }
-                for (String flight : flightNames) {
-                    //XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_speed));
-
-                    XYSeries serie = myflight.GetFlightData(flight).getSeries(3);
-                    int nbrData = serie.getItemCount();
-                    for (int i = 1; i < nbrData; i++) {
-                        double X, Y;
-                        X = serie.getX(i).doubleValue();
-                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000);
-                        myflight.AddToFlight((long) X, (long) (Y / (9.806)), flight, 4);
-                    }
-                }
-
-            }
-        }
-    }*/
-
-
 
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
@@ -152,7 +96,7 @@ public class FlightListActivity extends AppCompatActivity {
     private class RetrieveFlights extends AsyncTask<Void, Void, Void>  // UI thread
     {
         private AlertDialog.Builder builder = null;
-        private AlertDialog alert;
+
         private Boolean canceled = false;
         private String myMessage = "";
         private int NbrOfFlight = 0;
@@ -183,14 +127,13 @@ public class FlightListActivity extends AppCompatActivity {
 
             //get flights
             if (myBT.getConnected()) {
-                //Log.d("FlightList", "I am connected");
                 //clear anything on the connection
                 myBT.flush();
                 myBT.clearInput();
                 myBT.setNbrOfFlight(0);
                 myBT.getFlightData().ClearFlight();
-                // Send command to retrieve the config
 
+                // Send command to retrieve the nunber of flights
                 myBT.write("n;".toString());
                 myBT.flush();
 
@@ -213,11 +156,10 @@ public class FlightListActivity extends AppCompatActivity {
                 if (NbrOfFlight > 0) {
 
                     for (int j = 0; j < NbrOfFlight; j++) {
-
+                        dialogAppend("Retrieving flight:" +(j+1));
                         Log.d("FlightList", "FlightNbr:" + j);
                         myBT.flush();
                         myBT.clearInput();
-
 
                         myBT.write("r" + j + ";".toString());
                         myBT.flush();
@@ -234,42 +176,52 @@ public class FlightListActivity extends AppCompatActivity {
 
                         myMessage = myBT.ReadResult(60000);
 
+                        if (myMessage.equals("start end")) {
+
+                        }
                         if (canceled) {
                             Log.d("FlightList","Canceled retrieval");
-                            break;
-                        }
-                    }
-
-                    if (myMessage.equals("start end")) {
-
-                        flightNames = new ArrayList<String>();
-
-                        myflight = myBT.getFlightData();
-                        flightNames = myflight.getAllFlightNames2();
-
-                        for (String flight : flightNames) {
-                            XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_altitude));
-                            int nbrData = serie.getItemCount();
-                            for (int i = 1; i < nbrData; i++) {
-                                double X, Y;
-                                X = serie.getX(i).doubleValue();
-                                Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000);
-                                myflight.AddToFlight((long) X, (long) (Y), flight, 3);
-                            }
-                        }
-                        for (String flight : flightNames) {
-
-                            XYSeries serie = myflight.GetFlightData(flight).getSeries(3);
-                            int nbrData = serie.getItemCount();
-                            for (int i = 1; i < nbrData; i++) {
-                                double X, Y;
-                                X = serie.getX(i).doubleValue();
-                                Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000);
-                                myflight.AddToFlight((long) X, (long) (Y / (9.806)), flight, 4);
-                            }
+                            //this will exit the for loop and stop asking fo new flight
+                            j= NbrOfFlight;
                         }
                     }
                 }
+
+
+                flightNames = new ArrayList<String>();
+
+                myflight = myBT.getFlightData();
+                flightNames = myflight.getAllFlightNames2();
+                if (canceled) {
+                    //order the names in the collection
+                    Collections.sort(flightNames);
+                    //remove the last flight which might have incomplete data
+                    flightNames.remove(flightNames.size()-1);
+                }
+
+
+                for (String flight : flightNames) {
+                    XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_altitude));
+                    int nbrData = serie.getItemCount();
+                    for (int i = 1; i < nbrData; i++) {
+                        double X, Y;
+                        X = serie.getX(i).doubleValue();
+                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000);
+                        myflight.AddToFlight((long) X, (long) (Y), flight, 3);
+                    }
+                }
+                for (String flight : flightNames) {
+
+                    XYSeries serie = myflight.GetFlightData(flight).getSeries(3);
+                    int nbrData = serie.getItemCount();
+                    for (int i = 1; i < nbrData; i++) {
+                        double X, Y;
+                        X = serie.getX(i).doubleValue();
+                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000);
+                        myflight.AddToFlight((long) X, (long) (Y / (9.806)), flight, 4);
+                    }
+                }
+                //}
             }
             return null;
         }
@@ -278,7 +230,7 @@ public class FlightListActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             super.onPostExecute(result);
-            if (!canceled) {
+            //if (!canceled) {
 
                 final ArrayAdapter adapter = new ArrayAdapter(FlightListActivity.this, android.R.layout.simple_list_item_1, flightNames);
                 adapter.sort(new Comparator<String>() {
@@ -290,7 +242,7 @@ public class FlightListActivity extends AppCompatActivity {
                 flightList = (ListView) findViewById(R.id.listViewFlightList);
                 flightList.setAdapter(adapter);
                 flightList.setOnItemClickListener(myListClickListener);
-            }
+            //}
 
             alert.dismiss();
 
@@ -300,5 +252,16 @@ public class FlightListActivity extends AppCompatActivity {
             if (myflight == null && !canceled)
                 msg(getResources().getString(R.string.flight_have_been_recorded));
         }
+    }
+    Handler mHandler = new Handler();
+
+    private void dialogAppend(CharSequence text) {
+        final CharSequence ftext = text;
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                alert.setMessage(ftext);
+            }
+        });
     }
 }
