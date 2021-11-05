@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".config.ConfigBT">
+
+    <TextView
+        android:id="@+id/textBTConfigTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Configure Bluetooth module"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:elegantTextHeight="true"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_horizontal"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/textmodule"
+        android:layout_below="@+id/textBTConfigTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Module:"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerModules"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textmodule"
+        android:spinnerMode="dropdown"
+        android:layout_alignParentRight="true"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textBTBaud"
+        android:layout_below="@+id/textmodule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Baud:"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerBTBaudRate"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textBTBaud"
+        android:spinnerMode="dropdown"
+        android:layout_alignParentRight="true"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textversion"
+        android:layout_below="@+id/textBTBaud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/m3DR_version"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:id="@+id/textversionentry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textBTBaud"
+        android:layout_marginTop="18dp"
+        android:layout_alignParentRight="true"
+        android:text="               " />
+
+    <TextView
+        android:id="@+id/textPin"
+        android:layout_below="@+id/textversion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pin:"
+        android:layout_marginTop="18dp" />
+
+    <EditText
+        android:id="@+id/textPinEntry"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textversion"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="18dp"
+        android:text="1234"
+        android:textSize="12sp" />
+
+
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_below="@+id/textPin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name:"
+        android:layout_marginTop="18dp" />
+
+    <EditText
+        android:id="@+id/textNameEntry"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textPin"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="18dp"
+        android:text="               "
+        android:textSize="12sp" />
+
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginRight="-3dp"
+        android:layout_marginBottom="53dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvRead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentLeft="true" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/butRetrieveConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="onClickRetrieveConfig"
+        android:text="@string/retrieve_config" />
+
+    <Button
+        android:id="@+id/butDismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="onClickDismiss"
+        android:text="@string/dismiss_app_config" />
+
+    <Button
+        android:id="@+id/butSaveConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onClickSaveConfig"
+        android:text="@string/m3DR_save_config" />
+
+</RelativeLayout>

@@ -13,6 +13,11 @@
         android:title="3DR settings..."
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_modbt_settings"
+        android:orderInCategory="100"
+        android:title="BT settings..."
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_help"
         android:orderInCategory="100"
         android:title="@string/help"
