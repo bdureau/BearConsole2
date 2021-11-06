@@ -49,7 +49,10 @@ public class ConfigBT extends AppCompatActivity {
 
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
+    //private AlertDialog.Builder builderInfo = null;
     private UartConfig uartConfig;
+
+    //private AlertDialog Info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +136,22 @@ public class ConfigBT extends AppCompatActivity {
         DisableUI();
         btRetrieveConfig.setEnabled(true);
         btSaveConfig.setEnabled(false);
+        builder = new AlertDialog.Builder(ConfigBT.this);
+        //Running Saving commands
+        builder.setMessage("This will allows you to configure a bluetooth module. You will need a ttl cable and an adaptator to connect your bluetooth module to your phone. Please look at the on line help")
+                .setTitle("Bluetooth module configuration")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
 
+
+                        dialog.cancel();
+
+                    }
+                });
+
+        alert = builder.create();
+        alert.show();
     }
 
     public void EnableUI() {
@@ -606,19 +624,11 @@ public class ConfigBT extends AppCompatActivity {
 
                 if (Ret.length > 0) {
                     Log.d("RET0:", Ret[0] +"\n");
-                    //Log.d("RET1:", Ret[1] +"\n");
-                    //Log.d("RET2:", Ret[2] +"\n");
-                    //Log.d("RET3:", Ret[3] +"\n");
-                    //if(Ret[0].trim().equals("OK")/*| Ret[0].substring(0,8).equals("+VERSION")*/){
-                        at = true;
+                    at = true;
                         Log.d("Flight win", "connected!!!");
-                    //}
+
                 }
 
-                /*if (str.substring(0, 2).equals("OK")) {
-                    at = true;
-                    Log.d("Flight win", "connected!!!");
-                }*/
             }
 
             return at;
@@ -765,7 +775,7 @@ public class ConfigBT extends AppCompatActivity {
         //open help screen
         if (id == R.id.action_help) {
             Intent i = new Intent(ConfigBT.this, HelpActivity.class);
-            i.putExtra("help_file", "help_config3DR");
+            i.putExtra("help_file", "help_configBT");
             startActivity(i);
             return true;
         }

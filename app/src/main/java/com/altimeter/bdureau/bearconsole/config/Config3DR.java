@@ -209,6 +209,22 @@ public class Config3DR extends AppCompatActivity {
         btRetrieveConfig.setEnabled(true);
         btSaveConfig.setEnabled(false);
 
+        builder = new AlertDialog.Builder(this);
+        //Running Saving commands
+        builder.setMessage("This will allows you to configure a 3DR telemetry module. You will need a ttl cable and an adaptator to connect your 3DR module to your phone. Please look at the on line help")
+                .setTitle("3DR module configuration")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+
+
+                        dialog.cancel();
+
+                    }
+                });
+
+        alert = builder.create();
+        alert.show();
     }
 
     public void EnableUI() {

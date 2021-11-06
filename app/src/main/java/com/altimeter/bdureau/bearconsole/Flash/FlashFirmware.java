@@ -34,6 +34,7 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
+import com.altimeter.bdureau.bearconsole.config.ConfigBT;
 import com.physicaloid.lib.Boards;
 import com.physicaloid.lib.Physicaloid;
 
@@ -141,6 +142,22 @@ public class FlashFirmware extends AppCompatActivity {
         dropdownBaudRate.setAdapter(adapterBaudRate);
         dropdownBaudRate.setSelection(10);
 
+        builder = new AlertDialog.Builder(this);
+        //Running Saving commands
+        builder.setMessage("This will allows you to flash your altimeter firmware to make sure it is compatible with this application. You will need a ttl cable and an adaptator to connect your altimeter board to your phone. Please look at the on line help")
+                .setTitle("Flash firmware")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+
+
+                        dialog.cancel();
+
+                    }
+                });
+
+        alert = builder.create();
+        alert.show();
 
     }
 
