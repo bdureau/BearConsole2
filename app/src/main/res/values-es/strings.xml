@@ -354,6 +354,12 @@
     <string name="max_win_ms">Max Win (ms)</string>
     <string name="retrieve_config">Retrieve config</string>
     <string name="m3DR_save_config">Save Config</string>
+    <string name="bt_info_msg">This will allows you to configure a bluetooth module. You will need a ttl cable and an adaptator to connect your bluetooth module to your phone. Please look at the on line help</string>
+    <string name="bt_info_title">Bluetooth module configuration</string>
+    <string name="bt_info_ok">OK</string>
+    <string name="loading_bt_config_msg">Loading bluetooth module config</string>
+    <string name="dr_info_msg">This will allows you to configure a 3DR telemetry module. You will need a ttl cable and an adaptator to connect your 3DR module to your phone. Please look at the on line help</string>
+    <string name="dr_info_title">3DR module configuration</string>
 
 
 </resources>

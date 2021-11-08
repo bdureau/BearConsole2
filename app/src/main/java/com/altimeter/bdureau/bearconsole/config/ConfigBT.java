@@ -49,10 +49,8 @@ public class ConfigBT extends AppCompatActivity {
 
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
-    //private AlertDialog.Builder builderInfo = null;
-    private UartConfig uartConfig;
 
-    //private AlertDialog Info;
+    private UartConfig uartConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,21 +125,18 @@ public class ConfigBT extends AppCompatActivity {
 
         mPhysicaloid.open();
         mPhysicaloid.setConfig(uartConfig);
-        /*if (mPhysicaloid.open()) {
 
-            mPhysicaloid.setBaudrate(38400);
-        }*/
         mInfo = new ModuleInfo(mPhysicaloid);
-        //mInfo.open();
+
         DisableUI();
         btRetrieveConfig.setEnabled(true);
         btSaveConfig.setEnabled(false);
         builder = new AlertDialog.Builder(ConfigBT.this);
-        //Running Saving commands
-        builder.setMessage("This will allows you to configure a bluetooth module. You will need a ttl cable and an adaptator to connect your bluetooth module to your phone. Please look at the on line help")
-                .setTitle("Bluetooth module configuration")
+        //Display info message
+        builder.setMessage(R.string.bt_info_msg)
+                .setTitle(R.string.bt_info_title)
                 .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.bt_info_ok, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
 
 
@@ -223,7 +218,7 @@ public class ConfigBT extends AppCompatActivity {
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(ConfigBT.this);
             //Recover firmware...
-            builder.setMessage("Loading bluetooth module config")
+            builder.setMessage(getResources().getString(R.string.loading_bt_config_msg))
                     .setTitle(getResources().getString(R.string.m3DR_retrieving_cfg))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
@@ -299,6 +294,7 @@ public class ConfigBT extends AppCompatActivity {
         long error = 0;
         String baudID = "";
         String baudRate, Name, PIN;
+        String cancelMsg="";
 
         boolean cancelled = false;
 
@@ -323,6 +319,14 @@ public class ConfigBT extends AppCompatActivity {
             Name = txtModuleName.getText().toString();
             PIN = txtPin.getText().toString();
 
+            if(Name.trim().equals("")) {
+                cancelMsg = "Module name cannot be empty\n";
+                cancelled = true;
+            }
+            if(PIN.trim().equals("")) {
+                cancelMsg = cancelMsg + "Module Pin cannot be empty\n";
+                cancelled = true;
+            }
             alert = builder.create();
             alert.show();
         }
@@ -396,6 +400,8 @@ public class ConfigBT extends AppCompatActivity {
                 DisableUI();
                 btSaveConfig.setEnabled(false);
             }
+            if (cancelled)
+                msg(cancelMsg);
         }
     }
 
@@ -407,7 +413,7 @@ public class ConfigBT extends AppCompatActivity {
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(ConfigBT.this);
             //
-            builder.setMessage(getResources().getString(R.string.m3DR_attempt_con))
+            builder.setMessage("Attempting connecting to the Bluetooth module")
                     .setTitle(getResources().getString(R.string.m3DR_connecting))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
@@ -484,7 +490,7 @@ public class ConfigBT extends AppCompatActivity {
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(ConfigBT.this);
             //.
-            builder.setMessage(getResources().getString(R.string.m3DR_attempt_con))
+            builder.setMessage("Attempting connecting to the Bluetooth module")
                     .setTitle(getResources().getString(R.string.m3DR_connecting))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {

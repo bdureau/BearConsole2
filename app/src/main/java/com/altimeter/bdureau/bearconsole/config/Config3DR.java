@@ -199,20 +199,17 @@ public class Config3DR extends AppCompatActivity {
 
         mPhysicaloid = new Physicaloid(this);
         mPhysicaloid.open();
-        /*if (mPhysicaloid.open()) {
 
-            mPhysicaloid.setBaudrate(38400);
-        }*/
         mInfo = new ModuleInfo(mPhysicaloid);
-        //mInfo.open();
+
         DisableUI();
         btRetrieveConfig.setEnabled(true);
         btSaveConfig.setEnabled(false);
 
         builder = new AlertDialog.Builder(this);
-        //Running Saving commands
-        builder.setMessage("This will allows you to configure a 3DR telemetry module. You will need a ttl cable and an adaptator to connect your 3DR module to your phone. Please look at the on line help")
-                .setTitle("3DR module configuration")
+        //Display info message
+        builder.setMessage(getResources().getString(R.string.dr_info_msg))
+                .setTitle(R.string.dr_info_title)
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
