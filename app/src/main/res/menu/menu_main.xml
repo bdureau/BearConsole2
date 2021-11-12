@@ -10,12 +10,12 @@
     <item
         android:id="@+id/action_mod3dr_settings"
         android:orderInCategory="100"
-        android:title="3DR settings..."
+        android:title="@string/_3dr_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_modbt_settings"
         android:orderInCategory="100"
-        android:title="BT settings..."
+        android:title="@string/bt_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_help"

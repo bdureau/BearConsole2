@@ -362,5 +362,17 @@
     <string name="loading_bt_config_msg">Loading bluetooth module config</string>
     <string name="dr_info_msg">This will allows you to configure a 3DR telemetry module. You will need a ttl cable and an adaptator to connect your 3DR module to your phone. Please look at the on line help</string>
     <string name="dr_info_title">3DR module configuration</string>
+    <string name="configure_bluetooth_module">Configure Bluetooth module</string>
+    <string name="module">Module:</string>
+    <string name="bt_baud_rate">Baud rate:</string>
+    <string name="pin">Pin:</string>
+    <string name="module_name">Module name:</string>
+    <string name="chip_has_not_been_init">Chip has been initiated:</string>
+    <string name="flash_firmware_msg">This will allows you to flash your altimeter firmware to make sure it is compatible with this application. You will need a ttl cable and an adaptator to connect your altimeter board to your phone. Please look at the on line help</string>
+    <string name="flash_firmware_title">Flash firmware</string>
+    <string name="flash_firmware_ok">OK</string>
+    <string name="firmware_version_not_detected">"Firmware version detected: "</string>
+    <string name="_3dr_settings">3DR settings...</string>
+    <string name="bt_settings">BT settings...</string>
 
 </resources>

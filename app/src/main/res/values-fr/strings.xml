@@ -122,7 +122,7 @@
     <!-- Reset screen -->
     <string name="reset_msg1">Vous allez effacer toutes vos données de vol, etes vous certain de vouloir le faire?</string>
     <string name="reset_msg2">Vous allez réinitialiser la configuration de votre altimètre, etes vous certain de vouloir le faire?</string>
-    <string name="reset_msg3">You are about to erase your last flight, are you sure you want to do it?</string>
+    <string name="reset_msg3">Vous allez effacer votre dernier vol, etes vous certain de vouloir le faire?</string>
 
     <!-- bluetooth messages -->
     <string name="BT_msg1">Périphérique Bluetooth non disponible</string>
@@ -338,9 +338,9 @@
     <string name="m3DR_attempt_con">Tentative de connexion au module 3DR</string>
     <string name="m3DR_attempt_con2">Tentative de connexion à:</string>
     <string name="m3DR_connect_ok">Connexion avec succès à:</string>
-    <string name="m3DR_failed_con">Echec de connexion.\n Deconnecter le cable USB et reconnectez le\n Redémarez l\'application\n et réessayez</string>
+    <string name="m3DR_failed_con">Echec de connexion.\n Déconnecter le cable USB et reconnectez le\n Redémarez l\'application\n et réessayez</string>
     <string name="m3DR_connecting">Connexion en cours</string>
-    <string name="configure_telemetry_module">Configuration du module de télémetrie</string>
+    <string name="configure_telemetry_module">Configuration du module de télémétrie</string>
     <string name="m3DR_version">Version:</string>
     <string name="rssi">RSSI:</string>
     <string name="format">Format:</string>
@@ -360,12 +360,31 @@
     <string name="max_win_ms">Max Win (ms)</string>
     <string name="retrieve_config">Charger cfg</string>
     <string name="m3DR_save_config">Sauver Cfg</string>
-    <string name="bt_info_msg">This will allows you to configure a bluetooth module. You will need a ttl cable and an adaptator to connect your bluetooth module to your phone. Please look at the on line help</string>
-    <string name="bt_info_title">Bluetooth module configuration</string>
+    <string name="bt_info_msg">Cela vous permettra de configurer le module bluetooth.
+        Vous aurez besoin d\'un câble ttl et d\'un adaptateur pour connecter votre module bluetooth à votre appareil Android.
+        Merci de consulter l\'aide en ligne</string>
+    <string name="bt_info_title">Configuration du module Bluetooth</string>
     <string name="bt_info_ok">OK</string>
-    <string name="loading_bt_config_msg">Loading bluetooth module config</string>
-    <string name="dr_info_msg">This will allows you to configure a 3DR telemetry module. You will need a ttl cable and an adaptator to connect your 3DR module to your phone. Please look at the on line help</string>
-    <string name="dr_info_title">3DR module configuration</string>
+    <string name="loading_bt_config_msg">Chargement config module bluetooth</string>
+    <string name="dr_info_msg">Cela vous permettra de configurer un module de télémétrie 3DR.
+        Vous aurez besoin d\'un câble ttl et d\'un adaptateur pour connecter votre module 3DR à votre appareil Android.
+        Merci de consulter l\'aide en ligne</string>
+    <string name="dr_info_title">Configuration du module 3DR</string>
+    <string name="configure_bluetooth_module">Configure module Bluetooth</string>
+    <string name="module">Module:</string>
+    <string name="bt_baud_rate">Baud rate:</string>
+    <string name="pin">Pin:</string>
+    <string name="module_name">Nom module:</string>
+    <string name="chip_has_not_been_init">Le microcontroleur n\'a pas été initialisé:</string>
+    <string name="flash_firmware_msg">Cela vous permettra de mettre à jour le firmware de votre altimètre
+        pour vous assurer qu\'il est compatible avec cette application.
+        Vous aurez besoin d\'un cable ttl et d\'un adaptateur pour connecter votre carte altimètre à votre appareil Android.
+        Merci de consulter l\'aide en ligne</string>
+    <string name="flash_firmware_title">Flash firmware</string>
+    <string name="flash_firmware_ok">OK</string>
+    <string name="firmware_version_not_detected">Version du firmware detecté: </string>
+    <string name="_3dr_settings">Config 3DR module...</string>
+    <string name="bt_settings">Config BT module...</string>
 
 
 </resources>

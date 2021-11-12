@@ -144,10 +144,10 @@ public class FlashFirmware extends AppCompatActivity {
 
         builder = new AlertDialog.Builder(this);
         //Running Saving commands
-        builder.setMessage("This will allows you to flash your altimeter firmware to make sure it is compatible with this application. You will need a ttl cable and an adaptator to connect your altimeter board to your phone. Please look at the on line help")
-                .setTitle("Flash firmware")
+        builder.setMessage(R.string.flash_firmware_msg)
+                .setTitle(R.string.flash_firmware_title)
                 .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.flash_firmware_ok, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
 
 
@@ -305,7 +305,7 @@ public class FlashFirmware extends AppCompatActivity {
             firm.open(38400);
             version =firm.getFirmwarVersion();
 
-            tvAppend(tvRead, "Firmware version detected: "+ version +"\n");
+            tvAppend(tvRead, getString(R.string.firmware_version_not_detected)+ version +"\n");
 
             if(version.equals("AltiMulti")) {
                 setRadioButton (rbAltiMulti,true);
@@ -400,7 +400,7 @@ public class FlashFirmware extends AppCompatActivity {
         cmd.open(Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]));
         int ret = cmd.initChip();
         if (ret == 1)
-            dialogAppend("Chip has been initiated:" + ret);
+            dialogAppend(getString(R.string.chip_has_not_been_init) + ret);
         else {
             dialogAppend("Chip has not been initiated:" + ret);
             failed = true;

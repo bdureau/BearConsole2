@@ -9,7 +9,7 @@
         android:id="@+id/textBTConfigTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Configure Bluetooth module"
+        android:text="@string/configure_bluetooth_module"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -26,7 +26,7 @@
         android:layout_below="@+id/textBTConfigTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Module:"
+        android:text="@string/module"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -43,7 +43,7 @@
         android:layout_below="@+id/textmodule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Current Baud:"
+        android:text="@string/bt_baud_rate"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -77,7 +77,7 @@
         android:layout_below="@+id/textversion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pin:"
+        android:text="@string/pin"
         android:layout_marginTop="18dp" />
 
     <EditText
@@ -97,7 +97,7 @@
         android:layout_below="@+id/textPin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name:"
+        android:text="@string/module_name"
         android:layout_marginTop="18dp" />
 
     <EditText
