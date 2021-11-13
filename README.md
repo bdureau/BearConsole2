@@ -5,12 +5,12 @@ It runs some sort of AT commands and allow configuration of the altimeter as wel
 It also has the ability to flash the altimeter firmware using an OTG cable so that it is in sync with the console application.
 
 
-<img src="/pictures/altimulti_bluetooth.png" width="40%"> <img src="/pictures/altimulti_config.png" width="40%">
-<img src="/pictures/altimulti_flight_graph.png" width="69%">
-<img src="/pictures/altimulti_flight_list.png" width="40%"> <img src="/pictures/altimulti_mainscreen.png" width="40%">
+<img src="/pictures/bearconsole_about.png" width="29%"> <img src="/pictures/bearconsole_bluetooth_list.png" width="29%"> 
+<img src="/pictures/bearconsole_app_config1.png" width="29%"> <img src="/pictures/bearconsole_app_config2.png" width="29%">
+<img src="/pictures/bearconsole_board_cfg1.png" width="29%"> <img src="/pictures/bearconsole_curves.png" width="29%">
 
 With 3DR module you can also do telemetry                                         
-<img src="/pictures/altimulti_telemetryV2.jpg" width="40%">
+<img src="/pictures/bearconsole_telemetry.png" width="29%">
 
 # Getting the app
 You should be able to find the app on the google store, however it will not have all the latest fonctionnalities. You can subscribe to the beta test on the store. If you want the latest one, compile the code from the provided source. Also if your device is not fully supported that might be a good idea to try to fix it and release the code. Android support so many screen sizes and devices that it is difficult to test an application on all of them.
