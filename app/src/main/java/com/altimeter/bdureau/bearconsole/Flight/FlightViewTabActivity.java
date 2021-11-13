@@ -473,6 +473,11 @@ public class FlightViewTabActivity extends AppCompatActivity {
         private TextView nbrOfSamplesValue, flightNbrValue;
         private TextView apogeeAltitudeValue, flightDurationValue, burnTimeValue, maxVelociyValue, maxAccelerationValue;
         private TextView timeToApogeeValue, mainAltitudeValue, maxDescentValue, landingSpeedValue;
+
+        private AlertDialog.Builder builder = null;
+        private AlertDialog alert;
+
+        String SavedCurves = "";
         public Tab2Fragment (FlightData data, XYSeriesCollection data2) {
 
             myflight = data;
@@ -559,12 +564,30 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v)
                 {
+                    SavedCurves = "";
                     //export the data to a csv file
                    for (int j =0; j<numberOfCurves; j++) {
                        Log.d("Flight win", "Saving curve:" +j);
                         saveData(j, allFlightData);
                     }
-                   msg("flight curves saved");
+                    builder = new AlertDialog.Builder(Tab2Fragment.this.getContext());
+                    //Running Saving commands
+                    //getResources().getString(R.string.flight_time)
+                    builder.setMessage(getResources().getString(R.string.save_curve_msg) +  Environment.DIRECTORY_DOWNLOADS+ "\\BearConsoleFlights \n"+SavedCurves)
+                            /*Environment.DIRECTORY_DOWNLOADS+
+                            "\\RocketMotorTestStand\\"+ThrustCurveName +".eng" */
+
+                            .setTitle(getResources().getString(R.string.save_curves_title))
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.save_curve_ok, new DialogInterface.OnClickListener() {
+                                public void onClick(final DialogInterface dialog, final int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    alert = builder.create();
+                    alert.show();
+                   msg(getResources().getString(R.string.curves_saved_msg));
 
                 }
             });
@@ -596,6 +619,9 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 fout.write(csv_data.getBytes());
                 fout.close();
                 Log.d("Flight win", "write done" );
+                SavedCurves = SavedCurves +
+                        FlightName +Data.getSeries(nbr).getKey().toString() +".csv\n";
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
 

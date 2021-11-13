@@ -7,4 +7,6 @@
     <string name="loading_bt_config_msg">Loading bluetooth module config</string>
     <string name="dr_info_msg">This will allows you to configure a 3DR telemetry module. You will need a ttl cable and an adaptator to connect your 3DR module to your phone. Please look at the on line help</string>
     <string name="dr_info_title">3DR module configuration</string>
+    <string name="save_curves_title">Info</string>
+    <string name="save_curve_ok">OK</string>
 </resources>

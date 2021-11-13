@@ -74,7 +74,7 @@ public class TelemetryMp extends AppCompatActivity {
     private double FEET_IN_METER = 1;
     ArrayList<Entry> yValues;
     int altitudeTime = 0;
-    int altitude = 0;
+    //int altitude = 0;
 
     boolean telemetry = true;
     boolean liftOffSaid = false;
@@ -106,7 +106,7 @@ public class TelemetryMp extends AppCompatActivity {
 
                                 set1.setDrawValues(false);
                                 set1.setDrawCircles(false);
-                                set1.setLabel("Altitude");
+                                set1.setLabel(getResources().getString(R.string.altitude));
 
                                 dataSets.clear();
                                 dataSets.add(set1);
@@ -144,12 +144,7 @@ public class TelemetryMp extends AppCompatActivity {
                                 txtLiftOffTime.setText("0 ms");
                                 if (!liftOffSaid) {
                                     if (myBT.getAppConf().getLiftOff_event().equals("true")) {
-                                       /* if (Locale.getDefault().getLanguage() == "en")
-                                            mTTS.speak("lift off", TextToSpeech.QUEUE_FLUSH, null);
-                                        else if (Locale.getDefault().getLanguage() == "fr")
-                                            mTTS.speak("décollage", TextToSpeech.QUEUE_FLUSH, null);
-                                        else
-                                            mTTS.speak("lift off", TextToSpeech.QUEUE_FLUSH, null);*/
+
                                         mTTS.speak(getResources().getString(R.string.lift_off) , TextToSpeech.QUEUE_FLUSH, null);
                                     }
                                     liftOffSaid = true;
@@ -172,23 +167,18 @@ public class TelemetryMp extends AppCompatActivity {
                 case 4:
                     //Value 4 apogee altitude
                     if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
-                        //txtMaxAltitude.setText((String) msg.obj);
                         int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
-                        txtMaxAltitude.setText(String.valueOf(altitude) );
-                        if (cbApogee.isChecked())
+
+                        if (cbApogee.isChecked()) {
+                            txtMaxAltitude.setText(String.valueOf(altitude));
                             if (!apogeeSaid) {
                                 //first check if say it is enabled
                                 if (myBT.getAppConf().getApogee_altitude().equals("true")) {
-                                   /* if (Locale.getDefault().getLanguage() == "en")
-                                        mTTS.speak("apogee " + String.valueOf(altitude) + " " +myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
-                                    else if (Locale.getDefault().getLanguage() == "fr")
-                                        mTTS.speak("apogée à " + String.valueOf(altitude) + " " +myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
-                                    else
-                                        mTTS.speak("apogee " + String.valueOf(altitude) + " " +myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);*/
                                     mTTS.speak(getResources().getString(R.string.telemetry_apogee) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                                 }
                                 apogeeSaid = true;
                             }
+                        }
                     }
                     break;
                 case 5:
@@ -212,13 +202,7 @@ public class TelemetryMp extends AppCompatActivity {
 
                             if (!mainSaid) {
                                 if (myBT.getAppConf().getMain_event().equals("true")) {
-                                   /* if (Locale.getDefault().getLanguage() == "en")
-                                        mTTS.speak("main chute has deployed at " + String.valueOf(altitude) + " " +myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
-                                    else if (Locale.getDefault().getLanguage() == "fr")
-                                        mTTS.speak("déploiement du parachute principal à " + String.valueOf(altitude) + " " +myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
-                                    else
-                                        mTTS.speak("main chute has deployed at " + String.valueOf(altitude) + " " +myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
-                                    */
+
                                     mTTS.speak(getResources().getString(R.string.main_deployed) +" " + String.valueOf(altitude) + " " +myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                                 }
                                 mainSaid = true;
@@ -239,12 +223,7 @@ public class TelemetryMp extends AppCompatActivity {
                                 txtLandedTime.setText((System.currentTimeMillis() - LiftOffTime) + " ms");
                                 if (!landedSaid) {
                                     if (myBT.getAppConf().getLanding_event().equals("true")) {
-                                       /* if (Locale.getDefault().getLanguage() == "en")
-                                            mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);
-                                        else if (Locale.getDefault().getLanguage() == "fr")
-                                            mTTS.speak("la fusée a atterri", TextToSpeech.QUEUE_FLUSH, null);
-                                        else
-                                            mTTS.speak("rocket has landed", TextToSpeech.QUEUE_FLUSH, null);*/
+
                                         mTTS.speak(getResources().getString(R.string.rocket_has_landed), TextToSpeech.QUEUE_FLUSH, null);
                                     }
                                     landedSaid = true;

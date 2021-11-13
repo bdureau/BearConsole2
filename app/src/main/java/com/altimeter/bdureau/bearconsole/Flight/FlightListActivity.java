@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,13 +55,18 @@ public class FlightListActivity extends AppCompatActivity {
             // Get the flight name
             String currentFlight = ((TextView) v).getText().toString();
             Intent i;
-            // Make an intent to start next activity.
-            if (myBT.getAppConf().getGraphicsLibType().equals("0"))
-                i = new Intent(FlightListActivity.this, FlightViewActivity.class);
-            else
-                // i = new Intent(FlightListActivity.this, FlightViewMpActivity.class);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+                //if android ver = 8 or greater use the MPlib
                 i = new Intent(FlightListActivity.this, FlightViewTabActivity.class);
+            } else {
+                // Make an intent to start next activity.
+                if (myBT.getAppConf().getGraphicsLibType().equals("0"))
+                    i = new Intent(FlightListActivity.this, FlightViewActivity.class);
+                else
+                    // i = new Intent(FlightListActivity.this, FlightViewMpActivity.class);
+                    i = new Intent(FlightListActivity.this, FlightViewTabActivity.class);
 
+            }
             //Change the activity.
             i.putExtra(SELECTED_FLIGHT, currentFlight);
             startActivity(i);

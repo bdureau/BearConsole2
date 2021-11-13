@@ -173,10 +173,15 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.write("y1;".toString());
                 }
                 Intent i;
-                if (myBT.getAppConf().getGraphicsLibType().equals("0"))
-                    i = new Intent(MainScreenActivity.this, Telemetry.class);
-                else
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    //if android ver = 8 or greater use the MPlib
                     i = new Intent(MainScreenActivity.this, TelemetryMp.class);
+                } else {
+                    if (myBT.getAppConf().getGraphicsLibType().equals("0"))
+                        i = new Intent(MainScreenActivity.this, Telemetry.class);
+                    else
+                        i = new Intent(MainScreenActivity.this, TelemetryMp.class);
+                }
                 startActivity(i);
             }
         });

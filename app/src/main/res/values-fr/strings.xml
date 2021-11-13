@@ -385,6 +385,10 @@
     <string name="firmware_version_not_detected">Version du firmware detecté: </string>
     <string name="_3dr_settings">Config 3DR module...</string>
     <string name="bt_settings">Config BT module...</string>
+    <string name="save_curves_title">Info</string>
+    <string name="save_curve_ok">OK</string>
+    <string name="save_curve_msg">\"The following files have been saved under: \"</string>
+    <string name="curves_saved_msg">Flight curves saved</string>
 
 
 </resources>
