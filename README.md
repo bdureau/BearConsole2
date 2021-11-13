@@ -15,7 +15,10 @@ With 3DR module you can also do telemetry
 # Getting the app
 You should be able to find the app on the google store, however it will not have all the latest fonctionnalities. You can subscribe to the beta test on the store. If you want the latest one, compile the code from the provided source. Also if your device is not fully supported that might be a good idea to try to fix it and release the code. Android support so many screen sizes and devices that it is difficult to test an application on all of them.
 If you do not know how to build an Android application go to the release dirrectory, download the APK and install it on your phone.
+<p></p>
 Alternatively you could search the Google playstore and get the app from there.  
+https://play.google.com/store/apps/details?id=com.altimeter.bdureau.bearconsole
+<p></p>
 
 # Building the code
 You will need to use Android studio (I am no longer using Eclipse for Android developement).
