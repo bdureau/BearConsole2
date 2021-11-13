@@ -17,6 +17,7 @@ You should be able to find the app on the google store, however it will not have
 If you do not know how to build an Android application go to the release dirrectory, download the APK and install it on your phone.
 <p></p>
 Alternatively you could search the Google playstore and get the app from there.  
+<p></p>
 https://play.google.com/store/apps/details?id=com.altimeter.bdureau.bearconsole
 <p></p>
 
