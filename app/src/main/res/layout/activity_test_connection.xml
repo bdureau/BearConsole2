@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".connection.TestConnection">
+
+    <TextView
+        android:id="@+id/textTestConnectionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test your connection"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:elegantTextHeight="true"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_horizontal"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/textNbrTramSent"
+        android:layout_below="@+id/textTestConnectionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nbr tram sent:"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:id="@+id/textNbrTramSentVal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textTestConnectionTitle"
+        android:layout_marginTop="18dp"
+        android:layout_alignParentRight="true"
+        android:text="               " />
+
+    <TextView
+        android:id="@+id/textNbrTramReceived"
+        android:layout_below="@+id/textNbrTramSent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nbr tram received:"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:id="@+id/textNbrTramReceivedVal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textNbrTramSent"
+        android:layout_marginTop="18dp"
+        android:layout_alignParentRight="true"
+        android:text="               " />
+
+
+
+
+
+
+
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginRight="-3dp"
+        android:layout_marginBottom="53dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvRead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentLeft="true" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/butStartStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="onClickStartStop"
+        android:text="Start/Stop" />
+
+    <Button
+        android:id="@+id/butDismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="onClickDismiss"
+        android:text="@string/dismiss_app_config" />
+
+
+</RelativeLayout>

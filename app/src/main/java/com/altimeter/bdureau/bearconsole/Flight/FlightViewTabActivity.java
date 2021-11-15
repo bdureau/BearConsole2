@@ -2,16 +2,24 @@ package com.altimeter.bdureau.bearconsole.Flight;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
+import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
+import com.altimeter.bdureau.bearconsole.ShareHandler;
+import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -28,9 +36,12 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -79,7 +90,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private static String[] units= null;
     public static String SELECTED_FLIGHT = "MyFlight";
     public static int numberOfCurves =0;
-
+    File imagePath;
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -674,5 +685,42 @@ public class FlightViewTabActivity extends AppCompatActivity {
             }
             return pos;
         }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_flights, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //open application settings screen
+        if (id == R.id.action_share) {
+            ShareHandler.share(ShareHandler.takeScreenshot(findViewById(android.R.id.content).getRootView()), this.getApplicationContext());
+            return true;
+        }
+        //open help screen
+        if (id == R.id.action_help) {
+            Intent i= new Intent(this, HelpActivity.class);
+            i.putExtra("help_file", "help_bluetooth");
+            startActivity(i);
+            return true;
+        }
+        //open about screen
+        if (id == R.id.action_about) {
+            Intent i= new Intent(this, AboutActivity.class);
+            startActivity(i);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
