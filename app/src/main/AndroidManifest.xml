@@ -85,6 +85,10 @@
                 android:resource="@xml/device_filter" />
         </activity>
         <activity
+            android:name=".connection.TestConnection"
+            android:label="Test connection"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".connection.SearchBluetooth"
             android:label="@string/select_bluetooth_device"
             android:screenOrientation="portrait" />

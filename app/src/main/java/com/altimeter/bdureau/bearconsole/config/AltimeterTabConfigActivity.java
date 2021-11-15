@@ -257,6 +257,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             AltiCfg.setSupersonicDelay(configPage2.getSupersonicDelayOnOff());
             AltiCfg.setLiftOffAltitude(configPage2.getLiftOffAltitude());
             AltiCfg.setBatteryType(configPage2.getBatteryType());
+            AltiCfg.setRecordingTimeout(configPage2.getRecordingTimeout());
         }
 
         if (configPage3.isViewCreated()) {
@@ -391,6 +392,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
         altiCfgStr = altiCfgStr + "," + AltiCfg.getLiftOffAltitude();
         altiCfgStr = altiCfgStr + "," + AltiCfg.getBatteryType();
+        altiCfgStr = altiCfgStr + "," + AltiCfg.getRecordingTimeout();
 
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OnPos();
@@ -995,7 +997,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         private Spinner dropdownSupersonicDelay;
         private Spinner dropdownBatteryType;
         private EditText EndRecordAltitude;
-        private EditText LiftOffAltitude;
+        private EditText LiftOffAltitude, RecordingTimeout;
         private boolean ViewCreated = false;
         private TextView txtViewRecordTemp, txtViewEEpromSize;
 
@@ -1116,6 +1118,18 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             dropdownBatteryType.setSelection(BatteryType);
         }
 
+        public int getRecordingTimeout() {
+            int ret;
+            try {
+                ret = Integer.parseInt(this.RecordingTimeout.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
+        }
+        public void setRecordingTimeout(int RecordingTimeout) {
+            this.RecordingTimeout.setText(String.valueOf(RecordingTimeout));
+        }
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -1324,6 +1338,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             .show();
                 }
             });
+
+            //Max recording time in seconds
+            RecordingTimeout =(EditText) view.findViewById(R.id.editTxtRecordingTimeOut);
             if (lAltiCfg != null) {
                 dropdownBaudRate.setSelection(lAltiCfg.arrayIndex(itemsBaudRate, String.valueOf(lAltiCfg.getConnectionSpeed())));
                 ApogeeMeasures.setText(String.valueOf(lAltiCfg.getNbrOfMeasuresForApogee()));
@@ -1335,6 +1352,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 EndRecordAltitude.setText(String.valueOf(lAltiCfg.getEndRecordAltitude()));
                 LiftOffAltitude.setText(String.valueOf(lAltiCfg.getLiftOffAltitude()));
                 dropdownBatteryType.setSelection(lAltiCfg.getBatteryType());
+                RecordingTimeout.setText(String.valueOf(lAltiCfg.getRecordingTimeout()));
             }
             ViewCreated = true;
             return view;

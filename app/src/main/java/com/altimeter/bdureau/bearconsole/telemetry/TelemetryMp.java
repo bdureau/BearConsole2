@@ -395,7 +395,7 @@ public class TelemetryMp extends AppCompatActivity {
             public void onClick(View v) {
                 if (telemetry) {
                     telemetry = false;
-                    myBT.write("h;\n".toString());
+                    myBT.write("h;".toString());
 
                     myBT.setExit(true);
                     myBT.clearInput();
@@ -404,7 +404,7 @@ public class TelemetryMp extends AppCompatActivity {
                 //turn off telemetry
                 myBT.flush();
                 myBT.clearInput();
-                myBT.write("y0;\n".toString());
+                myBT.write("y0;".toString());
 
                 finish();      //exit the activity
             }
@@ -461,7 +461,7 @@ public class TelemetryMp extends AppCompatActivity {
     }
 
     public void onClickStopTelemetry(View view) {
-        myBT.write("h;\n".toString());
+        myBT.write("h;".toString());
 
         myBT.setExit(true);
 
@@ -479,7 +479,7 @@ public class TelemetryMp extends AppCompatActivity {
         super.onStop();
         if (telemetry) {
             telemetry = false;
-            myBT.write("h;\n".toString());
+            myBT.write("h;".toString());
 
             myBT.setExit(true);
             myBT.clearInput();
@@ -489,7 +489,7 @@ public class TelemetryMp extends AppCompatActivity {
 
         myBT.flush();
         myBT.clearInput();
-        myBT.write("h;\n".toString());
+        myBT.write("h;".toString());
         try {
             while (myBT.getInputStream().available() <= 0) ;
         } catch (IOException e) {

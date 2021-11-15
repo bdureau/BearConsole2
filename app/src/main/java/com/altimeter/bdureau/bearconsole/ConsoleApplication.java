@@ -41,6 +41,7 @@ public class ConsoleApplication extends Application {
     public int currentFlightNbr = 0;
     private FlightData MyFlight = null;
     private AltiConfigData AltiCfg = null;
+    private TestTrame testTrame = null;
 
     private static boolean DataReady = false;
     public long lastReceived = 0;
@@ -70,6 +71,7 @@ public class ConsoleApplication extends Application {
         super.onCreate();
         AltiCfg = new AltiConfigData();
         MyFlight = new FlightData(this, AltiCfg.getAltimeterName());
+        testTrame = new TestTrame();
         AppConf = new GlobalConfig(this);
         AppConf.ReadConfig();
         BTCon = new BluetoothConnection();
@@ -141,6 +143,10 @@ public class ConsoleApplication extends Application {
         return AltiCfg;
     }
 
+    public TestTrame getTestTrame() {
+        return testTrame;
+    }
+
     public void setFlightData(FlightData fData) {
         MyFlight = fData;
     }
@@ -186,15 +192,7 @@ public class ConsoleApplication extends Application {
         return state;
     }
 
-    /*public boolean connectFirmware(UsbManager usbManager, UsbDevice device, int baudRate) {
-        boolean state = false;
-        if (myTypeOfConnection.equals("usb")) {
-            state = UsbCon.connect(usbManager, device, baudRate);
-            setConnectionType("usb");
 
-        }
-        return state;
-    }*/
 
     public boolean isConnectionValid() {
         boolean valid = false;
@@ -736,69 +734,93 @@ public class ConsoleApplication extends Application {
                                         else
                                             AltiCfg.setBatteryType(0);
 
-
-                                    // Value 27 contains the servo 1 On position
+                                    // value 27 contains the recording timeout
                                     if (currentSentence.length > 27)
                                         if (currentSentence[27].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setRecordingTimeout(Integer.valueOf(currentSentence[27]));
+                                        else
+                                            AltiCfg.setRecordingTimeout(120);
+                                    // value 28 reserved param
 
-                                            AltiCfg.setServo1OnPos(Integer.valueOf(currentSentence[27]));
-                                        else
-                                            AltiCfg.setServo1OnPos(-1);
-                                    // Value 28 contains the servo 2 On position
-                                    if (currentSentence.length > 28)
-                                        if (currentSentence[28].matches("\\d+(?:\\.\\d+)?"))
-                                            AltiCfg.setServo2OnPos(Integer.valueOf(currentSentence[28]));
-                                        else
-                                            AltiCfg.setServo2OnPos(-1);
-                                    // Value 29 contains the servo 3 On position
-                                    if (currentSentence.length > 29)
-                                        if (currentSentence[29].matches("\\d+(?:\\.\\d+)?"))
-                                            AltiCfg.setServo3OnPos(Integer.valueOf(currentSentence[29]));
-                                        else
-                                            AltiCfg.setServo3OnPos(-1);
-                                    // Value 30 contains the servo 4 On position
-                                    if (currentSentence.length > 30)
-                                        if (currentSentence[30].matches("\\d+(?:\\.\\d+)?"))
-                                            AltiCfg.setServo4OnPos(Integer.valueOf(currentSentence[30]));
-                                        else
-                                            AltiCfg.setServo4OnPos(-1);
-                                    // Value 31 contains servo 1 off position
+                                    // value 29 reserved param
+
+                                    // value 30 reserved param
+
+
+                                    // Value 31 contains the servo 1 On position
                                     if (currentSentence.length > 31)
                                         if (currentSentence[31].matches("\\d+(?:\\.\\d+)?"))
-                                            AltiCfg.setServo1OffPos(Integer.valueOf(currentSentence[31]));
+
+                                            AltiCfg.setServo1OnPos(Integer.valueOf(currentSentence[31]));
                                         else
-                                            AltiCfg.setServo1OffPos(-1);
-                                    // Value 32 contains servo 2 off position
+                                            AltiCfg.setServo1OnPos(-1);
+                                    // Value 32 contains the servo 2 On position
                                     if (currentSentence.length > 32)
                                         if (currentSentence[32].matches("\\d+(?:\\.\\d+)?"))
-                                            AltiCfg.setServo2OffPos(Integer.valueOf(currentSentence[32]));
+                                            AltiCfg.setServo2OnPos(Integer.valueOf(currentSentence[32]));
                                         else
-                                            AltiCfg.setServo2OffPos(-1);
-                                    // Value 33 contains servo 3 off position
+                                            AltiCfg.setServo2OnPos(-1);
+                                    // Value 33 contains the servo 3 On position
                                     if (currentSentence.length > 33)
                                         if (currentSentence[33].matches("\\d+(?:\\.\\d+)?"))
-                                            AltiCfg.setServo3OffPos(Integer.valueOf(currentSentence[33]));
+                                            AltiCfg.setServo3OnPos(Integer.valueOf(currentSentence[33]));
                                         else
-                                            AltiCfg.setServo3OffPos(-1);
-                                    // Value 34 contains servo 4 off position
+                                            AltiCfg.setServo3OnPos(-1);
+                                    // Value 34 contains the servo 4 On position
                                     if (currentSentence.length > 34)
                                         if (currentSentence[34].matches("\\d+(?:\\.\\d+)?"))
-                                            AltiCfg.setServo4OffPos(Integer.valueOf(currentSentence[34]));
+                                            AltiCfg.setServo4OnPos(Integer.valueOf(currentSentence[34]));
                                         else
-                                            AltiCfg.setServo4OffPos(-1);
-                                    //Value 35 contains global servo settings
+                                            AltiCfg.setServo4OnPos(-1);
+                                    // Value 35 contains servo 1 off position
                                     if (currentSentence.length > 35)
                                         if (currentSentence[35].matches("\\d+(?:\\.\\d+)?"))
-                                            AltiCfg.setServoStayOn(Integer.valueOf(currentSentence[35]));
+                                            AltiCfg.setServo1OffPos(Integer.valueOf(currentSentence[35]));
+                                        else
+                                            AltiCfg.setServo1OffPos(-1);
+                                    // Value 36 contains servo 2 off position
+                                    if (currentSentence.length > 36)
+                                        if (currentSentence[36].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServo2OffPos(Integer.valueOf(currentSentence[36]));
+                                        else
+                                            AltiCfg.setServo2OffPos(-1);
+                                    // Value 37 contains servo 3 off position
+                                    if (currentSentence.length > 37)
+                                        if (currentSentence[37].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServo3OffPos(Integer.valueOf(currentSentence[37]));
+                                        else
+                                            AltiCfg.setServo3OffPos(-1);
+                                    // Value 38 contains servo 4 off position
+                                    if (currentSentence.length > 38)
+                                        if (currentSentence[38].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServo4OffPos(Integer.valueOf(currentSentence[38]));
+                                        else
+                                            AltiCfg.setServo4OffPos(-1);
+                                    //Value 39 contains global servo settings
+                                    if (currentSentence.length > 39)
+                                        if (currentSentence[39].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setServoStayOn(Integer.valueOf(currentSentence[39]));
                                         else
                                             AltiCfg.setServoStayOn(0);
                                     myMessage = myMessage + " " + "alticonfig";
                                 } else {
                                     myMessage = myMessage + "KO" + "alticonfig";
                                 }
-
                                 break;
-
+                            case "testTrame":
+                                if (currentSentence[currentSentence.length - 1].matches("\\d+(?:\\.\\d+)?"))
+                                    chk = Long.valueOf(currentSentence[currentSentence.length - 1]);
+                                if (calculateSentenceCHK(currentSentence) == chk) {
+                                    testTrame.setTrameStatus(true);
+                                } else
+                                {
+                                    testTrame.setTrameStatus(false);
+                                }
+                                if (currentSentence.length > 1)
+                                    testTrame.setCurrentTrame(currentSentence[1]);
+                                else
+                                    testTrame.setCurrentTrame("Error reading packet");
+                                break;
                             case "nbrOfFlight":
                                 // Value 1 contains the number of flight
                                 if (currentSentence.length > 1)
@@ -879,6 +901,28 @@ public class ConsoleApplication extends Application {
 
     public void setAppConf(GlobalConfig value) {
         AppConf = value;
+    }
+
+    public class TestTrame {
+
+        private String currentTrame = "";
+        private boolean trameStatus = false;
+
+        public void setCurrentTrame (String trame) {
+            currentTrame = trame;
+        }
+
+        public String getCurrentTrame() {
+            return currentTrame;
+        }
+
+        public void setTrameStatus (boolean val) {
+            trameStatus = val;
+        }
+
+        public boolean getTrameStatus () {
+            return trameStatus;
+        }
     }
 
     public class GlobalConfig {

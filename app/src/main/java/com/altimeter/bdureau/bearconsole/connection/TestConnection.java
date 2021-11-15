@@ -29,21 +29,23 @@ import com.altimeter.bdureau.bearconsole.R;
 import com.physicaloid.lib.Physicaloid;
 import com.physicaloid.lib.usb.driver.uart.UartConfig;
 
+import java.io.IOException;
+
 
 public class TestConnection extends AppCompatActivity {
 
 
 
-    //private Button btRetrieveConfig, btSaveConfig;
+    Thread testTelemetry;
 
     ConsoleApplication myBT;
-    //int currentBaudRate = 38400;//0;
-    //String cmdTer="";
+
 
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
-
-    //private UartConfig uartConfig;
+    private TextView tvRead;
+    private Button butStartStop, butDismiss;
+    private boolean testRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +56,9 @@ public class TestConnection extends AppCompatActivity {
         setContentView(R.layout.activity_test_connection);
 
 
-        //tvRead = (TextView) findViewById(R.id.tvRead);
-
+        tvRead = (TextView) findViewById(R.id.tvRead);
+        butDismiss = (Button) findViewById(R.id.butDismiss);
+        butStartStop =(Button) findViewById(R.id.butStartStop);
 
 
         builder = new AlertDialog.Builder(this);
@@ -74,8 +77,77 @@ public class TestConnection extends AppCompatActivity {
 
         alert = builder.create();
         alert.show();
+
+        butStartStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (testRunning) {
+                    testRunning = false;
+
+                    //myBT.write("h;\n".toString());
+                    butStartStop.setText("Start");
+                    //myBT.setExit(true);
+                    //myBT.clearInput();
+                    //myBT.flush();
+                }
+                else {
+                    testRunning = true;
+                    startTestTelemetry();
+                    butStartStop.setText("Stop");
+                }
+
+            }
+        });
+
+        butDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (testRunning) {
+                    testRunning = false;
+
+                }
+
+                finish();      //exit the activity
+            }
+        });
     }
 
+    public void startTestTelemetry() {
+        testRunning = true;
+
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                while (true) {
+                    if (!testRunning) break;
+
+                    String myMessage = "";
+                    myBT.write("o;".toString());
+                    myBT.flush();
+                    //get the results
+                    //wait for the result to come back
+                    try {
+                        while (myBT.getInputStream().available() <= 0) ;
+                    } catch (IOException e) {
+                        //success = false;
+                    }
+                    myMessage = myBT.ReadResult(3000);
+                    //reading the config
+                    if (myMessage.equals("start testTrame end")) {
+                       ConsoleApplication.TestTrame testTrame = myBT.getTestTrame();
+                        testTrame.getCurrentTrame();
+                    }
+
+                }
+            }
+        };
+
+        testTelemetry = new Thread(r);
+        testTelemetry.start();
+
+
+    }
     public void EnableUI() {
 
 

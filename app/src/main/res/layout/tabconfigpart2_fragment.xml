@@ -191,4 +191,24 @@
         android:layout_alignParentRight="true"
         android:spinnerMode="dropdown" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recording timeout (sec)"
+        android:id="@+id/txtViewRecordingTimeOut"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtViewBatteryType"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/editTxtRecordingTimeOut"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtViewRecordingTimeOut"
+        android:layout_alignParentRight="true"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        android:textSize="13sp" />
+
 </RelativeLayout>
