@@ -363,6 +363,7 @@ public class ConsoleApplication extends Application {
                         }
 
                         long chk = 0;
+                        if(currentSentence != null)
                         switch (currentSentence[0]) {
                             case "telemetry":
                                 if (currentSentence[currentSentence.length - 1].matches("\\d+(?:\\.\\d+)?"))
@@ -820,6 +821,7 @@ public class ConsoleApplication extends Application {
                                     testTrame.setCurrentTrame(currentSentence[1]);
                                 else
                                     testTrame.setCurrentTrame("Error reading packet");
+                                myMessage = myMessage + " " + "testTrame";
                                 break;
                             case "nbrOfFlight":
                                 // Value 1 contains the number of flight

@@ -46,6 +46,13 @@ public class TestConnection extends AppCompatActivity {
     private TextView tvRead;
     private Button butStartStop, butDismiss;
     private boolean testRunning = false;
+    private TextView textNbrPacketsSentVal, textNbrPacketsReceivedVal, textNbrPacketsReceivedValOK;
+    private TextView textNbrPacketsReceivedValNotOK, textNbrPacketsReceivedValPercentageError;
+    private long packetsSent = 0;
+    private long packetsReceived = 0;
+    private long packetsReceivedOK = 0;
+    private long packetsReceivedNotOK = 0;
+    private long packetsReceivedPercentageError = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,12 @@ public class TestConnection extends AppCompatActivity {
         butDismiss = (Button) findViewById(R.id.butDismiss);
         butStartStop =(Button) findViewById(R.id.butStartStop);
 
+        textNbrPacketsSentVal = (TextView) findViewById(R.id.textNbrPacketsSentVal);
+        textNbrPacketsReceivedVal = (TextView) findViewById(R.id.textNbrPacketsReceivedVal);
+        textNbrPacketsReceivedValOK = (TextView) findViewById(R.id.textNbrPacketsReceivedValOK);
+        textNbrPacketsReceivedValNotOK = (TextView) findViewById(R.id.textNbrPacketsReceivedValNotOK);
+        textNbrPacketsReceivedValPercentageError = (TextView) findViewById(R.id.textNbrPacketsReceivedValPercentageError);
+
 
         builder = new AlertDialog.Builder(this);
         //Display info message
@@ -68,10 +81,7 @@ public class TestConnection extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton(R.string.bt_info_ok, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-
-
                         dialog.cancel();
-
                     }
                 });
 
@@ -84,7 +94,6 @@ public class TestConnection extends AppCompatActivity {
                 if (testRunning) {
                     testRunning = false;
 
-                    //myBT.write("h;\n".toString());
                     butStartStop.setText("Start");
                     //myBT.setExit(true);
                     //myBT.clearInput();
@@ -125,6 +134,9 @@ public class TestConnection extends AppCompatActivity {
                     String myMessage = "";
                     myBT.write("o;".toString());
                     myBT.flush();
+                    packetsSent ++;
+                    setPacketSent(""+packetsSent);
+                    myBT.setDataReady(false);
                     //get the results
                     //wait for the result to come back
                     try {
@@ -133,10 +145,26 @@ public class TestConnection extends AppCompatActivity {
                         //success = false;
                     }
                     myMessage = myBT.ReadResult(3000);
-                    //reading the config
-                    if (myMessage.equals("start testTrame end")) {
-                       ConsoleApplication.TestTrame testTrame = myBT.getTestTrame();
-                        testTrame.getCurrentTrame();
+                    if (myBT.getDataReady()) {
+                        Log.d("test conection", myMessage +"\n");
+                        //reading the config
+                        if (myMessage.equals("start testTrame end")) {
+                            ConsoleApplication.TestTrame testTrame = myBT.getTestTrame();
+                            tvAppend(tvRead, testTrame.getCurrentTrame());
+                            packetsReceived++;
+                            setPacketReceived("" + packetsReceived);
+                            if (testTrame.getTrameStatus()) {
+                                packetsReceivedOK++;
+                                setPacketReceivedOK("" + packetsReceivedOK);
+                            } else {
+                                packetsReceivedNotOK++;
+                                setPacketReceivedNotOK("" + packetsReceivedNotOK);
+                            }
+                        }
+                    }
+                    else {
+                        packetsReceivedNotOK++;
+                        setPacketReceivedNotOK("" + packetsReceivedNotOK);
                     }
 
                 }
@@ -172,6 +200,67 @@ public class TestConnection extends AppCompatActivity {
         finish();
     }
 
+    Handler mHandler = new Handler();
+    private void tvAppend(TextView tv, CharSequence text) {
+        final TextView ftv = tv;
+        final CharSequence ftext = text;
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                ftv.append(ftext);
+
+            }
+        });
+    }
+
+    //textNbrPacketsSentVal, textNbrPacketsReceivedVal, textNbrPacketsReceivedValOK, textNbrPacketsReceivedValNotOK, textNbrPacketsReceivedValPercentageError;
+    private void setPacketSent(CharSequence text) {
+        final CharSequence ftext = text;
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textNbrPacketsSentVal.setText(ftext);
+            }
+        });
+    }
+
+    private void setPacketReceived(CharSequence text) {
+        final CharSequence ftext = text;
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textNbrPacketsReceivedVal.setText(ftext);
+            }
+        });
+    }
+
+    private void setPacketReceivedOK(CharSequence text) {
+        final CharSequence ftext = text;
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textNbrPacketsReceivedValOK.setText(ftext);
+            }
+        });
+    }
+    private void setPacketReceivedNotOK(CharSequence text) {
+        final CharSequence ftext = text;
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textNbrPacketsReceivedValNotOK.setText(ftext);
+            }
+        });
+    }
+    private void setPacketReceivedPercentageError(CharSequence text) {
+        final CharSequence ftext = text;
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textNbrPacketsReceivedValPercentageError.setText(ftext);
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

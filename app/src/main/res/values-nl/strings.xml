@@ -380,6 +380,7 @@
     <string name="save_curve_ok">OK</string>
     <string name="save_curve_msg">\"The following files have been saved under: \"</string>
     <string name="curves_saved_msg">Flight curves saved</string>
+    <string name="continuity_changed">Continuity changed</string>
 
 
 </resources>
