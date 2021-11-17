@@ -109,6 +109,7 @@ public class MainScreenActivity extends AppCompatActivity {
         //get the bluetooth and USB Application pointer
         myBT = (ConsoleApplication) getApplication();
 
+        //This will check if the firmware is compatible with the app and advice on flashing the firmware
         firmCompat = new FirmwareCompatibility();
 
         //Check the local and force it if needed
@@ -366,14 +367,13 @@ public class MainScreenActivity extends AppCompatActivity {
 
             if(!firmCompat.IsCompatible(myBT.getAltiConfigData().getAltimeterName(),
                     myBT.getAltiConfigData().getAltiMajorVersion()+ "."+ myBT.getAltiConfigData().getAltiMinorVersion())) {
-                msg("Altimeter firmware version might be incompatible, please consider flashing your board");
+                msg(getString(R.string.flash_advice_msg));
             }
             else {
                 msg(getResources().getString(R.string.MS_msg4));
             }
         } else {
-            msg("Unsupported firmware");
-
+            msg(getString(R.string.unsuported_firmware_msg));
             myBT.Disconnect();
         }
         // now enable or disable the menu entries by invalidating it
@@ -566,6 +566,7 @@ public class MainScreenActivity extends AppCompatActivity {
             startActivity(i);
             return true;
         }
+        //Test current connection
         if (id == R.id.action_test_connection) {
             Intent i = new Intent(MainScreenActivity.this, TestConnection.class);
             startActivity(i);
@@ -711,6 +712,5 @@ public class MainScreenActivity extends AppCompatActivity {
             }
             return compatible;
         }
-
     }
 }

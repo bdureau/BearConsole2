@@ -380,6 +380,8 @@
     <string name="save_curve_msg">\"The following files have been saved under: \"</string>
     <string name="curves_saved_msg">Flight curves saved</string>
     <string name="continuity_changed">Continuity changed</string>
+    <string name="flash_advice_msg">Altimeter firmware version might be incompatible, please consider flashing your board</string>
+    <string name="unsuported_firmware_msg">Unsupported firmware</string>
 
 
 </resources>

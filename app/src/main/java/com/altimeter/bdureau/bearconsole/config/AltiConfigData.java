@@ -321,12 +321,14 @@ public class AltiConfigData {
     public void setLiftOffAltitude(int value) {liftOffAltitude =value;}
     public int getLiftOffAltitude(){return liftOffAltitude;}
 
+    //Battery type so that we can warn on low battery
     public void setBatteryType(int value) {batteryType =value;}
     public int getBatteryType(){return batteryType;}
 
     public void setServoStayOn(int value) {servoStayOn =value;}
     public int getServoStayOn(){return servoStayOn;}
 
+    //Flight recording timeout
     public void setRecordingTimeout(int value) {recordingTimeout =value;}
     public int getRecordingTimeout(){return recordingTimeout;}
 }

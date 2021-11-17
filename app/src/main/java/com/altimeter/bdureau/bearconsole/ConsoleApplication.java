@@ -76,11 +76,7 @@ public class ConsoleApplication extends Application {
         AppConf.ReadConfig();
         BTCon = new BluetoothConnection();
         UsbCon = new UsbConnection();
-        /*if (AppConf.getConnectionType().equals("0"))
-            //bluetooth
-            myTypeOfConnection= "bluetooth";
-        else
-            myTypeOfConnection ="usb";*/
+
         myTypeOfConnection = AppConf.getConnectionTypeValue();
 
     }
