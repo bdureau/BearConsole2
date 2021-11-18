@@ -395,6 +395,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         altiCfgStr = altiCfgStr + "," + AltiCfg.getRecordingTimeout();
 
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
+            altiCfgStr = altiCfgStr + ",0";//reserved 1
+            altiCfgStr = altiCfgStr + ",0";//reserved 2
+            altiCfgStr = altiCfgStr + ",0";//reserved 3
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OnPos();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo2OnPos();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo3OnPos();

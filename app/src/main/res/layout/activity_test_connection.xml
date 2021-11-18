@@ -9,7 +9,7 @@
         android:id="@+id/textTestConnectionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test your connection"
+        android:text="@string/test_your_connection"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -26,7 +26,7 @@
         android:layout_below="@+id/textTestConnectionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nbr packets sent:"
+        android:text="@string/nbr_packets_sent"
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -36,14 +36,14 @@
         android:layout_below="@+id/textTestConnectionTitle"
         android:layout_marginTop="18dp"
         android:layout_alignParentRight="true"
-        android:text="               " />
+        android:text="" />
 
     <TextView
         android:id="@+id/textNbrPacketsReceived"
         android:layout_below="@+id/textNbrPacketsSent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nbr packets received:"
+        android:text="@string/nbr_packets_received"
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -53,14 +53,14 @@
         android:layout_below="@+id/textNbrPacketsSent"
         android:layout_marginTop="18dp"
         android:layout_alignParentRight="true"
-        android:text="               " />
+        android:text="" />
 
     <TextView
         android:id="@+id/textNbrPacketsReceivedOK"
         android:layout_below="@+id/textNbrPacketsReceived"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nbr received ok:"
+        android:text="@string/nbr_received_ok"
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -70,14 +70,14 @@
         android:layout_below="@+id/textNbrPacketsReceived"
         android:layout_marginTop="18dp"
         android:layout_alignParentRight="true"
-        android:text="               " />
+        android:text="" />
 
     <TextView
         android:id="@+id/textNbrPacketsReceivedNotOK"
         android:layout_below="@+id/textNbrPacketsReceivedOK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nbr packets not ok :"
+        android:text="@string/nbr_packets_not_ok"
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -87,14 +87,14 @@
         android:layout_below="@+id/textNbrPacketsReceivedOK"
         android:layout_marginTop="18dp"
         android:layout_alignParentRight="true"
-        android:text="               " />
+        android:text=""  />
 
     <TextView
         android:id="@+id/textNbrPacketsReceivedPercentageError"
         android:layout_below="@+id/textNbrPacketsReceivedNotOK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Percentage of errors:"
+        android:text="@string/percentage_of_errors"
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -104,7 +104,7 @@
         android:layout_below="@+id/textNbrPacketsReceivedNotOK"
         android:layout_marginTop="18dp"
         android:layout_alignParentRight="true"
-        android:text="               " />
+        android:text="" />
 
 
     <ScrollView
@@ -141,7 +141,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="onClickStartStop"
-        android:text="Start/Stop" />
+        android:text="@string/test_connection_start" />
 
     <Button
         android:id="@+id/butDismiss"

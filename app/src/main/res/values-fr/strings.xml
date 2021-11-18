@@ -387,11 +387,21 @@
     <string name="bt_settings">Config BT module...</string>
     <string name="save_curves_title">Info</string>
     <string name="save_curve_ok">OK</string>
-    <string name="save_curve_msg">\"The following files have been saved under: \"</string>
-    <string name="curves_saved_msg">Flight curves saved</string>
-    <string name="continuity_changed">Continuity changed</string>
-    <string name="flash_advice_msg">Altimeter firmware version might be incompatible, please consider flashing your board</string>
-    <string name="unsuported_firmware_msg">Unsupported firmware</string>
-
-
+    <string name="save_curve_msg">Les fichiers suivants ont été sauvegardés: </string>
+    <string name="curves_saved_msg">Courbes de vol sauvegardée</string>
+    <string name="continuity_changed">Changement bip continuité</string>
+    <string name="flash_advice_msg">La version du firmware de votre altimètre est peut etre incompatible,
+        il est conseillé de flasher la carte</string>
+    <string name="unsuported_firmware_msg">Firmware incompatible</string>
+    <string name="msg_test_connection">Cela vous permettra d\'évaluer la fiabilité de la connexion</string>
+    <string name="msg_title_info">Info</string>
+    <string name="test_connection_start">Démarrer</string>
+    <string name="test_connection_stop">Arreter</string>
+    <string name="test_your_connection">Tester votre connexion</string>
+    <string name="nbr_packets_sent">Nb packets envoyés:</string>
+    <string name="nbr_packets_received">Nb packets reçu:</string>
+    <string name="nbr_received_ok">Nb reçu ok:</string>
+    <string name="nbr_packets_not_ok">Nb packets non ok :</string>
+    <string name="percentage_of_errors">Pourcentage d\'erreurs:</string>
+    <string name="test_connection">Test connexion</string>
 </resources>

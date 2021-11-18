@@ -6,17 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,15 +22,11 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
-import com.physicaloid.lib.Physicaloid;
-import com.physicaloid.lib.usb.driver.uart.UartConfig;
 
 import java.io.IOException;
 
 
 public class TestConnection extends AppCompatActivity {
-
-
 
     Thread testTelemetry;
 
@@ -76,8 +68,8 @@ public class TestConnection extends AppCompatActivity {
 
         builder = new AlertDialog.Builder(this);
         //Display info message
-        builder.setMessage("This will allow to test the connection reliability")
-                .setTitle("Info")
+        builder.setMessage(R.string.msg_test_connection)
+                .setTitle(R.string.msg_title_info)
                 .setCancelable(false)
                 .setPositiveButton(R.string.bt_info_ok, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
@@ -94,15 +86,13 @@ public class TestConnection extends AppCompatActivity {
                 if (testRunning) {
                     testRunning = false;
 
-                    butStartStop.setText("Start");
-                    //myBT.setExit(true);
-                    //myBT.clearInput();
-                    //myBT.flush();
+                    butStartStop.setText(R.string.test_connection_start);
+
                 }
                 else {
                     testRunning = true;
                     startTestTelemetry();
-                    butStartStop.setText("Stop");
+                    butStartStop.setText(R.string.test_connection_stop);
                 }
 
             }
@@ -150,7 +140,7 @@ public class TestConnection extends AppCompatActivity {
                         //reading the config
                         if (myMessage.equals("start testTrame end")) {
                             ConsoleApplication.TestTrame testTrame = myBT.getTestTrame();
-                            tvAppend(tvRead, testTrame.getCurrentTrame());
+                            tvAppend(tvRead, testTrame.getCurrentTrame()+"\n");
                             packetsReceived++;
                             setPacketReceived("" + packetsReceived);
                             if (testTrame.getTrameStatus()) {

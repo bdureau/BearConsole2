@@ -369,16 +369,26 @@
     <string name="flash_firmware_msg">This will allows you to flash your altimeter firmware to make sure it is compatible with this application. You will need a ttl cable and an adaptator to connect your altimeter board to your phone. Please look at the on line help</string>
     <string name="flash_firmware_title">Flash firmware</string>
     <string name="flash_firmware_ok">OK</string>
-    <string name="firmware_version_not_detected">"Firmware version detected: "</string>
+    <string name="firmware_version_not_detected">Firmware version detected: </string>
     <string name="_3dr_settings">3DR settings...</string>
     <string name="bt_settings">BT settings...</string>
     <string name="save_curves_title">Info</string>
     <string name="save_curve_ok">OK</string>
-    <string name="save_curve_msg">\"The following files have been saved under: \"</string>
+    <string name="save_curve_msg">The following files have been saved under: </string>
     <string name="curves_saved_msg">Flight curves saved</string>
     <string name="continuity_changed">Continuity changed</string>
     <string name="flash_advice_msg">Altimeter firmware version might be incompatible, please consider flashing your board</string>
     <string name="unsuported_firmware_msg">Unsupported firmware</string>
-
+    <string name="msg_test_connection">This will allow to test the connection reliability</string>
+    <string name="msg_title_info">Info</string>
+    <string name="test_connection_start">Start</string>
+    <string name="test_connection_stop">Stop</string>
+    <string name="test_your_connection">Test your connection</string>
+    <string name="nbr_packets_sent">Nbr packets sent:</string>
+    <string name="nbr_packets_received">Nbr packets received:</string>
+    <string name="nbr_received_ok">Nbr received ok:</string>
+    <string name="nbr_packets_not_ok">Nbr packets not ok :</string>
+    <string name="percentage_of_errors">Percentage of errors:</string>
+    <string name="test_connection">Test connection</string>
 
 </resources>
