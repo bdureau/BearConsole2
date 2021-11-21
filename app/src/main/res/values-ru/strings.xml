@@ -394,4 +394,9 @@
     <string name="nbr_packets_not_ok">Nbr packets not ok :</string>
     <string name="percentage_of_errors">Percentage of errors:</string>
     <string name="test_connection">Test connection</string>
+    <string name="retrieving_flight">Retrieving flight:</string>
+    <string name="secs">secs</string>
+    <string name="km_h">Km/h</string>
+    <string name="g_secs">G/secs</string>
+    <string name="export_to_csv">Export to CSV</string>
 </resources>

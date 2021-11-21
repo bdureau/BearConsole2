@@ -57,13 +57,13 @@ public class FlightViewMpActivity extends AppCompatActivity {
         flightData = myflight.GetFlightData(FlightName);
         // Read the application config
         myBT.getAppConf().ReadConfig();
-        int graphBackColor;//= Color.WHITE;
+        int graphBackColor;
         graphBackColor =myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getGraphBackColor()));
 
         int fontSize;
         fontSize = myBT.getAppConf().ConvertFont(Integer.parseInt(myBT.getAppConf().getFontSize()));
 
-        int axisColor;//=Color.BLACK;
+        int axisColor;
         axisColor=myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getGraphColor()));
 
         int labelColor= Color.BLACK;

@@ -82,7 +82,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/apogeeAltitude"
         android:layout_marginTop="18dp"
-        android:text="secs" />
+        android:text="@string/secs" />
 
     <TextView
         android:id="@+id/burnTime"
@@ -100,7 +100,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/flightDuration"
         android:layout_marginTop="18dp"
-        android:text="secs" />
+        android:text="@string/secs" />
 
     <TextView
         android:id="@+id/maxVelociy"
@@ -118,7 +118,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/burnTime"
         android:layout_marginTop="18dp"
-        android:text="Km/h" />
+        android:text="@string/km_h" />
 
     <TextView
         android:id="@+id/maxAcceleration"
@@ -136,7 +136,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/maxVelociy"
         android:layout_marginTop="18dp"
-        android:text="G/secs" />
+        android:text="@string/g_secs" />
     <TextView
         android:id="@+id/timeToApogee"
         android:layout_width="wrap_content"
@@ -153,7 +153,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/maxAcceleration"
         android:layout_marginTop="18dp"
-        android:text="secs" />
+        android:text="@string/secs" />
 
     <TextView
         android:id="@+id/mainAltitude"
@@ -213,6 +213,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/landingSpeed"
-        android:text="Export to CSV" />
+        android:text="@string/export_to_csv" />
 
 </RelativeLayout>

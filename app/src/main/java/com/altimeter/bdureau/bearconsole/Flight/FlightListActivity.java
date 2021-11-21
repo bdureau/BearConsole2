@@ -55,7 +55,7 @@ public class FlightListActivity extends AppCompatActivity {
             // Get the flight name
             String currentFlight = ((TextView) v).getText().toString();
             Intent i;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 //if android ver = 8 or greater use the MPlib
                 i = new Intent(FlightListActivity.this, FlightViewTabActivity.class);
             } else {
@@ -106,6 +106,7 @@ public class FlightListActivity extends AppCompatActivity {
         private Boolean canceled = false;
         private String myMessage = "";
         private int NbrOfFlight = 0;
+
         @Override
         protected void onPreExecute() {
 
@@ -129,8 +130,6 @@ public class FlightListActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
         {
-
-
             //get flights
             if (myBT.getConnected()) {
                 //clear anything on the connection
@@ -139,7 +138,7 @@ public class FlightListActivity extends AppCompatActivity {
                 myBT.setNbrOfFlight(0);
                 myBT.getFlightData().ClearFlight();
 
-                // Send command to retrieve the nunber of flights
+                // Send command to retrieve the number of flights
                 myBT.write("n;".toString());
                 myBT.flush();
 
@@ -160,16 +159,14 @@ public class FlightListActivity extends AppCompatActivity {
                 }
 
                 if (NbrOfFlight > 0) {
-
                     for (int j = 0; j < NbrOfFlight; j++) {
-                        dialogAppend("Retrieving flight:" +(j+1));
+                        dialogAppend(getString(R.string.retrieving_flight) + (j + 1));
                         Log.d("FlightList", "FlightNbr:" + j);
                         myBT.flush();
                         myBT.clearInput();
 
                         myBT.write("r" + j + ";".toString());
                         myBT.flush();
-
 
                         try {
                             //wait for data to arrive
@@ -186,9 +183,9 @@ public class FlightListActivity extends AppCompatActivity {
 
                         }
                         if (canceled) {
-                            Log.d("FlightList","Canceled retrieval");
+                            Log.d("FlightList", "Canceled retrieval");
                             //this will exit the for loop and stop asking fo new flight
-                            j= NbrOfFlight;
+                            j = NbrOfFlight;
                         }
                     }
                 }
@@ -202,32 +199,32 @@ public class FlightListActivity extends AppCompatActivity {
                     //order the names in the collection
                     Collections.sort(flightNames);
                     //remove the last flight which might have incomplete data
-                    flightNames.remove(flightNames.size()-1);
+                    flightNames.remove(flightNames.size() - 1);
                 }
 
 
+                //calculate the speed
                 for (String flight : flightNames) {
                     XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_altitude));
                     int nbrData = serie.getItemCount();
                     for (int i = 1; i < nbrData; i++) {
                         double X, Y;
                         X = serie.getX(i).doubleValue();
-                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000);
+                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / (((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000));
                         myflight.AddToFlight((long) X, (long) (Y), flight, 3);
                     }
                 }
+                //calculate the acceleration
                 for (String flight : flightNames) {
-
                     XYSeries serie = myflight.GetFlightData(flight).getSeries(3);
                     int nbrData = serie.getItemCount();
                     for (int i = 1; i < nbrData; i++) {
                         double X, Y;
                         X = serie.getX(i).doubleValue();
                         Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000);
-                        myflight.AddToFlight((long) X, (long) (Y / (9.806)), flight, 4);
+                        myflight.AddToFlight((long) X, (long) (Y ), flight, 4);
                     }
                 }
-                //}
             }
             return null;
         }
@@ -236,19 +233,17 @@ public class FlightListActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             super.onPostExecute(result);
-            //if (!canceled) {
 
-                final ArrayAdapter adapter = new ArrayAdapter(FlightListActivity.this, android.R.layout.simple_list_item_1, flightNames);
-                adapter.sort(new Comparator<String>() {
-                    public int compare(String object1, String object2) {
-                        return object1.compareTo(object2);
-                    }
-                });
+            final ArrayAdapter adapter = new ArrayAdapter(FlightListActivity.this, android.R.layout.simple_list_item_1, flightNames);
+            adapter.sort(new Comparator<String>() {
+                public int compare(String object1, String object2) {
+                    return object1.compareTo(object2);
+                }
+            });
 
-                flightList = (ListView) findViewById(R.id.listViewFlightList);
-                flightList.setAdapter(adapter);
-                flightList.setOnItemClickListener(myListClickListener);
-            //}
+            flightList = (ListView) findViewById(R.id.listViewFlightList);
+            flightList.setAdapter(adapter);
+            flightList.setOnItemClickListener(myListClickListener);
 
             alert.dismiss();
 
@@ -259,6 +254,7 @@ public class FlightListActivity extends AppCompatActivity {
                 msg(getResources().getString(R.string.flight_have_been_recorded));
         }
     }
+
     Handler mHandler = new Handler();
 
     private void dialogAppend(CharSequence text) {
