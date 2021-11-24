@@ -320,11 +320,11 @@ public class ConfigBT extends AppCompatActivity {
             PIN = txtPin.getText().toString();
 
             if(Name.trim().equals("")) {
-                cancelMsg = "Module name cannot be empty\n";
+                cancelMsg = getString(R.string.module_name_cannot_be_empty_msg);
                 cancelled = true;
             }
             if(PIN.trim().equals("")) {
-                cancelMsg = cancelMsg + "Module Pin cannot be empty\n";
+                cancelMsg = cancelMsg + getString(R.string.module_pin_cannot_be_empty_msg);
                 cancelled = true;
             }
             alert = builder.create();
@@ -413,7 +413,7 @@ public class ConfigBT extends AppCompatActivity {
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(ConfigBT.this);
             //
-            builder.setMessage("Attempting connecting to the Bluetooth module")
+            builder.setMessage(R.string.attempting_connect_msg)
                     .setTitle(getResources().getString(R.string.m3DR_connecting))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
@@ -490,7 +490,7 @@ public class ConfigBT extends AppCompatActivity {
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(ConfigBT.this);
             //.
-            builder.setMessage("Attempting connecting to the Bluetooth module")
+            builder.setMessage(getResources().getString(R.string.attempting_connect_bt_msg))
                     .setTitle(getResources().getString(R.string.m3DR_connecting))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_share"
         android:orderInCategory="100"
-        android:title="Share"
+        android:title="@string/share"
         />
     <item
         android:id="@+id/action_help"

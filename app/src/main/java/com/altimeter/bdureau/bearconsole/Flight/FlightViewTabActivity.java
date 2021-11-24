@@ -56,6 +56,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -515,11 +516,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             }
             //max acceleration value
             double maxAccel = accel.getMaxY();
-            if (myBT.getAppConf().getUnits().equals("0")) {
-                maxAccel = maxAccel / 9.80665;
-            } else {
-                maxAccel = (maxAccel * FEET_IN_METER) / 9.80665;
-            }
+            maxAccel = (maxAccel * FEET_IN_METER) / 9.80665;
 
             maxAccelerationValue.setText(String.format("%.2f", maxAccel) + " G");
 
@@ -600,9 +597,12 @@ public class FlightViewTabActivity extends AppCompatActivity {
             root = new File(root, "BearConsoleFlights");
             root.mkdir();
 
+            SimpleDateFormat sdf = new SimpleDateFormat("_dd-MM-yyyy_hh-mm-ss");
+            String date = sdf.format(System.currentTimeMillis());
+
             // select the name for your file
-            root = new File(root, FlightName + "-" + Data.getSeries(nbr).getKey().toString() + ".csv");
-            Log.d("Flight win", FlightName + Data.getSeries(nbr).getKey().toString() + ".csv");
+            root = new File(root, FlightName + "-" + Data.getSeries(nbr).getKey().toString() + date + ".csv");
+            Log.d("Flight win", FlightName + Data.getSeries(nbr).getKey().toString() + date + ".csv");
             try {
                 Log.d("Flight win", "attempt to write");
                 FileOutputStream fout = new FileOutputStream(root);
@@ -610,7 +610,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 fout.close();
                 Log.d("Flight win", "write done");
                 SavedCurves = SavedCurves +
-                        FlightName + Data.getSeries(nbr).getKey().toString() + ".csv\n";
+                        FlightName + Data.getSeries(nbr).getKey().toString() + date + ".csv\n";
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -628,7 +628,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                     saveData(nbr, Data);
                 } else {
                     Log.d("Flight win", "Failed to create flight files");
-                    throw new IllegalStateException("Failed to create flight files");
+                    throw new IllegalStateException(getString(R.string.failed_create_flight_file_msg));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -689,7 +689,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         //open help screen
         if (id == R.id.action_help) {
             Intent i = new Intent(this, HelpActivity.class);
-            i.putExtra("help_file", "help_bluetooth");
+            i.putExtra("help_file", "help_flight");
             startActivity(i);
             return true;
         }

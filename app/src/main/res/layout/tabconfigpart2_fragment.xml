@@ -194,7 +194,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recording timeout (sec)"
+        android:text="@string/recording_timeout_sec"
         android:id="@+id/txtViewRecordingTimeOut"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewBatteryType"

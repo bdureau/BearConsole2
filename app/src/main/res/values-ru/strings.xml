@@ -399,4 +399,12 @@
     <string name="km_h">Km/h</string>
     <string name="g_secs">G/secs</string>
     <string name="export_to_csv">Export to CSV</string>
+    <string name="failed_create_flight_file_msg">Failed to create flight files</string>
+    <string name="module_name_cannot_be_empty_msg">Module name cannot be empty\n</string>
+    <string name="module_pin_cannot_be_empty_msg">Module Pin cannot be empty\n</string>
+    <string name="attempting_connect_msg">Attempting connecting to the Bluetooth module</string>
+    <string name="attempting_connect_bt_msg">Attempting connecting to the Bluetooth module</string>
+    <string name="share">Share</string>
+    <string name="delete_last_flight">Delete Last Flight</string>
+    <string name="recording_timeout_sec">Recording timeout (sec)</string>
 </resources>

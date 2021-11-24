@@ -270,7 +270,7 @@ public class TestConnection extends AppCompatActivity {
         //open help screen
         if (id == R.id.action_help) {
             Intent i = new Intent(this, HelpActivity.class);
-            i.putExtra("help_file", "help_configBT");
+            i.putExtra("help_file", "help_test_connection");
             startActivity(i);
             return true;
         }

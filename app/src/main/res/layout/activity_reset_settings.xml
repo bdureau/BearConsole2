@@ -35,7 +35,7 @@
         android:layout_alignParentTop="false"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="62dp"
-        android:text="Delete Last Flight" />
+        android:text="@string/delete_last_flight" />
 
     <Button
         android:layout_width="wrap_content"
