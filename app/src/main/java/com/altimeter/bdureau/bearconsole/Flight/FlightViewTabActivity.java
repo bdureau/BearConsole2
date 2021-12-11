@@ -437,6 +437,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         private AlertDialog alert;
 
         String SavedCurves = "";
+        boolean SavedCurvesOK = false;
 
         public Tab2Fragment(FlightData data, XYSeriesCollection data2) {
 
@@ -537,6 +538,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     SavedCurves = "";
+                    SavedCurvesOK = true;
                     //export the data to a csv file
                     for (int j = 0; j < numberOfCurves; j++) {
                         Log.d("Flight win", "Saving curve:" + j);
@@ -545,18 +547,23 @@ public class FlightViewTabActivity extends AppCompatActivity {
                     builder = new AlertDialog.Builder(Tab2Fragment.this.getContext());
                     //Running Saving commands
                     //getResources().getString(R.string.flight_time)
-                    builder.setMessage(getResources().getString(R.string.save_curve_msg) + Environment.DIRECTORY_DOWNLOADS + "\\BearConsoleFlights \n" + SavedCurves)
-                            .setTitle(getResources().getString(R.string.save_curves_title))
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.save_curve_ok, new DialogInterface.OnClickListener() {
-                                public void onClick(final DialogInterface dialog, final int id) {
-                                    dialog.cancel();
-                                }
-                            });
+                    if(SavedCurvesOK) {
+                        builder.setMessage(getResources().getString(R.string.save_curve_msg) + Environment.DIRECTORY_DOWNLOADS + "\\BearConsoleFlights \n" + SavedCurves)
+                                .setTitle(getResources().getString(R.string.save_curves_title))
+                                .setCancelable(false)
+                                .setPositiveButton(R.string.save_curve_ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(final DialogInterface dialog, final int id) {
+                                        dialog.cancel();
+                                    }
+                                });
 
-                    alert = builder.create();
-                    alert.show();
-                    msg(getResources().getString(R.string.curves_saved_msg));
+                        alert = builder.create();
+                        alert.show();
+                        msg(getResources().getString(R.string.curves_saved_msg));
+                    }
+                    else {
+                        msg("Failed saving flights");
+                    }
 
                 }
             });
@@ -628,7 +635,9 @@ public class FlightViewTabActivity extends AppCompatActivity {
                     saveData(nbr, Data);
                 } else {
                     Log.d("Flight win", "Failed to create flight files");
-                    throw new IllegalStateException(getString(R.string.failed_create_flight_file_msg));
+                    //msg("failed");
+                    SavedCurvesOK=false;
+                    //throw new IllegalStateException(getString(R.string.failed_create_flight_file_msg));// DOES NOT WORK !!
                 }
             } catch (IOException e) {
                 e.printStackTrace();
