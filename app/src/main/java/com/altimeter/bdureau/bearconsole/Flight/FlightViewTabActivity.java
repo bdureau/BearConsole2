@@ -86,6 +86,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW};
     static Font font;
     private static String FlightName = null;
+    private static XYSeries altitude;
     private static XYSeries speed;
     private static XYSeries accel;
 
@@ -165,6 +166,9 @@ public class FlightViewTabActivity extends AppCompatActivity {
         // get all the data that we have recorded for the current flight
         allFlightData = new XYSeriesCollection();
         allFlightData = myflight.GetFlightData(FlightName);
+
+        altitude = null;
+        altitude = allFlightData.getSeries(getResources().getString(R.string.curve_altitude));
 
         //calculate speed
         //altitude
@@ -485,15 +489,15 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
             //flight duration
             double flightDuration = flightData.getSeries(0).getMaxX() / 1000;
-            flightDurationValue.setText(String.format("%.2f",flightDuration) + " secs");
+            flightDurationValue.setText(String.format("%.2f", flightDuration) + " secs");
             //apogee altitude
             double apogeeAltitude = flightData.getSeries(0).getMaxY();
-            apogeeAltitudeValue.setText(String.format("%.0f",apogeeAltitude) + " " + myBT.getAppConf().getUnitsValue());
+            apogeeAltitudeValue.setText(String.format("%.0f", apogeeAltitude) + " " + myBT.getAppConf().getUnitsValue());
 
             //apogee time
             int pos = searchX(flightData.getSeries(0), apogeeAltitude);
             double apogeeTime = (double) flightData.getSeries(0).getX(pos);
-            timeToApogeeValue.setText(String.format("%.2f",apogeeTime / 1000) + " secs");
+            timeToApogeeValue.setText(String.format("%.2f", apogeeTime / 1000) + " secs");
 
             //calculate max speed
             double maxSpeed = speed.getMaxY();
@@ -503,18 +507,27 @@ public class FlightViewTabActivity extends AppCompatActivity {
             double landingSpeed = 0;
             if (searchY(speed, flightData.getSeries(0).getMaxX() - 2000) != -1) {
                 landingSpeed = speed.getY(searchY(speed, flightData.getSeries(0).getMaxX() - 2000)).doubleValue();
-                landingSpeedValue.setText((long) landingSpeed+ " " + myBT.getAppConf().getUnitsValue() + "/secs");
+                landingSpeedValue.setText((long) landingSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
             } else {
                 landingSpeedValue.setText("N/A");
             }
             //max descente speed
             double maxDescentSpeed = 0;
-            if (searchY(speed, apogeeTime + 2000) != -1) {
-                maxDescentSpeed = speed.getY(searchY(speed, apogeeTime + 2000)).doubleValue();
-                maxDescentValue.setText((long) maxDescentSpeed+ " " + myBT.getAppConf().getUnitsValue() + "/secs");
+            int timeBeforeLanding =searchXBack(altitude, 30);
+
+            if (searchY(speed, timeBeforeLanding) != -1) {
+                maxDescentSpeed = speed.getY(searchY(speed, timeBeforeLanding)).doubleValue();
+                maxDescentValue.setText((long) maxDescentSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
             } else {
                 maxDescentValue.setText("N/A");
             }
+            /*if (searchY(speed, apogeeTime + 2000) != -1) {
+                maxDescentSpeed = speed.getY(searchY(speed, apogeeTime + 2000)).doubleValue();
+                maxDescentValue.setText((long) maxDescentSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
+            } else {
+                maxDescentValue.setText("N/A");
+            }*/
+
             //max acceleration value
             double maxAccel = accel.getMaxY();
             maxAccel = (maxAccel * FEET_IN_METER) / 9.80665;
@@ -526,7 +539,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             if (searchX(speed, maxSpeed) != -1)
                 burnTime = speed.getX(searchX(speed, maxSpeed)).doubleValue();
             if (burnTime != 0)
-                burnTimeValue.setText(String.format("%.2f",burnTime / 1000) + " secs");
+                burnTimeValue.setText(String.format("%.2f", burnTime / 1000) + " secs");
             else
                 burnTimeValue.setText("N/A");
             //main value
@@ -547,7 +560,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                     builder = new AlertDialog.Builder(Tab2Fragment.this.getContext());
                     //Running Saving commands
                     //getResources().getString(R.string.flight_time)
-                    if(SavedCurvesOK) {
+                    if (SavedCurvesOK) {
                         builder.setMessage(getResources().getString(R.string.save_curve_msg) + Environment.DIRECTORY_DOWNLOADS + "\\BearConsoleFlights \n" + SavedCurves)
                                 .setTitle(getResources().getString(R.string.save_curves_title))
                                 .setCancelable(false)
@@ -560,11 +573,9 @@ public class FlightViewTabActivity extends AppCompatActivity {
                         alert = builder.create();
                         alert.show();
                         msg(getResources().getString(R.string.curves_saved_msg));
-                    }
-                    else {
+                    } else {
                         msg("Failed saving flights");
                     }
-
                 }
             });
 
@@ -636,7 +647,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 } else {
                     Log.d("Flight win", "Failed to create flight files");
                     //msg("failed");
-                    SavedCurvesOK=false;
+                    SavedCurvesOK = false;
                     //throw new IllegalStateException(getString(R.string.failed_create_flight_file_msg));// DOES NOT WORK !!
                 }
             } catch (IOException e) {
@@ -660,6 +671,21 @@ public class FlightViewTabActivity extends AppCompatActivity {
         }
 
         /*
+        Return the position of the first X value it finds from the beginning
+         */
+        public int searchXBack(XYSeries serie, double searchVal) {
+            int nbrData = serie.getItemCount();
+            int pos = -1;
+            for (int i = 1; i < nbrData; i++) {
+                if ((searchVal >= serie.getY((nbrData - i) + 1).doubleValue()) && (searchVal <= serie.getY(nbrData - i).doubleValue())) {
+                    pos = (nbrData - i);
+                    break;
+                }
+            }
+            return pos;
+        }
+
+        /*
         Return the position of the first Y value it finds from the beginning
          */
         public int searchY(XYSeries serie, double searchVal) {
@@ -668,6 +694,21 @@ public class FlightViewTabActivity extends AppCompatActivity {
             for (int i = 1; i < nbrData; i++) {
                 if ((searchVal >= serie.getX(i - 1).doubleValue()) && (searchVal <= serie.getX(i).doubleValue())) {
                     pos = i;
+                    break;
+                }
+            }
+            return pos;
+        }
+
+        /*
+        Return the position of the first Y value it finds from the end
+        */
+        public int searchYBack(XYSeries serie, double searchVal) {
+            int nbrData = serie.getItemCount();
+            int pos = -1;
+            for (int i = 1; i < nbrData; i++) {
+                if ((searchVal >= serie.getX((nbrData -i)+1 ).doubleValue()) && (searchVal <= serie.getX(nbrData-i).doubleValue())) {
+                    pos = (nbrData -i);
                     break;
                 }
             }
