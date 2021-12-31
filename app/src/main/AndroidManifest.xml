@@ -8,8 +8,11 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28"
@@ -123,6 +126,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".telemetry.AltimeterStatus"
+            android:label="@string/status_screen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".telemetry.RocketTrack"
             android:label="@string/status_screen"
             android:screenOrientation="portrait" />
         <!--

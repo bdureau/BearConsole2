@@ -476,7 +476,7 @@ public class ConsoleApplication extends Application {
                                                 mHandler.obtainMessage(18, String.valueOf(currentSentence[18])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(18, String.valueOf(0)).sendToTarget();
-                                        // Value 19 contains the number of flight
+                                        // Value 19 contains the longitude
                                         if (currentSentence.length > 19)
                                             if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
                                                 mHandler.obtainMessage(19, String.valueOf(currentSentence[19])).sendToTarget();

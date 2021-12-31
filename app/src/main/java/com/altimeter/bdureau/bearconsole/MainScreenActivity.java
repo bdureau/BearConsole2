@@ -38,6 +38,7 @@ import com.altimeter.bdureau.bearconsole.config.ConfigBT;
 import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
 import com.altimeter.bdureau.bearconsole.connection.TestConnection;
 import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatus;
+import com.altimeter.bdureau.bearconsole.telemetry.RocketTrack;
 import com.altimeter.bdureau.bearconsole.telemetry.Telemetry;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryMp;
 import com.google.android.gms.appindexing.Action;
@@ -55,7 +56,7 @@ import java.util.Set;
 public class MainScreenActivity extends AppCompatActivity {
     String address = null;
     Button btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
-    Button btnTelemetry, btnStatus, btnFlashFirmware;
+    Button btnTelemetry, btnStatus, btnFlashFirmware, btnTrack;
 
     UsbManager usbManager;
     UsbDevice device;
@@ -130,6 +131,7 @@ public class MainScreenActivity extends AppCompatActivity {
         btnConnectDisconnect = (Button) findViewById(R.id.butDisconnect);
         btnContinuityOnOff = (Button) findViewById(R.id.butContinuityOnOff);
         btnReset = (Button) findViewById(R.id.butReset);
+        btnTrack = (Button) findViewById(R.id.butTrack);
 
         if (myBT.getConnected()) {
             EnableUI();
@@ -205,6 +207,20 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.write("y1;".toString());
                 }
                 Intent i = new Intent(MainScreenActivity.this, AltimeterStatus.class);
+                startActivity(i);
+            }
+        });
+
+        btnTrack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //turn on telemetry
+                if (myBT.getConnected()) {
+                    myBT.flush();
+                    myBT.clearInput();
+                   // myBT.write("y1;".toString());
+                }
+                Intent i = new Intent(MainScreenActivity.this, RocketTrack.class);
                 startActivity(i);
             }
         });

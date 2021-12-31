@@ -92,6 +92,7 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
 
         polyline1.setPoints(coord);
 
+
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng((double)flightData.getSeries(3).getMaxY()/(double)100000,(double)flightData.getSeries(4).getMaxY()/(double)100000), 20));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord.get((int)(j/2)),15));

@@ -52,15 +52,29 @@
         android:layout_marginTop="21dp"
         android:layout_below="@+id/butContinuityOnOff"
         android:layout_centerHorizontal="true" />
+
     <Button
         android:id="@+id/butStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/butReset"
-        android:layout_marginTop="21dp"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="false"
 
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
         android:text="@string/status" />
+
+    <Button
+        android:id="@+id/butTrack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/butReset"
+        android:layout_alignParentRight="true"
+
+        android:layout_centerHorizontal="false"
+        android:layout_marginTop="21dp"
+        android:text="Track" />
 
     <Button
         android:id="@+id/butFlashFirmware"

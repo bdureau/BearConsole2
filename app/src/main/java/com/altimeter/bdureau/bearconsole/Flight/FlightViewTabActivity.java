@@ -505,28 +505,36 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
             //landing speed
             double landingSpeed = 0;
-            if (searchY(speed, flightData.getSeries(0).getMaxX() - 2000) != -1) {
+            int timeBeforeLanding =searchXBack(altitude, 30);
+            if (timeBeforeLanding != -1)
+                if (searchY(speed, altitude.getX(timeBeforeLanding).doubleValue() )!= -1) {
+                    landingSpeed =searchY(speed, altitude.getX(timeBeforeLanding).doubleValue() );
+                    landingSpeedValue.setText((long) landingSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
+                } else {
+                    landingSpeedValue.setText("N/A");
+                }
+            /*if (searchY(speed, flightData.getSeries(0).getMaxX() - 2000) != -1) {
                 landingSpeed = speed.getY(searchY(speed, flightData.getSeries(0).getMaxX() - 2000)).doubleValue();
                 landingSpeedValue.setText((long) landingSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
             } else {
-                landingSpeedValue.setText("N/A");
-            }
+                landingSpeedValue.setText("N/A");(
+            }*/
             //max descente speed
             double maxDescentSpeed = 0;
-            int timeBeforeLanding =searchXBack(altitude, 30);
 
-            if (searchY(speed, timeBeforeLanding) != -1) {
-                maxDescentSpeed = speed.getY(searchY(speed, timeBeforeLanding)).doubleValue();
+            if (searchY(speed, apogeeTime + 100) != -1) {
+                int pos1 = searchY(speed, apogeeTime + 100);
+                XYSeries partialSpeed;
+                partialSpeed = new XYSeries("partial_speed");
+                for(int i = pos1; i < speed.getItemCount(); i++ ) {
+                    partialSpeed.add(speed.getX(i), speed.getY(i));
+                }
+                maxDescentSpeed = partialSpeed.getMaxY();
+                //maxDescentSpeed = speed.getY(searchY(speed, apogeeTime + 500)).doubleValue();
                 maxDescentValue.setText((long) maxDescentSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
             } else {
                 maxDescentValue.setText("N/A");
             }
-            /*if (searchY(speed, apogeeTime + 2000) != -1) {
-                maxDescentSpeed = speed.getY(searchY(speed, apogeeTime + 2000)).doubleValue();
-                maxDescentValue.setText((long) maxDescentSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
-            } else {
-                maxDescentValue.setText("N/A");
-            }*/
 
             //max acceleration value
             double maxAccel = accel.getMaxY();
@@ -677,11 +685,13 @@ public class FlightViewTabActivity extends AppCompatActivity {
             int nbrData = serie.getItemCount();
             int pos = -1;
             for (int i = 1; i < nbrData; i++) {
-                if ((searchVal >= serie.getY((nbrData - i) + 1).doubleValue()) && (searchVal <= serie.getY(nbrData - i).doubleValue())) {
+                Log.d("I","i="+ i + " nbrData= "+ nbrData + "  Y = " + serie.getY((nbrData - i) - 1));
+                if ((searchVal <= serie.getY((nbrData - i) - 1).doubleValue()) && (searchVal >= serie.getY(nbrData - i).doubleValue())) {
                     pos = (nbrData - i);
                     break;
                 }
             }
+            Log.d("I","pos = " + pos);
             return pos;
         }
 
