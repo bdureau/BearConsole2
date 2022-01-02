@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".telemetry.AltimeterStatus">
+
+
+    <TextView
+        android:id="@+id/txtViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/altimeter_status"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altimeter_status_output_1"
+        android:id="@+id/txtViewOutput1"
+        android:layout_below="@+id/txtViewTitle"
+        android:layout_alignParentLeft="true"
+         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewOutput1Status"
+        android:text="@string/altimeter_status_disabled"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewTitle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altimeter_status_output_2"
+        android:id="@+id/txtViewOutput2"
+        android:layout_below="@+id/txtViewOutput1"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewOutput2Status"
+        android:text="Disabled"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewOutput1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altimeter_status_output_3"
+        android:id="@+id/txtViewOutput3"
+        android:layout_below="@+id/txtViewOutput2"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewOutput3Status"
+        android:text="Disabled"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewOutput2"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altimeter_status_output_4"
+        android:id="@+id/txtViewOutput4"
+        android:layout_below="@+id/txtViewOutput3"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewOutput4Status"
+        android:text="Disabled"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewOutput3"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altimeter_status_current_altitude"
+        android:id="@+id/txtViewCurrentAltitude"
+        android:layout_below="@+id/txtViewOutput4"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewAltitude"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewOutput4"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/temperature"
+        android:id="@+id/txtViewCurrentTemperature"
+        android:layout_below="@+id/txtViewCurrentAltitude"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewTemperature"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewCurrentAltitude"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altimeter_status_battery_voltage"
+        android:id="@+id/txtViewBatteryVoltage"
+        android:layout_below="@+id/txtViewTemperature"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewVoltage"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewTemperature"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EEprom"
+        android:id="@+id/txtViewEEprom"
+        android:layout_below="@+id/txtViewBatteryVoltage"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewEEpromUsage"
+        android:text="0 %"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewBatteryVoltage"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/flight"
+        android:id="@+id/txtViewFlight"
+        android:layout_below="@+id/txtViewEEpromUsage"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewNbrOfFlight"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewEEpromUsage"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altimeter_status_link_type"
+        android:id="@+id/txtViewLinkType"
+        android:layout_below="@+id/txtViewFlight"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewLink"
+        android:text="@string/altimeter_status_bluetooth"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewFlight"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/latitude"
+        android:id="@+id/txtViewLatitude"
+        android:layout_below="@+id/txtViewLinkType"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewLatitudeValue"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewLink"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/longitude"
+        android:id="@+id/txtViewLongitude"
+        android:layout_below="@+id/txtViewLatitude"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewLongitudeValue"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewLatitudeValue"/>
+
+    <TextView
+        android:id="@+id/txtViewTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtViewLongitude"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/status_msg1"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="18sp" />
+    <Switch
+        android:id="@+id/switchOutput1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txtViewTitle2"
+        android:layout_marginEnd="61dp"
+        android:layout_marginRight="61dp"
+        android:text="@string/switch_output_1" />
+    <Switch
+        android:id="@+id/switchOutput2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/switchOutput1"
+        android:layout_marginEnd="61dp"
+        android:layout_marginRight="61dp"
+        android:text="@string/switch_output_2" />
+
+    <Switch
+        android:id="@+id/switchOutput3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/switchOutput2"
+        android:layout_marginEnd="61dp"
+        android:layout_marginRight="61dp"
+        android:text="@string/switch_output_3" />
+    <Switch
+        android:id="@+id/switchOutput4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/switchOutput3"
+        android:layout_marginEnd="61dp"
+        android:layout_marginRight="61dp"
+        android:text="@string/switch_output_4" />
+
+
+</RelativeLayout>

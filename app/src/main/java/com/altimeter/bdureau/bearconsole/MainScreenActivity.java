@@ -218,7 +218,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 if (myBT.getConnected()) {
                     myBT.flush();
                     myBT.clearInput();
-                   // myBT.write("y1;".toString());
+                    myBT.write("y1;".toString());
                 }
                 Intent i = new Intent(MainScreenActivity.this, RocketTrack.class);
                 startActivity(i);

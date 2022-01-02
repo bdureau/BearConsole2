@@ -1,142 +1,235 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
-//import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-//import com.google.android.gms.location.LocationServices;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-public class RocketTrack extends AppCompatActivity implements LocationListener, OnMapReadyCallback {
-    protected LocationManager locationManager;
-    protected LocationListener locationListener;
-    protected Context context;
+import java.util.ArrayList;
+import java.util.List;
+
+public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback {
     SupportMapFragment mapFragment;
     GoogleMap mMap;
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-    LatLng origin = new LatLng(48.8698, 2.2190);
-    //LatLng dest = new LatLng(30.705493, 76.801256);
-    LatLng dest = new LatLng(48.8698, 2.2190);
-    GoogleApiClient mGoogleApiClient;
+    Marker marker, markerDest;
+    Polyline polyline1 = null;
+    Thread altiStatus;
+    boolean status = true;
+    Double rocketLatitude=48.8698, rocketLongitude=2.2190;
 
+    Button btnDismiss;
+    LocationBroadCastReceiver receiver=null;
+    LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
+
+    private static ConsoleApplication myBT;
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 18:
+                    //Value 18 contains the latitude
+                    setLatitudeValue((String) msg.obj );
+                    break;
+                case 19:
+                    //Value 19 contains the longitude
+                    setLongitudeValue((String) msg.obj );
+                    break;
+            }
+        }
+    };
+
+    private void setLatitudeValue(String value) {
+        if (value.matches("\\d+(?:\\.\\d+)?"))
+            rocketLatitude = Double.parseDouble(value) ;
+    }
+
+    private void setLongitudeValue(String value) {
+        if (value.matches("\\d+(?:\\.\\d+)?"))
+            rocketLongitude = Double.parseDouble(value) ;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        receiver = new LocationBroadCastReceiver();
+        myBT = (ConsoleApplication) getApplication();
         setContentView(R.layout.activity_rocket_track);
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        final String gpsProvider = LocationManager.GPS_PROVIDER;
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkLocationPermission();
+        myBT.setHandler(handler);
+
+        if(Build.VERSION.SDK_INT>=23) {
+            if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+            } else {
+                startService();
+            }
+        } else {
+            startService();
         }
 
-        /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }*/
-
-
-        locationManager.requestLocationUpdates(gpsProvider, 100, 1, this);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map1);
         mapFragment.getMapAsync(this);
-    }
-    public boolean checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        btnDismiss = (Button) findViewById(R.id.butDismiss);
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
+        btnDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (receiver !=null) {
+                    unregisterReceiver(receiver);
+                    receiver = null;
+                }
+                if (status & myBT.getConnected()) {
+
+                    status = false;
+                    myBT.write("h;\n".toString());
+
+                    myBT.setExit(true);
+                    myBT.clearInput();
+                    myBT.flush();
+                }
+                if (myBT.getConnected()) {
+                    //turn off telemetry
+                    myBT.flush();
+                    myBT.clearInput();
+                    myBT.write("y0;\n".toString());
+                }
+                finish();
+
             }
-            return false;
-        } else {
-            return true;
+        });
+    }
+    private void startService() {
+
+        IntentFilter filter = new IntentFilter("ACT_LOC");
+        registerReceiver(receiver, filter);
+
+        Intent intent = new Intent( RocketTrack.this, LocationService.class);
+        startService(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startService();
+                } else {
+                    Toast.makeText(this, "permission need to be granted", Toast.LENGTH_LONG).show();
+                }
         }
     }
-    /*protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
-    }*/
-    /*@Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_GRANTED) {
-                        if (mGoogleApiClient == null) {
-                            buildGoogleApiClient();
-                        }
-                        mMap.setMyLocationEnabled(true);
-                    }
-                } else {
-                    Toast.makeText(this, "permission denied",
-                            Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(myBT.getConnected() && !status) {
+            myBT.flush();
+            myBT.clearInput();
+
+            myBT.write("y1;".toString());
+            status = true;
+            altiStatus.start();
         }
-    }*/
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (receiver !=null) {
+            unregisterReceiver(receiver);
+            receiver = null;
+        }
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMap.addMarker(new MarkerOptions()
-                .position(origin)
-                .title("LinkedIn")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-
-        googleMap.addMarker(new MarkerOptions()
-                .position(dest));
-
-
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 15));
-
+        if(this.mMap == null) {
+            this.mMap = googleMap;
+            this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        }
     }
 
-    @Override
-    //public void onLocationChanged(@NonNull @android.support.annotation.NonNull Location location) {
-    public void onLocationChanged(Location location) {
+    public class LocationBroadCastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d ("coordinate",intent.getAction());
+            if(intent.getAction().equals("ACT_LOC")) {
+                double latitude = intent.getDoubleExtra("latitude", 0f);
+                double longitude = intent.getDoubleExtra("longitude", 0f);
+                Toast.makeText(RocketTrack.this, "latitude is:" + latitude + " longitude is: " + longitude, Toast.LENGTH_LONG).show();
+                Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
+                if(mMap != null) {
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    if(marker != null) {
+                        marker.setPosition(latLng);
+                    } else {
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        //markerOptions.position(latLng);
+                        BitmapDescriptor manIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_person_map);
+                        marker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
+                        //marker = googleMap.addMarker(markerOptions);
+                    }
 
-        //origin = new LatLng(location.getLatitude(), location.getLongitude());
+                    if(markerDest != null) {
+
+
+                        markerDest.setPosition(dest);
+                    } else {
+                        //MarkerOptions markerOptions = new MarkerOptions();
+                        //markerOptions.position(dest);
+                        BitmapDescriptor rocketIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_rocket_map);
+                        markerDest = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(dest).icon(rocketIcon));
+                        //markerDest = googleMap.addMarker(markerOptions);
+                    }
+                    List<LatLng> coord;
+                    coord = new ArrayList();
+
+                    //LatLng c = new LatLng((double) flightData.getSeries(3).getY(i) / 100000, (double) flightData.getSeries(4).getY(i) / 100000);
+                    dest = new LatLng(rocketLatitude, rocketLongitude);
+                    coord.add(0, dest);
+                    // coord.add(1, map.getCameraPosition().target);
+                    coord.add(1, latLng);
+                    if (polyline1 == null)
+                        polyline1 = mMap.addPolyline(new PolylineOptions()
+                                .clickable(false));
+                    polyline1.setColor(Color.YELLOW);
+                    polyline1.setPoints(coord);
+                    if(mMap.getCameraPosition().zoom > 10)
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, mMap.getCameraPosition().zoom));
+                    else
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                }
+            }
+        }
     }
 }

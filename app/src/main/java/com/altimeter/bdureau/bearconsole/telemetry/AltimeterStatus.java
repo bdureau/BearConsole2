@@ -21,11 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
-import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.R;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,11 +39,7 @@ public class AltimeterStatus extends AppCompatActivity {
     boolean status = true;
     boolean recording = false;
 
-   /* private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
-    private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage,txtNbrOfFlight;
-    private TextView txtViewOutput4, txtViewBatteryVoltage, txtViewOutput3, txtViewEEprom, txtViewFlight;
-    private TextView txtViewLatitude, txtViewLongitude, txtViewLatitudeValue, txtViewLongitudeValue;
-    private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;*/
+
 
     Handler handler = new Handler() {
         @Override
@@ -134,11 +126,11 @@ public class AltimeterStatus extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_altimeter_status);
+        //setContentView(R.layout.activity_altimeter_status_tab1);
         myBT = (ConsoleApplication) getApplication();
 
         //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
-        setContentView(R.layout.activity_altimeter_tab1_status);
+        setContentView(R.layout.activity_altimeter_status);
 
         mViewPager =(ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
@@ -213,194 +205,7 @@ public class AltimeterStatus extends AppCompatActivity {
 
             }
         });
-      /*  txtViewOutput1Status = (TextView) findViewById(R.id.txtViewOutput1Status);
-        txtViewOutput2Status = (TextView) findViewById(R.id.txtViewOutput2Status);
-        txtViewOutput3Status = (TextView) findViewById(R.id.txtViewOutput3Status);
-        txtViewOutput4Status = (TextView) findViewById(R.id.txtViewOutput4Status);
-        txtViewAltitude = (TextView) findViewById(R.id.txtViewAltitude);
-        txtViewVoltage = (TextView) findViewById(R.id.txtViewVoltage);
-        txtViewLink = (TextView) findViewById(R.id.txtViewLink);
-        txtViewOutput3 = (TextView) findViewById(R.id.txtViewOutput3);
-        txtViewOutput4 = (TextView) findViewById(R.id.txtViewOutput4);
-        txtViewBatteryVoltage = (TextView) findViewById(R.id.txtViewBatteryVoltage);
-        txtTemperature = (TextView) findViewById(R.id.txtViewTemperature);
-        txtEEpromUsage= (TextView) findViewById(R.id.txtViewEEpromUsage);
-        txtNbrOfFlight= (TextView) findViewById(R.id.txtViewNbrOfFlight);
-        txtViewEEprom = (TextView) findViewById(R.id.txtViewEEprom);
-        txtViewFlight = (TextView) findViewById(R.id.txtViewFlight);
-        txtViewLatitude = (TextView) findViewById(R.id.txtViewLatitude);
-        txtViewLongitude = (TextView) findViewById(R.id.txtViewLongitude);
-        txtViewLatitudeValue = (TextView) findViewById(R.id.txtViewLatitudeValue);
-        txtViewLongitudeValue = (TextView) findViewById(R.id.txtViewLongitudeValue);
 
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")||myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ) {
-            txtViewVoltage.setVisibility(View.VISIBLE);
-            txtViewBatteryVoltage.setVisibility(View.VISIBLE);
-        } else {
-            txtViewVoltage.setVisibility(View.INVISIBLE);
-            txtViewBatteryVoltage.setVisibility(View.INVISIBLE);
-        }
-        if (!myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
-            txtViewOutput3Status.setVisibility(View.VISIBLE);
-            txtViewOutput3.setVisibility(View.VISIBLE);
-        } else {
-            txtViewOutput3Status.setVisibility(View.INVISIBLE);
-            txtViewOutput3.setVisibility(View.INVISIBLE);
-        }
-
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") || myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-            txtViewOutput4Status.setVisibility(View.VISIBLE);
-            txtViewOutput4.setVisibility(View.VISIBLE);
-        } else {
-            txtViewOutput4Status.setVisibility(View.INVISIBLE);
-            txtViewOutput4.setVisibility(View.INVISIBLE);
-        }
-        //hide eeprom
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") || myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-            txtViewEEprom.setVisibility(View.INVISIBLE);
-            txtViewFlight.setVisibility(View.INVISIBLE);
-            txtEEpromUsage.setVisibility(View.INVISIBLE);
-            txtNbrOfFlight.setVisibility(View.INVISIBLE);
-        }
-        else {
-            txtViewEEprom.setVisibility(View.VISIBLE);
-            txtViewFlight.setVisibility(View.VISIBLE);
-            txtEEpromUsage.setVisibility(View.VISIBLE);
-            txtNbrOfFlight.setVisibility(View.VISIBLE);
-        }
-        //hide GPS
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")){
-            txtViewLatitude.setVisibility(View.VISIBLE);
-            txtViewLongitude.setVisibility(View.VISIBLE);
-            txtViewLatitudeValue.setVisibility(View.VISIBLE);
-            txtViewLongitudeValue.setVisibility(View.VISIBLE);
-        } else {
-            txtViewLatitude.setVisibility(View.INVISIBLE);
-            txtViewLongitude.setVisibility(View.INVISIBLE);
-            txtViewLatitudeValue.setVisibility(View.INVISIBLE);
-            txtViewLongitudeValue.setVisibility(View.INVISIBLE);
-        }
-        txtViewLink.setText(myBT.getConnectionType());
-
-        switchOutput1 = (Switch) findViewById(R.id.switchOutput1);
-        switchOutput2 = (Switch) findViewById(R.id.switchOutput2);
-        switchOutput3 = (Switch) findViewById(R.id.switchOutput3);
-        switchOutput4 = (Switch) findViewById(R.id.switchOutput4);
-        if (!myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo"))
-            switchOutput3.setVisibility(View.VISIBLE);
-        else
-            switchOutput3.setVisibility(View.INVISIBLE);
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS"))
-            switchOutput4.setVisibility(View.VISIBLE);
-        else
-            switchOutput4.setVisibility(View.INVISIBLE);
-
-        switchOutput1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (switchOutput1.isChecked())
-                    myBT.write("k1T;\n".toString());
-                else
-                    myBT.write("k1F;\n".toString());
-
-                myBT.flush();
-                myBT.clearInput();
-            }
-        });
-
-
-        switchOutput1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (switchOutput1.isChecked())
-                    myBT.write("k1T;\n".toString());
-                else
-                    myBT.write("k1F;\n".toString());
-
-                myBT.flush();
-                myBT.clearInput();
-
-            }
-        });
-
-        switchOutput2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (switchOutput2.isChecked())
-                    myBT.write("k2T;\n".toString());
-                else
-                    myBT.write("k2F;\n".toString());
-
-                myBT.flush();
-                myBT.clearInput();
-            }
-        });
-        switchOutput2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (switchOutput2.isChecked())
-                    myBT.write("k2T;\n".toString());
-                else
-                    myBT.write("k2F;\n".toString());
-
-                myBT.flush();
-                myBT.clearInput();
-
-            }
-        });
-        switchOutput3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (switchOutput3.isChecked())
-                    myBT.write("k3T;\n".toString());
-                else
-                    myBT.write("k3F;\n".toString());
-
-                myBT.flush();
-                myBT.clearInput();
-            }
-        });
-        switchOutput3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (switchOutput3.isChecked())
-                    myBT.write("k3T;\n".toString());
-                else
-                    myBT.write("k3F;\n".toString());
-
-                myBT.flush();
-                myBT.clearInput();
-
-            }
-        });
-        switchOutput4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (switchOutput4.isChecked())
-                    myBT.write("k4T;\n".toString());
-                else
-                    myBT.write("k4F;\n".toString());
-
-                myBT.flush();
-                myBT.clearInput();
-            }
-        });
-        switchOutput4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (switchOutput4.isChecked())
-                    myBT.write("k4T;\n".toString());
-                else
-                    myBT.write("k4F;\n".toString());
-
-                myBT.flush();
-                myBT.clearInput();
-
-            }
-        });*/
-        //myBT.setHandler(handler);
 
         Runnable r = new Runnable() {
 
@@ -548,7 +353,7 @@ public class AltimeterStatus extends AppCompatActivity {
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_altimeter_status,container,false);
+            View view = inflater.inflate(R.layout.activity_altimeter_status_tab1,container,false);
 
             ViewCreated = true;
             txtViewOutput1Status = (TextView) view.findViewById(R.id.txtViewOutput1Status);
@@ -757,93 +562,22 @@ public class AltimeterStatus extends AppCompatActivity {
         }
     }
 
-    public static class Tab2StatusFragment extends Fragment implements OnMapReadyCallback {
-        private static final String TAG = "Tab1StatusFragment";
+    public static class Tab2StatusFragment extends Fragment {
+        private static final String TAG = "Tab2StatusFragment";
         private boolean ViewCreated = false;
-        private GoogleMap mMap;
-        String FlightName = null;
-        ConsoleApplication myBT ;
-        private FlightData myflight=null;
 
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_rocket_track,container,false);
+            View view = inflater.inflate(R.layout.activity_rocket_track, container, false);
 
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            SupportMapFragment mapFragment = (SupportMapFragment) getParentFragmentManager()
-                    .findFragmentById(R.id.map);
-            //mapFragment.getMapAsync(this);
 
-            //get the bluetooth Application pointer
-            /*myBT = (ConsoleApplication) getApplication();
-
-            Intent newint = getIntent();
-            FlightName = newint.getStringExtra(FlightListActivity.SELECTED_FLIGHT);
-
-            myflight= myBT.getFlightData();*/
             ViewCreated = true;
             return view;
         }
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * If Google Play services is not installed on the device, the user will be prompted to install
-         * it inside the SupportMapFragment. This method will only be triggered once the user has
-         * installed Google Play services and returned to the app.
-         */
-        @Override
-        public void onMapReady(GoogleMap googleMap) {
-            mMap = googleMap;
-            /*XYSeriesCollection flightData;
-            flightData = myflight.GetFlightData(FlightName);
-
-            Log.d(TAG, "nbr of item:" +flightData.getSeries(3).getItemCount());
-            Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
-                    .clickable(false));
-
-            List<LatLng> coord;
-            coord =  new ArrayList();
-            int j=0;
-            for (int i=0; i< flightData.getSeries(3).getItemCount(); i++)   {
-
-                double res = (double)flightData.getSeries(3).getY(i);
-
-                if(res >0.0d) {
-
-                    LatLng c = new LatLng((double) flightData.getSeries(3).getY(i) / 100000, (double) flightData.getSeries(4).getY(i) / 100000);
-
-                    coord.add(j, c);
-                    j++;
-
-                }
-            }
-
-            polyline1.setPoints(coord);*/
-
-
-            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng((double)flightData.getSeries(3).getMaxY()/(double)100000,(double)flightData.getSeries(4).getMaxY()/(double)100000), 20));
-
-            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord.get((int)(j/2)),15));
-        }
     }
 
-    /*private String outputStatus(String msg) {
-        String res = "";
-        switch (msg) {
-            case "0":
-                res = getResources().getString(R.string.no_continuity);
-                break;
-            case "1":
-                res = getResources().getString(R.string.continuity);
-                break;
-            case "-1":
-                res = getResources().getString(R.string.disabled);
-                break;
-        }
-        return res;
-    }*/
+
 
     // fast way to call Toast
     private void msg(String s) {
