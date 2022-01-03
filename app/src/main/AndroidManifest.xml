@@ -130,7 +130,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".telemetry.RocketTrack"
-            android:label="@string/status_screen"
+            android:label="Track"
             android:screenOrientation="portrait" />
         <!--
            ATTENTION: This was auto-generated to add Google Play services to your project for

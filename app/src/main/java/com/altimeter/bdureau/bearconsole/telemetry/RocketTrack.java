@@ -70,13 +70,19 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
     };
 
     private void setLatitudeValue(String value) {
-        if (value.matches("\\d+(?:\\.\\d+)?"))
-            rocketLatitude = Double.parseDouble(value) ;
+        if (value.matches("\\d+(?:\\.\\d+)?")) {
+            Double val = Double.parseDouble(value);
+            if(val !=0)
+            rocketLatitude = Double.parseDouble(value);
+        }
     }
 
     private void setLongitudeValue(String value) {
-        if (value.matches("\\d+(?:\\.\\d+)?"))
-            rocketLongitude = Double.parseDouble(value) ;
+        if (value.matches("\\d+(?:\\.\\d+)?")) {
+            Double val = Double.parseDouble(value);
+            if(val !=0)
+            rocketLongitude = Double.parseDouble(value);
+        }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,8 +207,6 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
                     }
 
                     if(markerDest != null) {
-
-
                         markerDest.setPosition(dest);
                     } else {
                         //MarkerOptions markerOptions = new MarkerOptions();
