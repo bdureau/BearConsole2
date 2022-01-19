@@ -179,44 +179,13 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewFlight"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/latitude"
-        android:id="@+id/txtViewLatitude"
-        android:layout_below="@+id/txtViewLinkType"
-        android:layout_alignParentLeft="true"
-        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtViewLatitudeValue"
-        android:text="0"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/txtViewLink"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/longitude"
-        android:id="@+id/txtViewLongitude"
-        android:layout_below="@+id/txtViewLatitude"
-        android:layout_alignParentLeft="true"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtViewLongitudeValue"
-        android:text="0"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/txtViewLatitudeValue"/>
 
     <TextView
         android:id="@+id/txtViewTitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtViewLongitude"
+        android:layout_below="@+id/txtViewLinkType"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="@string/status_msg1"

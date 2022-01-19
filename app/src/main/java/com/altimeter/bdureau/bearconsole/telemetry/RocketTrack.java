@@ -59,6 +59,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
             switch (msg.what) {
                 case 18:
                     //Value 18 contains the latitude
+                    Log.d("status", "latitude");
                     setLatitudeValue((String) msg.obj );
                     break;
                 case 19:
@@ -72,16 +73,18 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
     private void setLatitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
             Double val = Double.parseDouble(value);
+            Log.d("track", "latitude:"+ value);
             if(val !=0)
-            rocketLatitude = Double.parseDouble(value);
+            rocketLatitude = Double.parseDouble(value)/100000;
         }
     }
 
     private void setLongitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
             Double val = Double.parseDouble(value);
+            Log.d("track", "longitude:"+ value);
             if(val !=0)
-            rocketLongitude = Double.parseDouble(value);
+            rocketLongitude = Double.parseDouble(value)/100000;
         }
     }
     @Override
@@ -133,6 +136,19 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
 
             }
         });
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                while (true) {
+                    if (!status) break;
+                    myBT.ReadResult(10000);
+                }
+            }
+        };
+
+        altiStatus = new Thread(r);
+        altiStatus.start();
     }
     private void startService() {
 

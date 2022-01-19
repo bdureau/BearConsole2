@@ -312,6 +312,7 @@ public class MainScreenActivity extends AppCompatActivity {
         btnContinuityOnOff.setEnabled(false);
         btnReset.setEnabled(false);
         btnStatus.setEnabled(false);
+        btnTrack.setEnabled(false);
         // now enable or disable the menu entries by invalidating it
         invalidateOptionsMenu();
     }
@@ -344,7 +345,8 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiV2") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti")) {
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")) {
             Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
                 btnContinuityOnOff.setEnabled(false);
@@ -367,6 +369,9 @@ public class MainScreenActivity extends AppCompatActivity {
                     btnReadFlights.setEnabled(false);
             }
             btnTelemetry.setEnabled(true);
+            if(myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+                btnTrack.setEnabled(true);
+            }
             //enable it for bT or USB only if full support
             if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true"))) {
                 btnAltiSettings.setEnabled(true);
@@ -700,6 +705,7 @@ public class MainScreenActivity extends AppCompatActivity {
             Add("AltiServo", "1.4");
             Add("AltiGPS", "1.3");
             Add("AltiDuo", "1.7");
+            Add("AltiMultiESP32", "1.26");
 
         }
         public void Add ( String altiName, String verList) {

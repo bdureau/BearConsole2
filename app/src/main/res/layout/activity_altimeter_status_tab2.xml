@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".telemetry.AltimeterStatus">
+
+
+    <TextView
+        android:id="@+id/txtViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-black"
+        android:text="GPS Status"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Satellites"
+        android:id="@+id/txtViewSatellites"
+        android:layout_below="@+id/txtViewTitle"
+        android:layout_alignParentLeft="true"
+         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewSatellitesVal"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewTitle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hdop"
+        android:id="@+id/txtViewHdop"
+        android:layout_below="@+id/txtViewSatellites"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewHdopVal"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewSatellites"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GPS altitude"
+        android:id="@+id/txtViewGPSAltitude"
+        android:layout_below="@+id/txtViewHdop"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewGPSAltitudeVal"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewHdop"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GPS Speed"
+        android:id="@+id/txtViewGPSSpeed"
+        android:layout_below="@+id/txtViewGPSAltitude"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewGPSSpeedVal"
+        android:text=""
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewGPSAltitude"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/latitude"
+        android:id="@+id/txtViewLatitude"
+        android:layout_below="@+id/txtViewGPSSpeed"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewLatitudeValue"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewGPSSpeed"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/longitude"
+        android:id="@+id/txtViewLongitude"
+        android:layout_below="@+id/txtViewLatitude"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewLongitudeValue"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewLatitudeValue"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location age"
+        android:id="@+id/txtViewLocationAge"
+        android:layout_below="@+id/txtViewLongitude"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewLocationAgeValue"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewLongitude"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time sat acquisition"
+        android:id="@+id/txtViewTimeSat"
+        android:layout_below="@+id/txtViewLocationAge"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewTimeSatValue"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewLocationAge"/>
+
+</RelativeLayout>

@@ -111,17 +111,101 @@ public class AltimeterStatus extends AppCompatActivity {
                     break;
                 case 18:
                     //Value 18 contains the latitude
-                    //txtViewLatitudeValue.setText((String) msg.obj );
-                    statusPage1.setLatitudeValue((String) msg.obj );
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+                        String latitude = (String) msg.obj;
+                        if (latitude.matches("\\d+(?:\\.\\d+)?")) {
+                            double latitudeVal = Double.parseDouble(latitude) / 100000;
+                            //statusPage1.setLatitudeValue((String) msg.obj);
+                            statusPage2.setLatitudeValue("" + latitudeVal);
+                        }
+                    }
                     break;
                 case 19:
                     //Value 19 contains the longitude
-                    //txtViewLongitudeValue.setText((String) msg.obj );
-                    statusPage1.setLongitudeValue((String) msg.obj );
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+                        String longitude = (String) msg.obj;
+                        if (longitude.matches("\\d+(?:\\.\\d+)?")) {
+                            double longitudeVal = Double.parseDouble(longitude) / 100000;
+                            //statusPage1.setLongitudeValue((String) msg.obj);
+                            statusPage2.setLongitudeValue("" + longitudeVal);
+                        }
+                    }
+                    break;
+                case 20:
+                    //Value 20 contains the number of satellites
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+                        String nbrOfSatellite = (String) msg.obj;
+                        if (nbrOfSatellite.matches("\\d+(?:\\.\\d+)?")) {
+                            int nbrOfSatelliteVal = Integer.parseInt(nbrOfSatellite);
+                            statusPage2.setSatellitesVal("" + nbrOfSatelliteVal);
+                        }
+                    }
+                    break;
+                case 21:
+                    //Value 21 contains the hdop
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+                        String hdop = (String) msg.obj;
+                        if (hdop.matches("\\d+(?:\\.\\d+)?")) {
+                            int hdopVal = Integer.parseInt(hdop);
+                            statusPage2.setHdopVal("" + hdopVal);
+                        }
+                    }
+                    break;
+                case 22:
+                    //Value 22 contains the location age
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+                        String locationAge = (String) msg.obj;
+                        if (locationAge.matches("\\d+(?:\\.\\d+)?")) {
+                            int locationAgeVal = Integer.parseInt(locationAge);
+                            statusPage2.setLocationAgeValue("" + locationAgeVal);
+                        }
+                    }
+                    break;
+                case 23:
+                    //Value 23 contains the GPS altitude
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+                        String GPSAltitude = (String) msg.obj;
+                        if (GPSAltitude.matches("\\d+(?:\\.\\d+)?")) {
+                            int GPSAltitudeVal = Integer.parseInt(GPSAltitude);
+                            statusPage2.setGPSAltitudeVal("" + GPSAltitudeVal);
+                        }
+                    }
+                    break;
+                case 24:
+                    // Value 24 contains the GPS Speed
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+                        String GPSSpeed = (String) msg.obj;
+                        if (GPSSpeed.matches("\\d+(?:\\.\\d+)?")) {
+                            int GPSSpeedVal = Integer.parseInt(GPSSpeed);
+                            statusPage2.setGPSSpeedVal("" + GPSSpeedVal);
+                        }
+                    }
+                    break;
+                case 25:
+                    // Value 25 contains the time for sat acquisition
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+                        String TimeSat = (String) msg.obj;
+                        if (TimeSat.matches("\\d+(?:\\.\\d+)?")) {
+                            int TimeSatVal = Integer.parseInt(TimeSat);
+                            statusPage2.setTimeSatValue("" + TimeSatVal);
+                        }
+                    }
                     break;
             }
         }
     };
+    /*
+    public void setHdopVal(String value) {
+            this.txtViewHdopVal.setText(value );
+        }
+        public void setGPSAltitudeVal(String value) {
+            this.txtViewGPSAltitudeVal.setText(value );
+        }
+        public void setGPSSpeedVal(String value) {
+            this.txtViewGPSSpeedVal.setText(value );
+        }
+        public void setLocationAgeValue(String value) {
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -273,7 +357,9 @@ public class AltimeterStatus extends AppCompatActivity {
         statusPage2 = new Tab2StatusFragment();
 
         adapter.addFragment(statusPage1, "TAB1");
-        //adapter.addFragment(statusPage2, "TAB2");
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+            adapter.addFragment(statusPage2, "TAB2");
+        }
 
 
         viewPager.setAdapter(adapter);
@@ -314,7 +400,7 @@ public class AltimeterStatus extends AppCompatActivity {
         private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
         private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage,txtNbrOfFlight;
         private TextView txtViewOutput4, txtViewBatteryVoltage, txtViewOutput3, txtViewEEprom, txtViewFlight;
-        private TextView txtViewLatitude, txtViewLongitude, txtViewLatitudeValue, txtViewLongitudeValue;
+
         private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;
 
         public void setOutput1Status(String value) {
@@ -344,12 +430,7 @@ public class AltimeterStatus extends AppCompatActivity {
         public void setNbrOfFlight(String value) {
             this.txtNbrOfFlight.setText(value );
         }
-        public void setLatitudeValue(String value) {
-            this.txtViewLatitudeValue.setText(value );
-        }
-        public void setLongitudeValue(String value) {
-            this.txtViewLongitudeValue.setText(value );
-        }
+
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -371,10 +452,7 @@ public class AltimeterStatus extends AppCompatActivity {
             txtNbrOfFlight= (TextView) view.findViewById(R.id.txtViewNbrOfFlight);
             txtViewEEprom = (TextView) view.findViewById(R.id.txtViewEEprom);
             txtViewFlight = (TextView) view.findViewById(R.id.txtViewFlight);
-            txtViewLatitude = (TextView) view.findViewById(R.id.txtViewLatitude);
-            txtViewLongitude = (TextView) view.findViewById(R.id.txtViewLongitude);
-            txtViewLatitudeValue = (TextView) view.findViewById(R.id.txtViewLatitudeValue);
-            txtViewLongitudeValue = (TextView) view.findViewById(R.id.txtViewLongitudeValue);
+
 
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")||myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ) {
                 txtViewVoltage.setVisibility(View.VISIBLE);
@@ -411,18 +489,7 @@ public class AltimeterStatus extends AppCompatActivity {
                 txtEEpromUsage.setVisibility(View.VISIBLE);
                 txtNbrOfFlight.setVisibility(View.VISIBLE);
             }
-            //hide GPS
-            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")){
-                txtViewLatitude.setVisibility(View.VISIBLE);
-                txtViewLongitude.setVisibility(View.VISIBLE);
-                txtViewLatitudeValue.setVisibility(View.VISIBLE);
-                txtViewLongitudeValue.setVisibility(View.VISIBLE);
-            } else {
-                txtViewLatitude.setVisibility(View.INVISIBLE);
-                txtViewLongitude.setVisibility(View.INVISIBLE);
-                txtViewLatitudeValue.setVisibility(View.INVISIBLE);
-                txtViewLongitudeValue.setVisibility(View.INVISIBLE);
-            }
+
             txtViewLink.setText(myBT.getConnectionType());
 
             switchOutput1 = (Switch) view.findViewById(R.id.switchOutput1);
@@ -565,13 +632,64 @@ public class AltimeterStatus extends AppCompatActivity {
     public static class Tab2StatusFragment extends Fragment {
         private static final String TAG = "Tab2StatusFragment";
         private boolean ViewCreated = false;
+        private TextView txtViewLatitude, txtViewLongitude, txtViewLatitudeValue, txtViewLongitudeValue;
+        private TextView txtViewSatellitesVal, txtViewHdopVal,txtViewGPSAltitudeVal, txtViewGPSSpeedVal;
+        private TextView txtViewLocationAgeValue, txtViewTimeSatValue;
+
+        public void setLatitudeValue(String value) {
+            this.txtViewLatitudeValue.setText(value );
+        }
+        public void setLongitudeValue(String value) {
+            this.txtViewLongitudeValue.setText(value );
+        }
+
+        public void setSatellitesVal(String value) {
+            this.txtViewSatellitesVal.setText(value );
+        }
+        public void setHdopVal(String value) {
+            this.txtViewHdopVal.setText(value );
+        }
+        public void setGPSAltitudeVal(String value) {
+            this.txtViewGPSAltitudeVal.setText(value );
+        }
+        public void setGPSSpeedVal(String value) {
+            this.txtViewGPSSpeedVal.setText(value );
+        }
+        public void setLocationAgeValue(String value) {
+            this.txtViewLocationAgeValue.setText(value );
+        }
+        public void setTimeSatValue(String value) {
+            this.txtViewTimeSatValue.setText(value );
+        }
 
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_rocket_track, container, false);
+            View view = inflater.inflate(R.layout.activity_altimeter_status_tab2,container,false);
 
+            txtViewLatitude = (TextView) view.findViewById(R.id.txtViewLatitude);
+            txtViewLongitude = (TextView) view.findViewById(R.id.txtViewLongitude);
+            txtViewLatitudeValue = (TextView) view.findViewById(R.id.txtViewLatitudeValue);
+            txtViewLongitudeValue = (TextView) view.findViewById(R.id.txtViewLongitudeValue);
+            txtViewSatellitesVal = (TextView) view.findViewById(R.id.txtViewSatellitesVal);
+            txtViewHdopVal= (TextView) view.findViewById(R.id.txtViewHdopVal);
+            txtViewGPSAltitudeVal= (TextView) view.findViewById(R.id.txtViewGPSAltitudeVal);
+            txtViewGPSSpeedVal= (TextView) view.findViewById(R.id.txtViewGPSSpeedVal);
+            txtViewLocationAgeValue = (TextView) view.findViewById(R.id.txtViewLocationAgeValue);
+            txtViewTimeSatValue= (TextView) view.findViewById(R.id.txtViewTimeSatValue);
 
+            //hide GPS
+           /* if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")){
+                txtViewLatitude.setVisibility(View.VISIBLE);
+                txtViewLongitude.setVisibility(View.VISIBLE);
+                txtViewLatitudeValue.setVisibility(View.VISIBLE);
+                txtViewLongitudeValue.setVisibility(View.VISIBLE);
+            } else {
+                txtViewLatitude.setVisibility(View.INVISIBLE);
+                txtViewLongitude.setVisibility(View.INVISIBLE);
+                txtViewLatitudeValue.setVisibility(View.INVISIBLE);
+                txtViewLongitudeValue.setVisibility(View.INVISIBLE);
+            }*/
             ViewCreated = true;
             return view;
         }

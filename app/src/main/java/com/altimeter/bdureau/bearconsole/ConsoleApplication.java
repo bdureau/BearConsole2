@@ -482,6 +482,43 @@ public class ConsoleApplication extends Application {
                                                 mHandler.obtainMessage(19, String.valueOf(currentSentence[19])).sendToTarget();
                                             else
                                                 mHandler.obtainMessage(19, String.valueOf(0)).sendToTarget();
+                                        // Value 20 contains the number of satellites
+                                        if (currentSentence.length > 20)
+                                            if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(20, String.valueOf(currentSentence[20])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(20, String.valueOf(0)).sendToTarget();
+                                        // Value 21 contains hdop
+                                        if (currentSentence.length > 21)
+                                            if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(21, String.valueOf(currentSentence[21])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(21, String.valueOf(0)).sendToTarget();
+                                        // Value 22 contains location age
+                                        if (currentSentence.length > 22)
+                                            if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(22, String.valueOf(currentSentence[22])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(22, String.valueOf(0)).sendToTarget();
+                                        // Value 23 contains the GPS altitude
+                                        if (currentSentence.length > 23)
+                                            if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(23, String.valueOf(currentSentence[23])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(23, String.valueOf(0)).sendToTarget();
+                                        // Value 24 contains the GPS Speed
+                                        if (currentSentence.length > 24)
+                                            if (currentSentence[24].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(24, String.valueOf(currentSentence[24])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(24, String.valueOf(0)).sendToTarget();
+                                        // Value 25 contains the time for sat acquisition
+                                        if (currentSentence.length > 25)
+                                            if (currentSentence[25].matches("\\d+(?:\\.\\d+)?"))
+                                                mHandler.obtainMessage(25, String.valueOf(currentSentence[25])).sendToTarget();
+                                            else
+                                                mHandler.obtainMessage(25, String.valueOf(0)).sendToTarget();
+
                                     }
                                 }
                                 break;
