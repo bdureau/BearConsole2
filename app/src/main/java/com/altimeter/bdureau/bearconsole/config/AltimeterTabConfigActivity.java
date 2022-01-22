@@ -340,7 +340,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                             public void onClick(final DialogInterface dialog, final int id) {
                                 dialog.cancel();
                                 AltiCfg.setConnectionSpeed(configPage2.getBaudRate());
-                                sendAltiCfg();
+                                sendAltiCfgV2();
                                 finish();
                             }
                         })
@@ -353,11 +353,11 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 final AlertDialog alert = builder.create();
                 alert.show();
             } else {
-                sendAltiCfg();
+                sendAltiCfgV2();
                 finish();
             }
         } else {
-            sendAltiCfg();
+            sendAltiCfgV2();
             finish();
         }
 
@@ -451,6 +451,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             } catch (IOException e) {
 
             }
+            myMessage = "";
             myMessage = myBT.ReadResult(3000);
             if (myMessage.equals("OK")) {
                 //msg("Sent OK:" + altiCfgStr.toString());
@@ -458,6 +459,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
             } else {
                 //  msg(myMessage);
+                Log.d("conftab", "config not sent succesfully");
+                Log.d("conftab", myMessage);
             }
             if (myMessage.equals("KO")) {
                 msg(getResources().getString(R.string.msg2));
@@ -484,6 +487,192 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.flush();
         }
 
+    }
+
+    private void sendAltiCfgV2() {
+
+        if (myBT.getConnected()) {
+            myBT.setDataReady(false);
+            myBT.flush();
+            myBT.clearInput();
+            //switch off the main loop before sending the config
+            myBT.write("m0;".toString());
+            Log.d("conftab", "switch off main loop");
+            //wait for the result to come back
+            try {
+                while (myBT.getInputStream().available() <= 0) ;
+            } catch (IOException e) {
+
+            }
+            String myMessage = "";
+            myMessage = myBT.ReadResult(3000);
+            if (myMessage.equals("OK")) {
+                Log.d("conftab", "switch off main loop ok");
+            }
+        }
+        String altiCfgStr = "";
+
+        //altiCfgStr = "s," +
+        //        AltiCfg.getUnits() + "," +
+        SendParam("p,1,"+ AltiCfg.getUnits());
+        //        AltiCfg.getBeepingMode() + "," +
+        SendParam("p,2,"+AltiCfg.getBeepingMode());
+        //        AltiCfg.getOutput1() + "," +
+        SendParam("p,3,"+AltiCfg.getOutput1());
+        //       AltiCfg.getOutput2() + "," +
+        SendParam("p,4,"+ AltiCfg.getOutput2());
+        //        AltiCfg.getOutput3() + "," +
+        SendParam("p,5,"+AltiCfg.getOutput3());
+        //        AltiCfg.getMainAltitude() + "," +
+        SendParam("p,6,"+AltiCfg.getMainAltitude());
+        //        AltiCfg.getSupersonicYesNo() + "," +
+        SendParam("p,7,"+AltiCfg.getSupersonicYesNo());
+        //        AltiCfg.getOutput1Delay() + "," +
+        SendParam("p,8,"+AltiCfg.getOutput1Delay());
+        //        AltiCfg.getOutput2Delay() + "," +
+        SendParam("p,9,"+AltiCfg.getOutput2Delay());
+        //        AltiCfg.getOutput3Delay() + "," +
+        SendParam("p,10,"+AltiCfg.getOutput3Delay());
+        //        AltiCfg.getBeepingFrequency() + "," +
+        SendParam("p,11,"+AltiCfg.getBeepingFrequency());
+        //        AltiCfg.getNbrOfMeasuresForApogee() + "," +
+        SendParam("p,12,"+AltiCfg.getNbrOfMeasuresForApogee());
+        //        AltiCfg.getEndRecordAltitude() + "," +
+        SendParam("p,13,"+AltiCfg.getEndRecordAltitude());
+        //        AltiCfg.getRecordTemperature() + "," +
+        SendParam("p,14,"+AltiCfg.getRecordTemperature());
+        //        AltiCfg.getSupersonicDelay() + "," +
+        SendParam("p,15,"+AltiCfg.getSupersonicDelay());
+        //        AltiCfg.getConnectionSpeed() + "," +
+        SendParam("p,16,"+AltiCfg.getConnectionSpeed());
+        //        AltiCfg.getAltimeterResolution() + "," +
+        SendParam("p,17,"+AltiCfg.getAltimeterResolution());
+        //        AltiCfg.getEepromSize() + "," +
+        SendParam("p,18,"+AltiCfg.getEepromSize());
+        //        AltiCfg.getBeepOnOff();
+        SendParam("p,19,"+AltiCfg.getBeepOnOff());
+        //altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4();
+        SendParam("p,20,"+AltiCfg.getOutput4());
+        //altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4Delay();
+        SendParam("p,21,"+ AltiCfg.getOutput4Delay());
+        //altiCfgStr = altiCfgStr + "," + AltiCfg.getLiftOffAltitude();
+        SendParam("p,22,"+AltiCfg.getLiftOffAltitude());
+        //altiCfgStr = altiCfgStr + "," + AltiCfg.getBatteryType();
+        SendParam("p,23,"+AltiCfg.getBatteryType());
+        //altiCfgStr = altiCfgStr + "," + AltiCfg.getRecordingTimeout();
+        SendParam("p,24,"+AltiCfg.getRecordingTimeout());
+        if (AltiCfg.getAltimeterName().equals("AltiServo")) {
+        //    altiCfgStr = altiCfgStr + ",0";//reserved 1
+            SendParam("p,25,"+0);
+        //    altiCfgStr = altiCfgStr + ",0";//reserved 2
+            SendParam("p,26,"+0);
+        //    altiCfgStr = altiCfgStr + ",0";//reserved 3
+            SendParam("p,27,"+0);
+        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OnPos();
+            SendParam("p,28,"+AltiCfg.getServo1OnPos());
+        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo2OnPos();
+            SendParam("p,29,"+AltiCfg.getServo2OnPos());
+        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo3OnPos();
+            SendParam("p,30,"+AltiCfg.getServo3OnPos());
+        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo4OnPos();
+            SendParam("p,31,"+AltiCfg.getServo4OnPos());
+        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OffPos();
+            SendParam("p,32,"+AltiCfg.getServo1OffPos());
+        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo2OffPos();
+            SendParam("p,33,"+AltiCfg.getServo2OffPos());
+        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo3OffPos();
+            SendParam("p,34,"+AltiCfg.getServo3OffPos());
+        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo4OffPos();
+            SendParam("p,35,"+AltiCfg.getServo4OffPos());
+        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServoStayOn();
+            SendParam("p,36,"+AltiCfg.getServoStayOn());
+        }
+
+        if (myBT.getConnected()) {
+
+            String myMessage = "";
+
+            myBT.setDataReady(false);
+            myBT.flush();
+            myBT.clearInput();
+            //switch on the main loop before sending the config
+            myBT.write("q;".toString());
+            Log.d("conftab", "write config");
+
+            //wait for the result to come back
+            try {
+                while (myBT.getInputStream().available() <= 0) ;
+            } catch (IOException e) {
+
+            }
+            myMessage = "";
+            myMessage = myBT.ReadResult(3000);
+            //msg(getResources().getString(R.string.msg3));
+
+            myBT.setDataReady(false);
+            myBT.flush();
+            myBT.clearInput();
+            //switch on the main loop before sending the config
+            myBT.write("m1;".toString());
+            Log.d("conftab", "switch on main loop");
+
+            //wait for the result to come back
+            try {
+                while (myBT.getInputStream().available() <= 0) ;
+            } catch (IOException e) {
+
+            }
+            myMessage = "";
+            myMessage = myBT.ReadResult(3000);
+            //msg(getResources().getString(R.string.msg3));
+
+            myBT.flush();
+        }
+    }
+
+    private void SendParam (String altiCfgStr) {
+        String cfg = altiCfgStr;
+        cfg = cfg.replace("p", "");
+        cfg = cfg.replace(",", "");
+        Log.d("conftab", cfg.toString());
+
+        altiCfgStr = altiCfgStr + "," + generateCheckSum(cfg) + ";";
+
+
+        if (myBT.getConnected()) {
+
+            String myMessage = "";
+
+            myBT.flush();
+            myBT.clearInput();
+            myBT.setDataReady(false);
+            //msg("Sent :" + altiCfgStr.toString());
+            //send back the config
+            myBT.write(altiCfgStr.toString());
+            Log.d("conftab", altiCfgStr.toString());
+            myBT.flush();
+            //get the results
+            //wait for the result to come back
+            try {
+                while (myBT.getInputStream().available() <= 0) ;
+            } catch (IOException e) {
+
+            }
+            myMessage = "";
+            myMessage = myBT.ReadResult(3000);
+            if (myMessage.equals("OK")) {
+                //msg("Sent OK:" + altiCfgStr.toString());
+                Log.d("conftab", "config sent succesfully");
+
+            } else {
+                //  msg(myMessage);
+                Log.d("conftab", "config not sent succesfully");
+                Log.d("conftab", myMessage);
+            }
+            if (myMessage.equals("KO")) {
+             //   msg(getResources().getString(R.string.msg2));
+            }
+        }
     }
 
     public static Integer generateCheckSum(String value) {

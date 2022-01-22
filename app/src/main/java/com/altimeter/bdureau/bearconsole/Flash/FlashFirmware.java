@@ -63,12 +63,12 @@ public class FlashFirmware extends AppCompatActivity {
     private ArrayList<Boards> mBoardList;
     private UartConfig uartConfig;
 
-    private static final String ASSET_FILE_NAME_ALTIMULTIV2 = "firmwares/2021-11-18-V1_25.altimultiV2.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTI = "firmwares/2021-11-18-V1_25.altimulti.hex";
-    private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2021-11-18-AltiServoV1_4.hex";
-    private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2021-11-18-V1_7.AltiDuo.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/2021-11-18-V1_25.altimultiSTM32.bin";
-    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2022-01-04-RocketGPSLoggerV1.3";
+    private static final String ASSET_FILE_NAME_ALTIMULTIV2 = "firmwares/2022-01-22-V1_26.altimultiV2.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTI = "firmwares/2022-01-22-V1_26.altimulti.hex";
+    private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2022-01-22-AltiServoV1_4.hex";
+    private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2022-01-22-V1_7.AltiDuo.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/2022-01-22-V1_26.altimultiSTM32.bin";
+    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2022-01-22-RocketGPSLoggerV1.3";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";

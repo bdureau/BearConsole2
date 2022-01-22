@@ -187,25 +187,13 @@ public class AltimeterStatus extends AppCompatActivity {
                         String TimeSat = (String) msg.obj;
                         if (TimeSat.matches("\\d+(?:\\.\\d+)?")) {
                             int TimeSatVal = Integer.parseInt(TimeSat);
-                            statusPage2.setTimeSatValue("" + TimeSatVal);
+                            statusPage2.setTimeSatValue(String.format("%.2f", (double)(TimeSatVal/1000)) + " secs" );
                         }
                     }
                     break;
             }
         }
     };
-    /*
-    public void setHdopVal(String value) {
-            this.txtViewHdopVal.setText(value );
-        }
-        public void setGPSAltitudeVal(String value) {
-            this.txtViewGPSAltitudeVal.setText(value );
-        }
-        public void setGPSSpeedVal(String value) {
-            this.txtViewGPSSpeedVal.setText(value );
-        }
-        public void setLocationAgeValue(String value) {
-     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

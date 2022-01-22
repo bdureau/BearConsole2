@@ -232,9 +232,11 @@ public class ConsoleApplication extends Application {
             lastReadResult = myMessage;
             valid = false;
         }
-        //}
+        //turn off telemetry
+        flush();
+        clearInput();
+        write("y0;".toString());
 
-        //valid = true;
         return valid;
     }
 
