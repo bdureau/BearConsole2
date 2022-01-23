@@ -595,7 +595,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.setDataReady(false);
             myBT.flush();
             myBT.clearInput();
-            //switch on the main loop before sending the config
+            //Write the config structure
             myBT.write("q;".toString());
             Log.d("conftab", "write config");
 
