@@ -68,7 +68,7 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2022-01-22-AltiServoV1_4.hex";
     private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2022-01-22-V1_7.AltiDuo.hex";
     private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/2022-01-22-V1_26.altimultiSTM32.bin";
-    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2022-01-22-RocketGPSLoggerV1.3";
+    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2022-01-22-RocketGPSLoggerV1.3.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
@@ -242,7 +242,7 @@ public class FlashFirmware extends AppCompatActivity {
             firmwareFileName = ASSET_FILE_NAME_ALTIMULTISTM32;
 
         tvRead.setText("");
-        if (!rbAltiMultiSTM32.isChecked()) {
+        if (!rbAltiMultiSTM32.isChecked()&& !rbAltiGPS.isChecked()) {
             try {
                 builder = new AlertDialog.Builder(FlashFirmware.this);
                 //Flashing firmware...
@@ -277,7 +277,6 @@ public class FlashFirmware extends AppCompatActivity {
 
     private class DetectAsyc extends AsyncTask<Void, Void, Void>  // UI thread
     {
-
         @Override
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(FlashFirmware.this);

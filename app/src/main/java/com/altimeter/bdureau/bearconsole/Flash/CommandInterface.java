@@ -6,7 +6,7 @@ package com.altimeter.bdureau.bearconsole.Flash;
  *   as I could not find anything on the internet!!!
  *   It uses the Physicaloid library but should be easy to use with any other USB library
  *   It could also be written in pure Java so that it could be integrated with the Arduino env
- *   This has been only tested with STM32F103 chips. Feel free to re-use it for your own projet
+ *   This has been only tested with STM32F103 chips. Feel free to re-use it for your own project
  *   Please make sure that you do report any bugs so that I can fix them
  *   So far it is reliable enough for me
  *

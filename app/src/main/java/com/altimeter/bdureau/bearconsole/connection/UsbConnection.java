@@ -112,7 +112,7 @@ public class UsbConnection {
             device.read(this);
         }
 
-        public void appendLog(String text)
+        /*public void appendLog(String text)
         {
             File logFile = new File("sdcard/debugfileStream.txt");
             if (!logFile.exists())
@@ -140,7 +140,7 @@ public class UsbConnection {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
+        }*/
 
         @Override
         public int available() throws IOException {
