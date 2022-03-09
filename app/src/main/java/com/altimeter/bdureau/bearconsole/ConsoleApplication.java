@@ -780,8 +780,13 @@ public class ConsoleApplication extends Application {
 
                                     // value 29 reserved param
 
-                                    // value 30 reserved param
+                                    // value 30 servoSwitch
+                                    if (currentSentence.length > 30)
+                                        if (currentSentence[30].matches("\\d+(?:\\.\\d+)?"))
 
+                                            AltiCfg.setServoSwitch(Integer.valueOf(currentSentence[30]));
+                                        else
+                                            AltiCfg.setServoSwitch(0);
 
                                     // Value 31 contains the servo 1 On position
                                     if (currentSentence.length > 31)

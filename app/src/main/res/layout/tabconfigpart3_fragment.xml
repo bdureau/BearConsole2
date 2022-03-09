@@ -97,11 +97,28 @@
         android:text="@string/servo_stay_on" />
 
     <Spinner
-        android:id="@+id/spinnerServoSatyOn"
+        android:id="@+id/spinnerServoStayOn"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignBaseline="@+id/txtServoStayOn"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/txtServoSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtServoStayOn"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:text="Servo Switch" />
+
+    <Spinner
+        android:id="@+id/spinnerServoSwitch"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/txtServoSwitch"
         android:spinnerMode="dropdown" />
 
 </RelativeLayout>

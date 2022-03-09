@@ -45,6 +45,7 @@ public class AltiConfigData {
     private int liftOffAltitude =20;
     private int batteryType =0;
     private int servoStayOn =1;
+    private int servoSwitch =1;
     private int recordingTimeout = 120;
 
     public AltiConfigData()
@@ -327,6 +328,8 @@ public class AltiConfigData {
 
     public void setServoStayOn(int value) {servoStayOn =value;}
     public int getServoStayOn(){return servoStayOn;}
+    public void setServoSwitch(int value) {servoSwitch =value;}
+    public int getServoSwitch(){return servoSwitch;}
 
     //Flight recording timeout
     public void setRecordingTimeout(int value) {recordingTimeout =value;}

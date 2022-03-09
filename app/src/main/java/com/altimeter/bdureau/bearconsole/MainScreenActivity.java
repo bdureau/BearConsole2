@@ -702,7 +702,7 @@ public class MainScreenActivity extends AppCompatActivity {
             Add("AltiMultiV2", "1.25");
             Add("AltiMultiV2", "1.25");
             Add("AltiMultiSTM32", "1.25");
-            Add("AltiServo", "1.4");
+            Add("AltiServo", "1.5");
             Add("AltiGPS", "1.3");
             Add("AltiDuo", "1.7");
             Add("AltiMultiESP32", "1.26");

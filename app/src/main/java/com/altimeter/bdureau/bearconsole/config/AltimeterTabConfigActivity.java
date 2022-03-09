@@ -265,6 +265,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             AltiCfg.setBeepingMode(configPage3.getDropdownBipMode());
             AltiCfg.setUnits(configPage3.getDropdownUnits());
             AltiCfg.setServoStayOn(configPage3.getServoStayOn());
+            AltiCfg.setServoSwitch(configPage3.getServoSwitch());
         }
 
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
@@ -567,7 +568,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         //    altiCfgStr = altiCfgStr + ",0";//reserved 2
             SendParam("p,26,"+0);
         //    altiCfgStr = altiCfgStr + ",0";//reserved 3
-            SendParam("p,27,"+0);
+            SendParam("p,27,"+AltiCfg.getServoSwitch());
         //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OnPos();
             SendParam("p,28,"+AltiCfg.getServo1OnPos());
         //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo2OnPos();
@@ -1560,6 +1561,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         private EditText Freq;
         private Spinner dropdownServoStayOn;
         private TextView txtServoStayOn;
+        private Spinner dropdownServoSwitch;
+        private TextView txtServoSwitch;
         private AltiConfigData lAltiCfg=null;
 
         public Tab3Fragment(AltiConfigData cfg) {
@@ -1615,7 +1618,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
 
         public void setServoStayOn(int ServoStayOn) {
-            this.dropdownBipMode.setSelection(ServoStayOn);
+            this.dropdownServoStayOn.setSelection(ServoStayOn);
+        }
+        public int getServoSwitch() {
+            return (int) this.dropdownServoSwitch.getSelectedItemId();
+        }
+
+        public void setServoSwitch(int ServoSwitch) {
+            this.dropdownServoSwitch.setSelection(ServoSwitch);
         }
 
         @Nullable
@@ -1673,7 +1683,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
 
-            dropdownServoStayOn= (Spinner) view.findViewById(R.id.spinnerServoSatyOn);
+            dropdownServoStayOn= (Spinner) view.findViewById(R.id.spinnerServoStayOn);
             //"No", "Yes"
             String[] items3 = new String[]{getResources().getString(R.string.config_no),
                     getResources().getString(R.string.config_yes)};
@@ -1690,6 +1700,20 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 txtServoStayOn.setVisibility(View.INVISIBLE);
             }
 
+            //ServoSwitch
+            dropdownServoSwitch = (Spinner) view.findViewById(R.id.spinnerServoSwitch);
+            dropdownServoSwitch.setAdapter(adapter3);
+
+            txtServoSwitch = (TextView) view.findViewById(R.id.txtServoSwitch);
+
+            if(lAltiCfg.getAltimeterName().equals("AltiServo")) {
+                dropdownServoSwitch.setVisibility(View.VISIBLE);
+                txtServoSwitch.setVisibility(View.VISIBLE);
+            } else {
+                dropdownServoSwitch.setVisibility(View.INVISIBLE);
+                txtServoSwitch.setVisibility(View.INVISIBLE);
+            }
+
             if (lAltiCfg != null) {
                 altiName.setText(lAltiCfg.getAltimeterName() + " ver: " +
                         lAltiCfg.getAltiMajorVersion() + "." + lAltiCfg.getAltiMinorVersion());
@@ -1698,6 +1722,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 dropdownUnits.setSelection(lAltiCfg.getUnits());
                 Freq.setText(String.valueOf(lAltiCfg.getBeepingFrequency()));
                 dropdownServoStayOn.setSelection(lAltiCfg.getServoStayOn());
+                dropdownServoSwitch.setSelection(lAltiCfg.getServoSwitch());
             }
             ViewCreated = true;
             return view;
@@ -1983,6 +2008,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     configPage3.setDropdownBipMode(AltiCfg.getBeepingMode());
                     configPage3.setDropdownUnits(AltiCfg.getUnits());
                     configPage3.setFreq(AltiCfg.getBeepingFrequency());
+                    configPage3.setServoStayOn(AltiCfg.getServoStayOn());
+                    configPage3.setServoSwitch(AltiCfg.getServoSwitch());
                 }
 
 
