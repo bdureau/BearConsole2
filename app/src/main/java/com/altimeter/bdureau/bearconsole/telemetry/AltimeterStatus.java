@@ -442,7 +442,9 @@ public class AltimeterStatus extends AppCompatActivity {
             txtViewFlight = (TextView) view.findViewById(R.id.txtViewFlight);
 
 
-            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")||myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ) {
+            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
+                    ||myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")
+                    ||myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ) {
                 txtViewVoltage.setVisibility(View.VISIBLE);
                 txtViewBatteryVoltage.setVisibility(View.VISIBLE);
             } else {
@@ -457,7 +459,9 @@ public class AltimeterStatus extends AppCompatActivity {
                 txtViewOutput3.setVisibility(View.INVISIBLE);
             }
 
-            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") || myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
+                    ||myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")
+                    || myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
                 txtViewOutput4Status.setVisibility(View.VISIBLE);
                 txtViewOutput4.setVisibility(View.VISIBLE);
             } else {
@@ -465,7 +469,8 @@ public class AltimeterStatus extends AppCompatActivity {
                 txtViewOutput4.setVisibility(View.INVISIBLE);
             }
             //hide eeprom
-            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") || myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")
+                    || myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
                 txtViewEEprom.setVisibility(View.INVISIBLE);
                 txtViewFlight.setVisibility(View.INVISIBLE);
                 txtEEpromUsage.setVisibility(View.INVISIBLE);
