@@ -132,6 +132,7 @@ public class FlightListActivity extends AppCompatActivity {
         {
             //get flights
             if (myBT.getConnected()) {
+                try { Thread.sleep(1000); } catch (InterruptedException e) {}
                 //clear anything on the connection
                 myBT.flush();
                 myBT.clearInput();

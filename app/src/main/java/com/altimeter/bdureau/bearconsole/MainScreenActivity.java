@@ -79,6 +79,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 if (granted) {
 
                     if (myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRateValue()))) {
+                        Log.d("baud rate", "baud:"+myBT.getAppConf().getBaudRateValue());
                         myBT.setConnected(true);
                         Log.d("Flight win", "about to enableUI");
                         EnableUI();
@@ -417,21 +418,28 @@ public class MainScreenActivity extends AppCompatActivity {
         boolean success = false;
         if (myBT.getConnected()) {
             //msg("Retreiving altimeter config...");
+            try { Thread.sleep(1000); } catch (InterruptedException e) {}
+            /*myBT.flush();
+            myBT.clearInput();
+            //switch off the main loop before sending the config
+            myBT.write("h;".toString());*/
             Log.d("MainScreen", "Retreiving altimeter config...");
             myBT.setDataReady(false);
             myBT.flush();
             myBT.clearInput();
             //switch off the main loop before sending the config
             myBT.write("m0;".toString());
-
+            Log.d("MainScreen", "after m0");
             //wait for the result to come back
             try {
                 while (myBT.getInputStream().available() <= 0) ;
             } catch (IOException e) {
 
             }
+            Log.d("MainScreen", "before myMessage");
             String myMessage = "";
             myMessage = myBT.ReadResult(3000);
+            Log.d("MainScreen", myMessage);
             if (myMessage.equals("OK")) {
                 myBT.setDataReady(false);
                 myBT.flush();
@@ -447,6 +455,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
                 }
                 myMessage = myBT.ReadResult(3000);
+                Log.d("MainScreen", myMessage);
                 //reading the config
                 if (myMessage.equals("start alticonfig end")) {
                     try {
