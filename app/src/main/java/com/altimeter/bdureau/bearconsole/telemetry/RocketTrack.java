@@ -74,8 +74,11 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         if (value.matches("\\d+(?:\\.\\d+)?")) {
             Double val = Double.parseDouble(value);
             Log.d("track", "latitude:"+ value);
-            if(val !=0)
-            rocketLatitude = Double.parseDouble(value)/100000;
+            if(val !=0) {
+                rocketLatitude = Double.parseDouble(value) / 100000;
+                myBT.getAppConf().setRocketLatitude(""+ rocketLatitude);
+
+            }
         }
     }
 
@@ -83,8 +86,11 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         if (value.matches("\\d+(?:\\.\\d+)?")) {
             Double val = Double.parseDouble(value);
             Log.d("track", "longitude:"+ value);
-            if(val !=0)
-            rocketLongitude = Double.parseDouble(value)/100000;
+            if(val !=0) {
+                rocketLongitude = Double.parseDouble(value) / 100000;
+                myBT.getAppConf().setRocketLongitude(""+ rocketLongitude);
+                myBT.getAppConf().SaveConfig();
+            }
         }
     }
     @Override
@@ -94,6 +100,12 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         myBT = (ConsoleApplication) getApplication();
         setContentView(R.layout.activity_rocket_track);
         myBT.setHandler(handler);
+
+        if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLatitude = Double.parseDouble(myBT.getAppConf().getRocketLatitude());
+
+        if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLongitude = Double.parseDouble(myBT.getAppConf().getRocketLongitude());
 
         if(Build.VERSION.SDK_INT>=23) {
             if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){

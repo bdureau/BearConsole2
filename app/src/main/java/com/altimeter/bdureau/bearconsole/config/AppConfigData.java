@@ -44,6 +44,9 @@ public class AppConfigData {
 
     private String fullUSBSupport = "false";
 
+    private String rocketLatitude = "0.0";
+    private String rocketLongitude = "0.0";
+
     public AppConfigData(Context current)
     {
         context = current;

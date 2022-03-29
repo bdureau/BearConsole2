@@ -1006,6 +1006,8 @@ public class ConsoleApplication extends Application {
         private String say_burnout_event= "false";
         private String say_warning_event= "false";
         private String say_liftoff_event= "false";
+        private String rocketLatitude = "0.0";
+        private String rocketLongitude = "0.0";
 
         private String telemetryVoice = "0";
 
@@ -1039,13 +1041,8 @@ public class ConsoleApplication extends Application {
             say_warning_event= "false";
             say_liftoff_event="false";
             telemetryVoice ="0";
-            /*edit.clear();
-            edit.putString("AppLanguage","0");
-            edit.putString("Units", "0");
-            edit.putString("GraphColor", "0");
-            edit.putString("GraphBackColor", "1");
-            edit.putString("FontSize", "10");*/
-
+            rocketLatitude = "0.0";
+            rocketLongitude = "0.0";
         }
 
         public void ReadConfig() {
@@ -1159,6 +1156,17 @@ public class ConsoleApplication extends Application {
                 telemetryVoice = appConfig.getString("telemetryVoice", "0");
                 if(!telemetryVoice.equals(""))
                     setTelemetryVoice(telemetryVoice);
+
+                String rocketLatitude = "0.0";
+                rocketLatitude = appConfig.getString("rocketLatitude", "0.0");
+                if(!rocketLatitude.equals(""))
+                    setRocketLatitude(rocketLatitude);
+
+                String rocketLongitude = "0.0";
+                rocketLongitude = appConfig.getString("rocketLongitude", "0.0");
+                if(!rocketLongitude.equals(""))
+                    setRocketLongitude(rocketLongitude);
+
             } catch (Exception e) {
 
             }
@@ -1186,6 +1194,9 @@ public class ConsoleApplication extends Application {
             edit.putString("say_warning_event", getWarning_event());
             edit.putString("say_liftoff_event", getLiftOff_event());
             edit.putString("telemetryVoice", getTelemetryVoice());
+
+            edit.putString("rocketLatitude", getRocketLatitude());
+            edit.putString("rocketLongitude", getRocketLongitude());
             edit.commit();
 
         }
@@ -1337,6 +1348,13 @@ public class ConsoleApplication extends Application {
         public String getTelemetryVoice() {
             return telemetryVoice;
         }
+
+        public void setRocketLatitude(String value) {rocketLatitude =value;}
+        public String getRocketLatitude() {return rocketLatitude;}
+
+        public void setRocketLongitude(String value) {rocketLongitude =value;}
+        public String getRocketLongitude() {return rocketLongitude;}
+
         public int ConvertFont(int font) {
             return font + 8;
         }
