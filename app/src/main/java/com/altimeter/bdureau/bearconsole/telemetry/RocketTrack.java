@@ -154,6 +154,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
             public void run() {
                 while (true) {
                     if (!status) break;
+                    if (! myBT.getConnected()) break;
                     myBT.ReadResult(10000);
                 }
             }

@@ -313,7 +313,7 @@ public class MainScreenActivity extends AppCompatActivity {
         btnContinuityOnOff.setEnabled(false);
         btnReset.setEnabled(false);
         btnStatus.setEnabled(false);
-        btnTrack.setEnabled(false);
+        //btnTrack.setEnabled(false);
         // now enable or disable the menu entries by invalidating it
         invalidateOptionsMenu();
     }
@@ -372,6 +372,8 @@ public class MainScreenActivity extends AppCompatActivity {
             btnTelemetry.setEnabled(true);
             if(myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                 btnTrack.setEnabled(true);
+            } else {
+                btnTrack.setEnabled(false);
             }
             //enable it for bT or USB only if full support
             if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true"))) {
