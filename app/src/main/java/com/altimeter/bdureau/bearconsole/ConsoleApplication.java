@@ -578,7 +578,7 @@ public class ConsoleApplication extends Application {
                                             value5 = Integer.valueOf(currentSentence[5]);
                                         else
                                             value5 = 0;
-                                        //add the temperature
+                                        //add the pressure
                                         MyFlight.AddToFlight(value2,
                                                 (long) (value5), flightName, 2);
                                     }

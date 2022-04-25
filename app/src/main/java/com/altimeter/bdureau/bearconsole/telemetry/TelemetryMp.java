@@ -81,6 +81,7 @@ public class TelemetryMp extends AppCompatActivity {
     boolean apogeeSaid = false;
     boolean landedSaid = false;
     boolean mainSaid = false;
+    double rocketLatitude, rocketLongitude;
 
     Button dismissButton;
 
@@ -239,10 +240,42 @@ public class TelemetryMp extends AppCompatActivity {
                         }
                     }
                     break;
+                case 18:
+                    //Value 18 contains the latitude
+                    Log.d("status", "latitude");
+                    setLatitudeValue((String) msg.obj );
+                    break;
+                case 19:
+                    //Value 19 contains the longitude
+                    setLongitudeValue((String) msg.obj );
+                    break;
             }
         }
     };
 
+    private void setLatitudeValue(String value) {
+        if (value.matches("\\d+(?:\\.\\d+)?")) {
+            Double val = Double.parseDouble(value);
+            Log.d("track", "latitude:"+ value);
+            if(val !=0) {
+                rocketLatitude = Double.parseDouble(value) / 100000;
+                myBT.getAppConf().setRocketLatitude(""+ rocketLatitude);
+
+            }
+        }
+    }
+
+    private void setLongitudeValue(String value) {
+        if (value.matches("\\d+(?:\\.\\d+)?")) {
+            Double val = Double.parseDouble(value);
+            Log.d("track", "longitude:"+ value);
+            if(val !=0) {
+                rocketLongitude = Double.parseDouble(value) / 100000;
+                myBT.getAppConf().setRocketLongitude(""+ rocketLongitude);
+                myBT.getAppConf().SaveConfig();
+            }
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

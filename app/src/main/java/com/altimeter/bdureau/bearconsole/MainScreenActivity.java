@@ -709,10 +709,10 @@ public class MainScreenActivity extends AppCompatActivity {
             hm =null;
             hm = new HashMap();
             //init compatible versions
-            Add("AltiMulti", "1.25");
-            Add("AltiMultiV2", "1.25");
-            Add("AltiMultiV2", "1.25");
-            Add("AltiMultiSTM32", "1.25");
+            Add("AltiMulti", "1.26");
+            Add("AltiMultiV2", "1.26");
+           // Add("AltiMultiV2", "1.25");
+            Add("AltiMultiSTM32", "1.26");
             Add("AltiServo", "1.5");
             Add("AltiGPS", "1.3");
             Add("AltiDuo", "1.7");
