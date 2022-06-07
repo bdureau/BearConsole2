@@ -101,7 +101,7 @@ public class FlightData {
 
         return exist;
     }
-    public void AddToFlight (long X, long Y, String flightName)
+    public void AddToFlight (float X, float Y, String flightName)
     {
 
         //Find out if the flight exist
@@ -118,7 +118,7 @@ public class FlightData {
         flightData.getSeries(0).add(X, Y);
 
     }
-    public void AddToFlight (long X, long Y, String flightName, int serie)
+    public void AddToFlight (float X, float Y, String flightName, int serie)
     {
 
         //Find out if the flight exist
@@ -162,6 +162,11 @@ public class FlightData {
         ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_speed)));
         //acceleration
         ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_accel)));
+        //voltage
+        if(altimeterName.equals("AltiGPS") || altimeterName.equals("AltiMultiSTM32") ||
+                altimeterName.equals("AltiMultiESP32") ) {
+            ret.addSeries(new XYSeries("voltage"));
+        }
 
         if(altimeterName.equals("AltiGPS")) {
             //latitude

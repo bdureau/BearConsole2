@@ -47,6 +47,8 @@ public class AltiConfigData {
     private int servoStayOn =1;
     private int servoSwitch =1;
     private int recordingTimeout = 120;
+    private int altiID = 0;
+    private int useTelemetryPort = 0;
 
     public AltiConfigData()
     {
@@ -334,4 +336,12 @@ public class AltiConfigData {
     //Flight recording timeout
     public void setRecordingTimeout(int value) {recordingTimeout =value;}
     public int getRecordingTimeout(){return recordingTimeout;}
+
+    //AltiID
+    public void setAltiID(int value) {altiID =value;}
+    public int getAltiID(){return altiID;}
+
+    //useTelemetryPort
+    public void setUseTelemetryPort(int value) {useTelemetryPort =value;}
+    public int getUseTelemetryPort(){return useTelemetryPort;}
 }

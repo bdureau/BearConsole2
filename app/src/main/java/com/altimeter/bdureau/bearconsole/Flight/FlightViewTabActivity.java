@@ -165,8 +165,17 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
             buttonMap.setVisibility(View.VISIBLE);
-            numberOfCurves = 7;
-        } else {
+            numberOfCurves = 8;
+        }
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")) {
+            buttonMap.setVisibility(View.INVISIBLE);
+            numberOfCurves = 6;
+        }
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiV2") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti")) {
             buttonMap.setVisibility(View.INVISIBLE);
             numberOfCurves = 5;
         }
@@ -229,6 +238,9 @@ public class FlightViewTabActivity extends AppCompatActivity {
         }
         units[1] = "(°C)";
         units[2] = "(mbar)";
+
+        if(numberOfCurves > 5)
+            units[5] = "(volts)";
 
         if (myBT.getAppConf().getUnits().equals("0")) {//meters
             FEET_IN_METER = 1;
@@ -627,8 +639,10 @@ public class FlightViewTabActivity extends AppCompatActivity {
             } else if (nbr == 4) {
                 valHeader = getResources().getString(R.string.curve_accel);
             } else if (nbr == 5) {
-                valHeader = getResources().getString(R.string.curve_latitude);
+                    valHeader = "voltage";
             } else if (nbr == 6) {
+                valHeader = getResources().getString(R.string.curve_latitude);
+            } else if (nbr == 7) {
                 valHeader = getResources().getString(R.string.curve_longitude);
             }
 

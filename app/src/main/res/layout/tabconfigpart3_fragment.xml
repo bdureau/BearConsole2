@@ -29,14 +29,37 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/txtAltimeterName"
         android:text="qqqq" />
+    <TextView
+        android:id="@+id/txtAltimeterID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtAltimeterName"
 
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="28dp"
+        android:text="AltiID" />
+
+
+
+    <EditText
+        android:id="@+id/editTxtAltiIDValue"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/txtAltimeterID"
+        android:inputType="number"
+        android:singleLine="true"
+        android:text="0"
+        android:textAlignment="textEnd"
+        android:textIsSelectable="false"
+        android:textSize="13sp" />
     <TextView
         android:id="@+id/txtAltiUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
-        android:layout_below="@+id/txtAltimeterName"
+        android:layout_below="@+id/txtAltimeterID"
         android:text="@string/units" />
 
     <Spinner
@@ -48,10 +71,27 @@
         android:spinnerMode="dropdown" />
 
     <TextView
+        android:id="@+id/txtAltiUseTelemetryPort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/txtAltiUnit"
+        android:text="Use TelemetryPort" />
+
+    <Spinner
+        android:id="@+id/spinnerUseTelemetryPort"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/txtAltiUseTelemetryPort"
+        android:spinnerMode="dropdown" />
+
+    <TextView
         android:id="@+id/txtBpMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtAltiUnit"
+        android:layout_below="@+id/txtAltiUseTelemetryPort"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:text="@string/bip_mode" />

@@ -264,8 +264,12 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             AltiCfg.setBeepingFrequency(configPage3.getFreq());
             AltiCfg.setBeepingMode(configPage3.getDropdownBipMode());
             AltiCfg.setUnits(configPage3.getDropdownUnits());
-            AltiCfg.setServoStayOn(configPage3.getServoStayOn());
-            AltiCfg.setServoSwitch(configPage3.getServoSwitch());
+            if (AltiCfg.getAltimeterName().equals("AltiServo")) {
+                AltiCfg.setServoStayOn(configPage3.getServoStayOn());
+                AltiCfg.setServoSwitch(configPage3.getServoSwitch());
+            }
+            AltiCfg.setAltiID(configPage3.getAltiID());
+            AltiCfg.setUseTelemetryPort(configPage3.getDropdownUseTelemetryPort());
         }
 
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
@@ -286,6 +290,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             nbrOfMain++;
 
         if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
+                AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
                 AltiCfg.getAltimeterName().equals("AltiServo") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiV2") ||
                 AltiCfg.getAltimeterName().equals("AltiGPS") ||
@@ -305,6 +310,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         if (AltiCfg.getOutput2() == 1)
             nbrOfDrogue++;
         if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
+                AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
                 AltiCfg.getAltimeterName().equals("AltiServo") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiV2") ||
                 AltiCfg.getAltimeterName().equals("AltiGPS") ||
@@ -365,7 +371,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         return true;
     }
 
-    private void sendAltiCfg() {
+    /*private void sendAltiCfg() {
         String altiCfgStr = "";
 
         altiCfgStr = "s," +
@@ -390,15 +396,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 AltiCfg.getBeepOnOff();
         altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4();
         altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4Delay();
-
         altiCfgStr = altiCfgStr + "," + AltiCfg.getLiftOffAltitude();
         altiCfgStr = altiCfgStr + "," + AltiCfg.getBatteryType();
         altiCfgStr = altiCfgStr + "," + AltiCfg.getRecordingTimeout();
+        altiCfgStr = altiCfgStr + ","+ AltiCfg.getAltiID(); //for ESP32
+        altiCfgStr = altiCfgStr + ","+ AltiCfg.getTelemetryPort(); //for ESP32 and STM32
 
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
-            altiCfgStr = altiCfgStr + ",0";//reserved 1
-            altiCfgStr = altiCfgStr + ",0";//reserved 2
-            altiCfgStr = altiCfgStr + ",0";//reserved 3
+            altiCfgStr = altiCfgStr + ",0";//Servo switch
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OnPos();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo2OnPos();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo3OnPos();
@@ -408,7 +413,6 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo3OffPos();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServo4OffPos();
             altiCfgStr = altiCfgStr + "," + AltiCfg.getServoStayOn();
-
         }
 
         String cfg = altiCfgStr;
@@ -488,7 +492,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.flush();
         }
 
-    }
+    }*/
 
     private void sendAltiCfgV2() {
 
@@ -562,12 +566,15 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         SendParam("p,23,"+AltiCfg.getBatteryType());
         //altiCfgStr = altiCfgStr + "," + AltiCfg.getRecordingTimeout();
         SendParam("p,24,"+AltiCfg.getRecordingTimeout());
+        //    altiCfgStr = altiCfgStr + ",0";
+        SendParam("p,25,"+AltiCfg.getAltiID());
+//    altiCfgStr = altiCfgStr + ",0";//reserved 2
+        Log.d("UseTelemetryPort", "before getUseTelemetryPort" );
+        SendParam("p,26,"+AltiCfg.getUseTelemetryPort());
+        Log.d("UseTelemetryPort", "after getUseTelemetryPort" );
+
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
-        //    altiCfgStr = altiCfgStr + ",0";//reserved 1
-            SendParam("p,25,"+0);
-        //    altiCfgStr = altiCfgStr + ",0";//reserved 2
-            SendParam("p,26,"+0);
-        //    altiCfgStr = altiCfgStr + ",0";//reserved 3
+        //    altiCfgStr = altiCfgStr + ",0";
             SendParam("p,27,"+AltiCfg.getServoSwitch());
         //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OnPos();
             SendParam("p,28,"+AltiCfg.getServo1OnPos());
@@ -647,7 +654,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.flush();
             myBT.clearInput();
             myBT.setDataReady(false);
-            //msg("Sent :" + altiCfgStr.toString());
+
             //send back the config
             myBT.write(altiCfgStr.toString());
             Log.d("conftab", altiCfgStr.toString());
@@ -1554,11 +1561,12 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
     public static class Tab3Fragment extends Fragment {
         private static final String TAG = "Tab3Fragment";
-
         private TextView altiName;
         private Spinner dropdownUnits;
         private Spinner dropdownBipMode;
         private EditText Freq;
+        private EditText altiID;
+        private Spinner dropdownUseTelemetryPort;
         private Spinner dropdownServoStayOn;
         private TextView txtServoStayOn;
         private Spinner dropdownServoSwitch;
@@ -1595,6 +1603,29 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
         public String getAltiName() {
             return (String) this.altiName.getText();
+        }
+
+        public void setAltiID(int ID) {
+            this.altiID.setText(ID);
+        }
+
+        public int getAltiID() {
+
+            int ret;
+            try {
+                ret = Integer.parseInt(this.altiID.getText().toString());
+            } catch (Exception e) {
+                ret = 0;
+            }
+            return ret;
+        }
+
+        public int getDropdownUseTelemetryPort() {
+            return (int) this.dropdownUseTelemetryPort.getSelectedItemId();
+        }
+
+        public void setDropdownUseTelemetryPort(int UseTelemetryPort) {
+            this.dropdownUseTelemetryPort.setSelection(UseTelemetryPort);
         }
 
         public int getDropdownUnits() {
@@ -1641,7 +1672,17 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     android.R.layout.simple_spinner_dropdown_item, items);
             dropdownBipMode.setAdapter(adapter);
 
+            Log.d("UseTelemetryPort","before UseTelemetryPort" );
+            //UseTelemetryPort
+            dropdownUseTelemetryPort = (Spinner) view.findViewById(R.id.spinnerUseTelemetryPort);
+            //"No", "Yes"
+            String[] itemsUseTelemetryPort = new String[]{"No",
+                    "Yes"};
+            ArrayAdapter<String> adapterUseTelemetryPort = new ArrayAdapter<String>(this.getActivity(),
+                    android.R.layout.simple_spinner_dropdown_item, itemsUseTelemetryPort);
+            dropdownUseTelemetryPort.setAdapter(adapterUseTelemetryPort);
 
+            Log.d("UseTelemetryPort","after UseTelemetryPort" );
             //units
             dropdownUnits = (Spinner) view.findViewById(R.id.spinnerUnit);
             //"Meters", "Feet"
@@ -1650,7 +1691,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_dropdown_item, items2);
             dropdownUnits.setAdapter(adapter2);
-
+            Log.d("UseTelemetryPort","after dropdownUnits" );
             // Tool tip
             view.findViewById(R.id.txtAltiUnit).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1683,6 +1724,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 }
             });
 
+            altiID = (EditText) view.findViewById(R.id.editTxtAltiIDValue);
             dropdownServoStayOn= (Spinner) view.findViewById(R.id.spinnerServoStayOn);
             //"No", "Yes"
             String[] items3 = new String[]{getResources().getString(R.string.config_no),
@@ -1721,8 +1763,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 dropdownBipMode.setSelection(lAltiCfg.getBeepingMode());
                 dropdownUnits.setSelection(lAltiCfg.getUnits());
                 Freq.setText(String.valueOf(lAltiCfg.getBeepingFrequency()));
-                dropdownServoStayOn.setSelection(lAltiCfg.getServoStayOn());
-                dropdownServoSwitch.setSelection(lAltiCfg.getServoSwitch());
+                altiID.setText(String.valueOf(lAltiCfg.getAltiID()));
+                if (lAltiCfg.getAltimeterName().equals("AltiServo")) {
+                    dropdownServoStayOn.setSelection(lAltiCfg.getServoStayOn());
+                    dropdownServoSwitch.setSelection(lAltiCfg.getServoSwitch());
+                }
+                Log.d("UseTelemetryPort","before  getting config" );
+                dropdownUseTelemetryPort.setSelection(lAltiCfg.getUseTelemetryPort());
+                Log.d("UseTelemetryPort","after getting config" );
             }
             ViewCreated = true;
             return view;
@@ -1943,7 +1991,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
     }
 
-    private class RetrieveConfig extends AsyncTask<Void, Void, Void>  // UI thread
+    /*private class RetrieveConfig extends AsyncTask<Void, Void, Void>  // UI thread
     {
 
         @Override
@@ -2010,6 +2058,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     configPage3.setFreq(AltiCfg.getBeepingFrequency());
                     configPage3.setServoStayOn(AltiCfg.getServoStayOn());
                     configPage3.setServoSwitch(AltiCfg.getServoSwitch());
+                    configPage3.setAltiID(AltiCfg.getAltiID());
+                    configPage3.setDropdownUseTelemetryPort(AltiCfg.getTelemetryPort());
                 }
 
 
@@ -2029,7 +2079,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             progress.dismiss();
         }
-    }
+    }*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

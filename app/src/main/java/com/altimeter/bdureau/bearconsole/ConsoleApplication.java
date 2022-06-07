@@ -14,6 +14,7 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
@@ -544,7 +545,7 @@ public class ConsoleApplication extends Application {
                                     // Value 2 contain the time
                                     // Value 3 contain the altitude
                                     // To do
-                                    int value2 = 0, value3 = 0, value4 = 0, value5 = 0, value6 = 0, value7 = 0;
+                                    int value2 = 0, value3 = 0, value4 = 0, value5 = 0, value6 = 0, value7 = 0, value8=0;
                                     if (currentSentence.length > 2)
                                         if (currentSentence[2].matches("\\d+(?:\\.\\d+)?"))
                                             value2 = Integer.valueOf(currentSentence[2]);
@@ -560,7 +561,7 @@ public class ConsoleApplication extends Application {
                                                 (long) (value3 * FEET_IN_METER), flightName, 0);
 
                                     }
-                                    //temperature
+                                    //value 4 contains temperature
                                     if (currentSentence.length > 4) {
                                         if (currentSentence[4].matches("\\d+(?:\\.\\d+)?"))
                                             value4 = Integer.valueOf(currentSentence[4]);
@@ -570,8 +571,6 @@ public class ConsoleApplication extends Application {
                                         MyFlight.AddToFlight(value2,
                                                 (long) (value4), flightName, 1);
                                     }
-
-                                    //Alti GPS does a lot more !!!!
                                     //pressure
                                     if (currentSentence.length > 5) {
                                         if (currentSentence[5].matches("\\d+(?:\\.\\d+)?"))
@@ -583,26 +582,43 @@ public class ConsoleApplication extends Application {
                                                 (long) (value5), flightName, 2);
                                     }
 
-                                    //Latitude
-                                    if (currentSentence.length > 6) {
-                                        if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
-                                            value6 = Integer.valueOf(currentSentence[6]);
-                                        else
-                                            value6 = 0;
-                                        //add the latitude
-                                        MyFlight.AddToFlight(value2,
-                                                (long) (value6), flightName, 3);
+                                   //Voltage (only for AltiGPS, AltiMultiESP32 and SMT32
+                                    if (AltiCfg.getAltimeterName().equals("AltiGPS")||
+                                            AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+                                            AltiCfg.getAltimeterName().equals("AltiMultiSTM32")) {
+                                        if (currentSentence.length > 6) {
+                                            if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
+                                                value6 = Integer.valueOf(currentSentence[6]);
+                                            else
+                                                value6 = 0;
+                                            //add the voltage
+                                            MyFlight.AddToFlight(value2,
+                                                    (float) (value6)/100, flightName, 5);
+                                        }
                                     }
+                                    //Alti GPS does a lot more !!!!
+                                    if (AltiCfg.getAltimeterName().equals("AltiGPS")) {
+                                        //Latitude
+                                        if (currentSentence.length > 7) {
+                                            if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
+                                                value7 = Integer.valueOf(currentSentence[7]);
+                                            else
+                                                value7 = 0;
+                                            //add the latitude
+                                            MyFlight.AddToFlight(value2,
+                                                    (long) (value7), flightName, 6);
+                                        }
 
-                                    //longitude
-                                    if (currentSentence.length > 7) {
-                                        if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
-                                            value7 = Integer.valueOf(currentSentence[7]);
-                                        else
-                                            value7 = 0;
-                                        //add the longitude
-                                        MyFlight.AddToFlight(value2,
-                                                (long) (value7), flightName, 4);
+                                        //longitude
+                                        if (currentSentence.length > 8) {
+                                            if (currentSentence[8].matches("\\d+(?:\\.\\d+)?"))
+                                                value8 = Integer.valueOf(currentSentence[8]);
+                                            else
+                                                value8 = 0;
+                                            //add the longitude
+                                            MyFlight.AddToFlight(value2,
+                                                    (long) (value8), flightName, 7);
+                                        }
                                     }
                                 }
                                 break;
@@ -776,9 +792,21 @@ public class ConsoleApplication extends Application {
                                             AltiCfg.setRecordingTimeout(Integer.valueOf(currentSentence[27]));
                                         else
                                             AltiCfg.setRecordingTimeout(120);
-                                    // value 28 reserved param
+                                    // value 28 altiID
+                                    if (currentSentence.length > 28)
+                                        if (currentSentence[28].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setAltiID(Integer.valueOf(currentSentence[28]));
+                                        else
+                                            AltiCfg.setAltiID(0);
 
-                                    // value 29 reserved param
+                                    // value 29 useTelemetryPort
+                                    if (currentSentence.length > 29) {
+                                        Log.d("useTelemetryPort", "currentSentence:" + currentSentence[29]);
+                                        if (currentSentence[29].matches("\\d+(?:\\.\\d+)?"))
+                                            AltiCfg.setUseTelemetryPort(Integer.valueOf(currentSentence[29]));
+                                        else
+                                            AltiCfg.setUseTelemetryPort(0);
+                                    }
 
                                     // value 30 servoSwitch
                                     if (currentSentence.length > 30)
