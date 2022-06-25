@@ -709,14 +709,14 @@ public class MainScreenActivity extends AppCompatActivity {
             hm =null;
             hm = new HashMap();
             //init compatible versions
-            Add("AltiMulti", "1.26");
-            Add("AltiMultiV2", "1.26");
+            Add("AltiMulti", "1.27");
+            Add("AltiMultiV2", "1.27");
            // Add("AltiMultiV2", "1.25");
-            Add("AltiMultiSTM32", "1.26");
+            Add("AltiMultiSTM32", "1.27");
             Add("AltiServo", "1.5");
-            Add("AltiGPS", "1.3");
-            Add("AltiDuo", "1.7");
-            Add("AltiMultiESP32", "1.26");
+            Add("AltiGPS", "1.5");
+            Add("AltiDuo", "1.8");
+            Add("AltiMultiESP32", "1.27");
 
         }
         public void Add ( String altiName, String verList) {
