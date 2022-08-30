@@ -10,8 +10,8 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 18,
-      "versionName": "Pre 2.0.0 candidate 18",
+      "versionCode": 21,
+      "versionName": "Pre 2.0.0 candidate 21",
       "outputFile": "app-release.apk"
     }
   ]

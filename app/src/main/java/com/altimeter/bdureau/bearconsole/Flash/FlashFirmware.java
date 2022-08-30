@@ -63,12 +63,12 @@ public class FlashFirmware extends AppCompatActivity {
     private ArrayList<Boards> mBoardList;
     private UartConfig uartConfig;
 
-    private static final String ASSET_FILE_NAME_ALTIMULTIV2 = "firmwares/2022-06-12-V1_27.altimultiV2.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTI = "firmwares/2022-06-12-V1_27.altimulti.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTIV2 = "firmwares/2022-08-25-V1_27.altimultiV2.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTI = "firmwares/2022-08-25-V1_27.altimulti.hex";
     private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2022-06-25-AltiServoV1_5.hex";
     private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2022-06-25-V1_8.AltiDuo.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/2022-06-12-V1_27.altimultiSTM32.bin";
-    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2022-06-25-RocketGPSLoggerV1.5.bin";
+    private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/2022-08-26-V1_27.altimultiSTM32.bin";
+    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2022-08-25-RocketGPSLoggerV1.5.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
@@ -242,6 +242,7 @@ public class FlashFirmware extends AppCompatActivity {
             firmwareFileName = ASSET_FILE_NAME_ALTIMULTISTM32;
 
         tvRead.setText("");
+        tvRead.setText("Loading firmware:"+ firmwareFileName);
         if (!rbAltiMultiSTM32.isChecked()&& !rbAltiGPS.isChecked()) {
             try {
                 builder = new AlertDialog.Builder(FlashFirmware.this);

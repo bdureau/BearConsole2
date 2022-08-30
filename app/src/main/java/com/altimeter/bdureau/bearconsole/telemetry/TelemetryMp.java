@@ -119,13 +119,7 @@ public class TelemetryMp extends AppCompatActivity {
                             // Tell altitude every 5 secondes
                             if ((altitudeTime - lastSpeakTime) > 5000 && liftOffSaid) {
                                 if (myBT.getAppConf().getAltitude_event().equals("true")) {
-                                       /* if (Locale.getDefault().getLanguage() == "en")
-                                            mTTS.speak("altitude " + String.valueOf(altitude) + " " +myBT.getAppConf().getUnitsValue() , TextToSpeech.QUEUE_FLUSH, null);
-                                        else if (Locale.getDefault().getLanguage() == "fr")
-                                            mTTS.speak("altitude " + String.valueOf(altitude) + " " +myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
-                                        else
-                                            mTTS.speak("altitude " + String.valueOf(altitude) + " " +myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);*/
-                                    mTTS.speak(getResources().getString(R.string.altitude) + " " + String.valueOf(altitude) +  " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                       mTTS.speak(getResources().getString(R.string.altitude) + " " + String.valueOf(altitude) +  " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                                 }
                                 lastSpeakTime = altitudeTime;
                             }
@@ -145,7 +139,6 @@ public class TelemetryMp extends AppCompatActivity {
                                 txtLiftOffTime.setText("0 ms");
                                 if (!liftOffSaid) {
                                     if (myBT.getAppConf().getLiftOff_event().equals("true")) {
-
                                         mTTS.speak(getResources().getString(R.string.lift_off) , TextToSpeech.QUEUE_FLUSH, null);
                                     }
                                     liftOffSaid = true;
@@ -203,7 +196,6 @@ public class TelemetryMp extends AppCompatActivity {
 
                             if (!mainSaid) {
                                 if (myBT.getAppConf().getMain_event().equals("true")) {
-
                                     mTTS.speak(getResources().getString(R.string.main_deployed) +" " + String.valueOf(altitude) + " " +myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                                 }
                                 mainSaid = true;

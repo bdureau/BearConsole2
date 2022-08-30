@@ -28,11 +28,11 @@
     <string name="disabled_config">Disabled</string>
     <string name="landing_config">Landing</string>
     <string name="liftoff_config">Liftoff</string>
-    <string name="altitude_config">Altitude</string>
-    <string name="altitude1">Altitude1</string>
-    <string name="altitude2">Altitude2</string>
-    <string name="altitude3">Altitude3</string>
-    <string name="altitude4">Altitude4</string>
+    <string name="altitude_config">Altitud</string>
+    <string name="altitude1">Altitud1</string>
+    <string name="altitude2">Altitud2</string>
+    <string name="altitude3">Altitud3</string>
+    <string name="altitude4">Altitud4</string>
     <!-- Config tab1 tooltips -->
     <string name="main_altitude_tooltip">Entre la altitud para el paracaídas principal</string>
     <string name="OutDelay1_tooltip">Entre el retraso en el disparo en ms para la salida 1</string>
@@ -76,8 +76,8 @@
     <string name="bip_mode">Modo de pitido</string>
     <string name="beep_freq">Frecuencia de pitido</string>
     <string name="servo_stay_on">Servo Stay On</string>
-    <string name="unit_meter">Meters</string>
-    <string name="unit_feet">Feets</string>
+    <string name="unit_meter">Metros</string>
+    <string name="unit_feet">Pies</string>
     <string name="config_no">No</string>
     <string name="config_yes">Yes</string>
     <!-- Config tab4-->
@@ -190,16 +190,16 @@
     <string name="phone_english">English</string>
     <string name="phone_french">French</string>
     <string name="phone_language">Phone language</string>
-    <string name="config_unit_meters">Meters</string>
-    <string name="config_unit_feet">Feet</string>
+    <string name="config_unit_meters">Metros</string>
+    <string name="config_unit_feet">Pies</string>
 
     <string name="general_config">General</string>
     <string name="telemetry_config">Telemetry config</string>
     <string name="main_event">Main event</string>
-    <string name="apogee_altitude_event">Apogee altitude</string>
-    <string name="main_altitude_event">Main altitude</string>
+    <string name="apogee_altitude_event">Apogee altitud</string>
+    <string name="main_altitude_event">Main altitud</string>
     <string name="drogue_event">Drogue event</string>
-    <string name="altitude_event">Altitude event</string>
+    <string name="altitude_event">Altitud event</string>
     <string name="landing_event">Landing event</string>
     <string name="burnout_event">Burnout event</string>
     <string name="warning_event">Warning event</string>
@@ -219,9 +219,9 @@
     <string name="current_altitude">Altitud actual</string>
     <string name="dis">Desconectar</string>
     <string name="tel_telemetry">Telemetry</string>
-    <string name="telemetry_apogee">apogee</string>
-    <string name="rocket_has_landed">rocket has landed</string>
-    <string name="main_deployed">main chute has deployed at</string>
+    <string name="telemetry_apogee">apogeo</string>
+    <string name="rocket_has_landed">cohete ha aterrizado</string>
+    <string name="main_deployed">paracaídas principal se ha desplegado en</string>
 
     <!-- Status -->
     <string name="title_activity_altimeter_status">Estado del altímetro</string>
@@ -297,10 +297,10 @@
     <string name="test_telemetry_voice">Test Voice</string>
 
     <!--units -->
-    <string name="unit_meters">meters</string>
+    <string name="unit_meters">metros</string>
     <string name="unit_time">time (ms)</string>
-    <string name="unit_feet_per_secs">feet/secs</string>
-    <string name="unit_feet_per_square_secs">feet/secs²</string>
+    <string name="unit_feet_per_secs">Pies/secs</string>
+    <string name="unit_feet_per_square_secs">Pies/secs²</string>
 
     <!--curves name -->
     <string name="curve_altitude">altitude</string>
