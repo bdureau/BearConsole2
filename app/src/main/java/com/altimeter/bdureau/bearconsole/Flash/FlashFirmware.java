@@ -41,6 +41,7 @@ import com.physicaloid.lib.Physicaloid;
 import com.physicaloid.lib.programmer.avr.UploadErrors;
 import com.physicaloid.lib.usb.driver.uart.UartConfig;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import java.io.InputStream;
@@ -56,7 +57,8 @@ public class FlashFirmware extends AppCompatActivity {
     boolean recorverFirmware = false;
     Boards mSelectedBoard;
     Button btFlash;
-    public RadioButton rbAltiMulti, rbAltiMultiV2, rbAltiServo, rbAltiDuo, rbAltiMultiSTM32, rbAltiGPS;
+    public RadioButton rbAltiMulti, rbAltiMultiV2, rbAltiServo, rbAltiDuo, rbAltiMultiSTM32;
+    public RadioButton rbAltiGPS, rbAltiMultiESP32;
     TextView tvRead;
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
@@ -69,6 +71,14 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2022-06-25-V1_8.AltiDuo.hex";
     private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/2022-08-26-V1_27.altimultiSTM32.bin";
     private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2022-08-25-RocketGPSLoggerV1.5.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/RocketFlightLoggerV1_27.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/RocketFlightLoggerV1_27.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE4 = "firmwares/ESP32/RocketFlightLoggerV1_27.ino.partitions.bin";
+    /*private static final String ASSET_FILE_NAME_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/Blink.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/Blink.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE4 = "firmwares/ESP32/Blink.ino.partitions.bin";*/
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
@@ -99,6 +109,8 @@ public class FlashFirmware extends AppCompatActivity {
         rbAltiMulti.setChecked(true);
         rbAltiMultiSTM32 = (RadioButton) findViewById(R.id.radioButAltiMultiSTM32);
         rbAltiGPS = (RadioButton) findViewById(R.id.radioButAltiGPS);
+        rbAltiMultiESP32 = (RadioButton) findViewById(R.id.radioButAltiESP32);
+
         mPhysicaloid = new Physicaloid(this);
         mBoardList = new ArrayList<Boards>();
         for (Boards board : Boards.values()) {
@@ -149,16 +161,12 @@ public class FlashFirmware extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton(R.string.flash_firmware_ok, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-
-
                         dialog.cancel();
-
                     }
                 });
 
         alert = builder.create();
         alert.show();
-
     }
 
 
@@ -191,7 +199,7 @@ public class FlashFirmware extends AppCompatActivity {
 
         tvRead.setText("");
         tvRead.setText(getResources().getString(R.string.after_complete_upload));
-        if (!rbAltiMultiSTM32.isChecked() && !rbAltiGPS.isChecked()) {
+        if (rbAltiMulti.isChecked()|| rbAltiMultiV2.isChecked() || rbAltiServo.isChecked() || rbAltiDuo.isChecked()) {
             try {
                 builder = new AlertDialog.Builder(FlashFirmware.this);
                 //Recover firmware...
@@ -214,9 +222,12 @@ public class FlashFirmware extends AppCompatActivity {
             } catch (IOException e) {
                 //Log.e(TAG, e.toString());
             }
-        } else {
+        } else if(rbAltiMultiSTM32.isChecked()|| rbAltiGPS.isChecked()){
             recorverFirmware = true;
             new UploadSTM32Asyc().execute();
+        } else if (rbAltiMultiESP32.isChecked()) {
+            recorverFirmware = true;
+            new UploadESP32Asyc().execute();
         }
     }
 
@@ -226,7 +237,7 @@ public class FlashFirmware extends AppCompatActivity {
 
 
     public void onClickFlash(View v) {
-        String firmwareFileName;
+        String firmwareFileName ;
 
         firmwareFileName = ASSET_FILE_NAME_ALTIMULTI;
 
@@ -240,10 +251,17 @@ public class FlashFirmware extends AppCompatActivity {
             firmwareFileName = ASSET_FILE_NAME_ALTIDUO;
         if (rbAltiMultiSTM32.isChecked())
             firmwareFileName = ASSET_FILE_NAME_ALTIMULTISTM32;
+        if (rbAltiMultiESP32.isChecked()) {
+            /*firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_FILE1;
+            firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_FILE2;
+            firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_FILE3;
+            firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_FILE4;*/
+        }
 
         tvRead.setText("");
-        tvRead.setText("Loading firmware:"+ firmwareFileName);
-        if (!rbAltiMultiSTM32.isChecked()&& !rbAltiGPS.isChecked()) {
+
+        if (rbAltiMulti.isChecked()|| rbAltiMultiV2.isChecked() || rbAltiServo.isChecked() || rbAltiDuo.isChecked()) {
+            tvRead.setText("Loading firmware:"+ firmwareFileName);
             try {
                 builder = new AlertDialog.Builder(FlashFirmware.this);
                 //Flashing firmware...
@@ -252,7 +270,6 @@ public class FlashFirmware extends AppCompatActivity {
                         .setCancelable(false)
                         .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, final int id) {
-
                                 dialog.cancel();
                                 mPhysicaloid.cancelUpload();
                             }
@@ -267,10 +284,14 @@ public class FlashFirmware extends AppCompatActivity {
             } catch (IOException e) {
                 //Log.e(TAG, e.toString());
             }
-        } else {
-            //uploadSTM32(firmwareFileName);
+        } else if (rbAltiMultiSTM32.isChecked()|| rbAltiGPS.isChecked()){
+            tvRead.setText("Loading firmware:"+ firmwareFileName);
             recorverFirmware = false;
             new UploadSTM32Asyc().execute();
+        } else if (rbAltiMultiESP32.isChecked()) {
+            tvRead.setText("Loading ESP32 firmware\n");
+            recorverFirmware = false;
+            new UploadESP32Asyc().execute();
         }
 
 
@@ -384,6 +405,7 @@ public class FlashFirmware extends AppCompatActivity {
         try {
             is = getAssets().open(fileName);
 
+
         } catch (IOException e) {
             //e.printStackTrace();
             tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
@@ -435,6 +457,7 @@ public class FlashFirmware extends AppCompatActivity {
             cmd.drain();
             tvAppend(tvRead, "writeMemory" + "\n");
             ret = cmd.writeMemory(0x8000000, is);
+
             tvAppend(tvRead, "writeMemory finish" + "\n\n\n\n");
             if (ret == 1) {
                 tvAppend(tvRead, "writeMemory success" + "\n\n\n\n");
@@ -444,6 +467,177 @@ public class FlashFirmware extends AppCompatActivity {
             cmd.cmdGo(0x8000000);
         }
         cmd.releaseChip();
+    }
+
+    private byte [] readFile(InputStream inputStream){
+        ByteArrayOutputStream byteArrayOutputStream=null;
+
+        int i;
+        try {
+            byteArrayOutputStream = new ByteArrayOutputStream();
+            i = inputStream.read();
+            while (i != -1)
+            {
+                byteArrayOutputStream.write(i);
+                i = inputStream.read();
+            }
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private class UploadESP32Asyc extends AsyncTask<Void, Void, Void>  // UI thread
+    {
+
+        @Override
+        protected void onPreExecute() {
+            builder = new AlertDialog.Builder(FlashFirmware.this);
+            //Flashing firmware...
+            builder.setMessage(getResources().getString(R.string.msg10))
+                    .setTitle(getResources().getString(R.string.msg11))
+                    .setCancelable(false)
+                    .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+
+                            dialog.cancel();
+
+                        }
+                    });
+            alert = builder.create();
+            alert.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String firmwareFileName[] = new String[4];
+            if (!recorverFirmware) {
+                firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_FILE1;
+                firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_FILE2;
+                firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_FILE3;
+                firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_FILE4;
+                uploadESP32(firmwareFileName, mUploadSTM32Callback);
+            } else {
+                firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_FILE1;
+                firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_FILE2;
+                firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_FILE3;
+                firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_FILE4;
+                uploadESP32(firmwareFileName, mUploadSTM32Callback);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
+        {
+            alert.dismiss();
+        }
+    }
+    public void uploadESP32(String fileName[], UploadSTM32CallBack UpCallback) {
+        boolean failed = false;
+        InputStream file1 = null;
+        InputStream file2 = null;
+        InputStream file3 = null;
+        InputStream file4 = null;
+        CommandInterfaceESP32 cmd;
+
+
+        cmd = new CommandInterfaceESP32(UpCallback, mPhysicaloid);
+
+        try {
+            file1 = getAssets().open(fileName[0]);
+
+        } catch (IOException e) {
+            //e.printStackTrace();
+            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+        }
+
+        try {
+            file2 = getAssets().open(fileName[1]);
+
+        } catch (IOException e) {
+            //e.printStackTrace();
+            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+        }
+        try {
+            file3 = getAssets().open(fileName[2]);
+
+        } catch (IOException e) {
+            //e.printStackTrace();
+            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+        }
+
+        try {
+            file4 = getAssets().open(fileName[3]);
+
+        } catch (IOException e) {
+            //e.printStackTrace();
+            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+        }
+
+        dialogAppend("Starting ...");
+
+
+        boolean ret = cmd.initChip();
+        if (ret )
+            dialogAppend(getString(R.string.chip_has_not_been_init) + ret);
+        else {
+            dialogAppend("Chip has not been initiated:" + ret);
+            failed = true;
+        }
+        int bootversion = 0;
+        if (!failed) {
+            // let's detect the chip, not really required but I just want to make sure that
+            // it is
+            // an ESP32 because this is what the program is for
+            int chip = cmd.detectChip();
+            if (chip == cmd.ESP32)
+                //dialogAppend("Chip is ESP32");
+                tvAppend(tvRead,"Chip is ESP32\n");
+
+            // now that we have initialized the chip we can change the baud rate to 921600
+            // first we tell the chip the new baud rate
+            dialogAppend("Changing baudrate to 921600");
+            cmd.changeBaudeRate();
+            cmd.init();
+
+            // Those are the files you want to flush
+            dialogAppend("Flashing file 1 0xe000");
+            cmd.flashData(readFile(file1), 0xe000, 0);
+            dialogAppend("Flashing file 2 0x1000");
+            cmd.flashData(readFile(file2), 0x1000, 0);
+            /*try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+
+            }*/
+            dialogAppend("Flashing file 3 0x10000");
+            cmd.flashData(readFile(file3), 0x10000, 0);
+            dialogAppend("Flashing file 4 0x8000");
+            cmd.flashData(readFile(file4), 0x8000, 0);
+
+            // we have finish flashing lets reset the board so that the program can start
+            cmd.reset();
+
+            dialogAppend("done ");
+            tvAppend(tvRead, "done");
+        }
+
+
     }
 
 
@@ -473,7 +667,6 @@ public class FlashFirmware extends AppCompatActivity {
                 //Upload fail
                 tvAppend(tvRead, getResources().getString(R.string.msg15));
             }
-
             alert.dismiss();
         }
 
@@ -495,7 +688,6 @@ public class FlashFirmware extends AppCompatActivity {
 
         @Override
         public void onUploading(int value) {
-
             dialogAppend(getResources().getString(R.string.msg12) + value + " %");
         }
 
@@ -508,7 +700,6 @@ public class FlashFirmware extends AppCompatActivity {
         public void onPreUpload() {
             //Upload : Start
             tvAppend(tvRead, getResources().getString(R.string.msg14));
-
         }
 
         public void info(String value) {
@@ -524,7 +715,6 @@ public class FlashFirmware extends AppCompatActivity {
                 //Upload fail
                 tvAppend(tvRead, getResources().getString(R.string.msg15));
             }
-
             alert.dismiss();
         }
 

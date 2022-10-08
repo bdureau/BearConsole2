@@ -254,6 +254,7 @@ public class CommandInterface {
         }
     }
 
+
     //writeMemory
     private int cmdWriteMemory (int addr,byte buf[]) {
         int lng=0;
