@@ -1,12 +1,24 @@
 package com.altimeter.bdureau.bearconsole.Flash;
-
+/**
+ *   @description: This is used to flash the ESP32 altimeter firmware from the Android device using an OTG cable
+ *   so that the store Android application is compatible with the altimeter.
+ *   Note that this is an Android port of the ESPLoader.py done by myself
+ *   as I could not find anything on the internet!!!
+ *   It uses the Physicaloid library but should be easy to use with any other USB library
+ *   It could also be written in pure Java so that it could be integrated with the Arduino env
+ *   This has been only tested with ESP32 chips. Feel free to re-use it for your own project
+ *   Please make sure that you do report any bugs so that I can fix them
+ *   So far it is reliable enough for me
+ *
+ *   @author: boris.dureau@neuf.fr
+ *
+ **/
 import com.physicaloid.lib.Physicaloid;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.Deflater;
 
-import static com.physicaloid.misc.Misc.toHexStr;
 
 
 public class CommandInterfaceESP32 {
@@ -29,15 +41,15 @@ public class CommandInterfaceESP32 {
     private static final int ESP_IMAGE_MAGIC = 0xe9;
 
     // Commands supported by ESP8266 ROM bootloader
-    private static final byte ESP_FLASH_BEGIN = 0x02;
-    private static final byte ESP_FLASH_DATA = 0x03;
-    private static final byte ESP_FLASH_END = 0x04;
-    private static final byte ESP_MEM_BEGIN = 0x05;
-    private static final byte ESP_MEM_END = 0x06;
+    private static final int ESP_FLASH_BEGIN = 0x02;
+    private static final int ESP_FLASH_DATA = 0x03;
+    private static final int ESP_FLASH_END = 0x04;
+    private static final int ESP_MEM_BEGIN = 0x05;
+    private static final int ESP_MEM_END = 0x06;
     private static final int ESP_MEM_DATA = 0x07;
-    private static final byte ESP_SYNC = 0x08;
+    private static final int ESP_SYNC = 0x08;
     private static final int ESP_WRITE_REG = 0x09;
-    private static final byte ESP_READ_REG = 0x0A;
+    private static final int ESP_READ_REG = 0x0A;
 
     // Some comands supported by ESP32 ROM bootloader (or -8266 w/ stub)
     private static final int ESP_SPI_SET_PARAMS = 0x0B; // 11
@@ -93,10 +105,6 @@ public class CommandInterfaceESP32 {
         mPhysicaloid = mPhysi;
     }
 
-    /*public void open (int baudRate) {
-        mPhysicaloid.open();
-        mPhysicaloid.setBaudrate(baudRate);
-    }*/
 
     /*
     *  Init chip
@@ -108,11 +116,12 @@ public class CommandInterfaceESP32 {
         mPhysicaloid.open();
         mPhysicaloid.setBaudrate(115200);
 
-        mPhysicaloid.setParity(2); // 2 = parity even
+        mPhysicaloid.setParity(0); // 2 = parity even
         mPhysicaloid.setStopBits(1);
 
         drain();
 
+        //reset();
         // let's put the ship in boot mode
         enterBootLoader();
 
@@ -188,8 +197,6 @@ public class CommandInterfaceESP32 {
         }
 
         for (x = 0; x < 7; x++) {
-
-            //byte cmd = (byte) 0x08;
             cmdRet ret = sendCommand((byte) ESP_SYNC, cmddata, 0, 100);
             if (ret.retCode == 1) {
                 response = 1;
@@ -340,7 +347,7 @@ public class CommandInterfaceESP32 {
      * This does a reset in order to run the prog after flash
      */
    /* public void reset() {
-        //mPhysicaloid.setRTS();
+        mPhysicaloid.setRTS(false,false);
         mPhysicaloid.setDtrRts(false, true);
         //mPhysicaloid.setDtrRts(true, true);
         try {
@@ -352,11 +359,13 @@ public class CommandInterfaceESP32 {
         //mPhysicaloid.setDtrRts(true, false);
     }*/
     public void reset() {
-        mPhysicaloid.setDtrRts(false, false);
-        try { Thread.sleep(100); } catch (InterruptedException e) {}
-
+       // mPhysicaloid.setDtrRts(true, false);
+       // try { Thread.sleep(100); } catch (InterruptedException e) {}
         mPhysicaloid.setDtrRts(true, false);
+        mPhysicaloid.setDtrRts(false, true);
         try { Thread.sleep(500); } catch (InterruptedException e) {}
+        mPhysicaloid.setDtrRts(true, false);
+        //try { Thread.sleep(500); } catch (InterruptedException e) {}
     }
 
     /*
@@ -366,9 +375,14 @@ public class CommandInterfaceESP32 {
         // reset bootloader
         //comPort.clearDTR();
         //comPort.setRTS();
+        mPhysicaloid.setDtrRts(true, false);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+        }
         mPhysicaloid.setDtrRts(true, true);
         mUpCallback.onInfo("Entering bootloader mode"  + "\n");
-        mPhysicaloid.setDtrRts(false, true);
+        //mPhysicaloid.setDtrRts(false, true);
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -578,7 +592,7 @@ public class CommandInterfaceESP32 {
     }
 
     /*
-     * Calculate the checksum. Still need to make sure that it works
+     * Calculate the checksum.
      */
     public int _checksum(byte[] data) {
         int chk = ESP_CHECKSUM_MAGIC;
@@ -592,7 +606,7 @@ public class CommandInterfaceESP32 {
     public int read_reg(int addr, int timeout) {
         cmdRet val;
         byte pkt[] = _int_to_bytearray(addr);
-        val = sendCommand(ESP_READ_REG, pkt, 0, timeout);
+        val = sendCommand((byte)ESP_READ_REG, pkt, 0, timeout);
         return val.retValue[0];
     }
 
@@ -612,7 +626,7 @@ public class CommandInterfaceESP32 {
 
             byte packet[] = _int_to_bytearray(reg);
 
-            ret = sendCommand(ESP_READ_REG, packet, 0, 0);
+            ret = sendCommand((byte) ESP_READ_REG, packet, 0, 0);
             Struct myRet = new Struct();
 
             byte subArray[] = new byte[4];
@@ -655,23 +669,7 @@ public class CommandInterfaceESP32 {
         return ((int)i | (int)(j << 8) | (int)(k << 16) | (int)(l << 24));
     }
 
-    /*
-     * Read a file and return an array of bytes
-     */
-    public byte[] readFile(String filename) {
 
-        byte[] allBytes = null;
-        /*try (InputStream inputStream = new FileInputStream(filename);) {
-            long fileSize = new File(filename).length();
-            System.out.println("fileSize from file open:" + fileSize);
-            allBytes = new byte[(int) fileSize];
-            int bytesRead = inputStream.read(allBytes);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
-
-        return allBytes;
-    }
 
     /**
      * Compress a byte array using ZLIB compression

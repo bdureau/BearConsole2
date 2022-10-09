@@ -85,6 +85,11 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_RESET_ALTISERVO = "recover_firmwares/ResetAltiConfigAltiServo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTISTM32 = "recover_firmwares/ResetAltiConfigAltimultiSTM32.ino.bin";
 
+    private static final String ASSET_FILE_RESET_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
+    private static final String ASSET_FILE_RESET_ALTIESP32_FILE2 = "firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bootloader.bin";
+    private static final String ASSET_FILE_RESET_ALTIESP32_FILE3 = "firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bin";
+    private static final String ASSET_FILE_RESET_ALTIESP32_FILE4 = "firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.partitions.bin";
+
     private String[] itemsBaudRate;
     private Spinner dropdownBaudRate;
 
@@ -520,10 +525,10 @@ public class FlashFirmware extends AppCompatActivity {
                 firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_FILE4;
                 uploadESP32(firmwareFileName, mUploadSTM32Callback);
             } else {
-                firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_FILE1;
-                firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_FILE2;
-                firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_FILE3;
-                firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_FILE4;
+                firmwareFileName[0] = ASSET_FILE_RESET_ALTIESP32_FILE1;
+                firmwareFileName[1] = ASSET_FILE_RESET_ALTIESP32_FILE2;
+                firmwareFileName[2] = ASSET_FILE_RESET_ALTIESP32_FILE3;
+                firmwareFileName[3] = ASSET_FILE_RESET_ALTIESP32_FILE4;
                 uploadESP32(firmwareFileName, mUploadSTM32Callback);
             }
             return null;
@@ -620,11 +625,7 @@ public class FlashFirmware extends AppCompatActivity {
             cmd.flashData(readFile(file1), 0xe000, 0);
             dialogAppend("Flashing file 2 0x1000");
             cmd.flashData(readFile(file2), 0x1000, 0);
-            /*try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
 
-            }*/
             dialogAppend("Flashing file 3 0x10000");
             cmd.flashData(readFile(file3), 0x10000, 0);
             dialogAppend("Flashing file 4 0x8000");

@@ -17,9 +17,11 @@
 <p><img  src="file:///android_asset/help/images/altiMultiV2-small.jpg"/></p>
 <p><strong>AltiMultiSTM32 or AltiGPS</strong></p>
 <p><img  src="file:///android_asset/help/images/altiMultiSTM32-small.jpg"/></p>
+<p><strong>AltiMultiESP32</strong></p>
+<p><img  src="file:///android_asset/help/images/altiMultiESP32-small.jpg"/></p>
 <p></p>
 <p>Sinon vous pouvez tenter une détection du firmware.</p>
-<p>A ce jour, 2 familles d'altimètres existent, les altimètres à base d'ATMega328 et les altimètres à base de STM32. </p>
+<p>A ce jour, 3 familles d'altimètres existent, les altimètres &agrave; base d'ATMega328, les altimètres &agrave; base de STM32 et les altimètres &agrave; base d'un ESP32. </p>
 <p><strong>Flashage des altimètres à base d'ATMega328 (ex: AltiDuo, AltiServo, AltiMulti and AltiMultiV2) </strong></p>
 <p>- Branchez le cable</p>
 <p>- Choisir le firmware approprié ou detectez le. </p>
@@ -35,7 +37,15 @@
 <p>- Appuyez sur le bouton [flash firmware]</p>
 <p>- Remettre le cavalier boot0 à gauche</p>
 <p><img  src="file:///android_asset/help/images/stm32-prog1-small.jpg"/></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>Firmware should be loading, when complete press the reset button</p>
+<p></p>
+<p><strong>Flashage des altimètres &agrave; base d'ESP32 (ex: AltiMultiESP32)</strong></p>
+<p>- Branchez le cable</p>
+<p>- Choisissez le firmware approprié ou détectez le</p>
+<p>- Sur la carte pressez le bouton <strong>boot</strong> et maintenez le</p>
+<p>- Sur la carte pressez le bouton <strong>reset</strong> et relacher le tout en maintenant le bouton boot</p>
+<p>- Puis relacher le bouton boot</p>
+<p><img  src="file:///android_asset/help/images/esp32-altimulti-button-small.jpg"/></p>
+<p>Le firmware devrait maintenant charger, si ce n'est pas le cas recommencez. Lorsque le chargement est complet appuyez sur le bouton reset</p>
+<p></p>
+<p>INFORMATION IMPORTANTE: lorsque vous flashez un altimètre ne deconnectez pas le cable lorsque vous flashez, le firmware sera corrompu et vous aurez &agrave; flasher &agrave; nouveau</p>
