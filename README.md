@@ -31,7 +31,7 @@ Please make sure you report any bugs so that I can fix them. If you have any ide
 The following altimeters can be used with the BearConsole
 - [AltiDuo](https://github.com/bdureau/AltiDuo_console) (this has a special firmware)
 - [AltiServo](https://github.com/bdureau/AltiServo)
-- [Altimulti](https://github.com/bdureau/RocketFlightLogger)(all versions)
+- [Altimulti](https://github.com/bdureau/RocketFlightLogger)(all versions Atmega328, STM32 and ESP32)
 - [AltiGPS](https://github.com/bdureau/AltiGPS)
 
 # Ability to flash the altimeter latest firmware
