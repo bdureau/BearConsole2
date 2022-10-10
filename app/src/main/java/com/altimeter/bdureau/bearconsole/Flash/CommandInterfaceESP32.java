@@ -12,6 +12,9 @@ package com.altimeter.bdureau.bearconsole.Flash;
  *
  *   @author: boris.dureau@neuf.fr
  *
+ *  Note: the flashing is very slow due to the delay en the send command. This needs to be improved
+ *  Also the reset() and enterBootLoader() do not currently work, you will need to enter the bootloader mode using the reset
+ *  and boot buttons on the board
  **/
 import com.physicaloid.lib.Physicaloid;
 
@@ -121,7 +124,6 @@ public class CommandInterfaceESP32 {
 
         drain();
 
-        //reset();
         // let's put the ship in boot mode
         enterBootLoader();
 
@@ -234,10 +236,7 @@ public class CommandInterfaceESP32 {
 
         ret = mPhysicaloid.write(buf, buf.length);
         try { Thread.sleep(timeout); } catch (InterruptedException e) {}
-        //try { Thread.sleep(100); } catch (InterruptedException e) {}
-        //for (int j = 0; j < 100 ; j++) {
-            //int numRead = mPhysicaloid.read(retVal.retValue, retVal.retValue.length);
-            //int numRead =_wait_for_ack(timeout,retVal.retValue);
+
             int numRead =recv(retVal.retValue, retVal.retValue.length, timeout);
             mUpCallback.onInfo("num read:" + numRead);
             if (numRead == 0) {
@@ -247,19 +246,17 @@ public class CommandInterfaceESP32 {
             }
 
             if (retVal.retValue[0] != (byte) 0xC0) {
-                // System.out.println("invalid packet");
                 //mUpCallback.onInfo("invalid packet\n");
                 // System.out.println("Packet: " + printHex(retVal.retValue));
                 retVal.retCode = -1;
             }
 
             if (retVal.retValue[0] == (byte) 0xC0) {
-                // System.out.println("This is correct!!!");
                 mUpCallback.onInfo("This is correct!!!\n");
                 // System.out.println("Packet: " + printHex(retVal.retValue));
                 retVal.retCode = 1;
             }
-        //}
+
         return retVal;
     }
     private int recv(byte[] buf, int length, long timeout) {
@@ -345,58 +342,36 @@ public class CommandInterfaceESP32 {
 
     /*
      * This does a reset in order to run the prog after flash
+     * currently does not work on the Android port
      */
-   /* public void reset() {
-        mPhysicaloid.setRTS(false,false);
-        mPhysicaloid.setDtrRts(false, true);
-        //mPhysicaloid.setDtrRts(true, true);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-        }
-        //comPort.clearRTS();
-        mPhysicaloid.setDtrRts(false, false);
-        //mPhysicaloid.setDtrRts(true, false);
-    }*/
     public void reset() {
-       // mPhysicaloid.setDtrRts(true, false);
-       // try { Thread.sleep(100); } catch (InterruptedException e) {}
-        mPhysicaloid.setDtrRts(true, false);
+
         mPhysicaloid.setDtrRts(false, true);
-        try { Thread.sleep(500); } catch (InterruptedException e) {}
+        try { Thread.sleep(100); } catch (InterruptedException e) {}
         mPhysicaloid.setDtrRts(true, false);
-        //try { Thread.sleep(500); } catch (InterruptedException e) {}
+
     }
 
     /*
      * enter bootloader mode
+     * does not currently work on Android
      */
     public void enterBootLoader() {
         // reset bootloader
-        //comPort.clearDTR();
-        //comPort.setRTS();
-        mPhysicaloid.setDtrRts(true, false);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-        }
-        mPhysicaloid.setDtrRts(true, true);
+
+        mPhysicaloid.setDtrRts(false, true);
         mUpCallback.onInfo("Entering bootloader mode"  + "\n");
-        //mPhysicaloid.setDtrRts(false, true);
+
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
         }
 
-        //comPort.setDTR();
-        //comPort.clearRTS();
         mPhysicaloid.setDtrRts(true, false);
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
         }
-
-        //comPort.clearDTR();
         mPhysicaloid.setDtrRts(false, false);
     }
 
@@ -447,7 +422,7 @@ public class CommandInterfaceESP32 {
      */
     public void flashData(byte binaryData[], int offset, int part) {
         int filesize = binaryData.length;
-        //System.out.println("\nWriting data with filesize: " + filesize);
+
         mUpCallback.onInfo("\nWriting data with filesize: " + filesize);
 
         byte image[] = compressBytes(binaryData);

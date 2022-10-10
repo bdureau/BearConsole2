@@ -88,6 +88,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
 
 
+
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +124,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
 
         viewPager.setAdapter(adapter);
+
     }
 
 

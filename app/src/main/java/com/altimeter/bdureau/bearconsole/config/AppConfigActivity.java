@@ -35,6 +35,7 @@ import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,7 @@ public class AppConfigActivity extends AppCompatActivity {
     Button btnDismiss, btnSave, bdtDefault;
     private ViewPager mViewPager;
     SectionsPageAdapter adapter;
+    //TabLayout tabs;
     private TextToSpeech mTTS;
 
     private Tab1Fragment appConfigPage1 = null;
@@ -69,6 +71,8 @@ public class AppConfigActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app_config);
 
         mViewPager = (ViewPager) findViewById(R.id.container_config);
+        //tabs = (TabLayout) findViewById(R.id.tabs);
+
         setupViewPager(mViewPager);
 
         btnDismiss = (Button) findViewById(R.id.butDismiss);
@@ -261,6 +265,7 @@ public class AppConfigActivity extends AppCompatActivity {
         adapter.addFragment(appConfigPage2, "TAB2");
 
         viewPager.setAdapter(adapter);
+
     }
 
     public class SectionsPageAdapter extends FragmentPagerAdapter {
