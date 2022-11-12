@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/bgc">
     <TextView
         android:id="@+id/textViewTtitleTab1"
         android:layout_width="wrap_content"
@@ -20,6 +21,7 @@
         android:textSize="18sp"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1"
+        android:textColor="?attr/tC"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -29,7 +31,8 @@
         android:id="@+id/txtMainAltitude"
         android:layout_marginTop="20dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtMainAltitude"
@@ -43,7 +46,8 @@
         android:text="100"
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -53,15 +57,19 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtMainAltitude"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <Spinner
         android:id="@+id/spinnerOut1"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/editTxtDelay1"
         android:layout_alignBaseline="@+id/txtOut1"
-        android:spinnerMode="dropdown" />
+        android:layout_alignStart="@+id/editTxtDelay1"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:spinnerMode="dropdown"
+
+        android:theme="@style/ThemeOverlay.AppCompat.DayNight" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -71,7 +79,8 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtOut1"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtDelay1"
@@ -81,7 +90,8 @@
         android:layout_alignBaseline="@+id/txtViewDelay1"
         android:inputType="number"
         android:textAlignment="textEnd"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textColor="?attr/tC"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -90,7 +100,8 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewDelay1"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <Spinner
         android:id="@+id/spinnerOut2"
@@ -108,7 +119,8 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtOut2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtDelay2"
@@ -118,7 +130,8 @@
         android:layout_alignBaseline="@+id/txtViewDelay2"
         android:inputType="number"
         android:textAlignment="textEnd"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textColor="?attr/tC"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -127,7 +140,8 @@
         android:layout_below="@+id/txtViewDelay2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp" />
+        android:layout_marginTop="18dp"
+        android:textColor="?attr/tC"/>
 
     <Spinner
         android:id="@+id/spinnerOut3"
@@ -144,7 +158,8 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtOut3"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtDelay3"
@@ -154,7 +169,8 @@
         android:layout_alignBaseline="@+id/txtViewDelay3"
         android:inputType="number"
         android:textAlignment="textEnd"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -164,7 +180,8 @@
         android:layout_below="@+id/txtViewDelay3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp" />
+        android:layout_marginTop="18dp"
+        android:textColor="?attr/tC"/>
 
     <Spinner
         android:id="@+id/spinnerOut4"
@@ -181,7 +198,8 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtOut4"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtDelay4"
@@ -192,6 +210,7 @@
         android:layout_marginEnd="42dp"
         android:inputType="number"
         android:textAlignment="textEnd"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textColor="?attr/tC"/>
 
 </RelativeLayout>

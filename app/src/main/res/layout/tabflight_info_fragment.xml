@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/bgc">
     <TextView
         android:id="@+id/textViewTitleFlightInfo"
         android:layout_width="wrap_content"
@@ -11,7 +12,8 @@
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"
         android:textSize="18sp"
-        android:text="@string/flight_info" />
+        android:text="@string/flight_info"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/flightNbr"
@@ -20,7 +22,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textViewTitleFlightInfo"
         android:layout_marginTop="18dp"
-        android:text="@string/flight_nbr" />
+        android:text="@string/flight_nbr"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/flightNbrValue"
@@ -29,7 +32,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textViewTitleFlightInfo"
         android:layout_marginTop="18dp"
-        android:text="" />
+        android:text=""
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/nbrOfSamples"
@@ -38,7 +42,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/flightNbr"
         android:layout_marginTop="18dp"
-        android:text="@string/nbr_of_sample" />
+        android:text="@string/nbr_of_sample"
+        android:textColor="?attr/tC"/>
     <TextView
         android:id="@+id/nbrOfSamplesValue"
         android:layout_width="wrap_content"
@@ -46,7 +51,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/flightNbr"
         android:layout_marginTop="18dp"
-        android:text="" />
+        android:text=""
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/apogeeAltitude"
@@ -55,7 +61,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/nbrOfSamples"
         android:layout_marginTop="18dp"
-        android:text="@string/apogee_altitude" />
+        android:text="@string/apogee_altitude"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/apogeeAltitudeValue"
@@ -64,7 +71,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/nbrOfSamples"
         android:layout_marginTop="18dp"
-        android:text="m" />
+        android:text="m"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/flightDuration"
@@ -73,7 +81,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/apogeeAltitude"
         android:layout_marginTop="18dp"
-        android:text="@string/flight_duration" />
+        android:text="@string/flight_duration"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/flightDurationValue"
@@ -82,7 +91,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/apogeeAltitude"
         android:layout_marginTop="18dp"
-        android:text="@string/secs" />
+        android:text="@string/secs"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/burnTime"
@@ -91,7 +101,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/flightDuration"
         android:layout_marginTop="18dp"
-        android:text="@string/burn_time" />
+        android:text="@string/burn_time"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/burnTimeValue"
@@ -100,7 +111,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/flightDuration"
         android:layout_marginTop="18dp"
-        android:text="@string/secs" />
+        android:text="@string/secs"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/maxVelociy"
@@ -109,7 +121,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/burnTime"
         android:layout_marginTop="18dp"
-        android:text="@string/max_velocity" />
+        android:text="@string/max_velocity"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/maxVelociyValue"
@@ -118,7 +131,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/burnTime"
         android:layout_marginTop="18dp"
-        android:text="@string/km_h" />
+        android:text="@string/km_h"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/maxAcceleration"
@@ -127,7 +141,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/maxVelociy"
         android:layout_marginTop="18dp"
-        android:text="@string/max_acceleration" />
+        android:text="@string/max_acceleration"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/maxAccelerationValue"
@@ -136,7 +151,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/maxVelociy"
         android:layout_marginTop="18dp"
-        android:text="@string/g_secs" />
+        android:text="@string/g_secs"
+        android:textColor="?attr/tC"/>
     <TextView
         android:id="@+id/timeToApogee"
         android:layout_width="wrap_content"
@@ -144,7 +160,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/maxAcceleration"
         android:layout_marginTop="18dp"
-        android:text="@string/time_to_apogee" />
+        android:text="@string/time_to_apogee"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/timeToApogeeValue"
@@ -153,7 +170,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/maxAcceleration"
         android:layout_marginTop="18dp"
-        android:text="@string/secs" />
+        android:text="@string/secs"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/mainAltitude"
@@ -162,7 +180,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/timeToApogee"
-        android:text="@string/main_alti" />
+        android:text="@string/main_alti"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/mainAltitudeValue"
@@ -171,7 +190,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/timeToApogee"
-        android:text="m" />
+        android:text="m"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/maxDescent"
@@ -180,7 +200,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/mainAltitude"
-        android:text="@string/max_descent_speed" />
+        android:text="@string/max_descent_speed"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/maxDescentValue"
@@ -189,7 +210,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/mainAltitude"
-        android:text="m/secs" />
+        android:text="m/secs"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/landingSpeed"
@@ -198,7 +220,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/maxDescent"
-        android:text="@string/landing_speed" />
+        android:text="@string/landing_speed"
+        android:textColor="?attr/tC"/>
     <TextView
         android:id="@+id/landingSpeedValue"
         android:layout_width="wrap_content"
@@ -206,7 +229,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/maxDescent"
-        android:text="m/secs" />
+        android:text="m/secs"
+        android:textColor="?attr/tC"/>
     <Button
         android:id="@+id/butExportToCsv"
         android:layout_width="wrap_content"

@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/bgc">
     <TextView
         android:id="@+id/textViewTtitleTab4"
         android:layout_width="wrap_content"
@@ -11,7 +12,8 @@
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"
         android:textSize="18sp"
-        android:text="@string/servos_config" />
+        android:text="@string/servos_config"
+        android:textColor="?attr/tC"/>
     <TextView
         android:id="@+id/servo1OffPos"
         android:layout_width="wrap_content"
@@ -19,7 +21,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textViewTtitleTab4"
         android:layout_marginTop="18dp"
-        android:text="@string/servo1_off_pos" />
+        android:text="@string/servo1_off_pos"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtServo1OffPos"
@@ -30,6 +33,7 @@
         android:inputType="number"
         android:singleLine="true"
         android:text="100"
+        android:textColor="?attr/tC"
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
         android:textSize="13sp" />
@@ -41,7 +45,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/servo1OffPos"
         android:layout_marginTop="18dp"
-        android:text="@string/servo1_on_pos" />
+        android:text="@string/servo1_on_pos"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtServo1OnPos"
@@ -52,6 +57,7 @@
         android:inputType="number"
         android:singleLine="true"
         android:text="100"
+        android:textColor="?attr/tC"
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
         android:textSize="13sp" />
@@ -63,7 +69,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/servo1OnPos"
-        android:text="@string/servo2_off_pos" />
+        android:text="@string/servo2_off_pos"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtServo2OffPos"
@@ -74,6 +81,7 @@
         android:inputType="number"
         android:singleLine="true"
         android:text="100"
+        android:textColor="?attr/tC"
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
         android:textSize="13sp" />
@@ -85,7 +93,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/servo2OffPos"
         android:layout_marginTop="18dp"
-        android:text="@string/servo2_on_pos" />
+        android:text="@string/servo2_on_pos"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtServo2OnPos"
@@ -96,6 +105,7 @@
         android:inputType="number"
         android:singleLine="true"
         android:text="100"
+        android:textColor="?attr/tC"
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
         android:textSize="13sp" />
@@ -108,7 +118,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/servo2OnPos"
-        android:text="@string/servo3_off_pos" />
+        android:text="@string/servo3_off_pos"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtServo3OffPos"
@@ -119,6 +130,7 @@
         android:inputType="number"
         android:singleLine="true"
         android:text="100"
+        android:textColor="?attr/tC"
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
         android:textSize="13sp" />
@@ -130,7 +142,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/servo3OffPos"
         android:layout_marginTop="18dp"
-        android:text="@string/servo3_on_pos" />
+        android:text="@string/servo3_on_pos"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtServo3OnPos"
@@ -143,7 +156,8 @@
         android:text="100"
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textColor="?attr/tC"/>
 
 
     <TextView
@@ -153,7 +167,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/servo3OnPos"
-        android:text="@string/servo4_off_pos" />
+        android:text="@string/servo4_off_pos"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtServo4OffPos"
@@ -166,7 +181,8 @@
         android:text="100"
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/servo4OnPos"
@@ -175,7 +191,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/servo4OffPos"
         android:layout_marginTop="18dp"
-        android:text="@string/servo4_on_pos" />
+        android:text="@string/servo4_on_pos"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtServo4OnPos"
@@ -186,7 +203,9 @@
         android:inputType="number"
         android:singleLine="true"
         android:text="100"
+        android:textColor="?attr/tC"
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        />
 </RelativeLayout>

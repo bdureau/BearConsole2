@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="?attr/bgc"
     tools:context=".telemetry.AltimeterStatus">
 
 
@@ -18,12 +19,14 @@
         android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-black"
         android:text="@string/altimeter_status"
+        android:textColor="?attr/tC"
         android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/altimeter_status_output_1"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewOutput1"
         android:layout_below="@+id/txtViewTitle"
         android:layout_alignParentLeft="true"
@@ -34,6 +37,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewOutput1Status"
         android:text="@string/altimeter_status_disabled"
+        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewTitle"/>
 
@@ -41,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/altimeter_status_output_2"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewOutput2"
         android:layout_below="@+id/txtViewOutput1"
         android:layout_alignParentLeft="true"
@@ -50,7 +55,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtViewOutput2Status"
-        android:text="Disabled"
+        android:text="@string/altimeter_status_disabled"
+        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewOutput1"/>
 
@@ -58,6 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/altimeter_status_output_3"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewOutput3"
         android:layout_below="@+id/txtViewOutput2"
         android:layout_alignParentLeft="true"
@@ -67,13 +74,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtViewOutput3Status"
-        android:text="Disabled"
+        android:text="@string/altimeter_status_disabled"
+        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewOutput2"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/altimeter_status_output_4"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewOutput4"
         android:layout_below="@+id/txtViewOutput3"
         android:layout_alignParentLeft="true"
@@ -83,7 +92,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtViewOutput4Status"
-        android:text="Disabled"
+        android:text="@string/altimeter_status_disabled"
+        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewOutput3"/>
 
@@ -91,6 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/altimeter_status_current_altitude"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewCurrentAltitude"
         android:layout_below="@+id/txtViewOutput4"
         android:layout_alignParentLeft="true"
@@ -100,12 +111,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewAltitude"
         android:text="0"
+        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewOutput4"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/temperature"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewCurrentTemperature"
         android:layout_below="@+id/txtViewCurrentAltitude"
         android:layout_alignParentLeft="true"
@@ -115,12 +128,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewTemperature"
         android:text="0"
+        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewCurrentAltitude"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/altimeter_status_battery_voltage"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewBatteryVoltage"
         android:layout_below="@+id/txtViewTemperature"
         android:layout_alignParentLeft="true"
@@ -130,12 +145,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewVoltage"
         android:text="0"
+        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewTemperature"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="EEprom"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewEEprom"
         android:layout_below="@+id/txtViewBatteryVoltage"
         android:layout_alignParentLeft="true"
@@ -145,12 +162,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewEEpromUsage"
         android:text="0 %"
+        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewBatteryVoltage"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/flight"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewFlight"
         android:layout_below="@+id/txtViewEEpromUsage"
         android:layout_alignParentLeft="true"
@@ -160,27 +179,26 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewNbrOfFlight"
         android:text="0"
+        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewEEpromUsage"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/altimeter_status_link_type"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewLinkType"
         android:layout_below="@+id/txtViewFlight"
         android:layout_alignParentLeft="true"
         />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtViewLink"
         android:text="@string/altimeter_status_bluetooth"
+        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewFlight"/>
-
-
-
     <TextView
         android:id="@+id/txtViewTitle2"
         android:layout_width="wrap_content"
@@ -200,7 +218,8 @@
         android:layout_below="@+id/txtViewTitle2"
         android:layout_marginEnd="61dp"
         android:layout_marginRight="61dp"
-        android:text="@string/switch_output_1" />
+        android:text="@string/switch_output_1"
+        android:textColor="?attr/tC"/>
     <Switch
         android:id="@+id/switchOutput2"
         android:layout_width="wrap_content"
@@ -210,7 +229,8 @@
         android:layout_below="@+id/switchOutput1"
         android:layout_marginEnd="61dp"
         android:layout_marginRight="61dp"
-        android:text="@string/switch_output_2" />
+        android:text="@string/switch_output_2"
+        android:textColor="?attr/tC"/>
 
     <Switch
         android:id="@+id/switchOutput3"
@@ -221,7 +241,8 @@
         android:layout_below="@+id/switchOutput2"
         android:layout_marginEnd="61dp"
         android:layout_marginRight="61dp"
-        android:text="@string/switch_output_3" />
+        android:text="@string/switch_output_3"
+        android:textColor="?attr/tC"/>
     <Switch
         android:id="@+id/switchOutput4"
         android:layout_width="wrap_content"
@@ -231,7 +252,8 @@
         android:layout_below="@+id/switchOutput3"
         android:layout_marginEnd="61dp"
         android:layout_marginRight="61dp"
-        android:text="@string/switch_output_4" />
+        android:text="@string/switch_output_4"
+        android:textColor="?attr/tC"/>
 
 
 </RelativeLayout>

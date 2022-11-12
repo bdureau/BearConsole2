@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/bgc">
 
     <TextView
         android:id="@+id/textViewAltimeterModelLbl"
@@ -11,6 +12,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="@string/select_altimeter_model"
+        android:textColor="?attr/tC"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <RadioGroup
@@ -26,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AltiMulti"
+            android:textColor="?attr/tC"
             tools:layout_editor_absoluteX="32dp"
             tools:layout_editor_absoluteY="74dp" />
 
@@ -34,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AltiMultiV2"
+            android:textColor="?attr/tC"
             tools:layout_editor_absoluteX="32dp"
             tools:layout_editor_absoluteY="74dp" />
 
@@ -42,6 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AltiServo"
+            android:textColor="?attr/tC"
             tools:layout_editor_absoluteX="32dp"
             tools:layout_editor_absoluteY="74dp" />
 
@@ -50,6 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AltiDuo"
+            android:textColor="?attr/tC"
             tools:layout_editor_absoluteX="32dp"
             tools:layout_editor_absoluteY="74dp" />
 
@@ -58,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AltiMultiSTM32"
+            android:textColor="?attr/tC"
             tools:layout_editor_absoluteX="32dp"
             tools:layout_editor_absoluteY="74dp" />
 
@@ -66,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AltiGPS"
+            android:textColor="?attr/tC"
             tools:layout_editor_absoluteX="32dp"
             tools:layout_editor_absoluteY="74dp" />
 
@@ -74,6 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AltiESP32"
+            android:textColor="?attr/tC"
             tools:layout_editor_absoluteX="32dp"
             tools:layout_editor_absoluteY="74dp" />
     </RadioGroup>
@@ -135,7 +144,7 @@
                 android:id="@+id/tvRead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:textColor="?attr/tC"
                 android:layout_alignParentLeft="true" />
         </LinearLayout>
     </ScrollView>

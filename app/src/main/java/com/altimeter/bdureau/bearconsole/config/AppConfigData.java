@@ -46,6 +46,7 @@ public class AppConfigData {
 
     private String rocketLatitude = "0.0";
     private String rocketLongitude = "0.0";
+    private String darkMode = "true";
 
     public AppConfigData(Context current)
     {

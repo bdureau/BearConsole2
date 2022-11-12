@@ -8,6 +8,8 @@ package com.altimeter.bdureau.bearconsole.Flight;
  *
  **/
 import android.content.Intent;
+
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +37,11 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
     public String TAG = "MAP_ACTIVITY";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.DarkTheme);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flight_view_maps);
 

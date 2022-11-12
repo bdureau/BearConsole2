@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_disabled">Disabled</string>
+    <string name="gps_status">GPS Status</string>
+    <string name="satellites">Satellites</string>
+    <string name="hdop">hdop</string>
+    <string name="gps_altitude">GPS altitude</string>
+    <string name="gps_speed">GPS Speed</string>
+    <string name="location_age">Location age</string>
+    <string name="time_sat_acquisition">Time sat acquisition</string>
+    <string name="use_telemetryport">Use TelemetryPort</string>
+</resources>

@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +45,11 @@ public class SearchBluetooth extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.DarkTheme);
+        } else {
+            setTheme(R.style.AppTheme);
+        }*/
         super.onCreate(savedInstanceState);
         //Check the local and force it if needed
         myBT = (ConsoleApplication) getApplication();
@@ -59,7 +66,7 @@ public class SearchBluetooth extends AppCompatActivity {
 
         if(myBluetooth == null)
         {
-            //Show a mensag. that the device has no bluetooth adapter
+            //Show a message. that the device has no bluetooth adapter
             //Bluetooth Device Not Available
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.BT_msg1), Toast.LENGTH_LONG).show();
 

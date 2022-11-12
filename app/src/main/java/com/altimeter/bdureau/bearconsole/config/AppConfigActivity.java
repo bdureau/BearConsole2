@@ -8,6 +8,7 @@ package com.altimeter.bdureau.bearconsole.config;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -27,7 +28,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
@@ -59,7 +62,13 @@ public class AppConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.DarkTheme);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
         //get the Connection Application pointer
         myBT = (ConsoleApplication) getApplication();
 
@@ -304,6 +313,7 @@ public class AppConfigActivity extends AppCompatActivity {
         private Spinner spConnectionType, spGraphicsLibType;
         private CheckBox cbAllowMainDrogue, cbFullUSBSupport;
         private ConsoleApplication BT;
+        private Switch darkModeSwitch;
 
         public Tab1Fragment(ConsoleApplication lBT) {
             BT = lBT;
@@ -454,6 +464,31 @@ public class AppConfigActivity extends AppCompatActivity {
             //Allow only telemetry via USB
             cbFullUSBSupport = (CheckBox) view.findViewById(R.id.checkBoxFullUSBSupport);
 
+            //Dark mode
+            darkModeSwitch = (Switch) view.findViewById(R.id.switchMode);
+
+            darkModeSwitch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (darkModeSwitch.isChecked()) {
+                        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    }
+                    else {
+                        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    }
+
+                }
+            });
+         /*   darkModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    } else {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    }
+                }
+            });*/
             spAppLanguage.setSelection(Integer.parseInt(BT.getAppConf().getApplicationLanguage()));
             spAppUnit.setSelection(Integer.parseInt(BT.getAppConf().getUnits()));
             spGraphColor.setSelection(Integer.parseInt(BT.getAppConf().getGraphColor()));

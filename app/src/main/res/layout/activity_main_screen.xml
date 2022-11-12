@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="?attr/bgc"
     tools:context="com.altimeter.bdureau.bearconsole.MainScreenActivity">
 
     <Button
@@ -43,12 +44,12 @@
         android:id="@+id/butContinuityOnOff"
         android:layout_below="@+id/butTelemetry"
         android:layout_centerHorizontal="true" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reset_settings"
         android:id="@+id/butReset"
-
         android:layout_marginTop="21dp"
         android:layout_below="@+id/butContinuityOnOff"
         android:layout_centerHorizontal="true" />
@@ -60,7 +61,6 @@
         android:layout_below="@+id/butReset"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="false"
-
         android:layout_centerHorizontal="true"
         android:layout_marginTop="21dp"
         android:text="@string/status" />
@@ -71,7 +71,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/butReset"
         android:layout_alignParentRight="true"
-
         android:layout_centerHorizontal="false"
         android:layout_marginTop="21dp"
         android:text="Track" />
@@ -83,19 +82,15 @@
         android:layout_below="@+id/butStatus"
         android:layout_marginTop="21dp"
         android:layout_centerHorizontal="true"
-
         android:text="Flash firmware" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/disconnect"
         android:id="@+id/butDisconnect"
         android:layout_marginTop="21dp"
-
         android:layout_below="@+id/butFlashFirmware"
         android:layout_centerHorizontal="true" />
-
-
-
 
 </RelativeLayout>

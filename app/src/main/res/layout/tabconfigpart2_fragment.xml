@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/bgc">
     <TextView
         android:id="@+id/textViewTtitleTab2"
         android:layout_width="wrap_content"
@@ -11,12 +12,14 @@
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"
         android:textSize="18sp"
-        android:text="@string/altimeter_config_tab2" />
+        android:text="@string/altimeter_config_tab2"
+        android:textColor="?attr/tC"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewTtitleTab2"
         android:text="@string/baudRate"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewBaudRate"
         android:layout_marginTop="18dp"
         android:layout_alignParentLeft="true"
@@ -34,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/apogeeMeasures"
+        android:textColor="?attr/tC"
         android:id="@+id/txtViewApogeeMeasures"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewBaudRate"
@@ -48,7 +52,8 @@
         android:inputType="number"
         android:textAlignment="textEnd"
         android:layout_alignParentRight="true"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,7 +63,8 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewApogeeMeasures"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <Spinner
         android:id="@+id/spinnerAltimeterResolution"
@@ -76,7 +82,8 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewAltimeterResolution"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <Spinner
         android:id="@+id/spinnerEEpromSize"
@@ -92,7 +99,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewEEpromSize"
-        android:text="@string/beepOnOff" />
+        android:text="@string/beepOnOff"
+        android:textColor="?attr/tC"/>
 
     <Spinner
         android:id="@+id/spinnerBeepOnOff"
@@ -110,7 +118,8 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewBeepOnOff"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtEndRecordAltitude"
@@ -120,7 +129,8 @@
         android:layout_alignParentRight="true"
         android:inputType="number"
         android:textAlignment="textEnd"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/txtViewRecordTemp"
@@ -128,7 +138,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewEndRecordAltitude"
-        android:text="@string/RecordTemp" />
+        android:text="@string/RecordTemp"
+        android:textColor="?attr/tC"/>
 
     <Spinner
         android:id="@+id/spinnerRecordTemp"
@@ -144,7 +155,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewRecordTemp"
-        android:text="@string/SupersonicDelay" />
+        android:text="@string/SupersonicDelay"
+        android:textColor="?attr/tC"/>
 
     <Spinner
         android:id="@+id/spinnerSupersonicDelay"
@@ -163,7 +175,8 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewSupersonicDelay"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtLiftOffAltitude"
@@ -173,7 +186,8 @@
         android:layout_alignParentRight="true"
         android:inputType="number"
         android:textAlignment="textEnd"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textColor="?attr/tC"/>
 
     <TextView
         android:id="@+id/txtViewBatteryType"
@@ -181,7 +195,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewLiftOffAltitude"
-        android:text="@string/BatteryType" />
+        android:text="@string/BatteryType"
+        android:textColor="?attr/tC"/>
 
     <Spinner
         android:id="@+id/spinnerBatteryType"
@@ -199,7 +214,8 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewBatteryType"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/tC"/>
 
     <EditText
         android:id="@+id/editTxtRecordingTimeOut"
@@ -209,6 +225,7 @@
         android:layout_alignParentRight="true"
         android:inputType="number"
         android:textAlignment="textEnd"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textColor="?attr/tC"/>
 
 </RelativeLayout>
