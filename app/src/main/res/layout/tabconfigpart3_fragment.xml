@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/bgc">
+    >
     <TextView
         android:id="@+id/textViewTtitleTab3"
         android:layout_width="wrap_content"
@@ -13,7 +13,7 @@
         android:gravity="center_horizontal"
         android:textSize="18sp"
         android:text="@string/altimeter_config_tab3"
-        android:textColor="?attr/tC"/>
+        />
     <TextView
         android:id="@+id/txtAltimeterName"
         android:layout_width="wrap_content"
@@ -23,7 +23,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="28dp"
         android:text="@string/alti_name"
-        android:textColor="?attr/tC"/>
+        />
 
     <TextView
         android:id="@+id/txtAltiNameValue"
@@ -32,7 +32,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/txtAltimeterName"
         android:text="qqqq"
-        android:textColor="?attr/tC"/>
+        />
     <TextView
         android:id="@+id/txtAltimeterID"
         android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="28dp"
         android:text="AltiID"
-        android:textColor="?attr/tC"/>
+        />
 
 
 
@@ -58,7 +58,7 @@
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
         android:textSize="13sp"
-        android:textColor="?attr/tC"/>
+        />
     <TextView
         android:id="@+id/txtAltiUnit"
         android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtAltimeterID"
         android:text="@string/units"
-        android:textColor="?attr/tC"/>
+        />
 
     <Spinner
         android:id="@+id/spinnerUnit"
@@ -85,7 +85,7 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtAltiUnit"
         android:text="@string/use_telemetryport"
-        android:textColor="?attr/tC"/>
+        />
 
     <Spinner
         android:id="@+id/spinnerUseTelemetryPort"
@@ -103,7 +103,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:text="@string/bip_mode"
-        android:textColor="?attr/tC"/>
+        />
 
     <Spinner
         android:id="@+id/spinnerBipMode"
@@ -121,7 +121,7 @@
         android:layout_below="@+id/txtBpMode"
         android:layout_marginTop="18dp"
         android:text="@string/beep_freq"
-        android:textColor="?attr/tC"/>
+        />
 
     <EditText
         android:id="@+id/editTxtBipFreq"
@@ -132,7 +132,7 @@
         android:inputType="number"
         android:singleLine="true"
         android:text="100"
-        android:textColor="?attr/tC"
+
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
         android:textSize="13sp" />
@@ -146,7 +146,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:text="@string/servo_stay_on"
-        android:textColor="?attr/tC"/>
+        />
 
     <Spinner
         android:id="@+id/spinnerServoStayOn"
@@ -164,7 +164,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:text="Servo Switch"
-        android:textColor="?attr/tC"/>
+        />
 
     <Spinner
         android:id="@+id/spinnerServoSwitch"

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/bgc"
     tools:context=".config.Config3DR">
 
     <TextView
@@ -11,7 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/configure_telemetry_module"
-        android:textColor="?attr/tC"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -29,7 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/m3DR_version"
-        android:textColor="?attr/tC"
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -39,8 +36,7 @@
         android:layout_below="@+id/textTelemetryConfigTitle"
         android:layout_marginTop="18dp"
         android:layout_toRightOf="@id/textversion"
-        android:text=""
-        android:textColor="?attr/tC"/>
+        android:text="" />
 
     <TextView
         android:id="@+id/textRSSI"
@@ -48,7 +44,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/rssi"
-        android:textColor="?attr/tC"
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -58,8 +53,7 @@
         android:layout_below="@+id/textversion"
         android:layout_marginTop="18dp"
         android:layout_toRightOf="@id/textRSSI"
-        android:text=""
-        android:textColor="?attr/tC"/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/textFormat"
@@ -67,7 +61,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/format"
-        android:textColor="?attr/tC"
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -77,8 +70,7 @@
         android:layout_below="@+id/textRSSI"
         android:layout_marginTop="18dp"
         android:layout_toRightOf="@id/textFormat"
-        android:text=""
-        android:textColor="?attr/tC"/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/textBaud"
@@ -86,7 +78,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/baud"
-        android:textColor="?attr/tC"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -105,8 +96,7 @@
         android:layout_below="@+id/textFormat"
         android:layout_marginTop="18dp"
         android:layout_toRightOf="@id/spinnerBaudRate"
-        android:text="@string/air_speed"
-        android:textColor="?attr/tC"/>
+        android:text="@string/air_speed"/>
 
     <Spinner
         android:id="@+id/spinnerAirSpeed"
@@ -123,7 +113,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/net_id"
-        android:textColor="?attr/tC"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -142,8 +131,7 @@
         android:layout_below="@+id/textAirSpeed"
         android:layout_marginTop="18dp"
         android:layout_toRightOf="@id/spinnerNetID"
-        android:text="@string/tx_power"
-        android:textColor="?attr/tC"/>
+        android:text="@string/tx_power"/>
 
     <Spinner
         android:id="@+id/spinnerTXPower"
@@ -159,8 +147,7 @@
         android:layout_below="@+id/spinnerTXPower"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ecc"
-        android:textColor="?attr/tC"/>
+        android:text="@string/ecc"/>
 
     <CheckBox
         android:id="@+id/checkBoxOpResend"
@@ -169,8 +156,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/spinnerTXPower"
         android:layout_centerInParent="true"
-        android:text="@string/op_resend"
-        android:textColor="?attr/tC"/>
+        android:text="@string/op_resend"/>
 
     <CheckBox
         android:id="@+id/checkBoxRTSCTS"
@@ -180,8 +166,7 @@
         android:layout_below="@+id/spinnerTXPower"
         android:layout_alignParentRight="true"
         android:layout_marginTop="0dp"
-        android:text="@string/rts_cts"
-        android:textColor="?attr/tC"/>
+        android:text="@string/rts_cts"/>
 
     <TextView
         android:id="@+id/textMavlink"
@@ -189,7 +174,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/mavlink"
-        android:textColor="?attr/tC"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -208,8 +192,7 @@
         android:layout_below="@+id/checkBoxECC"
         android:layout_alignRight="@id/textAirSpeed"
         android:layout_marginTop="18dp"
-        android:text="@string/lbt_rssi"
-        android:textColor="?attr/tC"/>
+        android:text="@string/lbt_rssi"/>
 
     <Spinner
         android:id="@+id/spinnerLBTRSSI"
@@ -227,7 +210,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/min_freq"
-        android:textColor="?attr/tC"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -245,15 +227,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textMinFreq"
         android:layout_marginTop="18dp"
-        android:text="@string/max_freq"
-        android:textColor="?attr/tC"/>
+        android:text="@string/max_freq"/>
 
     <Spinner
         android:id="@+id/spinnerMaxFreq"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textMaxFreq"
-
         android:layout_alignStart="@id/spinnerBaudRate"
         android:spinnerMode="dropdown"
         android:textAlignment="textEnd"/>
@@ -264,7 +244,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nbr_of_channels"
-        android:textColor="?attr/tC"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -283,8 +262,7 @@
         android:layout_below="@+id/textMaxFreq"
         android:layout_alignStart="@id/textAirSpeed"
         android:layout_marginTop="18dp"
-        android:text="@string/duty_cycle"
-        android:textColor="?attr/tC"/>
+        android:text="@string/duty_cycle"/>
 
     <Spinner
         android:id="@+id/spinnerDutyCycle"
@@ -301,7 +279,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/max_win_ms"
-        android:textColor="?attr/tC"
         android:layout_marginTop="18dp" />
 
     <Spinner

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/bgc"
+
     tools:context=".connection.TestConnection">
 
     <TextView
@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/test_your_connection"
-        android:textColor="?attr/tC"
+
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nbr_packets_sent"
-        android:textColor="?attr/tC"
+
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -40,7 +40,7 @@
         android:layout_marginTop="18dp"
         android:layout_alignParentRight="true"
         android:text=""
-        android:textColor="?attr/tC"/>
+        />
 
     <TextView
         android:id="@+id/textNbrPacketsReceived"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nbr_packets_received"
-        android:textColor="?attr/tC"
+
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -59,7 +59,7 @@
         android:layout_marginTop="18dp"
         android:layout_alignParentRight="true"
         android:text=""
-        android:textColor="?attr/tC"/>
+        />
 
     <TextView
         android:id="@+id/textNbrPacketsReceivedOK"
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nbr_received_ok"
-        android:textColor="?attr/tC"
+
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -78,7 +78,7 @@
         android:layout_marginTop="18dp"
         android:layout_alignParentRight="true"
         android:text=""
-        android:textColor="?attr/tC"/>
+        />
 
     <TextView
         android:id="@+id/textNbrPacketsReceivedNotOK"
@@ -86,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nbr_packets_not_ok"
-        android:textColor="?attr/tC"
+
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -97,7 +97,7 @@
         android:layout_marginTop="18dp"
         android:layout_alignParentRight="true"
         android:text=""
-        android:textColor="?attr/tC"/>
+        />
 
     <TextView
         android:id="@+id/textNbrPacketsReceivedPercentageError"
@@ -105,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/percentage_of_errors"
-        android:textColor="?attr/tC"
+
         android:layout_marginTop="18dp" />
 
     <TextView
@@ -116,7 +116,7 @@
         android:layout_marginTop="18dp"
         android:layout_alignParentRight="true"
         android:text=""
-        android:textColor="?attr/tC"/>
+        />
 
 
     <ScrollView
@@ -142,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:textColor="?attr/tC"/>
+                />
         </LinearLayout>
     </ScrollView>
 

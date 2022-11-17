@@ -7,7 +7,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="?attr/bgc"
     tools:context=".telemetry.AltimeterStatus">
 
 
@@ -19,14 +18,12 @@
         android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-black"
         android:text="@string/gps_status"
-        android:textColor="?attr/tC"
         android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/satellites"
-        android:textColor="?attr/tC"
         android:id="@+id/txtViewSatellites"
         android:layout_below="@+id/txtViewTitle"
         android:layout_alignParentLeft="true"
@@ -36,7 +33,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewSatellitesVal"
         android:text="0"
-        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewTitle"/>
 
@@ -44,7 +40,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hdop"
-        android:textColor="?attr/tC"
         android:id="@+id/txtViewHdop"
         android:layout_below="@+id/txtViewSatellites"
         android:layout_alignParentLeft="true"
@@ -54,7 +49,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewHdopVal"
         android:text="0"
-        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewSatellites"/>
 
@@ -62,7 +56,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/gps_altitude"
-        android:textColor="?attr/tC"
         android:id="@+id/txtViewGPSAltitude"
         android:layout_below="@+id/txtViewHdop"
         android:layout_alignParentLeft="true"/>
@@ -71,7 +64,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewGPSAltitudeVal"
         android:text="0"
-        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewHdop"/>
 
@@ -79,7 +71,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/gps_speed"
-        android:textColor="?attr/tC"
         android:id="@+id/txtViewGPSSpeed"
         android:layout_below="@+id/txtViewGPSAltitude"
         android:layout_alignParentLeft="true"/>
@@ -88,7 +79,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewGPSSpeedVal"
         android:text=""
-        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewGPSAltitude"/>
 
@@ -96,7 +86,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/latitude"
-        android:textColor="?attr/tC"
         android:id="@+id/txtViewLatitude"
         android:layout_below="@+id/txtViewGPSSpeed"
         android:layout_alignParentLeft="true"/>
@@ -105,7 +94,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewLatitudeValue"
         android:text="0"
-        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewGPSSpeed"/>
 
@@ -113,7 +101,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/longitude"
-        android:textColor="?attr/tC"
         android:id="@+id/txtViewLongitude"
         android:layout_below="@+id/txtViewLatitude"
         android:layout_alignParentLeft="true"
@@ -123,7 +110,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewLongitudeValue"
         android:text="0"
-        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewLatitudeValue"/>
 
@@ -131,7 +117,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/location_age"
-        android:textColor="?attr/tC"
         android:id="@+id/txtViewLocationAge"
         android:layout_below="@+id/txtViewLongitude"
         android:layout_alignParentLeft="true"
@@ -141,7 +126,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewLocationAgeValue"
         android:text="0"
-        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewLongitude"/>
 
@@ -149,7 +133,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/time_sat_acquisition"
-        android:textColor="?attr/tC"
         android:id="@+id/txtViewTimeSat"
         android:layout_below="@+id/txtViewLocationAge"
         android:layout_alignParentLeft="true"
@@ -159,7 +142,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtViewTimeSatValue"
         android:text="0"
-        android:textColor="?attr/tC"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewLocationAge"/>
 

@@ -96,11 +96,11 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
+        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
             setTheme(R.style.DarkTheme);
         } else {
             setTheme(R.style.AppTheme);
-        }
+        }*/
         super.onCreate(savedInstanceState);
         receiver = new LocationBroadCastReceiver();
         myBT = (ConsoleApplication) getApplication();

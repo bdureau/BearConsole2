@@ -78,7 +78,7 @@ public class ConsoleApplication extends Application {
         AppConf = new GlobalConfig(this);
         AppConf.ReadConfig();
         //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         BTCon = new BluetoothConnection();
         UsbCon = new UsbConnection();
 

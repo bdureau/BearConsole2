@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/bgc">
+    >
     <TextView
         android:id="@+id/textViewTtitleTab1"
         android:layout_width="wrap_content"
@@ -21,7 +21,7 @@
         android:textSize="18sp"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1"
-        android:textColor="?attr/tC"
+
         />
     <TextView
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
         android:layout_marginTop="20dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="?attr/tC"/>
+        />
 
     <EditText
         android:id="@+id/editTxtMainAltitude"
@@ -47,7 +47,7 @@
         android:textAlignment="textEnd"
         android:textIsSelectable="false"
         android:textSize="13sp"
-        android:textColor="?attr/tC"/>
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
         android:layout_below="@+id/txtMainAltitude"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="?attr/tC"/>
+        />
 
     <Spinner
         android:id="@+id/spinnerOut1"
@@ -80,7 +80,7 @@
         android:layout_below="@+id/txtOut1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="?attr/tC"/>
+        />
 
     <EditText
         android:id="@+id/editTxtDelay1"
@@ -91,7 +91,7 @@
         android:inputType="number"
         android:textAlignment="textEnd"
         android:textSize="13sp"
-        android:textColor="?attr/tC"/>
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
         android:layout_below="@+id/txtViewDelay1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="?attr/tC"/>
+        />
 
     <Spinner
         android:id="@+id/spinnerOut2"
@@ -120,7 +120,7 @@
         android:layout_below="@+id/txtOut2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="?attr/tC"/>
+        />
 
     <EditText
         android:id="@+id/editTxtDelay2"
@@ -131,7 +131,7 @@
         android:inputType="number"
         android:textAlignment="textEnd"
         android:textSize="13sp"
-        android:textColor="?attr/tC"/>
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="18dp"
-        android:textColor="?attr/tC"/>
+        />
 
     <Spinner
         android:id="@+id/spinnerOut3"
@@ -159,7 +159,7 @@
         android:layout_below="@+id/txtOut3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="?attr/tC"/>
+        />
 
     <EditText
         android:id="@+id/editTxtDelay3"
@@ -170,7 +170,7 @@
         android:inputType="number"
         android:textAlignment="textEnd"
         android:textSize="13sp"
-        android:textColor="?attr/tC"/>
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -181,7 +181,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="18dp"
-        android:textColor="?attr/tC"/>
+        />
 
     <Spinner
         android:id="@+id/spinnerOut4"
@@ -199,7 +199,7 @@
         android:layout_below="@+id/txtOut4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="?attr/tC"/>
+        />
 
     <EditText
         android:id="@+id/editTxtDelay4"
@@ -211,6 +211,6 @@
         android:inputType="number"
         android:textAlignment="textEnd"
         android:textSize="13sp"
-        android:textColor="?attr/tC"/>
+        />
 
 </RelativeLayout>
