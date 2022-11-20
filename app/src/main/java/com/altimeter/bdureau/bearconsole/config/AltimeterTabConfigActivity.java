@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +38,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +73,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
     private AltiConfigData AltiCfg = null;
     private ProgressDialog progress;
 
+    private TextView[] dotsSlide;
+    private LinearLayout linearDots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +96,6 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
-
-
 
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         btnDismiss.setOnClickListener(new View.OnClickListener() {
@@ -129,10 +131,45 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             adapter.addFragment(configPage4, "TAB4");
         }
 
+        linearDots=findViewById(R.id.idAltiConfigLinearDots);
+        agregaIndicateDots(0, adapter.getCount());
         viewPager.setAdapter(adapter);
+
+        viewPager.addOnPageChangeListener(viewListener);
+    }
+
+    public void agregaIndicateDots(int pos, int nbr){
+        dotsSlide =new TextView[nbr];
+        linearDots.removeAllViews();
+
+        for (int i=0; i< dotsSlide.length; i++){
+            dotsSlide[i]=new TextView(this);
+            dotsSlide[i].setText(Html.fromHtml("&#8226;"));
+            dotsSlide[i].setTextSize(35);
+            dotsSlide[i].setTextColor(getResources().getColor(R.color.colorWhiteTransparent));
+            linearDots.addView(dotsSlide[i]);
+        }
+
+        if(dotsSlide.length>0){
+            dotsSlide[pos].setTextColor(getResources().getColor(R.color.colorWhite));
+        }
 
     }
 
+    ViewPager.OnPageChangeListener viewListener=new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int i, float v, int i1) {
+        }
+
+        @Override
+        public void onPageSelected(int i) {
+            agregaIndicateDots(i, adapter.getCount());
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int i) {
+        }
+    };
 
     private boolean readConfig() {
         // ask for config

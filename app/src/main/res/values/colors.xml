@@ -10,4 +10,6 @@
     <color name="colorPrimary">#039BE5</color>
     <color name="colorPrimaryDark">#1E88E5</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorWhiteTransparent">#cccccc</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>

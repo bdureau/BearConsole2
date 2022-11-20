@@ -42,6 +42,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,6 +52,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +76,10 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private FlightData myflight = null;
     private ViewPager mViewPager;
     SectionsPageAdapter adapter;
+
+    private TextView[] dotsSlide;
+    private LinearLayout linearDots;
+
     private Tab1Fragment flightPage1 = null;
     private Tab2Fragment flightPage2 = null;
     private Button btnDismiss, buttonMap, butSelectCurves;
@@ -352,9 +358,43 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
         adapter.addFragment(flightPage1, "TAB1");
         adapter.addFragment(flightPage2, "TAB2");
-
+        linearDots=findViewById(R.id.idFlightLinearDots);
+        agregaIndicateDots(0, adapter.getCount());
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(viewListener);
     }
+
+    public void agregaIndicateDots(int pos, int nbr){
+        dotsSlide =new TextView[nbr];
+        linearDots.removeAllViews();
+
+        for (int i=0; i< dotsSlide.length; i++){
+            dotsSlide[i]=new TextView(this);
+            dotsSlide[i].setText(Html.fromHtml("&#8226;"));
+            dotsSlide[i].setTextSize(35);
+            dotsSlide[i].setTextColor(getResources().getColor(R.color.colorWhiteTransparent));
+            linearDots.addView(dotsSlide[i]);
+        }
+
+        if(dotsSlide.length>0){
+            dotsSlide[pos].setTextColor(getResources().getColor(R.color.colorWhite));
+        }
+    }
+
+    ViewPager.OnPageChangeListener viewListener=new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int i, float v, int i1) {
+        }
+
+        @Override
+        public void onPageSelected(int i) {
+            agregaIndicateDots(i, adapter.getCount());
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int i) {
+        }
+    };
 
     public class SectionsPageAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList();

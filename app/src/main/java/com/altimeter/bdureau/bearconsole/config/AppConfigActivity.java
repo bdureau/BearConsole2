@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,8 +30,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
@@ -49,16 +52,17 @@ public class AppConfigActivity extends AppCompatActivity {
     Button btnDismiss, btnSave, bdtDefault;
     private ViewPager mViewPager;
     SectionsPageAdapter adapter;
-    //TabLayout tabs;
-    private TextToSpeech mTTS;
 
+    private TextToSpeech mTTS;
     private Tab1Fragment appConfigPage1 = null;
     private Tab2Fragment appConfigPage2 = null;
-
 
     private static AppConfigData appConfigData = null;
 
     ConsoleApplication myBT;
+
+    private TextView[] dotsSlide;
+    private LinearLayout linearDots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +84,6 @@ public class AppConfigActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app_config);
 
         mViewPager = (ViewPager) findViewById(R.id.container_config);
-        //tabs = (TabLayout) findViewById(R.id.tabs);
-
         setupViewPager(mViewPager);
 
         btnDismiss = (Button) findViewById(R.id.butDismiss);
@@ -273,10 +275,44 @@ public class AppConfigActivity extends AppCompatActivity {
         adapter.addFragment(appConfigPage1, "TAB1");
         adapter.addFragment(appConfigPage2, "TAB2");
 
+        linearDots=findViewById(R.id.idAppConfigLinearDots);
+        agregaIndicateDots(0, adapter.getCount());
         viewPager.setAdapter(adapter);
+
+        viewPager.addOnPageChangeListener(viewListener);
+    }
+    public void agregaIndicateDots(int pos, int nbr){
+        dotsSlide =new TextView[nbr];
+        linearDots.removeAllViews();
+
+        for (int i=0; i< dotsSlide.length; i++){
+            dotsSlide[i]=new TextView(this);
+            dotsSlide[i].setText(Html.fromHtml("&#8226;"));
+            dotsSlide[i].setTextSize(35);
+            dotsSlide[i].setTextColor(getResources().getColor(R.color.colorWhiteTransparent));
+            linearDots.addView(dotsSlide[i]);
+        }
+
+        if(dotsSlide.length>0){
+            dotsSlide[pos].setTextColor(getResources().getColor(R.color.colorWhite));
+        }
 
     }
 
+    ViewPager.OnPageChangeListener viewListener=new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int i, float v, int i1) {
+        }
+
+        @Override
+        public void onPageSelected(int i) {
+            agregaIndicateDots(i, adapter.getCount());
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int i) {
+        }
+    };
     public class SectionsPageAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList();
         private final List<String> mFragmentTitleList = new ArrayList();
@@ -471,6 +507,7 @@ public class AppConfigActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (darkModeSwitch.isChecked()) {
+                        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                         //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     }
                     else {
