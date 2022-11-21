@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +11,6 @@
     tools:context="com.altimeter.bdureau.bearconsole.Help.AboutActivity">
 
 
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,11 +19,14 @@
         android:layout_above="@+id/txtViewTitle"
         android:layout_centerHorizontal="true" />
 
+    <!--android:text="@string/dismiss_about"-->
+    <!--app:icon="@drawable/ok_30x30_trans"-->
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dismiss_about"
         android:id="@+id/butDismiss"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:text="@string/dismiss_about"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
