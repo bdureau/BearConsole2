@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId 'com.altimeter.bdureau.bearconsole'
         minSdk 21
-        targetSdk 30
+        targetSdk 33
         versionName 'Pre 2.0.0 candidate 24'
         versionCode 24
         multiDexEnabled true
@@ -42,7 +42,6 @@ dependencies {
     implementation files('libs/usbserial.jar')
     implementation files('libs/physicaloid.aar')
     implementation files('libs/viewtooltip.aar')
-
     implementation 'com.google.android.gms:play-services-maps:18.0.1'
     implementation 'com.google.android.gms:play-services-location:19.0.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'

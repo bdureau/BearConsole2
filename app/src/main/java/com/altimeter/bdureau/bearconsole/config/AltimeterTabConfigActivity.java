@@ -13,13 +13,9 @@ import androidx.annotation.Nullable;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-/*import android.graphics.LinearGradient;
-import android.graphics.Paint;
-import android.graphics.Shader;*/
-import android.os.AsyncTask;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -56,8 +52,7 @@ import java.util.List;
 //tooltip library
 import com.github.florent37.viewtooltip.ViewTooltip;
 
-/*import static android.graphics.Color.BLUE;
-import static android.graphics.Color.GREEN;*/
+
 
 public class AltimeterTabConfigActivity extends AppCompatActivity {
     private static final String TAG = "AltimeterTabConfigActivity";
@@ -78,11 +73,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
+
         super.onCreate(savedInstanceState);
         //get the bluetooth connection pointer
         myBT = (ConsoleApplication) getApplication();
