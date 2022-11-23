@@ -58,9 +58,9 @@
 
     <Button
         android:id="@+id/butDefault"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:text="@string/default_config" />
+        app:icon="@drawable/default_30x30_trans" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
