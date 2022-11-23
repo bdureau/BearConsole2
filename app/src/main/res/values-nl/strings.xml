@@ -92,11 +92,11 @@
     <string name="config_no">Nee</string>
     <string name="config_yes">Ja</string>
     <!-- Main Screen -->
-    <string name="altimeter_settings">Hoogtemeterinstellingen</string>
-    <string name="continuity_on_off">Continuïteit aan/uit</string>
-    <string name="read_flights">Vluchten inlezen</string>
-    <string name="reset_settings">Reset instellingen</string>
-    <string name="disconnect">Verbinding verbreken</string>
+    <string name="altimeter_settings">Hoogtemeter\ninstellingen</string>
+    <string name="continuity_on_off">Continuïteit\naan/uit</string>
+    <string name="read_flights">Vluchten\ninlezen</string>
+    <string name="reset_settings">Reset\ninstellingen</string>
+    <string name="disconnect">Verbinding\nverbreken</string>
     <string name="connect">Aansluiten</string>
     <string name="telemetry">Telemetrie</string>
 

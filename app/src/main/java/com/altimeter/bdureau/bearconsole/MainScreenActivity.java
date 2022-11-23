@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
@@ -45,7 +48,6 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import org.afree.data.xy.XYSeriesCollection;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,8 +57,13 @@ import java.util.Set;
 
 public class MainScreenActivity extends AppCompatActivity {
     String address = null;
-    Button btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
-    Button btnTelemetry, btnStatus, btnFlashFirmware, btnTrack;
+    CardView btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
+    CardView btnTelemetry, btnStatus, btnFlashFirmware, btnTrack, btnInfo;
+
+    ImageView image_settings, image_flights, image_telemetry, image_continuity, image_reset,
+            image_status, image_track, image_flash, image_info, image_connect;
+    TextView text_settings, text_flights, text_telemetry, text_continuity, text_reset,
+            text_status, text_track, text_flash, text_info, text_connect;
 
     UsbManager usbManager;
     UsbDevice device;
@@ -85,7 +92,8 @@ public class MainScreenActivity extends AppCompatActivity {
                         EnableUI();
                         btnFlashFirmware.setEnabled(false);
                         myBT.setConnectionType("usb");
-                        btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
+                        //btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
+                        text_connect.setText(getResources().getString(R.string.disconnect));
                     }
 
                 } else {
@@ -97,7 +105,8 @@ public class MainScreenActivity extends AppCompatActivity {
                 if (myBT.getConnectionType().equals("usb"))
                     if (myBT.getConnected()) {
                         myBT.Disconnect();
-                        btnConnectDisconnect.setText(getResources().getString(R.string.connect));
+                        //btnConnectDisconnect.setText(getResources().getString(R.string.connect));
+                        text_connect.setText(getResources().getString(R.string.connect));
                     }
             }
         }
@@ -105,11 +114,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
+
         super.onCreate(savedInstanceState);
         usbManager = (UsbManager) getSystemService(this.USB_SERVICE);
 
@@ -129,41 +134,77 @@ public class MainScreenActivity extends AppCompatActivity {
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         registerReceiver(broadcastReceiver, filter);
 
-        btnAltiSettings = (Button) findViewById(R.id.butAltiSettings);
-        btnReadFlights = (Button) findViewById(R.id.butReadFlight);
-        btnTelemetry = (Button) findViewById(R.id.butTelemetry);
-        btnStatus = (Button) findViewById(R.id.butStatus);
-        btnFlashFirmware = (Button) findViewById(R.id.butFlashFirmware);
-        btnConnectDisconnect = (Button) findViewById(R.id.butDisconnect);
-        btnContinuityOnOff = (Button) findViewById(R.id.butContinuityOnOff);
-        btnReset = (Button) findViewById(R.id.butReset);
-        btnTrack = (Button) findViewById(R.id.butTrack);
+        //cards
+        btnAltiSettings = (CardView) findViewById(R.id.settings_card);
+        btnReadFlights = (CardView) findViewById(R.id.flights_card);
+        btnTelemetry = (CardView) findViewById(R.id.telemetry_card);
+        btnStatus = (CardView) findViewById(R.id.status_card);
+        btnFlashFirmware = (CardView) findViewById(R.id.flash_card);
+        btnConnectDisconnect = (CardView) findViewById(R.id.connect_card);
+        btnContinuityOnOff = (CardView) findViewById(R.id.continuity_card);
+        btnReset = (CardView) findViewById(R.id.reset_card);
+        btnTrack = (CardView) findViewById(R.id.track_card);
+        btnInfo = (CardView) findViewById(R.id.info_card);
+
+        // images
+        image_settings = (ImageView) findViewById(R.id.image_settings);
+        image_flights = (ImageView) findViewById(R.id.image_flights);
+        image_telemetry = (ImageView) findViewById(R.id.image_telemetry);
+        image_continuity = (ImageView) findViewById(R.id.image_continuity);
+        image_reset = (ImageView) findViewById(R.id.image_reset);
+        image_status = (ImageView) findViewById(R.id.image_status);
+        image_track = (ImageView) findViewById(R.id.image_status);
+        image_flash = (ImageView) findViewById(R.id.image_flash);
+        image_info = (ImageView) findViewById(R.id.image_info);
+        image_connect = (ImageView) findViewById(R.id.image_connect);
+
+        // text
+        text_settings = (TextView) findViewById(R.id.text_settings);
+        text_flights = (TextView) findViewById(R.id.text_flights);
+        text_telemetry = (TextView) findViewById(R.id.text_telemetry);
+        text_continuity = (TextView) findViewById(R.id.text_continuity);
+        text_reset = (TextView) findViewById(R.id.text_reset);
+        text_status = (TextView) findViewById(R.id.text_status);
+        text_track = (TextView) findViewById(R.id.text_track);
+        text_flash = (TextView) findViewById(R.id.text_flash);
+        text_info = (TextView) findViewById(R.id.text_info);
+        text_connect = (TextView) findViewById(R.id.text_connect);
 
         if (myBT.getConnected()) {
             EnableUI();
-            btnFlashFirmware.setEnabled(false);
+            //btnFlashFirmware.setEnabled(false);
+            setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
         } else {
             DisableUI();
-            btnConnectDisconnect.setText(R.string.connect);
-            btnFlashFirmware.setEnabled(true);
+            //btnConnectDisconnect.setText(R.string.connect);
+            text_connect.setText(getResources().getString(R.string.connect));
+            //btnFlashFirmware.setEnabled(true);
+            setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
         }
 
         //commands to be sent to bluetooth
         btnAltiSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent i = new Intent(MainScreenActivity.this, AltimeterTabConfigActivity.class);
                 //Change the activity.
                 startActivity(i);
             }
         });
 
+        // about
+        btnInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainScreenActivity.this, AboutActivity.class);
+                //Change the activity.
+                startActivity(i);
+            }
+        });
         //commands to be sent to flash the firmware
         btnFlashFirmware.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 myBT.getAppConf().ReadConfig();
                 Intent i = new Intent(MainScreenActivity.this, FlashFirmware.class);
                 //Change the activity.
@@ -186,7 +227,6 @@ public class MainScreenActivity extends AppCompatActivity {
                 if (myBT.getConnected()) {
                     myBT.flush();
                     myBT.clearInput();
-
                     myBT.write("y1;".toString());
                 }
                 Intent i;
@@ -244,8 +284,10 @@ public class MainScreenActivity extends AppCompatActivity {
                     Disconnect(); //close connection
                     DisableUI();
                     // we are disconnected enable flash firmware
-                    btnFlashFirmware.setEnabled(true);
-                    btnConnectDisconnect.setText(R.string.connect);
+                    //btnFlashFirmware.setEnabled(true);
+                    setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
+                    //btnConnectDisconnect.setText(R.string.connect);
+                    text_connect.setText(getResources().getString(R.string.connect));
                 } else {
                     if (myBT.getConnectionType().equals("bluetooth")) {
                         address = myBT.getAddress();
@@ -255,8 +297,10 @@ public class MainScreenActivity extends AppCompatActivity {
                             if (myBT.getConnected()) {
                                 EnableUI();
                                 // cannot flash firmware if connected
-                                btnFlashFirmware.setEnabled(false);
-                                btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
+                                //btnFlashFirmware.setEnabled(false);
+                                setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
+                                //btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
+                                text_connect.setText(getResources().getString(R.string.disconnect));
                             }
                         } else {
                             // choose the bluetooth device
@@ -312,15 +356,36 @@ public class MainScreenActivity extends AppCompatActivity {
     }
 
     private void DisableUI() {
-        btnAltiSettings.setEnabled(false);
-        btnReadFlights.setEnabled(false);
-        btnTelemetry.setEnabled(false);
-        btnContinuityOnOff.setEnabled(false);
-        btnReset.setEnabled(false);
-        btnStatus.setEnabled(false);
+        //btnAltiSettings.setEnabled(false);
+        setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
+
+        //btnReadFlights.setEnabled(false);
+        setEnabledCard(false, btnReadFlights, image_flights, text_flights);
+
+        //btnTelemetry.setEnabled(false);
+        setEnabledCard(false, btnTelemetry, image_telemetry, text_telemetry);
+
+        //btnContinuityOnOff.setEnabled(false);
+        setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
+
+        //btnReset.setEnabled(false);
+        setEnabledCard(false, btnReset, image_reset, text_reset);
+        //btnStatus.setEnabled(false);
+        setEnabledCard(false, btnStatus, image_status, text_status);
         //btnTrack.setEnabled(false);
+        //setEnabledCard(false, btnTrack, image_track, text_track);
         // now enable or disable the menu entries by invalidating it
         invalidateOptionsMenu();
+    }
+
+    private void setEnabledCard(boolean enable, CardView card, ImageView image, TextView text) {
+        card.setEnabled(enable);
+        image.setImageAlpha(enable? 0xFF : 0x3F);
+        /*if (enable==false)
+            if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES)
+                text.setTextColor(0xFF6C6666);
+            else
+                text.setTextColor(0xFFDFD5D5);*/
     }
 
     private void EnableUI() {
@@ -355,44 +420,61 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")) {
             Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-                btnContinuityOnOff.setEnabled(false);
+                //btnContinuityOnOff.setEnabled(false);
+                setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
             } else {
                 //enable it for bT or USB only if full support
                 if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true")))
-                    btnContinuityOnOff.setEnabled(true);
+                    //btnContinuityOnOff.setEnabled(true);
+                    setEnabledCard(true, btnContinuityOnOff, image_continuity, text_continuity);
                 else
-                    btnContinuityOnOff.setEnabled(false);
+                    //btnContinuityOnOff.setEnabled(false);
+                    setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
             }
 
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
                     myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
-                btnReadFlights.setEnabled(false);
+                //btnReadFlights.setEnabled(false);
+                setEnabledCard(false, btnReadFlights, image_flights, text_flights);
             } else {
                 //enable it for bT or USB only if full support
                 if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true")))
-                    btnReadFlights.setEnabled(true);
+                    //btnReadFlights.setEnabled(true);
+                    setEnabledCard(true, btnReadFlights, image_flights, text_flights);
                 else
-                    btnReadFlights.setEnabled(false);
+                    //btnReadFlights.setEnabled(false);
+                    setEnabledCard(false, btnReadFlights, image_flights, text_flights);
             }
-            btnTelemetry.setEnabled(true);
+            //btnTelemetry.setEnabled(true);
+            setEnabledCard(true, btnTelemetry, image_telemetry, text_telemetry);
             if(myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-                btnTrack.setEnabled(true);
+                //btnTrack.setEnabled(true);
+                setEnabledCard(true, btnTrack, image_track, text_track);
             } else {
-                btnTrack.setEnabled(false);
+                //btnTrack.setEnabled(false);
+                setEnabledCard(false, btnTrack, image_track, text_track);
             }
             //enable it for bT or USB only if full support
             if (myBT.getAppConf().getConnectionType().equals("0") || (myBT.getAppConf().getConnectionType().equals("1") && myBT.getAppConf().getFullUSBSupport().equals("true"))) {
-                btnAltiSettings.setEnabled(true);
-                btnReset.setEnabled(true);
-                btnStatus.setEnabled(true);
+                //btnAltiSettings.setEnabled(true);
+                setEnabledCard(true, btnAltiSettings, image_settings, text_settings);
+                //btnReset.setEnabled(true);
+                setEnabledCard(true, btnReset, image_reset, text_reset);
+                //btnStatus.setEnabled(true);
+                setEnabledCard(true, btnStatus, image_status, text_status);
             } else {
-                btnAltiSettings.setEnabled(false);
-                btnReset.setEnabled(false);
-                btnStatus.setEnabled(false);
+                //btnAltiSettings.setEnabled(false);
+                setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
+                //btnReset.setEnabled(false);
+                setEnabledCard(false, btnReset, image_reset, text_reset);
+                //btnStatus.setEnabled(false);
+                setEnabledCard(true, btnStatus, image_status, text_status);
             }
 
-            btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
-            btnFlashFirmware.setEnabled(false);
+            //btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
+            text_connect.setText(getResources().getString(R.string.disconnect));
+            //btnFlashFirmware.setEnabled(false);
+            setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
 
             if(!firmCompat.IsCompatible(myBT.getAltiConfigData().getAltimeterName(),
                     myBT.getAltiConfigData().getAltiMajorVersion()+ "."+ myBT.getAltiConfigData().getAltiMinorVersion())) {

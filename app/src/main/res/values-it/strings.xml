@@ -91,10 +91,10 @@
     <string name="config_no">No</string>
     <string name="config_yes">Si</string>
     <!-- Main Screen -->
-    <string name="altimeter_settings">Impostazioni Altimetro</string>
-    <string name="continuity_on_off">Continuità On/Off</string>
-    <string name="read_flights">Lettura Voli</string>
-    <string name="reset_settings">Reset impostazioni</string>
+    <string name="altimeter_settings">Impostazioni\nAltimetro</string>
+    <string name="continuity_on_off">Continuità\nOn/Off</string>
+    <string name="read_flights">Voli</string>
+    <string name="reset_settings">Reset\nimpostazioni</string>
     <string name="disconnect">Disconnessione</string>
     <string name="connect">Connessione</string>
     <string name="telemetry">Telemetria</string>

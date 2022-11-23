@@ -680,7 +680,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             } else if (nbr == 4) {
                 valHeader = getResources().getString(R.string.curve_accel);
             } else if (nbr == 5) {
-                    valHeader = "voltage";
+                valHeader = "voltage";
             } else if (nbr == 6) {
                 valHeader = getResources().getString(R.string.curve_latitude);
             } else if (nbr == 7) {

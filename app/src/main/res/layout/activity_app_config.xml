@@ -34,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignWithParentIfMissing="false"
+            android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
@@ -43,17 +44,17 @@
 
     <Button
         android:id="@+id/butSave"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start|bottom"
-        android:text="@string/save_config" />
+        app:icon="@drawable/save_30x30_trans"/>
 
     <Button
         android:id="@+id/butDismiss"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:text="@string/dismiss_app_config" />
+        app:icon="@drawable/ok_30x30_trans" />
 
     <Button
         android:id="@+id/butDefault"

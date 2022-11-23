@@ -26,11 +26,7 @@ Button btnDismiss;
     ConsoleApplication myBT ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
+
         super.onCreate(savedInstanceState);
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();

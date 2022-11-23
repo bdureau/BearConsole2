@@ -91,10 +91,10 @@
     <string name="servo4_off_pos">Servo4 off pos</string>
     <string name="servo4_on_pos">Servo4 on pos</string>
     <!-- Main Screen -->
-    <string name="altimeter_settings">Configuraciones de altímetro</string>
-    <string name="continuity_on_off">Continuidad On/Off</string>
-    <string name="read_flights">Lectura de vuelos</string>
-    <string name="reset_settings">Restablecer configuración</string>
+    <string name="altimeter_settings">Configuraciones\nde altímetro</string>
+    <string name="continuity_on_off">Continuidad\nOn/Off</string>
+    <string name="read_flights">Vuelos</string>
+    <string name="reset_settings">Restablecer\nconfiguración</string>
     <string name="disconnect">Desconectar</string>
     <string name="connect">Conectar</string>
     <string name="telemetry">Telemetría</string>

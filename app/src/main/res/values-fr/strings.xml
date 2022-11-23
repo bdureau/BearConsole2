@@ -93,10 +93,10 @@
     <string name="config_no">Non</string>
     <string name="config_yes">Oui</string>
     <!-- Main Screen -->
-    <string name="altimeter_settings">Configuration altimètre</string>
-    <string name="continuity_on_off">Continuité marche/arret</string>
-    <string name="read_flights">chargement vols</string>
-    <string name="reset_settings">Réinit config</string>
+    <string name="altimeter_settings">Configuration\naltimètre</string>
+    <string name="continuity_on_off">Continuité\nmarche/arret</string>
+    <string name="read_flights">Vols</string>
+    <string name="reset_settings">Réinit\nconfig</string>
     <string name="disconnect">Déconnecter</string>
     <string name="connect">Connecter</string>
     <string name="telemetry">Télémetrie</string>

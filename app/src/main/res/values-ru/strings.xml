@@ -92,12 +92,12 @@
     <string name="config_no">Нет</string>
     <string name="config_yes">Да</string>
     <!-- Main Screen -->
-    <string name="altimeter_settings">Настройки альтиметра</string>
-    <string name="continuity_on_off">Цепь замкнута ВКЛ/ВЫКЛ</string>
-    <string name="read_flights">Считать полёты</string>
-    <string name="reset_settings">Сброс настроек</string>
-    <string name="disconnect">Разорвать соединение</string>
-    <string name="connect">Установить соединение</string>
+    <string name="altimeter_settings">Настройки\nальтиметра</string>
+    <string name="continuity_on_off">Цепь замкнута\nВКЛ/ВЫКЛ</string>
+    <string name="read_flights">Считать\nполёты</string>
+    <string name="reset_settings">Сброс\nнастроек</string>
+    <string name="disconnect">Разорвать\nсоединение</string>
+    <string name="connect">Установить\nсоединение</string>
     <string name="telemetry">Телеметрия</string>
 
     <!--connection screen -->
@@ -112,6 +112,7 @@
     <string name="clear_flights">Очистить данные о полётах</string>
     <string name="reset_msg1">Вы хотите удалить все данные о полётах. Вы уверены?</string>
     <string name="reset_msg2">Вы хотите сбросить конфигурации альтиметра. Вы уверены?</string>
+    <string name="reset_msg3">You are about to erase your last flight, are you sure you want to do it?</string>
     <string name="Yes">Да</string>
     <string name="No">Нет</string>
     <!-- bluetooth messages -->

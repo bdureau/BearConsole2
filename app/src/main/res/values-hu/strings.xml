@@ -91,10 +91,10 @@
     <string name="config_no">Nem</string>
     <string name="config_yes">Igen</string>
     <!-- Main Screen -->
-    <string name="altimeter_settings">Altimeter beallitasok</string>
-    <string name="continuity_on_off">Szakadasvizsgalat On/Off</string>
-    <string name="read_flights">Read Flights</string>
-    <string name="reset_settings">Beallitasok visszaallitasa (Reset)</string>
+    <string name="altimeter_settings">Altimeter\nbeallitasok</string>
+    <string name="continuity_on_off">Szakadasvizsgalat\nOn/Off</string>
+    <string name="read_flights">Flights</string>
+    <string name="reset_settings">Beallitasok\nvisszaallitasa\n(Reset)</string>
     <string name="disconnect">Disconnect</string>
     <string name="connect">Connect</string>
     <string name="telemetry">Telemetria</string>

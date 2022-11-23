@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
@@ -25,11 +26,11 @@
 
     <Button
         android:id="@+id/butDismiss"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/dismiss_flight_list" />
+        app:icon="@drawable/ok_30x30_trans" />
 
 </RelativeLayout>
 

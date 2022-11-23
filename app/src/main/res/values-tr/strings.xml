@@ -91,11 +91,11 @@
     <string name="config_no">Hayır</string>
     <string name="config_yes">Evet</string>
     <!-- Main Screen -->
-    <string name="altimeter_settings">Altimetre Ayarları</string>
-    <string name="continuity_on_off">Süreklilik Açık/Kapalı</string>
-    <string name="read_flights">Uçuşları Oku</string>
-    <string name="reset_settings">Ayarları Sıfırla</string>
-    <string name="disconnect">Bağlantıyı Kes</string>
+    <string name="altimeter_settings">Altimetre\nAyarları</string>
+    <string name="continuity_on_off">Süreklilik\nAçık/Kapalı</string>
+    <string name="read_flights">Uçuşları\nOku</string>
+    <string name="reset_settings">Ayarları\nSıfırla</string>
+    <string name="disconnect">Bağlantıyı\nKes</string>
     <string name="connect">Bağlan</string>
     <string name="telemetry">Telemetri</string>
 

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".config.ConfigBT">
 
     <TextView
@@ -147,28 +148,28 @@
 
     <Button
         android:id="@+id/butRetrieveConfig"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="onClickRetrieveConfig"
-        android:text="@string/retrieve_config" />
+        app:icon="@drawable/refresh_30x30_trans" />
 
     <Button
         android:id="@+id/butDismiss"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:onClick="onClickDismiss"
-        android:text="@string/dismiss_app_config" />
+        app:icon="@drawable/ok_30x30_trans" />
 
     <Button
         android:id="@+id/butSaveConfig"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:onClick="onClickSaveConfig"
-        android:text="@string/m3DR_save_config" />
+        app:icon="@drawable/save_30x30_trans" />
 
 </RelativeLayout>

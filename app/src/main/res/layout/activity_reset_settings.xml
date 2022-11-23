@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -37,9 +38,9 @@
         android:text="@string/delete_last_flight" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:text="@string/dismiss_reset"
+        app:icon="@drawable/ok_30x30_trans"
         android:id="@+id/butDismiss"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />

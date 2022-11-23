@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    tools:context="com.altimeter.bdureau.bearconsole.telemetry.RocketTrack" >
+    tools:context="com.altimeter.bdureau.bearconsole.telemetry.RocketTrack">
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,8 +17,8 @@
 
     <Button
         android:id="@+id/butDismiss"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:text="@string/dismiss_about" />
+        app:icon="@drawable/ok_30x30_trans"/>
 </RelativeLayout>
