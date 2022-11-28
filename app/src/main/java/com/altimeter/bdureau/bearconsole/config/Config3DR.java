@@ -53,11 +53,7 @@ public class Config3DR extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
+
         super.onCreate(savedInstanceState);
 
         myBT = (ConsoleApplication) getApplication();

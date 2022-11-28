@@ -18,6 +18,11 @@
         android:title="@string/bt_settings"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_modlora_settings"
+        android:orderInCategory="100"
+        android:title="Lora settings..."
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_help"
         android:orderInCategory="100"
         android:title="@string/help"

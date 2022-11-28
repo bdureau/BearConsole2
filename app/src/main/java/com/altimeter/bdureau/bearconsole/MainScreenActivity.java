@@ -38,6 +38,7 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.config.Config3DR;
 import com.altimeter.bdureau.bearconsole.config.ConfigBT;
+import com.altimeter.bdureau.bearconsole.config.ConfigLora;
 import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
 import com.altimeter.bdureau.bearconsole.connection.TestConnection;
 import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatus;
@@ -630,12 +631,15 @@ public class MainScreenActivity extends AppCompatActivity {
             menu.findItem(R.id.action_mod3dr_settings).setEnabled(false);
             // same goes for the BT module
             menu.findItem(R.id.action_modbt_settings).setEnabled(false);
+            // same goes for the lora module
+            menu.findItem(R.id.action_modlora_settings).setEnabled(false);
             // Allow connection testing
             menu.findItem(R.id.action_test_connection).setEnabled(true);
         } else {
             // not connected so allow those
             menu.findItem(R.id.action_mod3dr_settings).setEnabled(true);
             menu.findItem(R.id.action_modbt_settings).setEnabled(true);
+            menu.findItem(R.id.action_modlora_settings).setEnabled(true);
             //cannot do connection testing until we are connected
             menu.findItem(R.id.action_test_connection).setEnabled(false);
         }
@@ -683,6 +687,12 @@ public class MainScreenActivity extends AppCompatActivity {
         //Open the bluetooth module config
         if (id == R.id.action_modbt_settings) {
             Intent i = new Intent(MainScreenActivity.this, ConfigBT.class);
+            startActivity(i);
+            return true;
+        }
+        //Open the lora module config
+        if (id == R.id.action_modlora_settings) {
+            Intent i = new Intent(MainScreenActivity.this, ConfigLora.class);
             startActivity(i);
             return true;
         }

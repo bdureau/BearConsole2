@@ -55,11 +55,7 @@ public class ConfigBT extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
+
         super.onCreate(savedInstanceState);
 
         myBT = (ConsoleApplication) getApplication();
@@ -156,15 +152,11 @@ public class ConfigBT extends AppCompatActivity {
     }
 
     public void EnableUI() {
-
         dropdownBaudRate.setEnabled(true);
-
     }
 
     public void DisableUI() {
-
         dropdownBaudRate.setEnabled(false);
-
     }
 
     //index in an array
@@ -637,8 +629,7 @@ public class ConfigBT extends AppCompatActivity {
                 if (Ret.length > 0) {
                     Log.d("RET0:", Ret[0] +"\n");
                     at = true;
-                        Log.d("Flight win", "connected!!!");
-
+                    Log.d("Flight win", "connected!!!");
                 }
 
             }
