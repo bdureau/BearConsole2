@@ -802,7 +802,10 @@ public class ConfigLora extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             alert.dismiss();
-            new getAllConfigAsyc().execute();
+            if(mPhysicaloid.isOpened())
+                new getAllConfigAsyc().execute();
+            else
+                msg("Not connected!!");
         }
     }
 

@@ -278,13 +278,15 @@ public class AltimeterStatus extends AppCompatActivity {
                     //myBT.setExit(true);
                     myBT.clearInput();
                     myBT.flush();
-                    btnRecording.setText("Start Rec");
+                    //btnRecording.setText("Start Rec");
+                    msg("Stopped recording");
                 } else {
                     recording = true;
                     myBT.write("w1;\n".toString());
                     myBT.clearInput();
                     myBT.flush();
-                    btnRecording.setText("Stop");
+                    //btnRecording.setText("Stop");
+                    msg("Started recording");
                 }
 
             }
@@ -325,6 +327,13 @@ public class AltimeterStatus extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         //msg("On stop");
+        if (recording) {
+            recording = false;
+            myBT.write("w0;\n".toString());
+            myBT.clearInput();
+            myBT.flush();
+        }
+
         if (status) {
             status = false;
             myBT.write("h;\n".toString());

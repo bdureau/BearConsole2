@@ -209,20 +209,5 @@
         android:layout_marginTop="-2dp"
         android:layout_marginRight="0dp" />
 
-    <TextView
-        android:id="@+id/textEnableDarkMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textFullUSBSupport"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="18dp"
-        android:text="Enable Dark mode"
-         />
 
-    <Switch
-        android:id="@+id/switchMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textEnableDarkMode"
-        android:layout_alignParentRight="true" />
 </RelativeLayout>

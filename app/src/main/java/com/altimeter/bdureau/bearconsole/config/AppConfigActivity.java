@@ -345,7 +345,7 @@ public class AppConfigActivity extends AppCompatActivity {
         private Spinner spConnectionType, spGraphicsLibType;
         private CheckBox cbAllowMainDrogue, cbFullUSBSupport;
         private ConsoleApplication BT;
-        private Switch darkModeSwitch;
+
 
         public Tab1Fragment(ConsoleApplication lBT) {
             BT = lBT;
@@ -496,32 +496,7 @@ public class AppConfigActivity extends AppCompatActivity {
             //Allow only telemetry via USB
             cbFullUSBSupport = (CheckBox) view.findViewById(R.id.checkBoxFullUSBSupport);
 
-            //Dark mode
-            darkModeSwitch = (Switch) view.findViewById(R.id.switchMode);
 
-            darkModeSwitch.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (darkModeSwitch.isChecked()) {
-                        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    }
-                    else {
-                        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    }
-
-                }
-            });
-         /*   darkModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    } else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    }
-                }
-            });*/
             spAppLanguage.setSelection(Integer.parseInt(BT.getAppConf().getApplicationLanguage()));
             spAppUnit.setSelection(Integer.parseInt(BT.getAppConf().getUnits()));
             spGraphColor.setSelection(Integer.parseInt(BT.getAppConf().getGraphColor()));
