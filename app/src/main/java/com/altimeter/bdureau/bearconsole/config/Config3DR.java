@@ -1,8 +1,6 @@
 package com.altimeter.bdureau.bearconsole.config;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,13 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
-
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
 import com.physicaloid.lib.Physicaloid;
 
+/**
+ * @description: This allows the configuration of 3DR telemetry modules from the phone using a ttl cable
+ * @author: boris.dureau@neuf.fr
+ **/
 
 public class Config3DR extends AppCompatActivity {
 
@@ -46,7 +47,7 @@ public class Config3DR extends AppCompatActivity {
     private Button btRetrieveConfig, btSaveConfig;
     ModuleInfo mInfo;
     ConsoleApplication myBT;
-    int currentBaudRate =0;
+    int currentBaudRate = 0;
 
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
@@ -315,7 +316,8 @@ public class Config3DR extends AppCompatActivity {
 
         String value = "";
         long error = 0;
-        boolean cancelled =false;
+        boolean cancelled = false;
+
         @Override
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(Config3DR.this);
@@ -334,60 +336,55 @@ public class Config3DR extends AppCompatActivity {
         }
 
 
-
         @Override
         protected Void doInBackground(Void... voids) {
-            if(!cancelled) {
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATI");
+            if (!cancelled) {
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATI");
                 value = mInfo.runCommand("ATI");
                 Log.d("Flight win", "ATI:" + value);
 
                 String ATI[] = value.split("\n");
-                if(ATI.length>1) {
+                if (ATI.length > 1) {
                     setVersion(ATI[1]);
                     if (ATI[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATI2");
+            if (!cancelled) {
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATI2");
                 value = mInfo.runCommand("ATI2");
                 String ATI2[] = value.split("\n");
                 Log.d("Flight win", "ATI2:" + value);
-                if(ATI2.length>1) {
+                if (ATI2.length > 1) {
                     if (ATI2[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATI3");
+            if (!cancelled) {
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATI3");
                 value = mInfo.runCommand("ATI3");
                 Log.d("Flight win", "ATI3:" + value);
                 String ATI3[] = value.split("\n");
-                if(ATI3.length>1) {
+                if (ATI3.length > 1) {
                     if (ATI3[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATI4");
+            if (!cancelled) {
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATI4");
                 value = mInfo.runCommand("ATI4");
                 Log.d("Flight win", "ATI4:" + value);
                 String ATI4[] = value.split("\n");
-                if(ATI4.length>1) {
+                if (ATI4.length > 1) {
                     if (ATI4[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
             /*dialogAppend("running ATI5");
@@ -397,127 +394,120 @@ public class Config3DR extends AppCompatActivity {
             if (ATI5[1].trim().equals("ERROR"))
                 error++;*/
 
-            if(!cancelled) {
+            if (!cancelled) {
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATI6");
                 value = mInfo.runCommand("ATI6");
                 Log.d("Flight win", "ATI6:" + value);
                 String ATI6[] = value.split("\n");
-                if(ATI6.length>1) {
+                if (ATI6.length > 1) {
                     if (ATI6[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
-            if(!cancelled) {
+            if (!cancelled) {
                 //RSSI
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATI7");
                 value = mInfo.runCommand("ATI7");
                 Log.d("Flight win", "ATI7:" + value);
                 String ATI7[] = value.split("\n");
-                if(ATI7.length>1) {
+                if (ATI7.length > 1) {
                     setRSSI(ATI7[1].trim());
                     if (ATI7[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
-            if(!cancelled) {
+            if (!cancelled) {
                 //format
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS0");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS0");
                 value = mInfo.runCommand("ATS0?");
                 Log.d("Flight win", "ATS0?:" + value);
                 String ATS0[] = value.split("\n");
 
-                if(ATS0.length>1) {
+                if (ATS0.length > 1) {
                     Log.d("Flight win", "ATS0?:" + ATS0[1]);
                     setFormat(ATS0[1]);
                     if (ATS0[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //serial speed
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS1");
                 value = mInfo.runCommand("ATS1?");
                 Log.d("Flight win", "ATS1?:" + value);
                 String ATS1[] = value.split("\n");
-                if(ATS1.length>1) {
+                if (ATS1.length > 1) {
                     Log.d("Flight win", "ATS1?:" + ATS1[1]);
 
                     setBaudRate(arrayIndex(itemsBaudRateShort, ATS1[1].trim()));
                     if (ATS1[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //air speed
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS2");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS2");
                 value = mInfo.runCommand("ATS2?");
                 String ATS2[] = value.split("\n");
                 Log.d("Flight win", "ATS2?:" + value);
-                if(ATS2.length>1) {
+                if (ATS2.length > 1) {
                     Log.d("Flight win", "ATS2?:" + ATS2[1]);
 
                     setAirSpeed(arrayIndex(itemsAirSpeed, ATS2[1].trim()));
                     if (ATS2[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //net id
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS3");
                 value = mInfo.runCommand("ATS3?");
                 String ATS3[] = value.split("\n");
                 Log.d("Flight win", "ATS3?:" + value);
 
-                if(ATS3.length>1) {
+                if (ATS3.length > 1) {
                     Log.d("Flight win", "ATS3?:" + ATS3[1]);
 
                     setNetID(arrayIndex(itemsNetID, ATS3[1].trim()));
                     if (ATS3[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //TX power
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS4");
                 value = mInfo.runCommand("ATS4?");
                 String ATS4[] = value.split("\n");
                 Log.d("Flight win", "ATS4?:" + value);
-                if(ATS4.length>1) {
+                if (ATS4.length > 1) {
                     Log.d("Flight win", "ATS4?:" + ATS4[1]);
 
                     setTXPower(arrayIndex(itemsTXPower, ATS4[1].trim()));
                     if (ATS4[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //ECC
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS5");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS5");
                 value = mInfo.runCommand("ATS5?");
                 String ATS5[] = value.split("\n");
                 Log.d("Flight win", "ATS5?:" + value);
 
 
-                if(ATS5.length>1) {
+                if (ATS5.length > 1) {
                     Log.d("Flight win", "ATS5?:" + ATS5[1].trim());
                     if (ATS5[1].trim().equals("1")) {
                         setBoxECC(true);
@@ -526,36 +516,34 @@ public class Config3DR extends AppCompatActivity {
                     }
                     if (ATS5[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //Mav Link
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS6");
                 value = mInfo.runCommand("ATS6?");
                 String ATS6[] = value.split("\n");
                 Log.d("Flight win", "ATS6?:" + value);
 
-                if(ATS6.length>1) {
+                if (ATS6.length > 1) {
                     Log.d("Flight win", "ATS6?:" + ATS6[1].trim());
 
                     setMavLink(arrayIndex(itemsMavLink, ATS6[1].trim()));
                     if (ATS6[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //OPPRESEND
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS7");
                 value = mInfo.runCommand("ATS7?");
                 String ATS7[] = value.split("\n");
                 Log.d("Flight win", "ATS7?:" + value);
-                if(ATS7.length>1) {
+                if (ATS7.length > 1) {
                     Log.d("Flight win", "ATS7?:" + ATS7[1].trim());
 
                     if (ATS7[1].trim().equals("1")) {
@@ -565,120 +553,113 @@ public class Config3DR extends AppCompatActivity {
                     }
                     if (ATS7[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //MIN_FREQ
-                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS8");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS8");
                 value = mInfo.runCommand("ATS8?");
                 String ATS8[] = value.split("\n");
                 Log.d("Flight win", "ATS8?:" + value);
-                if(ATS8.length>1) {
+                if (ATS8.length > 1) {
                     Log.d("Flight win", "ATS8?:" + ATS8[1]);
 
                     setMinFreq(arrayIndex(itemsMinFreq, ATS8[1].trim()));
                     if (ATS8[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //MAX_FREQ
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS9");
                 value = mInfo.runCommand("ATS9?");
                 String ATS9[] = value.split("\n");
                 Log.d("Flight win", "ATS9?:" + value);
-                if(ATS9.length>1) {
+                if (ATS9.length > 1) {
                     Log.d("Flight win", "ATS9?:" + ATS9[1]);
 
                     setMaxFreq(arrayIndex(itemsMinFreq, ATS9[1].trim()));
                     if (ATS9[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //NUM_CHANNELS
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS10");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS10");
                 value = mInfo.runCommand("ATS10?");
                 String ATS10[] = value.split("\n");
                 Log.d("Flight win", "ATS10?:" + value);
-                if(ATS10.length>1) {
+                if (ATS10.length > 1) {
                     Log.d("Flight win", "ATS10?:" + ATS10[1]);
 
                     setNbrOfChannel(arrayIndex(itemsNbrOfChannel, ATS10[1].trim()));
                     if (ATS10[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //DUTY_CYCLE
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS11");
                 value = mInfo.runCommand("ATS11?");
                 String ATS11[] = value.split("\n");
                 Log.d("Flight win", "ATS11?:" + value);
-                if(ATS11.length>1) {
+                if (ATS11.length > 1) {
                     Log.d("Flight win", "ATS11?:" + ATS11[1]);
 
                     setDutyCycle(arrayIndex(itemsDutyCycle, ATS11[1].trim()));
                     if (ATS11[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //LBT_RSSI
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS12");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS12");
                 value = mInfo.runCommand("ATS12?");
                 String ATS12[] = value.split("\n");
                 Log.d("Flight win", "ATS12?:" + value);
 
-                if(ATS12.length>1) {
+                if (ATS12.length > 1) {
                     Log.d("Flight win", "ATS12?:" + ATS12[1]);
 
                     setLBTRSSI(arrayIndex(itemsLBTRSSI, ATS12[1].trim()));
                     if (ATS12[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //MANCHESTER
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS13");
                 value = mInfo.runCommand("ATS13?");
                 String ATS13[] = value.split("\n");
                 Log.d("Flight win", "ATS13?:" + value);
-                if(ATS13.length>1) {
+                if (ATS13.length > 1) {
                     Log.d("Flight win", "ATS13?:" + ATS13[1]);
 
                     if (ATS13[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //RTSCTS
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS14");
                 value = mInfo.runCommand("ATS14?");
                 String ATS14[] = value.split("\n");
                 Log.d("Flight win", "ATS14?:" + value);
-                if(ATS14.length>1) {
+                if (ATS14.length > 1) {
                     Log.d("Flight win", "ATS14?:" + ATS14[1]);
 
                     if (ATS14[1].trim().equals("1")) {
@@ -688,28 +669,26 @@ public class Config3DR extends AppCompatActivity {
                     }
                     if (ATS14[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //MAX_WINDOW
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS15");
                 value = mInfo.runCommand("ATS15?");
                 String ATS15[] = value.split("\n");
                 Log.d("Flight win", "ATS15?:" + value);
-                if(ATS15.length>1) {
+                if (ATS15.length > 1) {
                     Log.d("Flight win", "ATS15?:" + ATS15[1]);
 
                     setMaxWindow(arrayIndex(itemsMaxWindow, ATS15[1].trim()));
                     if (ATS15[1].trim().equals("ERROR"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
-            if(cancelled) {
+            if (cancelled) {
                 dialogAppend(getResources().getString(R.string.m3DR_cancel_retrieve));
             }
             //Exit AT mode
@@ -724,7 +703,7 @@ public class Config3DR extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             alert.dismiss();
-            if(!cancelled & error == 0) {
+            if (!cancelled & error == 0) {
                 EnableUI();
                 btSaveConfig.setEnabled(true);
             }
@@ -761,14 +740,14 @@ public class Config3DR extends AppCompatActivity {
             netID = dropdownNetID.getSelectedItem().toString();
             txPower = dropdownTXPower.getSelectedItem().toString();
 
-            if(checkBoxECC.isChecked())
-                boxECC =true;
+            if (checkBoxECC.isChecked())
+                boxECC = true;
             else
                 boxECC = false;
 
             mavLink = dropdownMavLink.getSelectedItem().toString();
 
-            if(checkBoxOpResend.isChecked())
+            if (checkBoxOpResend.isChecked())
                 opResend = true;
             else
                 opResend = false;
@@ -779,12 +758,12 @@ public class Config3DR extends AppCompatActivity {
             dutyCycle = dropdownDutyCycle.getSelectedItem().toString();
             LBTRSSI = dropdownLBTRSSI.getSelectedItem().toString();
 
-            if(checkBoxRTSCTS.isChecked())
+            if (checkBoxRTSCTS.isChecked())
                 RTSCTS = true;
             else
                 RTSCTS = false;
 
-            maxWindow=dropdownMaxWindow.getSelectedItem().toString();
+            maxWindow = dropdownMaxWindow.getSelectedItem().toString();
             alert = builder.create();
             alert.show();
         }
@@ -792,69 +771,65 @@ public class Config3DR extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //serial speed
-                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS1");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS1");
                 value = mInfo.runCommand("ATS1=" + baudRate);
                 String ATS1[] = value.split("\n");
                 Log.d("Flight win", "ATS1?:" + value);
                 Log.d("Flight win", "ATS1=" + baudRate);
-                if(ATS1.length>1) {
+                if (ATS1.length > 1) {
                     if (!ATS1[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //air speed
-                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS2");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS2");
                 value = mInfo.runCommand("ATS2=" + airSpeed);
                 String ATS2[] = value.split("\n");
                 Log.d("Flight win", "ATS2?:" + value);
                 Log.d("Flight win", "ATS2?:" + airSpeed);
-                if(ATS2.length>1) {
+                if (ATS2.length > 1) {
                     if (!ATS2[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //net id
-                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS3");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS3");
                 value = mInfo.runCommand("ATS3=" + netID);
                 String ATS3[] = value.split("\n");
                 Log.d("Flight win", "ATS3?:" + value);
                 Log.d("Flight win", "ATS3?:" + netID);
-                if(ATS3.length>1) {
+                if (ATS3.length > 1) {
                     if (!ATS3[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //TX power
-                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS4");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS4");
                 value = mInfo.runCommand("ATS4=" + txPower);
                 String ATS4[] = value.split("\n");
                 Log.d("Flight win", "ATS4?:" + value);
                 Log.d("Flight win", "ATS4?:" + txPower);
-                if(ATS4.length>1) {
+                if (ATS4.length > 1) {
                     if (!ATS4[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //ECC
-                dialogAppend(getResources().getString(R.string.m3DR_run_command)+" ATS5");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS5");
                 if (boxECC)
                     value = mInfo.runCommand("ATS5=1");
                 else
@@ -862,137 +837,128 @@ public class Config3DR extends AppCompatActivity {
 
                 String ATS5[] = value.split("\n");
                 Log.d("Flight win", "ATS5?:" + value);
-                if(ATS5.length>1) {
+                if (ATS5.length > 1) {
                     if (!ATS5[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //Mav Link
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS6");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS6");
                 value = mInfo.runCommand("ATS6=" + mavLink);
                 String ATS6[] = value.split("\n");
                 Log.d("Flight win", "ATS6?:" + value);
                 Log.d("Flight win", "ATS6?:" + mavLink);
-                if(ATS6.length>1) {
+                if (ATS6.length > 1) {
                     if (!ATS6[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //OPPRESEND
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS7");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS7");
                 if (opResend)
                     value = mInfo.runCommand("ATS7=1");
                 else
                     value = mInfo.runCommand("ATS7=0");
                 String ATS7[] = value.split("\n");
                 Log.d("Flight win", "ATS7?:" + value);
-                if(ATS7.length>1) {
+                if (ATS7.length > 1) {
                     if (!ATS7[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //MIN_FREQ
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS8");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS8");
                 value = mInfo.runCommand("ATS8=" + minFreq);
                 String ATS8[] = value.split("\n");
                 Log.d("Flight win", "ATS8?:" + value);
                 Log.d("Flight win", "ATS8?:" + minFreq);
-                if(ATS8.length>1) {
+                if (ATS8.length > 1) {
                     if (!ATS8[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //MAX_FREQ
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS9");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS9");
                 value = mInfo.runCommand("ATS9=" + maxFreq);
                 String ATS9[] = value.split("\n");
                 Log.d("Flight win", "ATS9?:" + value);
                 Log.d("Flight win", "ATS9?:" + maxFreq);
-                if(ATS9.length>1) {
+                if (ATS9.length > 1) {
                     if (!ATS9[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //NUM_CHANNELS
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS10");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS10");
                 value = mInfo.runCommand("ATS10=" + nbrOfChannel);
                 String ATS10[] = value.split("\n");
                 Log.d("Flight win", "ATS10?:" + value);
                 Log.d("Flight win", "ATS10?:" + nbrOfChannel);
-                if(ATS10.length>1) {
+                if (ATS10.length > 1) {
                     if (!ATS10[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //DUTY_CYCLE
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS11");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS11");
                 value = mInfo.runCommand("ATS11=" + dutyCycle);
                 String ATS11[] = value.split("\n");
                 Log.d("Flight win", "ATS11?:" + value);
                 Log.d("Flight win", "ATS11?:" + dutyCycle);
-                if(ATS11.length>1) {
+                if (ATS11.length > 1) {
                     if (!ATS11[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //LBT_RSSI
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS12");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS12");
                 value = mInfo.runCommand("ATS12=" + LBTRSSI);
                 String ATS12[] = value.split("\n");
                 Log.d("Flight win", "ATS12?:" + value);
                 Log.d("Flight win", "ATS12?:" + LBTRSSI);
-                if(ATS12.length>1) {
+                if (ATS12.length > 1) {
                     if (!ATS12[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //MANCHESTER
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS13");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS13");
                 value = mInfo.runCommand("ATS13?");
                 String ATS13[] = value.split("\n");
                 Log.d("Flight win", "ATS13?:" + value);
-                if(ATS13.length>1) {
+                if (ATS13.length > 1) {
                     Log.d("Flight win", "ATS13?:" + ATS13[1]);
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //RTSCTS
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS14");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS14");
                 if (RTSCTS)
                     value = mInfo.runCommand("ATS14=1");
                 else
@@ -1000,31 +966,29 @@ public class Config3DR extends AppCompatActivity {
 
                 String ATS14[] = value.split("\n");
                 Log.d("Flight win", "ATS14?:" + value);
-               // Log.d("Flight win", "ATS14?:" + ATS14[1]);
-                if(ATS14.length>1) {
+                // Log.d("Flight win", "ATS14?:" + ATS14[1]);
+                if (ATS14.length > 1) {
                     if (!ATS14[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 //MAX_WINDOW
-                dialogAppend(getResources().getString(R.string.m3DR_run_command) +" ATS15");
+                dialogAppend(getResources().getString(R.string.m3DR_run_command) + " ATS15");
                 value = mInfo.runCommand("ATS15=" + maxWindow);
                 String ATS15[] = value.split("\n");
                 Log.d("Flight win", "ATS15?:" + value);
                 Log.d("Flight win", "ATS15?:" + maxWindow);
-                if(ATS15.length>1) {
+                if (ATS15.length > 1) {
                     if (!ATS15[1].trim().equals("OK"))
                         error++;
-                }
-                else
+                } else
                     error++;
             }
 
-            if(!cancelled) {
+            if (!cancelled) {
                 if (error == 0) {
                     dialogAppend(getResources().getString(R.string.m3DR_no_errors));
                     value = mInfo.runCommand("AT&W");
@@ -1032,8 +996,7 @@ public class Config3DR extends AppCompatActivity {
                 } else {
                     dialogAppend(getResources().getString(R.string.m3DR_we_have_errors));
                 }
-            }
-            else {
+            } else {
                 dialogAppend("Saving has been cancelled");
             }
             //Exit AT mode
@@ -1047,13 +1010,12 @@ public class Config3DR extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             alert.dismiss();
-            if(!cancelled & error == 0) {
+            if (!cancelled & error == 0) {
                 DisableUI();
                 btSaveConfig.setEnabled(false);
             }
         }
     }
-
 
 
     private class connectRetrieveAsyc extends AsyncTask<Void, Void, Void>  // UI thread
@@ -1115,22 +1077,22 @@ public class Config3DR extends AppCompatActivity {
 
             return null;
         }
+
         @Override
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
-            {
-                alert.dismiss();
+        {
+            alert.dismiss();
 
-                if(currentBaudRate > 0) {
-                    new getAllConfigAsyc().execute();
+            if (currentBaudRate > 0) {
+                new getAllConfigAsyc().execute();
 
-                }
-                else {
-                    msg(getResources().getString(R.string.m3DR_failed_con));
-
-                }
+            } else {
+                msg(getResources().getString(R.string.m3DR_failed_con));
 
             }
+
         }
+    }
 
     private class connectSaveAsyc extends AsyncTask<Void, Void, Void>  // UI thread
     {
@@ -1190,17 +1152,17 @@ public class Config3DR extends AppCompatActivity {
 
             return null;
         }
+
         @Override
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             alert.dismiss();
             //connectingDone =true;
-            if(currentBaudRate > 0) {
+            if (currentBaudRate > 0) {
                 //new getAllConfigAsyc().execute();
                 new saveAllConfigAsyc().execute();
                 //currentBaudRate = baud;
-            }
-            else {
+            } else {
                 msg(getResources().getString(R.string.m3DR_failed_con));
             }
 
@@ -1338,7 +1300,7 @@ public class Config3DR extends AppCompatActivity {
         });
     }
 
-    private void setVersion( CharSequence text) {
+    private void setVersion(CharSequence text) {
         final CharSequence ftext = text;
         mHandler.post(new Runnable() {
             @Override
@@ -1347,7 +1309,8 @@ public class Config3DR extends AppCompatActivity {
             }
         });
     }
-    private void setRSSI( CharSequence text) {
+
+    private void setRSSI(CharSequence text) {
         final CharSequence ftext = text;
         mHandler.post(new Runnable() {
             @Override
@@ -1357,7 +1320,7 @@ public class Config3DR extends AppCompatActivity {
         });
     }
 
-    private void setFormat( CharSequence text) {
+    private void setFormat(CharSequence text) {
         final CharSequence ftext = text;
         mHandler.post(new Runnable() {
             @Override
@@ -1367,7 +1330,7 @@ public class Config3DR extends AppCompatActivity {
         });
     }
 
-    private void setBaudRate( int index) {
+    private void setBaudRate(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1376,7 +1339,8 @@ public class Config3DR extends AppCompatActivity {
             }
         });
     }
-    private void setAirSpeed( int index) {
+
+    private void setAirSpeed(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1385,7 +1349,8 @@ public class Config3DR extends AppCompatActivity {
             }
         });
     }
-    private void setNetID( int index) {
+
+    private void setNetID(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1394,7 +1359,8 @@ public class Config3DR extends AppCompatActivity {
             }
         });
     }
-    private void setTXPower( int index) {
+
+    private void setTXPower(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1404,7 +1370,7 @@ public class Config3DR extends AppCompatActivity {
         });
     }
 
-    private void setBoxECC( boolean val) {
+    private void setBoxECC(boolean val) {
         final boolean fval = val;
         mHandler.post(new Runnable() {
             @Override
@@ -1414,7 +1380,7 @@ public class Config3DR extends AppCompatActivity {
         });
     }
 
-    private void setMavLink( int index) {
+    private void setMavLink(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1424,7 +1390,7 @@ public class Config3DR extends AppCompatActivity {
         });
     }
 
-    private void setOpResend( boolean val) {
+    private void setOpResend(boolean val) {
         final boolean fval = val;
         mHandler.post(new Runnable() {
             @Override
@@ -1434,7 +1400,7 @@ public class Config3DR extends AppCompatActivity {
         });
     }
 
-    private void setMinFreq( int index) {
+    private void setMinFreq(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1443,7 +1409,8 @@ public class Config3DR extends AppCompatActivity {
             }
         });
     }
-    private void setMaxFreq( int index) {
+
+    private void setMaxFreq(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1452,7 +1419,8 @@ public class Config3DR extends AppCompatActivity {
             }
         });
     }
-    private void setNbrOfChannel( int index) {
+
+    private void setNbrOfChannel(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1461,7 +1429,8 @@ public class Config3DR extends AppCompatActivity {
             }
         });
     }
-    private void setDutyCycle( int index) {
+
+    private void setDutyCycle(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1470,7 +1439,8 @@ public class Config3DR extends AppCompatActivity {
             }
         });
     }
-    private void setLBTRSSI( int index) {
+
+    private void setLBTRSSI(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1479,7 +1449,8 @@ public class Config3DR extends AppCompatActivity {
             }
         });
     }
-    private void setBoxRTSCTS( boolean index) {
+
+    private void setBoxRTSCTS(boolean index) {
         final boolean findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1488,7 +1459,8 @@ public class Config3DR extends AppCompatActivity {
             }
         });
     }
-    private void setMaxWindow( int index) {
+
+    private void setMaxWindow(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
             @Override
@@ -1514,20 +1486,20 @@ public class Config3DR extends AppCompatActivity {
 
         //open application settings screen
         if (id == R.id.action_settings) {
-            Intent i= new Intent(Config3DR.this, AppConfigActivity.class);
+            Intent i = new Intent(Config3DR.this, AppConfigActivity.class);
             startActivity(i);
             return true;
         }
         //open help screen
         if (id == R.id.action_help) {
-            Intent i= new Intent(Config3DR.this, HelpActivity.class);
+            Intent i = new Intent(Config3DR.this, HelpActivity.class);
             i.putExtra("help_file", "help_config3DR");
             startActivity(i);
             return true;
         }
         //open about screen
         if (id == R.id.action_about) {
-            Intent i= new Intent(Config3DR.this, AboutActivity.class);
+            Intent i = new Intent(Config3DR.this, AboutActivity.class);
             startActivity(i);
             return true;
         }

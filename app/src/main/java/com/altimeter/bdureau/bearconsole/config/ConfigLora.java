@@ -23,7 +23,13 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 import com.physicaloid.lib.Physicaloid;
-
+/**
+ * @description: This allows the configuration of Lora Ebytes telemetry modules from an Android
+ * phone or tablet using a ttl cable.
+ * This is not perfect code but should work. Feel free to re-use it for your own project.
+ * Make sure that you report any bugs or suggestions so that it can be improved
+ * @author: boris.dureau@neuf.fr
+ **/
 public class ConfigLora extends AppCompatActivity {
     Physicaloid mPhysicaloid;
 
@@ -268,10 +274,10 @@ public class ConfigLora extends AppCompatActivity {
 
         builder = new AlertDialog.Builder(this);
         //Display info message
-        builder.setMessage("This will allow you to configure Lora telemetry modules")
-                .setTitle("Lora telemetry module configuration")
+        builder.setMessage(R.string.lora_module_config_msg)
+                .setTitle(R.string.lora_module_config_msg_title)
                 .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.lora_module_config_button_ok, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         dialog.cancel();
                     }
@@ -467,7 +473,7 @@ public class ConfigLora extends AppCompatActivity {
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(ConfigLora.this);
             //Recover firmware...
-            builder.setMessage(getResources().getString(R.string.loading_bt_config_msg))
+            builder.setMessage(R.string.lora_module_loading_config_msg)
                     .setTitle(getResources().getString(R.string.m3DR_retrieving_cfg))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
@@ -631,35 +637,35 @@ public class ConfigLora extends AppCompatActivity {
 
             //check channel
             if (sChannel.trim().equals("")) {
-                cancelMsg = "Module channel cannot be empty";
+                cancelMsg = getString(R.string.lora_module_channel_msg);
                 cancelled = true;
             } else {
                 // check that we have a channel between 0 and 83
                 if (sAddress.matches("\\d+(?:\\.\\d+)?")) {
                     if (!(Integer.valueOf(sChannel) >= 0 & Integer.valueOf(sChannel) < 84)) {
-                        cancelMsg = cancelMsg + "Chanel must be between 0 and 83";
+                        cancelMsg = cancelMsg + getString(R.string.lora_module_channel_value_msg);
                         cancelled = true;
                     }
                 } else {
-                    cancelMsg = cancelMsg + "Chanel is invalid";
+                    cancelMsg = cancelMsg + getString(R.string.lora_module_invalid_channel);
                     cancelled = true;
                 }
             }
 
             // check the address
             if (sAddress.trim().equals("")) {
-                cancelMsg = cancelMsg + "Module address cannot be empty";
+                cancelMsg = cancelMsg + getString(R.string.lora_module_address_empty_msg);
                 cancelled = true;
             } else {
                 //check that the non empty address is a valid one
                 // ie 0 to FFFF (65535)
                 if (sAddress.matches("\\d+(?:\\.\\d+)?")) {
                     if (!(Integer.valueOf(sAddress) >= 0 & Integer.valueOf(sAddress) < 65535)) {
-                        cancelMsg = cancelMsg + "Address must be between 0 and 65535";
+                        cancelMsg = cancelMsg + getString(R.string.lora_module_address_range);
                         cancelled = true;
                     }
                 } else {
-                    cancelMsg = cancelMsg + "Address is invalid";
+                    cancelMsg = cancelMsg + getString(R.string.lora_module_address_invalid);
                     cancelled = true;
                 }
             }
@@ -675,7 +681,7 @@ public class ConfigLora extends AppCompatActivity {
                 //sAddress
                 byte addh = 0;
                 byte addl = 3;
-                dialogAppend("Updating module address");
+                dialogAppend(getString(R.string.lora_module_updating_address_msg));
                 byte cmd[] = {(byte) 0xC2, 0x00, 0x02, (byte) addh, (byte) addl};
                 byte[] value = mInfo.runCommand(cmd);
                 if (value[0] != (byte) 0xC1)
@@ -685,7 +691,7 @@ public class ConfigLora extends AppCompatActivity {
             if (!cancelled) {
                 int c;
                 //serial speed, parity and air rate
-                dialogAppend("Updating serial speed, parity and air rate");
+                dialogAppend(getString(R.string.lora_module_updating_msg2));
 
                 int iBaudeRate = searchBitFromString(strBLoraBaudRateVal, sBaudRate);
                 int iParity = searchBitFromString(strBLoraParityVal, sParity);
@@ -698,7 +704,7 @@ public class ConfigLora extends AppCompatActivity {
             }
             //updating packet , RSSI noise and transmitting power
             if (!cancelled) {
-                dialogAppend("updating packet , RSSI noise and transmitting power");
+                dialogAppend(getString(R.string.lora_module_updating_msg3));
                 //sPacketSize
                 int iPacketSize = searchBitFromString(strBLoraPacketSizeVal, sPacketSize);
                 //sChannelRSSI
@@ -714,7 +720,7 @@ public class ConfigLora extends AppCompatActivity {
             }
             //updating channel 0-83
             if (!cancelled) {
-                dialogAppend("updating channel");
+                dialogAppend(getString(R.string.lora_module_updating_msg4));
                 Log.d("Lora Config:", sChannel);
                 int channel = Integer.valueOf(sChannel);
                 byte cmd[] = {(byte) 0xC2, 0x04, 0x01, (byte) channel};
@@ -725,7 +731,7 @@ public class ConfigLora extends AppCompatActivity {
 
             //updating RSSI Byte, trans Mode, LBT and WOR Cycle
             if (!cancelled) {
-                dialogAppend("updating RSSI Byte, trans Mode, LBT and WOR Cycle");
+                dialogAppend(getString(R.string.lora_module_updating_msg5));
                 //sPacketRSSI
                 int iPacketRSSI = searchBitFromString(strBLoraPacketRSSIVal, sPacketRSSI);
                 //sTransMode
@@ -744,8 +750,7 @@ public class ConfigLora extends AppCompatActivity {
 
             //updating Key
             if (!cancelled) {
-                dialogAppend("updating key");
-
+                dialogAppend(getString(R.string.lora_module_updating_msg6));
             }
 
             //Exit AT mode
@@ -775,7 +780,7 @@ public class ConfigLora extends AppCompatActivity {
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(ConfigLora.this);
             //
-            builder.setMessage("Attempting connecting to the Lora module")
+            builder.setMessage(R.string.lora_module_connecting_msg)
                     .setTitle(getResources().getString(R.string.m3DR_connecting))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
@@ -802,7 +807,7 @@ public class ConfigLora extends AppCompatActivity {
         protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
         {
             alert.dismiss();
-            if(mPhysicaloid.isOpened())
+            if (mPhysicaloid.isOpened())
                 new getAllConfigAsyc().execute();
             else
                 msg("Not connected!!");
@@ -816,7 +821,7 @@ public class ConfigLora extends AppCompatActivity {
         protected void onPreExecute() {
             builder = new AlertDialog.Builder(ConfigLora.this);
             //.
-            builder.setMessage("Attempting connecting to the Lora module")
+            builder.setMessage(R.string.lora_module_connecting_msg)
                     .setTitle(getResources().getString(R.string.m3DR_connecting))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {

@@ -1,8 +1,6 @@
 package com.altimeter.bdureau.bearconsole.config;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +27,13 @@ import com.altimeter.bdureau.bearconsole.R;
 import com.physicaloid.lib.Physicaloid;
 import com.physicaloid.lib.usb.driver.uart.UartConfig;
 
-
+/**
+ * @description: This allows the configuration of bluetooth modules from the phone using a
+ * ttl cable.
+ * This is not perfect code but should work. Feel free to re-use it for your own project.
+ * Make sure that you report any bugs or suggestions so that it can be improved
+ * @author: boris.dureau@neuf.fr
+ **/
 public class ConfigBT extends AppCompatActivity {
 
     Physicaloid mPhysicaloid;
@@ -45,8 +48,8 @@ public class ConfigBT extends AppCompatActivity {
     private Button btRetrieveConfig, btSaveConfig;
     ModuleInfo mInfo;
     ConsoleApplication myBT;
-    int currentBaudRate = 38400;//0;
-    String cmdTer="";
+    int currentBaudRate = 38400;
+    String cmdTer = "";
 
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
@@ -99,7 +102,7 @@ public class ConfigBT extends AppCompatActivity {
                 "B",
                 "C"};
 
-       ArrayAdapter<String> adapterBaudRate = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapterBaudRate = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, itemsBaudRate);
 
         adapterBaudRate.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -238,7 +241,7 @@ public class ConfigBT extends AppCompatActivity {
                         dropdownModules.getSelectedItem().equals("unknown")) {
                     dialogAppend(getResources().getString(R.string.m3DR_run_command) + " AT");
 
-                    value = mInfo.runCommand("AT"+cmdTer);
+                    value = mInfo.runCommand("AT" + cmdTer);
                     Log.d("Flight win", "AT:" + value);
                     tvAppend(tvRead, "AT\n");
                     String AT[] = value.split("\n");
@@ -253,7 +256,7 @@ public class ConfigBT extends AppCompatActivity {
             //AT VERSION
             if (!cancelled) {
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " AT+VERSION");
-                value = mInfo.runCommand("AT+VERSION"+cmdTer);
+                value = mInfo.runCommand("AT+VERSION" + cmdTer);
                 Log.d("Flight win", "AT+VERSION:" + value);
 
                 String ATVERSION[] = value.split("\n");
@@ -292,7 +295,7 @@ public class ConfigBT extends AppCompatActivity {
         long error = 0;
         String baudID = "";
         String baudRate, Name, PIN;
-        String cancelMsg="";
+        String cancelMsg = "";
 
         boolean cancelled = false;
 
@@ -317,11 +320,11 @@ public class ConfigBT extends AppCompatActivity {
             Name = txtModuleName.getText().toString();
             PIN = txtPin.getText().toString();
 
-            if(Name.trim().equals("")) {
+            if (Name.trim().equals("")) {
                 cancelMsg = getString(R.string.module_name_cannot_be_empty_msg);
                 cancelled = true;
             }
-            if(PIN.trim().equals("")) {
+            if (PIN.trim().equals("")) {
                 cancelMsg = cancelMsg + getString(R.string.module_pin_cannot_be_empty_msg);
                 cancelled = true;
             }
@@ -337,14 +340,14 @@ public class ConfigBT extends AppCompatActivity {
             if (!cancelled) {
                 //serial speed
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " AT+PIN");
-                value = mInfo.runCommand("AT+PIN" + PIN.trim()+cmdTer);
+                value = mInfo.runCommand("AT+PIN" + PIN.trim() + cmdTer);
                 String ATPIN[] = value.split("\n");
                 Log.d("Flight win val", value);
                 Log.d("Flight win", "AT+PIN=" + PIN);
                 if (ATPIN.length > 0) {
                     tvAppend(tvRead, value + "\n");
                     Log.d("Flight win val", value);
-                    if (!ATPIN[0].substring(0,2).equals("OK"))
+                    if (!ATPIN[0].substring(0, 2).equals("OK"))
                         error++;
                 } else
                     error++;
@@ -354,13 +357,13 @@ public class ConfigBT extends AppCompatActivity {
             if (!cancelled) {
                 //serial speed
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " AT+NAME");
-                value = mInfo.runCommand("AT+NAME" + Name.trim()+cmdTer);
+                value = mInfo.runCommand("AT+NAME" + Name.trim() + cmdTer);
                 String ATNAME[] = value.split("\n");
                 Log.d("Flight win", "AT+NAME" + Name);
                 if (ATNAME.length > 0) {
                     tvAppend(tvRead, value + "\n");
                     Log.d("Flight win", ATNAME[0]);
-                    if (!ATNAME[0].substring(0,2).equals("OK"))
+                    if (!ATNAME[0].substring(0, 2).equals("OK"))
                         error++;
                 } else
                     error++;
@@ -370,13 +373,13 @@ public class ConfigBT extends AppCompatActivity {
             if (!cancelled) {
                 //serial speed
                 dialogAppend(getResources().getString(R.string.m3DR_run_command) + " AT+BAUD");
-                value = mInfo.runCommand("AT+BAUD" + baudID+cmdTer);
+                value = mInfo.runCommand("AT+BAUD" + baudID + cmdTer);
                 String ATBAUD[] = value.split("\n");
                 Log.d("Flight win", "AT+BAUD" + baudID);
-                Log.d("Flight win val",value);
+                Log.d("Flight win val", value);
                 if (ATBAUD.length > 0) {
                     tvAppend(tvRead, value + "\n");
-                    if (!ATBAUD[0].substring(0,2).equals("OK"))
+                    if (!ATBAUD[0].substring(0, 2).equals("OK"))
                         error++;
                 } else
                     error++;
@@ -454,7 +457,7 @@ public class ConfigBT extends AppCompatActivity {
                     }
                 }
                 if (mInfo.ATMode()) {
-                    setBaudRate(arrayIndex(itemsBaudRate, ""+currentBaudRate));
+                    setBaudRate(arrayIndex(itemsBaudRate, "" + currentBaudRate));
                 } else {
                     Log.d("Flight win", "Failed:" + currentBaudRate);
                     currentBaudRate = 0;
@@ -581,31 +584,25 @@ public class ConfigBT extends AppCompatActivity {
             byte[] cmd0;
             if (dropdownModules.getSelectedItem().equals("HC-05") |
                     dropdownModules.getSelectedItem().equals("HC-06")
-                    )
-            {
-                Log.d("Flight win", "AT\n" );
+            ) {
+                Log.d("Flight win", "AT\n");
                 cmd0 = "AT".getBytes();
-                cmdTer="";
-            }
-
-            else if (dropdownModules.getSelectedItem().equals("JDY-30") |
-                    dropdownModules.getSelectedItem().equals("JDY-31")){
-                Log.d("Flight win", "AT+VERSION\n" );
+                cmdTer = "";
+            } else if (dropdownModules.getSelectedItem().equals("JDY-30") |
+                    dropdownModules.getSelectedItem().equals("JDY-31")) {
+                Log.d("Flight win", "AT+VERSION\n");
                 cmd0 = "AT+VERSION\r\n".getBytes();
                 cmdTer = "\r\n";
-            }
-            else if (dropdownModules.getSelectedItem().equals("Unknown") ){
-                Log.d("Flight win - Unknown", "AT\n" );
+            } else if (dropdownModules.getSelectedItem().equals("Unknown")) {
+                Log.d("Flight win - Unknown", "AT\n");
                 cmd0 = "AT\r\n".getBytes();
                 cmdTer = "\r\n";
-            }
-            else if (dropdownModules.getSelectedItem().equals("SPP") ){
-                Log.d("Flight win - Unknown", "AT\n" );
+            } else if (dropdownModules.getSelectedItem().equals("SPP")) {
+                Log.d("Flight win - Unknown", "AT\n");
                 cmd0 = "AT\r\n".getBytes();
                 cmdTer = "\r\n";
-            }
-            else {
-                Log.d("Flight win", "AT\n" );
+            } else {
+                Log.d("Flight win", "AT\n");
                 cmd0 = "AT\r".getBytes();
             }
 
@@ -627,7 +624,7 @@ public class ConfigBT extends AppCompatActivity {
                 String Ret[] = str.split("\n");
 
                 if (Ret.length > 0) {
-                    Log.d("RET0:", Ret[0] +"\n");
+                    Log.d("RET0:", Ret[0] + "\n");
                     at = true;
                     Log.d("Flight win", "connected!!!");
                 }

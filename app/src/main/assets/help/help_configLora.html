@@ -1,0 +1,35 @@
+<h1>eByte Lora E220 module configuration</h1>
+<p>In order to do long range telemetry you will need to replace your bluetooth module by
+    a long rang telemetry module such as the Lora E22O.
+    The following modules have been successfully configured
+    E220-400T30D
+    E220-400T30S
+</p>
+<p></p>
+<p>Note that your Android device battery must be strong enought to power the Lora module. Consider using
+    an external battery if you have a powerfull module</p>
+<p></p>
+<p>In order to enter the configuration mode you will need to put both jumpers</p>
+<p>You will need to configure the module so that it works with your altimeter board.</p>
+<p>Note that those modules usually come pre-set to work at 57600 bauds. However your altimeter board
+    by default will work at 38400 bauds so will need to make sure that you are connecting at the correct speed.</p>
+<p></p>
+<p>Note that Lora modules comes in pair so you will need to configure both the transmitter and receiver</p>
+<p></p>
+<p><span style="color: #ff0000;">CAUTION: make sure that you do not unplug the module while doing the following</span></p>
+<p></p>
+<p><strong>Retrieving the module configuration</strong></p>
+<p>Plug the module in your Android device using an OTG cable or any USB adaptor that can work with
+    micro USB or type C USB</p>
+<p>Then click on [retrieve cfg] this will try to connect to the module using 9600 baud.
+    It will then retrieve the module config so that you can change it.</p>
+<p></p>
+<p><strong>Saving the module configuration</strong></p>
+<p>Change the settings that you want to change. Make sure that you have selected a baudrate that will
+    work with your board (by default 38400). Make sure that the channels are the same for the transmitter
+    and receiver. If you set an encryption key make sure it is the same on both. When done click [Save cfg].
+    This will save the configuration.
+    If any error occur while saving it will abort the save</p>
+<p></p>
+<p>Note that you will need to repeat the same step for each module</p>
+<p>Before you use it make sure you remove both jumpers to exit the configuration mode</p>

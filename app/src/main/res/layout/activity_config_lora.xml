@@ -11,7 +11,7 @@
         android:id="@+id/textLoraConfigTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Configure Lora module"
+        android:text="@string/lora_configure_module_title"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -63,7 +63,7 @@
         android:layout_below="@+id/textLoraModule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Channel:"
+        android:text="@string/lora_module_channel"
         android:layout_toRightOf="@id/spinnerLoraBaudRate"
         android:layout_marginTop="18dp" />
 
@@ -84,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:text="Trans mode:" />
+        android:text="@string/lora_module_trans_mode" />
 
     <Spinner
         android:id="@+id/spinnerLoraTransMode"
@@ -101,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/spinnerLoraChannelRSSI"
-        android:text="Address:"
+        android:text="@string/lora_module_address"
         android:layout_marginTop="18dp" />
 
     <EditText
@@ -109,7 +109,6 @@
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textLoraBaud"
-
         android:layout_marginTop="18dp"
         android:layout_alignBaseline="@+id/textLoraAddress"
         android:text=""
@@ -123,7 +122,7 @@
         android:layout_below="@+id/textLoraTransMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Channel RSSI"
+        android:text="@string/lora_module_channel_rssi"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -141,7 +140,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/spinnerLoraChannelRSSI"
-        android:text="Key:"
+        android:text="@string/lora_module_key"
         android:layout_marginTop="18dp" />
 
     <EditText
@@ -161,7 +160,7 @@
         android:layout_below="@+id/textLoraChannelRSSI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Parity"
+        android:text="@string/lora_module_parity"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -178,8 +177,7 @@
         android:layout_below="@+id/textLoraParity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Wor Cycle"
-
+        android:text="@string/lora_module_wor_cycle"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -196,7 +194,7 @@
         android:layout_below="@+id/textLoraWoreCycle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LBT:"
+        android:text="@string/lora_module_lbt"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -206,17 +204,14 @@
         android:layout_alignBaseline="@+id/textLoraLBT"
         android:spinnerMode="dropdown"
         android:layout_toRightOf="@id/textLoraChannelRSSI"
-
         android:textAlignment="textEnd" />
-
-
 
     <TextView
         android:id="@+id/textLoraAirRate"
         android:layout_below="@+id/textLoraLBT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Air Rate:"
+        android:text="@string/lora_module_air_rate"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -233,7 +228,7 @@
         android:layout_below="@+id/textLoraAirRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Power:"
+        android:text="@string/lora_module_power"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -250,7 +245,7 @@
         android:layout_below="@+id/textLoraPower"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Packet RSSI:"
+        android:text="@string/lora_module_packet_rssi"
         android:layout_marginTop="18dp" />
 
     <Spinner
@@ -262,13 +257,12 @@
         android:layout_toRightOf="@id/textLoraChannelRSSI"
         android:textAlignment="textEnd" />
 
-
     <TextView
         android:id="@+id/textLoraPacketSize"
         android:layout_below="@+id/textLoraPacketRSSI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Packet Size:"
+        android:text="@string/lora_module_packet_size"
         android:layout_marginTop="18dp" />
 
     <Spinner
