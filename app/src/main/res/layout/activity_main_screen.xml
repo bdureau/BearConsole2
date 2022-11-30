@@ -26,12 +26,11 @@
             android:layout_gravity="fill"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
-
             app:cardUseCompatPadding="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -44,10 +43,12 @@
 
                 <TextView
                     android:id="@+id/text_settings"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/altimeter_settings"
                     android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="2"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -67,8 +68,8 @@
             app:cardUseCompatPadding="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -81,10 +82,12 @@
 
                 <TextView
                     android:id="@+id/text_flights"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/read_flights"
                     android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="2"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -104,8 +107,8 @@
             app:cardUseCompatPadding="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -118,10 +121,12 @@
 
                 <TextView
                     android:id="@+id/text_telemetry"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/telemetry"
                     android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="2"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -141,8 +146,8 @@
             app:cardUseCompatPadding="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -155,10 +160,12 @@
 
                 <TextView
                     android:id="@+id/text_continuity"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/continuity_on_off"
                     android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="2"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -179,8 +186,8 @@
             app:cardUseCompatPadding="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -193,10 +200,12 @@
 
                 <TextView
                     android:id="@+id/text_reset"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/reset_settings"
                     android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="2"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -216,8 +225,8 @@
             app:cardUseCompatPadding="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -230,10 +239,12 @@
 
                 <TextView
                     android:id="@+id/text_status"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/status"
                     android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="2"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -253,8 +264,8 @@
             app:cardUseCompatPadding="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -267,10 +278,12 @@
 
                 <TextView
                     android:id="@+id/text_track"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Track"
                     android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="2"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -289,8 +302,8 @@
             app:cardUseCompatPadding="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -303,10 +316,12 @@
 
                 <TextView
                     android:id="@+id/text_flash"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Flash\nfirmware"
                     android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="2"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -325,8 +340,8 @@
             app:cardUseCompatPadding="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -339,10 +354,12 @@
 
                 <TextView
                     android:id="@+id/text_info"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="About"
                     android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="2"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -362,8 +379,8 @@
             app:cardUseCompatPadding="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -376,10 +393,12 @@
 
                 <TextView
                     android:id="@+id/text_connect"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/disconnect"
                     android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="2"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
