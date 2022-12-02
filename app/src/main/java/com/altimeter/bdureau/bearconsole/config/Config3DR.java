@@ -152,7 +152,11 @@ public class Config3DR extends AppCompatActivity {
             itemsMinFreq[a] = Integer.toString(i);
             a = a + 1;
         }
-
+        // need also to add the 900MHz freq!!!!
+        /*for (int i = 895000; i < 935050; i = i + 1000) {
+            itemsMinFreq[a] = Integer.toString(i);
+            a = a + 1;
+        }*/
         ArrayAdapter<String> adapterMinFreq = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, itemsMinFreq);
         dropdownMinFreq.setAdapter(adapterMinFreq);
@@ -227,6 +231,16 @@ public class Config3DR extends AppCompatActivity {
         alert.show();
     }
 
+    public void populateFrequency() {
+        ArrayAdapter<String> adapterMinFreq = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, itemsMinFreq);
+        dropdownMinFreq.setAdapter(adapterMinFreq);
+
+        ArrayAdapter<String> adapterMaxFreq = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, itemsMinFreq);
+        dropdownMaxFreq.setAdapter(adapterMaxFreq);
+    }
+
     public void EnableUI() {
 
         dropdownBaudRate.setEnabled(true);
@@ -270,6 +284,7 @@ public class Config3DR extends AppCompatActivity {
     public int arrayIndex(String stringArray[], String pattern) {
 
         for (int i = 0; i < stringArray.length; i++) {
+            Log.d("Flight win", pattern + ":" + i);
             if (stringArray[i].equals(pattern)) {
                 Log.d("Flight win", pattern + ":" + i);
                 return i;
@@ -565,7 +580,29 @@ public class Config3DR extends AppCompatActivity {
                 Log.d("Flight win", "ATS8?:" + value);
                 if (ATS8.length > 1) {
                     Log.d("Flight win", "ATS8?:" + ATS8[1]);
+                    int freq=0;
+                    if (ATS8[1].trim().matches("\\d+(?:\\.\\d+)?"))
+                        freq = Integer.valueOf(ATS8[1].trim());
 
+                    int a = 0;
+                    if (freq < 800000) {
+                        itemsMinFreq = new String[921];
+
+                        for (int i = 414000; i < 460050; i = i + 50) {
+                            itemsMinFreq[a] = Integer.toString(i);
+                            a = a + 1;
+                        }
+                    } else {
+                        itemsMinFreq = new String[41];
+                        // need also to add the 900MHz freq!!!!
+                        for (int i = 895000; i < 935050; i = i + 1000) {
+                            itemsMinFreq[a] = Integer.toString(i);
+                            a = a + 1;
+                            Log.d("3DR screen" , "a:"+a);
+                        }
+                    }
+                    setFreq();
+                    Log.d("Flight win", "before array index");
                     setMinFreq(arrayIndex(itemsMinFreq, ATS8[1].trim()));
                     if (ATS8[1].trim().equals("ERROR"))
                         error++;
@@ -1400,6 +1437,14 @@ public class Config3DR extends AppCompatActivity {
         });
     }
 
+    private void setFreq() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                populateFrequency();
+            }
+        });
+    }
     private void setMinFreq(int index) {
         final int findex = index;
         mHandler.post(new Runnable() {
