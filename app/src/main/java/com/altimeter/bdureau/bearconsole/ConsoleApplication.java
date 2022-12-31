@@ -4,19 +4,24 @@ package com.altimeter.bdureau.bearconsole;
  * @author: boris.dureau@neuf.fr
  **/
 
+import android.Manifest;
 import android.app.Application;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
@@ -169,7 +174,15 @@ public class ConsoleApplication extends Application {
         boolean state = false;
         //appendLog("connect:");
         if (myTypeOfConnection.equals("bluetooth")) {
-            state = BTCon.connect(address);
+            if (ContextCompat.checkSelfPermission(ConsoleApplication.this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    //getApplicationContext()
+
+                    //ActivityCompat.requestPermissions(this.getApplicationContext(), new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                    return false;
+                }
+            }
+            state = BTCon.connect(address, getApplicationContext());
             setConnectionType("bluetooth");
             if (!isConnectionValid()) {
                 Disconnect();

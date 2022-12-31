@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,8 @@ public class AltimeterStatus extends AppCompatActivity {
                         //Feet
                         myUnits = getResources().getString(R.string.Feet_fview);
                     //txtViewAltitude.setText((String) msg.obj + " " + myUnits);
-                    statusPage1.setAltitude((String) msg.obj + " " + myUnits);
+                    if(statusPage1 != null)
+                        statusPage1.setAltitude((String) msg.obj + " " + myUnits);
                     break;
                 case 13:
                     //Value 13 contains the battery voltage
@@ -445,31 +447,40 @@ public class AltimeterStatus extends AppCompatActivity {
         private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;
 
         public void setOutput1Status(String value) {
-            this.txtViewOutput1Status.setText(outputStatus(value));
+            if (ViewCreated)
+                this.txtViewOutput1Status.setText(outputStatus(value));
         }
         public void setOutput2Status(String value) {
-            this.txtViewOutput2Status.setText(outputStatus(value));
+            if (ViewCreated)
+                this.txtViewOutput2Status.setText(outputStatus(value));
         }
         public void setOutput3Status(String value) {
-            this.txtViewOutput3Status.setText(outputStatus(value));
+            if (ViewCreated)
+                this.txtViewOutput3Status.setText(outputStatus(value));
         }
         public void setOutput4Status(String value) {
-            this.txtViewOutput4Status.setText(outputStatus(value));
+            if (ViewCreated)
+                this.txtViewOutput4Status.setText(outputStatus(value));
         }
         public void setAltitude(String value) {
-            this.txtViewAltitude.setText(value);
+            if (ViewCreated)
+                this.txtViewAltitude.setText(value);
         }
         public void setVoltage(String value) {
-            this.txtViewVoltage.setText(value);
+            if (ViewCreated)
+                this.txtViewVoltage.setText(value);
         }
         public void setTemperature(String value) {
-            this.txtTemperature.setText(value );
+            if (ViewCreated)
+                this.txtTemperature.setText(value );
         }
         public void setEEpromUsage(String value) {
-            this.txtEEpromUsage.setText(value );
+            if (ViewCreated)
+                this.txtEEpromUsage.setText(value );
         }
         public void setNbrOfFlight(String value) {
-            this.txtNbrOfFlight.setText(value );
+            if (ViewCreated)
+                this.txtNbrOfFlight.setText(value );
         }
 
         @Nullable
@@ -477,7 +488,7 @@ public class AltimeterStatus extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.activity_altimeter_status_tab1,container,false);
 
-            ViewCreated = true;
+            //ViewCreated = true;
             txtViewOutput1Status = (TextView) view.findViewById(R.id.txtViewOutput1Status);
             txtViewOutput2Status = (TextView) view.findViewById(R.id.txtViewOutput2Status);
             txtViewOutput3Status = (TextView) view.findViewById(R.id.txtViewOutput3Status);
@@ -656,6 +667,7 @@ public class AltimeterStatus extends AppCompatActivity {
 
                 }
             });
+            ViewCreated = true;
             return view;
         }
         private String outputStatus(String msg) {
@@ -665,7 +677,7 @@ public class AltimeterStatus extends AppCompatActivity {
                     res = getResources().getString(R.string.no_continuity);
                     break;
                 case "1":
-                    res = getResources().getString(R.string.continuity);
+                    res = this.getContext().getResources().getString(R.string.continuity);
                     break;
                 case "-1":
                     res = getResources().getString(R.string.disabled);
