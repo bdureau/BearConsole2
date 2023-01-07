@@ -23,9 +23,25 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Atimeter Name"
+        android:id="@+id/txtStatusAltiName"
+        android:layout_below="@+id/txtViewTitle"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/txtStatusAltiNameValue"
+        android:layout_below="@+id/txtViewTitle"
+        android:layout_alignParentRight="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/altimeter_status_output_1"
         android:id="@+id/txtViewOutput1"
-        android:layout_below="@+id/txtViewTitle"
+        android:layout_below="@+id/txtStatusAltiName"
         android:layout_alignParentLeft="true"
          />
 
@@ -35,7 +51,7 @@
         android:id="@+id/txtViewOutput1Status"
         android:text="@string/altimeter_status_disabled"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/txtViewTitle"/>
+        android:layout_below="@+id/txtStatusAltiName"/>
 
     <TextView
         android:layout_width="wrap_content"

@@ -206,13 +206,9 @@ public class AltimeterStatus extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
+
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_altimeter_status_tab1);
+
         myBT = (ConsoleApplication) getApplication();
 
         //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
@@ -437,7 +433,7 @@ public class AltimeterStatus extends AppCompatActivity {
     public static class Tab1StatusFragment extends Fragment {
         private static final String TAG = "Tab1StatusFragment";
         private boolean ViewCreated = false;
-
+        private TextView txtStatusAltiName, txtStatusAltiNameValue;
         private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
         private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage,txtNbrOfFlight;
         private TextView txtViewOutput4, txtViewBatteryVoltage, txtViewOutput3, txtViewEEprom, txtViewFlight;
@@ -486,7 +482,8 @@ public class AltimeterStatus extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.activity_altimeter_status_tab1,container,false);
 
-            //ViewCreated = true;
+            txtStatusAltiName = (TextView) view.findViewById(R.id.txtStatusAltiName);
+            txtStatusAltiNameValue = (TextView) view.findViewById(R.id.txtStatusAltiNameValue);
             txtViewOutput1Status = (TextView) view.findViewById(R.id.txtViewOutput1Status);
             txtViewOutput2Status = (TextView) view.findViewById(R.id.txtViewOutput2Status);
             txtViewOutput3Status = (TextView) view.findViewById(R.id.txtViewOutput3Status);
@@ -503,7 +500,7 @@ public class AltimeterStatus extends AppCompatActivity {
             txtViewEEprom = (TextView) view.findViewById(R.id.txtViewEEprom);
             txtViewFlight = (TextView) view.findViewById(R.id.txtViewFlight);
 
-
+            txtStatusAltiNameValue.setText(myBT.getAltiConfigData().getAltimeterName());
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
                     ||myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")
                     ||myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ) {
@@ -752,6 +749,7 @@ public class AltimeterStatus extends AppCompatActivity {
             txtViewGPSSpeedVal= (TextView) view.findViewById(R.id.txtViewGPSSpeedVal);
             txtViewLocationAgeValue = (TextView) view.findViewById(R.id.txtViewLocationAgeValue);
             txtViewTimeSatValue= (TextView) view.findViewById(R.id.txtViewTimeSatValue);
+
 
             //hide GPS
            /* if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")){
