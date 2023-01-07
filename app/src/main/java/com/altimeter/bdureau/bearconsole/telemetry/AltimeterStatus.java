@@ -695,29 +695,37 @@ public class AltimeterStatus extends AppCompatActivity {
         private TextView txtViewLocationAgeValue, txtViewTimeSatValue;
 
         public void setLatitudeValue(String value) {
-            this.txtViewLatitudeValue.setText(value );
+            if (ViewCreated)
+                this.txtViewLatitudeValue.setText(value );
         }
         public void setLongitudeValue(String value) {
-            this.txtViewLongitudeValue.setText(value );
+            if (ViewCreated)
+                this.txtViewLongitudeValue.setText(value );
         }
 
         public void setSatellitesVal(String value) {
-            this.txtViewSatellitesVal.setText(value );
+            if (ViewCreated)
+                this.txtViewSatellitesVal.setText(value );
         }
         public void setHdopVal(String value) {
-            this.txtViewHdopVal.setText(value );
+            if (ViewCreated)
+                this.txtViewHdopVal.setText(value );
         }
         public void setGPSAltitudeVal(String value) {
-            this.txtViewGPSAltitudeVal.setText(value );
+            if (ViewCreated)
+                this.txtViewGPSAltitudeVal.setText(value );
         }
         public void setGPSSpeedVal(String value) {
-            this.txtViewGPSSpeedVal.setText(value );
+            if (ViewCreated)
+                this.txtViewGPSSpeedVal.setText(value );
         }
         public void setLocationAgeValue(String value) {
+            if (ViewCreated)
             this.txtViewLocationAgeValue.setText(value );
         }
         public void setTimeSatValue(String value) {
-            this.txtViewTimeSatValue.setText(value );
+            if (ViewCreated)
+                this.txtViewTimeSatValue.setText(value );
         }
 
         @Nullable

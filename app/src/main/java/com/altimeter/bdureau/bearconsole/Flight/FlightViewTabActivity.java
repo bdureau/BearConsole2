@@ -571,9 +571,12 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
             //apogee time
             int pos = searchX(flightData.getSeries(0), apogeeAltitude);
-            double apogeeTime = (double) flightData.getSeries(0).getX(pos);
-            timeToApogeeValue.setText(String.format("%.2f", apogeeTime / 1000) + " secs");
-
+            Log.d("apogeetime", "pos:"+pos);
+            double apogeeTime = 0;
+            if (pos !=-1) {
+                apogeeTime = (double) flightData.getSeries(0).getX(pos);
+                timeToApogeeValue.setText(String.format("%.2f", apogeeTime / 1000) + " secs");
+            }
             //calculate max speed
             double maxSpeed = speed.getMaxY();
             maxVelociyValue.setText((long) maxSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");

@@ -198,10 +198,15 @@ public class ConsoleApplication extends Application {
         if (myTypeOfConnection.equals("usb")) {
             state = UsbCon.connect(usbManager, device, baudRate);
             setConnectionType("usb");
-            if (!isConnectionValid()) {
-                Disconnect();
-                state = false;
+
+            for (int i =0; i < 3; i++) {
+                if (isConnectionValid()) {
+                    state = true;
+                    break;
+                }
             }
+            if(!state)
+                Disconnect();
         }
         return state;
     }
@@ -219,7 +224,7 @@ public class ConsoleApplication extends Application {
         }*/
         flush();
         clearInput();
-        //  send 2 commands to get read of the module connection string on some modules
+        //  send 2 commands to get rid off the module connection string on some modules
         write("h;".toString());
 
         flush();
