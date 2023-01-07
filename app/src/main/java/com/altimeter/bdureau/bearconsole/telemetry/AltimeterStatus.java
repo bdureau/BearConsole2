@@ -232,39 +232,12 @@ public class AltimeterStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (status) {
-
                     status = false;
                     myBT.write("h;\n".toString());
-
                     myBT.setExit(true);
                     myBT.clearInput();
                     myBT.flush();
                 }
-                //switch off output
-                if (statusPage1.switchOutput1.isChecked()) {
-                    myBT.write("k1F;\n".toString());
-                    myBT.clearInput();
-                    myBT.flush();
-                }
-                if (statusPage1.switchOutput2.isChecked()) {
-                    myBT.write("k2F;\n".toString());
-                    myBT.clearInput();
-                    myBT.flush();
-                }
-                if (statusPage1.switchOutput3.isChecked()) {
-                    myBT.write("k3F;\n".toString());
-                    myBT.clearInput();
-                    myBT.flush();
-                }
-                if (statusPage1.switchOutput4.isChecked()) {
-                    myBT.write("k4F;\n".toString());
-                    myBT.clearInput();
-                    myBT.flush();
-                }
-                //turn off telemetry
-                myBT.flush();
-                myBT.clearInput();
-                myBT.write("y0;\n".toString());
                 finish();      //exit the  activity
             }
         });
@@ -273,21 +246,16 @@ public class AltimeterStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (recording) {
-
                     recording = false;
                     myBT.write("w0;\n".toString());
-
-                    //myBT.setExit(true);
                     myBT.clearInput();
                     myBT.flush();
-                    //btnRecording.setText("Start Rec");
                     msg("Stopped recording");
                 } else {
                     recording = true;
                     myBT.write("w1;\n".toString());
                     myBT.clearInput();
                     myBT.flush();
-                    //btnRecording.setText("Stop");
                     msg("Started recording");
                 }
 
@@ -312,6 +280,36 @@ public class AltimeterStatus extends AppCompatActivity {
         // msg(myBT.getAltiConfigData().getAltimeterName());
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        //switch off output
+        if (statusPage1.switchOutput1.isChecked()) {
+            myBT.write("k1F;\n".toString());
+            myBT.clearInput();
+            myBT.flush();
+        }
+        if (statusPage1.switchOutput2.isChecked()) {
+            myBT.write("k2F;\n".toString());
+            myBT.clearInput();
+            myBT.flush();
+        }
+        if (statusPage1.switchOutput3.isChecked()) {
+            myBT.write("k3F;\n".toString());
+            myBT.clearInput();
+            myBT.flush();
+        }
+        if (statusPage1.switchOutput4.isChecked()) {
+            myBT.write("k4F;\n".toString());
+            myBT.clearInput();
+            myBT.flush();
+        }
+        //turn off telemetry
+        myBT.flush();
+        myBT.clearInput();
+        myBT.write("y0;\n".toString());
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -670,6 +668,17 @@ public class AltimeterStatus extends AppCompatActivity {
             ViewCreated = true;
             return view;
         }
+
+        @Override
+        public void onDestroyView() {
+
+            super.onDestroyView();
+            ViewCreated = false;
+        }
+        public boolean isViewCreated() {
+            return ViewCreated;
+        }
+
         private String outputStatus(String msg) {
             String res = "";
             switch (msg) {
@@ -721,7 +730,7 @@ public class AltimeterStatus extends AppCompatActivity {
         }
         public void setLocationAgeValue(String value) {
             if (ViewCreated)
-            this.txtViewLocationAgeValue.setText(value );
+                this.txtViewLocationAgeValue.setText(value );
         }
         public void setTimeSatValue(String value) {
             if (ViewCreated)

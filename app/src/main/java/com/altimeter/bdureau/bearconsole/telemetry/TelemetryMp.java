@@ -271,11 +271,7 @@ public class TelemetryMp extends AppCompatActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telemetry_mp);
         //get the bluetooth Application pointer
@@ -424,19 +420,6 @@ public class TelemetryMp extends AppCompatActivity {
         dismissButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (telemetry) {
-                    telemetry = false;
-                    myBT.write("h;".toString());
-
-                    myBT.setExit(true);
-                    myBT.clearInput();
-                    myBT.flush();
-                }
-                //turn off telemetry
-                myBT.flush();
-                myBT.clearInput();
-                myBT.write("y0;".toString());
-
                 finish();      //exit the activity
             }
         });
@@ -503,7 +486,22 @@ public class TelemetryMp extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (telemetry) {
+            telemetry = false;
+            myBT.write("h;".toString());
 
+            myBT.setExit(true);
+            myBT.clearInput();
+            myBT.flush();
+        }
+        //turn off telemetry
+        myBT.flush();
+        myBT.clearInput();
+        myBT.write("y0;".toString());
+    }
     @Override
     protected void onStop() {
         //msg("On stop");

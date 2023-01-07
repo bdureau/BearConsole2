@@ -73,24 +73,24 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         XYSeriesCollection flightData;
         flightData = myflight.GetFlightData(FlightName);
 
-        Log.d(TAG, "nbr of item:" +flightData.getSeries(3).getItemCount());
+        Log.d(TAG, "nbr of item:" +flightData.getSeries(6).getItemCount());
         Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
                 .clickable(false));
 
         List<LatLng> coord;
         coord =  new ArrayList();
         int j=0;
-        for (int i=0; i< flightData.getSeries(3).getItemCount(); i++)   {
+        for (int i=0; i< flightData.getSeries(6).getItemCount(); i++)   {
 
-            double res = (double)flightData.getSeries(3).getY(i);
-
+            double res = (double)flightData.getSeries(6).getY(i);
+            Log.d("map", "lat:"+ (double) flightData.getSeries(6).getY(i) );
+            Log.d("map", "long:"+ (double) flightData.getSeries(7).getY(i) );
             if(res >0.0d) {
-
-                LatLng c = new LatLng((double) flightData.getSeries(3).getY(i) / 100000, (double) flightData.getSeries(4).getY(i) / 100000);
-
+                LatLng c = new LatLng((double) flightData.getSeries(6).getY(i) , (double) flightData.getSeries(7).getY(i) );
                 coord.add(j, c);
                 j++;
 
@@ -103,6 +103,6 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng((double)flightData.getSeries(3).getMaxY()/(double)100000,(double)flightData.getSeries(4).getMaxY()/(double)100000), 20));
 
         if(coord.size() > 0)
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord.get((int)(j/2)),15));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord.get((int)(j/2)),15));
     }
 }

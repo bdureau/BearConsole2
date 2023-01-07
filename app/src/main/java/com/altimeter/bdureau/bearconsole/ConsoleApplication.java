@@ -627,7 +627,7 @@ public class ConsoleApplication extends Application {
                                                     value7 = 0;
                                                 //add the latitude
                                                 MyFlight.AddToFlight(value2,
-                                                        (long) (value7), flightName, 6);
+                                                        (float) (value7)/100000, flightName, 6);
                                             }
 
                                             //longitude
@@ -638,7 +638,7 @@ public class ConsoleApplication extends Application {
                                                     value8 = 0;
                                                 //add the longitude
                                                 MyFlight.AddToFlight(value2,
-                                                        (long) (value8), flightName, 7);
+                                                        (float) (value8)/100000, flightName, 7);
                                             }
                                         }
                                     }

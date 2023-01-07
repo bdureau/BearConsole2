@@ -131,25 +131,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (receiver !=null) {
-                    unregisterReceiver(receiver);
-                    receiver = null;
-                }
-                if (status & myBT.getConnected()) {
 
-                    status = false;
-                    myBT.write("h;\n".toString());
-
-                    myBT.setExit(true);
-                    myBT.clearInput();
-                    myBT.flush();
-                }
-                if (myBT.getConnected()) {
-                    //turn off telemetry
-                    myBT.flush();
-                    myBT.clearInput();
-                    myBT.write("y0;\n".toString());
-                }
                 finish();
 
             }
@@ -178,6 +160,29 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         startService(intent);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (receiver !=null) {
+            unregisterReceiver(receiver);
+            receiver = null;
+        }
+        if (status & myBT.getConnected()) {
+
+            status = false;
+            myBT.write("h;\n".toString());
+
+            myBT.setExit(true);
+            myBT.clearInput();
+            myBT.flush();
+        }
+        if (myBT.getConnected()) {
+            //turn off telemetry
+            myBT.flush();
+            myBT.clearInput();
+            myBT.write("y0;\n".toString());
+        }
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
