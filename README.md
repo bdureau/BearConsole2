@@ -8,6 +8,7 @@ It also has the ability to flash the altimeter firmware using an OTG cable so th
 <img src="/pictures/bearconsole_about.png" width="29%"> <img src="/pictures/bearconsole_bluetooth_list.png" width="29%"> 
 <img src="/pictures/bearconsole_app_config1.png" width="29%"> <img src="/pictures/bearconsole_app_config2.png" width="29%">
 <img src="/pictures/bearconsole_board_cfg1.png" width="29%"> <img src="/pictures/bearconsole_curves.png" width="29%">
+<img src="/pictures/console main screen 1.png" width="29%">
 
 With 3DR module you can also do telemetry                                         
 <img src="/pictures/bearconsole_telemetry.png" width="29%">
