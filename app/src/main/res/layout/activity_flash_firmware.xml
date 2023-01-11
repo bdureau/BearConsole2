@@ -121,12 +121,20 @@
         android:layout_alignParentLeft="true"
         android:onClick="onClickDetect"
         android:text="@string/detect_firmware" />
+    <Button
+        android:id="@+id/btFirmwareInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btDetect"
+        android:layout_alignParentLeft="true"
+        android:onClick="onClickFirmwareInfo"
+        android:text="Firmware info" />
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btDetect"
+        android:layout_below="@+id/btFirmwareInfo"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"

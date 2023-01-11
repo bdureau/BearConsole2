@@ -103,11 +103,6 @@ public class FlashFirmware extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flash_firmware);
 
@@ -246,7 +241,24 @@ public class FlashFirmware extends AppCompatActivity {
         new DetectAsyc().execute();
     }
 
-
+    public void onClickFirmwareInfo(View v) {
+        tvRead.setText("The following firmwares are available:");
+        tvRead.append("\n");
+        tvRead.append(ASSET_FILE_NAME_ALTIMULTIV2);
+        tvRead.append("\n");
+        tvRead.append(ASSET_FILE_NAME_ALTIMULTI);
+        tvRead.append("\n");
+        tvRead.append(ASSET_FILE_NAME_ALTISERVO);
+        tvRead.append("\n");
+        tvRead.append(ASSET_FILE_NAME_ALTIDUO);
+        tvRead.append("\n");
+        tvRead.append(ASSET_FILE_NAME_ALTIMULTISTM32);
+        tvRead.append("\n");
+        tvRead.append(ASSET_FILE_NAME_ALTIGPS);
+        tvRead.append("\n");
+        tvRead.append(ASSET_FILE_NAME_ALTIESP32_FILE2);
+        tvRead.append("\n");
+    }
     public void onClickFlash(View v) {
         String firmwareFileName ;
 
