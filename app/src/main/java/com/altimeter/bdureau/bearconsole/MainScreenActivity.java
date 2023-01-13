@@ -106,7 +106,9 @@ public class MainScreenActivity extends AppCompatActivity {
                 if (myBT.getConnectionType().equals("usb"))
                     if (myBT.getConnected()) {
                         myBT.Disconnect();
-                        //btnConnectDisconnect.setText(getResources().getString(R.string.connect));
+                        DisableUI();
+                        // we are disconnected enable flash firmware
+                        setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
                         text_connect.setText(getResources().getString(R.string.connect));
                     }
             }
