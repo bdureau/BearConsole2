@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.physicaloid.lib.Physicaloid;
 /**
  * @description: This allows the configuration of Lora Ebytes telemetry modules from an Android
@@ -1009,6 +1010,12 @@ public class ConfigLora extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        //share screen
+        if (id == R.id.action_share) {
+            ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this);
+            return true;
+        }
 
         //open application settings screen
         if (id == R.id.action_settings) {

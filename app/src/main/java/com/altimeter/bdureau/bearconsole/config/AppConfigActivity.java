@@ -41,6 +41,7 @@ import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -819,7 +820,11 @@ public class AppConfigActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
+        //share screen
+        if (id == R.id.action_share) {
+            ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this);
+            return true;
+        }
         //open help screen
         if (id == R.id.action_help) {
             Intent i = new Intent(AppConfigActivity.this, HelpActivity.class);

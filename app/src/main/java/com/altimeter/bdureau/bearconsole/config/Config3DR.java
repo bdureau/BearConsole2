@@ -3,6 +3,7 @@ package com.altimeter.bdureau.bearconsole.config;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
+import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.physicaloid.lib.Physicaloid;
 
 /**
@@ -1529,6 +1531,11 @@ public class Config3DR extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        //share screen
+        if (id == R.id.action_share) {
+            ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this);
+            return true;
+        }
         //open application settings screen
         if (id == R.id.action_settings) {
             Intent i = new Intent(Config3DR.this, AppConfigActivity.class);
@@ -1550,4 +1557,6 @@ public class Config3DR extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

@@ -872,7 +872,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //open application settings screen
+        //share screen
         if (id == R.id.action_share) {
             //ShareHandler.share(ShareHandler.takeScreenshot(findViewById(android.R.id.content).getRootView()), this.getApplicationContext());
             //ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this.getApplicationContext());

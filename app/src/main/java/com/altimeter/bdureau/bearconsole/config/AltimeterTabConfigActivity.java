@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //tooltip library
+import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.github.florent37.viewtooltip.ViewTooltip;
 
 
@@ -2130,7 +2131,11 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
+        //share screen
+        if (id == R.id.action_share) {
+            ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this);
+            return true;
+        }
         //open help screen
         if (id == R.id.action_help) {
             Intent i = new Intent(AltimeterTabConfigActivity.this, HelpActivity.class);
