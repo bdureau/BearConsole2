@@ -40,7 +40,7 @@ import java.util.Set;
 
 public class SearchBluetooth extends AppCompatActivity {
     //widgets
-    Button btnPaired;
+    Button btnPaired, btnDismiss;
     ListView devicelist;
     //Bluetooth
     private BluetoothAdapter myBluetooth = null;
@@ -50,20 +50,16 @@ public class SearchBluetooth extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
+
         super.onCreate(savedInstanceState);
         //Check the local and force it if needed
         myBT = (ConsoleApplication) getApplication();
-        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
-        //
+
         setContentView(R.layout.activity_search_bluetooth);
 
         //Calling widgets
         btnPaired = (Button) findViewById(R.id.button);
+        btnDismiss = (Button) findViewById(R.id.butSearchBTDismiss);
         devicelist = (ListView) findViewById(R.id.listView);
 
         //if the device has bluetooth
@@ -87,10 +83,14 @@ public class SearchBluetooth extends AppCompatActivity {
                 //                                          int[] grantResults)
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                    return;
+                }
                 startActivityForResult(turnBTon, 1);
                 return;
             }
-
         }
 
         btnPaired.setOnClickListener(new View.OnClickListener() {
@@ -100,8 +100,19 @@ public class SearchBluetooth extends AppCompatActivity {
             }
         });
 
+        btnDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+    }
     private void pairedDevicesList() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
@@ -155,14 +166,6 @@ public class SearchBluetooth extends AppCompatActivity {
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
 
-            // Make an intent to start next activity.
-           // Intent i= new Intent(MainActivity.this, MainScreenActivity.class);
-            ////////////////////>>>>>>Intent i = new Intent(MainActivity.this, ledControl.class);
-
-
-            //Change the activity.
-            //i.putExtra(EXTRA_ADDRESS, address); //this will be received at ledControl (class) Activity
-            //startActivity(i);
             myBT.setAddress(address);
             finish();
         }
