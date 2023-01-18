@@ -85,7 +85,14 @@
         <activity
             android:name=".Flash.FlashFirmware"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
         <activity android:name=".Flight.FlightViewMpActivity" />
         <activity
             android:name=".Flight.FlightViewTabActivity"
