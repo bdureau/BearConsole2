@@ -235,27 +235,35 @@ public class CommandInterfaceESP32 {
         byte buf[] = slipEncode(data);
 
         ret = mPhysicaloid.write(buf, buf.length);
-        try { Thread.sleep(timeout); } catch (InterruptedException e) {}
-
-            int numRead =recv(retVal.retValue, retVal.retValue.length, timeout);
-            mUpCallback.onInfo("num read:" + numRead);
+        try { Thread.sleep(5); } catch (InterruptedException e) {}
+        
+        int numRead = 0;
+        
+        for (i = 0; i < 10; i++) {
+            numRead = recv(retVal.retValue, retVal.retValue.length, timeout/10);
+            // mUpCallback.onInfo("num read:" + numRead);
             if (numRead == 0) {
                 retVal.retCode = -1;
+                continue;
             } else if (numRead == -1) {
                 retVal.retCode = -1;
+                continue;
             }
 
             if (retVal.retValue[0] != (byte) 0xC0) {
                 //mUpCallback.onInfo("invalid packet\n");
                 // System.out.println("Packet: " + printHex(retVal.retValue));
                 retVal.retCode = -1;
+                continue;
             }
 
             if (retVal.retValue[0] == (byte) 0xC0) {
                 mUpCallback.onInfo("This is correct!!!\n");
                 // System.out.println("Packet: " + printHex(retVal.retValue));
                 retVal.retCode = 1;
+                break;
             }
+        }
 
         return retVal;
     }
@@ -277,7 +285,8 @@ public class CommandInterfaceESP32 {
                 //    Log.d(TAG, "recv(" + retval + ") : " + toHexStr(buf, totalRetval));
                 //}
             }
-            if (totalRetval >= length) {
+            
+            if (totalRetval >= 8) { 
                 break;
             }
 
