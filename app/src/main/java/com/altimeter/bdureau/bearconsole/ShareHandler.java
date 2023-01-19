@@ -73,11 +73,13 @@ public class ShareHandler {
     public static  void shareScreenShot(File imageFile,Context ctx ) {
 
         Log.d("Package Name", "Package Name" + ctx.getPackageName());
-        Uri uri = FileProvider.getUriForFile(
+        /*Uri uri = FileProvider.getUriForFile(
                 ctx,
                 ctx.getPackageName() +  ".provider",
-                imageFile);
+                imageFile);*/
+        Uri uri = FileProvider.getUriForFile(ctx, BuildConfig.APPLICATION_ID + ".provider", imageFile);
 
+        ctx.grantUriPermission(ctx.getPackageName(), uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
