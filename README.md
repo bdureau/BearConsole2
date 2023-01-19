@@ -43,4 +43,4 @@ Falshing works for all versions Atmega328, STM32 and ESP32 based altimeters.
 If you need an altimeter board you can can either build it yourself using Arduino compatible hardware or contact me to get a board
 
 # Disclamer
-This is a work in progress project, not all Android devices might not be fully supported but if you find any bugs please make sure that you do report them so that I can fix them. 
+This is a work in progress project, not all Android devices might not be fully supported (version 6,7,8, 10 and 12 have been tested) but if you find any bugs please make sure that you do report them so that I can fix them. 
