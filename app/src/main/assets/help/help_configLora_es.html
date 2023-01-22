@@ -1,0 +1,50 @@
+<h1> Configuración del módulo eByte Lora E220 </h1>
+<p> Para realizar telemetría de largo alcance, deberá reemplazar su módulo Bluetooth por un módulo de telemetría de largo alcance, como el Lora E22O. </p>
+<p> Los siguientes módulos se han configurado con éxito </p>
+<p> E220-400T30D </p>
+<p> E220-400T30S </p>
+<p> E220-900T30D </p>
+<p> E220-900T30S </p>
+<p> E220-400T22D </p>
+<p> etc ... </p>
+<p><img  src="file:///android_asset/help/images/E220-900T22S.jpg"/></p>
+<p><img  src="file:///android_asset/help/images/E220-900T30D.jpg"/></p>
+<p> </p>
+<p> Para programar el módulo necesita un cable TTL </p>
+<p><img  src="file:///android_asset/help/images/ttl_cable-small.jpg"/></p>
+<p> un adaptador USB (USBC o micro USB dependiendo del dispositivo Android) </p>
+<p><img  src="file:///android_asset/help/images/usb_adpter-small.jpg"/></p>
+<p> se requiere un adaptador jst y algunos cables jst </p>
+<p> </p>
+<p> Tenga en cuenta que la batería de su dispositivo Android debe ser lo suficientemente fuerte
+    como para alimentar el módulo Lora. Considere el uso de una batería externa si tiene un módulo potente. </p>
+<p> </p>
+<p>Para entrar en el modo de configuración, deberás poner ambos jumpers.</p>
+<p>Deberás configurar el módulo para que funcione con tu placa altímetro.</p>
+<p>Ten en cuenta que estos módulos suelen venir preestablecidos para trabajar a 57600 baudios.
+    Sin embargo, tu placa altímetro trabajará de forma predeterminada a 38400 baudios, por lo que
+    deberás asegurarte de conectarte a la velocidad correcta.</p>
+<p></p>
+<p>Ten en cuenta que los módulos Lora vienen en pareja, por lo que tendrás que configurar tanto el
+    transmisor como el receptor.</p>
+<p></p>
+<p><span style="color: #ff0000;">PRECAUCIÓN: asegúrate de no desconectar el módulo mientras
+    realizas lo siguiente</span></p>
+<p></p>
+<p><strong>Recuperar la configuración del módulo</strong></p>
+<p>Conecta el módulo a tu dispositivo Android utilizando un cable OTG o cualquier adaptador USB
+    que pueda funcionar con USB tipo C o micro USB.</p>
+<p>Luego, haz clic en [recuperar cfg]. Esto intentará conectarse al módulo utilizando 9600 baudios.
+    Luego, recuperará la configuración del módulo para que puedas cambiarla.</p>
+<p></p>
+<p><strong>Guardar la configuración del módulo</strong></p>
+<p>Cambie la configuración que desee cambiar. Asegúrese de haber seleccionado una velocidad de transmisión que funcione con su tablero (por defecto 38400). Asegúrese de que los canales sean los mismos para el transmisor y el receptor. Si establece una clave de cifrado, asegúrese de que sea la misma en ambos. Una vez hecho esto, haga clic en [Save cfg]. Esto guardará la configuración. Si se produce algún error al guardar, se abortará el guardado</p>
+<p></p>
+<p>Tenga en cuenta que deberá repetir el mismo paso para cada módulo</p>
+<p>Antes de usarlo, asegúrese de quitar ambos jumpers para salir del modo de configuración</p>
+<p></p>
+<p>Los módulos de telemetría Lora actualmente no funcionan con el tablero ESP32.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
