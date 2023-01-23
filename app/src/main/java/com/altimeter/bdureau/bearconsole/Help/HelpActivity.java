@@ -51,6 +51,10 @@ Button btnDismiss;
 
         if (Locale.getDefault().getLanguage()=="fr")
             webView.loadUrl("file:///android_asset/help/"+ FileName + "_fr.html");
+       else if (Locale.getDefault().getLanguage()=="es")
+            webView.loadUrl("file:///android_asset/help/"+ FileName + "_es.html");
+        else if (Locale.getDefault().getLanguage()=="it")
+            webView.loadUrl("file:///android_asset/help/"+ FileName + "_it.html");
        else
             webView.loadUrl("file:///android_asset/help/"+ FileName + ".html");
 

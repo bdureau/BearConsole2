@@ -218,7 +218,7 @@
     <string name="max_speed">Velocidad máxima</string>
     <string name="current_altitude">Altitud actual</string>
     <string name="dis">Desconectar</string>
-    <string name="tel_telemetry">Telemetry</string>
+    <string name="tel_telemetry">Telemetría</string>
     <string name="telemetry_apogee">apogeo</string>
     <string name="rocket_has_landed">cohete ha aterrizado</string>
     <string name="main_deployed">paracaídas principal se ha desplegado en</string>
@@ -303,35 +303,35 @@
     <string name="unit_feet_per_square_secs">Pies/secs²</string>
 
     <!--curves name -->
-    <string name="curve_altitude">altitude</string>
-    <string name="curve_temperature">temperature</string>
-    <string name="curve_pressure">pressure</string>
-    <string name="curve_latitude">latitude</string>
-    <string name="curve_longitude">logitude</string>
-    <string name="curve_speed">speed</string>
-    <string name="curve_accel">acceleration</string>
-    <string name="flight_name">Flight</string>
+    <string name="curve_altitude">altitud</string>
+    <string name="curve_temperature">temperatura</string>
+    <string name="curve_pressure">presión</string>
+    <string name="curve_latitude">latitud</string>
+    <string name="curve_longitude">longitud</string>
+    <string name="curve_speed">velocidad</string>
+    <string name="curve_accel">aceleración</string>
+    <string name="flight_name">Vuelo</string>
 
-    <string name="select_bluetooth_device">Select Bluetooth device</string>
-    <string name="telemetry_screen">Telemetry</string>
-    <string name="status_screen">Status</string>
-    <string name="flight_time">Time</string>
+    <string name="select_bluetooth_device">Seleccionar dispositivo Bluetooth</string>
+    <string name="telemetry_screen">Telemetría</string>
+    <string name="status_screen">Estado</string>
+    <string name="flight_time">Tiempo</string>
 
     <!--telemetry module config -->
-    <string name="m3DR_load_cfg">Loading 3DR module configuration</string>
-    <string name="m3DR_retrieving_cfg">Retrieving config</string>
-    <string name="m3DR_no_errors">No error saving the data\n Running AT&amp;W</string>
-    <string name="m3DR_we_have_errors">We have an error\n not saving\n Please try again</string>
-    <string name="m3DR_saving_cancelled">Saving has been cancelled</string>
-    <string name="m3DR_run_command">Running command </string>
-    <string name="m3DR_cancel_retrieve">Cancelling retrieve</string>
-    <string name="m3DR_run_at0">Running command AT0 to exit AT mode</string>
-    <string name="m3DR_run_save">Running Saving commands</string>
-    <string name="m3DR_save_cfg">Saving config</string>
-    <string name="m3DR_Cancel">Cancel</string>
-    <string name="m3DR_attempt_con">Attempting connecting to the 3DR module</string>
-    <string name="m3DR_attempt_con2">Attempt connecting at:</string>
-    <string name="m3DR_connect_ok">Connection successfull at:</string>
+    <string name="m3DR_load_cfg">Cargando configuración del módulo 3DR</string>
+    <string name="m3DR_retrieving_cfg">Recuperando configuración</string>
+    <string name="m3DR_no_errors">No hay errores al guardar los datos\n Ejecutando AT&amp;W</string>
+    <string name="m3DR_we_have_errors">Tenemos un error\n no guardando\n Por favor, inténtelo de nuevo</string>
+    <string name="m3DR_saving_cancelled">El guardado se ha cancelado</string>
+    <string name="m3DR_run_command">Ejecutando comando </string>
+    <string name="m3DR_cancel_retrieve">Cancelando recuperación</string>
+    <string name="m3DR_run_at0">Ejecutando comando AT0 para salir del modo AT</string>
+    <string name="m3DR_run_save">Ejecutando comandos de guardado</string>
+    <string name="m3DR_save_cfg">Guardando configuración</string>
+    <string name="m3DR_Cancel">Cancelar</string>
+    <string name="m3DR_attempt_con">Intentando conectarse al módulo 3DR</string>
+    <string name="m3DR_attempt_con2">Intentando conectarse en:</string>
+    <string name="m3DR_connect_ok">Conexión exitosa en:</string>
     <string name="m3DR_failed_con">Failed to connect.\n Please unplug USB and plug it back\n Restart the application\n Then try again</string>
     <string name="m3DR_connecting">Connecting</string>
     <string name="configure_telemetry_module">Configure telemetry module</string>
@@ -428,19 +428,19 @@
     <string name="lora_module_config_msg">This will allow you to configure Lora telemetry modules</string>
     <string name="lora_module_config_msg_title">Lora telemetry module configuration</string>
     <string name="lora_module_config_button_ok">OK</string>
-    <string name="lora_module_loading_config_msg">Loading Lora module config</string>
-    <string name="lora_module_channel_msg">Module channel cannot be empty</string>
-    <string name="lora_module_invalid_channel">Channel is invalid</string>
-    <string name="lora_module_channel_value_msg">Channel must be between 0 and 83</string>
-    <string name="lora_module_address_empty_msg">Module address cannot be empty</string>
-    <string name="lora_module_address_range">Address must be between 0 and 65535</string>
-    <string name="lora_module_address_invalid">Address is invalid</string>
-    <string name="lora_module_updating_address_msg">Updating module address</string>
-    <string name="lora_module_updating_msg2">Updating serial speed, parity and air rate</string>
-    <string name="lora_module_updating_msg3">updating packet , RSSI noise and transmitting power</string>
-    <string name="lora_module_updating_msg4">updating channel</string>
-    <string name="lora_module_updating_msg5">updating RSSI Byte, trans Mode, LBT and WOR Cycle</string>
-    <string name="lora_module_updating_msg6">updating key</string>
-    <string name="lora_module_connecting_msg">Attempting connecting to the Lora module</string>
+    <string name="lora_module_loading_config_msg">Cargando configuración del módulo Lora</string>
+    <string name="lora_module_channel_msg">El canal del módulo no puede estar vacío</string>
+    <string name="lora_module_invalid_channel">El canal es inválido</string>
+    <string name="lora_module_channel_value_msg">El canal debe estar entre 0 y 83</string>
+    <string name="lora_module_address_empty_msg">La dirección del módulo no puede estar vacía</string>
+    <string name="lora_module_address_range">La dirección debe estar entre 0 y 65535</string>
+    <string name="lora_module_address_invalid">La dirección es inválida</string>
+    <string name="lora_module_updating_address_msg">Actualizando dirección del módulo</string>
+    <string name="lora_module_updating_msg2">Actualizando velocidad de serie, paridad y tasa de aire</string>
+    <string name="lora_module_updating_msg3">Actualizando paquete, ruido RSSI y potencia de transmisión</string>
+    <string name="lora_module_updating_msg4">Actualizando canal</string>
+    <string name="lora_module_updating_msg5">Actualizando Byte RSSI, modo de transmisión, LBT y ciclo WOR</string>
+    <string name="lora_module_updating_msg6">Actualizando clave</string>
+    <string name="lora_module_connecting_msg">Intentando conectarse al módulo Lora</string>
 
 </resources>

@@ -1,0 +1,60 @@
+<h1>Flash del firmware</h1>
+<p>In primo luogo è necessario selezionare il firmware. Il firmware dipende dall'altimetro che si desidera flashare</p>
+<p>Quindi decidere se si desidera flashare direttamente il firmware o utilizzare prima un firmware di recupero</p>
+<p>Utilizzare un firmware di recupero se la configurazione è sbagliata e l'altimetro non può più connettersi.</p>
+<p>Dopo aver utilizzato un firmware di recupero, sarà necessario flashare il firmware.</p>
+<p>Si noti che flashare il firmware sbagliato causerà un altimetro che non funziona affatto o che non funziona come previsto.</p>
+<p>Per essere in grado di flashare l'altimetro, è necessario un cavo TTL USB e un adattatore per collegarlo al telefono.</p>
+<p><img src="file:///android_asset/help/images/ttl_cable-small.jpg"/></p>
+<p>Un adattatore USB (USBC o micro USB a seconda del dispositivo Android) </p>
+<p><img src="file:///android_asset/help/images/usb_adpter-small.jpg"/></p>
+<p>sono necessari alcuni cavi JST.</p>
+<p> </p>
+<p></p>
+<p>I seguenti altimetri possono essere flashati, assicurarsi di guardare attentamente le immagini per identificare l'altimetro</p>
+<p><strong>AltiDuo</strong> (versione grande)</p>
+<p><img src="file:///android_asset/help/images/altiDuo-small.jpg"/></p>
+<p><strong>AltiServo</strong></p>
+<p><img src="file:///android_asset/help/images/altiServo-small.jpg"/></p>
+<p><strong>AltiMulti</strong></p>
+<p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg"/></p>
+<p><strong>AltiMultiV2</strong></p>
+<p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg"/></p>
+<p><strong>AltiMultiSTM32 o AltiGPS</strong></p>
+<p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg"/></p>
+<p><strong>AltiMultiESP32</strong></p>
+<p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg"/></p>
+<p></p>
+<p>In alternativa, è possibile tentare di rilevare il firmware.</p>
+<p>Al momento della scrittura, esistono 3 tipi di altimetri, gli altimetri basati su ATMega328, gli altimetri basati su STM32 e gli altimetri basati su ESP32.</p>
+<p><strong>Flash degli altimetri basati su ATMega328 (ad esempio: AltiDuo, AltiServo, AltiMulti e AltiMultiV2)</strong></p>
+<p>- Inserire il cavo</p>
+<p>- Selezionare il firmware corretto o rilevarlo</p>
+<p>- Premere e rilasciare il pulsante di reset sull'altimetro e premere il pulsante [flash firmware]</p>
+<p><img  src="file:///android_asset/help/images/alti-reset.jpg"/></p>
+<p></p>
+<p><strong>Flashing degli altimetri basati su STM32 (ad esempio: AltiMultiSTM32 e AltGPS)</strong></p>
+<p>- Inserire il cavo</p>
+<p>- Selezionare il firmware corretto o rilevarlo</p>
+<p>- Spostare il jumper boot0 a destra</p>
+<p><img  src="file:///android_asset/help/images/stm32-prog2-small.jpg"/></p>
+<p>- Premere il pulsante di reset </p>
+<p>- Premere il pulsante [flash firmware]</p>
+<p>- Spostare il jumper boot0 indietro a sinistra</p>
+<p><img  src="file:///android_asset/help/images/stm32-prog1-small.jpg"/></p>
+<p>Il firmware dovrebbe essere in caricamento, quando è completo premere il pulsante di reset</p>
+<p></p>
+<p><strong>Flashing degli altimetri basati su ESP32 (ad esempio: AltiMultiESP32)</strong></p>
+<p>- Inserire il cavo</p>
+<p>- Selezionare il firmware corretto o rilevarlo</p>
+<p>- Sul scheda premere il <strong>pulsante di boot</strong> e tenerlo premuto</p>
+<p>- Sul scheda premere il <strong>pulsante di reset</strong> e rilasciarlo tenendo premuto il pulsante di boot</p>
+<p>- Quindi rilasciare il pulsante di boot</p>
+<p><img  src="file:///android_asset/help/images/esp32-altimulti-button-small.jpg"/></p>
+<p>Il firmware dovrebbe essere ora in caricamento, se non funziona riprovare. Quando è completo premere il pulsante di reset</p>
+<p></p>
+<p>NOTA IMPORTANTE: durante il flashing di un altimetro non scollegare il cavo, ciò corromperà il firmware e dovrete flasharlo di nuovo</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

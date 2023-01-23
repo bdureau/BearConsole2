@@ -15,91 +15,53 @@
 
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <RadioGroup
-        android:id="@+id/question_radio_group"
+    <TextView
+        android:id="@+id/textViewFirmware"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/textViewAltimeterModelLbl"
-        tools:layout_editor_absoluteX="88dp"
-        tools:layout_editor_absoluteY="91dp">
+        android:text="Firmware:" />
+    <Spinner
+        android:id="@+id/spinnerFirmware"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAltimeterModelLbl"
+        android:layout_alignBaseline="@+id/textViewFirmware"
+        android:layout_alignParentRight="true"
+        android:spinnerMode="dropdown" />
 
-        <RadioButton
-            android:id="@+id/radioButAltiMulti"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AltiMulti"
-
-            tools:layout_editor_absoluteX="32dp"
-            tools:layout_editor_absoluteY="74dp" />
-
-        <RadioButton
-            android:id="@+id/radioButAltiMultiV2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AltiMultiV2"
-
-            tools:layout_editor_absoluteX="32dp"
-            tools:layout_editor_absoluteY="74dp" />
-
-        <RadioButton
-            android:id="@+id/radioButAltiServo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AltiServo"
-
-            tools:layout_editor_absoluteX="32dp"
-            tools:layout_editor_absoluteY="74dp" />
-
-        <RadioButton
-            android:id="@+id/radioButAltiDuo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AltiDuo"
-
-            tools:layout_editor_absoluteX="32dp"
-            tools:layout_editor_absoluteY="74dp" />
-
-        <RadioButton
-            android:id="@+id/radioButAltiMultiSTM32"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AltiMultiSTM32"
-
-            tools:layout_editor_absoluteX="32dp"
-            tools:layout_editor_absoluteY="74dp" />
-
-        <RadioButton
-            android:id="@+id/radioButAltiGPS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AltiGPS"
-
-            tools:layout_editor_absoluteX="32dp"
-            tools:layout_editor_absoluteY="74dp" />
-
-        <RadioButton
-            android:id="@+id/radioButAltiESP32"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AltiESP32"
-
-            tools:layout_editor_absoluteX="32dp"
-            tools:layout_editor_absoluteY="74dp" />
-    </RadioGroup>
+    <ImageView
+        android:id="@+id/imageAlti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinnerFirmware"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/altimultiv1_small" />
+    <TextView
+        android:id="@+id/textViewBaudRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageAlti"
+        android:text="Flash speed(Baud):" />
 
     <Spinner
         android:id="@+id/spinnerBaud"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/question_radio_group"
+        android:layout_below="@+id/imageAlti"
+        android:layout_alignBaseline="@+id/textViewBaudRate"
         android:layout_alignParentRight="true"
         android:spinnerMode="dropdown" />
+
+
 
     <Button
         android:id="@+id/btFlash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/question_radio_group"
+        android:layout_below="@+id/spinnerBaud"
         android:layout_alignParentLeft="true"
         android:onClick="onClickFlash"
         android:text="@string/flash_firmware" />
