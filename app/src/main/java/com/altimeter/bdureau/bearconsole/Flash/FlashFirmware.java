@@ -116,13 +116,12 @@ public class FlashFirmware extends AppCompatActivity {
                 "AltiMultiSTM32",
                 "AltiGPS",
                 "AltiESP32"
-                };
+        };
 
         ArrayAdapter<String> adapterFirmware = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item, itemsFirmwares);
         spinnerFirmware.setAdapter(adapterFirmware);
         spinnerFirmware.setSelection(0);
-
 
 
         btFlash = (Button) findViewById(R.id.btFlash);
@@ -176,23 +175,23 @@ public class FlashFirmware extends AppCompatActivity {
         spinnerFirmware.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMulti"))
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMulti"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiv1_small, getApplicationContext().getTheme()));
 
-                if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiV2"))
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiV2"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiv2_small, getApplicationContext().getTheme()));
 
-                if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiServo"))
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiServo"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altiservo_small, getApplicationContext().getTheme()));
 
-                if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiDuo"))
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiDuo"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altiduo_small, getApplicationContext().getTheme()));
 
-                if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32") ||
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32") ||
                         itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultistm32_small, getApplicationContext().getTheme()));
 
-                if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32"))
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiesp32_small, getApplicationContext().getTheme()));
 
             }
@@ -235,23 +234,23 @@ public class FlashFirmware extends AppCompatActivity {
         String recoverFileName;
         recoverFileName = ASSET_FILE_RESET_ALTIMULTI;
 
-        if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMulti")){
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMulti")) {
             recoverFileName = ASSET_FILE_RESET_ALTIMULTI;
         }
-        if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiV2")) {
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiV2")) {
             recoverFileName = ASSET_FILE_RESET_ALTIMULTI;
         }
-        if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiServo")) {
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiServo")) {
             recoverFileName = ASSET_FILE_RESET_ALTISERVO;
         }
-        if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiDuo")) {
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiDuo")) {
             recoverFileName = ASSET_FILE_RESET_ALTIDUO;
         }
-        if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32")){
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32")) {
             recoverFileName = ASSET_FILE_RESET_ALTISTM32;
         }
 
-        if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS"))
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS"))
             recoverFileName = ASSET_FILE_RESET_ALTISTM32;
 
         tvRead.setText("");
@@ -283,10 +282,10 @@ public class FlashFirmware extends AppCompatActivity {
                 //Log.e(TAG, e.toString());
             }
         } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS") ||
-                    itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32")) {
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32")) {
             recorverFirmware = true;
             new UploadSTM32Asyc().execute();
-        } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiESP32")) {
+        } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32")) {
             recorverFirmware = true;
             new UploadESP32Asyc().execute();
         }
@@ -314,20 +313,21 @@ public class FlashFirmware extends AppCompatActivity {
         tvRead.append(ASSET_FILE_NAME_ALTIESP32_FILE2);
         tvRead.append("\n");
     }
+
     public void onClickFlash(View v) {
-        String firmwareFileName ;
+        String firmwareFileName;
 
         firmwareFileName = ASSET_FILE_NAME_ALTIMULTI;
 
-        if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMulti"))
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMulti"))
             firmwareFileName = ASSET_FILE_RESET_ALTIMULTI;
-        if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiV2"))
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiV2"))
             firmwareFileName = ASSET_FILE_NAME_ALTIMULTIV2;
-        if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiServo"))
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiServo"))
             firmwareFileName = ASSET_FILE_RESET_ALTISERVO;
-        if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiDuo"))
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiDuo"))
             firmwareFileName = ASSET_FILE_RESET_ALTIDUO;
-        if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32"))
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32"))
             firmwareFileName = ASSET_FILE_RESET_ALTISTM32;
 
         tvRead.setText("");
@@ -336,7 +336,7 @@ public class FlashFirmware extends AppCompatActivity {
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiV2") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiServo") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiDuo")) {
-            tvRead.setText("Loading firmware:"+ firmwareFileName);
+            tvRead.setText("Loading firmware:" + firmwareFileName);
             try {
                 builder = new AlertDialog.Builder(FlashFirmware.this);
                 //Flashing firmware...
@@ -360,11 +360,11 @@ public class FlashFirmware extends AppCompatActivity {
                 //Log.e(TAG, e.toString());
             }
         } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS") ||
-                    itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32")) {
-            tvRead.setText("Loading firmware:"+ firmwareFileName);
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32")) {
+            tvRead.setText("Loading firmware:" + firmwareFileName);
             recorverFirmware = false;
             new UploadSTM32Asyc().execute();
-        } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiESP32")) {
+        } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32")) {
             tvRead.setText("Loading ESP32 firmware\n");
             recorverFirmware = false;
             new UploadESP32Asyc().execute();
@@ -394,35 +394,35 @@ public class FlashFirmware extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            String version="";
+            String version = "";
 
             FirmwareInfo firm = new FirmwareInfo(mPhysicaloid);
             firm.open(38400);
-            version =firm.getFirmwarVersion();
+            version = firm.getFirmwarVersion();
 
-            tvAppend(tvRead, getString(R.string.firmware_version_not_detected)+ version +"\n");
+            tvAppend(tvRead, getString(R.string.firmware_version_not_detected) + version + "\n");
 
-            if(version.equals("AltiMulti")) {
+            if (version.equals("AltiMulti")) {
                 //setRadioButton (rbAltiMulti,true);
                 spinnerFirmware.setSelection(0);
             }
-            if(version.equals("AltiMultiV2")) {
+            if (version.equals("AltiMultiV2")) {
                 //setRadioButton (rbAltiMultiV2,true);
                 spinnerFirmware.setSelection(1);
             }
-            if(version.equals("AltiServo")) {
+            if (version.equals("AltiServo")) {
                 //setRadioButton (rbAltiServo,true);
                 spinnerFirmware.setSelection(2);
             }
-            if(version.equals("AltiDuo")) {
+            if (version.equals("AltiDuo")) {
                 //setRadioButton (rbAltiDuo,true);
                 spinnerFirmware.setSelection(3);
             }
-            if(version.equals("AltiMultiSTM32")) {
+            if (version.equals("AltiMultiSTM32")) {
                 //setRadioButton (rbAltiMultiSTM32,true);
                 spinnerFirmware.setSelection(4);
             }
-            if(version.equals("AltiGPS")) {
+            if (version.equals("AltiGPS")) {
                 //setRadioButton (rbAltiGPS,true);
                 spinnerFirmware.setSelection(5);
             }
@@ -458,9 +458,9 @@ public class FlashFirmware extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             if (!recorverFirmware) {
-                if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32"))
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32"))
                     uploadSTM32(ASSET_FILE_NAME_ALTIMULTISTM32, mUploadSTM32Callback);
-                if(itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS"))
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS"))
                     uploadSTM32(ASSET_FILE_NAME_ALTIGPS, mUploadSTM32Callback);
             } else {
                 uploadSTM32(ASSET_FILE_RESET_ALTISTM32, mUploadSTM32Callback);
@@ -544,15 +544,14 @@ public class FlashFirmware extends AppCompatActivity {
         cmd.releaseChip();
     }
 
-    private byte [] readFile(InputStream inputStream){
-        ByteArrayOutputStream byteArrayOutputStream=null;
+    private byte[] readFile(InputStream inputStream) {
+        ByteArrayOutputStream byteArrayOutputStream = null;
 
         int i;
         try {
             byteArrayOutputStream = new ByteArrayOutputStream();
             i = inputStream.read();
-            while (i != -1)
-            {
+            while (i != -1) {
                 byteArrayOutputStream.write(i);
                 i = inputStream.read();
             }
@@ -576,9 +575,7 @@ public class FlashFirmware extends AppCompatActivity {
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, final int id) {
-
                             dialog.cancel();
-
                         }
                     });
             alert = builder.create();
@@ -610,6 +607,7 @@ public class FlashFirmware extends AppCompatActivity {
             alert.dismiss();
         }
     }
+
     public void uploadESP32(String fileName[], UploadSTM32CallBack UpCallback) {
         boolean failed = false;
         InputStream file1 = null;
@@ -626,10 +624,10 @@ public class FlashFirmware extends AppCompatActivity {
 
         } catch (IOException e) {
             //e.printStackTrace();
-            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIESP32_FILE1 + "\n");
         } catch (Exception e) {
             e.printStackTrace();
-            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIESP32_FILE1 + "\n");
         }
 
         try {
@@ -637,20 +635,20 @@ public class FlashFirmware extends AppCompatActivity {
 
         } catch (IOException e) {
             //e.printStackTrace();
-            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIESP32_FILE2 + "\n");
         } catch (Exception e) {
             e.printStackTrace();
-            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIESP32_FILE2 + "\n");
         }
         try {
             file3 = getAssets().open(fileName[2]);
 
         } catch (IOException e) {
             //e.printStackTrace();
-            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIESP32_FILE3 + "\n");
         } catch (Exception e) {
             e.printStackTrace();
-            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIESP32_FILE3 + "\n");
         }
 
         try {
@@ -658,17 +656,17 @@ public class FlashFirmware extends AppCompatActivity {
 
         } catch (IOException e) {
             //e.printStackTrace();
-            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIESP32_FILE4 + "\n");
         } catch (Exception e) {
             e.printStackTrace();
-            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+            tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIESP32_FILE4 + "\n");
         }
 
         dialogAppend("Starting ...");
 
 
         boolean ret = cmd.initChip();
-        if (ret )
+        if (ret)
             dialogAppend(getString(R.string.chip_has_not_been_init) + ret);
         else {
             dialogAppend("Chip has not been initiated:" + ret);
@@ -682,7 +680,7 @@ public class FlashFirmware extends AppCompatActivity {
             int chip = cmd.detectChip();
             if (chip == cmd.ESP32)
                 //dialogAppend("Chip is ESP32");
-                tvAppend(tvRead,"Chip is ESP32\n");
+                tvAppend(tvRead, "Chip is ESP32\n");
 
             // now that we have initialized the chip we can change the baud rate to 921600
             // first we tell the chip the new baud rate
@@ -798,7 +796,6 @@ public class FlashFirmware extends AppCompatActivity {
         public void onError(UploadSTM32Errors err) {
             tvAppend(tvRead, getResources().getString(R.string.msg18) + err.toString() + "\n");
         }
-
     };
     Handler mHandler = new Handler();
 
@@ -809,12 +806,11 @@ public class FlashFirmware extends AppCompatActivity {
             @Override
             public void run() {
                 ftv.append(ftext);
-
             }
         });
     }
 
-    private void setRadioButton (RadioButton rb, boolean state) {
+    private void setRadioButton(RadioButton rb, boolean state) {
         final RadioButton frb = rb;
         final boolean fstate = state;
         mHandler.post(new Runnable() {
@@ -824,6 +820,7 @@ public class FlashFirmware extends AppCompatActivity {
             }
         });
     }
+
     private void dialogAppend(CharSequence text) {
         final CharSequence ftext = text;
         mHandler.post(new Runnable() {
@@ -839,6 +836,7 @@ public class FlashFirmware extends AppCompatActivity {
 
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

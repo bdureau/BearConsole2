@@ -239,4 +239,12 @@
         android:layout_below="@+id/landingSpeed"
         android:text="@string/export_to_csv" />
 
+    <Button
+        android:id="@+id/butExportAndShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/butExportToCsv"
+        android:text="Export and Share" />
+
 </RelativeLayout>

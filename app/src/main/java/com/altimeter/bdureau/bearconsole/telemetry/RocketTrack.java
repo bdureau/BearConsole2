@@ -213,7 +213,11 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         super.onPause();
 
         if (receiver !=null) {
-            unregisterReceiver(receiver);
+            try {
+                unregisterReceiver(receiver);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             receiver = null;
         }
     }

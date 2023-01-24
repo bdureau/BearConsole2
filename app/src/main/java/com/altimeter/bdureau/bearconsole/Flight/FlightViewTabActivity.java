@@ -61,6 +61,7 @@ import org.afree.data.xy.XYSeriesCollection;
 import org.afree.graphics.geom.Font;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -69,6 +70,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 public class FlightViewTabActivity extends AppCompatActivity {
@@ -114,7 +117,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
     @Override
@@ -142,14 +144,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= 23)
             verifyStoragePermission(FlightViewTabActivity.this);
-        /*if (Build.VERSION.SDK_INT >= 23) {
-            int REQUEST_CODE_ASK_PERMISSIONS = 123;
-            int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        REQUEST_CODE_ASK_PERMISSIONS);
-            }
-        }*/
+
         // recovering the instance state
         if (savedInstanceState != null) {
             currentCurvesNames = savedInstanceState.getStringArray("CURRENT_CURVES_NAMES_KEY");
@@ -450,7 +445,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
         }
 
         private void drawGraph() {
-
             graphBackColor = myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getGraphBackColor()));
             fontSize = myBT.getAppConf().ConvertFont(Integer.parseInt(myBT.getAppConf().getFontSize()));
             axisColor = myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getGraphColor()));
@@ -486,7 +480,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
                     set1.setValueTextSize(fontSize);
                     dataSets.add(set1);
-
                 }
             }
 
@@ -517,9 +510,10 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
         String SavedCurves = "";
         boolean SavedCurvesOK = false;
+        private Button buttonExportToCsv, butExportAndShare;
+        int nbrSeries;
 
         public Tab2Fragment(FlightData data, XYSeriesCollection data2) {
-
             myflight = data;
             this.allFlightData = data2;
         }
@@ -528,8 +522,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             Toast.makeText(getActivity().getApplicationContext(), s, Toast.LENGTH_LONG).show();
         }
 
-        private Button buttonExportToCsv;
-        int nbrSeries;
+
 
         @Nullable
         @Override
@@ -539,6 +532,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.tabflight_info_fragment, container, false);
 
             buttonExportToCsv = (Button) view.findViewById(R.id.butExportToCsv);
+            butExportAndShare = (Button) view.findViewById(R.id.butExportAndShare);
             apogeeAltitudeValue = view.findViewById(R.id.apogeeAltitudeValue);
             flightDurationValue = view.findViewById(R.id.flightDurationValue);
             burnTimeValue = view.findViewById(R.id.burnTimeValue);
@@ -632,8 +626,71 @@ public class FlightViewTabActivity extends AppCompatActivity {
             // remain TODO!!!
             mainAltitudeValue.setText(" " + myBT.getAppConf().getUnitsValue());
 
-            buttonExportToCsv.setOnClickListener(new View.OnClickListener() {
+            //butExportAndShare
+            butExportAndShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SavedCurves = "";
+                    SavedCurvesOK = true;
+                    //File directoryToZip = new File(Environment.getExternalStorageDirectory(), "my_directory");
 
+                    // Create a file for the zip file
+                    File zipFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "flightData.zip");
+                    try {
+                        // Create a zip output stream to write to the zip file
+                        FileOutputStream fos = new FileOutputStream(zipFile);
+                        ZipOutputStream zos = new ZipOutputStream(fos);
+                        //export the data to a csv file
+                        for (int j = 0; j < numberOfCurves; j++) {
+                            Log.d("Flight win", "Saving curve:" + j);
+                            String fileName =saveData(j, allFlightData);
+                            // Create a new zip entry with the file's name
+                            ZipEntry ze = new ZipEntry(fileName);
+                            // Add the zip entry to the zip output stream
+                            zos.putNextEntry(ze);
+                            // Read the file and write it to the zip output stream
+                            File filetoZip = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "BearConsoleFlights/"+ fileName);
+                            FileInputStream fis = new FileInputStream(filetoZip);
+                            byte[] buffer = new byte[1024];
+                            int len;
+                            while ((len = fis.read(buffer)) > 0) {
+                                zos.write(buffer, 0, len);
+                            }
+                            // Close the zip entry and the file input stream
+                            //filetoZip.close();
+                            zos.closeEntry();
+                            fis.close();
+                        }
+
+                        // Close the zip output stream
+                        zos.close();
+                        fos.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    /*builder = new AlertDialog.Builder(Tab2Fragment.this.getContext());
+                    //Running Saving commands
+                    if (SavedCurvesOK) {
+                        builder.setMessage(getResources().getString(R.string.save_curve_msg) + Environment.DIRECTORY_DOWNLOADS + "\\BearConsoleFlights \n" + SavedCurves)
+                                .setTitle(getResources().getString(R.string.save_curves_title))
+                                .setCancelable(false)
+                                .setPositiveButton(R.string.save_curve_ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(final DialogInterface dialog, final int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        alert = builder.create();
+                        alert.show();
+                        msg(getResources().getString(R.string.curves_saved_msg));
+                    } else {
+                        msg("Failed saving flights");
+                    }*/
+                    shareFile(zipFile);
+                }
+            });
+
+            buttonExportToCsv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     SavedCurves = "";
@@ -668,8 +725,8 @@ public class FlightViewTabActivity extends AppCompatActivity {
             return view;
         }
 
-        private void saveData(int nbr, XYSeriesCollection Data) {
-
+        private String saveData(int nbr, XYSeriesCollection Data) {
+            String fileName ="";
             String valHeader = "altitude";
 
             if (nbr == 0) {
@@ -706,17 +763,17 @@ public class FlightViewTabActivity extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("_dd-MM-yyyy_hh-mm-ss");
             String date = sdf.format(System.currentTimeMillis());
 
+            fileName = FlightName + "-" + Data.getSeries(nbr).getKey().toString() + date + ".csv";
             // select the name for your file
-            root = new File(root, FlightName + "-" + Data.getSeries(nbr).getKey().toString() + date + ".csv");
-            Log.d("Flight win", FlightName + Data.getSeries(nbr).getKey().toString() + date + ".csv");
+            root = new File(root, fileName);
+            Log.d("Flight win", fileName);
             try {
                 Log.d("Flight win", "attempt to write");
                 FileOutputStream fout = new FileOutputStream(root);
                 fout.write(csv_data.getBytes());
                 fout.close();
                 Log.d("Flight win", "write done");
-                SavedCurves = SavedCurves +
-                        FlightName + Data.getSeries(nbr).getKey().toString() + date + ".csv\n";
+                SavedCurves = SavedCurves + fileName + "\n";
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -741,8 +798,33 @@ public class FlightViewTabActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return fileName;
         }
 
+        //Share file
+        private void shareFile(File file) {
+            Log.d("share", "Share 1");
+            //Uri uri = Uri.fromFile(file);
+            Uri uri = FileProvider.getUriForFile(
+                    this.getContext(),
+                    //this.getContext().getPackageName() + "." + this.getActivity().getLocalClassName() + ".provider",
+                    this.getContext().getPackageName() +  ".provider",
+                    file);
+            Log.d("share", "Share 2");
+
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.setType("file/*");
+            intent.putExtra(android.content.Intent.EXTRA_TEXT, "MotorTestStand has shared with you some info");
+            intent.putExtra(Intent.EXTRA_STREAM, uri);
+            Log.d("share", "Share 3");
+
+            try {
+                this.startActivity(Intent.createChooser(intent, "Share With"));
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(getContext(), "No App Available", Toast.LENGTH_SHORT).show();
+            }
+        }
         /*
         Return the position of the first X value it finds from the beginning
          */
@@ -806,6 +888,8 @@ public class FlightViewTabActivity extends AppCompatActivity {
         }
     }
 
+
+
     private  void takeScreenShot(View view) {
         Date date = new Date();
         CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
@@ -836,13 +920,11 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
     //Share ScreenShot
     private  void shareScreenShot(File imageFile ) {
-
         Log.d("Package Name", "Package Name" + this.getPackageName());
         Uri uri = FileProvider.getUriForFile(
                 this,
                 this.getPackageName() +  ".provider",
                 imageFile);
-
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
@@ -874,8 +956,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
         //share screen
         if (id == R.id.action_share) {
-            //ShareHandler.share(ShareHandler.takeScreenshot(findViewById(android.R.id.content).getRootView()), this.getApplicationContext());
-            //ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this.getApplicationContext());
             takeScreenShot(findViewById(android.R.id.content).getRootView());
             return true;
         }
