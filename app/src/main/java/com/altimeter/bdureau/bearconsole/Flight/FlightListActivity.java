@@ -76,11 +76,7 @@ public class FlightListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
+
         super.onCreate(savedInstanceState);
 
         //get the bluetooth Application pointer
@@ -205,8 +201,12 @@ public class FlightListActivity extends AppCompatActivity {
                 if (canceled) {
                     //order the names in the collection
                     Collections.sort(flightNames);
-                    //remove the last flight which might have incomplete data
-                    flightNames.remove(flightNames.size() - 1);
+                    try {
+                        //remove the last flight which might have incomplete data
+                        flightNames.remove(flightNames.size() - 1);
+                    } finally {
+
+                    }
                 }
 
 

@@ -305,6 +305,17 @@ public class AltimeterStatus extends AppCompatActivity {
         myBT.flush();
         myBT.clearInput();
         myBT.write("y0;\n".toString());
+
+        //exit recording if running
+        if (recording) {
+            recording = false;
+            myBT.flush();
+            myBT.clearInput();
+            myBT.write("w0;\n".toString());
+            myBT.clearInput();
+            myBT.flush();
+            msg("Stopped recording");
+        }
     }
     @Override
     public void onResume() {

@@ -75,7 +75,7 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2022-06-25-AltiServoV1_5.hex";
     private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2022-06-25-V1_8.AltiDuo.hex";
     private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/2022-08-26-V1_27.altimultiSTM32.bin";
-    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2023-01-07-RocketGPSLoggerV1.5.bin";
+    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2023-01-26-RocketGPSLoggerV1.6.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/RocketFlightLoggerV1_27.ino.bootloader.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/RocketFlightLoggerV1_27.ino.bin";
@@ -147,7 +147,6 @@ public class FlashFirmware extends AppCompatActivity {
         } else {
             //cannot open
             Toast.makeText(this, getResources().getString(R.string.msg13), Toast.LENGTH_LONG).show();
-            //btFlash.setEnabled(false);
         }
 
 
