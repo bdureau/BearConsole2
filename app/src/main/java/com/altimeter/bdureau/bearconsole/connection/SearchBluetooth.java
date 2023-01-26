@@ -106,6 +106,7 @@ public class SearchBluetooth extends AppCompatActivity {
                 finish();
             }
         });
+        pairedDevicesList();
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

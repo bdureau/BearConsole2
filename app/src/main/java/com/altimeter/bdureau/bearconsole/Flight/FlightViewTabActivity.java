@@ -657,7 +657,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
                                 zos.write(buffer, 0, len);
                             }
                             // Close the zip entry and the file input stream
-                            //filetoZip.close();
                             zos.closeEntry();
                             fis.close();
                         }
@@ -668,24 +667,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    /*builder = new AlertDialog.Builder(Tab2Fragment.this.getContext());
-                    //Running Saving commands
-                    if (SavedCurvesOK) {
-                        builder.setMessage(getResources().getString(R.string.save_curve_msg) + Environment.DIRECTORY_DOWNLOADS + "\\BearConsoleFlights \n" + SavedCurves)
-                                .setTitle(getResources().getString(R.string.save_curves_title))
-                                .setCancelable(false)
-                                .setPositiveButton(R.string.save_curve_ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(final DialogInterface dialog, final int id) {
-                                        dialog.cancel();
-                                    }
-                                });
 
-                        alert = builder.create();
-                        alert.show();
-                        msg(getResources().getString(R.string.curves_saved_msg));
-                    } else {
-                        msg("Failed saving flights");
-                    }*/
                     shareFile(zipFile);
                 }
             });
