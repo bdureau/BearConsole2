@@ -73,7 +73,17 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        //this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        this.mMap.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
+        /* MAP_TYPE_NONE = 0
+        MAP_TYPE_NORMAL =1
+        * MAP_TYPE_SATELLITE = 2
+        * MAP_TYPE_TERRAIN = 3
+        * MAP_TYPE_HYBRID = 4
+        *
+        * */
+
+
         XYSeriesCollection flightData;
         flightData = myflight.GetFlightData(FlightName);
 
@@ -85,7 +95,6 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
         coord =  new ArrayList();
         int j=0;
         for (int i=0; i< flightData.getSeries(6).getItemCount(); i++)   {
-
             double res = (double)flightData.getSeries(6).getY(i);
             Log.d("map", "lat:"+ (double) flightData.getSeries(6).getY(i) );
             Log.d("map", "long:"+ (double) flightData.getSeries(7).getY(i) );
@@ -93,12 +102,11 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
                 LatLng c = new LatLng((double) flightData.getSeries(6).getY(i) , (double) flightData.getSeries(7).getY(i) );
                 coord.add(j, c);
                 j++;
-
            }
         }
 
+        polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
         polyline1.setPoints(coord);
-
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng((double)flightData.getSeries(3).getMaxY()/(double)100000,(double)flightData.getSeries(4).getMaxY()/(double)100000), 20));
 

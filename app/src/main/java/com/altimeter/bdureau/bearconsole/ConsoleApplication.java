@@ -1035,6 +1035,11 @@ public class ConsoleApplication extends Application {
         private String graphBackColor = "1";
         //graph color
         private String graphColor = "0";
+        //map color
+        private String mapColor = "0";
+        //map type
+        private String mapType = "2";
+
         //graph font size
         private String fontSize = "10";
         // connection type is bluetooth
@@ -1072,6 +1077,8 @@ public class ConsoleApplication extends Application {
             applicationLanguage = "0"; // default to english
             graphBackColor = "1";
             graphColor = "0";
+            mapColor ="0";
+            mapType ="2";
             fontSize = "10";
             units = "0"; //default to meters
             baudRate = "8"; // default to 38400 baud
@@ -1118,6 +1125,18 @@ public class ConsoleApplication extends Application {
                 graphBackColor = appConfig.getString("GraphBackColor", "1");
                 if (!graphBackColor.equals(""))
                     setGraphBackColor(graphBackColor);
+
+                //Map color
+                String mapColor;
+                mapColor = appConfig.getString("MapColor", "1");
+                if (!mapColor.equals(""))
+                    setMapColor(mapColor);
+
+                //Map type
+                String mapType;
+                mapType = appConfig.getString("MapType", "2");
+                if (!mapType.equals(""))
+                    setMapType(mapType);
 
                 //Font size
                 String fontSize;
@@ -1225,6 +1244,8 @@ public class ConsoleApplication extends Application {
             edit.putString("Units", getUnits());
             edit.putString("GraphColor", getGraphColor());
             edit.putString("GraphBackColor", getGraphBackColor());
+            edit.putString("MapColor", getMapColor());
+            edit.putString("MapType", getMapType());
             edit.putString("FontSize", getFontSize());
             edit.putString("BaudRate", getBaudRate());
             edit.putString("ConnectionType", getConnectionType());
@@ -1293,6 +1314,22 @@ public class ConsoleApplication extends Application {
 
         public void setGraphBackColor(String value) {
             graphBackColor = value;
+        }
+
+        public String getMapColor() {
+            return mapColor;
+        }
+
+        public void setMapColor(String value) {
+            mapColor = value;
+        }
+
+        public String getMapType() {
+            return mapType;
+        }
+
+        public void setMapType(String value) {
+            mapType = value;
         }
 
         //get the id of the current connection type

@@ -108,7 +108,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private static String[] units = null;
     public static String SELECTED_FLIGHT = "MyFlight";
     public static int numberOfCurves = 0;
-    File imagePath;
+    //File imagePath;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSION_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -632,7 +632,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     SavedCurves = "";
                     SavedCurvesOK = true;
-                    //File directoryToZip = new File(Environment.getExternalStorageDirectory(), "my_directory");
 
                     // Create a file for the zip file
                     File zipFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "flightData.zip");
@@ -785,21 +784,18 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
         //Share file
         private void shareFile(File file) {
-            Log.d("share", "Share 1");
-            //Uri uri = Uri.fromFile(file);
+
             Uri uri = FileProvider.getUriForFile(
                     this.getContext(),
                     //this.getContext().getPackageName() + "." + this.getActivity().getLocalClassName() + ".provider",
                     this.getContext().getPackageName() +  ".provider",
                     file);
-            Log.d("share", "Share 2");
 
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
             intent.setType("file/*");
-            intent.putExtra(android.content.Intent.EXTRA_TEXT, "MotorTestStand has shared with you some info");
+            intent.putExtra(android.content.Intent.EXTRA_TEXT, "BearConsole has shared with you some info");
             intent.putExtra(Intent.EXTRA_STREAM, uri);
-            Log.d("share", "Share 3");
 
             try {
                 this.startActivity(Intent.createChooser(intent, "Share With"));
@@ -912,7 +908,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_SEND);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Altimulti has shared with you some info");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, "BearConsole has shared with you some info");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         try {

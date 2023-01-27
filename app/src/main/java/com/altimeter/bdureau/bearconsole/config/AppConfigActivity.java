@@ -170,6 +170,8 @@ public class AppConfigActivity extends AppCompatActivity {
         myBT.getAppConf().setGraphColor("" + appConfigPage1.getGraphColor() + "");
         myBT.getAppConf().setUnits("" + appConfigPage1.getAppUnit() + "");
         myBT.getAppConf().setGraphBackColor("" + appConfigPage1.getGraphBackColor() + "");
+        myBT.getAppConf().setMapColor("" + appConfigPage1.getMapColor() + "");
+        myBT.getAppConf().setMapType("" + appConfigPage1.getMapType() + "");
         myBT.getAppConf().setFontSize("" + appConfigPage1.getFontSize() + "");
         myBT.getAppConf().setBaudRate("" + appConfigPage1.getBaudRate() + "");
         myBT.getAppConf().setConnectionType("" + appConfigPage1.getConnectionType() + "");
@@ -198,6 +200,8 @@ public class AppConfigActivity extends AppCompatActivity {
         appConfigPage1.setAppUnit(Integer.parseInt(myBT.getAppConf().getUnits()));
         appConfigPage1.setGraphColor(Integer.parseInt(myBT.getAppConf().getGraphColor()));
         appConfigPage1.setGraphBackColor(Integer.parseInt(myBT.getAppConf().getGraphBackColor()));
+        appConfigPage1.setMapColor(Integer.parseInt(myBT.getAppConf().getMapColor()));
+        appConfigPage1.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
         appConfigPage1.setFontSize(Integer.parseInt(myBT.getAppConf().getFontSize()) - 8);
         appConfigPage1.setBaudRate(Integer.parseInt(myBT.getAppConf().getBaudRate()));
         appConfigPage1.setConnectionType(Integer.parseInt(myBT.getAppConf().getConnectionType()));
@@ -343,7 +347,7 @@ public class AppConfigActivity extends AppCompatActivity {
 
     public static class Tab1Fragment extends Fragment {
         private Spinner spAppLanguage, spGraphColor, spAppUnit, spGraphBackColor, spFontSize, spBaudRate;
-        private Spinner spConnectionType, spGraphicsLibType;
+        private Spinner spConnectionType, spGraphicsLibType, spMapColor, spMapType;
         private CheckBox cbAllowMainDrogue, cbFullUSBSupport;
         private ConsoleApplication BT;
 
@@ -382,6 +386,22 @@ public class AppConfigActivity extends AppCompatActivity {
 
         public void setGraphBackColor(int value) {
             this.spGraphBackColor.setSelection(value);
+        }
+
+        public int getMapColor() {
+            return (int) this.spMapColor.getSelectedItemId();
+        }
+
+        public void setMapColor(int value) {
+            this.spMapColor.setSelection(value);
+        }
+
+        public int getMapType() {
+            return (int) this.spMapType.getSelectedItemId();
+        }
+
+        public void setMapType(int value) {
+            this.spMapType.setSelection(value);
         }
 
         public int getFontSize() {
@@ -448,20 +468,31 @@ public class AppConfigActivity extends AppCompatActivity {
             //Language
             spAppLanguage = (Spinner) view.findViewById(R.id.spinnerLanguage);
 
+
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsLanguages());
             spAppLanguage.setAdapter(adapter);
             spAppLanguage.setEnabled(false); //disable it for the moment because it is causing troubles
+
             // graph color
             spGraphColor = (Spinner) view.findViewById(R.id.spinnerGraphColor);
-            // String[] itemsColor = new String[]{"Black", "White", "Yellow", "Red", "Green", "Blue"};
-
             ArrayAdapter<String> adapterColor = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsColor());
             spGraphColor.setAdapter(adapterColor);
+
             // graph back color
             spGraphBackColor = (Spinner) view.findViewById(R.id.spinnerGraphBackColor);
             ArrayAdapter<String> adapterGraphColor = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsColor());
-
             spGraphBackColor.setAdapter(adapterGraphColor);
+
+            // map color
+            spMapColor = (Spinner) view.findViewById(R.id.spinnerMapColor);
+            ArrayAdapter<String> adapterMapColor = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsColor());
+            spMapColor.setAdapter(adapterMapColor);
+
+            // map type
+            spMapType = (Spinner) view.findViewById(R.id.spinnerMapType);
+            ArrayAdapter<String> adapterMapType = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsMap());
+            spMapType.setAdapter(adapterMapType);
+
             //units
             spAppUnit = (Spinner) view.findViewById(R.id.spinnerUnits);
 
@@ -497,11 +528,12 @@ public class AppConfigActivity extends AppCompatActivity {
             //Allow only telemetry via USB
             cbFullUSBSupport = (CheckBox) view.findViewById(R.id.checkBoxFullUSBSupport);
 
-
             spAppLanguage.setSelection(Integer.parseInt(BT.getAppConf().getApplicationLanguage()));
             spAppUnit.setSelection(Integer.parseInt(BT.getAppConf().getUnits()));
             spGraphColor.setSelection(Integer.parseInt(BT.getAppConf().getGraphColor()));
             spGraphBackColor.setSelection(Integer.parseInt(BT.getAppConf().getGraphBackColor()));
+            spMapColor.setSelection(Integer.parseInt(BT.getAppConf().getMapColor()));
+            spMapType.setSelection(Integer.parseInt(BT.getAppConf().getMapType()));
             spFontSize.setSelection((Integer.parseInt(BT.getAppConf().getFontSize()) - 8));
             spBaudRate.setSelection(Integer.parseInt(BT.getAppConf().getBaudRate()));
             spConnectionType.setSelection(Integer.parseInt(BT.getAppConf().getConnectionType()));

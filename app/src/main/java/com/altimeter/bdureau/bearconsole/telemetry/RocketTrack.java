@@ -225,7 +225,8 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         if(this.mMap == null) {
             this.mMap = googleMap;
-            this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+            //this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+            this.mMap.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
         }
     }
 
@@ -270,7 +271,8 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
                     if (polyline1 == null)
                         polyline1 = mMap.addPolyline(new PolylineOptions()
                                 .clickable(false));
-                    polyline1.setColor(Color.YELLOW);
+                    //polyline1.setColor(Color.YELLOW);
+                    polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
                     polyline1.setPoints(coord);
                     if(mMap.getCameraPosition().zoom > 10)
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, mMap.getCameraPosition().zoom));

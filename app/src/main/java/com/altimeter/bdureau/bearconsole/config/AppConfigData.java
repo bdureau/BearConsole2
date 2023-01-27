@@ -19,6 +19,7 @@ public class AppConfigData {
     private String[] itemsLanguages = null;
 
     private String[] itemsColor = null;
+    private String[] itemsMaps = null;
     //"Meters", "Feet"
     private String[] itemsUnits = null;
     private String[] itemsFontSize = new String[]{"8","9", "10", "11", "12","13",
@@ -76,6 +77,13 @@ public class AppConfigData {
                 context.getResources().getString(R.string.color_ltgray), //"LTGRAY",
                 context.getResources().getString(R.string.color_red) //"RED"
         };
+        itemsMaps = new String[] {
+                "None", // MAP_TYPE_NONE = 0
+                "Normal", //MAP_TYPE_NORMAL =1
+                "Satellite", // MAP_TYPE_SATELLITE = 2
+                "Terrain", // MAP_TYPE_TERRAIN = 3
+                "Hybrid" //MAP_TYPE_HYBRID = 4
+        };
     }
     public String [] getItemsLanguages() {
         return itemsLanguages;
@@ -124,5 +132,19 @@ public class AppConfigData {
     public String getGraphicsLibTypeByNbr(int graphicsLibNbr) {return itemsGraphicsLib[graphicsLibNbr];}
     public String getMultipleDrogueMain () {
         return allowMultipleDrogueMain;
+    }
+
+    public String [] getItemsColorMap() {
+        return itemsColor;
+    }
+    public String  getColorMapByNbr(int colorNbr) {
+        return itemsColor[colorNbr];
+    }
+
+    public String [] getItemsMap() {
+        return itemsMaps;
+    }
+    public String  getMapByNbr(int mapNbr) {
+        return itemsMaps[mapNbr];
     }
 }

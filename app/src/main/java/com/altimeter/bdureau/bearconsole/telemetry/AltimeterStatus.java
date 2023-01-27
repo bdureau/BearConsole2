@@ -254,7 +254,6 @@ public class AltimeterStatus extends AppCompatActivity {
                     myBT.flush();
                     msg("Started recording");
                 }
-
             }
         });
 
