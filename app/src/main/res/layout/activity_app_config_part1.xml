@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/txtViewAppLang"
         android:layout_alignParentRight="true"
+        android:drawSelectorOnTop="true"
         android:focusableInTouchMode="false"
 
         android:theme="@style/ThemeOverlay.AppCompat.DayNight" />

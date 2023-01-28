@@ -319,15 +319,17 @@ public class FlashFirmware extends AppCompatActivity {
         firmwareFileName = ASSET_FILE_NAME_ALTIMULTI;
 
         if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMulti"))
-            firmwareFileName = ASSET_FILE_RESET_ALTIMULTI;
+            firmwareFileName = ASSET_FILE_NAME_ALTIMULTI;
         if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiV2"))
             firmwareFileName = ASSET_FILE_NAME_ALTIMULTIV2;
         if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiServo"))
-            firmwareFileName = ASSET_FILE_RESET_ALTISERVO;
+            firmwareFileName = ASSET_FILE_NAME_ALTISERVO;
         if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiDuo"))
-            firmwareFileName = ASSET_FILE_RESET_ALTIDUO;
+            firmwareFileName = ASSET_FILE_NAME_ALTIDUO;
         if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32"))
-            firmwareFileName = ASSET_FILE_RESET_ALTISTM32;
+            firmwareFileName = ASSET_FILE_NAME_ALTIMULTISTM32;
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS"))
+            firmwareFileName = ASSET_FILE_NAME_ALTIGPS;
 
         tvRead.setText("");
 
