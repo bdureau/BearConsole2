@@ -6,14 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -24,6 +28,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,10 +53,12 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
     Thread altiStatus;
     boolean status = true;
     Double rocketLatitude=48.8698, rocketLongitude=2.2190;
+    TextView textViewRecording;
 
-    Button btnDismiss;
+    Button btnDismiss, butShareMap;
     LocationBroadCastReceiver receiver=null;
     LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
+    boolean recording = false;
 
     private static ConsoleApplication myBT;
     Handler handler = new Handler() {
@@ -96,16 +103,21 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
         super.onCreate(savedInstanceState);
         receiver = new LocationBroadCastReceiver();
         myBT = (ConsoleApplication) getApplication();
         setContentView(R.layout.activity_rocket_track);
         myBT.setHandler(handler);
+
+        // See if we are called from the status activity
+        try {
+            Intent newint = getIntent();
+
+            if (newint.getStringExtra("recording").equals("true"))
+                recording = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
             rocketLatitude = Double.parseDouble(myBT.getAppConf().getRocketLatitude());
@@ -126,18 +138,30 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map1);
         mapFragment.getMapAsync(this);
+
         btnDismiss = (Button) findViewById(R.id.butDismiss);
+        butShareMap = (Button) findViewById(R.id.butShareMap);
+        textViewRecording = (TextView) findViewById(R.id.textViewRecording);
+
+        if(!recording)
+            textViewRecording.setVisibility(View.INVISIBLE);
 
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 finish();
+            }
+        });
 
+        butShareMap.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                takeMapScreenshot();
             }
         });
         Runnable r = new Runnable() {
-
             @Override
             public void run() {
                 while (true) {
@@ -150,6 +174,37 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
 
         altiStatus = new Thread(r);
         altiStatus.start();
+    }
+
+    private void takeMapScreenshot() {
+        GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
+            Bitmap bitmap;
+
+            @Override
+            public void onSnapshotReady(Bitmap snapshot) {
+                // Callback is called from the main thread, so we can modify the ImageView safely.
+                bitmap = snapshot;
+                shareScreenshot(bitmap);
+            }
+        };
+        mMap.snapshot(callback);
+    }
+
+    private void shareScreenshot(Bitmap bitmap) {
+        try {
+            // Save the screenshot to a file
+            //String fileName = "screenshot.jpg";
+            String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
+            Uri fileUri = Uri.parse(filePath);
+            // Share the screenshot
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("image/*");
+            share.putExtra(Intent.EXTRA_STREAM, fileUri);
+            startActivity(Intent.createChooser(share, "Share Map screenshot"));
+        } catch (Exception e) {
+            Toast.makeText(this, "Error saving/sharing Map screenshot", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
     private void startService() {
 
@@ -271,7 +326,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
                     if (polyline1 == null)
                         polyline1 = mMap.addPolyline(new PolylineOptions()
                                 .clickable(false));
-                    //polyline1.setColor(Color.YELLOW);
+                    //Get the line color from the config
                     polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
                     polyline1.setPoints(coord);
                     if(mMap.getCameraPosition().zoom > 10)

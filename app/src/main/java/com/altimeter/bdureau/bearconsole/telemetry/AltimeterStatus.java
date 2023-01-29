@@ -1,9 +1,19 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -25,7 +35,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
+import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.config.Config3DR;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,12 +64,14 @@ public class AltimeterStatus extends AppCompatActivity {
     SectionsStatusPageAdapter adapter;
     Tab1StatusFragment statusPage1 =null;
     Tab2StatusFragment statusPage2 =null;
+    Tab3StatusFragment statusPage3 =null;
 
     Button btnDismiss, btnRecording;
     private static ConsoleApplication myBT;
     Thread altiStatus;
     boolean status = true;
     boolean recording = false;
+    public String TAG = "AltimeterStatus.class";
 
 
 
@@ -227,20 +253,43 @@ public class AltimeterStatus extends AppCompatActivity {
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (status) {
-                    status = false;
-                    myBT.write("h;\n".toString());
-                    myBT.setExit(true);
-                    myBT.clearInput();
-                    myBT.flush();
+
+                if(recording) {
+                    new AlertDialog.Builder(v.getContext())
+                            .setTitle("Confirm Exit")
+                            .setMessage("Are you sure you want to exit?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (status) {
+                                        status = false;
+                                        myBT.write("h;\n".toString());
+                                        myBT.setExit(true);
+                                        myBT.clearInput();
+                                        myBT.flush();
+                                    }
+                                    finish();      //exit the  activity
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
+                } else {
+                    if (status) {
+                        status = false;
+                        myBT.write("h;\n".toString());
+                        myBT.setExit(true);
+                        myBT.clearInput();
+                        myBT.flush();
+                    }
+                    finish();      //exit the  activity
                 }
-                finish();      //exit the  activity
             }
         });
 
         btnRecording.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (recording) {
                     recording = false;
                     myBT.write("w0;\n".toString());
@@ -254,6 +303,10 @@ public class AltimeterStatus extends AppCompatActivity {
                     myBT.flush();
                     msg("Started recording");
                 }
+                /*recording = true;
+                Intent i = new Intent(AltimeterStatus.this, RocketTrack.class);
+                i.putExtra("recording", "true");
+                startActivity(i);*/
             }
         });
 
@@ -271,14 +324,31 @@ public class AltimeterStatus extends AppCompatActivity {
 
         altiStatus = new Thread(r);
         altiStatus.start();
-
-        // msg(myBT.getAltiConfigData().getAltimeterName());
     }
 
+    @Override
+    public void onBackPressed() {
+        if(recording) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirm Exit")
+                    .setMessage("Currently recording. Are you sure you want to exit?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        } else {
+            finish();
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
 
+        Log.d(TAG, "onDestroy()");
         //switch off output
         if (statusPage1.switchOutput1.isChecked()) {
             myBT.write("k1F;\n".toString());
@@ -319,7 +389,7 @@ public class AltimeterStatus extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-
+        Log.d(TAG, "onResume()");
         if(myBT.getConnected() && !status) {
             myBT.flush();
             myBT.clearInput();
@@ -332,7 +402,8 @@ public class AltimeterStatus extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        //msg("On stop");
+        Log.d(TAG, "onStop()");
+
         if (recording) {
             recording = false;
             myBT.write("w0;\n".toString());
@@ -370,10 +441,12 @@ public class AltimeterStatus extends AppCompatActivity {
         adapter = new SectionsStatusPageAdapter(getSupportFragmentManager());
         statusPage1 = new Tab1StatusFragment();
         statusPage2 = new Tab2StatusFragment();
+        statusPage3 = new Tab3StatusFragment();
 
         adapter.addFragment(statusPage1, "TAB1");
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
             adapter.addFragment(statusPage2, "TAB2");
+            //adapter.addFragment(statusPage3, "TAB3");
         }
 
         linearDots=findViewById(R.id.idAltiStatusLinearDots);
@@ -412,6 +485,7 @@ public class AltimeterStatus extends AppCompatActivity {
         public void onPageScrollStateChanged(int i) {
         }
     };
+
     public class SectionsStatusPageAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList();
         private final List<String> mFragmentTitleList= new ArrayList();
@@ -778,7 +852,120 @@ public class AltimeterStatus extends AppCompatActivity {
         }
     }
 
+    public static class Tab3StatusFragment extends Fragment implements OnMapReadyCallback {
+        private static final String TAG = "Tab3StatusFragment";
+        private boolean ViewCreated = false;
+        SupportMapFragment mapFragment;
+        GoogleMap mMap;
+        Marker marker, markerDest;
+        Polyline polyline1 = null;
+        boolean status = true;
+        Double rocketLatitude=48.8698, rocketLongitude=2.2190;
+        LocationBroadCastReceiver receiver=null;
+        LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
 
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.activity_altimeter_status_tab3, container, false);
+            receiver = new LocationBroadCastReceiver();
+            if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
+                rocketLatitude = Double.parseDouble(myBT.getAppConf().getRocketLatitude());
+
+            if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
+                rocketLongitude = Double.parseDouble(myBT.getAppConf().getRocketLongitude());
+
+            /*if(Build.VERSION.SDK_INT>=23) {
+                if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+                } else {
+                    startService();
+                }
+            } else {
+                startService();
+            }
+
+            mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map1);
+            mapFragment.getMapAsync(this);*/
+
+            ViewCreated = true;
+            return view;
+        }
+
+        private void startService() {
+
+           /* IntentFilter filter = new IntentFilter("ACT_LOC");
+            registerReceiver(receiver, filter);
+
+            Intent intent = new Intent( AltimeterStatus.this, LocationService.class);
+            startService(intent);*/
+        }
+
+        //protected abstract void startService(Intent intent);
+
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            if(this.mMap == null) {
+                this.mMap = googleMap;
+                //this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                this.mMap.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
+            }
+        }
+
+        public class LocationBroadCastReceiver extends BroadcastReceiver {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d ("coordinate",intent.getAction());
+                if(intent.getAction().equals("ACT_LOC")) {
+                    double latitude = intent.getDoubleExtra("latitude", 0f);
+                    double longitude = intent.getDoubleExtra("longitude", 0f);
+                    //Toast.makeText(AltimeterStatus.this, "latitude is:" + latitude + " longitude is: " + longitude, Toast.LENGTH_LONG).show();
+                    Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
+                    if(mMap != null) {
+                        LatLng latLng = new LatLng(latitude, longitude);
+                        if(marker != null) {
+                            marker.setPosition(latLng);
+                        } else {
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            //markerOptions.position(latLng);
+                            BitmapDescriptor manIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_person_map);
+                            marker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
+                            //marker = googleMap.addMarker(markerOptions);
+                        }
+
+                        if(markerDest != null) {
+                            markerDest.setPosition(dest);
+                        } else {
+                            //MarkerOptions markerOptions = new MarkerOptions();
+                            //markerOptions.position(dest);
+                            BitmapDescriptor rocketIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_rocket_map);
+                            markerDest = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(dest).icon(rocketIcon));
+                            //markerDest = googleMap.addMarker(markerOptions);
+                        }
+                        List<LatLng> coord;
+                        coord = new ArrayList();
+
+                        //LatLng c = new LatLng((double) flightData.getSeries(3).getY(i) / 100000, (double) flightData.getSeries(4).getY(i) / 100000);
+                        dest = new LatLng(rocketLatitude, rocketLongitude);
+                        coord.add(0, dest);
+                        // coord.add(1, map.getCameraPosition().target);
+                        coord.add(1, latLng);
+                        if (polyline1 == null)
+                            polyline1 = mMap.addPolyline(new PolylineOptions()
+                                    .clickable(false));
+                        //Get the line color from the config
+                        polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
+                        polyline1.setPoints(coord);
+                        if(mMap.getCameraPosition().zoom > 10)
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, mMap.getCameraPosition().zoom));
+                        else
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    }
+                }
+            }
+        }
+    }
 
     // fast way to call Toast
     private void msg(String s) {

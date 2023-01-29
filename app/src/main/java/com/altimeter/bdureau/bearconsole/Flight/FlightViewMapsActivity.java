@@ -9,11 +9,21 @@ package com.altimeter.bdureau.bearconsole.Flight;
  **/
 import android.content.Intent;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentActivity;
+
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,28 +38,47 @@ import org.afree.data.xy.XYSeriesCollection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FlightViewMapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class FlightViewMapsActivity extends /*FragmentActivity*/ AppCompatActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    SupportMapFragment mapFragment;
+    GoogleMap mMap;
     String FlightName = null;
     ConsoleApplication myBT ;
     private FlightData myflight=null;
+    Button butDismissViewMap, butShareMap;
+
     public String TAG = "MAP_ACTIVITY";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.AppTheme);
-        }*/
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flight_view_maps);
 
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        butDismissViewMap = (Button) findViewById(R.id.butDismissViewMap);
+        butDismissViewMap.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                finish();      //exit the activity
+            }
+        });
+
+        butShareMap = (Button) findViewById(R.id.butShareMap);
+        butShareMap.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(),  mapFragment.getContext());
+                takeMapScreenshot();
+            }
+        });
 
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();
@@ -61,7 +90,36 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
 
     }
 
+    private void takeMapScreenshot() {
+        GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
+            Bitmap bitmap;
 
+            @Override
+            public void onSnapshotReady(Bitmap snapshot) {
+                // Callback is called from the main thread, so we can modify the ImageView safely.
+                bitmap = snapshot;
+                shareScreenshot(bitmap);
+            }
+        };
+        mMap.snapshot(callback);
+    }
+
+    private void shareScreenshot(Bitmap bitmap) {
+        try {
+            // Save the screenshot to a file
+            //String fileName = "screenshot.jpg";
+            String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
+            Uri fileUri = Uri.parse(filePath);
+            // Share the screenshot
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("image/*");
+            share.putExtra(Intent.EXTRA_STREAM, fileUri);
+            startActivity(Intent.createChooser(share, "Share screenshot"));
+        } catch (Exception e) {
+            Toast.makeText(this, "Error saving/sharing Map screenshot", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -74,14 +132,14 @@ public class FlightViewMapsActivity extends FragmentActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         //this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        this.mMap.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
-        /* MAP_TYPE_NONE = 0
+         /* MAP_TYPE_NONE = 0
         MAP_TYPE_NORMAL =1
-        * MAP_TYPE_SATELLITE = 2
-        * MAP_TYPE_TERRAIN = 3
-        * MAP_TYPE_HYBRID = 4
-        *
-        * */
+        MAP_TYPE_SATELLITE = 2
+        MAP_TYPE_TERRAIN = 3
+        MAP_TYPE_HYBRID = 4
+        */
+        this.mMap.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
+
 
 
         XYSeriesCollection flightData;

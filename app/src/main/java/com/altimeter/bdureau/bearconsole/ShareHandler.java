@@ -3,6 +3,8 @@ package com.altimeter.bdureau.bearconsole;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
@@ -18,6 +20,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 public class ShareHandler {
 
@@ -87,6 +90,15 @@ public class ShareHandler {
         intent.setType("image/*");
         intent.putExtra(android.content.Intent.EXTRA_TEXT, "Altimulti has shared with you some info");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
+
+        Intent chooser = Intent.createChooser(intent, "Share File");
+
+        List<ResolveInfo> resInfoList = ctx.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
+
+        for (ResolveInfo resolveInfo : resInfoList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            ctx.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
 
         try {
             ctx.startActivity(Intent.createChooser(intent, "Share With"));
