@@ -1035,10 +1035,6 @@ public class ConsoleApplication extends Application {
         private String graphBackColor = "1";
         //graph color
         private String graphColor = "0";
-        //map color
-        private String mapColor = "0";
-        //map type
-        private String mapType = "2";
 
         //graph font size
         private String fontSize = "10";
@@ -1063,6 +1059,13 @@ public class ConsoleApplication extends Application {
         private String rocketLongitude = "0.0";
 
         private String telemetryVoice = "0";
+
+        //map color
+        private String mapColor = "0";
+        //map type
+        private String mapType = "2";
+
+        private Boolean allowManualRecording = true;
 
         public GlobalConfig(Context current) {
             appConfig = getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
@@ -1098,6 +1101,7 @@ public class ConsoleApplication extends Application {
             telemetryVoice = "0";
             rocketLatitude = "0.0";
             rocketLongitude = "0.0";
+            allowManualRecording = true;
         }
 
         public void ReadConfig() {
@@ -1234,6 +1238,10 @@ public class ConsoleApplication extends Application {
                 if (!rocketLongitude.equals(""))
                     setRocketLongitude(rocketLongitude);
 
+                Boolean allowManualRecording = false;
+                allowManualRecording = appConfig.getBoolean("allowManualRecording", false);
+                setManualRecording(allowManualRecording);
+
             } catch (Exception e) {
 
             }
@@ -1266,6 +1274,7 @@ public class ConsoleApplication extends Application {
 
             edit.putString("rocketLatitude", getRocketLatitude());
             edit.putString("rocketLongitude", getRocketLongitude());
+            edit.putBoolean("allowManualRecording", getManualRecording());
             edit.commit();
 
         }
@@ -1361,11 +1370,9 @@ public class ConsoleApplication extends Application {
         public String getBaudRate() {
             return baudRate;
         }
-
         public String getBaudRateValue() {
             return appCfgData.getBaudRateByNbr(Integer.parseInt(baudRate));
         }
-
         public void setBaudRate(String value) {
             baudRate = value;
         }
@@ -1374,23 +1381,18 @@ public class ConsoleApplication extends Application {
         public void setAllowMultipleDrogueMain(String value) {
             allowMultipleDrogueMain = value;
         }
-
         public String getAllowMultipleDrogueMain() {
-            return allowMultipleDrogueMain;//appCfgData.getMultipleDrogueMain();
+            return allowMultipleDrogueMain;
         }
 
         public void setFullUSBSupport(String value) {
             fullUSBSupport = value;
         }
-
-        public String getFullUSBSupport() {
-            return fullUSBSupport;//appCfgData.getMultipleDrogueMain();
-        }
+        public String getFullUSBSupport() { return fullUSBSupport;  }
 
         public void setMain_event(String value) {
             say_main_event = value;
         }
-
         public String getMain_event() {
             return say_main_event;
         }
@@ -1398,7 +1400,6 @@ public class ConsoleApplication extends Application {
         public void setApogee_altitude(String value) {
             say_apogee_altitude = value;
         }
-
         public String getApogee_altitude() {
             return say_apogee_altitude;
         }
@@ -1406,7 +1407,6 @@ public class ConsoleApplication extends Application {
         public void setMain_altitude(String value) {
             say_main_altitude = value;
         }
-
         public String getMain_altitude() {
             return say_main_altitude;
         }
@@ -1470,7 +1470,6 @@ public class ConsoleApplication extends Application {
         public void setRocketLatitude(String value) {
             rocketLatitude = value;
         }
-
         public String getRocketLatitude() {
             return rocketLatitude;
         }
@@ -1478,10 +1477,12 @@ public class ConsoleApplication extends Application {
         public void setRocketLongitude(String value) {
             rocketLongitude = value;
         }
-
         public String getRocketLongitude() {
             return rocketLongitude;
         }
+
+        public void setManualRecording(boolean value)  { allowManualRecording = value;}
+        public Boolean getManualRecording() {return allowManualRecording;}
 
         public int ConvertFont(int font) {
             return font + 8;

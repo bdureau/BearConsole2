@@ -57,6 +57,7 @@ public class AppConfigActivity extends AppCompatActivity {
     private TextToSpeech mTTS;
     private Tab1Fragment appConfigPage1 = null;
     private Tab2Fragment appConfigPage2 = null;
+    private Tab3Fragment appConfigPage3 = null;
 
     private static AppConfigData appConfigData = null;
 
@@ -170,8 +171,6 @@ public class AppConfigActivity extends AppCompatActivity {
         myBT.getAppConf().setGraphColor("" + appConfigPage1.getGraphColor() + "");
         myBT.getAppConf().setUnits("" + appConfigPage1.getAppUnit() + "");
         myBT.getAppConf().setGraphBackColor("" + appConfigPage1.getGraphBackColor() + "");
-        myBT.getAppConf().setMapColor("" + appConfigPage1.getMapColor() + "");
-        myBT.getAppConf().setMapType("" + appConfigPage1.getMapType() + "");
         myBT.getAppConf().setFontSize("" + appConfigPage1.getFontSize() + "");
         myBT.getAppConf().setBaudRate("" + appConfigPage1.getBaudRate() + "");
         myBT.getAppConf().setConnectionType("" + appConfigPage1.getConnectionType() + "");
@@ -189,6 +188,10 @@ public class AppConfigActivity extends AppCompatActivity {
         myBT.getAppConf().setMain_event(appConfigPage2.getMainEvent());
         myBT.getAppConf().setLiftOff_event(appConfigPage2.getLiftOffEvent());
         myBT.getAppConf().setTelemetryVoice("" + appConfigPage2.getTelemetryVoice() + "");
+        //page3
+        myBT.getAppConf().setMapColor("" + appConfigPage3.getMapColor() + "");
+        myBT.getAppConf().setMapType("" + appConfigPage3.getMapType() + "");
+        myBT.getAppConf().setManualRecording(appConfigPage3.getAllowManualRecording());
         myBT.getAppConf().SaveConfig();
         invalidateOptionsMenu();
         finish();
@@ -200,8 +203,6 @@ public class AppConfigActivity extends AppCompatActivity {
         appConfigPage1.setAppUnit(Integer.parseInt(myBT.getAppConf().getUnits()));
         appConfigPage1.setGraphColor(Integer.parseInt(myBT.getAppConf().getGraphColor()));
         appConfigPage1.setGraphBackColor(Integer.parseInt(myBT.getAppConf().getGraphBackColor()));
-        appConfigPage1.setMapColor(Integer.parseInt(myBT.getAppConf().getMapColor()));
-        appConfigPage1.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
         appConfigPage1.setFontSize(Integer.parseInt(myBT.getAppConf().getFontSize()) - 8);
         appConfigPage1.setBaudRate(Integer.parseInt(myBT.getAppConf().getBaudRate()));
         appConfigPage1.setConnectionType(Integer.parseInt(myBT.getAppConf().getConnectionType()));
@@ -265,6 +266,10 @@ public class AppConfigActivity extends AppCompatActivity {
         }
         appConfigPage2.setTelemetryVoice(Integer.parseInt(myBT.getAppConf().getTelemetryVoice()));
 
+        //config page 3
+        appConfigPage3.setMapColor(Integer.parseInt(myBT.getAppConf().getMapColor()));
+        appConfigPage3.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
+        appConfigPage3.setAllowManualRecording(myBT.getAppConf().getManualRecording());
     }
 
 
@@ -272,35 +277,38 @@ public class AppConfigActivity extends AppCompatActivity {
         adapter = new AppConfigActivity.SectionsPageAdapter(getSupportFragmentManager());
         appConfigPage1 = new AppConfigActivity.Tab1Fragment(myBT);
         appConfigPage2 = new AppConfigActivity.Tab2Fragment(myBT);
+        appConfigPage3 = new AppConfigActivity.Tab3Fragment(myBT);
 
         adapter.addFragment(appConfigPage1, "TAB1");
         adapter.addFragment(appConfigPage2, "TAB2");
+        adapter.addFragment(appConfigPage3, "TAB3");
 
-        linearDots=findViewById(R.id.idAppConfigLinearDots);
+        linearDots = findViewById(R.id.idAppConfigLinearDots);
         agregaIndicateDots(0, adapter.getCount());
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(viewListener);
     }
-    public void agregaIndicateDots(int pos, int nbr){
-        dotsSlide =new TextView[nbr];
+
+    public void agregaIndicateDots(int pos, int nbr) {
+        dotsSlide = new TextView[nbr];
         linearDots.removeAllViews();
 
-        for (int i=0; i< dotsSlide.length; i++){
-            dotsSlide[i]=new TextView(this);
+        for (int i = 0; i < dotsSlide.length; i++) {
+            dotsSlide[i] = new TextView(this);
             dotsSlide[i].setText(Html.fromHtml("&#8226;"));
             dotsSlide[i].setTextSize(35);
             dotsSlide[i].setTextColor(getResources().getColor(R.color.colorWhiteTransparent));
             linearDots.addView(dotsSlide[i]);
         }
 
-        if(dotsSlide.length>0){
+        if (dotsSlide.length > 0) {
             dotsSlide[pos].setTextColor(getResources().getColor(R.color.colorWhite));
         }
 
     }
 
-    ViewPager.OnPageChangeListener viewListener=new ViewPager.OnPageChangeListener() {
+    ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int i, float v, int i1) {
         }
@@ -314,6 +322,7 @@ public class AppConfigActivity extends AppCompatActivity {
         public void onPageScrollStateChanged(int i) {
         }
     };
+
     public class SectionsPageAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList();
         private final List<String> mFragmentTitleList = new ArrayList();
@@ -347,7 +356,7 @@ public class AppConfigActivity extends AppCompatActivity {
 
     public static class Tab1Fragment extends Fragment {
         private Spinner spAppLanguage, spGraphColor, spAppUnit, spGraphBackColor, spFontSize, spBaudRate;
-        private Spinner spConnectionType, spGraphicsLibType, spMapColor, spMapType;
+        private Spinner spConnectionType, spGraphicsLibType;
         private CheckBox cbAllowMainDrogue, cbFullUSBSupport;
         private ConsoleApplication BT;
 
@@ -388,21 +397,6 @@ public class AppConfigActivity extends AppCompatActivity {
             this.spGraphBackColor.setSelection(value);
         }
 
-        public int getMapColor() {
-            return (int) this.spMapColor.getSelectedItemId();
-        }
-
-        public void setMapColor(int value) {
-            this.spMapColor.setSelection(value);
-        }
-
-        public int getMapType() {
-            return (int) this.spMapType.getSelectedItemId();
-        }
-
-        public void setMapType(int value) {
-            this.spMapType.setSelection(value);
-        }
 
         public int getFontSize() {
             return (int) this.spFontSize.getSelectedItemId();
@@ -483,16 +477,6 @@ public class AppConfigActivity extends AppCompatActivity {
             ArrayAdapter<String> adapterGraphColor = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsColor());
             spGraphBackColor.setAdapter(adapterGraphColor);
 
-            // map color
-            spMapColor = (Spinner) view.findViewById(R.id.spinnerMapColor);
-            ArrayAdapter<String> adapterMapColor = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsColor());
-            spMapColor.setAdapter(adapterMapColor);
-
-            // map type
-            spMapType = (Spinner) view.findViewById(R.id.spinnerMapType);
-            ArrayAdapter<String> adapterMapType = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsMap());
-            spMapType.setAdapter(adapterMapType);
-
             //units
             spAppUnit = (Spinner) view.findViewById(R.id.spinnerUnits);
 
@@ -532,8 +516,7 @@ public class AppConfigActivity extends AppCompatActivity {
             spAppUnit.setSelection(Integer.parseInt(BT.getAppConf().getUnits()));
             spGraphColor.setSelection(Integer.parseInt(BT.getAppConf().getGraphColor()));
             spGraphBackColor.setSelection(Integer.parseInt(BT.getAppConf().getGraphBackColor()));
-            spMapColor.setSelection(Integer.parseInt(BT.getAppConf().getMapColor()));
-            spMapType.setSelection(Integer.parseInt(BT.getAppConf().getMapType()));
+
             spFontSize.setSelection((Integer.parseInt(BT.getAppConf().getFontSize()) - 8));
             spBaudRate.setSelection(Integer.parseInt(BT.getAppConf().getBaudRate()));
             spConnectionType.setSelection(Integer.parseInt(BT.getAppConf().getConnectionType()));
@@ -833,8 +816,68 @@ public class AppConfigActivity extends AppCompatActivity {
             });
             return view;
         }
+
         private void msg(String s) {
             Toast.makeText(getContext(), s, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public static class Tab3Fragment extends Fragment {
+        private Spinner spMapColor, spMapType;
+        private CheckBox cbAllowManualRecording;
+
+        private ConsoleApplication BT;
+
+
+        public Tab3Fragment(ConsoleApplication lBT) {
+            BT = lBT;
+        }
+
+        public int getMapColor() {
+            return (int) this.spMapColor.getSelectedItemId();
+        }
+
+        public void setMapColor(int value) {
+            this.spMapColor.setSelection(value);
+        }
+
+        public int getMapType() {
+            return (int) this.spMapType.getSelectedItemId();
+        }
+
+        public void setMapType(int value) {
+            this.spMapType.setSelection(value);
+        }
+
+        public Boolean getAllowManualRecording() {
+            return cbAllowManualRecording.isChecked();
+        }
+
+        public void setAllowManualRecording(boolean value) {
+            cbAllowManualRecording.setChecked(value);
+        }
+
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            View view = inflater.inflate(R.layout.activity_app_config_part3, container, false);
+            // map color
+            spMapColor = (Spinner) view.findViewById(R.id.spinnerMapColor);
+            ArrayAdapter<String> adapterMapColor = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsColor());
+            spMapColor.setAdapter(adapterMapColor);
+
+            // map type
+            spMapType = (Spinner) view.findViewById(R.id.spinnerMapType);
+            ArrayAdapter<String> adapterMapType = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsMap());
+            spMapType.setAdapter(adapterMapType);
+
+            spMapColor.setSelection(Integer.parseInt(BT.getAppConf().getMapColor()));
+            spMapType.setSelection(Integer.parseInt(BT.getAppConf().getMapType()));
+
+            // allow manual recording
+            cbAllowManualRecording = (CheckBox) view.findViewById(R.id.checkBoxAllowManualRecording);
+            cbAllowManualRecording.setChecked(BT.getAppConf().getManualRecording());
+
+            return view;
         }
     }
 

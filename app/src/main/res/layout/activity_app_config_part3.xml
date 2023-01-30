@@ -25,5 +25,57 @@
         tools:layout_constraintTop_creator="1"
         />
 
+    <TextView
+        android:id="@+id/textMapLineColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewConfigTitleTab3"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:text="Map Line Color" />
 
+    <Spinner
+        android:id="@+id/spinnerMapColor"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textMapLineColor"
+        android:layout_below="@+id/textViewConfigTitleTab3"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:id="@+id/textMapType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textMapLineColor"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:text="Map Type" />
+
+    <Spinner
+        android:id="@+id/spinnerMapType"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textMapType"
+        android:layout_below="@+id/textMapLineColor"
+        android:layout_alignParentRight="true" />
+
+
+    <TextView
+        android:id="@+id/textAllowManualRecording"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textMapType"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:text="Allow manual Recording"
+        />
+
+    <CheckBox
+        android:id="@+id/checkBoxAllowManualRecording"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textAllowManualRecording"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginRight="0dp" />
 </RelativeLayout>

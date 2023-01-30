@@ -245,7 +245,7 @@ public class AltimeterStatus extends AppCompatActivity {
         myBT.setHandler(handler);
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         btnRecording = (Button) findViewById(R.id.butRecording);
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS"))
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")&& myBT.getAppConf().getManualRecording())
             btnRecording.setVisibility(View.VISIBLE);
         else
             btnRecording.setVisibility(View.INVISIBLE);
@@ -256,8 +256,8 @@ public class AltimeterStatus extends AppCompatActivity {
 
                 if(recording) {
                     new AlertDialog.Builder(v.getContext())
-                            .setTitle("Confirm Exit")
-                            .setMessage("Are you sure you want to exit?")
+                            .setTitle("Confirm Exit Recording")
+                            .setMessage("Recording in progress... Are you sure you want to exit?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -330,8 +330,8 @@ public class AltimeterStatus extends AppCompatActivity {
     public void onBackPressed() {
         if(recording) {
             new AlertDialog.Builder(this)
-                    .setTitle("Confirm Exit")
-                    .setMessage("Currently recording. Are you sure you want to exit?")
+                    .setTitle("Confirm Exit Recording")
+                    .setMessage("Recording in progress... Are you sure you want to exit?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
