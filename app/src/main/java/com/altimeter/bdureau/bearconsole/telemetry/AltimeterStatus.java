@@ -61,16 +61,16 @@ public class AltimeterStatus extends AppCompatActivity {
 
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
-    public LocationBroadCastReceiver receiver=null;
+    public LocationBroadCastReceiver receiver = null;
     SectionsStatusPageAdapter adapter;
-    Tab1StatusFragment statusPage1 =null;
-    Tab2StatusFragment statusPage2 =null;
-    Tab3StatusFragment statusPage3 =null;
+    Tab1StatusFragment statusPage1 = null;
+    Tab2StatusFragment statusPage2 = null;
+    Tab3StatusFragment statusPage3 = null;
 
     Marker marker, markerDest;
     Polyline polyline1 = null;
-    public Double rocketLatitude=48.8698;
-    public Double rocketLongitude=2.2190;
+    public Double rocketLatitude = 48.8698;
+    public Double rocketLongitude = 2.2190;
     LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
 
     Button btnDismiss, btnRecording;
@@ -81,29 +81,24 @@ public class AltimeterStatus extends AppCompatActivity {
     public String TAG = "AltimeterStatus.class";
 
 
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 9:
                     // Value 9 contains the output 1 status
-                    //txtViewOutput1Status.setText(outputStatus((String) msg.obj));
                     statusPage1.setOutput1Status((String) msg.obj);
                     break;
                 case 10:
                     // Value 10 contains the output 2 status
-                    //txtViewOutput2Status.setText(outputStatus((String) msg.obj));
                     statusPage1.setOutput2Status((String) msg.obj);
                     break;
                 case 11:
                     // Value 11 contains the output 3 status
-                    //txtViewOutput3Status.setText(outputStatus((String) msg.obj));
                     statusPage1.setOutput3Status((String) msg.obj);
                     break;
                 case 12:
                     //Value 12 contains the output 4 status
-                    //txtViewOutput4Status.setText(outputStatus((String) msg.obj));
                     statusPage1.setOutput4Status((String) msg.obj);
                     break;
                 case 1:
@@ -115,7 +110,7 @@ public class AltimeterStatus extends AppCompatActivity {
                     else
                         //Feet
                         myUnits = getResources().getString(R.string.Feet_fview);
-                    if(statusPage1 != null)
+                    if (statusPage1 != null)
                         statusPage1.setAltitude((String) msg.obj + " " + myUnits);
                     break;
                 case 13:
@@ -139,7 +134,7 @@ public class AltimeterStatus extends AppCompatActivity {
 
                 case 16:
                     //Value 16 contains the number of flight
-                    statusPage1.setNbrOfFlight((String) msg.obj );
+                    statusPage1.setNbrOfFlight((String) msg.obj);
                     break;
                 case 18:
                     //Value 18 contains the latitude
@@ -157,7 +152,6 @@ public class AltimeterStatus extends AppCompatActivity {
                         String longitude = (String) msg.obj;
                         if (longitude.matches("\\d+(?:\\.\\d+)?")) {
                             double longitudeVal = Double.parseDouble(longitude) / 100000;
-                            //statusPage1.setLongitudeValue((String) msg.obj);
                             statusPage2.setLongitudeValue("" + longitudeVal);
                         }
                     }
@@ -218,7 +212,7 @@ public class AltimeterStatus extends AppCompatActivity {
                         String TimeSat = (String) msg.obj;
                         if (TimeSat.matches("\\d+(?:\\.\\d+)?")) {
                             int TimeSatVal = Integer.parseInt(TimeSat);
-                            statusPage2.setTimeSatValue(String.format("%.2f", (double)(TimeSatVal/1000)) + " secs" );
+                            statusPage2.setTimeSatValue(String.format("%.2f", (double) (TimeSatVal / 1000)) + " secs");
                         }
                     }
                     break;
@@ -233,9 +227,9 @@ public class AltimeterStatus extends AppCompatActivity {
 
         myBT = (ConsoleApplication) getApplication();
         receiver = new LocationBroadCastReceiver();
-        if(Build.VERSION.SDK_INT>=23) {
-            if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             } else {
                 startService();
             }
@@ -249,14 +243,14 @@ public class AltimeterStatus extends AppCompatActivity {
 
         if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
             rocketLongitude = Double.parseDouble(myBT.getAppConf().getRocketLongitude());
-        mViewPager =(ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.container);
 
         setupViewPager(mViewPager);
 
         myBT.setHandler(handler);
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         btnRecording = (Button) findViewById(R.id.butRecording);
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")&& myBT.getAppConf().getManualRecording())
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") && myBT.getAppConf().getManualRecording())
             btnRecording.setVisibility(View.VISIBLE);
         else
             btnRecording.setVisibility(View.INVISIBLE);
@@ -265,7 +259,7 @@ public class AltimeterStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(recording) {
+                if (recording) {
                     new AlertDialog.Builder(v.getContext())
                             .setTitle("Confirm Exit Recording")
                             .setMessage("Recording in progress... Are you sure you want to exit?")
@@ -314,10 +308,7 @@ public class AltimeterStatus extends AppCompatActivity {
                     myBT.flush();
                     msg("Started recording");
                 }
-                /*recording = true;
-                Intent i = new Intent(AltimeterStatus.this, RocketTrack.class);
-                i.putExtra("recording", "true");
-                startActivity(i);*/
+
             }
         });
 
@@ -339,7 +330,7 @@ public class AltimeterStatus extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(recording) {
+        if (recording) {
             new AlertDialog.Builder(this)
                     .setTitle("Confirm Exit Recording")
                     .setMessage("Recording in progress... Are you sure you want to exit?")
@@ -355,6 +346,7 @@ public class AltimeterStatus extends AppCompatActivity {
             finish();
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -397,11 +389,12 @@ public class AltimeterStatus extends AppCompatActivity {
             msg("Stopped recording");
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
-        if(myBT.getConnected() && !status) {
+        if (myBT.getConnected() && !status) {
             myBT.flush();
             myBT.clearInput();
 
@@ -410,6 +403,7 @@ public class AltimeterStatus extends AppCompatActivity {
             altiStatus.start();
         }
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -460,30 +454,31 @@ public class AltimeterStatus extends AppCompatActivity {
             adapter.addFragment(statusPage3, "TAB3");
         }
 
-        linearDots=findViewById(R.id.idAltiStatusLinearDots);
+        linearDots = findViewById(R.id.idAltiStatusLinearDots);
         agregaIndicateDots(0, adapter.getCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(viewListener);
 
     }
-    public void agregaIndicateDots(int pos, int nbr){
-        dotsSlide =new TextView[nbr];
+
+    public void agregaIndicateDots(int pos, int nbr) {
+        dotsSlide = new TextView[nbr];
         linearDots.removeAllViews();
 
-        for (int i=0; i< dotsSlide.length; i++){
-            dotsSlide[i]=new TextView(this);
+        for (int i = 0; i < dotsSlide.length; i++) {
+            dotsSlide[i] = new TextView(this);
             dotsSlide[i].setText(Html.fromHtml("&#8226;"));
             dotsSlide[i].setTextSize(35);
             dotsSlide[i].setTextColor(getResources().getColor(R.color.colorWhiteTransparent));
             linearDots.addView(dotsSlide[i]);
         }
 
-        if(dotsSlide.length>0){
+        if (dotsSlide.length > 0) {
             dotsSlide[pos].setTextColor(getResources().getColor(R.color.colorWhite));
         }
     }
 
-    ViewPager.OnPageChangeListener viewListener=new ViewPager.OnPageChangeListener() {
+    ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int i, float v, int i1) {
         }
@@ -500,13 +495,14 @@ public class AltimeterStatus extends AppCompatActivity {
 
     public class SectionsStatusPageAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList();
-        private final List<String> mFragmentTitleList= new ArrayList();
+        private final List<String> mFragmentTitleList = new ArrayList();
 
         public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
-        public SectionsStatusPageAdapter (FragmentManager fm){
+
+        public SectionsStatusPageAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -516,36 +512,29 @@ public class AltimeterStatus extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return super.getPageTitle(position);
         }
+
         @Override
         public Fragment getItem(int position) {
             return mFragmentList.get(position);
         }
+
         @Override
         public int getCount() {
             return mFragmentList.size();
         }
     }
 
-    /*public class Tab1StatusFragment extends Fragment {
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_altimeter_status_tab1, container, false);
-        return view;
-        }
-    }*/
     public static class Tab1StatusFragment extends Fragment {
         //private static final String TAG = "Tab1StatusFragment";
         private boolean ViewCreated = false;
         private TextView txtStatusAltiName, txtStatusAltiNameValue;
         private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
-        private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage,txtNbrOfFlight;
+        private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage, txtNbrOfFlight;
         private TextView txtViewOutput4, txtViewBatteryVoltage, txtViewOutput3, txtViewEEprom, txtViewFlight;
         ConsoleApplication lBT;
         private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;
 
-        public Tab1StatusFragment (ConsoleApplication bt) {
+        public Tab1StatusFragment(ConsoleApplication bt) {
             lBT = bt;
         }
 
@@ -553,43 +542,51 @@ public class AltimeterStatus extends AppCompatActivity {
             if (ViewCreated)
                 this.txtViewOutput1Status.setText(outputStatus(value));
         }
+
         public void setOutput2Status(String value) {
             if (ViewCreated)
                 this.txtViewOutput2Status.setText(outputStatus(value));
         }
+
         public void setOutput3Status(String value) {
             if (ViewCreated)
                 this.txtViewOutput3Status.setText(outputStatus(value));
         }
+
         public void setOutput4Status(String value) {
             if (ViewCreated)
                 this.txtViewOutput4Status.setText(outputStatus(value));
         }
+
         public void setAltitude(String value) {
             if (ViewCreated)
                 this.txtViewAltitude.setText(value);
         }
+
         public void setVoltage(String value) {
             if (ViewCreated)
                 this.txtViewVoltage.setText(value);
         }
+
         public void setTemperature(String value) {
             if (ViewCreated)
-                this.txtTemperature.setText(value );
+                this.txtTemperature.setText(value);
         }
+
         public void setEEpromUsage(String value) {
             if (ViewCreated)
-                this.txtEEpromUsage.setText(value );
+                this.txtEEpromUsage.setText(value);
         }
+
         public void setNbrOfFlight(String value) {
             if (ViewCreated)
-                this.txtNbrOfFlight.setText(value );
+                this.txtNbrOfFlight.setText(value);
         }
 
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_altimeter_status_tab1,container,false);
+            View view = inflater.inflate(R.layout.activity_altimeter_status_tab1, container, false);
 
             txtStatusAltiName = (TextView) view.findViewById(R.id.txtStatusAltiName);
             txtStatusAltiNameValue = (TextView) view.findViewById(R.id.txtStatusAltiNameValue);
@@ -604,15 +601,15 @@ public class AltimeterStatus extends AppCompatActivity {
             txtViewOutput4 = (TextView) view.findViewById(R.id.txtViewOutput4);
             txtViewBatteryVoltage = (TextView) view.findViewById(R.id.txtViewBatteryVoltage);
             txtTemperature = (TextView) view.findViewById(R.id.txtViewTemperature);
-            txtEEpromUsage= (TextView) view.findViewById(R.id.txtViewEEpromUsage);
-            txtNbrOfFlight= (TextView) view.findViewById(R.id.txtViewNbrOfFlight);
+            txtEEpromUsage = (TextView) view.findViewById(R.id.txtViewEEpromUsage);
+            txtNbrOfFlight = (TextView) view.findViewById(R.id.txtViewNbrOfFlight);
             txtViewEEprom = (TextView) view.findViewById(R.id.txtViewEEprom);
             txtViewFlight = (TextView) view.findViewById(R.id.txtViewFlight);
 
             txtStatusAltiNameValue.setText(lBT.getAltiConfigData().getAltimeterName());
             if (lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
-                    ||lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")
-                    ||lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ) {
+                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")
+                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                 txtViewVoltage.setVisibility(View.VISIBLE);
                 txtViewBatteryVoltage.setVisibility(View.VISIBLE);
             } else {
@@ -643,8 +640,7 @@ public class AltimeterStatus extends AppCompatActivity {
                 txtViewFlight.setVisibility(View.INVISIBLE);
                 txtEEpromUsage.setVisibility(View.INVISIBLE);
                 txtNbrOfFlight.setVisibility(View.INVISIBLE);
-            }
-            else {
+            } else {
                 txtViewEEprom.setVisibility(View.VISIBLE);
                 txtViewFlight.setVisibility(View.VISIBLE);
                 txtEEpromUsage.setVisibility(View.VISIBLE);
@@ -662,7 +658,7 @@ public class AltimeterStatus extends AppCompatActivity {
             else
                 switchOutput3.setVisibility(View.INVISIBLE);
             if (lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
-                    lBT.getAltiConfigData().getAltimeterName().equals("AltiServo")||
+                    lBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
                     lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS"))
                 switchOutput4.setVisibility(View.VISIBLE);
             else
@@ -781,6 +777,7 @@ public class AltimeterStatus extends AppCompatActivity {
             super.onDestroyView();
             ViewCreated = false;
         }
+
         public boolean isViewCreated() {
             return ViewCreated;
         }
@@ -806,62 +803,69 @@ public class AltimeterStatus extends AppCompatActivity {
         private static final String TAG = "Tab2StatusFragment";
         private boolean ViewCreated = false;
         private TextView txtViewLatitude, txtViewLongitude, txtViewLatitudeValue, txtViewLongitudeValue;
-        private TextView txtViewSatellitesVal, txtViewHdopVal,txtViewGPSAltitudeVal, txtViewGPSSpeedVal;
+        private TextView txtViewSatellitesVal, txtViewHdopVal, txtViewGPSAltitudeVal, txtViewGPSSpeedVal;
         private TextView txtViewLocationAgeValue, txtViewTimeSatValue;
         ConsoleApplication lBT;
-        public Tab2StatusFragment (ConsoleApplication bt) {
+
+        public Tab2StatusFragment(ConsoleApplication bt) {
             lBT = bt;
         }
 
         public void setLatitudeValue(String value) {
             if (ViewCreated)
-                this.txtViewLatitudeValue.setText(value );
+                this.txtViewLatitudeValue.setText(value);
         }
+
         public void setLongitudeValue(String value) {
             if (ViewCreated)
-                this.txtViewLongitudeValue.setText(value );
+                this.txtViewLongitudeValue.setText(value);
         }
 
         public void setSatellitesVal(String value) {
             if (ViewCreated)
-                this.txtViewSatellitesVal.setText(value );
+                this.txtViewSatellitesVal.setText(value);
         }
+
         public void setHdopVal(String value) {
             if (ViewCreated)
-                this.txtViewHdopVal.setText(value );
+                this.txtViewHdopVal.setText(value);
         }
+
         public void setGPSAltitudeVal(String value) {
             if (ViewCreated)
-                this.txtViewGPSAltitudeVal.setText(value );
+                this.txtViewGPSAltitudeVal.setText(value);
         }
+
         public void setGPSSpeedVal(String value) {
             if (ViewCreated)
-                this.txtViewGPSSpeedVal.setText(value );
+                this.txtViewGPSSpeedVal.setText(value);
         }
+
         public void setLocationAgeValue(String value) {
             if (ViewCreated)
-                this.txtViewLocationAgeValue.setText(value );
+                this.txtViewLocationAgeValue.setText(value);
         }
+
         public void setTimeSatValue(String value) {
             if (ViewCreated)
-                this.txtViewTimeSatValue.setText(value );
+                this.txtViewTimeSatValue.setText(value);
         }
 
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_altimeter_status_tab2,container,false);
+            View view = inflater.inflate(R.layout.activity_altimeter_status_tab2, container, false);
 
             txtViewLatitude = (TextView) view.findViewById(R.id.txtViewLatitude);
             txtViewLongitude = (TextView) view.findViewById(R.id.txtViewLongitude);
             txtViewLatitudeValue = (TextView) view.findViewById(R.id.txtViewLatitudeValue);
             txtViewLongitudeValue = (TextView) view.findViewById(R.id.txtViewLongitudeValue);
             txtViewSatellitesVal = (TextView) view.findViewById(R.id.txtViewSatellitesVal);
-            txtViewHdopVal= (TextView) view.findViewById(R.id.txtViewHdopVal);
-            txtViewGPSAltitudeVal= (TextView) view.findViewById(R.id.txtViewGPSAltitudeVal);
-            txtViewGPSSpeedVal= (TextView) view.findViewById(R.id.txtViewGPSSpeedVal);
+            txtViewHdopVal = (TextView) view.findViewById(R.id.txtViewHdopVal);
+            txtViewGPSAltitudeVal = (TextView) view.findViewById(R.id.txtViewGPSAltitudeVal);
+            txtViewGPSSpeedVal = (TextView) view.findViewById(R.id.txtViewGPSSpeedVal);
             txtViewLocationAgeValue = (TextView) view.findViewById(R.id.txtViewLocationAgeValue);
-            txtViewTimeSatValue= (TextView) view.findViewById(R.id.txtViewTimeSatValue);
+            txtViewTimeSatValue = (TextView) view.findViewById(R.id.txtViewTimeSatValue);
 
 
             //hide GPS
@@ -881,25 +885,22 @@ public class AltimeterStatus extends AppCompatActivity {
         }
     }
 
-    public static class Tab3StatusFragment extends Fragment  {
+    public static class Tab3StatusFragment extends Fragment {
         private static final String TAG = "Tab3StatusFragment";
         private boolean ViewCreated = false;
 
-
-        public GoogleMap lMap=null;
-
+        public GoogleMap lMap = null;
         ConsoleApplication lBT;
-
-
         Button butBack;
 
-        public Tab3StatusFragment (ConsoleApplication bt ) {
+        public Tab3StatusFragment(ConsoleApplication bt) {
             lBT = bt;
         }
 
         public GoogleMap getlMap() {
             return lMap;
         }
+
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -907,12 +908,11 @@ public class AltimeterStatus extends AppCompatActivity {
 
             butBack = (Button) view.findViewById(R.id.butBack);
             SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapStatus);
-            /*if(mapFragment == null)
-                Log.d(TAG, "not good");*/
+
             mapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
-                    if(lMap == null) {
+                    if (lMap == null) {
                         lMap = googleMap;
                         lMap.setMapType(Integer.parseInt(lBT.getAppConf().getMapType()));
                     }
@@ -935,23 +935,22 @@ public class AltimeterStatus extends AppCompatActivity {
     public class LocationBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d ("coordinate",intent.getAction());
-            if(intent.getAction().equals("ACT_LOC")) {
+            Log.d("coordinate", intent.getAction());
+            if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
-                                Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
+                Log.d("coordinate", "latitude is:" + latitude + " longitude is: " + longitude);
 
-                if(statusPage3.getlMap() != null) {
+                if (statusPage3.getlMap() != null) {
                     LatLng latLng = new LatLng(latitude, longitude);
-                    if(marker != null) {
+                    if (marker != null) {
                         marker.setPosition(latLng);
                     } else {
                         BitmapDescriptor manIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_person_map);
                         marker = statusPage3.getlMap().addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
-
                     }
 
-                    if(markerDest != null) {
+                    if (markerDest != null) {
                         markerDest.setPosition(dest);
                     } else {
                         BitmapDescriptor rocketIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_rocket_map);
@@ -965,12 +964,11 @@ public class AltimeterStatus extends AppCompatActivity {
 
                     coord.add(1, latLng);
                     if (polyline1 == null)
-                        polyline1 = statusPage3.getlMap().addPolyline(new PolylineOptions()
-                                .clickable(false));
+                        polyline1 = statusPage3.getlMap().addPolyline(new PolylineOptions().clickable(false));
                     //Get the line color from the config
                     polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
                     polyline1.setPoints(coord);
-                    if(statusPage3.getlMap().getCameraPosition().zoom > 10)
+                    if (statusPage3.getlMap().getCameraPosition().zoom > 10)
                         statusPage3.getlMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, statusPage3.getlMap().getCameraPosition().zoom));
                     else
                         statusPage3.getlMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
@@ -978,14 +976,16 @@ public class AltimeterStatus extends AppCompatActivity {
             }
         }
     }
+
     private void startService() {
 
         IntentFilter filter = new IntentFilter("ACT_LOC");
         registerReceiver(receiver, filter);
 
-        Intent intent = new Intent( AltimeterStatus.this, LocationService.class);
+        Intent intent = new Intent(AltimeterStatus.this, LocationService.class);
         startService(intent);
     }
+
     // fast way to call Toast
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
