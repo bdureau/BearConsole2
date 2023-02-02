@@ -1,6 +1,7 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -60,14 +61,20 @@ public class AltimeterStatus extends AppCompatActivity {
 
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
-
+    public LocationBroadCastReceiver receiver=null;
     SectionsStatusPageAdapter adapter;
     Tab1StatusFragment statusPage1 =null;
     Tab2StatusFragment statusPage2 =null;
     Tab3StatusFragment statusPage3 =null;
 
+    Marker marker, markerDest;
+    Polyline polyline1 = null;
+    public Double rocketLatitude=48.8698;
+    public Double rocketLongitude=2.2190;
+    LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
+
     Button btnDismiss, btnRecording;
-    private static ConsoleApplication myBT;
+    private ConsoleApplication myBT;
     Thread altiStatus;
     boolean status = true;
     boolean recording = false;
@@ -108,7 +115,6 @@ public class AltimeterStatus extends AppCompatActivity {
                     else
                         //Feet
                         myUnits = getResources().getString(R.string.Feet_fview);
-                    //txtViewAltitude.setText((String) msg.obj + " " + myUnits);
                     if(statusPage1 != null)
                         statusPage1.setAltitude((String) msg.obj + " " + myUnits);
                     break;
@@ -116,32 +122,23 @@ public class AltimeterStatus extends AppCompatActivity {
                     //Value 13 contains the battery voltage
                     String voltage = (String) msg.obj;
                     if (voltage.matches("\\d+(?:\\.\\d+)?")) {
-                        /*double batVolt;
-
-                        batVolt =  (3.1972*((Double.parseDouble(voltage) * 3300) / 4096)/1000);
-                        txtViewVoltage.setText(String.format("%.2f",batVolt)+ " Volts");*/
-                        //txtViewVoltage.setText(voltage + " Volts");
                         statusPage1.setVoltage(voltage + " Volts");
                     } else {
-                        //txtViewVoltage.setText("NA");
                         statusPage1.setVoltage("NA");
                     }
                     break;
                 case 14:
                     //Value 14 contains the temperature
-                    //txtTemperature.setText((String) msg.obj + "°C");
                     statusPage1.setTemperature((String) msg.obj + "°C");
                     break;
 
                 case 15:
                     //Value 15 contains the EEprom usage
-                    //txtEEpromUsage.setText((String) msg.obj + " %");
                     statusPage1.setEEpromUsage((String) msg.obj + " %");
                     break;
 
                 case 16:
                     //Value 16 contains the number of flight
-                    //txtNbrOfFlight.setText((String) msg.obj );
                     statusPage1.setNbrOfFlight((String) msg.obj );
                     break;
                 case 18:
@@ -150,7 +147,6 @@ public class AltimeterStatus extends AppCompatActivity {
                         String latitude = (String) msg.obj;
                         if (latitude.matches("\\d+(?:\\.\\d+)?")) {
                             double latitudeVal = Double.parseDouble(latitude) / 100000;
-                            //statusPage1.setLatitudeValue((String) msg.obj);
                             statusPage2.setLatitudeValue("" + latitudeVal);
                         }
                     }
@@ -236,12 +232,27 @@ public class AltimeterStatus extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         myBT = (ConsoleApplication) getApplication();
-
+        receiver = new LocationBroadCastReceiver();
+        if(Build.VERSION.SDK_INT>=23) {
+            if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+            } else {
+                startService();
+            }
+        } else {
+            startService();
+        }
         //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         setContentView(R.layout.activity_altimeter_status);
+        if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLatitude = Double.parseDouble(myBT.getAppConf().getRocketLatitude());
 
+        if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLongitude = Double.parseDouble(myBT.getAppConf().getRocketLongitude());
         mViewPager =(ViewPager) findViewById(R.id.container);
+
         setupViewPager(mViewPager);
+
         myBT.setHandler(handler);
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         btnRecording = (Button) findViewById(R.id.butRecording);
@@ -439,20 +450,21 @@ public class AltimeterStatus extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsStatusPageAdapter(getSupportFragmentManager());
-        statusPage1 = new Tab1StatusFragment();
-        statusPage2 = new Tab2StatusFragment();
-        statusPage3 = new Tab3StatusFragment();
+        statusPage1 = new Tab1StatusFragment(myBT);
+        statusPage2 = new Tab2StatusFragment(myBT);
+        statusPage3 = new Tab3StatusFragment(myBT/*, mMap*/);
 
         adapter.addFragment(statusPage1, "TAB1");
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
             adapter.addFragment(statusPage2, "TAB2");
-            //adapter.addFragment(statusPage3, "TAB3");
+            adapter.addFragment(statusPage3, "TAB3");
         }
 
         linearDots=findViewById(R.id.idAltiStatusLinearDots);
         agregaIndicateDots(0, adapter.getCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(viewListener);
+
     }
     public void agregaIndicateDots(int pos, int nbr){
         dotsSlide =new TextView[nbr];
@@ -514,15 +526,28 @@ public class AltimeterStatus extends AppCompatActivity {
         }
     }
 
+    /*public class Tab1StatusFragment extends Fragment {
+
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.activity_altimeter_status_tab1, container, false);
+        return view;
+        }
+    }*/
     public static class Tab1StatusFragment extends Fragment {
-        private static final String TAG = "Tab1StatusFragment";
+        //private static final String TAG = "Tab1StatusFragment";
         private boolean ViewCreated = false;
         private TextView txtStatusAltiName, txtStatusAltiNameValue;
         private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
         private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage,txtNbrOfFlight;
         private TextView txtViewOutput4, txtViewBatteryVoltage, txtViewOutput3, txtViewEEprom, txtViewFlight;
-
+        ConsoleApplication lBT;
         private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;
+
+        public Tab1StatusFragment (ConsoleApplication bt) {
+            lBT = bt;
+        }
 
         public void setOutput1Status(String value) {
             if (ViewCreated)
@@ -584,17 +609,17 @@ public class AltimeterStatus extends AppCompatActivity {
             txtViewEEprom = (TextView) view.findViewById(R.id.txtViewEEprom);
             txtViewFlight = (TextView) view.findViewById(R.id.txtViewFlight);
 
-            txtStatusAltiNameValue.setText(myBT.getAltiConfigData().getAltimeterName());
-            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
-                    ||myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")
-                    ||myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ) {
+            txtStatusAltiNameValue.setText(lBT.getAltiConfigData().getAltimeterName());
+            if (lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
+                    ||lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")
+                    ||lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ) {
                 txtViewVoltage.setVisibility(View.VISIBLE);
                 txtViewBatteryVoltage.setVisibility(View.VISIBLE);
             } else {
                 txtViewVoltage.setVisibility(View.INVISIBLE);
                 txtViewBatteryVoltage.setVisibility(View.INVISIBLE);
             }
-            if (!myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
+            if (!lBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
                 txtViewOutput3Status.setVisibility(View.VISIBLE);
                 txtViewOutput3.setVisibility(View.VISIBLE);
             } else {
@@ -602,9 +627,9 @@ public class AltimeterStatus extends AppCompatActivity {
                 txtViewOutput3.setVisibility(View.INVISIBLE);
             }
 
-            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
-                    ||myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")
-                    || myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+            if (lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
+                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")
+                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
                 txtViewOutput4Status.setVisibility(View.VISIBLE);
                 txtViewOutput4.setVisibility(View.VISIBLE);
             } else {
@@ -612,8 +637,8 @@ public class AltimeterStatus extends AppCompatActivity {
                 txtViewOutput4.setVisibility(View.INVISIBLE);
             }
             //hide eeprom
-            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")
-                    || myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+            if (lBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")
+                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
                 txtViewEEprom.setVisibility(View.INVISIBLE);
                 txtViewFlight.setVisibility(View.INVISIBLE);
                 txtEEpromUsage.setVisibility(View.INVISIBLE);
@@ -626,19 +651,19 @@ public class AltimeterStatus extends AppCompatActivity {
                 txtNbrOfFlight.setVisibility(View.VISIBLE);
             }
 
-            txtViewLink.setText(myBT.getConnectionType());
+            txtViewLink.setText(lBT.getConnectionType());
 
             switchOutput1 = (Switch) view.findViewById(R.id.switchOutput1);
             switchOutput2 = (Switch) view.findViewById(R.id.switchOutput2);
             switchOutput3 = (Switch) view.findViewById(R.id.switchOutput3);
             switchOutput4 = (Switch) view.findViewById(R.id.switchOutput4);
-            if (!myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo"))
+            if (!lBT.getAltiConfigData().getAltimeterName().equals("AltiDuo"))
                 switchOutput3.setVisibility(View.VISIBLE);
             else
                 switchOutput3.setVisibility(View.INVISIBLE);
-            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
-                    myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")||
-                    myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS"))
+            if (lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
+                    lBT.getAltiConfigData().getAltimeterName().equals("AltiServo")||
+                    lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS"))
                 switchOutput4.setVisibility(View.VISIBLE);
             else
                 switchOutput4.setVisibility(View.INVISIBLE);
@@ -647,12 +672,12 @@ public class AltimeterStatus extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (switchOutput1.isChecked())
-                        myBT.write("k1T;\n".toString());
+                        lBT.write("k1T;\n".toString());
                     else
-                        myBT.write("k1F;\n".toString());
+                        lBT.write("k1F;\n".toString());
 
-                    myBT.flush();
-                    myBT.clearInput();
+                    lBT.flush();
+                    lBT.clearInput();
                 }
             });
 
@@ -661,12 +686,12 @@ public class AltimeterStatus extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (switchOutput1.isChecked())
-                        myBT.write("k1T;\n".toString());
+                        lBT.write("k1T;\n".toString());
                     else
-                        myBT.write("k1F;\n".toString());
+                        lBT.write("k1F;\n".toString());
 
-                    myBT.flush();
-                    myBT.clearInput();
+                    lBT.flush();
+                    lBT.clearInput();
 
                 }
             });
@@ -675,24 +700,24 @@ public class AltimeterStatus extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (switchOutput2.isChecked())
-                        myBT.write("k2T;\n".toString());
+                        lBT.write("k2T;\n".toString());
                     else
-                        myBT.write("k2F;\n".toString());
+                        lBT.write("k2F;\n".toString());
 
-                    myBT.flush();
-                    myBT.clearInput();
+                    lBT.flush();
+                    lBT.clearInput();
                 }
             });
             switchOutput2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (switchOutput2.isChecked())
-                        myBT.write("k2T;\n".toString());
+                        lBT.write("k2T;\n".toString());
                     else
-                        myBT.write("k2F;\n".toString());
+                        lBT.write("k2F;\n".toString());
 
-                    myBT.flush();
-                    myBT.clearInput();
+                    lBT.flush();
+                    lBT.clearInput();
 
                 }
             });
@@ -700,24 +725,24 @@ public class AltimeterStatus extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (switchOutput3.isChecked())
-                        myBT.write("k3T;\n".toString());
+                        lBT.write("k3T;\n".toString());
                     else
-                        myBT.write("k3F;\n".toString());
+                        lBT.write("k3F;\n".toString());
 
-                    myBT.flush();
-                    myBT.clearInput();
+                    lBT.flush();
+                    lBT.clearInput();
                 }
             });
             switchOutput3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (switchOutput3.isChecked())
-                        myBT.write("k3T;\n".toString());
+                        lBT.write("k3T;\n".toString());
                     else
-                        myBT.write("k3F;\n".toString());
+                        lBT.write("k3F;\n".toString());
 
-                    myBT.flush();
-                    myBT.clearInput();
+                    lBT.flush();
+                    lBT.clearInput();
 
                 }
             });
@@ -725,24 +750,24 @@ public class AltimeterStatus extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (switchOutput4.isChecked())
-                        myBT.write("k4T;\n".toString());
+                        lBT.write("k4T;\n".toString());
                     else
-                        myBT.write("k4F;\n".toString());
+                        lBT.write("k4F;\n".toString());
 
-                    myBT.flush();
-                    myBT.clearInput();
+                    lBT.flush();
+                    lBT.clearInput();
                 }
             });
             switchOutput4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (switchOutput4.isChecked())
-                        myBT.write("k4T;\n".toString());
+                        lBT.write("k4T;\n".toString());
                     else
-                        myBT.write("k4F;\n".toString());
+                        lBT.write("k4F;\n".toString());
 
-                    myBT.flush();
-                    myBT.clearInput();
+                    lBT.flush();
+                    lBT.clearInput();
 
                 }
             });
@@ -783,6 +808,10 @@ public class AltimeterStatus extends AppCompatActivity {
         private TextView txtViewLatitude, txtViewLongitude, txtViewLatitudeValue, txtViewLongitudeValue;
         private TextView txtViewSatellitesVal, txtViewHdopVal,txtViewGPSAltitudeVal, txtViewGPSSpeedVal;
         private TextView txtViewLocationAgeValue, txtViewTimeSatValue;
+        ConsoleApplication lBT;
+        public Tab2StatusFragment (ConsoleApplication bt) {
+            lBT = bt;
+        }
 
         public void setLatitudeValue(String value) {
             if (ViewCreated)
@@ -852,121 +881,111 @@ public class AltimeterStatus extends AppCompatActivity {
         }
     }
 
-    public static class Tab3StatusFragment extends Fragment implements OnMapReadyCallback {
+    public static class Tab3StatusFragment extends Fragment  {
         private static final String TAG = "Tab3StatusFragment";
         private boolean ViewCreated = false;
-        SupportMapFragment mapFragment;
-        GoogleMap mMap;
-        Marker marker, markerDest;
-        Polyline polyline1 = null;
-        boolean status = true;
-        Double rocketLatitude=48.8698, rocketLongitude=2.2190;
-        LocationBroadCastReceiver receiver=null;
-        LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
 
+
+        public GoogleMap lMap=null;
+
+        ConsoleApplication lBT;
+
+
+        Button butBack;
+
+        public Tab3StatusFragment (ConsoleApplication bt ) {
+            lBT = bt;
+        }
+
+        public GoogleMap getlMap() {
+            return lMap;
+        }
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.activity_altimeter_status_tab3, container, false);
-            receiver = new LocationBroadCastReceiver();
-            if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
-                rocketLatitude = Double.parseDouble(myBT.getAppConf().getRocketLatitude());
 
-            if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
-                rocketLongitude = Double.parseDouble(myBT.getAppConf().getRocketLongitude());
-
-            /*if(Build.VERSION.SDK_INT>=23) {
-                if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
-                } else {
-                    startService();
+            butBack = (Button) view.findViewById(R.id.butBack);
+            SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapStatus);
+            /*if(mapFragment == null)
+                Log.d(TAG, "not good");*/
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    if(lMap == null) {
+                        lMap = googleMap;
+                        lMap.setMapType(Integer.parseInt(lBT.getAppConf().getMapType()));
+                    }
                 }
-            } else {
-                startService();
-            }
+            });
 
-            mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map1);
-            mapFragment.getMapAsync(this);*/
+            /*butBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mViewPager.setCurrentItem(0);
+
+                }
+            });*/
 
             ViewCreated = true;
             return view;
         }
+    }
 
-        private void startService() {
-
-           /* IntentFilter filter = new IntentFilter("ACT_LOC");
-            registerReceiver(receiver, filter);
-
-            Intent intent = new Intent( AltimeterStatus.this, LocationService.class);
-            startService(intent);*/
-        }
-
-        //protected abstract void startService(Intent intent);
-
+    public class LocationBroadCastReceiver extends BroadcastReceiver {
         @Override
-        public void onMapReady(GoogleMap googleMap) {
-            if(this.mMap == null) {
-                this.mMap = googleMap;
-                //this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                this.mMap.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
-            }
-        }
+        public void onReceive(Context context, Intent intent) {
+            Log.d ("coordinate",intent.getAction());
+            if(intent.getAction().equals("ACT_LOC")) {
+                double latitude = intent.getDoubleExtra("latitude", 0f);
+                double longitude = intent.getDoubleExtra("longitude", 0f);
+                                Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
 
-        public class LocationBroadCastReceiver extends BroadcastReceiver {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.d ("coordinate",intent.getAction());
-                if(intent.getAction().equals("ACT_LOC")) {
-                    double latitude = intent.getDoubleExtra("latitude", 0f);
-                    double longitude = intent.getDoubleExtra("longitude", 0f);
-                    //Toast.makeText(AltimeterStatus.this, "latitude is:" + latitude + " longitude is: " + longitude, Toast.LENGTH_LONG).show();
-                    Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
-                    if(mMap != null) {
-                        LatLng latLng = new LatLng(latitude, longitude);
-                        if(marker != null) {
-                            marker.setPosition(latLng);
-                        } else {
-                            MarkerOptions markerOptions = new MarkerOptions();
-                            //markerOptions.position(latLng);
-                            BitmapDescriptor manIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_person_map);
-                            marker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
-                            //marker = googleMap.addMarker(markerOptions);
-                        }
+                if(statusPage3.getlMap() != null) {
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    if(marker != null) {
+                        marker.setPosition(latLng);
+                    } else {
+                        BitmapDescriptor manIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_person_map);
+                        marker = statusPage3.getlMap().addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
 
-                        if(markerDest != null) {
-                            markerDest.setPosition(dest);
-                        } else {
-                            //MarkerOptions markerOptions = new MarkerOptions();
-                            //markerOptions.position(dest);
-                            BitmapDescriptor rocketIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_rocket_map);
-                            markerDest = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(dest).icon(rocketIcon));
-                            //markerDest = googleMap.addMarker(markerOptions);
-                        }
-                        List<LatLng> coord;
-                        coord = new ArrayList();
-
-                        //LatLng c = new LatLng((double) flightData.getSeries(3).getY(i) / 100000, (double) flightData.getSeries(4).getY(i) / 100000);
-                        dest = new LatLng(rocketLatitude, rocketLongitude);
-                        coord.add(0, dest);
-                        // coord.add(1, map.getCameraPosition().target);
-                        coord.add(1, latLng);
-                        if (polyline1 == null)
-                            polyline1 = mMap.addPolyline(new PolylineOptions()
-                                    .clickable(false));
-                        //Get the line color from the config
-                        polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
-                        polyline1.setPoints(coord);
-                        if(mMap.getCameraPosition().zoom > 10)
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, mMap.getCameraPosition().zoom));
-                        else
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                     }
+
+                    if(markerDest != null) {
+                        markerDest.setPosition(dest);
+                    } else {
+                        BitmapDescriptor rocketIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_rocket_map);
+                        markerDest = statusPage3.getlMap().addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(dest).icon(rocketIcon));
+                    }
+                    List<LatLng> coord;
+                    coord = new ArrayList();
+
+                    dest = new LatLng(rocketLatitude, rocketLongitude);
+                    coord.add(0, dest);
+
+                    coord.add(1, latLng);
+                    if (polyline1 == null)
+                        polyline1 = statusPage3.getlMap().addPolyline(new PolylineOptions()
+                                .clickable(false));
+                    //Get the line color from the config
+                    polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
+                    polyline1.setPoints(coord);
+                    if(statusPage3.getlMap().getCameraPosition().zoom > 10)
+                        statusPage3.getlMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, statusPage3.getlMap().getCameraPosition().zoom));
+                    else
+                        statusPage3.getlMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 }
             }
         }
     }
+    private void startService() {
 
+        IntentFilter filter = new IntentFilter("ACT_LOC");
+        registerReceiver(receiver, filter);
+
+        Intent intent = new Intent( AltimeterStatus.this, LocationService.class);
+        startService(intent);
+    }
     // fast way to call Toast
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
