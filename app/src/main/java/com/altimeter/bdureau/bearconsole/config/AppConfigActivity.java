@@ -167,31 +167,37 @@ public class AppConfigActivity extends AppCompatActivity {
     }
 
     private void SaveConfig() {
-        myBT.getAppConf().setApplicationLanguage("" + appConfigPage1.getAppLanguage() + "");
-        myBT.getAppConf().setGraphColor("" + appConfigPage1.getGraphColor() + "");
-        myBT.getAppConf().setUnits("" + appConfigPage1.getAppUnit() + "");
-        myBT.getAppConf().setGraphBackColor("" + appConfigPage1.getGraphBackColor() + "");
-        myBT.getAppConf().setFontSize("" + appConfigPage1.getFontSize() + "");
-        myBT.getAppConf().setBaudRate("" + appConfigPage1.getBaudRate() + "");
-        myBT.getAppConf().setConnectionType("" + appConfigPage1.getConnectionType() + "");
-        myBT.getAppConf().setGraphicsLibType("" + appConfigPage1.getGraphicsLibType() + "");
-        myBT.getAppConf().setAllowMultipleDrogueMain(appConfigPage1.getAllowMainDrogue());
-        myBT.getAppConf().setFullUSBSupport(appConfigPage1.getFullUSBSupport());
+        if(appConfigPage1.isViewCreated()) {
+            myBT.getAppConf().setApplicationLanguage("" + appConfigPage1.getAppLanguage() + "");
+            myBT.getAppConf().setGraphColor("" + appConfigPage1.getGraphColor() + "");
+            myBT.getAppConf().setUnits("" + appConfigPage1.getAppUnit() + "");
+            myBT.getAppConf().setGraphBackColor("" + appConfigPage1.getGraphBackColor() + "");
+            myBT.getAppConf().setFontSize("" + appConfigPage1.getFontSize() + "");
+            myBT.getAppConf().setBaudRate("" + appConfigPage1.getBaudRate() + "");
+            myBT.getAppConf().setConnectionType("" + appConfigPage1.getConnectionType() + "");
+            myBT.getAppConf().setGraphicsLibType("" + appConfigPage1.getGraphicsLibType() + "");
+            myBT.getAppConf().setAllowMultipleDrogueMain(appConfigPage1.getAllowMainDrogue());
+            myBT.getAppConf().setFullUSBSupport(appConfigPage1.getFullUSBSupport());
+        }
         //page2
-        myBT.getAppConf().setAltitude_event(appConfigPage2.getAltitudeEvent());
-        myBT.getAppConf().setApogee_altitude(appConfigPage2.getApogeeAltitude());
-        myBT.getAppConf().setBurnout_event(appConfigPage2.getBurnoutEvent());
-        myBT.getAppConf().setMain_altitude(appConfigPage2.getMainAltitude());
-        myBT.getAppConf().setDrogue_event(appConfigPage2.getDrogueEvent());
-        myBT.getAppConf().setLanding_event(appConfigPage2.getLandingEvent());
-        myBT.getAppConf().setWarning_event(appConfigPage2.getWarningEvent());
-        myBT.getAppConf().setMain_event(appConfigPage2.getMainEvent());
-        myBT.getAppConf().setLiftOff_event(appConfigPage2.getLiftOffEvent());
-        myBT.getAppConf().setTelemetryVoice("" + appConfigPage2.getTelemetryVoice() + "");
+        if(appConfigPage2.isViewCreated()) {
+            myBT.getAppConf().setAltitude_event(appConfigPage2.getAltitudeEvent());
+            myBT.getAppConf().setApogee_altitude(appConfigPage2.getApogeeAltitude());
+            myBT.getAppConf().setBurnout_event(appConfigPage2.getBurnoutEvent());
+            myBT.getAppConf().setMain_altitude(appConfigPage2.getMainAltitude());
+            myBT.getAppConf().setDrogue_event(appConfigPage2.getDrogueEvent());
+            myBT.getAppConf().setLanding_event(appConfigPage2.getLandingEvent());
+            myBT.getAppConf().setWarning_event(appConfigPage2.getWarningEvent());
+            myBT.getAppConf().setMain_event(appConfigPage2.getMainEvent());
+            myBT.getAppConf().setLiftOff_event(appConfigPage2.getLiftOffEvent());
+            myBT.getAppConf().setTelemetryVoice("" + appConfigPage2.getTelemetryVoice() + "");
+        }
         //page3
-        myBT.getAppConf().setMapColor("" + appConfigPage3.getMapColor() + "");
-        myBT.getAppConf().setMapType("" + appConfigPage3.getMapType() + "");
-        myBT.getAppConf().setManualRecording(appConfigPage3.getAllowManualRecording());
+        if(appConfigPage3.isViewCreated()) {
+            myBT.getAppConf().setMapColor("" + appConfigPage3.getMapColor() + "");
+            myBT.getAppConf().setMapType("" + appConfigPage3.getMapType() + "");
+            myBT.getAppConf().setManualRecording(appConfigPage3.getAllowManualRecording());
+        }
         myBT.getAppConf().SaveConfig();
         invalidateOptionsMenu();
         finish();
@@ -199,77 +205,82 @@ public class AppConfigActivity extends AppCompatActivity {
 
     private void RestoreToDefault() {
         myBT.getAppConf().ResetDefaultConfig();
-        appConfigPage1.setAppLanguage(Integer.parseInt(myBT.getAppConf().getApplicationLanguage()));
-        appConfigPage1.setAppUnit(Integer.parseInt(myBT.getAppConf().getUnits()));
-        appConfigPage1.setGraphColor(Integer.parseInt(myBT.getAppConf().getGraphColor()));
-        appConfigPage1.setGraphBackColor(Integer.parseInt(myBT.getAppConf().getGraphBackColor()));
-        appConfigPage1.setFontSize(Integer.parseInt(myBT.getAppConf().getFontSize()) - 8);
-        appConfigPage1.setBaudRate(Integer.parseInt(myBT.getAppConf().getBaudRate()));
-        appConfigPage1.setConnectionType(Integer.parseInt(myBT.getAppConf().getConnectionType()));
-        appConfigPage1.setGraphicsLibType(Integer.parseInt(myBT.getAppConf().getGraphicsLibType()));
+        if(appConfigPage1.isViewCreated()) {
+            appConfigPage1.setAppLanguage(Integer.parseInt(myBT.getAppConf().getApplicationLanguage()));
+            appConfigPage1.setAppUnit(Integer.parseInt(myBT.getAppConf().getUnits()));
+            appConfigPage1.setGraphColor(Integer.parseInt(myBT.getAppConf().getGraphColor()));
+            appConfigPage1.setGraphBackColor(Integer.parseInt(myBT.getAppConf().getGraphBackColor()));
+            appConfigPage1.setFontSize(Integer.parseInt(myBT.getAppConf().getFontSize()) - 8);
+            appConfigPage1.setBaudRate(Integer.parseInt(myBT.getAppConf().getBaudRate()));
+            appConfigPage1.setConnectionType(Integer.parseInt(myBT.getAppConf().getConnectionType()));
+            appConfigPage1.setGraphicsLibType(Integer.parseInt(myBT.getAppConf().getGraphicsLibType()));
 
-        if (myBT.getAppConf().getAllowMultipleDrogueMain().equals("true")) {
-            appConfigPage1.setAllowMainDrogue(true);
-        } else {
-            appConfigPage1.setAllowMainDrogue(false);
+            if (myBT.getAppConf().getAllowMultipleDrogueMain().equals("true")) {
+                appConfigPage1.setAllowMainDrogue(true);
+            } else {
+                appConfigPage1.setAllowMainDrogue(false);
+            }
+            if (myBT.getAppConf().getFullUSBSupport().equals("true")) {
+                appConfigPage1.setFullUSBSupport(true);
+            } else {
+                appConfigPage1.setFullUSBSupport(false);
+            }
         }
-        if (myBT.getAppConf().getFullUSBSupport().equals("true")) {
-            appConfigPage1.setFullUSBSupport(true);
-        } else {
-            appConfigPage1.setFullUSBSupport(false);
+        if(appConfigPage2.isViewCreated()) {
+            //config page 2
+            if (myBT.getAppConf().getAltitude_event().equals("true")) {
+                appConfigPage2.setAltitudeEvent(true);
+            } else {
+                appConfigPage2.setAltitudeEvent(false);
+            }
+            if (myBT.getAppConf().getApogee_altitude().equals("true")) {
+                appConfigPage2.setApogeeAltitude(true);
+            } else {
+                appConfigPage2.setApogeeAltitude(false);
+            }
+            if (myBT.getAppConf().getBurnout_event().equals("true")) {
+                appConfigPage2.setBurnoutEvent(true);
+            } else {
+                appConfigPage2.setBurnoutEvent(false);
+            }
+            if (myBT.getAppConf().getMain_altitude().equals("true")) {
+                appConfigPage2.setMainAltitude(true);
+            } else {
+                appConfigPage2.setMainAltitude(false);
+            }
+            if (myBT.getAppConf().getDrogue_event().equals("true")) {
+                appConfigPage2.setDrogueEvent(true);
+            } else {
+                appConfigPage2.setDrogueEvent(false);
+            }
+            if (myBT.getAppConf().getLanding_event().equals("true")) {
+                appConfigPage2.setLandingEvent(true);
+            } else {
+                appConfigPage2.setLandingEvent(false);
+            }
+            if (myBT.getAppConf().getMain_event().equals("true")) {
+                appConfigPage2.setMainEvent(true);
+            } else {
+                appConfigPage2.setMainEvent(false);
+            }
+            if (myBT.getAppConf().getWarning_event().equals("true")) {
+                appConfigPage2.setWarningEvent(true);
+            } else {
+                appConfigPage2.setWarningEvent(false);
+            }
+            if (myBT.getAppConf().getLiftOff_event().equals("true")) {
+                appConfigPage2.setLiftOffEvent(true);
+            } else {
+                appConfigPage2.setLiftOffEvent(false);
+            }
+            appConfigPage2.setTelemetryVoice(Integer.parseInt(myBT.getAppConf().getTelemetryVoice()));
         }
-        //config page 2
-        if (myBT.getAppConf().getAltitude_event().equals("true")) {
-            appConfigPage2.setAltitudeEvent(true);
-        } else {
-            appConfigPage2.setAltitudeEvent(false);
-        }
-        if (myBT.getAppConf().getApogee_altitude().equals("true")) {
-            appConfigPage2.setApogeeAltitude(true);
-        } else {
-            appConfigPage2.setApogeeAltitude(false);
-        }
-        if (myBT.getAppConf().getBurnout_event().equals("true")) {
-            appConfigPage2.setBurnoutEvent(true);
-        } else {
-            appConfigPage2.setBurnoutEvent(false);
-        }
-        if (myBT.getAppConf().getMain_altitude().equals("true")) {
-            appConfigPage2.setMainAltitude(true);
-        } else {
-            appConfigPage2.setMainAltitude(false);
-        }
-        if (myBT.getAppConf().getDrogue_event().equals("true")) {
-            appConfigPage2.setDrogueEvent(true);
-        } else {
-            appConfigPage2.setDrogueEvent(false);
-        }
-        if (myBT.getAppConf().getLanding_event().equals("true")) {
-            appConfigPage2.setLandingEvent(true);
-        } else {
-            appConfigPage2.setLandingEvent(false);
-        }
-        if (myBT.getAppConf().getMain_event().equals("true")) {
-            appConfigPage2.setMainEvent(true);
-        } else {
-            appConfigPage2.setMainEvent(false);
-        }
-        if (myBT.getAppConf().getWarning_event().equals("true")) {
-            appConfigPage2.setWarningEvent(true);
-        } else {
-            appConfigPage2.setWarningEvent(false);
-        }
-        if (myBT.getAppConf().getLiftOff_event().equals("true")) {
-            appConfigPage2.setLiftOffEvent(true);
-        } else {
-            appConfigPage2.setLiftOffEvent(false);
-        }
-        appConfigPage2.setTelemetryVoice(Integer.parseInt(myBT.getAppConf().getTelemetryVoice()));
-
         //config page 3
-        appConfigPage3.setMapColor(Integer.parseInt(myBT.getAppConf().getMapColor()));
-        appConfigPage3.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
-        appConfigPage3.setAllowManualRecording(myBT.getAppConf().getManualRecording());
+        if(appConfigPage3.isViewCreated()) {
+            appConfigPage3.setMapColor(Integer.parseInt(myBT.getAppConf().getMapColor()));
+            appConfigPage3.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
+            appConfigPage3.setAllowManualRecording(myBT.getAppConf().getManualRecording());
+        }
     }
 
 
@@ -359,7 +370,7 @@ public class AppConfigActivity extends AppCompatActivity {
         private Spinner spConnectionType, spGraphicsLibType;
         private CheckBox cbAllowMainDrogue, cbFullUSBSupport;
         private ConsoleApplication BT;
-
+        private boolean ViewCreated = false;
 
         public Tab1Fragment(ConsoleApplication lBT) {
             BT = lBT;
@@ -448,10 +459,14 @@ public class AppConfigActivity extends AppCompatActivity {
                 return "false";
         }
 
+
+
         public void setFullUSBSupport(boolean value) {
             cbFullUSBSupport.setChecked(value);
         }
-
+        public boolean isViewCreated() {
+            return ViewCreated;
+        }
 
         @Nullable
         @Override
@@ -531,7 +546,7 @@ public class AppConfigActivity extends AppCompatActivity {
             } else {
                 cbFullUSBSupport.setChecked(false);
             }
-
+            ViewCreated = true;
             return view;
         }
 
@@ -546,6 +561,7 @@ public class AppConfigActivity extends AppCompatActivity {
         private TextToSpeech mTTS;
         private Spinner spTelemetryVoice;
         private int nbrVoices = 0;
+        boolean ViewCreated = false;
 
         public Tab2Fragment(ConsoleApplication lBT) {
             BT = lBT;
@@ -659,7 +675,7 @@ public class AppConfigActivity extends AppCompatActivity {
                 spTelemetryVoice.setSelection(Integer.parseInt(BT.getAppConf().getTelemetryVoice()));
         }
 
-        ;
+        //;
 
         public void setTelemetryVoice(int value) {
             if (value < nbrVoices)
@@ -670,6 +686,9 @@ public class AppConfigActivity extends AppCompatActivity {
             return (int) this.spTelemetryVoice.getSelectedItemId();
         }
 
+        public boolean isViewCreated() {
+            return ViewCreated;
+        }
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Nullable
         @Override
@@ -814,6 +833,7 @@ public class AppConfigActivity extends AppCompatActivity {
 
                 }
             });
+            ViewCreated = true;
             return view;
         }
 
@@ -825,7 +845,7 @@ public class AppConfigActivity extends AppCompatActivity {
     public static class Tab3Fragment extends Fragment {
         private Spinner spMapColor, spMapType;
         private CheckBox cbAllowManualRecording;
-
+        private boolean ViewCreated = false;
         private ConsoleApplication BT;
 
 
@@ -856,6 +876,9 @@ public class AppConfigActivity extends AppCompatActivity {
         public void setAllowManualRecording(boolean value) {
             cbAllowManualRecording.setChecked(value);
         }
+        public boolean isViewCreated() {
+            return ViewCreated;
+        }
 
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -876,7 +899,7 @@ public class AppConfigActivity extends AppCompatActivity {
             // allow manual recording
             cbAllowManualRecording = (CheckBox) view.findViewById(R.id.checkBoxAllowManualRecording);
             cbAllowManualRecording.setChecked(BT.getAppConf().getManualRecording());
-
+            ViewCreated = true;
             return view;
         }
     }
