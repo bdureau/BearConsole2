@@ -84,6 +84,7 @@ public class MainScreenActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
                 boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
+
                 if (granted) {
 
                     if (myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRateValue()))) {
@@ -320,7 +321,13 @@ public class MainScreenActivity extends AppCompatActivity {
                                 device = entry.getValue();
                                 int deviceVID = device.getVendorId();
 
-                                PendingIntent pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+                                PendingIntent pi;
+                                if(android.os.Build.VERSION.SDK_INT >= 31) {
+                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0, new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
+                                } else {
+                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+                                }
+                                //PendingIntent pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0, new Intent(ACTION_USB_PERMISSION), 0);
                                 usbManager.requestPermission(device, pi);
                                 keep = false;
 

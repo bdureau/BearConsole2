@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation files('libs/usbserial.jar')
+    //implementation files('libs/usbserial-6.1.0.aar')
     implementation files('libs/physicaloid.aar')
     implementation files('libs/viewtooltip.aar')
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
@@ -55,6 +56,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     // required to avoid crash on Android 12 API 31
-    implementation 'androidx.work:work-runtime-ktx:2.7.1'
+    //implementation 'androidx.work:work-runtime-ktx:2.7.1'
+    implementation 'androidx.work:work-runtime:2.7.1'
 }
 

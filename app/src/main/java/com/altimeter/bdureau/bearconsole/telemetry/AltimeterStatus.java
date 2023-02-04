@@ -261,7 +261,7 @@ public class AltimeterStatus extends AppCompatActivity {
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.d(TAG, "btnDismiss()");
                 if (recording) {
                     new AlertDialog.Builder(v.getContext())
                             .setTitle("Confirm Exit Recording")
@@ -269,12 +269,29 @@ public class AltimeterStatus extends AppCompatActivity {
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    if (status) {
+                                    Log.d(TAG, "about to Stop recording !!!!");
+                                    /*if (status) {
                                         status = false;
                                         myBT.write("h;\n".toString());
                                         myBT.setExit(true);
                                         myBT.clearInput();
                                         myBT.flush();
+                                    }*/
+                                    //turn off telemetry
+                                    /*myBT.flush();
+                                    myBT.clearInput();
+                                    myBT.write("y0;\n".toString());*/
+
+                                    //exit recording if running
+                                    if (recording) {
+                                        recording = false;
+                                        myBT.flush();
+                                        myBT.clearInput();
+                                        myBT.write("w0;\n".toString());
+                                        myBT.clearInput();
+                                        myBT.flush();
+                                        Log.d(TAG, "Stopped recording !!!!");
+                                        msg("Stopped recording");
                                     }
                                     finish();      //exit the  activity
                                 }
@@ -289,6 +306,10 @@ public class AltimeterStatus extends AppCompatActivity {
                         myBT.clearInput();
                         myBT.flush();
                     }
+                    //turn off telemetry
+                    myBT.flush();
+                    myBT.clearInput();
+                    myBT.write("y0;\n".toString());
                     finish();      //exit the  activity
                 }
             }
@@ -333,6 +354,8 @@ public class AltimeterStatus extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Log.d(TAG, "onBackPressed()");
+        //super.onBackPressed();
         if (recording) {
             new AlertDialog.Builder(this)
                     .setTitle("Confirm Exit Recording")
@@ -340,12 +363,32 @@ public class AltimeterStatus extends AppCompatActivity {
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
+                            //turn off telemetry
+                           /* myBT.flush();
+                            myBT.clearInput();
+                            myBT.write("y0;\n".toString());*/
+
+                            //exit recording if running
+                            if (recording) {
+                                recording = false;
+                                myBT.flush();
+                                myBT.clearInput();
+                                myBT.write("w0;\n".toString());
+                                myBT.clearInput();
+                                myBT.flush();
+                                msg("Stopped recording");
+                            }
                             finish();
                         }
                     })
                     .setNegativeButton("No", null)
                     .show();
         } else {
+            //turn off telemetry
+            myBT.flush();
+            myBT.clearInput();
+            myBT.write("y0;\n".toString());
             finish();
         }
     }
@@ -353,7 +396,6 @@ public class AltimeterStatus extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         Log.d(TAG, "onDestroy()");
         //switch off output
         if (statusPage1.switchOutput1.isChecked()) {
