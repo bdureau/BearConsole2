@@ -18,6 +18,13 @@
         android:id="@+id/butBack"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="start|bottom"
+        app:icon="@drawable/back_arrow32x32" />
+    <Button
+        android:id="@+id/butShareMap"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_gravity="end|bottom"
-        app:icon="@drawable/ok_30x30_trans" />
+        app:icon="@drawable/share_30x33_trans" />
 </RelativeLayout>
