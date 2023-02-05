@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -29,6 +30,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.text.Html;
@@ -426,7 +428,6 @@ public class TelemetryMp extends AppCompatActivity {
             if (val != 0) {
                 rocketLatitude = Double.parseDouble(value) / 100000;
                 myBT.getAppConf().setRocketLatitude("" + rocketLatitude);
-
             }
         }
     }
@@ -460,6 +461,31 @@ public class TelemetryMp extends AppCompatActivity {
             startService();
         }
 
+        LocationManager lm = (LocationManager)this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+//this.getBaseContext()
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex) {}
+
+        if(!gps_enabled && !network_enabled) {
+            // notify user
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.gps_network_not_enabled)
+                    .setPositiveButton(R.string.open_location_settings, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton(R.string.Cancel,null)
+                    .show();
+        }
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();
 
@@ -975,6 +1001,7 @@ public class TelemetryMp extends AppCompatActivity {
         private static final String TAG = "Tab2TelemetryFragment";
         private boolean ViewCreated = false;
         private TextView txtViewLatitude, txtViewLongitude, txtViewLatitudeValue, txtViewLongitudeValue;
+        private TextView txtViewTelLatitudeValue, txtViewTelLongitudeValue;
         private TextView txtViewSatellitesVal, txtViewHdopVal, txtViewGPSAltitudeVal, txtViewGPSSpeedVal;
         private TextView txtViewLocationAgeValue, txtViewTimeSatValue;
         ConsoleApplication lBT;
@@ -1023,11 +1050,22 @@ public class TelemetryMp extends AppCompatActivity {
                 this.txtViewTimeSatValue.setText(value);
         }
 
+        public void setTelLatitudeValue(String value) {
+            if (ViewCreated)
+                this.txtViewTelLatitudeValue.setText(value);
+        }
+
+        public void setTelLongitudeValue(String value) {
+            if (ViewCreated)
+                this.txtViewTelLongitudeValue.setText(value);
+        }
+
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.activity_altimeter_status_tab2, container, false);
 
+            // GPS altimeter data
             txtViewLatitude = (TextView) view.findViewById(R.id.txtViewLatitude);
             txtViewLongitude = (TextView) view.findViewById(R.id.txtViewLongitude);
             txtViewLatitudeValue = (TextView) view.findViewById(R.id.txtViewLatitudeValue);
@@ -1038,6 +1076,10 @@ public class TelemetryMp extends AppCompatActivity {
             txtViewGPSSpeedVal = (TextView) view.findViewById(R.id.txtViewGPSSpeedVal);
             txtViewLocationAgeValue = (TextView) view.findViewById(R.id.txtViewLocationAgeValue);
             txtViewTimeSatValue = (TextView) view.findViewById(R.id.txtViewTimeSatValue);
+
+            // GPS tel data
+            txtViewTelLatitudeValue = (TextView) view.findViewById(R.id.txtViewTelLatitudeValue);
+            txtViewTelLongitudeValue = (TextView) view.findViewById(R.id.txtViewTelLongitudeValue);
 
             ViewCreated = true;
             return view;
@@ -1140,6 +1182,10 @@ public class TelemetryMp extends AppCompatActivity {
                 double longitude = intent.getDoubleExtra("longitude", 0f);
                 Log.d("coordinate", "latitude is:" + latitude + " longitude is: " + longitude);
 
+                if (statusPage2 != null) {
+                    statusPage2.setTelLatitudeValue(latitude + "");
+                    statusPage2.setTelLongitudeValue(longitude + "");
+                }
                 if (statusPage3.getlMap() != null) {
                     LatLng latLng = new LatLng(latitude, longitude);
                     if (marker != null) {
@@ -1230,8 +1276,6 @@ public class TelemetryMp extends AppCompatActivity {
 
         rocketTelemetry = new Thread(r);
         rocketTelemetry.start();
-
-
     }
 
     public void onClickStopTelemetry(View view) {

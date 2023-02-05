@@ -443,4 +443,9 @@
     <string name="lora_module_updating_msg6">Actualizando clave</string>
     <string name="lora_module_connecting_msg">Intentando conectarse al módulo Lora</string>
 
+    <!-- GPS -->
+    <string name="gps_network_not_enabled">Do you want to enable your GPS?</string>
+    <string name="open_location_settings">OK</string>
+    <string name="Cancel">Cancel</string>
+
 </resources>

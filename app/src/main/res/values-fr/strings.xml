@@ -456,4 +456,10 @@
     <string name="lora_module_updating_msg5">updating RSSI Byte, trans Mode, LBT and WOR Cycle</string>
     <string name="lora_module_updating_msg6">mise à jour key</string>
     <string name="lora_module_connecting_msg">Tentative de connexion au module Lora</string>
+
+    <!-- GPS -->
+    <string name="gps_network_not_enabled">Voulez vous authoriser l\'utilisation de votre GPS?</string>
+    <string name="open_location_settings">OK</string>
+    <string name="Cancel">Annuler</string>
+
 </resources>

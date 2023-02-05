@@ -143,4 +143,36 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewLocationAge"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tel Latitude"
+        android:id="@+id/txtViewTelLatitude"
+        android:layout_below="@+id/txtViewTimeSat"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewTelLatitudeValue"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewTimeSat"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tel Latitude"
+        android:id="@+id/txtViewTelLongitude"
+        android:layout_below="@+id/txtViewTelLatitude"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewTelLongitudeValue"
+        android:text="0"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewTelLatitude"/>
+
 </RelativeLayout>
