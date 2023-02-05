@@ -13,36 +13,27 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -52,39 +43,12 @@ import java.util.Locale;
 
 import android.content.Intent;
 
-import android.graphics.Typeface;
-
-import android.os.Bundle;
-
-import org.afree.chart.ChartFactory;
-import org.afree.chart.AFreeChart;
-import org.afree.chart.axis.NumberAxis;
-import org.afree.chart.axis.ValueAxis;
-import org.afree.chart.plot.PlotOrientation;
-import org.afree.chart.plot.XYPlot;
-
-import org.afree.data.category.DefaultCategoryDataset;
-import org.afree.data.xy.XYSeriesCollection;
-
-import org.afree.graphics.SolidColor;
-import org.afree.graphics.geom.Font;
-
-
-import android.graphics.Color;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.R;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -102,16 +66,18 @@ public class TelemetryMp extends AppCompatActivity {
     private LinearLayout linearDots;
     public LocationBroadCastReceiver receiver = null;
     SectionsStatusPageAdapter adapter;
-    Tab0TelemetryFragment statusPage0 = null;
-    Tab1TelemetryFragment statusPage1 = null;
-    Tab2TelemetryFragment statusPage2 = null;
-    Tab3TelemetryFragment statusPage3 = null;
+    AltimeterMpFlightFragment statusPage0 = null;
+    AltimeterInfoFragment statusPage1 = null;
+    GPSStatusFragment statusPage2 = null;
+    GPSMapStatusFragment statusPage3 = null;
 
     Marker marker, markerDest;
     Polyline polyline1 = null;
     public Double rocketLatitude = 48.8698;
     public Double rocketLongitude = 2.2190;
     LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
+
+    ArrayList<Entry> yValues;
 
     private ConsoleApplication myBT;
     Thread rocketTelemetry;
@@ -121,7 +87,7 @@ public class TelemetryMp extends AppCompatActivity {
     private int lastPlotTime = 0;
     private int lastSpeakTime = 1000;
     private double FEET_IN_METER = 1;
-    //ArrayList<Entry> yValues;
+
     int altitudeTime = 0;
 
     boolean telemetry = true;
@@ -142,16 +108,19 @@ public class TelemetryMp extends AppCompatActivity {
                     // Value 1 contain the current altitude
                     if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
                         if (statusPage0.isViewCreated())
-                            if (statusPage0.cbLiftOff.isChecked() && !statusPage0.cbLanded.isChecked()) {
+                            //if (statusPage0.cbLiftOff.isChecked() && !statusPage0.cbLanded.isChecked()) {
+                            if (statusPage0.isLiftOffChecked() && !statusPage0.isLandedChecked()) {
                                 int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
-                                statusPage0.txtCurrentAltitude.setText(String.valueOf(altitude));
-                                statusPage0.yValues.add(new Entry(altitudeTime, altitude));
+                                //statusPage0.txtCurrentAltitude.setText(String.valueOf(altitude));
+                                statusPage0.setCurrentAltitude(altitude+"");
+                                //statusPage0.yValues.add(new Entry(altitudeTime, altitude));
+                                yValues.add(new Entry(altitudeTime, altitude));
 
                                 //plot every seconde
                                 if ((altitudeTime - lastPlotTime) > 1000) {
                                     lastPlotTime = altitudeTime;
 
-                                    LineDataSet set1 = new LineDataSet(statusPage0.yValues, "Altitude/Time");
+                                    /*LineDataSet set1 = new LineDataSet(statusPage0.yValues, "Altitude/Time");
 
                                     set1.setDrawValues(false);
                                     set1.setDrawCircles(false);
@@ -162,7 +131,8 @@ public class TelemetryMp extends AppCompatActivity {
 
                                     statusPage0.data = new LineData(statusPage0.dataSets);
                                     statusPage0.mChart.clear();
-                                    statusPage0.mChart.setData(statusPage0.data);
+                                    statusPage0.mChart.setData(statusPage0.data);*/
+                                    statusPage0.plotYvalues(yValues);
                                 }
                                 // Tell altitude every 5 secondes
                                 if ((altitudeTime - lastSpeakTime) > 5000 && liftOffSaid) {
@@ -177,15 +147,20 @@ public class TelemetryMp extends AppCompatActivity {
                 case 2:
                     // Value 2 lift off yes/no
                     if (statusPage0.isViewCreated())
-                        if (!statusPage0.cbLiftOff.isChecked())
+                        //if (!statusPage0.cbLiftOff.isChecked())
+                        if (!statusPage0.isLiftOffChecked())
                             if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
                                 if (Integer.parseInt((String) msg.obj) > 0 || LiftOffTime > 0) {
-                                    statusPage0.cbLiftOff.setEnabled(true);
-                                    statusPage0.cbLiftOff.setChecked(true);
-                                    statusPage0.cbLiftOff.setEnabled(false);
+                                    //statusPage0.cbLiftOff.setEnabled(true);
+                                    statusPage0.setLiftOffEnabled(true);
+                                    //statusPage0.cbLiftOff.setChecked(true);
+                                    statusPage0.setLiftOffChecked(true);
+                                    //statusPage0.cbLiftOff.setEnabled(false);
+                                    statusPage0.setLiftOffEnabled(false);
                                     if (LiftOffTime == 0)
                                         LiftOffTime = System.currentTimeMillis();
-                                    statusPage0.txtLiftOffTime.setText("0 ms");
+                                    //statusPage0.txtLiftOffTime.setText("0 ms");
+                                    statusPage0.setLiftOffTime("0 ms");
                                     if (!liftOffSaid) {
                                         if (myBT.getAppConf().getLiftOff_event().equals("true")) {
                                             mTTS.speak(getResources().getString(R.string.lift_off), TextToSpeech.QUEUE_FLUSH, null);
@@ -198,13 +173,18 @@ public class TelemetryMp extends AppCompatActivity {
                 case 3:
                     // Value 3 apogee fired yes/no
                     if (statusPage0.isViewCreated())
-                        if (!statusPage0.cbApogee.isChecked())
+                        //if (!statusPage0.cbApogee.isChecked())
+                        if (!statusPage0.isApogeeChecked())
                             if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
                                 if (Integer.parseInt((String) msg.obj) > 0) {
-                                    statusPage0.cbApogee.setEnabled(true);
-                                    statusPage0.cbApogee.setChecked(true);
-                                    statusPage0.cbApogee.setEnabled(false);
-                                    statusPage0.txtMaxAltitudeTime.setText((int) (System.currentTimeMillis() - LiftOffTime) + " ms");
+                                    //statusPage0.cbApogee.setEnabled(true);
+                                    statusPage0.setApogeeEnable(true);
+                                    //statusPage0.cbApogee.setChecked(true);
+                                    statusPage0.setApogeeChecked(true);
+                                    //statusPage0.cbApogee.setEnabled(false);
+                                    statusPage0.setApogeeEnable(false);
+                                    //statusPage0.txtMaxAltitudeTime.setText((int) (System.currentTimeMillis() - LiftOffTime) + " ms");
+                                    statusPage0.setMaxAltitudeTime((int) (System.currentTimeMillis() - LiftOffTime) + " ms");
                                 }
 
                     break;
@@ -214,8 +194,10 @@ public class TelemetryMp extends AppCompatActivity {
                         if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
                             int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
 
-                            if (statusPage0.cbApogee.isChecked()) {
-                                statusPage0.txtMaxAltitude.setText(String.valueOf(altitude));
+                            //if (statusPage0.cbApogee.isChecked()) {
+                            if (statusPage0.isApogeeChecked()) {
+                                //statusPage0.txtMaxAltitude.setText(String.valueOf(altitude));
+                                statusPage0.setMaxAltitude(altitude +"");
                                 if (!apogeeSaid) {
                                     //first check if say it is enabled
                                     if (myBT.getAppConf().getApogee_altitude().equals("true")) {
@@ -229,13 +211,18 @@ public class TelemetryMp extends AppCompatActivity {
                 case 5:
                     //value 5 main fired yes/no
                     if (statusPage0.isViewCreated())
-                        if (!statusPage0.cbMainChute.isChecked())
+                        //if (!statusPage0.cbMainChute.isChecked())
+                        if (!statusPage0.isMainChuteChecked())
                             if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
                                 if (Integer.parseInt((String) msg.obj) > 0) {
-                                    statusPage0.txtMainChuteTime.setText((System.currentTimeMillis() - LiftOffTime) + " ms");
-                                    statusPage0.cbMainChute.setEnabled(true);
-                                    statusPage0.cbMainChute.setChecked(true);
-                                    statusPage0.cbMainChute.setEnabled(false);
+                                    //statusPage0.txtMainChuteTime.setText((System.currentTimeMillis() - LiftOffTime) + " ms");
+                                    statusPage0.setMainChuteTime((System.currentTimeMillis() - LiftOffTime) + " ms");
+                                    //statusPage0.cbMainChute.setEnabled(true);
+                                    statusPage0.setMainChuteEnabled(true);
+                                    //statusPage0.cbMainChute.setChecked(true);
+                                    statusPage0.setMainChuteChecked(true);
+                                    //statusPage0.cbMainChute.setEnabled(false);
+                                    statusPage0.setMainChuteEnabled(false);
                                 }
 
                     break;
@@ -243,10 +230,11 @@ public class TelemetryMp extends AppCompatActivity {
                     // value 6 main altitude
                     if (statusPage0.isViewCreated())
                         if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
-                            if (statusPage0.cbMainChute.isChecked()) {
+                            //if (statusPage0.cbMainChute.isChecked()) {
+                            if (statusPage0.isMainChuteChecked()) {
                                 int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
-                                statusPage0.txtMainAltitude.setText(String.valueOf(altitude));
-
+                                //statusPage0.txtMainAltitude.setText(String.valueOf(altitude));
+                                statusPage0.setMainAltitude(String.valueOf(altitude));
                                 if (!mainSaid) {
                                     if (myBT.getAppConf().getMain_event().equals("true")) {
                                         mTTS.speak(getResources().getString(R.string.main_deployed) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
@@ -260,14 +248,20 @@ public class TelemetryMp extends AppCompatActivity {
                 case 7:
                     //have we landed
                     if (statusPage0.isViewCreated())
-                        if (!statusPage0.cbLanded.isChecked())
+                        //if (!statusPage0.cbLanded.isChecked())
+                        if (!statusPage0.isLandedChecked())
                             if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
                                 if (Integer.parseInt((String) msg.obj) > 0) {
-                                    statusPage0.cbLanded.setEnabled(true);
-                                    statusPage0.cbLanded.setChecked(true);
-                                    statusPage0.cbLanded.setEnabled(false);
-                                    statusPage0.txtLandedAltitude.setText(statusPage0.txtCurrentAltitude.getText());
-                                    statusPage0.txtLandedTime.setText((System.currentTimeMillis() - LiftOffTime) + " ms");
+                                    //statusPage0.cbLanded.setEnabled(true);
+                                    statusPage0.setLandedEnabled(true);
+                                    //statusPage0.cbLanded.setChecked(true);
+                                    statusPage0.setLandedChecked(true);
+                                    //statusPage0.cbLanded.setEnabled(false);
+                                    statusPage0.setLandedEnabled(false);
+                                    //statusPage0.txtLandedAltitude.setText(statusPage0.txtCurrentAltitude.getText());
+                                    statusPage0.setLandedAltitude(statusPage0.getLandedAltitude());
+                                    //statusPage0.txtLandedTime.setText((System.currentTimeMillis() - LiftOffTime) + " ms");
+                                    statusPage0.setLandedTime((System.currentTimeMillis() - LiftOffTime) + " ms");
                                     if (!landedSaid) {
                                         if (myBT.getAppConf().getLanding_event().equals("true")) {
 
@@ -325,11 +319,6 @@ public class TelemetryMp extends AppCompatActivity {
                     //Value 16 contains the number of flight
                     statusPage1.setNbrOfFlight((String) msg.obj);
                     break;
-                /*case 18:
-                    //Value 18 contains the latitude
-                    Log.d("status", "latitude");
-                    setLatitudeValue((String) msg.obj );
-                    break;*/
                 case 18:
                     //Value 18 contains the latitude
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
@@ -338,13 +327,10 @@ public class TelemetryMp extends AppCompatActivity {
                             double latitudeVal = Double.parseDouble(latitude) / 100000;
                             statusPage2.setLatitudeValue("" + latitudeVal);
                             setLatitudeValue(latitude);
+                            rocketLatitude = latitudeVal;
                         }
                     }
                     break;
-               /* case 19:
-                    //Value 19 contains the longitude
-                    setLongitudeValue((String) msg.obj );
-                    break;*/
                 case 19:
                     //Value 19 contains the longitude
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
@@ -353,6 +339,7 @@ public class TelemetryMp extends AppCompatActivity {
                             double longitudeVal = Double.parseDouble(longitude) / 100000;
                             statusPage2.setLongitudeValue("" + longitudeVal);
                             setLongitudeValue(longitude);
+                            rocketLongitude = longitudeVal;
                         }
                     }
                     break;
@@ -449,6 +436,7 @@ public class TelemetryMp extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telemetry_mp);
+        yValues = new ArrayList<>();
 
         receiver = new LocationBroadCastReceiver();
         if (Build.VERSION.SDK_INT >= 23) {
@@ -670,10 +658,11 @@ public class TelemetryMp extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsStatusPageAdapter(getSupportFragmentManager());
-        statusPage0 = new Tab0TelemetryFragment(myBT);
-        statusPage1 = new Tab1TelemetryFragment(myBT);
-        statusPage2 = new Tab2TelemetryFragment(myBT);
-        statusPage3 = new Tab3TelemetryFragment(myBT);
+        statusPage0 = new AltimeterMpFlightFragment(myBT);
+        //statusPage1 = new Tab1TelemetryFragment(myBT);
+        statusPage1 = new AltimeterInfoFragment(myBT);
+        statusPage2 = new GPSStatusFragment(myBT);
+        statusPage3 = new GPSMapStatusFragment(myBT, viewPager);
 
         adapter.addFragment(statusPage0, "TAB0");
         adapter.addFragment(statusPage1, "TAB1");
@@ -753,425 +742,7 @@ public class TelemetryMp extends AppCompatActivity {
         }
     }
 
-    public static class Tab0TelemetryFragment extends Fragment {
-        private boolean ViewCreated = false;
-        ConsoleApplication lBT;
-        private CheckBox cbLiftOff, cbApogee, cbMainChute, cbLanded;
-        private TextView txtCurrentAltitude, txtMaxAltitude, txtMainAltitude, txtLandedAltitude, txtLiftOffAltitude;
-        private TextView txtLandedTime, txtMaxSpeedTime, txtMaxAltitudeTime, txtLiftOffTime, txtMainChuteTime;
-        private LineChart mChart;
 
-        LineData data;
-        ArrayList<ILineDataSet> dataSets;
-        ArrayList<Entry> yValues;
-
-        public Tab0TelemetryFragment(ConsoleApplication bt) {
-            lBT = bt;
-        }
-
-        public boolean isViewCreated() {
-            return ViewCreated;
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_telemetry_mp_tab0, container, false);
-
-            cbLiftOff = (CheckBox) view.findViewById(R.id.checkBoxLiftoff);
-            cbLiftOff.setEnabled(false);
-            cbApogee = (CheckBox) view.findViewById(R.id.checkBoxApogee);
-            cbApogee.setEnabled(false);
-            cbMainChute = (CheckBox) view.findViewById(R.id.checkBoxMainchute);
-            cbMainChute.setEnabled(false);
-            cbLanded = (CheckBox) view.findViewById(R.id.checkBoxLanded);
-            cbLanded.setEnabled(false);
-
-            txtCurrentAltitude = (TextView) view.findViewById(R.id.textViewCurrentAltitude);
-            txtMaxAltitude = (TextView) view.findViewById(R.id.textViewApogeeAltitude);
-
-            txtLandedTime = (TextView) view.findViewById(R.id.textViewLandedTime);
-
-            txtMaxSpeedTime = (TextView) view.findViewById(R.id.textViewMaxSpeedTime);
-            txtMaxAltitudeTime = (TextView) view.findViewById(R.id.textViewApogeeTime);
-            txtLiftOffTime = (TextView) view.findViewById(R.id.textViewLiftoffTime);
-            txtMainChuteTime = (TextView) view.findViewById(R.id.textViewMainChuteTime);
-            txtMainAltitude = (TextView) view.findViewById(R.id.textViewMainChuteAltitude);
-            txtLandedAltitude = (TextView) view.findViewById(R.id.textViewLandedAltitude);
-            txtLiftOffAltitude = (TextView) view.findViewById(R.id.textViewLiftoffAltitude);
-
-            // Read the application config
-            lBT.getAppConf().ReadConfig();
-
-            int graphBackColor;//= Color.WHITE;
-            graphBackColor = lBT.getAppConf().ConvertColor(Integer.parseInt(lBT.getAppConf().getGraphBackColor()));
-
-            int fontSize;
-            fontSize = lBT.getAppConf().ConvertFont(Integer.parseInt(lBT.getAppConf().getFontSize()));
-
-            int axisColor;//=Color.BLACK;
-            axisColor = lBT.getAppConf().ConvertColor(Integer.parseInt(lBT.getAppConf().getGraphColor()));
-
-            int labelColor = Color.BLACK;
-
-            int nbrColor = Color.BLACK;
-            String myUnits = "";
-
-            yValues = new ArrayList<>();
-            yValues.add(new Entry(0, 0));
-            //yValues.add(new Entry(1,0));
-            //altitude
-            LineDataSet set1 = new LineDataSet(yValues, getResources().getString(R.string.altitude));
-            mChart = (LineChart) view.findViewById(R.id.telemetryChartView);
-
-            mChart.setDragEnabled(true);
-            mChart.setScaleEnabled(true);
-            mChart.setScaleMinima(0, 0);
-            dataSets = new ArrayList<>();
-            dataSets.add(set1);
-
-            LineData data = new LineData(dataSets);
-            mChart.setData(data);
-            Description desc = new Description();
-            desc.setText(getResources().getString(R.string.tel_telemetry));
-            mChart.setDescription(desc);
-
-            ViewCreated = true;
-            return view;
-        }
-    }
-
-    public static class Tab1TelemetryFragment extends Fragment {
-        private static final String TAG = "Tab1TelemetryFragment";
-        private boolean ViewCreated = false;
-        private TextView txtStatusAltiName, txtStatusAltiNameValue;
-        private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
-        private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage, txtNbrOfFlight;
-        private TextView txtViewOutput3, txtViewOutput4, txtViewBatteryVoltage, txtViewEEprom, txtViewFlight;
-        ConsoleApplication lBT;
-
-        public Tab1TelemetryFragment(ConsoleApplication bt) {
-            lBT = bt;
-        }
-
-        public void setOutput1Status(String value) {
-            if (ViewCreated)
-                this.txtViewOutput1Status.setText(outputStatus(value));
-        }
-
-        public void setOutput2Status(String value) {
-            if (ViewCreated)
-                this.txtViewOutput2Status.setText(outputStatus(value));
-        }
-
-        public void setOutput3Status(String value) {
-            if (ViewCreated)
-                this.txtViewOutput3Status.setText(outputStatus(value));
-        }
-
-        public void setOutput4Status(String value) {
-            if (ViewCreated)
-                this.txtViewOutput4Status.setText(outputStatus(value));
-        }
-
-        public void setAltitude(String value) {
-            if (ViewCreated)
-                this.txtViewAltitude.setText(value);
-        }
-
-        public void setVoltage(String value) {
-            if (ViewCreated)
-                this.txtViewVoltage.setText(value);
-        }
-
-        public void setTemperature(String value) {
-            if (ViewCreated)
-                this.txtTemperature.setText(value);
-        }
-
-        public void setEEpromUsage(String value) {
-            if (ViewCreated)
-                this.txtEEpromUsage.setText(value);
-        }
-
-        public void setNbrOfFlight(String value) {
-            if (ViewCreated)
-                this.txtNbrOfFlight.setText(value);
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_telemetry_mp_tab1, container, false);
-
-            txtStatusAltiName = (TextView) view.findViewById(R.id.txtStatusAltiName);
-            txtStatusAltiNameValue = (TextView) view.findViewById(R.id.txtStatusAltiNameValue);
-            txtViewOutput1Status = (TextView) view.findViewById(R.id.txtViewOutput1Status);
-            txtViewOutput2Status = (TextView) view.findViewById(R.id.txtViewOutput2Status);
-            txtViewOutput3Status = (TextView) view.findViewById(R.id.txtViewOutput3Status);
-            txtViewOutput4Status = (TextView) view.findViewById(R.id.txtViewOutput4Status);
-            txtViewAltitude = (TextView) view.findViewById(R.id.txtViewAltitude);
-            txtViewVoltage = (TextView) view.findViewById(R.id.txtViewVoltage);
-            txtViewLink = (TextView) view.findViewById(R.id.txtViewLink);
-            txtViewOutput3 = (TextView) view.findViewById(R.id.txtViewOutput3);
-            txtViewOutput4 = (TextView) view.findViewById(R.id.txtViewOutput4);
-
-            txtViewBatteryVoltage = (TextView) view.findViewById(R.id.txtViewBatteryVoltage);
-            txtTemperature = (TextView) view.findViewById(R.id.txtViewTemperature);
-            txtEEpromUsage = (TextView) view.findViewById(R.id.txtViewEEpromUsage);
-            txtNbrOfFlight = (TextView) view.findViewById(R.id.txtViewNbrOfFlight);
-            txtViewEEprom = (TextView) view.findViewById(R.id.txtViewEEprom);
-            txtViewFlight = (TextView) view.findViewById(R.id.txtViewFlight);
-
-            txtStatusAltiNameValue.setText(lBT.getAltiConfigData().getAltimeterName());
-            if (lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
-                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")
-                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-                txtViewVoltage.setVisibility(View.VISIBLE);
-                txtViewBatteryVoltage.setVisibility(View.VISIBLE);
-            } else {
-                txtViewVoltage.setVisibility(View.INVISIBLE);
-                txtViewBatteryVoltage.setVisibility(View.INVISIBLE);
-            }
-            if (!lBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
-                txtViewOutput3Status.setVisibility(View.VISIBLE);
-                txtViewOutput3.setVisibility(View.VISIBLE);
-            } else {
-                txtViewOutput3Status.setVisibility(View.INVISIBLE);
-                txtViewOutput3.setVisibility(View.INVISIBLE);
-            }
-
-            if (lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
-                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")
-                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-                txtViewOutput4Status.setVisibility(View.VISIBLE);
-                txtViewOutput4.setVisibility(View.VISIBLE);
-            } else {
-                txtViewOutput4Status.setVisibility(View.INVISIBLE);
-                txtViewOutput4.setVisibility(View.INVISIBLE);
-            }
-            //hide eeprom
-            if (lBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")
-                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-                txtViewEEprom.setVisibility(View.INVISIBLE);
-                txtViewFlight.setVisibility(View.INVISIBLE);
-                txtEEpromUsage.setVisibility(View.INVISIBLE);
-                txtNbrOfFlight.setVisibility(View.INVISIBLE);
-            } else {
-                txtViewEEprom.setVisibility(View.VISIBLE);
-                txtViewFlight.setVisibility(View.VISIBLE);
-                txtEEpromUsage.setVisibility(View.VISIBLE);
-                txtNbrOfFlight.setVisibility(View.VISIBLE);
-            }
-
-            txtViewLink.setText(lBT.getConnectionType());
-
-            ViewCreated = true;
-            return view;
-        }
-
-        @Override
-        public void onDestroyView() {
-            super.onDestroyView();
-            ViewCreated = false;
-        }
-
-        public boolean isViewCreated() {
-            return ViewCreated;
-        }
-
-        private String outputStatus(String msg) {
-            String res = "";
-            switch (msg) {
-                case "0":
-                    res = getResources().getString(R.string.no_continuity);
-                    break;
-                case "1":
-                    res = this.getContext().getResources().getString(R.string.continuity);
-                    break;
-                case "-1":
-                    res = getResources().getString(R.string.disabled);
-                    break;
-            }
-            return res;
-        }
-    }
-
-    public static class Tab2TelemetryFragment extends Fragment {
-        private static final String TAG = "Tab2TelemetryFragment";
-        private boolean ViewCreated = false;
-        private TextView txtViewLatitude, txtViewLongitude, txtViewLatitudeValue, txtViewLongitudeValue;
-        private TextView txtViewTelLatitudeValue, txtViewTelLongitudeValue;
-        private TextView txtViewSatellitesVal, txtViewHdopVal, txtViewGPSAltitudeVal, txtViewGPSSpeedVal;
-        private TextView txtViewLocationAgeValue, txtViewTimeSatValue;
-        ConsoleApplication lBT;
-
-        public Tab2TelemetryFragment(ConsoleApplication bt) {
-            lBT = bt;
-        }
-
-        public void setLatitudeValue(String value) {
-            if (ViewCreated)
-                this.txtViewLatitudeValue.setText(value);
-        }
-
-        public void setLongitudeValue(String value) {
-            if (ViewCreated)
-                this.txtViewLongitudeValue.setText(value);
-        }
-
-        public void setSatellitesVal(String value) {
-            if (ViewCreated)
-                this.txtViewSatellitesVal.setText(value);
-        }
-
-        public void setHdopVal(String value) {
-            if (ViewCreated)
-                this.txtViewHdopVal.setText(value);
-        }
-
-        public void setGPSAltitudeVal(String value) {
-            if (ViewCreated)
-                this.txtViewGPSAltitudeVal.setText(value);
-        }
-
-        public void setGPSSpeedVal(String value) {
-            if (ViewCreated)
-                this.txtViewGPSSpeedVal.setText(value);
-        }
-
-        public void setLocationAgeValue(String value) {
-            if (ViewCreated)
-                this.txtViewLocationAgeValue.setText(value);
-        }
-
-        public void setTimeSatValue(String value) {
-            if (ViewCreated)
-                this.txtViewTimeSatValue.setText(value);
-        }
-
-        public void setTelLatitudeValue(String value) {
-            if (ViewCreated)
-                this.txtViewTelLatitudeValue.setText(value);
-        }
-
-        public void setTelLongitudeValue(String value) {
-            if (ViewCreated)
-                this.txtViewTelLongitudeValue.setText(value);
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_altimeter_status_tab2, container, false);
-
-            // GPS altimeter data
-            txtViewLatitude = (TextView) view.findViewById(R.id.txtViewLatitude);
-            txtViewLongitude = (TextView) view.findViewById(R.id.txtViewLongitude);
-            txtViewLatitudeValue = (TextView) view.findViewById(R.id.txtViewLatitudeValue);
-            txtViewLongitudeValue = (TextView) view.findViewById(R.id.txtViewLongitudeValue);
-            txtViewSatellitesVal = (TextView) view.findViewById(R.id.txtViewSatellitesVal);
-            txtViewHdopVal = (TextView) view.findViewById(R.id.txtViewHdopVal);
-            txtViewGPSAltitudeVal = (TextView) view.findViewById(R.id.txtViewGPSAltitudeVal);
-            txtViewGPSSpeedVal = (TextView) view.findViewById(R.id.txtViewGPSSpeedVal);
-            txtViewLocationAgeValue = (TextView) view.findViewById(R.id.txtViewLocationAgeValue);
-            txtViewTimeSatValue = (TextView) view.findViewById(R.id.txtViewTimeSatValue);
-
-            // GPS tel data
-            txtViewTelLatitudeValue = (TextView) view.findViewById(R.id.txtViewTelLatitudeValue);
-            txtViewTelLongitudeValue = (TextView) view.findViewById(R.id.txtViewTelLongitudeValue);
-
-            ViewCreated = true;
-            return view;
-        }
-    }
-
-    public static class Tab3TelemetryFragment extends Fragment {
-        private static final String TAG = "Tab3TelemetryFragment";
-        private boolean ViewCreated = false;
-
-        public GoogleMap lMap = null;
-        ConsoleApplication lBT;
-        Button butBack, butShareMap;
-
-        public Tab3TelemetryFragment(ConsoleApplication bt) {
-            lBT = bt;
-        }
-
-        public GoogleMap getlMap() {
-            return lMap;
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_altimeter_status_tab3, container, false);
-
-            butBack = (Button) view.findViewById(R.id.butBack);
-            butShareMap = (Button) view.findViewById(R.id.butShareMap);
-            SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapStatus);
-
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    if (lMap == null) {
-                        lMap = googleMap;
-                        lMap.setMapType(Integer.parseInt(lBT.getAppConf().getMapType()));
-                    }
-                }
-            });
-
-            butBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mViewPager.setCurrentItem(0);
-
-                }
-            });
-
-            butShareMap.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    takeMapScreenshot();
-                }
-            });
-
-            ViewCreated = true;
-            return view;
-        }
-        private void takeMapScreenshot() {
-            GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
-                Bitmap bitmap;
-
-                @Override
-                public void onSnapshotReady(Bitmap snapshot) {
-                    // Callback is called from the main thread, so we can modify the ImageView safely.
-                    bitmap = snapshot;
-                    shareScreenshot(bitmap);
-                }
-            };
-            lMap.snapshot(callback);
-        }
-
-        private void shareScreenshot(Bitmap bitmap) {
-            try {
-                // Save the screenshot to a file
-                String filePath = MediaStore.Images.Media.insertImage(this.getContext().getContentResolver(),
-                        bitmap, "Title", null);
-                Uri fileUri = Uri.parse(filePath);
-                // Share the screenshot
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType("image/*");
-                share.putExtra(Intent.EXTRA_STREAM, fileUri);
-                startActivity(Intent.createChooser(share, "Share Map screenshot"));
-            } catch (Exception e) {
-                //Toast.makeText(this, "Error saving/sharing Map screenshot", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-        }
-    }
 
     public class LocationBroadCastReceiver extends BroadcastReceiver {
         @Override

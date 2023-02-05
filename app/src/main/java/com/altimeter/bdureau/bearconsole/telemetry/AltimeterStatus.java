@@ -1,7 +1,6 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,24 +8,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
@@ -41,14 +35,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
-import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.R;
-import com.altimeter.bdureau.bearconsole.config.Config3DR;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -69,8 +58,8 @@ public class AltimeterStatus extends AppCompatActivity {
     public LocationBroadCastReceiver receiver = null;
     SectionsStatusPageAdapter adapter;
     Tab1StatusFragment statusPage1 = null;
-    Tab2StatusFragment statusPage2 = null;
-    Tab3StatusFragment statusPage3 = null;
+    GPSStatusFragment statusPage2 = null;
+    GPSMapStatusFragment statusPage3 = null;
 
     Marker marker, markerDest;
     Polyline polyline1 = null;
@@ -535,8 +524,10 @@ public class AltimeterStatus extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsStatusPageAdapter(getSupportFragmentManager());
         statusPage1 = new Tab1StatusFragment(myBT);
-        statusPage2 = new Tab2StatusFragment(myBT);
-        statusPage3 = new Tab3StatusFragment(myBT/*, mMap*/);
+        //statusPage2 = new Tab2StatusFragment(myBT);
+        statusPage2 = new GPSStatusFragment(myBT);
+        //statusPage3 = new Tab3StatusFragment(myBT/*, mMap*/);
+        statusPage3 = new GPSMapStatusFragment(myBT, viewPager);
 
         adapter.addFragment(statusPage1, "TAB1");
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
@@ -886,180 +877,6 @@ public class AltimeterStatus extends AppCompatActivity {
                     break;
             }
             return res;
-        }
-    }
-
-    public static class Tab2StatusFragment extends Fragment {
-        private static final String TAG = "Tab2StatusFragment";
-        private boolean ViewCreated = false;
-        private TextView txtViewLatitude, txtViewLongitude, txtViewLatitudeValue, txtViewLongitudeValue;
-        private TextView txtViewTelLatitudeValue, txtViewTelLongitudeValue;
-        private TextView txtViewSatellitesVal, txtViewHdopVal, txtViewGPSAltitudeVal, txtViewGPSSpeedVal;
-        private TextView txtViewLocationAgeValue, txtViewTimeSatValue;
-        ConsoleApplication lBT;
-
-        public Tab2StatusFragment(ConsoleApplication bt) {
-            lBT = bt;
-        }
-
-        public void setLatitudeValue(String value) {
-            if (ViewCreated)
-                this.txtViewLatitudeValue.setText(value);
-        }
-
-        public void setLongitudeValue(String value) {
-            if (ViewCreated)
-                this.txtViewLongitudeValue.setText(value);
-        }
-
-        public void setSatellitesVal(String value) {
-            if (ViewCreated)
-                this.txtViewSatellitesVal.setText(value);
-        }
-
-        public void setHdopVal(String value) {
-            if (ViewCreated)
-                this.txtViewHdopVal.setText(value);
-        }
-
-        public void setGPSAltitudeVal(String value) {
-            if (ViewCreated)
-                this.txtViewGPSAltitudeVal.setText(value);
-        }
-
-        public void setGPSSpeedVal(String value) {
-            if (ViewCreated)
-                this.txtViewGPSSpeedVal.setText(value);
-        }
-
-        public void setLocationAgeValue(String value) {
-            if (ViewCreated)
-                this.txtViewLocationAgeValue.setText(value);
-        }
-
-        public void setTimeSatValue(String value) {
-            if (ViewCreated)
-                this.txtViewTimeSatValue.setText(value);
-        }
-
-        public void setTelLatitudeValue(String value) {
-            if (ViewCreated)
-                this.txtViewTelLatitudeValue.setText(value);
-        }
-
-        public void setTelLongitudeValue(String value) {
-            if (ViewCreated)
-                this.txtViewTelLongitudeValue.setText(value);
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_altimeter_status_tab2, container, false);
-
-            // GPS altimeter data
-            txtViewLatitude = (TextView) view.findViewById(R.id.txtViewLatitude);
-            txtViewLongitude = (TextView) view.findViewById(R.id.txtViewLongitude);
-            txtViewLatitudeValue = (TextView) view.findViewById(R.id.txtViewLatitudeValue);
-            txtViewLongitudeValue = (TextView) view.findViewById(R.id.txtViewLongitudeValue);
-            txtViewSatellitesVal = (TextView) view.findViewById(R.id.txtViewSatellitesVal);
-            txtViewHdopVal = (TextView) view.findViewById(R.id.txtViewHdopVal);
-            txtViewGPSAltitudeVal = (TextView) view.findViewById(R.id.txtViewGPSAltitudeVal);
-            txtViewGPSSpeedVal = (TextView) view.findViewById(R.id.txtViewGPSSpeedVal);
-            txtViewLocationAgeValue = (TextView) view.findViewById(R.id.txtViewLocationAgeValue);
-            txtViewTimeSatValue = (TextView) view.findViewById(R.id.txtViewTimeSatValue);
-
-            // GPS tel data
-            txtViewTelLatitudeValue = (TextView) view.findViewById(R.id.txtViewTelLatitudeValue);
-            txtViewTelLongitudeValue = (TextView) view.findViewById(R.id.txtViewTelLongitudeValue);
-
-            ViewCreated = true;
-            return view;
-        }
-    }
-
-    public static class Tab3StatusFragment extends Fragment {
-        private static final String TAG = "Tab3StatusFragment";
-        private boolean ViewCreated = false;
-
-        public GoogleMap lMap = null;
-        ConsoleApplication lBT;
-        Button butBack, butShareMap;
-
-        public Tab3StatusFragment(ConsoleApplication bt) {
-            lBT = bt;
-        }
-
-        public GoogleMap getlMap() {
-            return lMap;
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_altimeter_status_tab3, container, false);
-
-            butBack = (Button) view.findViewById(R.id.butBack);
-            butShareMap = (Button) view.findViewById(R.id.butShareMap);
-            SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapStatus);
-
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    if (lMap == null) {
-                        lMap = googleMap;
-                        lMap.setMapType(Integer.parseInt(lBT.getAppConf().getMapType()));
-                    }
-                }
-            });
-
-            butBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mViewPager.setCurrentItem(0);
-
-                }
-            });
-            butShareMap.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    takeMapScreenshot();
-                }
-            });
-            ViewCreated = true;
-            return view;
-        }
-        private void takeMapScreenshot() {
-            GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
-                Bitmap bitmap;
-
-                @Override
-                public void onSnapshotReady(Bitmap snapshot) {
-                    // Callback is called from the main thread, so we can modify the ImageView safely.
-                    bitmap = snapshot;
-                    shareScreenshot(bitmap);
-                }
-            };
-            lMap.snapshot(callback);
-        }
-
-        private void shareScreenshot(Bitmap bitmap) {
-            try {
-                // Save the screenshot to a file
-                String filePath = MediaStore.Images.Media.insertImage(this.getContext().getContentResolver(),
-                        bitmap, "Title", null);
-                Uri fileUri = Uri.parse(filePath);
-                // Share the screenshot
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType("image/*");
-                share.putExtra(Intent.EXTRA_STREAM, fileUri);
-                startActivity(Intent.createChooser(share, "Share Map screenshot"));
-            } catch (Exception e) {
-                //Toast.makeText(this, "Error saving/sharing Map screenshot", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
         }
     }
 
