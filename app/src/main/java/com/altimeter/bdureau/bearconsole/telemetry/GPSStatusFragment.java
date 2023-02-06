@@ -1,4 +1,9 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
+/**
+ * @description: This will display altimeter GPS and phone informations such as current altitude,
+ * latititude, logitude number of satellite etc...
+ * @author: boris.dureau@neuf.fr
+ **/
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

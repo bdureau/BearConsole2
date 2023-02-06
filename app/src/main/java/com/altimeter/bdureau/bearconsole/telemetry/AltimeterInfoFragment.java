@@ -1,4 +1,8 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
+/**
+ * @description: This will display altimeter information such as current altitude, battery voltage etc...
+ * @author: boris.dureau@neuf.fr
+ **/
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

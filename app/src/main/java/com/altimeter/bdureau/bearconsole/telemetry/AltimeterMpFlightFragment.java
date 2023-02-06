@@ -1,5 +1,8 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
-
+/**
+ * @description: This will display altimeter realtime flight graph
+ * @author: boris.dureau@neuf.fr
+ **/
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,5 +1,8 @@
 package com.altimeter.bdureau.bearconsole;
-
+/**
+ * @description: This provides location from the phone
+ * @author: boris.dureau@neuf.fr
+ **/
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,7 +38,6 @@ public class LocationService extends Service {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-
                 Intent intent = new Intent("ACT_LOC");
                 intent.putExtra("latitude", locationResult.getLastLocation().getLatitude());
                 intent.putExtra("longitude", locationResult.getLastLocation().getLongitude());
@@ -43,8 +45,6 @@ public class LocationService extends Service {
             }
 
         };
-
-
     }
 
     @Override

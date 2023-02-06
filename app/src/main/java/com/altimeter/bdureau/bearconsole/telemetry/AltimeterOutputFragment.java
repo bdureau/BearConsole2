@@ -24,26 +24,6 @@ public class AltimeterOutputFragment extends Fragment {
         lBT = bt;
     }
 
-    /*public void setOutput1Status(String value) {
-        if (ViewCreated)
-            this.txtViewOutput1Status.setText(outputStatus(value));
-    }
-
-    public void setOutput2Status(String value) {
-        if (ViewCreated)
-            this.txtViewOutput2Status.setText(outputStatus(value));
-    }
-
-    public void setOutput3Status(String value) {
-        if (ViewCreated)
-            this.txtViewOutput3Status.setText(outputStatus(value));
-    }
-
-    public void setOutput4Status(String value) {
-        if (ViewCreated)
-            this.txtViewOutput4Status.setText(outputStatus(value));
-    }*/
-
     public void resetSwitches() {
         //switch off output
         if (this.switchOutput1.isChecked()) {

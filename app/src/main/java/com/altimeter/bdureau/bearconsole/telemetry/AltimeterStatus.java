@@ -1,4 +1,13 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
+/**
+ * @description: This will display real time altimeter status using the bluetooth module/or telemetry
+ * This is a tabbed activity that will display several fragments for each tab of the telemetry
+ * - AltimeterInfoFragment => display altimeter status
+ * - AltimeterOutputFragment => will allow you to test your altimeter outputs
+ * - GPSStatusFragment => will display information about the GPS when using the altiGPS
+ * - GPSMapStatusFragment => will display the Map when using the altiGPS
+ * @author: boris.dureau@neuf.fr
+ **/
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -24,13 +33,9 @@ import androidx.viewpager.widget.ViewPager;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -234,19 +239,21 @@ public class AltimeterStatus extends AppCompatActivity {
             startService();
         }
 
-        LocationManager lm = (LocationManager)this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
 
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch(Exception ex) {}
+        } catch (Exception ex) {
+        }
 
         try {
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } catch(Exception ex) {}
+        } catch (Exception ex) {
+        }
 
-        if(!gps_enabled && !network_enabled) {
+        if (!gps_enabled && !network_enabled) {
             // notify user
             new AlertDialog.Builder(this)
                     .setMessage(R.string.gps_network_not_enabled)
@@ -256,10 +263,10 @@ public class AltimeterStatus extends AppCompatActivity {
                             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         }
                     })
-                    .setNegativeButton(R.string.Cancel,null)
+                    .setNegativeButton(R.string.Cancel, null)
                     .show();
         }
-        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
+
         setContentView(R.layout.activity_altimeter_status);
         if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
             rocketLatitude = Double.parseDouble(myBT.getAppConf().getRocketLatitude());
@@ -384,10 +391,6 @@ public class AltimeterStatus extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            //turn off telemetry
-                           /* myBT.flush();
-                            myBT.clearInput();
-                            myBT.write("y0;\n".toString());*/
 
                             //exit recording if running
                             if (recording) {
@@ -419,26 +422,7 @@ public class AltimeterStatus extends AppCompatActivity {
         Log.d(TAG, "onDestroy()");
         //switch off output
         statusPage1bis.resetSwitches();
-        /*if (statusPage1.switchOutput1.isChecked()) {
-            myBT.write("k1F;\n".toString());
-            myBT.clearInput();
-            myBT.flush();
-        }
-        if (statusPage1.switchOutput2.isChecked()) {
-            myBT.write("k2F;\n".toString());
-            myBT.clearInput();
-            myBT.flush();
-        }
-        if (statusPage1.switchOutput3.isChecked()) {
-            myBT.write("k3F;\n".toString());
-            myBT.clearInput();
-            myBT.flush();
-        }
-        if (statusPage1.switchOutput4.isChecked()) {
-            myBT.write("k4F;\n".toString());
-            myBT.clearInput();
-            myBT.flush();
-        }*/
+
         //turn off telemetry
         myBT.flush();
         myBT.clearInput();
@@ -466,10 +450,7 @@ public class AltimeterStatus extends AppCompatActivity {
 
             myBT.write("y1;".toString());
             status = true;
-            //altiStatus = new Thread(r);
-            //altiStatus.stop();
-            /*if(altiStatus != null)
-                altiStatus.start();*/
+
             Runnable r = new Runnable() {
 
                 @Override
@@ -607,281 +588,7 @@ public class AltimeterStatus extends AppCompatActivity {
         }
     }
 
-    /*public static class Tab1StatusFragment extends Fragment {
-        private static final String TAG = "Tab1StatusFragment";
-        private boolean ViewCreated = false;
-        private TextView txtStatusAltiName, txtStatusAltiNameValue;
-        private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
-        private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage, txtNbrOfFlight;
-        private TextView txtViewOutput4, txtViewBatteryVoltage, txtViewOutput3, txtViewEEprom, txtViewFlight;
-        ConsoleApplication lBT;
-        private Switch switchOutput1, switchOutput2, switchOutput3, switchOutput4;
 
-        public Tab1StatusFragment(ConsoleApplication bt) {
-            lBT = bt;
-        }
-
-        public void setOutput1Status(String value) {
-            if (ViewCreated)
-                this.txtViewOutput1Status.setText(outputStatus(value));
-        }
-
-        public void setOutput2Status(String value) {
-            if (ViewCreated)
-                this.txtViewOutput2Status.setText(outputStatus(value));
-        }
-
-        public void setOutput3Status(String value) {
-            if (ViewCreated)
-                this.txtViewOutput3Status.setText(outputStatus(value));
-        }
-
-        public void setOutput4Status(String value) {
-            if (ViewCreated)
-                this.txtViewOutput4Status.setText(outputStatus(value));
-        }
-
-        public void setAltitude(String value) {
-            if (ViewCreated)
-                this.txtViewAltitude.setText(value);
-        }
-
-        public void setVoltage(String value) {
-            if (ViewCreated)
-                this.txtViewVoltage.setText(value);
-        }
-
-        public void setTemperature(String value) {
-            if (ViewCreated)
-                this.txtTemperature.setText(value);
-        }
-
-        public void setEEpromUsage(String value) {
-            if (ViewCreated)
-                this.txtEEpromUsage.setText(value);
-        }
-
-        public void setNbrOfFlight(String value) {
-            if (ViewCreated)
-                this.txtNbrOfFlight.setText(value);
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_altimeter_status_tab1bis, container, false);
-
-            txtStatusAltiName = (TextView) view.findViewById(R.id.txtStatusAltiName);
-            txtStatusAltiNameValue = (TextView) view.findViewById(R.id.txtStatusAltiNameValue);
-            txtViewOutput1Status = (TextView) view.findViewById(R.id.txtViewOutput1Status);
-            txtViewOutput2Status = (TextView) view.findViewById(R.id.txtViewOutput2Status);
-            txtViewOutput3Status = (TextView) view.findViewById(R.id.txtViewOutput3Status);
-            txtViewOutput4Status = (TextView) view.findViewById(R.id.txtViewOutput4Status);
-            txtViewAltitude = (TextView) view.findViewById(R.id.txtViewAltitude);
-            txtViewVoltage = (TextView) view.findViewById(R.id.txtViewVoltage);
-            txtViewLink = (TextView) view.findViewById(R.id.txtViewLink);
-            txtViewOutput3 = (TextView) view.findViewById(R.id.txtViewOutput3);
-            txtViewOutput4 = (TextView) view.findViewById(R.id.txtViewOutput4);
-            txtViewBatteryVoltage = (TextView) view.findViewById(R.id.txtViewBatteryVoltage);
-            txtTemperature = (TextView) view.findViewById(R.id.txtViewTemperature);
-            txtEEpromUsage = (TextView) view.findViewById(R.id.txtViewEEpromUsage);
-            txtNbrOfFlight = (TextView) view.findViewById(R.id.txtViewNbrOfFlight);
-            txtViewEEprom = (TextView) view.findViewById(R.id.txtViewEEprom);
-            txtViewFlight = (TextView) view.findViewById(R.id.txtViewFlight);
-
-            txtStatusAltiNameValue.setText(lBT.getAltiConfigData().getAltimeterName());
-            if (lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
-                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")
-                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-                txtViewVoltage.setVisibility(View.VISIBLE);
-                txtViewBatteryVoltage.setVisibility(View.VISIBLE);
-            } else {
-                txtViewVoltage.setVisibility(View.INVISIBLE);
-                txtViewBatteryVoltage.setVisibility(View.INVISIBLE);
-            }
-            if (!lBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
-                txtViewOutput3Status.setVisibility(View.VISIBLE);
-                txtViewOutput3.setVisibility(View.VISIBLE);
-            } else {
-                txtViewOutput3Status.setVisibility(View.INVISIBLE);
-                txtViewOutput3.setVisibility(View.INVISIBLE);
-            }
-
-            if (lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
-                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")
-                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-                txtViewOutput4Status.setVisibility(View.VISIBLE);
-                txtViewOutput4.setVisibility(View.VISIBLE);
-            } else {
-                txtViewOutput4Status.setVisibility(View.INVISIBLE);
-                txtViewOutput4.setVisibility(View.INVISIBLE);
-            }
-            //hide eeprom
-            if (lBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")
-                    || lBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-                txtViewEEprom.setVisibility(View.INVISIBLE);
-                txtViewFlight.setVisibility(View.INVISIBLE);
-                txtEEpromUsage.setVisibility(View.INVISIBLE);
-                txtNbrOfFlight.setVisibility(View.INVISIBLE);
-            } else {
-                txtViewEEprom.setVisibility(View.VISIBLE);
-                txtViewFlight.setVisibility(View.VISIBLE);
-                txtEEpromUsage.setVisibility(View.VISIBLE);
-                txtNbrOfFlight.setVisibility(View.VISIBLE);
-            }
-
-            txtViewLink.setText(lBT.getConnectionType());
-
-            switchOutput1 = (Switch) view.findViewById(R.id.switchOutput1);
-            switchOutput2 = (Switch) view.findViewById(R.id.switchOutput2);
-            switchOutput3 = (Switch) view.findViewById(R.id.switchOutput3);
-            switchOutput4 = (Switch) view.findViewById(R.id.switchOutput4);
-            if (!lBT.getAltiConfigData().getAltimeterName().equals("AltiDuo"))
-                switchOutput3.setVisibility(View.VISIBLE);
-            else
-                switchOutput3.setVisibility(View.INVISIBLE);
-            if (lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
-                    lBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
-                    lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS"))
-                switchOutput4.setVisibility(View.VISIBLE);
-            else
-                switchOutput4.setVisibility(View.INVISIBLE);
-
-            switchOutput1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (switchOutput1.isChecked())
-                        lBT.write("k1T;\n".toString());
-                    else
-                        lBT.write("k1F;\n".toString());
-
-                    lBT.flush();
-                    lBT.clearInput();
-                }
-            });
-
-
-            switchOutput1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (switchOutput1.isChecked())
-                        lBT.write("k1T;\n".toString());
-                    else
-                        lBT.write("k1F;\n".toString());
-
-                    lBT.flush();
-                    lBT.clearInput();
-
-                }
-            });
-
-            switchOutput2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (switchOutput2.isChecked())
-                        lBT.write("k2T;\n".toString());
-                    else
-                        lBT.write("k2F;\n".toString());
-
-                    lBT.flush();
-                    lBT.clearInput();
-                }
-            });
-            switchOutput2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (switchOutput2.isChecked())
-                        lBT.write("k2T;\n".toString());
-                    else
-                        lBT.write("k2F;\n".toString());
-
-                    lBT.flush();
-                    lBT.clearInput();
-
-                }
-            });
-            switchOutput3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (switchOutput3.isChecked())
-                        lBT.write("k3T;\n".toString());
-                    else
-                        lBT.write("k3F;\n".toString());
-
-                    lBT.flush();
-                    lBT.clearInput();
-                }
-            });
-            switchOutput3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (switchOutput3.isChecked())
-                        lBT.write("k3T;\n".toString());
-                    else
-                        lBT.write("k3F;\n".toString());
-
-                    lBT.flush();
-                    lBT.clearInput();
-
-                }
-            });
-            switchOutput4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (switchOutput4.isChecked())
-                        lBT.write("k4T;\n".toString());
-                    else
-                        lBT.write("k4F;\n".toString());
-
-                    lBT.flush();
-                    lBT.clearInput();
-                }
-            });
-            switchOutput4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (switchOutput4.isChecked())
-                        lBT.write("k4T;\n".toString());
-                    else
-                        lBT.write("k4F;\n".toString());
-
-                    lBT.flush();
-                    lBT.clearInput();
-
-                }
-            });
-            ViewCreated = true;
-            return view;
-        }
-
-        @Override
-        public void onDestroyView() {
-
-            super.onDestroyView();
-            ViewCreated = false;
-        }
-
-        public boolean isViewCreated() {
-            return ViewCreated;
-        }
-
-        private String outputStatus(String msg) {
-            String res = "";
-            switch (msg) {
-                case "0":
-                    res = getResources().getString(R.string.no_continuity);
-                    break;
-                case "1":
-                    res = this.getContext().getResources().getString(R.string.continuity);
-                    break;
-                case "-1":
-                    res = getResources().getString(R.string.disabled);
-                    break;
-            }
-            return res;
-        }
-    }
-*/
     public class LocationBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

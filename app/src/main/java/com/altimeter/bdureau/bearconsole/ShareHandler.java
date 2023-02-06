@@ -1,4 +1,8 @@
 package com.altimeter.bdureau.bearconsole;
+/**
+ * @description: This share a screen using Whats app, mail etc ...
+ * @author: boris.dureau@neuf.fr
+ **/
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -8,7 +12,6 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -24,27 +27,7 @@ import java.util.List;
 
 public class ShareHandler {
 
-    /*public static Bitmap takeScreenshot(View rootView) {
-        //View rootView = view.findViewById(android.R.id.content).getRootView();
-        rootView.setDrawingCacheEnabled(true);
-        return rootView.getDrawingCache();
-    }
-
-
-    public static void share(Bitmap bitmap, Context ctx){
-        String pathofBmp=
-                MediaStore.Images.Media.insertImage(ctx.getContentResolver(),
-                        bitmap,"BearConsole", null);
-        Uri uri = Uri.parse(pathofBmp);
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("image/*");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Star App");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "");
-        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        ctx.startActivity(Intent.createChooser(shareIntent, "BearConsole has shared you some info"));
-    }*/
-
-    public static  void takeScreenShot(View view, Context ctx) {
+    public static void takeScreenShot(View view, Context ctx) {
         Date date = new Date();
         CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
 
@@ -73,13 +56,10 @@ public class ShareHandler {
     }
 
     //Share ScreenShot
-    public static  void shareScreenShot(File imageFile,Context ctx ) {
+    public static void shareScreenShot(File imageFile, Context ctx) {
 
         Log.d("Package Name", "Package Name" + ctx.getPackageName());
-        /*Uri uri = FileProvider.getUriForFile(
-                ctx,
-                ctx.getPackageName() +  ".provider",
-                imageFile);*/
+
         Uri uri = FileProvider.getUriForFile(ctx, BuildConfig.APPLICATION_ID + ".provider", imageFile);
 
         ctx.grantUriPermission(ctx.getPackageName(), uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);

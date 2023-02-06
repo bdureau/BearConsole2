@@ -1,5 +1,8 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
-
+/**
+ * @description: This will display altimeter MAP when using the altiGPS
+ * @author: boris.dureau@neuf.fr
+ **/
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
