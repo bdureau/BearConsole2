@@ -15,7 +15,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-black"
-        android:text="Altimeter telemetry"
+        android:text="@string/altimeter_status"
         android:textSize="18sp" />
 
     <TextView

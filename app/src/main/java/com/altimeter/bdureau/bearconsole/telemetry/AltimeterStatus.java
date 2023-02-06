@@ -57,7 +57,8 @@ public class AltimeterStatus extends AppCompatActivity {
     private LinearLayout linearDots;
     public LocationBroadCastReceiver receiver = null;
     SectionsStatusPageAdapter adapter;
-    Tab1StatusFragment statusPage1 = null;
+    AltimeterInfoFragment statusPage1 = null;
+    AltimeterOutputFragment statusPage1bis = null;
     GPSStatusFragment statusPage2 = null;
     GPSMapStatusFragment statusPage3 = null;
 
@@ -417,7 +418,8 @@ public class AltimeterStatus extends AppCompatActivity {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
         //switch off output
-        if (statusPage1.switchOutput1.isChecked()) {
+        statusPage1bis.resetSwitches();
+        /*if (statusPage1.switchOutput1.isChecked()) {
             myBT.write("k1F;\n".toString());
             myBT.clearInput();
             myBT.flush();
@@ -436,7 +438,7 @@ public class AltimeterStatus extends AppCompatActivity {
             myBT.write("k4F;\n".toString());
             myBT.clearInput();
             myBT.flush();
-        }
+        }*/
         //turn off telemetry
         myBT.flush();
         myBT.clearInput();
@@ -523,13 +525,13 @@ public class AltimeterStatus extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsStatusPageAdapter(getSupportFragmentManager());
-        statusPage1 = new Tab1StatusFragment(myBT);
-        //statusPage2 = new Tab2StatusFragment(myBT);
+        statusPage1 = new AltimeterInfoFragment(myBT);
+        statusPage1bis = new AltimeterOutputFragment(myBT);
         statusPage2 = new GPSStatusFragment(myBT);
-        //statusPage3 = new Tab3StatusFragment(myBT/*, mMap*/);
         statusPage3 = new GPSMapStatusFragment(myBT, viewPager);
 
         adapter.addFragment(statusPage1, "TAB1");
+        adapter.addFragment(statusPage1bis, "TAB1BIS");
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
             adapter.addFragment(statusPage2, "TAB2");
             adapter.addFragment(statusPage3, "TAB3");
@@ -605,7 +607,7 @@ public class AltimeterStatus extends AppCompatActivity {
         }
     }
 
-    public static class Tab1StatusFragment extends Fragment {
+    /*public static class Tab1StatusFragment extends Fragment {
         private static final String TAG = "Tab1StatusFragment";
         private boolean ViewCreated = false;
         private TextView txtStatusAltiName, txtStatusAltiNameValue;
@@ -667,7 +669,7 @@ public class AltimeterStatus extends AppCompatActivity {
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_altimeter_status_tab1, container, false);
+            View view = inflater.inflate(R.layout.activity_altimeter_status_tab1bis, container, false);
 
             txtStatusAltiName = (TextView) view.findViewById(R.id.txtStatusAltiName);
             txtStatusAltiNameValue = (TextView) view.findViewById(R.id.txtStatusAltiNameValue);
@@ -879,7 +881,7 @@ public class AltimeterStatus extends AppCompatActivity {
             return res;
         }
     }
-
+*/
     public class LocationBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
