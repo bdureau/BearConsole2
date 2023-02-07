@@ -56,7 +56,7 @@ public class FlightViewMapsActivity extends /*FragmentActivity*/ AppCompatActivi
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.mapFlight);
         mapFragment.getMapAsync(this);
 
         butDismissViewMap = (Button) findViewById(R.id.butDismissViewMap);

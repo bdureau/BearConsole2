@@ -223,6 +223,21 @@ public class AltimeterStatus extends AppCompatActivity {
     };
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceState()");
+        outState.putBoolean("RECORDING_KEY", recording);
+        outState.putBoolean("STATUS_KEY", status);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d(TAG, "onRestoreInstanceState()");
+        recording = savedInstanceState.getBoolean("RECORDING_KEY");
+        status = savedInstanceState.getBoolean("STATUS_KEY");
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -391,7 +406,6 @@ public class AltimeterStatus extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-
                             //exit recording if running
                             if (recording) {
                                 recording = false;
@@ -438,6 +452,35 @@ public class AltimeterStatus extends AppCompatActivity {
             myBT.flush();
             msg("Stopped recording");
         }
+
+        //////////////////////////////
+        if (status) {
+            status = false;
+            myBT.write("h;\n".toString());
+
+            myBT.setExit(true);
+            myBT.clearInput();
+            myBT.flush();
+            //finish();
+        }
+
+
+        myBT.flush();
+        myBT.clearInput();
+        myBT.write("h;\n".toString());
+        try {
+            while (myBT.getInputStream().available() <= 0) ;
+        } catch (IOException e) {
+
+        }
+        String myMessage = "";
+        long timeOut = 10000;
+        long startTime = System.currentTimeMillis();
+
+        myMessage = myBT.ReadResult(10000);
+
+        /////////////////////////////
+
     }
 
     @Override
@@ -467,18 +510,29 @@ public class AltimeterStatus extends AppCompatActivity {
     }
 
     @Override
+    public void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart()");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause()");
+    }
+    @Override
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
 
-        if (recording) {
+        /*if (recording) {
             recording = false;
             myBT.write("w0;\n".toString());
             myBT.clearInput();
             myBT.flush();
-        }
+        }*/
 
-        if (status) {
+        /*if (status) {
             status = false;
             myBT.write("h;\n".toString());
 
@@ -501,7 +555,7 @@ public class AltimeterStatus extends AppCompatActivity {
         long timeOut = 10000;
         long startTime = System.currentTimeMillis();
 
-        myMessage = myBT.ReadResult(10000);
+        myMessage = myBT.ReadResult(10000);*/
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -596,7 +650,7 @@ public class AltimeterStatus extends AppCompatActivity {
             if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
-                Log.d("coordinate", "latitude is:" + latitude + " longitude is: " + longitude);
+                //Log.d("coordinate", "latitude is:" + latitude + " longitude is: " + longitude);
                 if (statusPage2 != null) {
                     statusPage2.setTelLatitudeValue(latitude + "");
                     statusPage2.setTelLongitudeValue(longitude + "");

@@ -26,11 +26,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 public class GPSMapStatusFragment extends Fragment {
     private static final String TAG = "Tab3StatusFragment";
     private boolean ViewCreated = false;
-
+    Integer MapType;
     private GoogleMap lMap = null;
     private ConsoleApplication lBT;
     private ViewPager lPager;
-    private Button butBack, butShareMap;
+    private Button butBack, butShareMap, butMapType;
 
     public GPSMapStatusFragment(ConsoleApplication bt, ViewPager pager) {
         lBT = bt;
@@ -44,11 +44,14 @@ public class GPSMapStatusFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_altimeter_status_tab3, container, false);
+        View view = inflater.inflate(R.layout.activity_flight_view_maps, container, false);
 
         butBack = (Button) view.findViewById(R.id.butBack);
         butShareMap = (Button) view.findViewById(R.id.butShareMap);
+        butMapType = (Button) view.findViewById(R.id.butMap);
+
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapStatus);
+        MapType = Integer.parseInt(lBT.getAppConf().getMapType());
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -73,6 +76,18 @@ public class GPSMapStatusFragment extends Fragment {
             public void onClick(View v)
             {
                 takeMapScreenshot();
+            }
+        });
+        butMapType.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                MapType = MapType + 1;
+                if(MapType > 4)
+                    MapType =0;
+
+                lMap.setMapType(MapType);
             }
         });
         ViewCreated = true;

@@ -9,7 +9,7 @@
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
+        android:id="@+id/mapFlight"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -21,7 +21,19 @@
         android:layout_alignParentLeft="true"
         android:layout_gravity="start|bottom"
         app:icon="@drawable/ok_30x30_trans" />
-
+    <Button
+        android:id="@+id/butBack"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|bottom"
+        app:icon="@drawable/back_arrow32x32" />
+    <Button
+        android:id="@+id/butMap"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_centerHorizontal="true"
+        app:icon="@drawable/map_30x30_black_trans" />
     <Button
         android:id="@+id/butShareMap"
         android:layout_width="60dp"

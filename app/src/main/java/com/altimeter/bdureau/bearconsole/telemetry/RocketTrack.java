@@ -58,10 +58,12 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
     Double rocketLatitude=48.8698, rocketLongitude=2.2190;
     TextView textViewRecording;
 
-    Button btnDismiss, butShareMap;
+    Button btnDismiss, butShareMap, butMapType;
     LocationBroadCastReceiver receiver=null;
     LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
     boolean recording = false;
+
+    Integer MapType;
 
     private static ConsoleApplication myBT;
     Handler handler = new Handler() {
@@ -112,6 +114,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_rocket_track);
         myBT.setHandler(handler);
 
+        MapType = Integer.parseInt(myBT.getAppConf().getMapType());
         // See if we are called from the status activity
         try {
             Intent newint = getIntent();
@@ -141,7 +144,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         LocationManager lm = (LocationManager)this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
-//this.getBaseContext()
+
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         } catch(Exception ex) {}
@@ -169,6 +172,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
 
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         butShareMap = (Button) findViewById(R.id.butShareMap);
+        butMapType = (Button) findViewById(R.id.butMap);
         textViewRecording = (TextView) findViewById(R.id.textViewRecording);
 
         if(!recording)
@@ -187,6 +191,18 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
             public void onClick(View v)
             {
                 takeMapScreenshot();
+            }
+        });
+        butMapType.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                MapType = MapType + 1;
+                if(MapType > 4)
+                    MapType = 0;
+
+                mMap.setMapType(MapType);
             }
         });
         Runnable r = new Runnable() {
@@ -309,7 +325,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         if(this.mMap == null) {
             this.mMap = googleMap;
             //this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-            this.mMap.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
+            this.mMap.setMapType(MapType);
         }
     }
 
@@ -320,7 +336,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
             if(intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
-                Toast.makeText(RocketTrack.this, "latitude is:" + latitude + " longitude is: " + longitude, Toast.LENGTH_LONG).show();
+                //Toast.makeText(RocketTrack.this, "latitude is:" + latitude + " longitude is: " + longitude, Toast.LENGTH_LONG).show();
                 Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
                 if(mMap != null) {
                     LatLng latLng = new LatLng(latitude, longitude);
