@@ -41,13 +41,6 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/butMap"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|bottom"
-        app:icon="@drawable/map_30x30_black_trans" />
-
-    <Button
         android:id="@+id/butSelectCurves"
         android:layout_width="60dp"
         android:layout_height="wrap_content"

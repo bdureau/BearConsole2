@@ -58,7 +58,7 @@ public class FlightViewMapFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_altimeter_status_tab3, container, false);
+        View view = inflater.inflate(R.layout.activity_flight_view_maps, container, false);
 
         butBack = (Button) view.findViewById(R.id.butBack);
         butShareMap = (Button) view.findViewById(R.id.butShareMap);
@@ -70,12 +70,7 @@ public class FlightViewMapFragment extends Fragment {
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                /*if (lMap == null) {
-                    lMap = googleMap;
-                    lMap.setMapType(Integer.parseInt(lBT.getAppConf().getMapType()));
-                }*/
                 mMap = googleMap;
-                //this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
                 /* MAP_TYPE_NONE = 0
                 MAP_TYPE_NORMAL =1
                 MAP_TYPE_SATELLITE = 2
@@ -108,8 +103,6 @@ public class FlightViewMapFragment extends Fragment {
 
                 polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
                 polyline1.setPoints(coord);
-
-                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng((double)flightData.getSeries(3).getMaxY()/(double)100000,(double)flightData.getSeries(4).getMaxY()/(double)100000), 20));
 
                 if (coord.size() > 0)
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord.get((int) (j / 2)), 15));

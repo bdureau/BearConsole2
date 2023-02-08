@@ -82,34 +82,31 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
 
-    /*private Tab1Fragment flightPage1 = null;
-    private Tab2Fragment flightPage2 = null;*/
+    // This are the activity tabs
     private FlightViewMpFragment flightPage1 = null;
     private FlightViewInfoFragment flightPage2 = null;
-    private Button btnDismiss, buttonMap, butSelectCurves;
-    private /*static*/ ConsoleApplication myBT;
-    private /*static*/ double FEET_IN_METER = 1;
+    private FlightViewMapFragment flightPage3 = null;
 
-    private /*static*/ String curvesNames[] = null;
-    private /*static*/ String currentCurvesNames[] = null;
-    private /*static*/ boolean[] checkedItems = null;
+    private Button btnDismiss,  butSelectCurves;
+    private ConsoleApplication myBT;
+    //private double FEET_IN_METER = 1;
+
+    private String curvesNames[] = null;
+    private String currentCurvesNames[] = null;
+    private boolean[] checkedItems = null;
     private XYSeriesCollection allFlightData = null;
-    //private static XYSeriesCollection flightData = null;
-    //private static ArrayList<ILineDataSet> dataSets;
+
     static int colors[] = {Color.RED, Color.BLUE, Color.BLACK,
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW, Color.RED,
             Color.BLUE, Color.BLACK,
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW, Color.RED, Color.BLUE, Color.BLACK,
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW};
     static Font font;
-    private /*static*/ String FlightName = null;
-    //private  XYSeries altitude;
-    //private  XYSeries speed;
-    //private  XYSeries accel;
+    private String FlightName = null;
 
-    private /*static*/ String[] units = null;
-    public /*static*/ String SELECTED_FLIGHT = "MyFlight";
-    public /*static*/ int numberOfCurves = 0;
+    private String[] units = null;
+    public String SELECTED_FLIGHT = "MyFlight";
+    public int numberOfCurves = 0;
     //File imagePath;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSION_STORAGE = {
@@ -164,23 +161,23 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
 
         btnDismiss = (Button) findViewById(R.id.butDismiss);
-        buttonMap = (Button) findViewById(R.id.butMap);
+        //buttonMap = (Button) findViewById(R.id.butMap);
         butSelectCurves = (Button) findViewById(R.id.butSelectCurves);
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-            buttonMap.setVisibility(View.VISIBLE);
+            //buttonMap.setVisibility(View.VISIBLE);
             numberOfCurves = 8;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")) {
-            buttonMap.setVisibility(View.INVISIBLE);
+            //buttonMap.setVisibility(View.INVISIBLE);
             numberOfCurves = 6;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiV2") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti")) {
-            buttonMap.setVisibility(View.INVISIBLE);
+            //buttonMap.setVisibility(View.INVISIBLE);
             numberOfCurves = 5;
         }
 
@@ -192,25 +189,10 @@ public class FlightViewTabActivity extends AppCompatActivity {
         allFlightData = null; //new XYSeriesCollection();
         allFlightData = myflight.GetFlightData(FlightName);
 
-        //altitude = null;
-        //altitude = allFlightData.getSeries(getResources().getString(R.string.curve_altitude));
-
-        //calculate speed
-        //altitude
-        //speed = null;
-        //speed =getSpeedSerie(allFlightData.getSeries(getResources().getString(R.string.curve_altitude)));
-        //speed = allFlightData.getSeries(getResources().getString(R.string.curve_speed));
-
-        // calculate acceleration
-        //accel = null;
-        //accel = getAccelSerie(speed);
-        //accel = allFlightData.getSeries(getResources().getString(R.string.curve_accel));
 
         // by default we will display the altitude
         // but then the user will be able to change the data
-        //flightData = new XYSeriesCollection();
-        //altitude
-        //flightData.addSeries(allFlightData.getSeries(getResources().getString(R.string.curve_altitude)));
+
 
         // get a list of all the curves that have been recorded
         //int numberOfCurves = allFlightData.getSeries().size();
@@ -246,15 +228,14 @@ public class FlightViewTabActivity extends AppCompatActivity {
         if(numberOfCurves > 5)
             units[5] = "(volts)";
 
-        if (myBT.getAppConf().getUnits().equals("0")) {//meters
+        /*if (myBT.getAppConf().getUnits().equals("0")) {//meters
             FEET_IN_METER = 1;
         } else {
             FEET_IN_METER = 3.28084;
-        }
+        }*/
 
         if (currentCurvesNames == null) {
             //This is the first time so only display the altitude
-            //dataSets = new ArrayList<>();
             currentCurvesNames = new String[curvesNames.length];
             currentCurvesNames[0] = this.getResources().getString(R.string.curve_altitude);
             checkedItems = new boolean[curvesNames.length];
@@ -274,12 +255,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
         butSelectCurves.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*int numberOfCurves = flightData.getSeries().size();
-                currentCurvesNames = new String[numberOfCurves];
-
-                for (int i = 0; i < numberOfCurves; i++) {
-                    currentCurvesNames[i] = flightData.getSeries(i).getKey().toString();
-                }*/
                 // Set up the alert builder
                 AlertDialog.Builder builder = new AlertDialog.Builder(FlightViewTabActivity.this);
 
@@ -347,7 +322,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
         });
         //this has a GPS so display Map =>FlightViewMapsActivity
-        buttonMap.setOnClickListener(new View.OnClickListener() {
+        /*buttonMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i;
@@ -358,7 +333,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 i.putExtra(SELECTED_FLIGHT, FlightName);
                 startActivity(i);
             }
-        });
+        });*/
     }
 
     public static void verifyStoragePermission(Activity activity) {
@@ -374,37 +349,32 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        /*flightPage1 = new Tab1Fragment(allFlightData);
-        flightPage2 = new Tab2Fragment(myflight, allFlightData);*/
-        /*
-        XYSeriesCollection data,
-                                ConsoleApplication BT,
-                                String pCurvesNames[],
-                                boolean pCheckedItems[],
-                                String pUnits[]
-         */
 
         flightPage1 = new FlightViewMpFragment(allFlightData,
                 myBT,
                 curvesNames,
                 checkedItems,
-                units/*,
-                dataSets*/);
-        /*
-        FlightData data,
-                                  XYSeriesCollection data2,
-                                  ConsoleApplication BT,
-                                  String pUnits[],
-                                  String pFlightName
-         */
+                units);
+
         flightPage2 = new FlightViewInfoFragment(myflight,
                 allFlightData,
                 myBT,
                 units,
                 FlightName);
 
+
+
         adapter.addFragment(flightPage1, "TAB1");
         adapter.addFragment(flightPage2, "TAB2");
+
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+            flightPage3 = new FlightViewMapFragment(myBT,
+                    mViewPager,
+                    myflight,
+                    FlightName);
+            adapter.addFragment(flightPage3, "TAB3");
+        }
+
         linearDots=findViewById(R.id.idFlightLinearDots);
         agregaIndicateDots(0, adapter.getCount());
         viewPager.setAdapter(adapter);

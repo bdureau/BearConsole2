@@ -30,7 +30,7 @@ public class FlightViewMpFragment extends Fragment {
     private ConsoleApplication myBT;
     int graphBackColor, fontSize, axisColor, labelColor, nbrColor;
     private ArrayList<ILineDataSet> dataSets;
-    //private XYSeriesCollection flightData = null;
+
     private String units[] = null;
     String curvesNames[];
     boolean checkedItems[];
@@ -44,8 +44,7 @@ public class FlightViewMpFragment extends Fragment {
                                 ConsoleApplication pBT,
                                 String pCurvesNames[],
                                 boolean pCheckedItems[],
-                                String pUnits[]/*,
-                                ArrayList<ILineDataSet> pDataSets*/) {
+                                String pUnits[]) {
         this.allFlightData = pAllFlightData;
         this.myBT = pBT;
         this.curvesNames = pCurvesNames;
@@ -57,10 +56,7 @@ public class FlightViewMpFragment extends Fragment {
     public void setCheckedItems(boolean[] checkedItems) {
         this.checkedItems = checkedItems;
     }
-    //setCurveNames
-    /*public void setCurveNames(String[] curvesNames) {
-        this.curvesNames = curvesNames;
-    }*/
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,13 +88,11 @@ public class FlightViewMpFragment extends Fragment {
         dataSets = new ArrayList<>();
         dataSets.clear();
 
-        //flightData = new XYSeriesCollection();
         for (int i = 0; i < curvesNames.length; i++) {
             Log.d("drawAllCurves", "i:" + i);
             Log.d("drawAllCurves", "curvesNames:" + curvesNames[i]);
             if (checkedItems[i]) {
                 Log.d("drawAllCurves", "curve checked" + curvesNames[i]);
-                //flightData.addSeries(allFlightData.getSeries(curvesNames[i]));
 
                 int nbrData = allFlightData.getSeries(i).getItemCount();
 
@@ -131,6 +125,5 @@ public class FlightViewMpFragment extends Fragment {
         //time (ms)
         desc.setText(getResources().getString(R.string.unit_time));
         mChart.setDescription(desc);
-        //mChart.
     }
 }
