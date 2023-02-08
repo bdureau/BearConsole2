@@ -179,13 +179,13 @@ public class FlightViewActivity extends AppCompatActivity {
          @Override
          public void onClick(View v)
          {
-             Intent i;
+            /* Intent i;
              // Make an intent to start next activity.
              i = new Intent(FlightViewActivity.this, FlightViewMapsActivity.class);
 
              //Change the activity.
              i.putExtra(SELECTED_FLIGHT, FlightName);
-             startActivity(i);
+             startActivity(i);*/
          }
      });
  }
