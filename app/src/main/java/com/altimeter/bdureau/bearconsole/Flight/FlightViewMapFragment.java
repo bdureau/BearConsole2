@@ -1,5 +1,8 @@
 package com.altimeter.bdureau.bearconsole.Flight;
-
+/**
+ * @description: This will display altimeter MAP that has been recorded when using the altiGPS
+ * @author: boris.dureau@neuf.fr
+ **/
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;

@@ -6,6 +6,7 @@ package com.altimeter.bdureau.bearconsole.telemetry;
  * - AltimeterOutputFragment => will allow you to test your altimeter outputs
  * - GPSStatusFragment => will display information about the GPS when using the altiGPS
  * - GPSMapStatusFragment => will display the Map when using the altiGPS
+ * This has the ability to take screen shot of each tab and share them using Whats app, email etc ...
  * @author: boris.dureau@neuf.fr
  **/
 

@@ -2,6 +2,7 @@ package com.altimeter.bdureau.bearconsole.Flight;
 
 /**
  *   @description: This will display each flight using a freechart library
+ *   This is no longer superted with Android > 6
  *   @author: boris.dureau@neuf.fr
  *
  **/

@@ -1,5 +1,8 @@
 package com.altimeter.bdureau.bearconsole.Flight;
-
+/**
+ * @description: This will display altimeter flight summary
+ * @author: boris.dureau@neuf.fr
+ **/
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -14,17 +17,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
-
 import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

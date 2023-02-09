@@ -1,37 +1,31 @@
 package com.altimeter.bdureau.bearconsole.Flight;
 
+/**
+ * @description: This will display the altimeter flights
+ * This is a tabbed activity that will display several fragments for each tab of the flights
+ * - FlightViewMpFragment => display altimeter flight curves
+ * - FlightViewInfoFragment => display flight informations
+ * - FlightViewMapFragment => will display the Map that has been recorded when using the altiGPS
+ * This has the ability to take screen shot of each tab and share them using Whats app, email etc ...
+ * @author: boris.dureau@neuf.fr
+ **/
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
-
-import com.altimeter.bdureau.bearconsole.ShareHandler;
-import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-
-
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -41,37 +35,29 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.Html;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.LayoutInflater;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
 import org.afree.graphics.geom.Font;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+
 
 
 public class FlightViewTabActivity extends AppCompatActivity {
@@ -82,14 +68,13 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
 
-    // This are the activity tabs
+    // These are the activity tabs
     private FlightViewMpFragment flightPage1 = null;
     private FlightViewInfoFragment flightPage2 = null;
     private FlightViewMapFragment flightPage3 = null;
 
     private Button btnDismiss,  butSelectCurves;
     private ConsoleApplication myBT;
-    //private double FEET_IN_METER = 1;
 
     private String curvesNames[] = null;
     private String currentCurvesNames[] = null;
@@ -153,31 +138,23 @@ public class FlightViewTabActivity extends AppCompatActivity {
         //get the connection pointer
         myBT = (ConsoleApplication) getApplication();
 
-        //Check the local and force it if needed
-        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
-
         setContentView(R.layout.activity_flight_view_tab);
         mViewPager = (ViewPager) findViewById(R.id.container);
 
-
         btnDismiss = (Button) findViewById(R.id.butDismiss);
-        //buttonMap = (Button) findViewById(R.id.butMap);
         butSelectCurves = (Button) findViewById(R.id.butSelectCurves);
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-            //buttonMap.setVisibility(View.VISIBLE);
             numberOfCurves = 8;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")) {
-            //buttonMap.setVisibility(View.INVISIBLE);
             numberOfCurves = 6;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiV2") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti")) {
-            //buttonMap.setVisibility(View.INVISIBLE);
             numberOfCurves = 5;
         }
 
@@ -188,14 +165,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
         // get all the data that we have recorded for the current flight
         allFlightData = null; //new XYSeriesCollection();
         allFlightData = myflight.GetFlightData(FlightName);
-
-
-        // by default we will display the altitude
-        // but then the user will be able to change the data
-
-
-        // get a list of all the curves that have been recorded
-        //int numberOfCurves = allFlightData.getSeries().size();
 
         Log.d("numberOfCurves", "numberOfCurves:" + allFlightData.getSeries().size());
         curvesNames = new String[numberOfCurves];
@@ -228,11 +197,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
         if(numberOfCurves > 5)
             units[5] = "(volts)";
 
-        /*if (myBT.getAppConf().getUnits().equals("0")) {//meters
-            FEET_IN_METER = 1;
-        } else {
-            FEET_IN_METER = 3.28084;
-        }*/
 
         if (currentCurvesNames == null) {
             //This is the first time so only display the altitude
@@ -319,21 +283,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
-
         });
-        //this has a GPS so display Map =>FlightViewMapsActivity
-        /*buttonMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i;
-                // Make an intent to start next activity.
-                i = new Intent(FlightViewTabActivity.this, FlightViewMapsActivity.class);
-
-                //Change the activity.
-                i.putExtra(SELECTED_FLIGHT, FlightName);
-                startActivity(i);
-            }
-        });*/
     }
 
     public static void verifyStoragePermission(Activity activity) {

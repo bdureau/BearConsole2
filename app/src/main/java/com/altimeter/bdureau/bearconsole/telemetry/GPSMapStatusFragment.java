@@ -44,7 +44,7 @@ public class GPSMapStatusFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_flight_view_maps, container, false);
+        View view = inflater.inflate(R.layout.activity_altimeter_status_tab3, container, false);
 
         butBack = (Button) view.findViewById(R.id.butBack);
         butShareMap = (Button) view.findViewById(R.id.butShareMap);

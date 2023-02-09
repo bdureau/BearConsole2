@@ -1,5 +1,8 @@
 package com.altimeter.bdureau.bearconsole.Flight;
-
+/**
+ * @description: This will display altimeter flight curves
+ * @author: boris.dureau@neuf.fr
+ **/
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
