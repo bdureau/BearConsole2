@@ -90,10 +90,25 @@ public class FlightViewMpFragment extends Fragment {
     public void drawAllCurves(XYSeriesCollection allFlightData) {
         dataSets = new ArrayList<>();
         dataSets.clear();
+        String graphTimeUnits = getResources().getString(R.string.unit_time);
+        int nbrOfItem = allFlightData.getSeries(0).getItemCount();
+        float maxTime = allFlightData.getSeries(0).getX(nbrOfItem-1).floatValue();
+
+        float timeFactor = 1;
+        if(maxTime > 10000){
+            graphTimeUnits = "time (s)";
+            timeFactor =0.001f;
+        }
+
+        if(maxTime > 600000){
+            graphTimeUnits = "time (min)";
+            timeFactor =0.001f/60;
+        }
 
         for (int i = 0; i < curvesNames.length; i++) {
             Log.d("drawAllCurves", "i:" + i);
             Log.d("drawAllCurves", "curvesNames:" + curvesNames[i]);
+
             if (checkedItems[i]) {
                 Log.d("drawAllCurves", "curve checked" + curvesNames[i]);
 
@@ -102,7 +117,7 @@ public class FlightViewMpFragment extends Fragment {
                 ArrayList<Entry> yValues = new ArrayList<>();
 
                 for (int k = 0; k < nbrData; k++) {
-                    yValues.add(new Entry(allFlightData.getSeries(i).getX(k).floatValue(), allFlightData.getSeries(i).getY(k).floatValue()));
+                    yValues.add(new Entry(allFlightData.getSeries(i).getX(k).floatValue()*timeFactor, allFlightData.getSeries(i).getY(k).floatValue()));
                 }
 
                 LineDataSet set1 = new LineDataSet(yValues, getResources().getString(R.string.flight_time));
@@ -126,7 +141,7 @@ public class FlightViewMpFragment extends Fragment {
         mChart.setBackgroundColor(graphBackColor);
         Description desc = new Description();
         //time (ms)
-        desc.setText(getResources().getString(R.string.unit_time));
+        desc.setText(graphTimeUnits);
         mChart.setDescription(desc);
     }
 }
