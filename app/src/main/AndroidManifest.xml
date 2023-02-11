@@ -46,133 +46,136 @@
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <!-- Necessary for apps that target Android 9.0 or higher -->
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
-        <activity android:name=".Flight.FlightViewMapsActivity" />
-        <activity
-            android:name=".config.Config3DR"
-            android:exported="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
+        <!--  <activity android:name=".Flight.FlightViewMapsActivity" />-->
+         <activity
+             android:name=".config.Config3DR"
+             android:exported="true"
+             android:screenOrientation="portrait">
+             <intent-filter>
+                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+             </intent-filter>
 
-            <meta-data
-                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                android:resource="@xml/device_filter" />
-        </activity>
-        <activity
-            android:name=".config.ConfigBT"
-            android:exported="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
+             <meta-data
+                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                 android:resource="@xml/device_filter" />
+         </activity>
+         <activity
+             android:name=".config.ConfigBT"
+             android:exported="true"
+             android:screenOrientation="portrait">
+             <intent-filter>
+                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+             </intent-filter>
 
-            <meta-data
-                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                android:resource="@xml/device_filter" />
-        </activity>
-        <activity
-            android:name=".config.ConfigLora"
-            android:exported="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
-            <meta-data
-                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                android:resource="@xml/device_filter" />
-        </activity>
-        <activity
-            android:name=".Flash.FlashFirmware"
-            android:exported="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
-            <meta-data
-                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                android:resource="@xml/device_filter" />
-        </activity>
-        <activity android:name=".Flight.FlightViewMpActivity" />
-        <activity
-            android:name=".Flight.FlightViewTabActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".MainScreenActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
+             <meta-data
+                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                 android:resource="@xml/device_filter" />
+         </activity>
+         <activity
+             android:name=".config.ConfigLora"
+             android:exported="true"
+             android:screenOrientation="portrait">
+             <intent-filter>
+                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+             </intent-filter>
+             <meta-data
+                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                 android:resource="@xml/device_filter" />
+         </activity>
+         <activity
+             android:name=".Flash.FlashFirmware"
+             android:exported="true"
+             android:screenOrientation="portrait">
+             <intent-filter>
+                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+             </intent-filter>
+             <meta-data
+                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                 android:resource="@xml/device_filter" />
+         </activity>
+         <!--<activity android:name=".Flight.FlightViewMpActivity" />-->
+         <activity
+             android:name=".Flight.FlightViewTabActivity"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".MainScreenActivity"
+             android:exported="true"
+             android:label="@string/app_name"
+             android:screenOrientation="portrait">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+             <intent-filter>
+                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+             </intent-filter>
 
-            <meta-data
-                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                android:resource="@xml/device_filter" />
-        </activity>
+             <meta-data
+                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                 android:resource="@xml/device_filter" />
+         </activity>
+         <activity
+             android:name=".connection.TestConnection"
+             android:label="Test connection"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".connection.SearchBluetooth"
+             android:label="@string/select_bluetooth_device"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".config.AltimeterTabConfigActivity"
+             android:label="@string/altimeter_config"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".Flight.FlightListActivity"
+             android:label="@string/Flight_list"
+             android:screenOrientation="portrait" />
+         <activity android:name=".Flight.FlightViewActivity" />
+         <activity
+             android:name=".Help.AboutActivity"
+             android:label="@string/about_screen"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".config.AppConfigActivity"
+             android:label="@string/titre_application_pref"
+             android:screenOrientation="portrait" />
+         <activity android:name=".Help.HelpActivity" />
+         <activity
+             android:name=".ResetSettingsActivity"
+             android:label="@string/reset_settings"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".telemetry.Telemetry"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".telemetry.TelemetryMp"
+             android:label="@string/telemetry_screen"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".telemetry.AltimeterStatus"
+             android:label="@string/status_screen"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".telemetry.RocketTrackGoogleMap"
+             android:label="Track"
+             android:screenOrientation="portrait" />
         <activity
-            android:name=".connection.TestConnection"
-            android:label="Test connection"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".connection.SearchBluetooth"
-            android:label="@string/select_bluetooth_device"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".config.AltimeterTabConfigActivity"
-            android:label="@string/altimeter_config"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Flight.FlightListActivity"
-            android:label="@string/Flight_list"
-            android:screenOrientation="portrait" />
-        <activity android:name=".Flight.FlightViewActivity" />
-        <activity
-            android:name=".Help.AboutActivity"
-            android:label="@string/about_screen"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".config.AppConfigActivity"
-            android:label="@string/titre_application_pref"
-            android:screenOrientation="portrait" />
-        <activity android:name=".Help.HelpActivity" />
-        <activity
-            android:name=".ResetSettingsActivity"
-            android:label="@string/reset_settings"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".telemetry.Telemetry"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".telemetry.TelemetryMp"
-            android:label="@string/telemetry_screen"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".telemetry.AltimeterStatus"
-            android:label="@string/status_screen"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".telemetry.RocketTrack"
+            android:name=".telemetry.RocketTrackOpenMap"
             android:label="Track"
             android:screenOrientation="portrait" />
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.altimeter.bdureau.bearconsole.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path" />
-        </provider>
-        <!--
-           ATTENTION: This was auto-generated to add Google Play services to your project for
-           App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
+         <provider
+             android:name="androidx.core.content.FileProvider"
+             android:authorities="com.altimeter.bdureau.bearconsole.provider"
+             android:exported="false"
+             android:grantUriPermissions="true">
+             <meta-data
+                 android:name="android.support.FILE_PROVIDER_PATHS"
+                 android:resource="@xml/file_path" />
+         </provider>
+         <!--
+            ATTENTION: This was auto-generated to add Google Play services to your project for
+            App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+         -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

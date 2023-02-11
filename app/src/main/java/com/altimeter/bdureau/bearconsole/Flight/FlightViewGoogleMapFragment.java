@@ -33,7 +33,7 @@ import org.afree.data.xy.XYSeriesCollection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FlightViewMapFragment extends Fragment {
+public class FlightViewGoogleMapFragment extends Fragment {
     private static final String TAG = "Tab3StatusFragment";
     private boolean ViewCreated = false;
     Integer MapType;
@@ -44,10 +44,10 @@ public class FlightViewMapFragment extends Fragment {
     private FlightData myflight;
     private String FlightName;
 
-    public FlightViewMapFragment(ConsoleApplication bt,
-                                 ViewPager pager,
-                                 FlightData pFlight,
-                                 String pFlightName) {
+    public FlightViewGoogleMapFragment(ConsoleApplication bt,
+                                       ViewPager pager,
+                                       FlightData pFlight,
+                                       String pFlightName) {
         myBT = bt;
         lPager = pager;
         myflight = pFlight;
@@ -61,7 +61,7 @@ public class FlightViewMapFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_flight_view_maps, container, false);
+        View view = inflater.inflate(R.layout.activity_flight_view_google_map, container, false);
 
         butBack = (Button) view.findViewById(R.id.butBack);
         butShareMap = (Button) view.findViewById(R.id.butShareMap);

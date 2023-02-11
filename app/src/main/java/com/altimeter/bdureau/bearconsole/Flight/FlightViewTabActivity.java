@@ -71,7 +71,8 @@ public class FlightViewTabActivity extends AppCompatActivity {
     // These are the activity tabs
     private FlightViewMpFragment flightPage1 = null;
     private FlightViewInfoFragment flightPage2 = null;
-    private FlightViewMapFragment flightPage3 = null;
+    private FlightViewGoogleMapFragment flightPage3 = null;
+    private FlightViewOpenMapFragment flightPage4 = null;
 
     private Button btnDismiss,  butSelectCurves;
     private ConsoleApplication myBT;
@@ -318,11 +319,19 @@ public class FlightViewTabActivity extends AppCompatActivity {
         adapter.addFragment(flightPage2, "TAB2");
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-            flightPage3 = new FlightViewMapFragment(myBT,
-                    mViewPager,
-                    myflight,
-                    FlightName);
-            adapter.addFragment(flightPage3, "TAB3");
+            if (!myBT.getAppConf().getUseOpenMap()) {
+                flightPage3 = new FlightViewGoogleMapFragment(myBT,
+                        mViewPager,
+                        myflight,
+                        FlightName);
+                adapter.addFragment(flightPage3, "TAB3");
+            } else {
+                flightPage4 = new FlightViewOpenMapFragment(myBT,
+                        mViewPager,
+                        myflight,
+                        FlightName);
+                adapter.addFragment(flightPage4, "TAB4");
+            }
         }
 
         linearDots=findViewById(R.id.idFlightLinearDots);

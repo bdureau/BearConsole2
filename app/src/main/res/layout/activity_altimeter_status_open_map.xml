@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin">
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapOpenMapStatus"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tilesource="Mapnik"/>
+
+    <Button
+        android:id="@+id/butBack"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|bottom"
+        app:icon="@drawable/back_arrow32x32" />
+
+    <Button
+        android:id="@+id/butShareMap"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end|bottom"
+        app:icon="@drawable/share_30x33_trans" />
+</RelativeLayout>

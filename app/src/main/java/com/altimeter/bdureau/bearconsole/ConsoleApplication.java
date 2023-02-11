@@ -1066,6 +1066,7 @@ public class ConsoleApplication extends Application {
         private String mapType = "2";
 
         private Boolean allowManualRecording = true;
+        private Boolean useOpenMap = true;
 
         public GlobalConfig(Context current) {
             appConfig = getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
@@ -1076,7 +1077,6 @@ public class ConsoleApplication extends Application {
         }
 
         public void ResetDefaultConfig() {
-
             applicationLanguage = "0"; // default to english
             graphBackColor = "1";
             graphColor = "0";
@@ -1102,6 +1102,7 @@ public class ConsoleApplication extends Application {
             rocketLatitude = "0.0";
             rocketLongitude = "0.0";
             allowManualRecording = true;
+            useOpenMap = true;
         }
 
         public void ReadConfig() {
@@ -1242,6 +1243,9 @@ public class ConsoleApplication extends Application {
                 allowManualRecording = appConfig.getBoolean("allowManualRecording", false);
                 setManualRecording(allowManualRecording);
 
+                Boolean useOpenMap = false;
+                useOpenMap = appConfig.getBoolean("useOpenMap", false);
+                setUseOpenMap(useOpenMap);
             } catch (Exception e) {
 
             }
@@ -1275,6 +1279,7 @@ public class ConsoleApplication extends Application {
             edit.putString("rocketLatitude", getRocketLatitude());
             edit.putString("rocketLongitude", getRocketLongitude());
             edit.putBoolean("allowManualRecording", getManualRecording());
+            edit.putBoolean("useOpenMap", getUseOpenMap());
             edit.commit();
 
         }
@@ -1483,6 +1488,9 @@ public class ConsoleApplication extends Application {
 
         public void setManualRecording(boolean value)  { allowManualRecording = value;}
         public Boolean getManualRecording() {return allowManualRecording;}
+
+        public void setUseOpenMap(boolean value)  { useOpenMap = value;}
+        public Boolean getUseOpenMap() {return useOpenMap;}
 
         public int ConvertFont(int font) {
             return font + 8;

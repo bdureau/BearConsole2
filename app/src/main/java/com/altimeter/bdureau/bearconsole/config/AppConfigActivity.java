@@ -197,6 +197,7 @@ public class AppConfigActivity extends AppCompatActivity {
             myBT.getAppConf().setMapColor("" + appConfigPage3.getMapColor() + "");
             myBT.getAppConf().setMapType("" + appConfigPage3.getMapType() + "");
             myBT.getAppConf().setManualRecording(appConfigPage3.getAllowManualRecording());
+            myBT.getAppConf().setUseOpenMap(appConfigPage3.getUseOpenMap());
         }
         myBT.getAppConf().SaveConfig();
         invalidateOptionsMenu();
@@ -280,6 +281,7 @@ public class AppConfigActivity extends AppCompatActivity {
             appConfigPage3.setMapColor(Integer.parseInt(myBT.getAppConf().getMapColor()));
             appConfigPage3.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
             appConfigPage3.setAllowManualRecording(myBT.getAppConf().getManualRecording());
+            appConfigPage3.setUseOpenMap(myBT.getAppConf().getUseOpenMap());
         }
     }
 
@@ -844,7 +846,7 @@ public class AppConfigActivity extends AppCompatActivity {
 
     public static class Tab3Fragment extends Fragment {
         private Spinner spMapColor, spMapType;
-        private CheckBox cbAllowManualRecording;
+        private CheckBox cbAllowManualRecording, cbUseOpenMap;
         private boolean ViewCreated = false;
         private ConsoleApplication BT;
 
@@ -876,6 +878,12 @@ public class AppConfigActivity extends AppCompatActivity {
         public void setAllowManualRecording(boolean value) {
             cbAllowManualRecording.setChecked(value);
         }
+
+        public Boolean getUseOpenMap() { return cbUseOpenMap.isChecked();}
+
+        public void setUseOpenMap(boolean value) {
+            cbUseOpenMap.setChecked(value);
+        }
         public boolean isViewCreated() {
             return ViewCreated;
         }
@@ -899,6 +907,9 @@ public class AppConfigActivity extends AppCompatActivity {
             // allow manual recording
             cbAllowManualRecording = (CheckBox) view.findViewById(R.id.checkBoxAllowManualRecording);
             cbAllowManualRecording.setChecked(BT.getAppConf().getManualRecording());
+            //use OpnMap or GoogleMap
+            cbUseOpenMap = (CheckBox) view.findViewById(R.id.checkBoxUseOpenMap);
+            cbUseOpenMap.setChecked(BT.getAppConf().getUseOpenMap());
             ViewCreated = true;
             return view;
         }

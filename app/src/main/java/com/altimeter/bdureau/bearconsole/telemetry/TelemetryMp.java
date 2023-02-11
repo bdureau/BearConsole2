@@ -74,7 +74,8 @@ public class TelemetryMp extends AppCompatActivity {
     AltimeterMpFlightFragment statusPage0 = null;
     AltimeterInfoFragment statusPage1 = null;
     GPSStatusFragment statusPage2 = null;
-    GPSMapStatusFragment statusPage3 = null;
+    GPSGoogleMapStatusFragment statusPage3 = null;
+    GPSOpenMapStatusFragment statusPage4 = null;
 
     Marker marker, markerDest;
     Polyline polyline1 = null;
@@ -626,14 +627,19 @@ public class TelemetryMp extends AppCompatActivity {
         statusPage0 = new AltimeterMpFlightFragment(myBT);
         statusPage1 = new AltimeterInfoFragment(myBT);
         statusPage2 = new GPSStatusFragment(myBT);
-        statusPage3 = new GPSMapStatusFragment(myBT, viewPager);
+        statusPage3 = new GPSGoogleMapStatusFragment(myBT, viewPager);
+        statusPage4 = new GPSOpenMapStatusFragment(myBT, viewPager);
 
         adapter.addFragment(statusPage0, "TAB0");
         adapter.addFragment(statusPage1, "TAB1");
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
             adapter.addFragment(statusPage2, "TAB2");
-            adapter.addFragment(statusPage3, "TAB3");
+            if(!myBT.getAppConf().getUseOpenMap()) {
+                adapter.addFragment(statusPage3, "TAB3");
+            } else {
+                adapter.addFragment(statusPage4, "TAB3");
+            }
         }
 
         linearDots = findViewById(R.id.idAltiStatusLinearDots);
@@ -720,7 +726,7 @@ public class TelemetryMp extends AppCompatActivity {
                     statusPage2.setTelLatitudeValue(latitude + "");
                     statusPage2.setTelLongitudeValue(longitude + "");
                 }
-                if (statusPage3.getlMap() != null) {
+                /*if (statusPage3.getlMap() != null) {
                     LatLng latLng = new LatLng(latitude, longitude);
                     if (marker != null) {
                         marker.setPosition(latLng);
@@ -751,6 +757,15 @@ public class TelemetryMp extends AppCompatActivity {
                         statusPage3.getlMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, statusPage3.getlMap().getCameraPosition().zoom));
                     else
                         statusPage3.getlMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                }*/
+                if (!myBT.getAppConf().getUseOpenMap()) {
+                    if (statusPage3 != null)
+                        if (statusPage3.getlMap() != null) {
+                            statusPage3.updateLocation(latitude, longitude, rocketLatitude, rocketLongitude);
+                        }
+                } else {
+                    if (statusPage4 != null)
+                        statusPage4.updateLocation(latitude, longitude, rocketLatitude, rocketLongitude);
                 }
             }
         }

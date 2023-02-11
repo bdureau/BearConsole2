@@ -41,7 +41,8 @@ import com.altimeter.bdureau.bearconsole.config.ConfigLora;
 import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
 import com.altimeter.bdureau.bearconsole.connection.TestConnection;
 import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatus;
-import com.altimeter.bdureau.bearconsole.telemetry.RocketTrack;
+import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackGoogleMap;
+import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackOpenMap;
 import com.altimeter.bdureau.bearconsole.telemetry.Telemetry;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryMp;
 import com.google.android.gms.appindexing.Action;
@@ -270,7 +271,13 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.clearInput();
                     myBT.write("y1;".toString());
                 }
-                Intent i = new Intent(MainScreenActivity.this, RocketTrack.class);
+                Intent i = null;
+                if (myBT.getAppConf().getUseOpenMap()) {
+                    i = new Intent(MainScreenActivity.this, RocketTrackOpenMap.class);
+                } else {
+                    i = new Intent(MainScreenActivity.this, RocketTrackGoogleMap.class);
+                }
+
                 startActivity(i);
             }
         });

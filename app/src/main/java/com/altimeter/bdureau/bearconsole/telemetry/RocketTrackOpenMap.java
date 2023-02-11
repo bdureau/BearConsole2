@@ -6,6 +6,7 @@ package com.altimeter.bdureau.bearconsole.telemetry;
  **/
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,53 +18,54 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+import androidx.preference.PreferenceManager;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polyline;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
-public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback {
-    SupportMapFragment mapFragment;
-    GoogleMap mMap;
-    Marker marker, markerDest;
-    Polyline polyline1 = null;
+public class RocketTrackOpenMap extends AppCompatActivity {
+    private MapView mMap= null;
+    Marker marker,markerDest;
+    Polyline polyline= null;
+    IMapController mapController  = null;
     Thread altiStatus;
     boolean status = true;
     Double rocketLatitude=48.8698, rocketLongitude=2.2190;
-    TextView textViewRecording;
 
-    Button btnDismiss, butShareMap, butMapType;
+    Button btnDismiss, butShareMap;
     LocationBroadCastReceiver receiver=null;
-    LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
-    boolean recording = false;
 
-    Integer MapType;
+    GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
+
 
     private static ConsoleApplication myBT;
     Handler handler = new Handler() {
@@ -111,19 +113,8 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         receiver = new LocationBroadCastReceiver();
         myBT = (ConsoleApplication) getApplication();
-        setContentView(R.layout.activity_rocket_track);
+        setContentView(R.layout.activity_rocket_track_open_map);
         myBT.setHandler(handler);
-
-        MapType = Integer.parseInt(myBT.getAppConf().getMapType());
-        // See if we are called from the status activity
-        try {
-            Intent newint = getIntent();
-
-            if (newint.getStringExtra("recording").equals("true"))
-                recording = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
             rocketLatitude = Double.parseDouble(myBT.getAppConf().getRocketLatitude());
@@ -166,17 +157,30 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
                     .setNegativeButton(R.string.Cancel,null)
                     .show();
         }
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map1);
-        mapFragment.getMapAsync(this);
+
+        mMap = (MapView) findViewById(R.id.mapOpenMap);
+        mMap.setTileSource(TileSourceFactory.MAPNIK);
+        mMap.setBuiltInZoomControls(true);
+        mMap.setMultiTouchControls(true);
+
+        marker = new Marker(mMap);
+        marker.setIcon(getResources().getDrawable(R.drawable.ic_person_map));
+        mMap.getOverlays().add(marker);
+
+        markerDest = new Marker(mMap);
+        markerDest.setIcon(getResources().getDrawable(R.drawable.ic_rocket_map));
+        mMap.getOverlays().add(markerDest);
+
+        polyline = new Polyline();
+        polyline.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
+        polyline.setWidth(10);
+        mMap.getOverlays().add(polyline);
+
+        mapController = mMap.getController();
+        mapController.setZoom(18.0);
 
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         butShareMap = (Button) findViewById(R.id.butShareMap);
-        butMapType = (Button) findViewById(R.id.butMap);
-        textViewRecording = (TextView) findViewById(R.id.textViewRecording);
-
-        if(!recording)
-            textViewRecording.setVisibility(View.INVISIBLE);
 
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,18 +197,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
                 takeMapScreenshot();
             }
         });
-        butMapType.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                MapType = MapType + 1;
-                if(MapType > 4)
-                    MapType = 0;
 
-                mMap.setMapType(MapType);
-            }
-        });
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -220,7 +213,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
         altiStatus.start();
     }
 
-    private void takeMapScreenshot() {
+    /*private void takeMapScreenshot() {
         GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
             Bitmap bitmap;
 
@@ -232,12 +225,11 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
             }
         };
         mMap.snapshot(callback);
-    }
+    }*/
 
-    private void shareScreenshot(Bitmap bitmap) {
+    /*private void shareScreenshot(Bitmap bitmap) {
         try {
             // Save the screenshot to a file
-            //String fileName = "screenshot.jpg";
             String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
             Uri fileUri = Uri.parse(filePath);
             // Share the screenshot
@@ -249,13 +241,60 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
             Toast.makeText(this, "Error saving/sharing Map screenshot", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }*/
+    private  void takeMapScreenshot() {
+        Date date = new Date();
+        CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
+
+        try {
+            File mainDir = new File(
+                    this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FilShare");
+            if (!mainDir.exists()) {
+                boolean mkdir = mainDir.mkdir();
+            }
+
+            String path = mainDir + "/" + "AltiMultiCurve" + "-" + format + ".jpeg";
+            findViewById(android.R.id.content).getRootView().setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(findViewById(android.R.id.content).getRootView().getDrawingCache());
+            findViewById(android.R.id.content).getRootView().setDrawingCacheEnabled(false);
+
+
+            File imageFile = new File(path);
+            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            shareScreenShot(imageFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private  void shareScreenShot(File imageFile ) {
+        Log.d("Package Name", "Package Name" + this.getPackageName());
+        Uri uri = FileProvider.getUriForFile(
+                this,
+                this.getPackageName() +  ".provider",
+                imageFile);
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setType("image/*");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, "BearConsole has shared with you some info");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+
+        try {
+            this.startActivity(Intent.createChooser(intent, "Share With"));
+        } catch (ActivityNotFoundException e) {
+            //Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
+        }
     }
     private void startService() {
 
         IntentFilter filter = new IntentFilter("ACT_LOC");
         registerReceiver(receiver, filter);
 
-        Intent intent = new Intent( RocketTrack.this, LocationService.class);
+        Intent intent = new Intent( RocketTrackOpenMap.this, LocationService.class);
         startService(intent);
     }
 
@@ -297,7 +336,11 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onResume() {
         super.onResume();
-
+        Configuration.getInstance().load(getApplicationContext(),
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
+        if (mMap != null) {
+            mMap.onResume();
+        }
         if(myBT.getConnected() && !status) {
             myBT.flush();
             myBT.clearInput();
@@ -310,7 +353,11 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onPause() {
         super.onPause();
-
+        Configuration.getInstance().save(getApplicationContext(),
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
+        if (mMap != null) {
+            mMap.onPause();
+        }
         if (receiver !=null) {
             try {
                 unregisterReceiver(receiver);
@@ -320,25 +367,38 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
             receiver = null;
         }
     }
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        if(this.mMap == null) {
-            this.mMap = googleMap;
-            //this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-            this.mMap.setMapType(MapType);
-        }
-    }
 
     public class LocationBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d ("coordinate",intent.getAction());
+
+
+            dest = new GeoPoint(rocketLatitude, rocketLongitude);
             if(intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
-                //Toast.makeText(RocketTrack.this, "latitude is:" + latitude + " longitude is: " + longitude, Toast.LENGTH_LONG).show();
                 Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
-                if(mMap != null) {
+                if(mMap !=null){
+
+                    GeoPoint latLng = new GeoPoint(latitude, longitude);
+                    mapController.setCenter(latLng);
+                    if(marker != null) {
+                       marker.setPosition(latLng);
+                       marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+                    }
+                    if(markerDest != null) {
+                        markerDest.setPosition(dest);
+                    }
+
+                    if (polyline != null) {
+                        ArrayList<GeoPoint> pathPoints=new ArrayList();
+                        pathPoints.add(latLng);
+                        pathPoints.add(dest);
+                        polyline.setPoints(pathPoints);
+                    }
+                }
+                /*if(mMap != null) {
                     LatLng latLng = new LatLng(latitude, longitude);
                     if(marker != null) {
                         marker.setPosition(latLng);
@@ -377,7 +437,7 @@ public class RocketTrack extends AppCompatActivity implements OnMapReadyCallback
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, mMap.getCameraPosition().zoom));
                     else
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                }
+                }*/
             }
         }
     }

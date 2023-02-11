@@ -66,7 +66,8 @@ public class AltimeterStatus extends AppCompatActivity {
     AltimeterInfoFragment statusPage1 = null;
     AltimeterOutputFragment statusPage1bis = null;
     GPSStatusFragment statusPage2 = null;
-    GPSMapStatusFragment statusPage3 = null;
+    GPSGoogleMapStatusFragment statusPage3 = null;
+    GPSOpenMapStatusFragment statusPage4 = null;
 
     Marker marker, markerDest;
     Polyline polyline1 = null;
@@ -238,6 +239,7 @@ public class AltimeterStatus extends AppCompatActivity {
         recording = savedInstanceState.getBoolean("RECORDING_KEY");
         status = savedInstanceState.getBoolean("STATUS_KEY");
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -521,6 +523,7 @@ public class AltimeterStatus extends AppCompatActivity {
         super.onPause();
         Log.d(TAG, "onPause()");
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -563,14 +566,20 @@ public class AltimeterStatus extends AppCompatActivity {
         adapter = new SectionsStatusPageAdapter(getSupportFragmentManager());
         statusPage1 = new AltimeterInfoFragment(myBT);
         statusPage1bis = new AltimeterOutputFragment(myBT);
-        statusPage2 = new GPSStatusFragment(myBT);
-        statusPage3 = new GPSMapStatusFragment(myBT, viewPager);
 
         adapter.addFragment(statusPage1, "TAB1");
         adapter.addFragment(statusPage1bis, "TAB1BIS");
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+            statusPage2 = new GPSStatusFragment(myBT);
             adapter.addFragment(statusPage2, "TAB2");
-            adapter.addFragment(statusPage3, "TAB3");
+
+            if (!myBT.getAppConf().getUseOpenMap()) {
+                statusPage3 = new GPSGoogleMapStatusFragment(myBT, viewPager);
+                adapter.addFragment(statusPage3, "TAB3");
+            } else {
+                statusPage4 = new GPSOpenMapStatusFragment(myBT, viewPager);
+                adapter.addFragment(statusPage4, "TAB4");
+            }
         }
 
         linearDots = findViewById(R.id.idAltiStatusLinearDots);
@@ -651,43 +660,20 @@ public class AltimeterStatus extends AppCompatActivity {
             if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
-                //Log.d("coordinate", "latitude is:" + latitude + " longitude is: " + longitude);
+
                 if (statusPage2 != null) {
                     statusPage2.setTelLatitudeValue(latitude + "");
                     statusPage2.setTelLongitudeValue(longitude + "");
                 }
 
-                if (statusPage3.getlMap() != null) {
-                    LatLng latLng = new LatLng(latitude, longitude);
-                    if (marker != null) {
-                        marker.setPosition(latLng);
-                    } else {
-                        BitmapDescriptor manIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_person_map);
-                        marker = statusPage3.getlMap().addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
-                    }
-
-                    if (markerDest != null) {
-                        markerDest.setPosition(dest);
-                    } else {
-                        BitmapDescriptor rocketIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_rocket_map);
-                        markerDest = statusPage3.getlMap().addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(dest).icon(rocketIcon));
-                    }
-                    List<LatLng> coord;
-                    coord = new ArrayList();
-
-                    dest = new LatLng(rocketLatitude, rocketLongitude);
-                    coord.add(0, dest);
-
-                    coord.add(1, latLng);
-                    if (polyline1 == null)
-                        polyline1 = statusPage3.getlMap().addPolyline(new PolylineOptions().clickable(false));
-                    //Get the line color from the config
-                    polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
-                    polyline1.setPoints(coord);
-                    if (statusPage3.getlMap().getCameraPosition().zoom > 10)
-                        statusPage3.getlMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, statusPage3.getlMap().getCameraPosition().zoom));
-                    else
-                        statusPage3.getlMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                if (!myBT.getAppConf().getUseOpenMap()) {
+                    if (statusPage3 != null)
+                        if (statusPage3.getlMap() != null) {
+                            statusPage3.updateLocation(latitude, longitude, rocketLatitude, rocketLongitude);
+                        }
+                } else {
+                    if (statusPage4 != null)
+                        statusPage4.updateLocation(latitude, longitude, rocketLatitude, rocketLongitude);
                 }
             }
         }
