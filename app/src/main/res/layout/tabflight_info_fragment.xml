@@ -245,6 +245,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/butExportToCsv"
-        android:text="Export and Share" />
+        android:text="@string/export_and_share" />
 
 </RelativeLayout>

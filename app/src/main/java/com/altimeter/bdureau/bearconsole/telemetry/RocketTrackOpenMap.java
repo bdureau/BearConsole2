@@ -213,35 +213,6 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         altiStatus.start();
     }
 
-    /*private void takeMapScreenshot() {
-        GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
-            Bitmap bitmap;
-
-            @Override
-            public void onSnapshotReady(Bitmap snapshot) {
-                // Callback is called from the main thread, so we can modify the ImageView safely.
-                bitmap = snapshot;
-                shareScreenshot(bitmap);
-            }
-        };
-        mMap.snapshot(callback);
-    }*/
-
-    /*private void shareScreenshot(Bitmap bitmap) {
-        try {
-            // Save the screenshot to a file
-            String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
-            Uri fileUri = Uri.parse(filePath);
-            // Share the screenshot
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("image/*");
-            share.putExtra(Intent.EXTRA_STREAM, fileUri);
-            startActivity(Intent.createChooser(share, "Share Map screenshot"));
-        } catch (Exception e) {
-            Toast.makeText(this, "Error saving/sharing Map screenshot", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-    }*/
     private  void takeMapScreenshot() {
         Date date = new Date();
         CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
@@ -280,11 +251,11 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         intent.setAction(Intent.ACTION_SEND);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "BearConsole has shared with you some info");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.bearconsole_has_shared3));
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         try {
-            this.startActivity(Intent.createChooser(intent, "Share With"));
+            this.startActivity(Intent.createChooser(intent, getString(R.string.share_with3)));
         } catch (ActivityNotFoundException e) {
             //Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
         }

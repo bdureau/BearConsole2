@@ -163,7 +163,7 @@ public class FlightViewGoogleMapFragment extends Fragment {
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setType("image/*");
             share.putExtra(Intent.EXTRA_STREAM, fileUri);
-            startActivity(Intent.createChooser(share, "Share Map screenshot"));
+            startActivity(Intent.createChooser(share, getString(R.string.share_map_screenshot)));
         } catch (Exception e) {
             //Toast.makeText(this, "Error saving/sharing Map screenshot", Toast.LENGTH_SHORT).show();
             e.printStackTrace();

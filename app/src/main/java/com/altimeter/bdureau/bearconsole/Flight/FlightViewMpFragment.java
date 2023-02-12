@@ -96,12 +96,12 @@ public class FlightViewMpFragment extends Fragment {
 
         float timeFactor = 1;
         if(maxTime > 10000){
-            graphTimeUnits = "time (s)";
+            graphTimeUnits = getString(R.string.unit_time_seconde);
             timeFactor =0.001f;
         }
 
         if(maxTime > 600000){
-            graphTimeUnits = "time (min)";
+            graphTimeUnits = getString(R.string.unit_time_minutes);
             timeFactor =0.001f/60;
         }
 

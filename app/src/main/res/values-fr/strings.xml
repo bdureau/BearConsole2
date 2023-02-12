@@ -424,8 +424,8 @@
     <string name="gps_altitude">Altitude GPS</string>
     <string name="gps_speed">Vitesse GPS</string>
     <string name="location_age">age Localisation</string>
-    <string name="time_sat_acquisition">Time sat acquisition</string>
-    <string name="use_telemetryport">Utiliser le port telemetrie</string>
+    <string name="time_sat_acquisition">Temps acquisition sat</string>
+    <string name="use_telemetryport">Utiliser le port telémetrie</string>
     <string name="lora_configure_module_title">Configuration du module Lora</string>
     <string name="lora_module_channel">Canal:</string>
     <string name="lora_module_trans_mode">Trans mode:</string>
@@ -450,10 +450,10 @@
     <string name="lora_module_address_range">L\'addresse doit etre entre 0 et 65535</string>
     <string name="lora_module_address_invalid">L\'addresse n\'est pas valide</string>
     <string name="lora_module_updating_address_msg">Mise à jour de l\'addresse du module</string>
-    <string name="lora_module_updating_msg2">Updating serial speed, parity and air rate</string>
-    <string name="lora_module_updating_msg3">updating packet , RSSI noise and transmitting power</string>
-    <string name="lora_module_updating_msg4">updating channel</string>
-    <string name="lora_module_updating_msg5">updating RSSI Byte, trans Mode, LBT and WOR Cycle</string>
+    <string name="lora_module_updating_msg2">Mise à jour serial speed, parity et air rate</string>
+    <string name="lora_module_updating_msg3">Mise à jour packet , RSSI noise et transmitting power</string>
+    <string name="lora_module_updating_msg4">Mise à jour channel</string>
+    <string name="lora_module_updating_msg5">Mise à jour RSSI Byte, trans Mode, LBT et WOR Cycle</string>
     <string name="lora_module_updating_msg6">mise à jour key</string>
     <string name="lora_module_connecting_msg">Tentative de connexion au module Lora</string>
 
@@ -461,5 +461,37 @@
     <string name="gps_network_not_enabled">Voulez vous authoriser l\'utilisation de votre GPS?</string>
     <string name="open_location_settings">OK</string>
     <string name="Cancel">Annuler</string>
+    <string name="tel_latitude">Latitude Tel</string>
+    <string name="tel_longitude">Longitude Tel</string>
+    <string name="altimeter_name">Nom altimétre</string>
+    <string name="unit_time_seconde">temps (s)</string>
+    <string name="unit_time_minutes">temps (min)</string>
+    <string name="share_with">Partager avec</string>
+    <string name="bearconsole_has_shared">BearConsole a partagé avec vous des informations</string>
+    <string name="bearconsole_has_shared2">BearConsole a partagé avec vous des informations</string>
+    <string name="no_app_available">Pas d\'application disponible</string>
+    <string name="share_map_screenshot">Partager une copie de la carte</string>
+    <string name="volts">(volts)</string>
+    <string name="mbar">(mbar)</string>
+    <string name="bear_console_has_shared3">BearConsole a partagé avec vous des informations</string>
+    <string name="share_with2">Partager avec</string>
+    <string name="no_app_available2">Pas d\'application disponible</string>
+    <string name="bearconsole_has_shared3">BearConsole a partagé avec vous des informations</string>
+    <string name="share_with3">Partager avec</string>
+    <string name="share_map_screenshot2">Partager une copie de la carte</string>
+    <string name="error_saving_map">Erreur de sauvegarde/partage de la copie de carte</string>
+    <string name="permission_need_to_be_granted">il est necessaire de donner la permission</string>
+    <string name="use_openmap">Utiliser OpenMap</string>
+    <string name="allow_manual_recording">Authoriser l\'enregistrement manuel</string>
+    <string name="map_type">Type de carte</string>
+    <string name="map_line_color">Couleur ligne carte</string>
+    <string name="altigps_config">Configuration AltiGPS</string>
+    <string name="firmware">Firmware:</string>
+    <string name="flash_speed_baud">Vitesse Flash(Baud):</string>
+    <string name="firmware_info">Info Firmware</string>
+    <string name="map">Carte</string>
+    <string name="track">Track</string>
+    <string name="flash_nfirmware">Flash\nfirmware</string>
+    <string name="export_and_share">Exporter partager</string>
 
 </resources>

@@ -192,11 +192,11 @@ public class FlightViewOpenMapFragment extends Fragment {
         intent.setAction(Intent.ACTION_SEND);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "BearConsole has shared with you some info");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.bearconsole_has_shared));
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         try {
-            this.startActivity(Intent.createChooser(intent, "Share With"));
+            this.startActivity(Intent.createChooser(intent, getString(R.string.share_with)));
         } catch (ActivityNotFoundException e) {
             //Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
         }

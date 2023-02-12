@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:text="AltiGPS config"
+        android:text="@string/altigps_config"
         android:elegantTextHeight="true"
         android:fontFamily="sans-serif-black"
         android:gravity="center_horizontal"
@@ -32,7 +32,7 @@
         android:layout_below="@+id/textViewConfigTitleTab3"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
-        android:text="Map Line Color" />
+        android:text="@string/map_line_color" />
 
     <Spinner
         android:id="@+id/spinnerMapColor"
@@ -49,7 +49,7 @@
         android:layout_below="@+id/textMapLineColor"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
-        android:text="Map Type" />
+        android:text="@string/map_type" />
 
     <Spinner
         android:id="@+id/spinnerMapType"
@@ -67,7 +67,7 @@
         android:layout_below="@+id/textMapType"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
-        android:text="Allow manual Recording"
+        android:text="@string/allow_manual_recording"
         />
 
     <CheckBox
@@ -86,7 +86,7 @@
         android:layout_below="@+id/textAllowManualRecording"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
-        android:text="Use OpenMap"
+        android:text="@string/use_openmap"
         />
 
     <CheckBox

@@ -21,7 +21,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textViewAltimeterModelLbl"
         android:theme="@style/ThemeOverlay.AppCompat.Light"
-        android:text="Firmware:" />
+        android:text="@string/firmware" />
     <Spinner
         android:id="@+id/spinnerFirmware"
         android:layout_width="175dp"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/imageAlti"
-        android:text="Flash speed(Baud):" />
+        android:text="@string/flash_speed_baud" />
 
     <Spinner
         android:id="@+id/spinnerBaud"
@@ -90,7 +90,7 @@
         android:layout_below="@+id/btDetect"
         android:layout_alignParentLeft="true"
         android:onClick="onClickFirmwareInfo"
-        android:text="Firmware info" />
+        android:text="@string/firmware_info" />
 
     <ScrollView
         android:id="@+id/scrollView1"

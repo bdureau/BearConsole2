@@ -146,7 +146,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tel Latitude"
+        android:text="@string/tel_latitude"
         android:id="@+id/txtViewTelLatitude"
         android:layout_below="@+id/txtViewTimeSat"
         android:layout_alignParentLeft="true"
@@ -162,7 +162,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tel Latitude"
+        android:text="@string/tel_longitude"
         android:id="@+id/txtViewTelLongitude"
         android:layout_below="@+id/txtViewTelLatitude"
         android:layout_alignParentLeft="true"

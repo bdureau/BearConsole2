@@ -164,7 +164,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         FlightName = newint.getStringExtra(FlightListActivity.SELECTED_FLIGHT);
         myflight = myBT.getFlightData();
         // get all the data that we have recorded for the current flight
-        allFlightData = null; //new XYSeriesCollection();
+        allFlightData = null;
         allFlightData = myflight.GetFlightData(FlightName);
 
         Log.d("numberOfCurves", "numberOfCurves:" + allFlightData.getSeries().size());
@@ -193,10 +193,10 @@ public class FlightViewTabActivity extends AppCompatActivity {
             units[4] = "(" + getResources().getString(R.string.unit_feet_per_square_secs) + ")";
         }
         units[1] = "(°C)";
-        units[2] = "(mbar)";
+        units[2] = getString(R.string.mbar);
 
         if(numberOfCurves > 5)
-            units[5] = "(volts)";
+            units[5] = getString(R.string.volts);
 
 
         if (currentCurvesNames == null) {
@@ -410,7 +410,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
         try {
             File mainDir = new File(
-                    this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FilShare");
+                    this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FileShare");
             if (!mainDir.exists()) {
                 boolean mkdir = mainDir.mkdir();
             }
@@ -444,13 +444,13 @@ public class FlightViewTabActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_SEND);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "BearConsole has shared with you some info");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.bear_console_has_shared3));
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         try {
-            this.startActivity(Intent.createChooser(intent, "Share With"));
+            this.startActivity(Intent.createChooser(intent, getString(R.string.share_with2)));
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_app_available2), Toast.LENGTH_SHORT).show();
         }
     }
 

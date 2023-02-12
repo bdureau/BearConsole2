@@ -726,38 +726,7 @@ public class TelemetryMp extends AppCompatActivity {
                     statusPage2.setTelLatitudeValue(latitude + "");
                     statusPage2.setTelLongitudeValue(longitude + "");
                 }
-                /*if (statusPage3.getlMap() != null) {
-                    LatLng latLng = new LatLng(latitude, longitude);
-                    if (marker != null) {
-                        marker.setPosition(latLng);
-                    } else {
-                        BitmapDescriptor manIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_person_map);
-                        marker = statusPage3.getlMap().addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
-                    }
 
-                    if (markerDest != null) {
-                        markerDest.setPosition(dest);
-                    } else {
-                        BitmapDescriptor rocketIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_rocket_map);
-                        markerDest = statusPage3.getlMap().addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(dest).icon(rocketIcon));
-                    }
-                    List<LatLng> coord;
-                    coord = new ArrayList();
-
-                    dest = new LatLng(rocketLatitude, rocketLongitude);
-                    coord.add(0, dest);
-
-                    coord.add(1, latLng);
-                    if (polyline1 == null)
-                        polyline1 = statusPage3.getlMap().addPolyline(new PolylineOptions().clickable(false));
-                    //Get the line color from the config
-                    polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
-                    polyline1.setPoints(coord);
-                    if (statusPage3.getlMap().getCameraPosition().zoom > 10)
-                        statusPage3.getlMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, statusPage3.getlMap().getCameraPosition().zoom));
-                    else
-                        statusPage3.getlMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                }*/
                 if (!myBT.getAppConf().getUseOpenMap()) {
                     if (statusPage3 != null)
                         if (statusPage3.getlMap() != null) {

@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Atimeter Name"
+        android:text="@string/altimeter_name"
         android:id="@+id/txtStatusAltiName"
         android:layout_below="@+id/txtViewTitle"
         android:layout_alignParentLeft="true"

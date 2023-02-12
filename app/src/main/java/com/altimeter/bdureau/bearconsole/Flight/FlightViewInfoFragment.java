@@ -364,13 +364,13 @@ public class FlightViewInfoFragment extends Fragment {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("file/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "BearConsole has shared with you some info");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.bearconsole_has_shared2));
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         try {
             this.startActivity(Intent.createChooser(intent, "Share With"));
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getContext(), "No App Available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.no_app_available), Toast.LENGTH_SHORT).show();
         }
     }
     /*

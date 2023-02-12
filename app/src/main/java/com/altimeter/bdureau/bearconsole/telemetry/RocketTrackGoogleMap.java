@@ -56,7 +56,6 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     Thread altiStatus;
     boolean status = true;
     Double rocketLatitude=48.8698, rocketLongitude=2.2190;
-    TextView textViewRecording;
 
     Button btnDismiss, butShareMap, butMapType;
     LocationBroadCastReceiver receiver=null;
@@ -173,10 +172,10 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         butShareMap = (Button) findViewById(R.id.butShareMap);
         butMapType = (Button) findViewById(R.id.butMap);
-        textViewRecording = (TextView) findViewById(R.id.textViewRecording);
+        //textViewRecording = (TextView) findViewById(R.id.textViewRecording);
 
-        if(!recording)
-            textViewRecording.setVisibility(View.INVISIBLE);
+        //if(!recording)
+        //    textViewRecording.setVisibility(View.INVISIBLE);
 
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,9 +243,9 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setType("image/*");
             share.putExtra(Intent.EXTRA_STREAM, fileUri);
-            startActivity(Intent.createChooser(share, "Share Map screenshot"));
+            startActivity(Intent.createChooser(share, getString(R.string.share_map_screenshot2)));
         } catch (Exception e) {
-            Toast.makeText(this, "Error saving/sharing Map screenshot", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_saving_map), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
@@ -290,7 +289,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startService();
                 } else {
-                    Toast.makeText(this, "permission need to be granted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.permission_need_to_be_granted), Toast.LENGTH_LONG).show();
                 }
         }
     }
@@ -336,7 +335,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             if(intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
-                //Toast.makeText(RocketTrack.this, "latitude is:" + latitude + " longitude is: " + longitude, Toast.LENGTH_LONG).show();
+
                 Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
                 if(mMap != null) {
                     LatLng latLng = new LatLng(latitude, longitude);
@@ -344,28 +343,22 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                         marker.setPosition(latLng);
                     } else {
                         MarkerOptions markerOptions = new MarkerOptions();
-                        //markerOptions.position(latLng);
                         BitmapDescriptor manIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_person_map);
                         marker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
-                        //marker = googleMap.addMarker(markerOptions);
                     }
 
                     if(markerDest != null) {
                         markerDest.setPosition(dest);
                     } else {
-                        //MarkerOptions markerOptions = new MarkerOptions();
-                        //markerOptions.position(dest);
                         BitmapDescriptor rocketIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_rocket_map);
                         markerDest = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(dest).icon(rocketIcon));
-                        //markerDest = googleMap.addMarker(markerOptions);
                     }
                     List<LatLng> coord;
                     coord = new ArrayList();
 
-                    //LatLng c = new LatLng((double) flightData.getSeries(3).getY(i) / 100000, (double) flightData.getSeries(4).getY(i) / 100000);
                     dest = new LatLng(rocketLatitude, rocketLongitude);
                     coord.add(0, dest);
-                    // coord.add(1, map.getCameraPosition().target);
+
                     coord.add(1, latLng);
                     if (polyline1 == null)
                         polyline1 = mMap.addPolyline(new PolylineOptions()

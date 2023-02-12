@@ -450,5 +450,37 @@
     <string name="gps_network_not_enabled">Do you want to enable your GPS?</string>
     <string name="open_location_settings">OK</string>
     <string name="Cancel">Cancel</string>
+    <string name="tel_latitude">Tel Latitude</string>
+    <string name="tel_longitude">Tel Longitude</string>
+    <string name="altimeter_name">Altimeter Name</string>
+    <string name="unit_time_seconde">time (s)</string>
+    <string name="unit_time_minutes">time (min)</string>
+    <string name="share_with">Share With</string>
+    <string name="bearconsole_has_shared">BearConsole has shared with you some info</string>
+    <string name="bearconsole_has_shared2">BearConsole has shared with you some info</string>
+    <string name="no_app_available">No App Available</string>
+    <string name="share_map_screenshot">Share Map screenshot</string>
+    <string name="volts">(volts)</string>
+    <string name="mbar">(mbar)</string>
+    <string name="bear_console_has_shared3">BearConsole has shared with you some info</string>
+    <string name="share_with2">Share With</string>
+    <string name="no_app_available2">No App Available</string>
+    <string name="bearconsole_has_shared3">BearConsole has shared with you some info</string>
+    <string name="share_with3">Share With</string>
+    <string name="share_map_screenshot2">Share Map screenshot</string>
+    <string name="error_saving_map">Error saving/sharing Map screenshot</string>
+    <string name="permission_need_to_be_granted">permission need to be granted</string>
+    <string name="use_openmap">Use OpenMap</string>
+    <string name="allow_manual_recording">Allow manual Recording</string>
+    <string name="map_type">Map Type</string>
+    <string name="map_line_color">Map Line Color</string>
+    <string name="altigps_config">AltiGPS config</string>
+    <string name="firmware">Firmware:</string>
+    <string name="flash_speed_baud">Flash speed(Baud):</string>
+    <string name="firmware_info">Firmware info</string>
+    <string name="map">Map</string>
+    <string name="track">Track</string>
+    <string name="flash_nfirmware">Flash\nfirmware</string>
+    <string name="export_and_share">Export and Share</string>
 
 </resources>
