@@ -367,6 +367,12 @@ public class RocketTrackOpenMap extends AppCompatActivity {
                         pathPoints.add(latLng);
                         pathPoints.add(dest);
                         polyline.setPoints(pathPoints);
+                        if(mMap.getZoomLevelDouble() > 10.0) {
+                            mapController.setCenter(latLng);
+                        } else {
+                            mapController.setCenter(latLng);
+                            mapController.setZoom(15.0);
+                        }
                     }
                 }
                 /*if(mMap != null) {

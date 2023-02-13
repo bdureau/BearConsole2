@@ -25,6 +25,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
+import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -90,7 +91,7 @@ public class GPSOpenMapStatusFragment extends Fragment {
         mMap.getOverlays().add(polyline);
 
         mapController = mMap.getController();
-        mapController.setZoom(18.0);
+        mapController.setZoom(15.0);
 
         butBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +152,13 @@ public class GPSOpenMapStatusFragment extends Fragment {
                 pathPoints.add(dest);
                 try  {
                     polyline.setPoints(pathPoints);
+                    //mMap.animate().
+                    if(mMap.getZoomLevelDouble() > 10.0) {
+                        mapController.setCenter(latLng);
+                    } else {
+                        mapController.setCenter(latLng);
+                        mapController.setZoom(15.0);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -164,7 +172,7 @@ public class GPSOpenMapStatusFragment extends Fragment {
 
         try {
             File mainDir = new File(
-                    this.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FilShare");
+                    this.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FileShare");
             if (!mainDir.exists()) {
                 boolean mkdir = mainDir.mkdir();
             }
@@ -196,11 +204,11 @@ public class GPSOpenMapStatusFragment extends Fragment {
         intent.setAction(Intent.ACTION_SEND);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "BearConsole has shared with you some info");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.bear_console_has_shared6));
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         try {
-            this.startActivity(Intent.createChooser(intent, "Share With"));
+            this.startActivity(Intent.createChooser(intent, getString(R.string.share_with6)));
         } catch (ActivityNotFoundException e) {
             //Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
         }

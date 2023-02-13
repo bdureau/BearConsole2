@@ -33,7 +33,7 @@ public class ShareHandler {
 
         try {
             File mainDir = new File(
-                    ctx.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FilShare");
+                    ctx.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FileShare");
             if (!mainDir.exists()) {
                 boolean mkdir = mainDir.mkdir();
             }
@@ -68,10 +68,10 @@ public class ShareHandler {
         intent.setAction(Intent.ACTION_SEND);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Altimulti has shared with you some info");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, ctx.getString(R.string.bearconsole_has_shared4));
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
-        Intent chooser = Intent.createChooser(intent, "Share File");
+        Intent chooser = Intent.createChooser(intent, ctx.getString(R.string.share_file4));
 
         List<ResolveInfo> resInfoList = ctx.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
 
@@ -81,9 +81,9 @@ public class ShareHandler {
         }
 
         try {
-            ctx.startActivity(Intent.createChooser(intent, "Share With"));
+            ctx.startActivity(Intent.createChooser(intent, ctx.getString(R.string.share_with4)));
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(ctx, "No App Available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx, ctx.getString(R.string.no_app_available4), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -24,6 +24,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 
 import org.afree.data.xy.XYSeriesCollection;
 import org.osmdroid.api.IMapController;
@@ -146,10 +147,13 @@ public class FlightViewOpenMapFragment extends Fragment {
 
         polyline.setPoints(pathPoints);
         IMapController mapController = mMap.getController();
-        mapController.setZoom(18.0);
+
         if(firstPoint !=null) {
             GeoPoint startPoint = new GeoPoint(firstPoint);
-            mapController.setCenter(startPoint);
+            if (pathPoints.size() > 0)
+                mapController.setCenter(pathPoints.get((int) (pathPoints.size()/2)));
+            mapController.setZoom(15.0);
+
         }
     }
 

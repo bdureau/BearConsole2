@@ -130,7 +130,7 @@ public class GPSGoogleMapStatusFragment extends Fragment {
             List<LatLng> coord;
             coord = new ArrayList();
 
-            dest = new LatLng(rocketLatitude, rocketLongitude);
+            dest = new LatLng(rocketLat, rocketLong);
             coord.add(0, dest);
 
             coord.add(1, latLng);
@@ -169,7 +169,7 @@ public class GPSGoogleMapStatusFragment extends Fragment {
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setType("image/*");
             share.putExtra(Intent.EXTRA_STREAM, fileUri);
-            startActivity(Intent.createChooser(share, "Share Map screenshot"));
+            startActivity(Intent.createChooser(share, getString(R.string.share_map_screenshot3)));
         } catch (Exception e) {
             //Toast.makeText(this, "Error saving/sharing Map screenshot", Toast.LENGTH_SHORT).show();
             e.printStackTrace();

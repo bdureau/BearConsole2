@@ -493,5 +493,13 @@
     <string name="track">Track</string>
     <string name="flash_nfirmware">Flash\nfirmware</string>
     <string name="export_and_share">Exporter partager</string>
+    <string name="bearconsole_has_shared4">BearConsole a partagé avec vous des informations</string>
+    <string name="share_map_screenshot3">Partager une copie de la carte</string>
+    <string name="share_with4">Partager avec</string>
+    <string name="share_file4">Partager Fichier</string>
+    <string name="no_app_available4">Pas d\'application disponible</string>
+    <string name="share_with5">Partager avec</string>
+    <string name="bear_console_has_shared6">BearConsole has shared with you some info</string>
+    <string name="share_with6">Share With</string>
 
 </resources>

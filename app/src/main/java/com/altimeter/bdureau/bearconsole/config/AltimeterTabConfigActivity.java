@@ -1682,9 +1682,9 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                     dropdownServoStayOn.setSelection(lAltiCfg.getServoStayOn());
                     dropdownServoSwitch.setSelection(lAltiCfg.getServoSwitch());
                 }
-                Log.d("UseTelemetryPort","before  getting config" );
+                //Log.d("UseTelemetryPort","before  getting config" );
                 dropdownUseTelemetryPort.setSelection(lAltiCfg.getUseTelemetryPort());
-                Log.d("UseTelemetryPort","after getting config" );
+                //Log.d("UseTelemetryPort","after getting config" );
             }
             ViewCreated = true;
             return view;

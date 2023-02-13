@@ -368,7 +368,7 @@ public class FlightViewInfoFragment extends Fragment {
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         try {
-            this.startActivity(Intent.createChooser(intent, "Share With"));
+            this.startActivity(Intent.createChooser(intent, getString(R.string.share_with5)));
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getContext(), getString(R.string.no_app_available), Toast.LENGTH_SHORT).show();
         }
