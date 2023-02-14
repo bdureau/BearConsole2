@@ -834,7 +834,7 @@ public class TelemetryMp extends AppCompatActivity {
         //open help screen
         if (id == R.id.action_help) {
             Intent i = new Intent(TelemetryMp.this, HelpActivity.class);
-            i.putExtra("help_file", "help_status_alti");
+            i.putExtra("help_file", "help_telemetry_alti");
             startActivity(i);
             return true;
         }

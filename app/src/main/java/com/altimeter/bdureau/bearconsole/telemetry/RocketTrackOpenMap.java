@@ -1,6 +1,7 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
 /**
  * @description: This will allow rocket tracking using the latest rocket altimeter position
+ * This is using the OpenMap
  *
  * @author: boris.dureau@neuf.fr
  **/
@@ -375,46 +376,6 @@ public class RocketTrackOpenMap extends AppCompatActivity {
                         }
                     }
                 }
-                /*if(mMap != null) {
-                    LatLng latLng = new LatLng(latitude, longitude);
-                    if(marker != null) {
-                        marker.setPosition(latLng);
-                    } else {
-                        MarkerOptions markerOptions = new MarkerOptions();
-                        //markerOptions.position(latLng);
-                        BitmapDescriptor manIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_person_map);
-                        marker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
-                        //marker = googleMap.addMarker(markerOptions);
-                    }
-
-                    if(markerDest != null) {
-                        markerDest.setPosition(dest);
-                    } else {
-                        //MarkerOptions markerOptions = new MarkerOptions();
-                        //markerOptions.position(dest);
-                        BitmapDescriptor rocketIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_rocket_map);
-                        markerDest = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(dest).icon(rocketIcon));
-                        //markerDest = googleMap.addMarker(markerOptions);
-                    }
-                    List<LatLng> coord;
-                    coord = new ArrayList();
-
-                    //LatLng c = new LatLng((double) flightData.getSeries(3).getY(i) / 100000, (double) flightData.getSeries(4).getY(i) / 100000);
-                    dest = new LatLng(rocketLatitude, rocketLongitude);
-                    coord.add(0, dest);
-                    // coord.add(1, map.getCameraPosition().target);
-                    coord.add(1, latLng);
-                    if (polyline1 == null)
-                        polyline1 = mMap.addPolyline(new PolylineOptions()
-                                .clickable(false));
-                    //Get the line color from the config
-                    polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
-                    polyline1.setPoints(coord);
-                    if(mMap.getCameraPosition().zoom > 10)
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, mMap.getCameraPosition().zoom));
-                    else
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                }*/
             }
         }
     }

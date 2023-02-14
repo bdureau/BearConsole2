@@ -1,6 +1,7 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
 /**
  * @description: This will display altimeter MAP when using the altiGPS
+ * This is using OpenMap
  * @author: boris.dureau@neuf.fr
  **/
 import android.content.ActivityNotFoundException;
@@ -25,7 +26,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
-import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
