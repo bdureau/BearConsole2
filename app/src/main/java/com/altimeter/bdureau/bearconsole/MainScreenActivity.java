@@ -32,12 +32,12 @@ import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
 import com.altimeter.bdureau.bearconsole.Flight.FlightListActivity;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.altimeter.bdureau.bearconsole.config.AltimeterTabConfigActivity;
-import com.altimeter.bdureau.bearconsole.config.AppConfigActivity;
+import com.altimeter.bdureau.bearconsole.config.AppTabConfigActivity;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
-import com.altimeter.bdureau.bearconsole.config.Config3DR;
-import com.altimeter.bdureau.bearconsole.config.ConfigBT;
-import com.altimeter.bdureau.bearconsole.config.ConfigLora;
+import com.altimeter.bdureau.bearconsole.config.ConfigModules.Config3DR;
+import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigBT;
+import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigLora;
 import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
 import com.altimeter.bdureau.bearconsole.connection.TestConnection;
 import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatus;
@@ -670,7 +670,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
         //Open application configuration
         if (id == R.id.action_settings) {
-            Intent i = new Intent(MainScreenActivity.this, AppConfigActivity.class);
+            Intent i = new Intent(MainScreenActivity.this, AppTabConfigActivity.class);
             startActivity(i);
             return true;
         }

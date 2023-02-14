@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole.Flight;
+package com.altimeter.bdureau.bearconsole.Flight.FlightView;
 /**
  * @description: This will display altimeter flight summary
  * @author: boris.dureau@neuf.fr
@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.R;
 import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;

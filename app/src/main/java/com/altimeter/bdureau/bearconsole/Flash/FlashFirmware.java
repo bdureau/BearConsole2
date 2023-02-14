@@ -14,11 +14,9 @@ import android.os.AsyncTask;
 import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +36,6 @@ import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
 import com.altimeter.bdureau.bearconsole.ShareHandler;
-import com.altimeter.bdureau.bearconsole.config.ConfigBT;
 import com.physicaloid.lib.Boards;
 import com.physicaloid.lib.Physicaloid;
 
@@ -49,7 +46,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import static com.physicaloid.misc.Misc.toHexStr;
@@ -491,9 +487,9 @@ public class FlashFirmware extends AppCompatActivity {
         }
 
         dialogAppend("Starting ...");
-        CommandInterface cmd;
+        CommandInterfaceSTM32 cmd;
 
-        cmd = new CommandInterface(UpCallback, mPhysicaloid);
+        cmd = new CommandInterfaceSTM32(UpCallback, mPhysicaloid);
 
         cmd.open(Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]));
         int ret = cmd.initChip();

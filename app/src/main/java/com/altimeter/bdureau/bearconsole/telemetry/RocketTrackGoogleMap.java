@@ -1,9 +1,10 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
 /**
  * @description: This will allow rocket tracking using the latest rocket altimeter position
- *
+ * This class uses Google Map
  * @author: boris.dureau@neuf.fr
  **/
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -24,7 +25,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -55,10 +55,10 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     Polyline polyline1 = null;
     Thread altiStatus;
     boolean status = true;
-    Double rocketLatitude=48.8698, rocketLongitude=2.2190;
+    Double rocketLatitude = 48.8698, rocketLongitude = 2.2190;
 
     Button btnDismiss, butShareMap, butMapType;
-    LocationBroadCastReceiver receiver=null;
+    LocationBroadCastReceiver receiver = null;
     LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
     boolean recording = false;
 
@@ -72,11 +72,11 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                 case 18:
                     //Value 18 contains the latitude
                     Log.d("status", "latitude");
-                    setLatitudeValue((String) msg.obj );
+                    setLatitudeValue((String) msg.obj);
                     break;
                 case 19:
                     //Value 19 contains the longitude
-                    setLongitudeValue((String) msg.obj );
+                    setLongitudeValue((String) msg.obj);
                     break;
             }
         }
@@ -85,10 +85,10 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     private void setLatitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
             Double val = Double.parseDouble(value);
-            Log.d("track", "latitude:"+ value);
-            if(val !=0) {
+            Log.d("track", "latitude:" + value);
+            if (val != 0) {
                 rocketLatitude = Double.parseDouble(value) / 100000;
-                myBT.getAppConf().setRocketLatitude(""+ rocketLatitude);
+                myBT.getAppConf().setRocketLatitude("" + rocketLatitude);
 
             }
         }
@@ -97,14 +97,15 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     private void setLongitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
             Double val = Double.parseDouble(value);
-            Log.d("track", "longitude:"+ value);
-            if(val !=0) {
+            Log.d("track", "longitude:" + value);
+            if (val != 0) {
                 rocketLongitude = Double.parseDouble(value) / 100000;
-                myBT.getAppConf().setRocketLongitude(""+ rocketLongitude);
+                myBT.getAppConf().setRocketLongitude("" + rocketLongitude);
                 myBT.getAppConf().SaveConfig();
             }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,9 +131,9 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
             rocketLongitude = Double.parseDouble(myBT.getAppConf().getRocketLongitude());
 
-        if(Build.VERSION.SDK_INT>=23) {
-            if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             } else {
                 startService();
             }
@@ -140,19 +141,21 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             startService();
         }
 
-        LocationManager lm = (LocationManager)this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
 
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch(Exception ex) {}
+        } catch (Exception ex) {
+        }
 
         try {
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } catch(Exception ex) {}
+        } catch (Exception ex) {
+        }
 
-        if(!gps_enabled && !network_enabled) {
+        if (!gps_enabled && !network_enabled) {
             // notify user
             new AlertDialog.Builder(this)
                     .setMessage(R.string.gps_network_not_enabled)
@@ -162,7 +165,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         }
                     })
-                    .setNegativeButton(R.string.Cancel,null)
+                    .setNegativeButton(R.string.Cancel, null)
                     .show();
         }
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -184,21 +187,17 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             }
         });
 
-        butShareMap.setOnClickListener(new View.OnClickListener()
-        {
+        butShareMap.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 takeMapScreenshot();
             }
         });
-        butMapType.setOnClickListener(new View.OnClickListener()
-        {
+        butMapType.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 MapType = MapType + 1;
-                if(MapType > 4)
+                if (MapType > 4)
                     MapType = 0;
 
                 mMap.setMapType(MapType);
@@ -209,7 +208,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             public void run() {
                 while (true) {
                     if (!status) break;
-                    if (! myBT.getConnected()) break;
+                    if (!myBT.getConnected()) break;
                     myBT.ReadResult(10000);
                 }
             }
@@ -219,49 +218,21 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         altiStatus.start();
     }
 
-    private void takeMapScreenshot() {
-        GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
-            Bitmap bitmap;
 
-            @Override
-            public void onSnapshotReady(Bitmap snapshot) {
-                // Callback is called from the main thread, so we can modify the ImageView safely.
-                bitmap = snapshot;
-                shareScreenshot(bitmap);
-            }
-        };
-        mMap.snapshot(callback);
-    }
 
-    private void shareScreenshot(Bitmap bitmap) {
-        try {
-            // Save the screenshot to a file
-            //String fileName = "screenshot.jpg";
-            String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
-            Uri fileUri = Uri.parse(filePath);
-            // Share the screenshot
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("image/*");
-            share.putExtra(Intent.EXTRA_STREAM, fileUri);
-            startActivity(Intent.createChooser(share, getString(R.string.share_map_screenshot2)));
-        } catch (Exception e) {
-            Toast.makeText(this, getString(R.string.error_saving_map), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-    }
     private void startService() {
 
         IntentFilter filter = new IntentFilter("ACT_LOC");
         registerReceiver(receiver, filter);
 
-        Intent intent = new Intent( RocketTrackGoogleMap.this, LocationService.class);
+        Intent intent = new Intent(RocketTrackGoogleMap.this, LocationService.class);
         startService(intent);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (receiver !=null) {
+        if (receiver != null) {
             unregisterReceiver(receiver);
             receiver = null;
         }
@@ -281,23 +252,25 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             myBT.write("y0;\n".toString());
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 1:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startService();
                 } else {
                     Toast.makeText(this, getString(R.string.permission_need_to_be_granted), Toast.LENGTH_LONG).show();
                 }
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
 
-        if(myBT.getConnected() && !status) {
+        if (myBT.getConnected() && !status) {
             myBT.flush();
             myBT.clearInput();
 
@@ -306,11 +279,12 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             altiStatus.start();
         }
     }
+
     @Override
     protected void onPause() {
         super.onPause();
 
-        if (receiver !=null) {
+        if (receiver != null) {
             try {
                 unregisterReceiver(receiver);
             } catch (Exception e) {
@@ -319,11 +293,11 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             receiver = null;
         }
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        if(this.mMap == null) {
+        if (this.mMap == null) {
             this.mMap = googleMap;
-            //this.mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
             this.mMap.setMapType(MapType);
         }
     }
@@ -331,15 +305,15 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     public class LocationBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d ("coordinate",intent.getAction());
-            if(intent.getAction().equals("ACT_LOC")) {
+            Log.d("coordinate", intent.getAction());
+            if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
 
-                Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
-                if(mMap != null) {
+                Log.d("coordinate", "latitude is:" + latitude + " longitude is: " + longitude);
+                if (mMap != null) {
                     LatLng latLng = new LatLng(latitude, longitude);
-                    if(marker != null) {
+                    if (marker != null) {
                         marker.setPosition(latLng);
                     } else {
                         MarkerOptions markerOptions = new MarkerOptions();
@@ -347,7 +321,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                         marker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
                     }
 
-                    if(markerDest != null) {
+                    if (markerDest != null) {
                         markerDest.setPosition(dest);
                     } else {
                         BitmapDescriptor rocketIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_rocket_map);
@@ -366,12 +340,42 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                     //Get the line color from the config
                     polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
                     polyline1.setPoints(coord);
-                    if(mMap.getCameraPosition().zoom > 10)
+                    if (mMap.getCameraPosition().zoom > 10)
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, mMap.getCameraPosition().zoom));
                     else
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 }
             }
+        }
+    }
+
+    private void takeMapScreenshot() {
+        GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
+            Bitmap bitmap;
+
+            @Override
+            public void onSnapshotReady(Bitmap snapshot) {
+                // Callback is called from the main thread, so we can modify the ImageView safely.
+                bitmap = snapshot;
+                shareScreenshot(bitmap);
+            }
+        };
+        mMap.snapshot(callback);
+    }
+
+    private void shareScreenshot(Bitmap bitmap) {
+        try {
+            // Save the screenshot to a file
+            String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
+            Uri fileUri = Uri.parse(filePath);
+            // Share the screenshot
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("image/*");
+            share.putExtra(Intent.EXTRA_STREAM, fileUri);
+            startActivity(Intent.createChooser(share, getString(R.string.share_map_screenshot2)));
+        } catch (Exception e) {
+            Toast.makeText(this, getString(R.string.error_saving_map), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 }

@@ -38,6 +38,7 @@ import androidx.preference.PreferenceManager;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.ShareHandler;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -214,53 +215,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         altiStatus.start();
     }
 
-    private  void takeMapScreenshot() {
-        Date date = new Date();
-        CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
 
-        try {
-            File mainDir = new File(
-                    this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FilShare");
-            if (!mainDir.exists()) {
-                boolean mkdir = mainDir.mkdir();
-            }
-
-            String path = mainDir + "/" + "AltiMultiCurve" + "-" + format + ".jpeg";
-            findViewById(android.R.id.content).getRootView().setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(findViewById(android.R.id.content).getRootView().getDrawingCache());
-            findViewById(android.R.id.content).getRootView().setDrawingCacheEnabled(false);
-
-
-            File imageFile = new File(path);
-            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
-            fileOutputStream.flush();
-            fileOutputStream.close();
-            shareScreenShot(imageFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    private  void shareScreenShot(File imageFile ) {
-        Log.d("Package Name", "Package Name" + this.getPackageName());
-        Uri uri = FileProvider.getUriForFile(
-                this,
-                this.getPackageName() +  ".provider",
-                imageFile);
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.bearconsole_has_shared3));
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-
-        try {
-            this.startActivity(Intent.createChooser(intent, getString(R.string.share_with3)));
-        } catch (ActivityNotFoundException e) {
-            //Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
-        }
-    }
     private void startService() {
 
         IntentFilter filter = new IntentFilter("ACT_LOC");
@@ -379,4 +334,53 @@ public class RocketTrackOpenMap extends AppCompatActivity {
             }
         }
     }
+
+    private  void takeMapScreenshot() {
+        Date date = new Date();
+        CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
+
+        try {
+            File mainDir = new File(
+                    this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FilShare");
+            if (!mainDir.exists()) {
+                boolean mkdir = mainDir.mkdir();
+            }
+
+            String path = mainDir + "/" + "AltiMultiCurve" + "-" + format + ".jpeg";
+            findViewById(android.R.id.content).getRootView().setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(findViewById(android.R.id.content).getRootView().getDrawingCache());
+            findViewById(android.R.id.content).getRootView().setDrawingCacheEnabled(false);
+
+
+            File imageFile = new File(path);
+            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            //shareScreenShot(imageFile);
+            ShareHandler.shareScreenShot(imageFile, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /*private  void shareScreenShot(File imageFile ) {
+        Log.d("Package Name", "Package Name" + this.getPackageName());
+        Uri uri = FileProvider.getUriForFile(
+                this,
+                this.getPackageName() +  ".provider",
+                imageFile);
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setType("image/*");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.bearconsole_has_shared3));
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+
+        try {
+            this.startActivity(Intent.createChooser(intent, getString(R.string.share_with3)));
+        } catch (ActivityNotFoundException e) {
+            //Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
+        }
+    }*/
 }

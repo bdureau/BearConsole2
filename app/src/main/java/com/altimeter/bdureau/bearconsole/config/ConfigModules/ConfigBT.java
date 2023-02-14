@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole.config;
+package com.altimeter.bdureau.bearconsole.config.ConfigModules;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +25,7 @@ import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
 import com.altimeter.bdureau.bearconsole.ShareHandler;
+import com.altimeter.bdureau.bearconsole.config.AppTabConfigActivity;
 import com.physicaloid.lib.Physicaloid;
 import com.physicaloid.lib.usb.driver.uart.UartConfig;
 
@@ -779,7 +780,7 @@ public class ConfigBT extends AppCompatActivity {
 
         //open application settings screen
         if (id == R.id.action_settings) {
-            Intent i = new Intent(ConfigBT.this, AppConfigActivity.class);
+            Intent i = new Intent(ConfigBT.this, AppTabConfigActivity.class);
             startActivity(i);
             return true;
         }

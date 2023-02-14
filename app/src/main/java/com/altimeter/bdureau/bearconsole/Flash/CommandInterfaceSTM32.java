@@ -22,11 +22,11 @@ import java.io.InputStream;
 import static com.physicaloid.misc.Misc.toHexStr;
 
 
-public class CommandInterface {
+public class CommandInterfaceSTM32 {
     UploadSTM32CallBack mUpCallback;
     Physicaloid mPhysicaloid;
 
-    CommandInterface(UploadSTM32CallBack UpCallback, Physicaloid mPhysi) {
+    CommandInterfaceSTM32(UploadSTM32CallBack UpCallback, Physicaloid mPhysi) {
         mUpCallback = UpCallback;
         mPhysicaloid = mPhysi;
     }

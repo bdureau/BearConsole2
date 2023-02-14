@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole.Flight;
+package com.altimeter.bdureau.bearconsole.Flight.FlightView;
 /**
  * @description: This will display altimeter MAP that has been recorded when using the altiGPS
  * @author: boris.dureau@neuf.fr
@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

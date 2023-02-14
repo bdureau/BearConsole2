@@ -48,7 +48,7 @@
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <!--  <activity android:name=".Flight.FlightViewMapsActivity" />-->
          <activity
-             android:name=".config.Config3DR"
+             android:name=".config.ConfigModules.Config3DR"
              android:exported="true"
              android:screenOrientation="portrait">
              <intent-filter>
@@ -60,7 +60,7 @@
                  android:resource="@xml/device_filter" />
          </activity>
          <activity
-             android:name=".config.ConfigBT"
+             android:name=".config.ConfigModules.ConfigBT"
              android:exported="true"
              android:screenOrientation="portrait">
              <intent-filter>
@@ -72,7 +72,7 @@
                  android:resource="@xml/device_filter" />
          </activity>
          <activity
-             android:name=".config.ConfigLora"
+             android:name=".config.ConfigModules.ConfigLora"
              android:exported="true"
              android:screenOrientation="portrait">
              <intent-filter>
@@ -136,7 +136,7 @@
              android:label="@string/about_screen"
              android:screenOrientation="portrait" />
          <activity
-             android:name=".config.AppConfigActivity"
+             android:name=".config.AppTabConfigActivity"
              android:label="@string/titre_application_pref"
              android:screenOrientation="portrait" />
          <activity android:name=".Help.HelpActivity" />

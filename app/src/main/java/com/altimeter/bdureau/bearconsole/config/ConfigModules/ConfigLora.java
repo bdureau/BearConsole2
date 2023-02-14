@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole.config;
+package com.altimeter.bdureau.bearconsole.config.ConfigModules;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +23,7 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.ShareHandler;
+import com.altimeter.bdureau.bearconsole.config.AppTabConfigActivity;
 import com.physicaloid.lib.Physicaloid;
 /**
  * @description: This allows the configuration of Lora Ebytes telemetry modules from an Android
@@ -1019,7 +1020,7 @@ public class ConfigLora extends AppCompatActivity {
 
         //open application settings screen
         if (id == R.id.action_settings) {
-            Intent i = new Intent(ConfigLora.this, AppConfigActivity.class);
+            Intent i = new Intent(ConfigLora.this, AppTabConfigActivity.class);
             startActivity(i);
             return true;
         }

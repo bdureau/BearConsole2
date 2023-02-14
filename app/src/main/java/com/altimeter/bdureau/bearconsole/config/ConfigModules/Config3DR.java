@@ -1,9 +1,8 @@
-package com.altimeter.bdureau.bearconsole.config;
+package com.altimeter.bdureau.bearconsole.config.ConfigModules;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -26,6 +25,7 @@ import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
 import com.altimeter.bdureau.bearconsole.ShareHandler;
+import com.altimeter.bdureau.bearconsole.config.AppTabConfigActivity;
 import com.physicaloid.lib.Physicaloid;
 
 /**
@@ -1538,7 +1538,7 @@ public class Config3DR extends AppCompatActivity {
         }
         //open application settings screen
         if (id == R.id.action_settings) {
-            Intent i = new Intent(Config3DR.this, AppConfigActivity.class);
+            Intent i = new Intent(Config3DR.this, AppTabConfigActivity.class);
             startActivity(i);
             return true;
         }

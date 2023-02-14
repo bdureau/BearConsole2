@@ -76,17 +76,17 @@ public class TelemetryMp extends AppCompatActivity {
     private LinearLayout linearDots;
     public LocationBroadCastReceiver receiver = null;
     SectionsStatusPageAdapter adapter;
-    AltimeterMpFlightFragment statusPage0 = null;
-    AltimeterInfoFragment statusPage1 = null;
-    GPSStatusFragment statusPage2 = null;
-    GPSGoogleMapStatusFragment statusPage3 = null;
-    GPSOpenMapStatusFragment statusPage4 = null;
+    private AltimeterMpFlightFragment statusPage0 = null;
+    private AltimeterInfoFragment statusPage1 = null;
+    private GPSStatusFragment statusPage2 = null;
+    private GPSGoogleMapStatusFragment statusPage3 = null;
+    private GPSOpenMapStatusFragment statusPage4 = null;
 
-    Marker marker, markerDest;
-    Polyline polyline1 = null;
+    //Marker marker, markerDest;
+    //Polyline polyline1 = null;
     public Double rocketLatitude = 48.8698;
     public Double rocketLongitude = 2.2190;
-    LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
+    //LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
 
     ArrayList<Entry> yValues;
 
@@ -777,7 +777,7 @@ public class TelemetryMp extends AppCompatActivity {
 
     }
 
-    public void onClickStartTelemetry(View view) {
+    /*public void onClickStartTelemetry(View view) {
 
         telemetry = true;
 
@@ -799,19 +799,8 @@ public class TelemetryMp extends AppCompatActivity {
 
         rocketTelemetry = new Thread(r);
         rocketTelemetry.start();
-    }
+    }*/
 
-    public void onClickStopTelemetry(View view) {
-        myBT.write("h;".toString());
-
-        myBT.setExit(true);
-
-        telemetry = false;
-
-        myBT.clearInput();
-        myBT.flush();
-
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
