@@ -68,14 +68,14 @@ public class GPSGoogleMapStatusFragment extends Fragment {
         butMapType = (Button) view.findViewById(R.id.butMap);
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapStatus);
-        MapType = Integer.parseInt(myBT.getAppConf().getMapType());
+        MapType = myBT.getAppConf().getMapType();
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 if (mMap == null) {
                     mMap = googleMap;
-                    mMap.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
+                    mMap.setMapType(myBT.getAppConf().getMapType());
                 }
             }
         });
@@ -137,7 +137,7 @@ public class GPSGoogleMapStatusFragment extends Fragment {
             if (polyline1 == null)
                 polyline1 = mMap.addPolyline(new PolylineOptions().clickable(false));
             //Get the line color from the config
-            polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
+            polyline1.setColor(myBT.getAppConf().ConvertColor(myBT.getAppConf().getMapColor()));
             polyline1.setPoints(coord);
             if (mMap.getCameraPosition().zoom > 10)
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, mMap.getCameraPosition().zoom));

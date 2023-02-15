@@ -61,7 +61,7 @@ public class FlightListActivity extends AppCompatActivity {
                 i = new Intent(FlightListActivity.this, FlightViewTabActivity.class);
             } else {
                 // Make an intent to start next activity.
-                if (myBT.getAppConf().getGraphicsLibType().equals("0"))
+                if (myBT.getAppConf().getGraphicsLibType()==0)
                     i = new Intent(FlightListActivity.this, FlightViewActivity.class);
                 else
                     // i = new Intent(FlightListActivity.this, FlightViewMpActivity.class);

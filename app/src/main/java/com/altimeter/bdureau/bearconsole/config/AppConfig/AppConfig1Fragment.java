@@ -94,22 +94,24 @@ public class AppConfig1Fragment extends Fragment {
         this.spGraphicsLibType.setSelection(value);
     }
 
-    public String getAllowMainDrogue() {
-        if (cbAllowMainDrogue.isChecked())
+    public boolean getAllowMainDrogue() {
+        return cbAllowMainDrogue.isChecked();
+        /*if (cbAllowMainDrogue.isChecked())
             return "true";
         else
-            return "false";
+            return "false";*/
     }
 
     public void setAllowMainDrogue(boolean value) {
         cbAllowMainDrogue.setChecked(value);
     }
 
-    public String getFullUSBSupport() {
-        if (cbFullUSBSupport.isChecked())
+    public boolean getFullUSBSupport() {
+        return cbFullUSBSupport.isChecked();
+        /*if (cbFullUSBSupport.isChecked())
             return "true";
         else
-            return "false";
+            return "false";*/
     }
 
 
@@ -180,21 +182,21 @@ public class AppConfig1Fragment extends Fragment {
         //Allow only telemetry via USB
         cbFullUSBSupport = (CheckBox) view.findViewById(R.id.checkBoxFullUSBSupport);
 
-        spAppLanguage.setSelection(Integer.parseInt(BT.getAppConf().getApplicationLanguage()));
-        spAppUnit.setSelection(Integer.parseInt(BT.getAppConf().getUnits()));
-        spGraphColor.setSelection(Integer.parseInt(BT.getAppConf().getGraphColor()));
-        spGraphBackColor.setSelection(Integer.parseInt(BT.getAppConf().getGraphBackColor()));
+        spAppLanguage.setSelection(BT.getAppConf().getApplicationLanguage());
+        spAppUnit.setSelection(BT.getAppConf().getUnits());
+        spGraphColor.setSelection(BT.getAppConf().getGraphColor());
+        spGraphBackColor.setSelection(BT.getAppConf().getGraphBackColor());
 
-        spFontSize.setSelection((Integer.parseInt(BT.getAppConf().getFontSize()) - 8));
-        spBaudRate.setSelection(Integer.parseInt(BT.getAppConf().getBaudRate()));
-        spConnectionType.setSelection(Integer.parseInt(BT.getAppConf().getConnectionType()));
-        spGraphicsLibType.setSelection(Integer.parseInt(BT.getAppConf().getGraphicsLibType()));
-        if (BT.getAppConf().getAllowMultipleDrogueMain().equals("true")) {
+        spFontSize.setSelection((BT.getAppConf().getFontSize()) - 8);
+        spBaudRate.setSelection(BT.getAppConf().getBaudRate());
+        spConnectionType.setSelection(BT.getAppConf().getConnectionType());
+        spGraphicsLibType.setSelection(BT.getAppConf().getGraphicsLibType());
+        if (BT.getAppConf().getAllowMultipleDrogueMain()) {
             cbAllowMainDrogue.setChecked(true);
         } else {
             cbAllowMainDrogue.setChecked(false);
         }
-        if (BT.getAppConf().getFullUSBSupport().equals("true")) {
+        if (BT.getAppConf().getFullUSBSupport()) {
             cbFullUSBSupport.setChecked(true);
         } else {
             cbFullUSBSupport.setChecked(false);

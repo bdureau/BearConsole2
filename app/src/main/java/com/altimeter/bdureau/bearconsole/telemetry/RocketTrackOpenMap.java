@@ -61,7 +61,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
     IMapController mapController  = null;
     Thread altiStatus;
     boolean status = true;
-    Double rocketLatitude=48.8698, rocketLongitude=2.2190;
+    Float rocketLatitude=48.8698f, rocketLongitude=2.2190f;
 
     Button btnDismiss, butShareMap;
     LocationBroadCastReceiver receiver=null;
@@ -89,11 +89,11 @@ public class RocketTrackOpenMap extends AppCompatActivity {
 
     private void setLatitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
-            Double val = Double.parseDouble(value);
+            Float val = Float.parseFloat(value);
             Log.d("track", "latitude:"+ value);
             if(val !=0) {
-                rocketLatitude = Double.parseDouble(value) / 100000;
-                myBT.getAppConf().setRocketLatitude(""+ rocketLatitude);
+                rocketLatitude = Float.parseFloat(value) / 100000;
+                myBT.getAppConf().setRocketLatitude(rocketLatitude);
 
             }
         }
@@ -104,8 +104,8 @@ public class RocketTrackOpenMap extends AppCompatActivity {
             Double val = Double.parseDouble(value);
             Log.d("track", "longitude:"+ value);
             if(val !=0) {
-                rocketLongitude = Double.parseDouble(value) / 100000;
-                myBT.getAppConf().setRocketLongitude(""+ rocketLongitude);
+                rocketLongitude = Float.parseFloat(value) / 100000;
+                myBT.getAppConf().setRocketLongitude( rocketLongitude);
                 myBT.getAppConf().SaveConfig();
             }
         }
@@ -118,11 +118,11 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         setContentView(R.layout.activity_rocket_track_open_map);
         myBT.setHandler(handler);
 
-        if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLatitude = Double.parseDouble(myBT.getAppConf().getRocketLatitude());
+        //if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLatitude = myBT.getAppConf().getRocketLatitude(); //Double.parseDouble(myBT.getAppConf().getRocketLatitude());
 
-        if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLongitude = Double.parseDouble(myBT.getAppConf().getRocketLongitude());
+        //if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLongitude = myBT.getAppConf().getRocketLongitude();
 
         if(Build.VERSION.SDK_INT>=23) {
             if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
@@ -174,7 +174,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         mMap.getOverlays().add(markerDest);
 
         polyline = new Polyline();
-        polyline.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
+        polyline.setColor(myBT.getAppConf().ConvertColor(myBT.getAppConf().getMapColor()));
         polyline.setWidth(10);
         mMap.getOverlays().add(polyline);
 

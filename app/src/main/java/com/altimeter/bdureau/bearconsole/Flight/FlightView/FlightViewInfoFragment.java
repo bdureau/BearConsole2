@@ -121,7 +121,7 @@ public class FlightViewInfoFragment extends Fragment {
             numberOfCurves = 5;
         }
 
-        if (myBT.getAppConf().getUnits().equals("0")) {//meters
+        if (myBT.getAppConf().getUnits()==0) {//meters
             FEET_IN_METER = 1;
         } else {
             FEET_IN_METER = 3.28084;

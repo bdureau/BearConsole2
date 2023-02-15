@@ -38,88 +38,97 @@ public class AppConfig2Fragment extends Fragment {
         BT = lBT;
     }
 
-    public String getMainEvent() {
-        if (cbMainEvent.isChecked())
+    public boolean getMainEvent() {
+        return cbMainEvent.isChecked();
+        /*if (cbMainEvent.isChecked())
             return "true";
         else
-            return "false";
+            return "false";*/
     }
 
     public void setMainEvent(boolean value) {
         cbMainEvent.setChecked(value);
     }
 
-    public String getDrogueEvent() {
-        if (cbDrogueEvent.isChecked())
+    public boolean getDrogueEvent() {
+        return cbDrogueEvent.isChecked();
+        /*if (cbDrogueEvent.isChecked())
             return "true";
         else
-            return "false";
+            return "false";*/
     }
 
     public void setDrogueEvent(boolean value) {
         cbDrogueEvent.setChecked(value);
     }
 
-    public String getAltitudeEvent() {
-        if (cbAltitudeEvent.isChecked())
+    public boolean getAltitudeEvent() {
+        return cbAltitudeEvent.isChecked();
+        /*if (cbAltitudeEvent.isChecked())
             return "true";
         else
-            return "false";
+            return "false";*/
     }
 
     public void setAltitudeEvent(boolean value) {
         cbAltitudeEvent.setChecked(value);
     }
 
-    public String getLandingEvent() {
-        if (cbLandingEvent.isChecked())
+    public boolean getLandingEvent() {
+        return cbLandingEvent.isChecked();
+        /*if (cbLandingEvent.isChecked())
             return "true";
         else
-            return "false";
+            return "false";*/
     }
 
     public void setLandingEvent(boolean value) {
         cbLandingEvent.setChecked(value);
     }
 
-    public String getBurnoutEvent() {
-        if (cbBurnoutEvent.isChecked())
+    public boolean getBurnoutEvent() {
+        return cbBurnoutEvent.isChecked();
+        /*if (cbBurnoutEvent.isChecked())
             return "true";
         else
-            return "false";
+            return "false";*/
     }
 
     public void setBurnoutEvent(boolean value) {
         cbBurnoutEvent.setChecked(value);
     }
 
-    public String getWarningEvent() {
-        if (cbWarningEvent.isChecked())
+    public boolean getWarningEvent() {
+        return cbWarningEvent.isChecked();
+
+        /*if (cbWarningEvent.isChecked())
             return "true";
         else
-            return "false";
+            return "false";*/
     }
 
     public void setWarningEvent(boolean value) {
         cbWarningEvent.setChecked(value);
     }
 
-    public String getApogeeAltitude() {
-        if (cbApogeeAltitude.isChecked())
+    public boolean getApogeeAltitude() {
+        return cbApogeeAltitude.isChecked();
+        /*if (cbApogeeAltitude.isChecked())
             return "true";
         else
-            return "false";
+            return "false";*/
     }
 
     public void setApogeeAltitude(boolean value) {
         cbApogeeAltitude.setChecked(value);
     }
 
-    public String getMainAltitude() {
-        if (cbMainAltitude.isChecked())
+    public boolean getMainAltitude() {
+        return cbMainAltitude.isChecked();
+        /*if (cbMainAltitude.isChecked())
             return "true";
         else
-            return "false";
+            return "false";*/
     }
 
     public void setMainAltitude(boolean value) {
@@ -127,11 +136,12 @@ public class AppConfig2Fragment extends Fragment {
     }
 
     //cbLiftOffEvent
-    public String getLiftOffEvent() {
-        if (cbLiftOffEvent.isChecked())
+    public boolean getLiftOffEvent() {
+        return cbLiftOffEvent.isChecked();
+        /*if (cbLiftOffEvent.isChecked())
             return "true";
         else
-            return "false";
+            return "false";*/
     }
 
     public void setLiftOffEvent(boolean value) {
@@ -142,8 +152,8 @@ public class AppConfig2Fragment extends Fragment {
         nbrVoices = itemsVoices.length;
         ArrayAdapter<String> adapterVoice = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, itemsVoices);
         spTelemetryVoice.setAdapter(adapterVoice);
-        if (Integer.parseInt(BT.getAppConf().getTelemetryVoice()) < nbrVoices)
-            spTelemetryVoice.setSelection(Integer.parseInt(BT.getAppConf().getTelemetryVoice()));
+        if (BT.getAppConf().getTelemetryVoice() < nbrVoices)
+            spTelemetryVoice.setSelection(BT.getAppConf().getTelemetryVoice());
     }
 
     //;
@@ -178,48 +188,48 @@ public class AppConfig2Fragment extends Fragment {
         cbLiftOffEvent = (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent9);
         spTelemetryVoice = (Spinner) view.findViewById(R.id.spinnerTelemetryVoice);
 
-        if (BT.getAppConf().getMain_event().equals("true")) {
+        if (BT.getAppConf().getMain_event()) {
             cbMainEvent.setChecked(true);
         } else {
             cbMainEvent.setChecked(false);
         }
-        if (BT.getAppConf().getDrogue_event().equals("true")) {
+        if (BT.getAppConf().getDrogue_event()) {
             cbDrogueEvent.setChecked(true);
         } else {
             cbDrogueEvent.setChecked(false);
         }
-        if (BT.getAppConf().getAltitude_event().equals("true")) {
+        if (BT.getAppConf().getAltitude_event()) {
             cbAltitudeEvent.setChecked(true);
         } else {
             cbAltitudeEvent.setChecked(false);
         }
-        if (BT.getAppConf().getLanding_event().equals("true")) {
+        if (BT.getAppConf().getLanding_event()) {
             cbLandingEvent.setChecked(true);
         } else {
             cbLandingEvent.setChecked(false);
         }
-        if (BT.getAppConf().getBurnout_event().equals("true")) {
+        if (BT.getAppConf().getBurnout_event()) {
             cbBurnoutEvent.setChecked(true);
         } else {
             cbBurnoutEvent.setChecked(false);
         }
-        if (BT.getAppConf().getWarning_event().equals("true")) {
+        if (BT.getAppConf().getWarning_event()) {
             cbWarningEvent.setChecked(true);
         } else {
             cbWarningEvent.setChecked(false);
         }
-        if (BT.getAppConf().getApogee_altitude().equals("true")) {
+        if (BT.getAppConf().getApogee_altitude()) {
             cbApogeeAltitude.setChecked(true);
         } else {
             cbApogeeAltitude.setChecked(false);
         }
-        if (BT.getAppConf().getMain_altitude().equals("true")) {
+        if (BT.getAppConf().getMain_altitude()) {
             cbMainAltitude.setChecked(true);
         } else {
             cbMainAltitude.setChecked(false);
         }
         //cbLiftOffEvent
-        if (BT.getAppConf().getLiftOff_event().equals("true")) {
+        if (BT.getAppConf().getLiftOff_event()) {
             cbLiftOffEvent.setChecked(true);
         } else {
             cbLiftOffEvent.setChecked(false);
@@ -258,8 +268,8 @@ public class AppConfig2Fragment extends Fragment {
                             else
                                 result = mTTS.setLanguage(Locale.ENGLISH);
 
-                            if (!BT.getAppConf().getTelemetryVoice().equals("")) {
-                                Log.d("Voice", BT.getAppConf().getTelemetryVoice());
+                            //if (!BT.getAppConf().getTelemetryVoice().equals("")) {
+                                Log.d("Voice", BT.getAppConf().getTelemetryVoice()+"");
                                 try {
                                     for (Voice tmpVoice : mTTS.getVoices()) {
                                         Log.d("Voice", tmpVoice.getName());
@@ -272,7 +282,7 @@ public class AppConfig2Fragment extends Fragment {
                                 } catch (Exception e) {
                                     msg(Locale.getDefault().getLanguage());
                                 }
-                            }
+                            //}
                             mTTS.setPitch(1.0f);
                             mTTS.setSpeechRate(1.0f);
                             if (Locale.getDefault().getLanguage() == "en")

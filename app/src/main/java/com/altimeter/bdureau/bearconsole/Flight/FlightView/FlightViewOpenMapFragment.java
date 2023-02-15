@@ -128,7 +128,7 @@ public class FlightViewOpenMapFragment extends Fragment {
         ArrayList<GeoPoint> pathPoints=new ArrayList();
 
         polyline = new Polyline();
-        polyline.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
+        polyline.setColor(myBT.getAppConf().ConvertColor(myBT.getAppConf().getMapColor()));
         polyline.setWidth(5);
         mMap.getOverlays().add(polyline);
 

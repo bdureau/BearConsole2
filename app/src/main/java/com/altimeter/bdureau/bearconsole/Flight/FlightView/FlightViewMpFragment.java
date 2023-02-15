@@ -80,9 +80,9 @@ public class FlightViewMpFragment extends Fragment {
     }
 
     public void drawGraph() {
-        graphBackColor = myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getGraphBackColor()));
-        fontSize = myBT.getAppConf().ConvertFont(Integer.parseInt(myBT.getAppConf().getFontSize()));
-        axisColor = myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getGraphColor()));
+        graphBackColor = myBT.getAppConf().ConvertColor(myBT.getAppConf().getGraphBackColor());
+        fontSize = myBT.getAppConf().ConvertFont(myBT.getAppConf().getFontSize());
+        axisColor = myBT.getAppConf().ConvertColor(myBT.getAppConf().getGraphColor());
         labelColor = Color.BLACK;
         nbrColor = Color.BLACK;
     }

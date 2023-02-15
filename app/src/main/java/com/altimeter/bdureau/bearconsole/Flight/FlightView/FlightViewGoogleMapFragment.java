@@ -69,7 +69,7 @@ public class FlightViewGoogleMapFragment extends Fragment {
         butMapType = (Button) view.findViewById(R.id.butMap);
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapFlight);
-        MapType = Integer.parseInt(myBT.getAppConf().getMapType());
+        MapType = myBT.getAppConf().getMapType();
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -81,7 +81,7 @@ public class FlightViewGoogleMapFragment extends Fragment {
                 MAP_TYPE_TERRAIN = 3
                 MAP_TYPE_HYBRID = 4
                 */
-                mMap.setMapType(Integer.parseInt(myBT.getAppConf().getMapType()));
+                mMap.setMapType(myBT.getAppConf().getMapType());
 
 
                 XYSeriesCollection flightData;
@@ -105,7 +105,7 @@ public class FlightViewGoogleMapFragment extends Fragment {
                     }
                 }
 
-                polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
+                polyline1.setColor(myBT.getAppConf().ConvertColor(myBT.getAppConf().getMapColor()));
                 polyline1.setPoints(coord);
 
                 if (coord.size() > 0)

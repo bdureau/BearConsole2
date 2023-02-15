@@ -74,8 +74,8 @@ public class AppConfig3Fragment extends Fragment {
         ArrayAdapter<String> adapterMapType = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsMap());
         spMapType.setAdapter(adapterMapType);
 
-        spMapColor.setSelection(Integer.parseInt(BT.getAppConf().getMapColor()));
-        spMapType.setSelection(Integer.parseInt(BT.getAppConf().getMapType()));
+        spMapColor.setSelection(BT.getAppConf().getMapColor());
+        spMapType.setSelection(BT.getAppConf().getMapType());
 
         // allow manual recording
         cbAllowManualRecording = (CheckBox) view.findViewById(R.id.checkBoxAllowManualRecording);

@@ -360,7 +360,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             if (AltiCfg.getOutput4() == 1)
                 nbrOfDrogue++;
         }
-        if (myBT.getAppConf().getAllowMultipleDrogueMain().equals("false")) {
+        //if (myBT.getAppConf().getAllowMultipleDrogueMain().equals("false")) {
+        if (!myBT.getAppConf().getAllowMultipleDrogueMain()) {
             if (nbrOfMain > 1) {
                 //Only one main is allowed Please review your config
                 msg(getResources().getString(R.string.msg1));

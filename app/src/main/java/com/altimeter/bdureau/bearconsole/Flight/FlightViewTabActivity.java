@@ -181,7 +181,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         // Read the application config
         myBT.getAppConf().ReadConfig();
         //metrics
-        if (myBT.getAppConf().getUnits().equals("0")) {
+        if (myBT.getAppConf().getUnits()==0) {
             //Meters
             units[0] = "(" + getResources().getString(R.string.Meters_fview) + ")";
             units[3] = "(m/secs)";

@@ -294,7 +294,7 @@ public class ConsoleApplication extends Application {
 
     public void initFlightData() {
         MyFlight = new FlightData(this, AltiCfg.getAltimeterName());
-        if (AppConf.getUnits().equals("0")) {//meters
+        if (AppConf.getUnits()== 0) {//meters
             //if (AppConf.getUnitsValue().equals("Meters")) {
             FEET_IN_METER = 1;
         } else {
@@ -969,9 +969,9 @@ public class ConsoleApplication extends Application {
     public Configuration getAppLocal() {
 
         Locale locale = null;
-        if (AppConf.getApplicationLanguage().equals("1")) {
+        if (AppConf.getApplicationLanguage()==1) {
             locale = Locale.FRENCH;//new Locale("fr_FR");
-        } else if (AppConf.getApplicationLanguage().equals("2")) {
+        } else if (AppConf.getApplicationLanguage()==2) {
             locale = Locale.ENGLISH;//new Locale("en_US");
         } else {
             locale = Locale.getDefault();
@@ -1014,7 +1014,7 @@ public class ConsoleApplication extends Application {
             return trameStatus;
         }
     }
-
+/*
     public class GlobalConfig {
         Context context;
 
@@ -1539,4 +1539,6 @@ public class ConsoleApplication extends Application {
             return myColor;
         }
     }
+*/
 }
+

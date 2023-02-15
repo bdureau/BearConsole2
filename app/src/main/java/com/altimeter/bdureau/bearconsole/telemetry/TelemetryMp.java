@@ -84,8 +84,8 @@ public class TelemetryMp extends AppCompatActivity {
 
     //Marker marker, markerDest;
     //Polyline polyline1 = null;
-    public Double rocketLatitude = 48.8698;
-    public Double rocketLongitude = 2.2190;
+    public Float rocketLatitude = 48.8698f;
+    public Float rocketLongitude = 2.2190f;
     //LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
 
     ArrayList<Entry> yValues;
@@ -132,7 +132,7 @@ public class TelemetryMp extends AppCompatActivity {
                                 }
                                 // Tell altitude every 5 secondes
                                 if ((altitudeTime - lastSpeakTime) > 5000 && liftOffSaid) {
-                                    if (myBT.getAppConf().getAltitude_event().equals("true")) {
+                                    if (myBT.getAppConf().getAltitude_event()) {
                                         mTTS.speak(getResources().getString(R.string.altitude) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                                     }
                                     lastSpeakTime = altitudeTime;
@@ -153,7 +153,7 @@ public class TelemetryMp extends AppCompatActivity {
                                         LiftOffTime = System.currentTimeMillis();
                                     statusPage0.setLiftOffTime("0 ms");
                                     if (!liftOffSaid) {
-                                        if (myBT.getAppConf().getLiftOff_event().equals("true")) {
+                                        if (myBT.getAppConf().getLiftOff_event()) {
                                             mTTS.speak(getResources().getString(R.string.lift_off), TextToSpeech.QUEUE_FLUSH, null);
                                         }
                                         liftOffSaid = true;
@@ -184,7 +184,7 @@ public class TelemetryMp extends AppCompatActivity {
                                 statusPage0.setMaxAltitude(altitude + "");
                                 if (!apogeeSaid) {
                                     //first check if say it is enabled
-                                    if (myBT.getAppConf().getApogee_altitude().equals("true")) {
+                                    if (myBT.getAppConf().getApogee_altitude()) {
                                         mTTS.speak(getResources().getString(R.string.telemetry_apogee) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                                     }
                                     apogeeSaid = true;
@@ -213,7 +213,7 @@ public class TelemetryMp extends AppCompatActivity {
                                 int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
                                 statusPage0.setMainAltitude(String.valueOf(altitude));
                                 if (!mainSaid) {
-                                    if (myBT.getAppConf().getMain_event().equals("true")) {
+                                    if (myBT.getAppConf().getMain_event()) {
                                         mTTS.speak(getResources().getString(R.string.main_deployed) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                                     }
                                     mainSaid = true;
@@ -234,7 +234,7 @@ public class TelemetryMp extends AppCompatActivity {
                                     statusPage0.setLandedAltitude(statusPage0.getLandedAltitude());
                                     statusPage0.setLandedTime((System.currentTimeMillis() - LiftOffTime) + " ms");
                                     if (!landedSaid) {
-                                        if (myBT.getAppConf().getLanding_event().equals("true")) {
+                                        if (myBT.getAppConf().getLanding_event()) {
                                             mTTS.speak(getResources().getString(R.string.rocket_has_landed), TextToSpeech.QUEUE_FLUSH, null);
                                         }
                                         landedSaid = true;
@@ -294,7 +294,7 @@ public class TelemetryMp extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String latitude = (String) msg.obj;
                         if (latitude.matches("\\d+(?:\\.\\d+)?")) {
-                            double latitudeVal = Double.parseDouble(latitude) / 100000;
+                            float latitudeVal = Float.parseFloat(latitude) / 100000;
                             statusPage2.setLatitudeValue("" + latitudeVal);
                             setLatitudeValue(latitude);
                             rocketLatitude = latitudeVal;
@@ -306,7 +306,7 @@ public class TelemetryMp extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String longitude = (String) msg.obj;
                         if (longitude.matches("\\d+(?:\\.\\d+)?")) {
-                            double longitudeVal = Double.parseDouble(longitude) / 100000;
+                            float longitudeVal = Float.parseFloat(longitude) / 100000;
                             statusPage2.setLongitudeValue("" + longitudeVal);
                             setLongitudeValue(longitude);
                             rocketLongitude = longitudeVal;
@@ -380,11 +380,11 @@ public class TelemetryMp extends AppCompatActivity {
 
     private void setLatitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
-            Double val = Double.parseDouble(value);
+            Float val = Float.parseFloat(value);
             Log.d("track", "latitude:" + value);
             if (val != 0) {
-                rocketLatitude = Double.parseDouble(value) / 100000;
-                myBT.getAppConf().setRocketLatitude("" + rocketLatitude);
+                rocketLatitude = Float.parseFloat(value) / 100000;
+                myBT.getAppConf().setRocketLatitude( rocketLatitude);
             }
         }
     }
@@ -394,8 +394,8 @@ public class TelemetryMp extends AppCompatActivity {
             Double val = Double.parseDouble(value);
             Log.d("track", "longitude:" + value);
             if (val != 0) {
-                rocketLongitude = Double.parseDouble(value) / 100000;
-                myBT.getAppConf().setRocketLongitude("" + rocketLongitude);
+                rocketLongitude = Float.parseFloat(value) / 100000;
+                myBT.getAppConf().setRocketLongitude(rocketLongitude);
                 myBT.getAppConf().SaveConfig();
             }
         }
@@ -461,11 +461,11 @@ public class TelemetryMp extends AppCompatActivity {
 
         // Read the application config
         myBT.getAppConf().ReadConfig();
-        if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLatitude = Double.parseDouble(myBT.getAppConf().getRocketLatitude());
+        //if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLatitude = myBT.getAppConf().getRocketLatitude();
 
-        if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLongitude = Double.parseDouble(myBT.getAppConf().getRocketLongitude());
+        //if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLongitude = myBT.getAppConf().getRocketLongitude();
         //init text to speech
         mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -492,8 +492,8 @@ public class TelemetryMp extends AppCompatActivity {
                     else
                         result = mTTS.setLanguage(Locale.ENGLISH);
 
-                    if (!myBT.getAppConf().getTelemetryVoice().equals("")) {
-                        Log.d("Voice", myBT.getAppConf().getTelemetryVoice());
+                    //if (!myBT.getAppConf().getTelemetryVoice().equals("")) {
+                        Log.d("Voice", myBT.getAppConf().getTelemetryVoice()+"");
                         String[] itemsVoices;
                         String items = "";
                         int i = 0;
@@ -502,7 +502,7 @@ public class TelemetryMp extends AppCompatActivity {
 
                                 if (tmpVoice.getName().startsWith(Locale.getDefault().getLanguage())) {
                                     Log.d("Voice", tmpVoice.getName());
-                                    if (myBT.getAppConf().getTelemetryVoice().equals(i + "")) {
+                                    if (myBT.getAppConf().getTelemetryVoice() == i ) {
                                         mTTS.setVoice(tmpVoice);
                                         Log.d("Voice", "Found voice");
                                         break;
@@ -513,7 +513,7 @@ public class TelemetryMp extends AppCompatActivity {
                         } catch (Exception e) {
 
                         }
-                    }
+                    //}
 
                     if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                         Log.e("TTS", "Language not supported");
@@ -531,7 +531,7 @@ public class TelemetryMp extends AppCompatActivity {
 
         String myUnits = "";
 
-        if (myBT.getAppConf().getUnits().equals("0")) {
+        if (myBT.getAppConf().getUnits()==0) {
             //Meters
             FEET_IN_METER = 1;
             myUnits = getResources().getString(R.string.Meters_fview);

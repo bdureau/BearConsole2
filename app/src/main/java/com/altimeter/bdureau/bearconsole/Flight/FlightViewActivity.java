@@ -74,19 +74,19 @@ public class FlightViewActivity extends AppCompatActivity {
      // Read the application config
      myBT.getAppConf().ReadConfig();
      int graphBackColor;//= Color.WHITE;
-     graphBackColor =myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getGraphBackColor()));
+     graphBackColor =myBT.getAppConf().ConvertColor(myBT.getAppConf().getGraphBackColor());
 
      int fontSize;
-     fontSize = myBT.getAppConf().ConvertFont(Integer.parseInt(myBT.getAppConf().getFontSize()));
+     fontSize = myBT.getAppConf().ConvertFont(myBT.getAppConf().getFontSize());
 
      int axisColor;//=Color.BLACK;
-     axisColor=myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getGraphColor()));
+     axisColor=myBT.getAppConf().ConvertColor(myBT.getAppConf().getGraphColor());
 
      int labelColor=Color.BLACK;
 
      int nbrColor=Color.BLACK;
      String myUnits="";
-     if (myBT.getAppConf().getUnits().equals("0"))
+     if (myBT.getAppConf().getUnits()==0)
          //Meters
          myUnits=getResources().getString(R.string.Meters_fview);
      else

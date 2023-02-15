@@ -86,7 +86,7 @@ public class GPSOpenMapStatusFragment extends Fragment {
         mMap.getOverlays().add(markerDest);
 
         polyline = new Polyline(mMap);
-        polyline.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
+        polyline.setColor(myBT.getAppConf().ConvertColor(myBT.getAppConf().getMapColor()));
         polyline.setWidth(10);
         mMap.getOverlays().add(polyline);
 

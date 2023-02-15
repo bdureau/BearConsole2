@@ -55,7 +55,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     Polyline polyline1 = null;
     Thread altiStatus;
     boolean status = true;
-    Double rocketLatitude = 48.8698, rocketLongitude = 2.2190;
+    Float rocketLatitude = 48.8698f, rocketLongitude = 2.2190f;
 
     Button btnDismiss, butShareMap, butMapType;
     LocationBroadCastReceiver receiver = null;
@@ -84,11 +84,11 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
 
     private void setLatitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
-            Double val = Double.parseDouble(value);
+            Float val = Float.parseFloat(value);
             Log.d("track", "latitude:" + value);
             if (val != 0) {
-                rocketLatitude = Double.parseDouble(value) / 100000;
-                myBT.getAppConf().setRocketLatitude("" + rocketLatitude);
+                rocketLatitude = Float.parseFloat(value) / 100000;
+                myBT.getAppConf().setRocketLatitude(rocketLatitude);
 
             }
         }
@@ -96,11 +96,11 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
 
     private void setLongitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
-            Double val = Double.parseDouble(value);
+            Float val = Float.parseFloat(value);
             Log.d("track", "longitude:" + value);
             if (val != 0) {
-                rocketLongitude = Double.parseDouble(value) / 100000;
-                myBT.getAppConf().setRocketLongitude("" + rocketLongitude);
+                rocketLongitude = Float.parseFloat(value) / 100000;
+                myBT.getAppConf().setRocketLongitude( rocketLongitude);
                 myBT.getAppConf().SaveConfig();
             }
         }
@@ -114,7 +114,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.activity_rocket_track_google_map);
         myBT.setHandler(handler);
 
-        MapType = Integer.parseInt(myBT.getAppConf().getMapType());
+        MapType = myBT.getAppConf().getMapType();
         // See if we are called from the status activity
         try {
             Intent newint = getIntent();
@@ -125,11 +125,11 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             e.printStackTrace();
         }
 
-        if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLatitude = Double.parseDouble(myBT.getAppConf().getRocketLatitude());
+        //if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLatitude = myBT.getAppConf().getRocketLatitude();//Float.parseFloat(myBT.getAppConf().getRocketLatitude());
 
-        if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLongitude = Double.parseDouble(myBT.getAppConf().getRocketLongitude());
+        //if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLongitude = myBT.getAppConf().getRocketLongitude();
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -338,7 +338,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                         polyline1 = mMap.addPolyline(new PolylineOptions()
                                 .clickable(false));
                     //Get the line color from the config
-                    polyline1.setColor(myBT.getAppConf().ConvertColor(Integer.parseInt(myBT.getAppConf().getMapColor())));
+                    polyline1.setColor(myBT.getAppConf().ConvertColor(myBT.getAppConf().getMapColor()));
                     polyline1.setPoints(coord);
                     if (mMap.getCameraPosition().zoom > 10)
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, mMap.getCameraPosition().zoom));

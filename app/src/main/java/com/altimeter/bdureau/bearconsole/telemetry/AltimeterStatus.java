@@ -77,8 +77,8 @@ public class AltimeterStatus extends AppCompatActivity {
 
     Marker marker, markerDest;
     Polyline polyline1 = null;
-    public Double rocketLatitude = 48.8698;
-    public Double rocketLongitude = 2.2190;
+    public Float rocketLatitude = 48.8698f;
+    public Float rocketLongitude = 2.2190f;
     LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
 
     Button btnDismiss, btnRecording;
@@ -112,7 +112,7 @@ public class AltimeterStatus extends AppCompatActivity {
                 case 1:
                     String myUnits;
                     //Value 1 contains the current altitude
-                    if (myBT.getAppConf().getUnits().equals("0"))
+                    if (myBT.getAppConf().getUnits()==0)
                         //Meters
                         myUnits = getResources().getString(R.string.Meters_fview);
                     else
@@ -149,7 +149,7 @@ public class AltimeterStatus extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String latitude = (String) msg.obj;
                         if (latitude.matches("\\d+(?:\\.\\d+)?")) {
-                            double latitudeVal = Double.parseDouble(latitude) / 100000;
+                            float latitudeVal = Float.parseFloat(latitude) / 100000;
                             rocketLatitude = latitudeVal;
                             statusPage2.setLatitudeValue("" + latitudeVal);
                         }
@@ -160,7 +160,7 @@ public class AltimeterStatus extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String longitude = (String) msg.obj;
                         if (longitude.matches("\\d+(?:\\.\\d+)?")) {
-                            double longitudeVal = Double.parseDouble(longitude) / 100000;
+                            Float longitudeVal = Float.parseFloat(longitude) / 100000;
                             rocketLongitude = longitudeVal;
                             statusPage2.setLongitudeValue("" + longitudeVal);
                         }
@@ -292,11 +292,11 @@ public class AltimeterStatus extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_altimeter_status);
-        if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLatitude = Double.parseDouble(myBT.getAppConf().getRocketLatitude());
+        //if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLatitude = myBT.getAppConf().getRocketLatitude();
 
-        if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLongitude = Double.parseDouble(myBT.getAppConf().getRocketLongitude());
+        //if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
+            rocketLongitude = myBT.getAppConf().getRocketLongitude();
         mViewPager = (ViewPager) findViewById(R.id.container);
 
         setupViewPager(mViewPager);
