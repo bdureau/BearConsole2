@@ -96,10 +96,6 @@ public class AppConfig1Fragment extends Fragment {
 
     public boolean getAllowMainDrogue() {
         return cbAllowMainDrogue.isChecked();
-        /*if (cbAllowMainDrogue.isChecked())
-            return "true";
-        else
-            return "false";*/
     }
 
     public void setAllowMainDrogue(boolean value) {
@@ -108,10 +104,6 @@ public class AppConfig1Fragment extends Fragment {
 
     public boolean getFullUSBSupport() {
         return cbFullUSBSupport.isChecked();
-        /*if (cbFullUSBSupport.isChecked())
-            return "true";
-        else
-            return "false";*/
     }
 
 

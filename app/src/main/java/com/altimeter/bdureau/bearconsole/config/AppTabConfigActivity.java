@@ -26,7 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
-//import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
@@ -44,13 +43,11 @@ public class AppTabConfigActivity extends AppCompatActivity {
     Button btnDismiss, btnSave, bdtDefault;
     private ViewPager mViewPager;
     private SectionsPageAdapter adapter;
-
     private TextToSpeech mTTS;
 
     private AppConfig1Fragment appConfigPage1 = null;
     private AppConfig2Fragment appConfigPage2 = null;
     private AppConfig3Fragment appConfigPage3 = null;
-
 
     private AppConfigData appConfigData = null;
 
@@ -209,85 +206,28 @@ public class AppTabConfigActivity extends AppCompatActivity {
             appConfigPage1.setConnectionType(myBT.getAppConf().getConnectionType());
             appConfigPage1.setGraphicsLibType(myBT.getAppConf().getGraphicsLibType());
 
-            //if (myBT.getAppConf().getAllowMultipleDrogueMain().equals("true")) {
-            /*if (myBT.getAppConf().getAllowMultipleDrogueMain()) {
-                appConfigPage1.setAllowMainDrogue(true);
-            } else {
-                appConfigPage1.setAllowMainDrogue(false);
-            }*/
             appConfigPage1.setAllowMainDrogue(myBT.getAppConf().getAllowMultipleDrogueMain());
 
-            //if (myBT.getAppConf().getFullUSBSupport().equals("true")) {
-            /*if (myBT.getAppConf().getFullUSBSupport()) {
-                appConfigPage1.setFullUSBSupport(true);
-            } else {
-                appConfigPage1.setFullUSBSupport(false);
-            }*/
             appConfigPage1.setFullUSBSupport(myBT.getAppConf().getFullUSBSupport());
         }
         if(appConfigPage2.isViewCreated()) {
             //config page 2
-            /*if (myBT.getAppConf().getAltitude_event()) {
-                appConfigPage2.setAltitudeEvent(true);
-            } else {
-                appConfigPage2.setAltitudeEvent(false);
-            }*/
             appConfigPage2.setAltitudeEvent(myBT.getAppConf().getAltitude_event());
 
-            /*if (myBT.getAppConf().getApogee_altitude()) {
-                appConfigPage2.setApogeeAltitude(true);
-            } else {
-                appConfigPage2.setApogeeAltitude(false);
-            }*/
             appConfigPage2.setApogeeAltitude(myBT.getAppConf().getApogee_altitude());
 
-            /*if (myBT.getAppConf().getBurnout_event()) {
-                appConfigPage2.setBurnoutEvent(true);
-            } else {
-                appConfigPage2.setBurnoutEvent(false);
-            }*/
             appConfigPage2.setBurnoutEvent(myBT.getAppConf().getBurnout_event());
 
-            /*if (myBT.getAppConf().getMain_altitude()) {
-                appConfigPage2.setMainAltitude(true);
-            } else {
-                appConfigPage2.setMainAltitude(false);
-            }*/
             appConfigPage2.setMainAltitude(myBT.getAppConf().getMain_altitude());
 
-            /*if (myBT.getAppConf().getDrogue_event()) {
-                appConfigPage2.setDrogueEvent(true);
-            } else {
-                appConfigPage2.setDrogueEvent(false);
-            }*/
             appConfigPage2.setDrogueEvent(myBT.getAppConf().getDrogue_event());
 
-            /*if (myBT.getAppConf().getLanding_event()) {
-                appConfigPage2.setLandingEvent(true);
-            } else {
-                appConfigPage2.setLandingEvent(false);
-            }*/
             appConfigPage2.setLandingEvent(myBT.getAppConf().getDrogue_event());
 
-            /*if (myBT.getAppConf().getMain_event()) {
-                appConfigPage2.setMainEvent(true);
-            } else {
-                appConfigPage2.setMainEvent(false);
-            }*/
             appConfigPage2.setMainEvent(myBT.getAppConf().getMain_event());
 
-            /*if (myBT.getAppConf().getWarning_event()) {
-                appConfigPage2.setWarningEvent(true);
-            } else {
-                appConfigPage2.setWarningEvent(false);
-            }*/
             appConfigPage2.setWarningEvent(myBT.getAppConf().getWarning_event());
 
-            /*if (myBT.getAppConf().getLiftOff_event()) {
-                appConfigPage2.setLiftOffEvent(true);
-            } else {
-                appConfigPage2.setLiftOffEvent(false);
-            }*/
             appConfigPage2.setLiftOffEvent(myBT.getAppConf().getLiftOff_event());
             appConfigPage2.setTelemetryVoice(myBT.getAppConf().getTelemetryVoice());
         }

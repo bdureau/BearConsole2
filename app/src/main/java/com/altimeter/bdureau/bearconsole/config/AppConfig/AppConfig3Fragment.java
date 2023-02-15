@@ -44,7 +44,7 @@ public class AppConfig3Fragment extends Fragment {
         this.spMapType.setSelection(value);
     }
 
-    public Boolean getAllowManualRecording() {
+    public boolean getAllowManualRecording() {
         return cbAllowManualRecording.isChecked();
     }
 
@@ -52,10 +52,14 @@ public class AppConfig3Fragment extends Fragment {
         cbAllowManualRecording.setChecked(value);
     }
 
-    public Boolean getUseOpenMap() { return cbUseOpenMap.isChecked();}
+    public boolean getUseOpenMap() { return cbUseOpenMap.isChecked();}
 
     public void setUseOpenMap(boolean value) {
         cbUseOpenMap.setChecked(value);
+        if (cbUseOpenMap.isChecked())
+            spMapType.setEnabled(false);
+        else
+            spMapType.setEnabled(true);
     }
     public boolean isViewCreated() {
         return ViewCreated;
@@ -80,9 +84,24 @@ public class AppConfig3Fragment extends Fragment {
         // allow manual recording
         cbAllowManualRecording = (CheckBox) view.findViewById(R.id.checkBoxAllowManualRecording);
         cbAllowManualRecording.setChecked(BT.getAppConf().getManualRecording());
-        //use OpnMap or GoogleMap
+        //use OpenMap or GoogleMap
         cbUseOpenMap = (CheckBox) view.findViewById(R.id.checkBoxUseOpenMap);
         cbUseOpenMap.setChecked(BT.getAppConf().getUseOpenMap());
+        // Check if we enable Map type or not which is only available for GoogleMap
+        if (cbUseOpenMap.isChecked())
+            spMapType.setEnabled(false);
+        else
+            spMapType.setEnabled(true);
+        cbUseOpenMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (cbUseOpenMap.isChecked())
+                    spMapType.setEnabled(false);
+                else
+                    spMapType.setEnabled(true);
+            }
+        });
+
         ViewCreated = true;
         return view;
     }

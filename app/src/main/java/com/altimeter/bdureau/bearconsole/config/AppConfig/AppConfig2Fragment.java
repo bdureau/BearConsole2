@@ -40,10 +40,6 @@ public class AppConfig2Fragment extends Fragment {
 
     public boolean getMainEvent() {
         return cbMainEvent.isChecked();
-        /*if (cbMainEvent.isChecked())
-            return "true";
-        else
-            return "false";*/
     }
 
     public void setMainEvent(boolean value) {
@@ -52,10 +48,6 @@ public class AppConfig2Fragment extends Fragment {
 
     public boolean getDrogueEvent() {
         return cbDrogueEvent.isChecked();
-        /*if (cbDrogueEvent.isChecked())
-            return "true";
-        else
-            return "false";*/
     }
 
     public void setDrogueEvent(boolean value) {
@@ -64,10 +56,6 @@ public class AppConfig2Fragment extends Fragment {
 
     public boolean getAltitudeEvent() {
         return cbAltitudeEvent.isChecked();
-        /*if (cbAltitudeEvent.isChecked())
-            return "true";
-        else
-            return "false";*/
     }
 
     public void setAltitudeEvent(boolean value) {
@@ -76,10 +64,6 @@ public class AppConfig2Fragment extends Fragment {
 
     public boolean getLandingEvent() {
         return cbLandingEvent.isChecked();
-        /*if (cbLandingEvent.isChecked())
-            return "true";
-        else
-            return "false";*/
     }
 
     public void setLandingEvent(boolean value) {
@@ -88,10 +72,6 @@ public class AppConfig2Fragment extends Fragment {
 
     public boolean getBurnoutEvent() {
         return cbBurnoutEvent.isChecked();
-        /*if (cbBurnoutEvent.isChecked())
-            return "true";
-        else
-            return "false";*/
     }
 
     public void setBurnoutEvent(boolean value) {
@@ -100,11 +80,6 @@ public class AppConfig2Fragment extends Fragment {
 
     public boolean getWarningEvent() {
         return cbWarningEvent.isChecked();
-
-        /*if (cbWarningEvent.isChecked())
-            return "true";
-        else
-            return "false";*/
     }
 
     public void setWarningEvent(boolean value) {
@@ -113,10 +88,6 @@ public class AppConfig2Fragment extends Fragment {
 
     public boolean getApogeeAltitude() {
         return cbApogeeAltitude.isChecked();
-        /*if (cbApogeeAltitude.isChecked())
-            return "true";
-        else
-            return "false";*/
     }
 
     public void setApogeeAltitude(boolean value) {
@@ -125,10 +96,6 @@ public class AppConfig2Fragment extends Fragment {
 
     public boolean getMainAltitude() {
         return cbMainAltitude.isChecked();
-        /*if (cbMainAltitude.isChecked())
-            return "true";
-        else
-            return "false";*/
     }
 
     public void setMainAltitude(boolean value) {
@@ -138,10 +105,6 @@ public class AppConfig2Fragment extends Fragment {
     //cbLiftOffEvent
     public boolean getLiftOffEvent() {
         return cbLiftOffEvent.isChecked();
-        /*if (cbLiftOffEvent.isChecked())
-            return "true";
-        else
-            return "false";*/
     }
 
     public void setLiftOffEvent(boolean value) {
@@ -156,7 +119,7 @@ public class AppConfig2Fragment extends Fragment {
             spTelemetryVoice.setSelection(BT.getAppConf().getTelemetryVoice());
     }
 
-    //;
+
 
     public void setTelemetryVoice(int value) {
         if (value < nbrVoices)
@@ -170,6 +133,7 @@ public class AppConfig2Fragment extends Fragment {
     public boolean isViewCreated() {
         return ViewCreated;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
@@ -268,21 +232,21 @@ public class AppConfig2Fragment extends Fragment {
                             else
                                 result = mTTS.setLanguage(Locale.ENGLISH);
 
-                            //if (!BT.getAppConf().getTelemetryVoice().equals("")) {
-                                Log.d("Voice", BT.getAppConf().getTelemetryVoice()+"");
-                                try {
-                                    for (Voice tmpVoice : mTTS.getVoices()) {
-                                        Log.d("Voice", tmpVoice.getName());
-                                        if (tmpVoice.getName().equals(spTelemetryVoice.getSelectedItem().toString())) {
-                                            mTTS.setVoice(tmpVoice);
-                                            Log.d("Voice", "Found voice");
-                                            break;
-                                        }
+
+                            Log.d("Voice", BT.getAppConf().getTelemetryVoice() + "");
+                            try {
+                                for (Voice tmpVoice : mTTS.getVoices()) {
+                                    Log.d("Voice", tmpVoice.getName());
+                                    if (tmpVoice.getName().equals(spTelemetryVoice.getSelectedItem().toString())) {
+                                        mTTS.setVoice(tmpVoice);
+                                        Log.d("Voice", "Found voice");
+                                        break;
                                     }
-                                } catch (Exception e) {
-                                    msg(Locale.getDefault().getLanguage());
                                 }
-                            //}
+                            } catch (Exception e) {
+                                msg(Locale.getDefault().getLanguage());
+                            }
+
                             mTTS.setPitch(1.0f);
                             mTTS.setSpeechRate(1.0f);
                             if (Locale.getDefault().getLanguage() == "en")

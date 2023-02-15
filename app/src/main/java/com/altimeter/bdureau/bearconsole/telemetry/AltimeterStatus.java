@@ -112,7 +112,7 @@ public class AltimeterStatus extends AppCompatActivity {
                 case 1:
                     String myUnits;
                     //Value 1 contains the current altitude
-                    if (myBT.getAppConf().getUnits()==0)
+                    if (myBT.getAppConf().getUnits() == 0)
                         //Meters
                         myUnits = getResources().getString(R.string.Meters_fview);
                     else
@@ -292,11 +292,9 @@ public class AltimeterStatus extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_altimeter_status);
-        //if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLatitude = myBT.getAppConf().getRocketLatitude();
+        rocketLatitude = myBT.getAppConf().getRocketLatitude();
 
-        //if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLongitude = myBT.getAppConf().getRocketLongitude();
+        rocketLongitude = myBT.getAppConf().getRocketLongitude();
         mViewPager = (ViewPager) findViewById(R.id.container);
 
         setupViewPager(mViewPager);

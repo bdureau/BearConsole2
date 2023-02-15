@@ -1,12 +1,10 @@
-package com.altimeter.bdureau.bearconsole;
+package com.altimeter.bdureau.bearconsole.config;
 
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-
-import com.altimeter.bdureau.bearconsole.config.AppConfigData;
 
 public class GlobalConfig {
     Context context;
@@ -105,19 +103,19 @@ public class GlobalConfig {
             //int applicationLanguage;
             int applicationLanguage = appConfig.getInt("AppLanguage", 0);
             //if (!applicationLanguage.equals(""))
-                setApplicationLanguage(applicationLanguage);
+            setApplicationLanguage(applicationLanguage);
 
             //Application Units
             //String appUnit;
             int appUnit = appConfig.getInt("Units", 0);
             //if (!appUnit.equals(""))
-                setUnits(appUnit);
+            setUnits(appUnit);
 
             //Graph color
             //String graphColor;
             int graphColor = appConfig.getInt("GraphColor", 0);
             //if (!graphColor.equals(""))
-                setGraphColor(graphColor);
+            setGraphColor(graphColor);
 
             //Graph Background color
             //int graphBackColor;
@@ -126,119 +124,90 @@ public class GlobalConfig {
             setGraphBackColor(graphBackColor);
 
             //Map color
-            //String mapColor;
             int mapColor = appConfig.getInt("MapColor", 1);
-            //if (!mapColor.equals(""))
-                setMapColor(mapColor);
+            setMapColor(mapColor);
 
             //Map type
-            //String mapType;
             int mapType = appConfig.getInt("MapType", 2);
-            //if (!mapType.equals(""))
-                setMapType(mapType);
+            setMapType(mapType);
 
             //Font size
-            //String fontSize;
             int fontSize = appConfig.getInt("FontSize", 10);
-            //if (!fontSize.equals(""))
-                setFontSize(fontSize);
+            setFontSize(fontSize);
 
             //Baud rate
-            //String baudRate;
             int baudRate = appConfig.getInt("BaudRate", 8);
-            //if (!baudRate.equals(""))
-                setBaudRate(baudRate);
+            setBaudRate(baudRate);
 
             //Connection type
-            //String connectionType;
             int connectionType = appConfig.getInt("ConnectionType", 0);
-            //if (!connectionType.equals(""))
-                setConnectionType(connectionType);
+            setConnectionType(connectionType);
 
             //Graphics Lib Type
-            //String graphicsLibType;
             int graphicsLibType = appConfig.getInt("GraphicsLibType", 1);
-            //if (!graphicsLibType.equals(""))
-                setGraphicsLibType(graphicsLibType);
+            setGraphicsLibType(graphicsLibType);
 
             //Allow multiple drogue and main
-            //boolean allowMultipleDrogueMain;
             boolean allowMultipleDrogueMain = appConfig.getBoolean("AllowMultipleDrogueMain", false);
-            //if (!allowMultipleDrogueMain)
-                setAllowMultipleDrogueMain(allowMultipleDrogueMain);
+            setAllowMultipleDrogueMain(allowMultipleDrogueMain);
 
             //enable full USB support
-            //boolean fullUSBSupport;
             boolean fullUSBSupport = appConfig.getBoolean("fullUSBSupport", false);
-            //if (!fullUSBSupport)
-                setFullUSBSupport(fullUSBSupport);
+            setFullUSBSupport(fullUSBSupport);
 
-            //boolean say_main_event;
+            //main_event
             boolean say_main_event = appConfig.getBoolean("say_main_event", false);
-            //if (!say_main_event.equals(""))
-                setMain_event(say_main_event);
+            setMain_event(say_main_event);
 
-            //boolean say_apogee_altitude;
+            //apogee_altitude
             boolean say_apogee_altitude = appConfig.getBoolean("say_apogee_altitude", false);
-            //if (!say_apogee_altitude.equals(""))
-                setApogee_altitude(say_apogee_altitude);
+            setApogee_altitude(say_apogee_altitude);
 
-            //boolean say_main_altitude;
+            //main_altitude
             boolean say_main_altitude = appConfig.getBoolean("say_main_altitude", false);
-            //if (!say_main_altitude.equals(""))
-                setMain_altitude(say_main_altitude);
+            setMain_altitude(say_main_altitude);
 
-            //boolean say_drogue_event;
+            //drogue_event
             boolean say_drogue_event = appConfig.getBoolean("say_drogue_event", false);
-            //if (!say_drogue_event.equals(""))
-                setDrogue_event(say_drogue_event);
+            setDrogue_event(say_drogue_event);
 
-            //boolean say_altitude_event;
+            //altitude_event
             boolean say_altitude_event = appConfig.getBoolean("say_altitude_event", false);
-            //if (!say_altitude_event.equals(""))
-                setAltitude_event(say_altitude_event);
+            setAltitude_event(say_altitude_event);
 
-            //boolean say_landing_event;
+            //landing_event
             boolean say_landing_event = appConfig.getBoolean("say_landing_event", false);
-            //if (!say_landing_event.equals(""))
-                setLanding_event(say_landing_event);
+            setLanding_event(say_landing_event);
 
-            //boolean say_burnout_event;
+            //burnout_event
             boolean say_burnout_event = appConfig.getBoolean("say_burnout_event", false);
-            //if (!say_burnout_event.equals(""))
-                setBurnout_event(say_burnout_event);
+            setBurnout_event(say_burnout_event);
 
-            //boolean say_warning_event;
+            //warning_event
             boolean say_warning_event = appConfig.getBoolean("say_warning_event", false);
-            //if (!say_warning_event.equals(""))
-                setWarning_event(say_warning_event);
+            setWarning_event(say_warning_event);
 
-            //boolean say_liftoff_event;
+            //liftoff_event
             boolean say_liftoff_event = appConfig.getBoolean("say_liftoff_event", false);
-            //if (!say_liftoff_event.equals(""))
-                setLiftOff_event(say_liftoff_event);
+            setLiftOff_event(say_liftoff_event);
 
-            //String telemetryVoice;
+            //telemetryVoice
             int telemetryVoice = appConfig.getInt("telemetryVoice", 0);
-            //if (!telemetryVoice.equals(""))
-                setTelemetryVoice(telemetryVoice);
+            setTelemetryVoice(telemetryVoice);
 
-            //Float rocketLatitude = 0.0f;
+            //rocketLatitude
             float rocketLatitude = appConfig.getFloat("rocketLatitude", 0.0f);
-            //if (!rocketLatitude.equals(""))
-            //if (rocketLatitude != 0.0f)
-                setRocketLatitude(rocketLatitude);
+            setRocketLatitude(rocketLatitude);
 
-            //Float rocketLongitude = 0.0f;
+            //rocketLongitude
             float rocketLongitude = appConfig.getFloat("rocketLongitude", 0.0f);
-            //if (rocketLongitude != 0.0f)
-                setRocketLongitude(rocketLongitude);
+            setRocketLongitude(rocketLongitude);
 
-            //boolean allowManualRecording = false;
+            //allowManualRecording
             boolean allowManualRecording = appConfig.getBoolean("allowManualRecording", false);
             setManualRecording(allowManualRecording);
 
-            //boolean useOpenMap = false;
+            //useOpenMap
             boolean useOpenMap = appConfig.getBoolean("useOpenMap", false);
             setUseOpenMap(useOpenMap);
         } catch (Exception e) {
@@ -369,9 +338,11 @@ public class GlobalConfig {
     public int getBaudRate() {
         return baudRate;
     }
+
     public String getBaudRateValue() {
         return appCfgData.getBaudRateByNbr(baudRate);
     }
+
     public void setBaudRate(int value) {
         baudRate = value;
     }
@@ -380,6 +351,7 @@ public class GlobalConfig {
     public void setAllowMultipleDrogueMain(boolean value) {
         allowMultipleDrogueMain = value;
     }
+
     public boolean getAllowMultipleDrogueMain() {
         return allowMultipleDrogueMain;
     }
@@ -387,11 +359,15 @@ public class GlobalConfig {
     public void setFullUSBSupport(boolean value) {
         fullUSBSupport = value;
     }
-    public boolean getFullUSBSupport() { return fullUSBSupport;  }
+
+    public boolean getFullUSBSupport() {
+        return fullUSBSupport;
+    }
 
     public void setMain_event(boolean value) {
         say_main_event = value;
     }
+
     public boolean getMain_event() {
         return say_main_event;
     }
@@ -399,6 +375,7 @@ public class GlobalConfig {
     public void setApogee_altitude(boolean value) {
         say_apogee_altitude = value;
     }
+
     public boolean getApogee_altitude() {
         return say_apogee_altitude;
     }
@@ -406,6 +383,7 @@ public class GlobalConfig {
     public void setMain_altitude(boolean value) {
         say_main_altitude = value;
     }
+
     public boolean getMain_altitude() {
         return say_main_altitude;
     }
@@ -469,6 +447,7 @@ public class GlobalConfig {
     public void setRocketLatitude(float value) {
         rocketLatitude = value;
     }
+
     public float getRocketLatitude() {
         return rocketLatitude;
     }
@@ -476,15 +455,26 @@ public class GlobalConfig {
     public void setRocketLongitude(float value) {
         rocketLongitude = value;
     }
+
     public float getRocketLongitude() {
         return rocketLongitude;
     }
 
-    public void setManualRecording(boolean value)  { allowManualRecording = value;}
-    public boolean getManualRecording() {return allowManualRecording;}
+    public void setManualRecording(boolean value) {
+        allowManualRecording = value;
+    }
 
-    public void setUseOpenMap(boolean value)  { useOpenMap = value;}
-    public boolean getUseOpenMap() {return useOpenMap;}
+    public boolean getManualRecording() {
+        return allowManualRecording;
+    }
+
+    public void setUseOpenMap(boolean value) {
+        useOpenMap = value;
+    }
+
+    public boolean getUseOpenMap() {
+        return useOpenMap;
+    }
 
     public int ConvertFont(int font) {
         return font + 8;
