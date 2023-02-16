@@ -37,7 +37,7 @@ import java.util.zip.ZipOutputStream;
 public class FlightViewInfoFragment extends Fragment {
 
     private FlightData myflight;
-    XYSeriesCollection allFlightData;
+    private XYSeriesCollection allFlightData;
     private TextView nbrOfSamplesValue, flightNbrValue;
     private TextView apogeeAltitudeValue, flightDurationValue, burnTimeValue, maxVelociyValue, maxAccelerationValue;
     private TextView timeToApogeeValue, mainAltitudeValue, maxDescentValue, landingSpeedValue;
@@ -46,8 +46,8 @@ public class FlightViewInfoFragment extends Fragment {
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
 
-    String SavedCurves = "";
-    boolean SavedCurvesOK = false;
+    private String SavedCurves = "";
+    private boolean SavedCurvesOK = false;
     private Button buttonExportToCsv, butExportAndShare;
     private String units[] = null;
     private String FlightName = null;
@@ -55,7 +55,7 @@ public class FlightViewInfoFragment extends Fragment {
     private XYSeries altitude;
     private XYSeries speed;
     private XYSeries accel;
-    public int numberOfCurves = 0;
+    private int numberOfCurves = 0;
 
     int nbrSeries;
 
@@ -135,7 +135,10 @@ public class FlightViewInfoFragment extends Fragment {
 
         //flight duration
         double flightDuration = flightData.getSeries(0).getMaxX() / 1000;
-        flightDurationValue.setText(String.format("%.2f", flightDuration) + " secs");
+        if(flightDuration < 60.0)
+            flightDurationValue.setText(String.format("%.2f", flightDuration) + " secs");
+        else
+            flightDurationValue.setText(String.format("%.2f", flightDuration/60) + " minutes");
         //apogee altitude
         double apogeeAltitude = flightData.getSeries(0).getMaxY();
         apogeeAltitudeValue.setText(String.format("%.0f", apogeeAltitude) + " " + myBT.getAppConf().getUnitsValue());
@@ -150,6 +153,8 @@ public class FlightViewInfoFragment extends Fragment {
         }
         //calculate max speed
         double maxSpeed = speed.getMaxY();
+        //speed.getMaxY()
+        Log.d("maxSpeed", "maxSpeed:"+maxSpeed);
         maxVelociyValue.setText((long) maxSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
 
         //landing speed
@@ -157,7 +162,9 @@ public class FlightViewInfoFragment extends Fragment {
         int timeBeforeLanding =searchXBack(altitude, 30);
         if (timeBeforeLanding != -1)
             if (searchY(speed, altitude.getX(timeBeforeLanding).doubleValue() )!= -1) {
-                landingSpeed =searchY(speed, altitude.getX(timeBeforeLanding).doubleValue() );
+                int posLanding =searchY(speed, altitude.getX(timeBeforeLanding).doubleValue() );
+                landingSpeed = speed.getY(posLanding).doubleValue();
+                Log.d("landingSpeed", "landingSpeed:"+landingSpeed);
                 landingSpeedValue.setText((long) landingSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
             } else {
                 landingSpeedValue.setText("N/A");

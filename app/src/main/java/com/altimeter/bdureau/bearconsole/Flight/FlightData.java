@@ -116,25 +116,21 @@ public class FlightData {
 
         flightData = GetFlightData(flightName);
         flightData.getSeries(0).add(X, Y);
-
     }
+
     public void AddToFlight (float X, float Y, String flightName, int serie)
     {
-
         //Find out if the flight exist
         //If it exist append the data to the flight and if not create a new flight
         XYSeriesCollection  flightData=null;
         if (!FlightExist(flightName))
         {
-
             //if the flight name does not exist let's create it first
             hm.put(flightName, createFlight(flightName));
         }
 
         flightData = GetFlightData(flightName);
         flightData.getSeries(serie).add(X, Y);
-
-
     }
     //not sure that I will be using that one
     public void AddFlightData (XYSeriesCollection  flightData, String flightName)

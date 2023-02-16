@@ -17,7 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
+//import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,7 +52,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.afree.data.xy.XYSeriesCollection;
-import org.afree.graphics.geom.Font;
+//import org.afree.graphics.geom.Font;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -86,16 +86,16 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private boolean[] checkedItems = null;
     private XYSeriesCollection allFlightData = null;
 
-    static int colors[] = {Color.RED, Color.BLUE, Color.BLACK,
+    /*static int colors[] = {Color.RED, Color.BLUE, Color.BLACK,
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW, Color.RED,
             Color.BLUE, Color.BLACK,
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW, Color.RED, Color.BLUE, Color.BLACK,
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW};
-    static Font font;
+    static Font font;*/
     private String FlightName = null;
 
     private String[] units = null;
-    public String SELECTED_FLIGHT = "MyFlight";
+    //public String SELECTED_FLIGHT = "MyFlight";
     public int numberOfCurves = 0;
     //File imagePath;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
