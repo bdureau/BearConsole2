@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -42,7 +41,7 @@ import org.afree.graphics.geom.Font;
 import android.graphics.Color;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
-import com.altimeter.bdureau.bearconsole.Flight.ChartView;
+import com.altimeter.bdureau.bearconsole.Flight.FlightView.ChartView;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.R;
 

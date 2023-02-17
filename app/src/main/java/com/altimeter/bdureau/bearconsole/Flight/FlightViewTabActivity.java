@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewFcFragment;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewGoogleMapFragment;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewInfoFragment;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewMpFragment;
@@ -74,6 +75,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
     // These are the activity tabs
     private FlightViewMpFragment flightPage1 = null;
+    private FlightViewFcFragment flightPage1bis = null;
     private FlightViewInfoFragment flightPage2 = null;
     private FlightViewGoogleMapFragment flightPage3 = null;
     private FlightViewOpenMapFragment flightPage4 = null;
@@ -86,18 +88,12 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private boolean[] checkedItems = null;
     private XYSeriesCollection allFlightData = null;
 
-    /*static int colors[] = {Color.RED, Color.BLUE, Color.BLACK,
-            Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW, Color.RED,
-            Color.BLUE, Color.BLACK,
-            Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW, Color.RED, Color.BLUE, Color.BLACK,
-            Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW};
-    static Font font;*/
     private String FlightName = null;
 
     private String[] units = null;
-    //public String SELECTED_FLIGHT = "MyFlight";
+
     public int numberOfCurves = 0;
-    //File imagePath;
+
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSION_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -254,7 +250,12 @@ public class FlightViewTabActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // The user clicked OK
-                        flightPage1.setCheckedItems(checkedItems);
+                        if ((myBT.getAppConf().getGraphicsLibType() == 0) &
+                                (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
+                            flightPage1bis.setCheckedItems(checkedItems);
+                        } else {
+                            flightPage1.setCheckedItems(checkedItems);
+                        }
                         int nbrOfItems =0;
                         for (int i = 0; i < checkedItems.length; i++) {
 
@@ -277,8 +278,14 @@ public class FlightViewTabActivity extends AppCompatActivity {
                                 k++;
                             }
                         }
-                        flightPage1.drawGraph();
-                        flightPage1.drawAllCurves(allFlightData);
+                        if ((myBT.getAppConf().getGraphicsLibType() == 0) &
+                                (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
+                            flightPage1bis.drawGraph();
+                            flightPage1bis.drawAllCurves(allFlightData);
+                        } else {
+                            flightPage1.drawGraph();
+                            flightPage1.drawAllCurves(allFlightData);
+                        }
                     }
                 });
                 //cancel
@@ -305,11 +312,23 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsPageAdapter(getSupportFragmentManager());
 
-        flightPage1 = new FlightViewMpFragment(allFlightData,
-                myBT,
-                curvesNames,
-                checkedItems,
-                units);
+        //if we are using afreeChart
+        if ((myBT.getAppConf().getGraphicsLibType() == 0) &
+                (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
+            flightPage1bis = new FlightViewFcFragment(allFlightData,
+                    myBT,
+                    curvesNames,
+                    checkedItems,
+                    units);
+            adapter.addFragment(flightPage1bis, "TAB1");
+        } else {
+            flightPage1 = new FlightViewMpFragment(allFlightData,
+                    myBT,
+                    curvesNames,
+                    checkedItems,
+                    units);
+            adapter.addFragment(flightPage1, "TAB1");
+        }
 
         flightPage2 = new FlightViewInfoFragment(myflight,
                 allFlightData,
@@ -317,9 +336,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 units,
                 FlightName);
 
-
-
-        adapter.addFragment(flightPage1, "TAB1");
         adapter.addFragment(flightPage2, "TAB2");
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {

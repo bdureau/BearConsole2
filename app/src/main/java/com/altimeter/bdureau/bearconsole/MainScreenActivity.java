@@ -44,7 +44,7 @@ import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatus;
 import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackGoogleMap;
 import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackOpenMap;
 import com.altimeter.bdureau.bearconsole.telemetry.Telemetry;
-import com.altimeter.bdureau.bearconsole.telemetry.TelemetryMp;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryTabActivity;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -83,10 +83,6 @@ public class MainScreenActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
-                Log.d("Flight win","intent.getAction():" + intent.getAction());
-                Log.d("Flight win","ACTION_USB_PERMISSION:" + ACTION_USB_PERMISSION);
-                Log.d("Flight win", "EXTRA_PERMISSION_GRANTED:" +UsbManager.EXTRA_PERMISSION_GRANTED);
-                Log.d("Flight win","intent.getExtras()" + intent.getExtras());
                 boolean granted = true;
                 if(android.os.Build.VERSION.SDK_INT < 31)
                     granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
@@ -186,9 +182,7 @@ public class MainScreenActivity extends AppCompatActivity {
             setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
         } else {
             DisableUI();
-            //btnConnectDisconnect.setText(R.string.connect);
             text_connect.setText(getResources().getString(R.string.connect));
-            //btnFlashFirmware.setEnabled(true);
             setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
         }
 
@@ -242,12 +236,12 @@ public class MainScreenActivity extends AppCompatActivity {
                 Intent i;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                     //if android ver = 8 or greater use the MPlib
-                    i = new Intent(MainScreenActivity.this, TelemetryMp.class);
+                    i = new Intent(MainScreenActivity.this, TelemetryTabActivity.class);
                 } else {
                     if (myBT.getAppConf().getGraphicsLibType()==0)
                         i = new Intent(MainScreenActivity.this, Telemetry.class);
                     else
-                        i = new Intent(MainScreenActivity.this, TelemetryMp.class);
+                        i = new Intent(MainScreenActivity.this, TelemetryTabActivity.class);
                 }
                 startActivity(i);
             }
@@ -300,9 +294,7 @@ public class MainScreenActivity extends AppCompatActivity {
                     Disconnect(); //close connection
                     DisableUI();
                     // we are disconnected enable flash firmware
-                    //btnFlashFirmware.setEnabled(true);
                     setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
-                    //btnConnectDisconnect.setText(R.string.connect);
                     text_connect.setText(getResources().getString(R.string.connect));
                 } else {
                     if (myBT.getConnectionType().equals("bluetooth")) {
@@ -313,9 +305,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             if (myBT.getConnected()) {
                                 EnableUI();
                                 // cannot flash firmware if connected
-                                //btnFlashFirmware.setEnabled(false);
                                 setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
-                                //btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
                                 text_connect.setText(getResources().getString(R.string.disconnect));
                             }
                         } else {
@@ -338,7 +328,7 @@ public class MainScreenActivity extends AppCompatActivity {
                                 } else {
                                     pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0, new Intent(ACTION_USB_PERMISSION), 0);
                                 }
-                                //PendingIntent pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+
                                 usbManager.requestPermission(device, pi);
                                 keep = false;
 
@@ -395,24 +385,18 @@ public class MainScreenActivity extends AppCompatActivity {
     }
 
     private void DisableUI() {
-        //btnAltiSettings.setEnabled(false);
         setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
 
-        //btnReadFlights.setEnabled(false);
         setEnabledCard(false, btnReadFlights, image_flights, text_flights);
 
-        //btnTelemetry.setEnabled(false);
         setEnabledCard(false, btnTelemetry, image_telemetry, text_telemetry);
 
-        //btnContinuityOnOff.setEnabled(false);
         setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
 
-        //btnReset.setEnabled(false);
         setEnabledCard(false, btnReset, image_reset, text_reset);
-        //btnStatus.setEnabled(false);
+
         setEnabledCard(false, btnStatus, image_status, text_status);
-        //btnTrack.setEnabled(false);
-        //setEnabledCard(false, btnTrack, image_track, text_track);
+
         // now enable or disable the menu entries by invalidating it
         invalidateOptionsMenu();
     }
@@ -420,11 +404,7 @@ public class MainScreenActivity extends AppCompatActivity {
     private void setEnabledCard(boolean enable, CardView card, ImageView image, TextView text) {
         card.setEnabled(enable);
         image.setImageAlpha(enable? 0xFF : 0x3F);
-        /*if (enable==false)
-            if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES)
-                text.setTextColor(0xFF6C6666);
-            else
-                text.setTextColor(0xFFDFD5D5);*/
+
     }
 
     private void EnableUI() {
@@ -459,60 +439,43 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")) {
             Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-                //btnContinuityOnOff.setEnabled(false);
                 setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
             } else {
                 //enable it for bT or USB only if full support
                 if (myBT.getAppConf().getConnectionType()==0 || (myBT.getAppConf().getConnectionType()==1 && myBT.getAppConf().getFullUSBSupport()))
-                    //btnContinuityOnOff.setEnabled(true);
                     setEnabledCard(true, btnContinuityOnOff, image_continuity, text_continuity);
                 else
-                    //btnContinuityOnOff.setEnabled(false);
                     setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
             }
 
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
                     myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
-                //btnReadFlights.setEnabled(false);
                 setEnabledCard(false, btnReadFlights, image_flights, text_flights);
             } else {
                 //enable it for bT or USB only if full support
                 if (myBT.getAppConf().getConnectionType()==0 || (myBT.getAppConf().getConnectionType()==1 && myBT.getAppConf().getFullUSBSupport()))
-                    //btnReadFlights.setEnabled(true);
                     setEnabledCard(true, btnReadFlights, image_flights, text_flights);
                 else
-                    //btnReadFlights.setEnabled(false);
                     setEnabledCard(false, btnReadFlights, image_flights, text_flights);
             }
-            //btnTelemetry.setEnabled(true);
             setEnabledCard(true, btnTelemetry, image_telemetry, text_telemetry);
             if(myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-                //btnTrack.setEnabled(true);
                 setEnabledCard(true, btnTrack, image_track, text_track);
             } else {
-                //btnTrack.setEnabled(false);
                 setEnabledCard(false, btnTrack, image_track, text_track);
             }
             //enable it for bT or USB only if full support
             if (myBT.getAppConf().getConnectionType()== 0 || (myBT.getAppConf().getConnectionType()==1 && myBT.getAppConf().getFullUSBSupport())) {
-                //btnAltiSettings.setEnabled(true);
                 setEnabledCard(true, btnAltiSettings, image_settings, text_settings);
-                //btnReset.setEnabled(true);
                 setEnabledCard(true, btnReset, image_reset, text_reset);
-                //btnStatus.setEnabled(true);
                 setEnabledCard(true, btnStatus, image_status, text_status);
             } else {
-                //btnAltiSettings.setEnabled(false);
                 setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
-                //btnReset.setEnabled(false);
                 setEnabledCard(false, btnReset, image_reset, text_reset);
-                //btnStatus.setEnabled(false);
                 setEnabledCard(true, btnStatus, image_status, text_status);
             }
 
-            //btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
             text_connect.setText(getResources().getString(R.string.disconnect));
-            //btnFlashFirmware.setEnabled(false);
             setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
 
             if(!firmCompat.IsCompatible(myBT.getAltiConfigData().getAltimeterName(),
@@ -528,7 +491,6 @@ public class MainScreenActivity extends AppCompatActivity {
         }
         // now enable or disable the menu entries by invalidating it
         invalidateOptionsMenu();
-
     }
 
     // fast way to call Toast

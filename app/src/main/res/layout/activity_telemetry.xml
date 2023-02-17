@@ -281,7 +281,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/gridLayout">
-        <com.altimeter.bdureau.bearconsole.Flight.ChartView
+        <com.altimeter.bdureau.bearconsole.Flight.FlightView.ChartView
             android:id="@+id/telemetryChartView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

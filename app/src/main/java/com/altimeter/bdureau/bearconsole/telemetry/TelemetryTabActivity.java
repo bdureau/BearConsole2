@@ -58,19 +58,11 @@ import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.github.mikephil.charting.data.Entry;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 
-public class TelemetryMp extends AppCompatActivity {
+public class TelemetryTabActivity extends AppCompatActivity {
 
     public String TAG = "TelemetryMp.class";
-    private static ViewPager mViewPager;
+    private ViewPager mViewPager;
 
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
@@ -82,11 +74,8 @@ public class TelemetryMp extends AppCompatActivity {
     private GPSGoogleMapStatusFragment statusPage3 = null;
     private GPSOpenMapStatusFragment statusPage4 = null;
 
-    //Marker marker, markerDest;
-    //Polyline polyline1 = null;
-    public Float rocketLatitude = 48.8698f;
-    public Float rocketLongitude = 2.2190f;
-    //LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
+    public float rocketLatitude = 48.8698f;
+    public float rocketLongitude = 2.2190f;
 
     ArrayList<Entry> yValues;
 
@@ -122,7 +111,6 @@ public class TelemetryMp extends AppCompatActivity {
                             if (statusPage0.isLiftOffChecked() && !statusPage0.isLandedChecked()) {
                                 int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
                                 statusPage0.setCurrentAltitude(altitude + "");
-
                                 yValues.add(new Entry(altitudeTime, altitude));
 
                                 //plot every seconde
@@ -384,7 +372,7 @@ public class TelemetryMp extends AppCompatActivity {
             Log.d("track", "latitude:" + value);
             if (val != 0) {
                 rocketLatitude = Float.parseFloat(value) / 100000;
-                myBT.getAppConf().setRocketLatitude( rocketLatitude);
+                myBT.getAppConf().setRocketLatitude(rocketLatitude);
             }
         }
     }
@@ -461,11 +449,9 @@ public class TelemetryMp extends AppCompatActivity {
 
         // Read the application config
         myBT.getAppConf().ReadConfig();
-        //if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLatitude = myBT.getAppConf().getRocketLatitude();
+        rocketLatitude = myBT.getAppConf().getRocketLatitude();
 
-        //if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLongitude = myBT.getAppConf().getRocketLongitude();
+        rocketLongitude = myBT.getAppConf().getRocketLongitude();
         //init text to speech
         mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -492,28 +478,27 @@ public class TelemetryMp extends AppCompatActivity {
                     else
                         result = mTTS.setLanguage(Locale.ENGLISH);
 
-                    //if (!myBT.getAppConf().getTelemetryVoice().equals("")) {
-                        Log.d("Voice", myBT.getAppConf().getTelemetryVoice()+"");
-                        String[] itemsVoices;
-                        String items = "";
-                        int i = 0;
-                        try {
-                            for (Voice tmpVoice : mTTS.getVoices()) {
+                    Log.d("Voice", myBT.getAppConf().getTelemetryVoice() + "");
+                    String[] itemsVoices;
+                    String items = "";
+                    int i = 0;
+                    try {
+                        for (Voice tmpVoice : mTTS.getVoices()) {
 
-                                if (tmpVoice.getName().startsWith(Locale.getDefault().getLanguage())) {
-                                    Log.d("Voice", tmpVoice.getName());
-                                    if (myBT.getAppConf().getTelemetryVoice() == i ) {
-                                        mTTS.setVoice(tmpVoice);
-                                        Log.d("Voice", "Found voice");
-                                        break;
-                                    }
-                                    i++;
+                            if (tmpVoice.getName().startsWith(Locale.getDefault().getLanguage())) {
+                                Log.d("Voice", tmpVoice.getName());
+                                if (myBT.getAppConf().getTelemetryVoice() == i) {
+                                    mTTS.setVoice(tmpVoice);
+                                    Log.d("Voice", "Found voice");
+                                    break;
                                 }
+                                i++;
                             }
-                        } catch (Exception e) {
-
                         }
-                    //}
+                    } catch (Exception e) {
+
+                    }
+
 
                     if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                         Log.e("TTS", "Language not supported");
@@ -531,7 +516,7 @@ public class TelemetryMp extends AppCompatActivity {
 
         String myUnits = "";
 
-        if (myBT.getAppConf().getUnits()==0) {
+        if (myBT.getAppConf().getUnits() == 0) {
             //Meters
             FEET_IN_METER = 1;
             myUnits = getResources().getString(R.string.Meters_fview);
@@ -632,17 +617,17 @@ public class TelemetryMp extends AppCompatActivity {
         statusPage0 = new AltimeterMpFlightFragment(myBT);
         statusPage1 = new AltimeterInfoFragment(myBT);
         statusPage2 = new GPSStatusFragment(myBT);
-        statusPage3 = new GPSGoogleMapStatusFragment(myBT, viewPager);
-        statusPage4 = new GPSOpenMapStatusFragment(myBT, viewPager);
 
         adapter.addFragment(statusPage0, "TAB0");
         adapter.addFragment(statusPage1, "TAB1");
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
             adapter.addFragment(statusPage2, "TAB2");
-            if(!myBT.getAppConf().getUseOpenMap()) {
+            if (!myBT.getAppConf().getUseOpenMap()) {
+                statusPage3 = new GPSGoogleMapStatusFragment(myBT, viewPager);
                 adapter.addFragment(statusPage3, "TAB3");
             } else {
+                statusPage4 = new GPSOpenMapStatusFragment(myBT, viewPager);
                 adapter.addFragment(statusPage4, "TAB3");
             }
         }
@@ -750,7 +735,7 @@ public class TelemetryMp extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("ACT_LOC");
         registerReceiver(receiver, filter);
 
-        Intent intent = new Intent(TelemetryMp.this, LocationService.class);
+        Intent intent = new Intent(TelemetryTabActivity.this, LocationService.class);
         startService(intent);
     }
 
@@ -777,29 +762,6 @@ public class TelemetryMp extends AppCompatActivity {
 
     }
 
-    /*public void onClickStartTelemetry(View view) {
-
-        telemetry = true;
-
-        lastPlotTime = 0;
-        myBT.initFlightData();
-
-
-        LiftOffTime = 0;
-        Runnable r = new Runnable() {
-
-            @Override
-            public void run() {
-                while (true) {
-                    if (!telemetry) break;
-                    myBT.ReadResult(100000);
-                }
-            }
-        };
-
-        rocketTelemetry = new Thread(r);
-        rocketTelemetry.start();
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -822,14 +784,14 @@ public class TelemetryMp extends AppCompatActivity {
         }
         //open help screen
         if (id == R.id.action_help) {
-            Intent i = new Intent(TelemetryMp.this, HelpActivity.class);
+            Intent i = new Intent(TelemetryTabActivity.this, HelpActivity.class);
             i.putExtra("help_file", "help_telemetry_alti");
             startActivity(i);
             return true;
         }
 
         if (id == R.id.action_about) {
-            Intent i = new Intent(TelemetryMp.this, AboutActivity.class);
+            Intent i = new Intent(TelemetryTabActivity.this, AboutActivity.class);
             startActivity(i);
             return true;
         }

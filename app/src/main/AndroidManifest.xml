@@ -130,7 +130,7 @@
              android:name=".Flight.FlightListActivity"
              android:label="@string/Flight_list"
              android:screenOrientation="portrait" />
-         <activity android:name=".Flight.FlightViewActivity" />
+
          <activity
              android:name=".Help.AboutActivity"
              android:label="@string/about_screen"
@@ -148,7 +148,7 @@
              android:name=".telemetry.Telemetry"
              android:screenOrientation="portrait" />
          <activity
-             android:name=".telemetry.TelemetryMp"
+             android:name=".telemetry.TelemetryTabActivity"
              android:label="@string/telemetry_screen"
              android:screenOrientation="portrait" />
          <activity

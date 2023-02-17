@@ -40,14 +40,10 @@ public class UsbConnection {
             if (serialPort.open()) { //Set Serial Connection Parameters.
 
                 serialPort.setBaudRate(baudRate);
-                //serialPort.setBaudRate(38400);
                 serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
                 serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
                 serialPort.setParity(UsbSerialInterface.PARITY_NONE);
                 serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);//ok
-                //serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_DSR_DTR);//non
-                //serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_RTS_CTS);//ok
-                //serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_XON_XOFF);//ok
 
                 usbInputStream = new SerialInputStream(serialPort);
 

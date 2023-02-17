@@ -56,18 +56,8 @@ public class FlightListActivity extends AppCompatActivity {
             // Get the flight name
             String currentFlight = ((TextView) v).getText().toString();
             Intent i;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                //if android ver = 8 or greater use the MPlib
-                i = new Intent(FlightListActivity.this, FlightViewTabActivity.class);
-            } else {
-                // Make an intent to start next activity.
-                if (myBT.getAppConf().getGraphicsLibType()==0)
-                    i = new Intent(FlightListActivity.this, FlightViewActivity.class);
-                else
-                    // i = new Intent(FlightListActivity.this, FlightViewMpActivity.class);
-                    i = new Intent(FlightListActivity.this, FlightViewTabActivity.class);
+            i = new Intent(FlightListActivity.this, FlightViewTabActivity.class);
 
-            }
             //Change the activity.
             i.putExtra(SELECTED_FLIGHT, currentFlight);
             startActivity(i);
@@ -134,7 +124,10 @@ public class FlightListActivity extends AppCompatActivity {
         {
             //get flights
             if (myBT.getConnected()) {
-                try { Thread.sleep(1000); } catch (InterruptedException e) {}
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                }
                 //clear anything on the connection
                 myBT.flush();
                 myBT.clearInput();
@@ -229,7 +222,7 @@ public class FlightListActivity extends AppCompatActivity {
                         double X, Y;
                         X = serie.getX(i).doubleValue();
                         Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000.0);
-                        myflight.AddToFlight((long) X, (long) (Y ), flight, 4);
+                        myflight.AddToFlight((long) X, (long) (Y), flight, 4);
                     }
                 }
             }
