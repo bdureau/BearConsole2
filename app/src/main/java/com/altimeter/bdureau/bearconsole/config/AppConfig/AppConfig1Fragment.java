@@ -127,7 +127,7 @@ public class AppConfig1Fragment extends Fragment {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsLanguages());
         spAppLanguage.setAdapter(adapter);
-        spAppLanguage.setEnabled(false); //disable it for the moment because it is causing troubles
+        //spAppLanguage.setEnabled(false); //disable it for the moment because it is causing troubles
 
         // graph color
         spGraphColor = (Spinner) view.findViewById(R.id.spinnerGraphColor);

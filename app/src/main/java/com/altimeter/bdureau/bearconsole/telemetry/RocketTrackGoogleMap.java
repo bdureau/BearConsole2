@@ -55,7 +55,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     Polyline polyline1 = null;
     Thread altiStatus;
     boolean status = true;
-    Float rocketLatitude = 48.8698f, rocketLongitude = 2.2190f;
+    float rocketLatitude = 48.8698f, rocketLongitude = 2.2190f;
 
     Button btnDismiss, butShareMap, butMapType;
     LocationBroadCastReceiver receiver = null;
@@ -64,7 +64,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
 
     Integer MapType;
 
-    private static ConsoleApplication myBT;
+    private ConsoleApplication myBT;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -84,21 +84,20 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
 
     private void setLatitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
-            Float val = Float.parseFloat(value);
+            float val = Float.parseFloat(value);
             Log.d("track", "latitude:" + value);
-            if (val != 0) {
+            if (val != 0.0f) {
                 rocketLatitude = Float.parseFloat(value) / 100000;
                 myBT.getAppConf().setRocketLatitude(rocketLatitude);
-
             }
         }
     }
 
     private void setLongitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
-            Float val = Float.parseFloat(value);
+            float val = Float.parseFloat(value);
             Log.d("track", "longitude:" + value);
-            if (val != 0) {
+            if (val != 0.0f) {
                 rocketLongitude = Float.parseFloat(value) / 100000;
                 myBT.getAppConf().setRocketLongitude( rocketLongitude);
                 myBT.getAppConf().SaveConfig();
@@ -125,11 +124,9 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             e.printStackTrace();
         }
 
-        //if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLatitude = myBT.getAppConf().getRocketLatitude();//Float.parseFloat(myBT.getAppConf().getRocketLatitude());
+        rocketLatitude = myBT.getAppConf().getRocketLatitude();
 
-        //if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLongitude = myBT.getAppConf().getRocketLongitude();
+        rocketLongitude = myBT.getAppConf().getRocketLongitude();
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

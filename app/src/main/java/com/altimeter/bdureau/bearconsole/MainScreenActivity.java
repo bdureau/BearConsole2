@@ -83,10 +83,16 @@ public class MainScreenActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
-                boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
+                Log.d("Flight win","intent.getAction():" + intent.getAction());
+                Log.d("Flight win","ACTION_USB_PERMISSION:" + ACTION_USB_PERMISSION);
+                Log.d("Flight win", "EXTRA_PERMISSION_GRANTED:" +UsbManager.EXTRA_PERMISSION_GRANTED);
+                Log.d("Flight win","intent.getExtras()" + intent.getExtras());
+                boolean granted = true;
+                if(android.os.Build.VERSION.SDK_INT < 31)
+                    granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
 
                 if (granted) {
-
+                    Log.d("Flight win", "Permission granted");
                     if (myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRateValue()))) {
                         Log.d("baud rate", "baud:"+myBT.getAppConf().getBaudRateValue());
                         myBT.setConnected(true);
@@ -94,7 +100,6 @@ public class MainScreenActivity extends AppCompatActivity {
                         EnableUI();
                         btnFlashFirmware.setEnabled(false);
                         myBT.setConnectionType("usb");
-                        //btnConnectDisconnect.setText(getResources().getString(R.string.disconnect));
                         text_connect.setText(getResources().getString(R.string.disconnect));
                     }
 
@@ -370,6 +375,23 @@ public class MainScreenActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_USB_PERMISSION);
+        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+        registerReceiver(broadcastReceiver, filter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+
     }
 
     private void DisableUI() {

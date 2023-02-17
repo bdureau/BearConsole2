@@ -61,7 +61,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
     IMapController mapController  = null;
     Thread altiStatus;
     boolean status = true;
-    Float rocketLatitude=48.8698f, rocketLongitude=2.2190f;
+    float rocketLatitude=48.8698f, rocketLongitude=2.2190f;
 
     Button btnDismiss, butShareMap;
     LocationBroadCastReceiver receiver=null;
@@ -69,7 +69,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
     GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
 
 
-    private static ConsoleApplication myBT;
+    private ConsoleApplication myBT;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -89,9 +89,9 @@ public class RocketTrackOpenMap extends AppCompatActivity {
 
     private void setLatitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
-            Float val = Float.parseFloat(value);
+            float val = Float.parseFloat(value);
             Log.d("track", "latitude:"+ value);
-            if(val !=0) {
+            if(val !=0.0f) {
                 rocketLatitude = Float.parseFloat(value) / 100000;
                 myBT.getAppConf().setRocketLatitude(rocketLatitude);
 
@@ -101,9 +101,9 @@ public class RocketTrackOpenMap extends AppCompatActivity {
 
     private void setLongitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
-            Double val = Double.parseDouble(value);
+            float val = Float.parseFloat(value);
             Log.d("track", "longitude:"+ value);
-            if(val !=0) {
+            if(val !=0.0f) {
                 rocketLongitude = Float.parseFloat(value) / 100000;
                 myBT.getAppConf().setRocketLongitude( rocketLongitude);
                 myBT.getAppConf().SaveConfig();
@@ -118,11 +118,9 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         setContentView(R.layout.activity_rocket_track_open_map);
         myBT.setHandler(handler);
 
-        //if (myBT.getAppConf().getRocketLatitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLatitude = myBT.getAppConf().getRocketLatitude(); //Double.parseDouble(myBT.getAppConf().getRocketLatitude());
+        rocketLatitude = myBT.getAppConf().getRocketLatitude(); //Double.parseDouble(myBT.getAppConf().getRocketLatitude());
 
-        //if (myBT.getAppConf().getRocketLongitude().matches("\\d+(?:\\.\\d+)?"))
-            rocketLongitude = myBT.getAppConf().getRocketLongitude();
+        rocketLongitude = myBT.getAppConf().getRocketLongitude();
 
         if(Build.VERSION.SDK_INT>=23) {
             if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
