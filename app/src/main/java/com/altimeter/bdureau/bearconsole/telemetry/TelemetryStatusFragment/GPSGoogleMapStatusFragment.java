@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole.telemetry;
+package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
 /**
  * @description: This will display altimeter MAP when using the altiGPS
  * @author: boris.dureau@neuf.fr
@@ -61,7 +61,7 @@ public class GPSGoogleMapStatusFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_altimeter_status_google_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_altimeter_status_google_map, container, false);
 
         butBack = (Button) view.findViewById(R.id.butBack);
         butShareMap = (Button) view.findViewById(R.id.butShareMap);

@@ -40,10 +40,9 @@ import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigBT;
 import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigLora;
 import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
 import com.altimeter.bdureau.bearconsole.connection.TestConnection;
-import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatus;
+import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatusTabActivity;
 import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackGoogleMap;
 import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackOpenMap;
-import com.altimeter.bdureau.bearconsole.telemetry.Telemetry;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryTabActivity;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -233,16 +232,7 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.clearInput();
                     myBT.write("y1;".toString());
                 }
-                Intent i;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    //if android ver = 8 or greater use the MPlib
-                    i = new Intent(MainScreenActivity.this, TelemetryTabActivity.class);
-                } else {
-                    if (myBT.getAppConf().getGraphicsLibType()==0)
-                        i = new Intent(MainScreenActivity.this, Telemetry.class);
-                    else
-                        i = new Intent(MainScreenActivity.this, TelemetryTabActivity.class);
-                }
+                Intent i = new Intent(MainScreenActivity.this, TelemetryTabActivity.class);
                 startActivity(i);
             }
         });
@@ -256,7 +246,7 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.clearInput();
                     myBT.write("y1;".toString());
                 }
-                Intent i = new Intent(MainScreenActivity.this, AltimeterStatus.class);
+                Intent i = new Intent(MainScreenActivity.this, AltimeterStatusTabActivity.class);
                 startActivity(i);
             }
         });

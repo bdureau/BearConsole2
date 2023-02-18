@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole.telemetry;
+package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
 /**
  * @description: This will display altimeter MAP when using the altiGPS
  * This is using OpenMap
@@ -67,7 +67,7 @@ public class GPSOpenMapStatusFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Configuration.getInstance().load(this.getContext(),
                 PreferenceManager.getDefaultSharedPreferences(this.getContext()));
-        View view = inflater.inflate(R.layout.activity_altimeter_status_open_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_altimeter_status_open_map, container, false);
 
         butBack = (Button) view.findViewById(R.id.butBack);
         butShareMap = (Button) view.findViewById(R.id.butShareMap);

@@ -120,7 +120,7 @@ public class AppConfig1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View view = inflater.inflate(R.layout.activity_app_config_part1, container, false);
+        View view = inflater.inflate(R.layout.fragment_app_config_tab1, container, false);
         //Language
         spAppLanguage = (Spinner) view.findViewById(R.id.spinnerLanguage);
 
@@ -183,6 +183,11 @@ public class AppConfig1Fragment extends Fragment {
         spBaudRate.setSelection(BT.getAppConf().getBaudRate());
         spConnectionType.setSelection(BT.getAppConf().getConnectionType());
         spGraphicsLibType.setSelection(BT.getAppConf().getGraphicsLibType());
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            //if android ver = 8 or greater use the MPlib so disable the choice and for it to use MP
+            spGraphicsLibType.setSelection(1);
+            spGraphicsLibType.setEnabled(false);
+        }
         if (BT.getAppConf().getAllowMultipleDrogueMain()) {
             cbAllowMainDrogue.setChecked(true);
         } else {

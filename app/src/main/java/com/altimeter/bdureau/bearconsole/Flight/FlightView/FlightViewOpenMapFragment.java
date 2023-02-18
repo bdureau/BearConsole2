@@ -25,7 +25,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
 
 import org.afree.data.xy.XYSeriesCollection;
 import org.osmdroid.api.IMapController;
@@ -69,7 +68,7 @@ public class FlightViewOpenMapFragment extends Fragment {
 
         Configuration.getInstance().load(this.getContext(),
                 PreferenceManager.getDefaultSharedPreferences(this.getContext()));
-        View view = inflater.inflate(R.layout.activity_flight_view_open_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_flight_view_open_map, container, false);
 
         butBack = (Button) view.findViewById(R.id.butBack);
         butShareMap = (Button) view.findViewById(R.id.butShareMap);

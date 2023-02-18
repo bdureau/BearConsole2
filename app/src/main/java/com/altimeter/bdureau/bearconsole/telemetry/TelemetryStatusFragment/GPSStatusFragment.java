@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole.telemetry;
+package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
 /**
  * @description: This will display altimeter GPS and phone informations such as current altitude,
  * latititude, logitude number of satellite etc...
@@ -83,7 +83,7 @@ public class GPSStatusFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_altimeter_status_tab2, container, false);
+        View view = inflater.inflate(R.layout.fragment_altimeter_status_tab2, container, false);
 
         // GPS altimeter data
         txtViewLatitude = (TextView) view.findViewById(R.id.txtViewLatitude);

@@ -285,8 +285,8 @@ public class ConsoleApplication extends Application {
 
     public void initFlightData() {
         MyFlight = new FlightData(this, AltiCfg.getAltimeterName());
-        if (AppConf.getUnits()== 0) {//meters
-            //if (AppConf.getUnitsValue().equals("Meters")) {
+        if (AppConf.getUnits()== 0) {
+            //meters
             FEET_IN_METER = 1;
         } else {
             FEET_IN_METER = 3.28084;

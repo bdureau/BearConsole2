@@ -52,11 +52,18 @@ import android.content.Intent;
 
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.ShareHandler;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.AltimeterFcFlightFragment;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.AltimeterInfoFragment;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.AltimeterMpFlightFragment;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSGoogleMapStatusFragment;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSOpenMapStatusFragment;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSStatusFragment;
 import com.github.mikephil.charting.data.Entry;
 
 public class TelemetryTabActivity extends AppCompatActivity {
@@ -69,6 +76,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
     public LocationBroadCastReceiver receiver = null;
     SectionsStatusPageAdapter adapter;
     private AltimeterMpFlightFragment statusPage0 = null;
+    private AltimeterFcFlightFragment statusPage0bis = null;
     private AltimeterInfoFragment statusPage1 = null;
     private GPSStatusFragment statusPage2 = null;
     private GPSGoogleMapStatusFragment statusPage3 = null;
@@ -76,6 +84,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
 
     public float rocketLatitude = 48.8698f;
     public float rocketLongitude = 2.2190f;
+    private FlightData myflight = null; //used with afreeChart
 
     ArrayList<Entry> yValues;
 
@@ -107,128 +116,247 @@ public class TelemetryTabActivity extends AppCompatActivity {
                 case 1:
                     // Value 1 contain the current altitude
                     if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
-                        if (statusPage0.isViewCreated())
-                            if (statusPage0.isLiftOffChecked() && !statusPage0.isLandedChecked()) {
-                                int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
-                                statusPage0.setCurrentAltitude(altitude + "");
-                                yValues.add(new Entry(altitudeTime, altitude));
+                        int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
+                        //use afree chart
+                        if ((myBT.getAppConf().getGraphicsLibType() == 0) &
+                                (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
+                            if (statusPage0bis.isViewCreated())
+                                if (statusPage0bis.isLiftOffChecked() && !statusPage0bis.isLandedChecked()) {
+                                    statusPage0bis.setCurrentAltitude(altitude + "");
 
-                                //plot every seconde
-                                if ((altitudeTime - lastPlotTime) > 1000) {
-                                    lastPlotTime = altitudeTime;
-                                    statusPage0.plotYvalues(yValues);
-                                }
-                                // Tell altitude every 5 secondes
-                                if ((altitudeTime - lastSpeakTime) > 5000 && liftOffSaid) {
-                                    if (myBT.getAppConf().getAltitude_event()) {
-                                        mTTS.speak(getResources().getString(R.string.altitude) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                    myflight.AddToFlight(altitudeTime, altitude, "Telemetry");
+
+                                    //plot every seconde
+                                    if ((altitudeTime - lastPlotTime) > 1000) {
+                                        lastPlotTime = altitudeTime;
+                                        statusPage0bis.plotYvalues(myflight.GetFlightData("Telemetry"));
                                     }
-                                    lastSpeakTime = altitudeTime;
                                 }
+
+                        } else
+                        //use MpChart
+                        {
+                            if (statusPage0.isViewCreated())
+                                if (statusPage0.isLiftOffChecked() && !statusPage0.isLandedChecked()) {
+                                    statusPage0.setCurrentAltitude(altitude + "");
+                                    yValues.add(new Entry(altitudeTime, altitude));
+
+                                    //plot every seconde
+                                    if ((altitudeTime - lastPlotTime) > 1000) {
+                                        lastPlotTime = altitudeTime;
+                                        statusPage0.plotYvalues(yValues);
+                                    }
+                                }
+                        }
+                        // Tell altitude every 5 secondes
+                        if ((altitudeTime - lastSpeakTime) > 5000 && liftOffSaid) {
+                            if (myBT.getAppConf().getAltitude_event()) {
+                                mTTS.speak(getResources().getString(R.string.altitude) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                             }
+                            lastSpeakTime = altitudeTime;
+                        }
                     }
                     break;
                 case 2:
                     // Value 2 lift off yes/no
-                    if (statusPage0.isViewCreated())
-                        if (!statusPage0.isLiftOffChecked())
-                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                if (Integer.parseInt((String) msg.obj) > 0 || LiftOffTime > 0) {
-                                    statusPage0.setLiftOffEnabled(true);
-                                    statusPage0.setLiftOffChecked(true);
-                                    statusPage0.setLiftOffEnabled(false);
-                                    if (LiftOffTime == 0)
-                                        LiftOffTime = System.currentTimeMillis();
-                                    statusPage0.setLiftOffTime("0 ms");
-                                    if (!liftOffSaid) {
-                                        if (myBT.getAppConf().getLiftOff_event()) {
-                                            mTTS.speak(getResources().getString(R.string.lift_off), TextToSpeech.QUEUE_FLUSH, null);
+                    if ((myBT.getAppConf().getGraphicsLibType() == 0) &
+                            (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
+                        if (statusPage0bis.isViewCreated())
+                            if (!statusPage0bis.isLiftOffChecked())
+                                if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
+                                    if (Integer.parseInt((String) msg.obj) > 0 || LiftOffTime > 0) {
+                                        statusPage0bis.setLiftOffEnabled(true);
+                                        statusPage0bis.setLiftOffChecked(true);
+                                        statusPage0bis.setLiftOffEnabled(false);
+                                        if (LiftOffTime == 0)
+                                            LiftOffTime = System.currentTimeMillis();
+                                        statusPage0bis.setLiftOffTime("0 ms");
+                                        if (!liftOffSaid) {
+                                            if (myBT.getAppConf().getLiftOff_event()) {
+                                                mTTS.speak(getResources().getString(R.string.lift_off), TextToSpeech.QUEUE_FLUSH, null);
+                                            }
+                                            liftOffSaid = true;
                                         }
-                                        liftOffSaid = true;
                                     }
-                                }
-
+                    } else {
+                        if (statusPage0.isViewCreated())
+                            if (!statusPage0.isLiftOffChecked())
+                                if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
+                                    if (Integer.parseInt((String) msg.obj) > 0 || LiftOffTime > 0) {
+                                        statusPage0.setLiftOffEnabled(true);
+                                        statusPage0.setLiftOffChecked(true);
+                                        statusPage0.setLiftOffEnabled(false);
+                                        if (LiftOffTime == 0)
+                                            LiftOffTime = System.currentTimeMillis();
+                                        statusPage0.setLiftOffTime("0 ms");
+                                        if (!liftOffSaid) {
+                                            if (myBT.getAppConf().getLiftOff_event()) {
+                                                mTTS.speak(getResources().getString(R.string.lift_off), TextToSpeech.QUEUE_FLUSH, null);
+                                            }
+                                            liftOffSaid = true;
+                                        }
+                                    }
+                    }
                     break;
                 case 3:
                     // Value 3 apogee fired yes/no
-                    if (statusPage0.isViewCreated())
-                        if (!statusPage0.isApogeeChecked())
-                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                if (Integer.parseInt((String) msg.obj) > 0) {
-                                    statusPage0.setApogeeEnable(true);
-                                    statusPage0.setApogeeChecked(true);
-                                    statusPage0.setApogeeEnable(false);
-                                    statusPage0.setMaxAltitudeTime((int) (System.currentTimeMillis() - LiftOffTime) + " ms");
-                                }
+                    if ((myBT.getAppConf().getGraphicsLibType() == 0) &
+                            (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
+                        if (statusPage0bis.isViewCreated())
+                            if (!statusPage0bis.isApogeeChecked())
+                                if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
+                                    if (Integer.parseInt((String) msg.obj) > 0) {
+                                        statusPage0bis.setApogeeEnable(true);
+                                        statusPage0bis.setApogeeChecked(true);
+                                        statusPage0bis.setApogeeEnable(false);
+                                        statusPage0bis.setMaxAltitudeTime((int) (System.currentTimeMillis() - LiftOffTime) + " ms");
+                                    }
+                    } else {
+                        if (statusPage0.isViewCreated())
+                            if (!statusPage0.isApogeeChecked())
+                                if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
+                                    if (Integer.parseInt((String) msg.obj) > 0) {
+                                        statusPage0.setApogeeEnable(true);
+                                        statusPage0.setApogeeChecked(true);
+                                        statusPage0.setApogeeEnable(false);
+                                        statusPage0.setMaxAltitudeTime((int) (System.currentTimeMillis() - LiftOffTime) + " ms");
+                                    }
+                    }
 
                     break;
                 case 4:
                     //Value 4 apogee altitude
-                    if (statusPage0.isViewCreated())
-                        if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
-                            int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
+                    if ((myBT.getAppConf().getGraphicsLibType() == 0) &
+                            (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
+                        if (statusPage0bis.isViewCreated())
+                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
+                                int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
 
-                            if (statusPage0.isApogeeChecked()) {
-                                statusPage0.setMaxAltitude(altitude + "");
-                                if (!apogeeSaid) {
-                                    //first check if say it is enabled
-                                    if (myBT.getAppConf().getApogee_altitude()) {
-                                        mTTS.speak(getResources().getString(R.string.telemetry_apogee) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                if (statusPage0bis.isApogeeChecked()) {
+                                    statusPage0bis.setMaxAltitude(altitude + "");
+                                    if (!apogeeSaid) {
+                                        //first check if say it is enabled
+                                        if (myBT.getAppConf().getApogee_altitude()) {
+                                            mTTS.speak(getResources().getString(R.string.telemetry_apogee) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                        }
+                                        apogeeSaid = true;
                                     }
-                                    apogeeSaid = true;
                                 }
                             }
-                        }
+                    } else {
+                        if (statusPage0.isViewCreated())
+                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
+                                int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
+
+                                if (statusPage0.isApogeeChecked()) {
+                                    statusPage0.setMaxAltitude(altitude + "");
+                                    if (!apogeeSaid) {
+                                        //first check if say it is enabled
+                                        if (myBT.getAppConf().getApogee_altitude()) {
+                                            mTTS.speak(getResources().getString(R.string.telemetry_apogee) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                        }
+                                        apogeeSaid = true;
+                                    }
+                                }
+                            }
+                    }
                     break;
                 case 5:
                     //value 5 main fired yes/no
-                    if (statusPage0.isViewCreated())
-                        if (!statusPage0.isMainChuteChecked())
-                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                if (Integer.parseInt((String) msg.obj) > 0) {
-                                    statusPage0.setMainChuteTime((System.currentTimeMillis() - LiftOffTime) + " ms");
-                                    statusPage0.setMainChuteEnabled(true);
-                                    statusPage0.setMainChuteChecked(true);
-                                    statusPage0.setMainChuteEnabled(false);
-                                }
-
+                    if ((myBT.getAppConf().getGraphicsLibType() == 0) &
+                            (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
+                        if (statusPage0bis.isViewCreated())
+                            if (!statusPage0bis.isMainChuteChecked())
+                                if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
+                                    if (Integer.parseInt((String) msg.obj) > 0) {
+                                        statusPage0bis.setMainChuteTime((System.currentTimeMillis() - LiftOffTime) + " ms");
+                                        statusPage0bis.setMainChuteEnabled(true);
+                                        statusPage0bis.setMainChuteChecked(true);
+                                        statusPage0bis.setMainChuteEnabled(false);
+                                    }
+                    }else {
+                        if (statusPage0.isViewCreated())
+                            if (!statusPage0.isMainChuteChecked())
+                                if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
+                                    if (Integer.parseInt((String) msg.obj) > 0) {
+                                        statusPage0.setMainChuteTime((System.currentTimeMillis() - LiftOffTime) + " ms");
+                                        statusPage0.setMainChuteEnabled(true);
+                                        statusPage0.setMainChuteChecked(true);
+                                        statusPage0.setMainChuteEnabled(false);
+                                    }
+                    }
                     break;
                 case 6:
                     // value 6 main altitude
-                    if (statusPage0.isViewCreated())
-                        if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
-                            if (statusPage0.isMainChuteChecked()) {
-                                int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
-                                statusPage0.setMainAltitude(String.valueOf(altitude));
-                                if (!mainSaid) {
-                                    if (myBT.getAppConf().getMain_event()) {
-                                        mTTS.speak(getResources().getString(R.string.main_deployed) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                    if ((myBT.getAppConf().getGraphicsLibType() == 0) &
+                            (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
+                        if (statusPage0bis.isViewCreated())
+                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
+                                if (statusPage0bis.isMainChuteChecked()) {
+                                    int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
+                                    statusPage0bis.setMainAltitude(String.valueOf(altitude));
+                                    if (!mainSaid) {
+                                        if (myBT.getAppConf().getMain_event()) {
+                                            mTTS.speak(getResources().getString(R.string.main_deployed) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                        }
+                                        mainSaid = true;
                                     }
-                                    mainSaid = true;
                                 }
                             }
-                        }
-
+                    } else {
+                        if (statusPage0.isViewCreated())
+                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
+                                if (statusPage0.isMainChuteChecked()) {
+                                    int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
+                                    statusPage0.setMainAltitude(String.valueOf(altitude));
+                                    if (!mainSaid) {
+                                        if (myBT.getAppConf().getMain_event()) {
+                                            mTTS.speak(getResources().getString(R.string.main_deployed) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                        }
+                                        mainSaid = true;
+                                    }
+                                }
+                            }
+                    }
                     break;
                 case 7:
                     //have we landed
-                    if (statusPage0.isViewCreated())
-                        if (!statusPage0.isLandedChecked())
-                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                if (Integer.parseInt((String) msg.obj) > 0) {
-                                    statusPage0.setLandedEnabled(true);
-                                    statusPage0.setLandedChecked(true);
-                                    statusPage0.setLandedEnabled(false);
-                                    statusPage0.setLandedAltitude(statusPage0.getLandedAltitude());
-                                    statusPage0.setLandedTime((System.currentTimeMillis() - LiftOffTime) + " ms");
-                                    if (!landedSaid) {
-                                        if (myBT.getAppConf().getLanding_event()) {
-                                            mTTS.speak(getResources().getString(R.string.rocket_has_landed), TextToSpeech.QUEUE_FLUSH, null);
+                    if ((myBT.getAppConf().getGraphicsLibType() == 0) &
+                            (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
+                        if (statusPage0bis.isViewCreated())
+                            if (!statusPage0bis.isLandedChecked())
+                                if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
+                                    if (Integer.parseInt((String) msg.obj) > 0) {
+                                        statusPage0bis.setLandedEnabled(true);
+                                        statusPage0bis.setLandedChecked(true);
+                                        statusPage0bis.setLandedEnabled(false);
+                                        statusPage0bis.setLandedAltitude(statusPage0bis.getLandedAltitude());
+                                        statusPage0bis.setLandedTime((System.currentTimeMillis() - LiftOffTime) + " ms");
+                                        if (!landedSaid) {
+                                            if (myBT.getAppConf().getLanding_event()) {
+                                                mTTS.speak(getResources().getString(R.string.rocket_has_landed), TextToSpeech.QUEUE_FLUSH, null);
+                                            }
+                                            landedSaid = true;
                                         }
-                                        landedSaid = true;
                                     }
-                                }
-
+                    }else {
+                        if (statusPage0.isViewCreated())
+                            if (!statusPage0.isLandedChecked())
+                                if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
+                                    if (Integer.parseInt((String) msg.obj) > 0) {
+                                        statusPage0.setLandedEnabled(true);
+                                        statusPage0.setLandedChecked(true);
+                                        statusPage0.setLandedEnabled(false);
+                                        statusPage0.setLandedAltitude(statusPage0.getLandedAltitude());
+                                        statusPage0.setLandedTime((System.currentTimeMillis() - LiftOffTime) + " ms");
+                                        if (!landedSaid) {
+                                            if (myBT.getAppConf().getLanding_event()) {
+                                                mTTS.speak(getResources().getString(R.string.rocket_has_landed), TextToSpeech.QUEUE_FLUSH, null);
+                                            }
+                                            landedSaid = true;
+                                        }
+                                    }
+                    }
                     break;
                 case 8:
                     // Value 8 contain the sample time
@@ -393,7 +521,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_telemetry_mp);
+        setContentView(R.layout.activity_telemetry_tab);
         yValues = new ArrayList<>();
 
         receiver = new LocationBroadCastReceiver();
@@ -437,11 +565,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();
 
-
         mViewPager = (ViewPager) findViewById(R.id.container);
-
         setupViewPager(mViewPager);
-
 
         dismissButton = (Button) findViewById(R.id.butDismiss);
 
@@ -614,11 +739,19 @@ public class TelemetryTabActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsStatusPageAdapter(getSupportFragmentManager());
-        statusPage0 = new AltimeterMpFlightFragment(myBT);
+        if ((myBT.getAppConf().getGraphicsLibType() == 0) &
+                (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
+            statusPage0bis = new AltimeterFcFlightFragment(myBT);
+            adapter.addFragment(statusPage0bis, "TAB0");
+        } else {
+            statusPage0 = new AltimeterMpFlightFragment(myBT);
+            adapter.addFragment(statusPage0, "TAB0");
+        }
+
         statusPage1 = new AltimeterInfoFragment(myBT);
         statusPage2 = new GPSStatusFragment(myBT);
 
-        adapter.addFragment(statusPage0, "TAB0");
+
         adapter.addFragment(statusPage1, "TAB1");
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
@@ -745,6 +878,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
         lastPlotTime = 0;
         myBT.initFlightData();
 
+        myflight = myBT.getFlightData(); //this is used by the afreeChart
         LiftOffTime = 0;
         Runnable r = new Runnable() {
 

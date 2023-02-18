@@ -121,7 +121,7 @@ public class AltimeterConfig3Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tabconfigpart3_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_altimeter_config_tab3, container, false);
         //Beep mode
         dropdownBipMode = (Spinner) view.findViewById(R.id.spinnerBipMode);
         //"Mode1", "Mode2", "Off"

@@ -67,7 +67,7 @@ public class FlightViewMpFragment extends Fragment {
 
         dataSets = new ArrayList<>();
 
-        View view = inflater.inflate(R.layout.tabflight_view_mp_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_flight_view_mp, container, false);
 
         mChart = (LineChart) view.findViewById(R.id.linechart);
 

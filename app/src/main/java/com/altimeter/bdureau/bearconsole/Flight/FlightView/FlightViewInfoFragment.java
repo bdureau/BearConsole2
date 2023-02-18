@@ -81,7 +81,7 @@ public class FlightViewInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View view = inflater.inflate(R.layout.tabflight_info_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_flight_info, container, false);
 
         buttonExportToCsv = (Button) view.findViewById(R.id.butExportToCsv);
         butExportAndShare = (Button) view.findViewById(R.id.butExportAndShare);

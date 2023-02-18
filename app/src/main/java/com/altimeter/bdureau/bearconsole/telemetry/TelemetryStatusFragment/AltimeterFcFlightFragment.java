@@ -1,9 +1,10 @@
-package com.altimeter.bdureau.bearconsole.telemetry;
+package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
 /**
  * @description: This will display altimeter realtime flight graph
  * @author: boris.dureau@neuf.fr
  **/
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +16,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.Flight.FlightData;
+import com.altimeter.bdureau.bearconsole.Flight.FlightView.ChartView;
 import com.altimeter.bdureau.bearconsole.R;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import java.util.ArrayList;
+import org.afree.chart.AFreeChart;
+import org.afree.chart.ChartFactory;
+import org.afree.chart.axis.NumberAxis;
+import org.afree.chart.axis.ValueAxis;
+import org.afree.chart.plot.PlotOrientation;
+import org.afree.chart.plot.XYPlot;
+import org.afree.data.xy.XYSeriesCollection;
+import org.afree.graphics.SolidColor;
+import org.afree.graphics.geom.Font;
+
 
 public class AltimeterFcFlightFragment extends Fragment {
     private boolean ViewCreated = false;
@@ -31,11 +37,11 @@ public class AltimeterFcFlightFragment extends Fragment {
     private CheckBox cbLiftOff, cbApogee, cbMainChute, cbLanded;
     private TextView txtCurrentAltitude, txtMaxAltitude, txtMainAltitude, txtLandedAltitude, txtLiftOffAltitude;
     private TextView txtLandedTime, txtMaxSpeedTime, txtMaxAltitudeTime, txtLiftOffTime, txtMainChuteTime;
-    private LineChart mChart;
 
-    LineData data;
-    ArrayList<ILineDataSet> dataSets;
-    ArrayList<Entry> yValues;
+    private ChartView chartView;
+    private AFreeChart mChart = null;
+    private XYPlot plot;
+    private FlightData myflight=null;
 
     public AltimeterFcFlightFragment(ConsoleApplication bt) {
         lBT = bt;
@@ -158,24 +164,13 @@ public class AltimeterFcFlightFragment extends Fragment {
             this.txtLandedTime.setText(value);
     }
 
-    public void plotYvalues(ArrayList<Entry> yValues) {
-        LineDataSet set1 = new LineDataSet(yValues, "Altitude/Time");
-
-        set1.setDrawValues(false);
-        set1.setDrawCircles(false);
-        set1.setLabel(getResources().getString(R.string.altitude));
-
-        this.dataSets.clear();
-        this.dataSets.add(set1);
-
-        this.data = new LineData(this.dataSets);
-        this.mChart.clear();
-        this.mChart.setData(this.data);
+    public void plotYvalues(XYSeriesCollection flightData) {
+        plot.setDataset(0, flightData);
     }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_telemetry_mp_tab0, container, false);
+        View view = inflater.inflate(R.layout.fragment_telemetry_fc_tab0, container, false);
 
         cbLiftOff = (CheckBox) view.findViewById(R.id.checkBoxLiftoff);
         cbLiftOff.setEnabled(false);
@@ -216,24 +211,64 @@ public class AltimeterFcFlightFragment extends Fragment {
         int nbrColor = Color.BLACK;
         String myUnits = "";
 
-        yValues = new ArrayList<>();
-        yValues.add(new Entry(0, 0));
-        //yValues.add(new Entry(1,0));
-        //altitude
-        LineDataSet set1 = new LineDataSet(yValues, getResources().getString(R.string.altitude));
-        mChart = (LineChart) view.findViewById(R.id.telemetryChartView);
+        Font font = new Font("Dialog", Typeface.NORMAL,fontSize);
 
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-        mChart.setScaleMinima(0, 0);
-        dataSets = new ArrayList<>();
-        dataSets.add(set1);
+        mChart = ChartFactory.createXYLineChart(
+                getResources().getString(R.string.Altitude_time),
+                getResources().getString(R.string.Time_fv),
+                getResources().getString(R.string.Altitude) + " (" + myUnits + ")",
+                null,
+                PlotOrientation.VERTICAL, // orientation
+                true,                     // include legend
+                true,                     // tooltips?
+                false                     // URLs?
+        );
 
-        LineData data = new LineData(dataSets);
-        mChart.setData(data);
-        Description desc = new Description();
-        desc.setText(getResources().getString(R.string.tel_telemetry));
-        mChart.setDescription(desc);
+        // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
+        mChart.getTitle().setFont(font);
+        // set the background color for the chart...
+        mChart.setBackgroundPaintType(new SolidColor(graphBackColor));
+
+        // get a reference to the plot for further customisation...
+        plot = mChart.getXYPlot();
+
+        plot.setDomainGridlinesVisible(false);
+        plot.setRangeGridlinesVisible(false);
+
+        plot.setBackgroundPaintType(new SolidColor(graphBackColor));
+        plot.setOutlinePaintType(new SolidColor(Color.YELLOW));
+        plot.setDomainZeroBaselinePaintType(new SolidColor(Color.GREEN));
+        plot.setRangeZeroBaselinePaintType(new SolidColor(Color.MAGENTA));
+
+        final ValueAxis Xaxis = plot.getDomainAxis();
+        Xaxis.setAutoRange(true);
+        Xaxis.setAxisLinePaintType(new SolidColor(axisColor));
+
+        final ValueAxis YAxis = plot.getRangeAxis();
+        YAxis.setAxisLinePaintType(new SolidColor(axisColor));
+
+
+        Xaxis.setTickLabelFont(font);
+        Xaxis.setLabelFont(font);
+
+        YAxis.setTickLabelFont(font);
+        YAxis.setLabelFont(font);
+
+        //Xaxis label color
+        Xaxis.setLabelPaintType(new SolidColor(labelColor));
+
+        Xaxis.setTickMarkPaintType(new SolidColor(axisColor));
+        Xaxis.setTickLabelPaintType(new SolidColor(nbrColor));
+        //Y axis label color
+        YAxis.setLabelPaintType(new SolidColor(labelColor));
+        YAxis.setTickLabelPaintType(new SolidColor(nbrColor));
+        final NumberAxis rangeAxis2 = new NumberAxis("Range Axis 2");
+        rangeAxis2.setAutoRangeIncludesZero(false);
+
+
+        chartView = (ChartView) view.findViewById(R.id.telemetryChartView);
+        chartView.setChart(mChart);
+
 
         ViewCreated = true;
         return view;

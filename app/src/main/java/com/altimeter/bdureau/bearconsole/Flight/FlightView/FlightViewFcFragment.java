@@ -67,7 +67,7 @@ public class FlightViewFcFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View view = inflater.inflate(R.layout.tabflight_view_fc_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_flight_view_fc, container, false);
         chartView = (ChartView) view.findViewById(R.id.chartView1);
 
         mChart = ChartFactory.createXYLineChart(

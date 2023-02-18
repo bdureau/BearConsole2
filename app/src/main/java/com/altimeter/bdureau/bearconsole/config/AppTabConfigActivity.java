@@ -69,7 +69,7 @@ public class AppTabConfigActivity extends AppCompatActivity {
         //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         // get the data for all the drop down
         appConfigData = new AppConfigData(this);
-        setContentView(R.layout.activity_app_config);
+        setContentView(R.layout.activity_app_tab_config);
 
         mViewPager = (ViewPager) findViewById(R.id.container_config);
         setupViewPager(mViewPager);

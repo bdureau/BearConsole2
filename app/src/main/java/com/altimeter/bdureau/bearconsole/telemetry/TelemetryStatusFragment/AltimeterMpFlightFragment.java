@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole.telemetry;
+package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
 /**
  * @description: This will display altimeter realtime flight graph
  * @author: boris.dureau@neuf.fr
@@ -175,7 +175,7 @@ public class AltimeterMpFlightFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_telemetry_mp_tab0, container, false);
+        View view = inflater.inflate(R.layout.fragment_telemetry_mp_tab0, container, false);
 
         cbLiftOff = (CheckBox) view.findViewById(R.id.checkBoxLiftoff);
         cbLiftOff.setEnabled(false);

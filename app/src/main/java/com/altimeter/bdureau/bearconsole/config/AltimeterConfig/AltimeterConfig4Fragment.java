@@ -147,7 +147,7 @@ public class AltimeterConfig4Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tabconfigpart4_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_altimeter_config_tab4, container, false);
 
 
         servo1OnPos = (EditText) view.findViewById(R.id.editTxtServo1OnPos);

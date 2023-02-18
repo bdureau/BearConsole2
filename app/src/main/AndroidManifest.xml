@@ -145,14 +145,11 @@
              android:label="@string/reset_settings"
              android:screenOrientation="portrait" />
          <activity
-             android:name=".telemetry.Telemetry"
-             android:screenOrientation="portrait" />
-         <activity
              android:name=".telemetry.TelemetryTabActivity"
              android:label="@string/telemetry_screen"
              android:screenOrientation="portrait" />
          <activity
-             android:name=".telemetry.AltimeterStatus"
+             android:name=".telemetry.AltimeterStatusTabActivity"
              android:label="@string/status_screen"
              android:screenOrientation="portrait" />
          <activity

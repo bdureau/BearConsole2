@@ -48,21 +48,20 @@ import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.ShareHandler;
-import com.altimeter.bdureau.bearconsole.config.AltimeterTabConfigActivity;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.AltimeterInfoFragment;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.AltimeterOutputFragment;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSGoogleMapStatusFragment;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSOpenMapStatusFragment;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSStatusFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AltimeterStatus extends AppCompatActivity {
+public class AltimeterStatusTabActivity extends AppCompatActivity {
     private static ViewPager mViewPager;
 
     private TextView[] dotsSlide;
@@ -291,7 +290,7 @@ public class AltimeterStatus extends AppCompatActivity {
                     .show();
         }
 
-        setContentView(R.layout.activity_altimeter_status);
+        setContentView(R.layout.fragment_altimeter_status_tab);
         rocketLatitude = myBT.getAppConf().getRocketLatitude();
 
         rocketLongitude = myBT.getAppConf().getRocketLongitude();
@@ -688,7 +687,7 @@ public class AltimeterStatus extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("ACT_LOC");
         registerReceiver(receiver, filter);
 
-        Intent intent = new Intent(AltimeterStatus.this, LocationService.class);
+        Intent intent = new Intent(AltimeterStatusTabActivity.this, LocationService.class);
         startService(intent);
     }
 
@@ -718,14 +717,14 @@ public class AltimeterStatus extends AppCompatActivity {
         }
         //open help screen
         if (id == R.id.action_help) {
-            Intent i = new Intent(AltimeterStatus.this, HelpActivity.class);
+            Intent i = new Intent(AltimeterStatusTabActivity.this, HelpActivity.class);
             i.putExtra("help_file", "help_status_alti");
             startActivity(i);
             return true;
         }
 
         if (id == R.id.action_about) {
-            Intent i = new Intent(AltimeterStatus.this, AboutActivity.class);
+            Intent i = new Intent(AltimeterStatusTabActivity.this, AboutActivity.class);
             startActivity(i);
             return true;
         }

@@ -165,7 +165,7 @@ public class AltimeterConfig1Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tabconfigpart1_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_altimeter_config_tab1, container, false);
 
         //Output 1
         dropdownOut1 = (Spinner) view.findViewById(R.id.spinnerOut1);

@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole.telemetry;
+package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
 /**
  * @description: This will display altimeter information such as current altitude, battery voltage etc...
  * @author: boris.dureau@neuf.fr
@@ -77,7 +77,7 @@ public class AltimeterInfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_telemetry_mp_tab1, container, false);
+        View view = inflater.inflate(R.layout.fragment_telemetry_mp_tab1, container, false);
 
         txtStatusAltiName = (TextView) view.findViewById(R.id.txtStatusAltiName);
         txtStatusAltiNameValue = (TextView) view.findViewById(R.id.txtStatusAltiNameValue);

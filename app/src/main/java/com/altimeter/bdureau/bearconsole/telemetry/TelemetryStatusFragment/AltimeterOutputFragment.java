@@ -1,4 +1,4 @@
-package com.altimeter.bdureau.bearconsole.telemetry;
+package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -52,7 +52,7 @@ public class AltimeterOutputFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_altimeter_status_tab1bis, container, false);
+        View view = inflater.inflate(R.layout.fragment_altimeter_status_tab1bis, container, false);
 
 
         switchOutput1 = (Switch) view.findViewById(R.id.switchOutput1);

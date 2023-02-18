@@ -67,7 +67,7 @@ public class AppConfig3Fragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.activity_app_config_part3, container, false);
+        View view = inflater.inflate(R.layout.fragment_app_config_tab3, container, false);
         // map color
         spMapColor = (Spinner) view.findViewById(R.id.spinnerMapColor);
         ArrayAdapter<String> adapterMapColor = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsColor());
