@@ -17,7 +17,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-//import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -80,7 +79,10 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private FlightViewGoogleMapFragment flightPage3 = null;
     private FlightViewOpenMapFragment flightPage4 = null;
 
+    //buttons
     private Button btnDismiss,  butSelectCurves;
+
+    //ref to the application
     private ConsoleApplication myBT;
 
     private String curvesNames[] = null;
@@ -94,6 +96,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
     public int numberOfCurves = 0;
 
+    //Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSION_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -164,7 +167,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         FlightName = newint.getStringExtra(FlightListActivity.SELECTED_FLIGHT);
         myflight = myBT.getFlightData();
         // get all the data that we have recorded for the current flight
-        allFlightData = null;
+        allFlightData = null; //remove???
         allFlightData = myflight.GetFlightData(FlightName);
 
         Log.d("numberOfCurves", "numberOfCurves:" + allFlightData.getSeries().size());

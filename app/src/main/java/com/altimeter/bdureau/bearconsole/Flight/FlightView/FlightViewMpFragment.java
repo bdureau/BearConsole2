@@ -53,7 +53,6 @@ public class FlightViewMpFragment extends Fragment {
         this.curvesNames = pCurvesNames;
         this.checkedItems = pCheckedItems;
         this.units = pUnits;
-        //this.dataSets = pDataSets;
     }
 
     public void setCheckedItems(boolean[] checkedItems) {
@@ -134,9 +133,7 @@ public class FlightViewMpFragment extends Fragment {
         }
 
         LineData data = new LineData(dataSets);
-
         mChart.clear();
-
         mChart.setData(data);
         mChart.setBackgroundColor(graphBackColor);
         Description desc = new Description();
