@@ -734,12 +734,12 @@ public class ConsoleApplication extends Application {
                                                 AltiCfg.setEndRecordAltitude(Integer.valueOf(currentSentence[16]));
                                             else
                                                 AltiCfg.setEndRecordAltitude(5);
-                                        // Value 17 contains the record temp flag
+                                        // Value 17 contains the TelemetryType flag
                                         if (currentSentence.length > 17)
                                             if (currentSentence[17].matches("\\d+(?:\\.\\d+)?"))
-                                                AltiCfg.setRecordTemperature(Integer.valueOf(currentSentence[17]));
+                                                AltiCfg.setTelemetryType(Integer.valueOf(currentSentence[17]));
                                             else
-                                                AltiCfg.setRecordTemperature(0);
+                                                AltiCfg.setTelemetryType(0);
                                         // Value 18 contains the supersonic delay flag
                                         if (currentSentence.length > 18)
                                             if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))

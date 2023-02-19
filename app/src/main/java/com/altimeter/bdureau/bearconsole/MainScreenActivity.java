@@ -400,6 +400,8 @@ public class MainScreenActivity extends AppCompatActivity {
     private void EnableUI() {
 
         boolean success;
+        //wait so that the port open
+        try { Thread.sleep(1000); } catch (InterruptedException e) {}
         success = readConfig();
         //second attempt
         if (!success)
@@ -497,12 +499,7 @@ public class MainScreenActivity extends AppCompatActivity {
         // ask for config
         boolean success = false;
         if (myBT.getConnected()) {
-            //msg("Retreiving altimeter config...");
-            try { Thread.sleep(1000); } catch (InterruptedException e) {}
-            /*myBT.flush();
-            myBT.clearInput();
-            //switch off the main loop before sending the config
-            myBT.write("h;".toString());*/
+
             Log.d("MainScreen", "Retreiving altimeter config...");
             myBT.setDataReady(false);
             myBT.flush();

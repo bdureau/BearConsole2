@@ -24,7 +24,7 @@ public class AltimeterConfig2Fragment extends Fragment {
     private String[] itemsAltimeterResolution;
     private String[] itemsEEpromSize;
     private String[] itemsBeepOnOff;
-    private String[] itemsRecordTempOnOff;
+    private String[] itemsTelemetryType;
     private String[] itemsSupersonicDelayOnOff;
     private String[] itemsBatteryType;
 
@@ -32,13 +32,13 @@ public class AltimeterConfig2Fragment extends Fragment {
     private Spinner dropdownBaudRate;
     private EditText ApogeeMeasures;
     private Spinner dropdownAltimeterResolution, dropdownEEpromSize;
-    private Spinner dropdownRecordTemp;
+    private Spinner dropdownTelemetryType;
     private Spinner dropdownSupersonicDelay;
     private Spinner dropdownBatteryType;
     private EditText EndRecordAltitude;
     private EditText LiftOffAltitude, RecordingTimeout;
     private boolean ViewCreated = false;
-    private TextView txtViewRecordTemp, txtViewEEpromSize;
+    private TextView txtViewTelemetryType, txtViewEEpromSize;
 
     public AltimeterConfig2Fragment (AltiConfigData cfg) {
         lAltiCfg=cfg;
@@ -106,11 +106,11 @@ public class AltimeterConfig2Fragment extends Fragment {
     }
 
     public int getRecordTempOnOff() {
-        return (int) this.dropdownRecordTemp.getSelectedItemId();
+        return (int) this.dropdownTelemetryType.getSelectedItemId();
     }
 
     public void setRecordTempOnOff(int RecordTempOnOff) {
-        this.dropdownRecordTemp.setSelection(RecordTempOnOff);
+        this.dropdownTelemetryType.setSelection(RecordTempOnOff);
     }
 
     public int getSupersonicDelayOnOff() {
@@ -281,30 +281,28 @@ public class AltimeterConfig2Fragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item, itemsBeepOnOff);
         dropdownBeepOnOff.setAdapter(adapterBeepOnOff);
 
-        // Record temperature on or off
-        txtViewRecordTemp = (TextView) view.findViewById(R.id.txtViewRecordTemp);
-        dropdownRecordTemp = (Spinner) view.findViewById(R.id.spinnerRecordTemp);
-        //Off
-        //on
-        itemsRecordTempOnOff = new String[]{getResources().getString(R.string.config_off),
-                getResources().getString(R.string.config_on)};
-        ArrayAdapter<String> adapterRecordTemp = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, itemsRecordTempOnOff);
-        dropdownRecordTemp.setAdapter(adapterRecordTemp);
+        // Telemetry type
+        txtViewTelemetryType = (TextView) view.findViewById(R.id.txtViewTelemetryType);
+        dropdownTelemetryType = (Spinner) view.findViewById(R.id.spinnerTelemetryType);
+        //Fast,Average, Slow, VerySlow
+        itemsTelemetryType = new String[]{"Fast", "Average", "Slow", "VerySlow"};
+        ArrayAdapter<String> adapterTelemetryType = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, itemsTelemetryType);
+        dropdownTelemetryType.setAdapter(adapterTelemetryType);
 
         if (lAltiCfg != null) {
             if (lAltiCfg.getAltimeterName().equals("AltiServo") ||
                     lAltiCfg.getAltimeterName().equals("AltiDuo")) {
-                dropdownRecordTemp.setVisibility(View.INVISIBLE);
-                txtViewRecordTemp.setVisibility(View.INVISIBLE);
+                dropdownTelemetryType.setVisibility(View.INVISIBLE);
+                txtViewTelemetryType.setVisibility(View.INVISIBLE);
             } else {
-                dropdownRecordTemp.setVisibility(View.VISIBLE);
-                txtViewRecordTemp.setVisibility(View.VISIBLE);
+                dropdownTelemetryType.setVisibility(View.VISIBLE);
+                txtViewTelemetryType.setVisibility(View.VISIBLE);
             }
         }
 
         // Tool tip
-        txtViewRecordTemp.setOnClickListener(new View.OnClickListener() {
+        txtViewTelemetryType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ViewTooltip
@@ -312,7 +310,7 @@ public class AltimeterConfig2Fragment extends Fragment {
                         .color(Color.BLACK)
                         .position(ViewTooltip.Position.TOP)
                         //Choose if you want to record the temperature
-                        .text(getResources().getString(R.string.txtViewRecordTemp_tooltip))
+                        .text("Choose the type of telemetry module you use")
                         .show();
             }
         });
@@ -386,7 +384,7 @@ public class AltimeterConfig2Fragment extends Fragment {
             dropdownAltimeterResolution.setSelection(lAltiCfg.getAltimeterResolution());
             dropdownEEpromSize.setSelection(lAltiCfg.arrayIndex(itemsEEpromSize, String.valueOf(lAltiCfg.getEepromSize())));
             dropdownBeepOnOff.setSelection(lAltiCfg.getBeepOnOff());
-            dropdownRecordTemp.setSelection(lAltiCfg.getRecordTemperature());
+            dropdownTelemetryType.setSelection(lAltiCfg.getTelemetryType());
             dropdownSupersonicDelay.setSelection(lAltiCfg.getSupersonicDelay());
             EndRecordAltitude.setText(String.valueOf(lAltiCfg.getEndRecordAltitude()));
             LiftOffAltitude.setText(String.valueOf(lAltiCfg.getLiftOffAltitude()));

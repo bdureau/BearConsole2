@@ -31,7 +31,7 @@ public class AltiConfigData {
     private int altimeterResolution = 0;
     private int eepromSize= 512;
     private int endRecordAltitude =3;
-    private int recordTemperature = 0;
+    private int TelemetryType = 0;
     private int supersonicDelay=0;
     private int beepOnOff = 0;
     private int servo1OnPos = 0;
@@ -213,9 +213,9 @@ public class AltiConfigData {
     public void setEndRecordAltitude(int value) {endRecordAltitude =value;}
     public int getEndRecordAltitude(){return endRecordAltitude;}
 
-    // Record temperature
-    public void setRecordTemperature(int value){recordTemperature=value;}
-    public int getRecordTemperature(){return recordTemperature;}
+    // TelemetryType
+    public void setTelemetryType(int value){TelemetryType=value;}
+    public int getTelemetryType(){return TelemetryType;}
 
    // supersonic delay
     public void setSupersonicDelay(int value) {supersonicDelay=value;}

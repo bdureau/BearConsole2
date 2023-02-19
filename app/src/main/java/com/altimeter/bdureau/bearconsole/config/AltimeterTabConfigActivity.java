@@ -289,7 +289,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             AltiCfg.setBeepOnOff(configPage2.getBeepOnOff());
             // msg("ret" +configPage2.getRecordTempOnOff());
             AltiCfg.setEndRecordAltitude(configPage2.getEndRecordAltitude());
-            AltiCfg.setRecordTemperature(configPage2.getRecordTempOnOff());
+            AltiCfg.setTelemetryType(configPage2.getRecordTempOnOff());
             AltiCfg.setSupersonicDelay(configPage2.getSupersonicDelayOnOff());
             AltiCfg.setLiftOffAltitude(configPage2.getLiftOffAltitude());
             AltiCfg.setBatteryType(configPage2.getBatteryType());
@@ -459,7 +459,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         //        AltiCfg.getEndRecordAltitude() + "," +
         SendParam("p,13,"+AltiCfg.getEndRecordAltitude());
         //        AltiCfg.getRecordTemperature() + "," +
-        SendParam("p,14,"+AltiCfg.getRecordTemperature());
+        SendParam("p,14,"+AltiCfg.getTelemetryType());
         //        AltiCfg.getSupersonicDelay() + "," +
         SendParam("p,15,"+AltiCfg.getSupersonicDelay());
         //        AltiCfg.getConnectionSpeed() + "," +

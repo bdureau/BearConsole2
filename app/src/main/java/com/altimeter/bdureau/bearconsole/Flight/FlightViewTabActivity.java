@@ -29,6 +29,8 @@ import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewOpenMapFrag
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.ShareHandler;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
@@ -261,7 +263,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
                         }
                         int nbrOfItems =0;
                         for (int i = 0; i < checkedItems.length; i++) {
-
                             //count nbr of selected
                             if(checkedItems[i]) {
                                 nbrOfItems++;
@@ -388,6 +389,12 @@ public class FlightViewTabActivity extends AppCompatActivity {
         @Override
         public void onPageSelected(int i) {
             agregaIndicateDots(i, adapter.getCount());
+
+            if(i ==0) {
+                butSelectCurves.setVisibility(View.VISIBLE);
+            } else {
+                butSelectCurves.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override
@@ -427,56 +434,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
     }
 
 
-    private  void takeScreenShot(View view) {
-        Date date = new Date();
-        CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
-
-        try {
-            File mainDir = new File(
-                    this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FileShare");
-            if (!mainDir.exists()) {
-                boolean mkdir = mainDir.mkdir();
-            }
-
-            String path = mainDir + "/" + "AltiMultiCurve" + "-" + format + ".jpeg";
-            view.setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
-            view.setDrawingCacheEnabled(false);
-
-
-            File imageFile = new File(path);
-            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
-            fileOutputStream.flush();
-            fileOutputStream.close();
-            shareScreenShot(imageFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //Share ScreenShot
-    private  void shareScreenShot(File imageFile ) {
-        Log.d("Package Name", "Package Name" + this.getPackageName());
-        Uri uri = FileProvider.getUriForFile(
-                this,
-                this.getPackageName() +  ".provider",
-                imageFile);
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.bear_console_has_shared3));
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-
-        try {
-            this.startActivity(Intent.createChooser(intent, getString(R.string.share_with2)));
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, getString(R.string.no_app_available2), Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -493,7 +450,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
         //share screen
         if (id == R.id.action_share) {
-            takeScreenShot(findViewById(android.R.id.content).getRootView());
+            ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this);
             return true;
         }
         //open help screen
