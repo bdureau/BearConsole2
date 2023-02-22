@@ -123,7 +123,6 @@ public class TelemetryTabActivity extends AppCompatActivity {
                             if (statusPage0bis.isViewCreated())
                                 if (statusPage0bis.isLiftOffChecked() && !statusPage0bis.isLandedChecked()) {
                                     statusPage0bis.setCurrentAltitude(altitude + "");
-
                                     myflight.AddToFlight(altitudeTime, altitude, "Telemetry");
 
                                     //plot every seconde

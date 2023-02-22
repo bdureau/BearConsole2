@@ -164,8 +164,9 @@ public class SearchBluetooth extends AppCompatActivity {
             // Get the device MAC address, the last 17 chars in the View
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
-
             myBT.setAddress(address);
+            String moduleName = info.substring(0, info.length() - 17);
+            myBT.setModuleName(moduleName);
             finish();
         }
     };

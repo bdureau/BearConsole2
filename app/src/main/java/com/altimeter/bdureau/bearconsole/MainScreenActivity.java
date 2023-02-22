@@ -304,6 +304,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             startActivity(i);
                         }
                     } else {
+                        myBT.setModuleName("USB");
                         //this is a USB connection
                         HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
                         if (!usbDevices.isEmpty()) {
@@ -743,7 +744,7 @@ public class MainScreenActivity extends AppCompatActivity {
             //"Connecting...", "Please wait!!!"
             builder = new AlertDialog.Builder(MainScreenActivity.this);
             //Connecting...
-            builder.setMessage(getResources().getString(R.string.MS_msg1))
+            builder.setMessage(getResources().getString(R.string.MS_msg1)+ "\n"+ myBT.getModuleName())
                     .setTitle(getResources().getString(R.string.MS_msg2))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.main_screen_actity), new DialogInterface.OnClickListener() {

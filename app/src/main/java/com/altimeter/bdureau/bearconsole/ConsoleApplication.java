@@ -49,7 +49,7 @@ public class ConsoleApplication extends Application {
     private double FEET_IN_METER = 1;
     private boolean exit = false;
     private GlobalConfig AppConf = null;
-    private String address;
+    private String address, moduleName;
     private String myTypeOfConnection = "bluetooth";// "USB";//"bluetooth";
 
     private BluetoothConnection BTCon = null;
@@ -91,13 +91,19 @@ public class ConsoleApplication extends Application {
     }
 
     public void setAddress(String bTAddress) {
-
         address = bTAddress;
-
     }
 
     public String getAddress() {
         return address;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String bTmoduleName) {
+        moduleName = bTmoduleName;
     }
 
     public InputStream getInputStream() {
