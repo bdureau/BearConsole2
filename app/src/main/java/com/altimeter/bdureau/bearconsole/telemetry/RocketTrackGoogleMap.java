@@ -25,6 +25,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.LocationService;
+import com.altimeter.bdureau.bearconsole.LocationUtils;
 import com.altimeter.bdureau.bearconsole.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -56,6 +58,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     Thread altiStatus;
     boolean status = true;
     float rocketLatitude = 48.8698f, rocketLongitude = 2.2190f;
+    private TextView textViewdistance;
 
     Button btnDismiss, butShareMap, butMapType;
     LocationBroadCastReceiver receiver = null;
@@ -112,6 +115,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         myBT = (ConsoleApplication) getApplication();
         setContentView(R.layout.activity_rocket_track_google_map);
         myBT.setHandler(handler);
+        textViewdistance = (TextView) findViewById(R.id.textViewdistance);
 
         MapType = myBT.getAppConf().getMapType();
         // See if we are called from the status activity
@@ -306,7 +310,8 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
-
+                double distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude, longitude, rocketLongitude);
+                textViewdistance.setText(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
                 Log.d("coordinate", "latitude is:" + latitude + " longitude is: " + longitude);
                 if (mMap != null) {
                     LatLng latLng = new LatLng(latitude, longitude);
