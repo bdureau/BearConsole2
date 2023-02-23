@@ -179,7 +179,7 @@ public class AppConfig1Fragment extends Fragment {
         spGraphColor.setSelection(BT.getAppConf().getGraphColor());
         spGraphBackColor.setSelection(BT.getAppConf().getGraphBackColor());
 
-        spFontSize.setSelection((BT.getAppConf().getFontSize()) - 8);
+        spFontSize.setSelection((BT.getAppConf().getFontSize()));
         spBaudRate.setSelection(BT.getAppConf().getBaudRate());
         spConnectionType.setSelection(BT.getAppConf().getConnectionType());
         spGraphicsLibType.setSelection(BT.getAppConf().getGraphicsLibType());

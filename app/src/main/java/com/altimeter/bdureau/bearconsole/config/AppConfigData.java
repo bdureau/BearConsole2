@@ -23,7 +23,7 @@ public class AppConfigData {
     //"Meters", "Feet"
     private String[] itemsUnits = null;
     private String[] itemsFontSize = new String[]{"8","9", "10", "11", "12","13",
-            "14", "15", "16", "17", "18", "19", "20"};
+            "14", "15", "16", "17", "18", "19", "20", "25", "30", "40"};
 
     private String[] itemsBaudRate = new String[]{ "300",
             "1200",

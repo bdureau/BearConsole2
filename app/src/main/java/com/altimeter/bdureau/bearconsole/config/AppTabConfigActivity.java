@@ -201,7 +201,7 @@ public class AppTabConfigActivity extends AppCompatActivity {
             appConfigPage1.setAppUnit(myBT.getAppConf().getUnits());
             appConfigPage1.setGraphColor(myBT.getAppConf().getGraphColor());
             appConfigPage1.setGraphBackColor(myBT.getAppConf().getGraphBackColor());
-            appConfigPage1.setFontSize(myBT.getAppConf().getFontSize() - 8);
+            appConfigPage1.setFontSize(myBT.getAppConf().getFontSize() );
             appConfigPage1.setBaudRate(myBT.getAppConf().getBaudRate());
             appConfigPage1.setConnectionType(myBT.getAppConf().getConnectionType());
             appConfigPage1.setGraphicsLibType(myBT.getAppConf().getGraphicsLibType());

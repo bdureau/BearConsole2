@@ -22,15 +22,22 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
+import com.altimeter.bdureau.bearconsole.LocationUtils;
 import com.altimeter.bdureau.bearconsole.R;
+import com.google.android.gms.maps.model.LatLng;
+
 import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
+import org.osmdroid.util.GeoPoint;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -40,7 +47,7 @@ public class FlightViewInfoFragment extends Fragment {
     private XYSeriesCollection allFlightData;
     private TextView nbrOfSamplesValue, flightNbrValue;
     private TextView apogeeAltitudeValue, flightDurationValue, burnTimeValue, maxVelociyValue, maxAccelerationValue;
-    private TextView timeToApogeeValue, mainAltitudeValue, maxDescentValue, landingSpeedValue;
+    private TextView timeToApogeeValue, mainAltitudeValue, maxDescentValue, landingSpeedValue, flightDistanceValue;
     private double FEET_IN_METER = 1;
 
     private AlertDialog.Builder builder = null;
@@ -96,7 +103,10 @@ public class FlightViewInfoFragment extends Fragment {
         landingSpeedValue = view.findViewById(R.id.landingSpeedValue);
         nbrOfSamplesValue = view.findViewById(R.id.nbrOfSamplesValue);
         flightNbrValue = view.findViewById(R.id.flightNbrValue);
-
+        flightDistanceValue = view.findViewById(R.id.flightDistanceValue);
+        if (!myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+            flightDistanceValue.setVisibility(View.INVISIBLE);
+        }
         XYSeriesCollection flightData;
 
         flightData = myflight.GetFlightData(FlightName);
@@ -204,6 +214,22 @@ public class FlightViewInfoFragment extends Fragment {
         //main value
         // remain TODO!!!
         mainAltitudeValue.setText(" " + myBT.getAppConf().getUnitsValue());
+
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+            // flight distance
+            GeoPoint coord[];
+            coord = new GeoPoint[flightData.getSeries(6).getItemCount()];
+
+            for (int i = 0; i < flightData.getSeries(6).getItemCount(); i++) {
+                double res = (double) flightData.getSeries(6).getY(i);
+
+                if ((double)flightData.getSeries(6).getY(i) > 0.0d & (double)flightData.getSeries(7).getY(i) > 0.0d) {
+                    GeoPoint c = new GeoPoint((double) flightData.getSeries(6).getY(i), (double) flightData.getSeries(7).getY(i));
+                    coord[i] = c;
+                }
+            }
+            flightDistanceValue.setText(String.format("%.2f",LocationUtils.distanceBetweenCoordinates(coord))+" " + myBT.getAppConf().getUnitsValue());
+        }
 
         //butExportAndShare
         butExportAndShare.setOnClickListener(new View.OnClickListener() {

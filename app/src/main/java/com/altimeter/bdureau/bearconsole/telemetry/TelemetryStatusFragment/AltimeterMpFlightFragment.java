@@ -221,12 +221,15 @@ public class AltimeterMpFlightFragment extends Fragment {
         //yValues.add(new Entry(1,0));
         //altitude
         LineDataSet set1 = new LineDataSet(yValues, getResources().getString(R.string.altitude));
+        set1.setValueTextColor(labelColor);
+        set1.setValueTextSize(fontSize);
         mChart = (LineChart) view.findViewById(R.id.telemetryChartView);
 
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
         mChart.setScaleMinima(0, 0);
         dataSets = new ArrayList<>();
+
         dataSets.add(set1);
 
         LineData data = new LineData(dataSets);
@@ -234,6 +237,7 @@ public class AltimeterMpFlightFragment extends Fragment {
         Description desc = new Description();
         desc.setText(getResources().getString(R.string.tel_telemetry));
         mChart.setDescription(desc);
+        mChart.setBackgroundColor(graphBackColor);
 
         ViewCreated = true;
         return view;

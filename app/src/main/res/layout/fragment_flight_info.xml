@@ -231,14 +231,32 @@
         android:layout_below="@+id/maxDescent"
         android:text="m/secs"
         />
+
+    <TextView
+        android:id="@+id/flightDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/landingSpeed"
+        android:text="Fight distance"
+        />
+    <TextView
+        android:id="@+id/flightDistanceValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/landingSpeed"
+        android:text="m"
+        />
     <Button
         android:id="@+id/butExportToCsv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/landingSpeed"
+        android:layout_below="@+id/flightDistance"
         android:text="@string/export_to_csv" />
-
     <Button
         android:id="@+id/butExportAndShare"
         android:layout_width="wrap_content"
