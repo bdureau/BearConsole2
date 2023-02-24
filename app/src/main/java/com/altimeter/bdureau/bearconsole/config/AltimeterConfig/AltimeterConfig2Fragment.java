@@ -379,10 +379,12 @@ public class AltimeterConfig2Fragment extends Fragment {
         //Max recording time in seconds
         RecordingTimeout =(EditText) view.findViewById(R.id.editTxtRecordingTimeOut);
         if (lAltiCfg != null) {
-            dropdownBaudRate.setSelection(lAltiCfg.arrayIndex(itemsBaudRate, String.valueOf(lAltiCfg.getConnectionSpeed())));
+            dropdownBaudRate.setSelection(lAltiCfg.arrayIndex(itemsBaudRate,
+                    String.valueOf(lAltiCfg.getConnectionSpeed())));
             ApogeeMeasures.setText(String.valueOf(lAltiCfg.getNbrOfMeasuresForApogee()));
             dropdownAltimeterResolution.setSelection(lAltiCfg.getAltimeterResolution());
-            dropdownEEpromSize.setSelection(lAltiCfg.arrayIndex(itemsEEpromSize, String.valueOf(lAltiCfg.getEepromSize())));
+            dropdownEEpromSize.setSelection(lAltiCfg.arrayIndex(itemsEEpromSize,
+                    String.valueOf(lAltiCfg.getEepromSize())));
             dropdownBeepOnOff.setSelection(lAltiCfg.getBeepOnOff());
             dropdownTelemetryType.setSelection(lAltiCfg.getTelemetryType());
             dropdownSupersonicDelay.setSelection(lAltiCfg.getSupersonicDelay());

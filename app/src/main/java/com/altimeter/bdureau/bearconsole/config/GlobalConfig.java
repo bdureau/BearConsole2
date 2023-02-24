@@ -100,27 +100,19 @@ public class GlobalConfig {
     public void ReadConfig() {
         try {
             //Application language
-            //int applicationLanguage;
             int applicationLanguage = appConfig.getInt("AppLanguage", 0);
-            //if (!applicationLanguage.equals(""))
             setApplicationLanguage(applicationLanguage);
 
             //Application Units
-            //String appUnit;
             int appUnit = appConfig.getInt("Units", 0);
-            //if (!appUnit.equals(""))
             setUnits(appUnit);
 
             //Graph color
-            //String graphColor;
             int graphColor = appConfig.getInt("GraphColor", 0);
-            //if (!graphColor.equals(""))
             setGraphColor(graphColor);
 
             //Graph Background color
-            //int graphBackColor;
             int graphBackColor = appConfig.getInt("GraphBackColor", 1);
-            //if (!graphBackColor.equals(""))
             setGraphBackColor(graphBackColor);
 
             //Map color
@@ -521,5 +513,16 @@ public class GlobalConfig {
                 break;
         }
         return myColor;
+    }
+
+    public static class AltitudeUnit
+    {
+        public static int METERS = 0;
+        public static int FEET = 1;
+    }
+    public static class ConnectionType
+    {
+        public static int BT = 0;
+        public static int USB = 1;
     }
 }

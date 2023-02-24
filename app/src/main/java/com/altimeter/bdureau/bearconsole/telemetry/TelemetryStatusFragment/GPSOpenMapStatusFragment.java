@@ -49,11 +49,11 @@ public class GPSOpenMapStatusFragment extends Fragment {
     private ViewPager lPager;
     private Button butBack, butShareMap;
 
-    Marker marker,markerDest;
-    Polyline polyline= null;
-    IMapController mapController  = null;
+    private Marker marker,markerDest;
+    private Polyline polyline= null;
+    private IMapController mapController  = null;
     double rocketLatitude=48.8698, rocketLongitude=2.2190;
-    GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
+    private GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
 
     public GPSOpenMapStatusFragment(ConsoleApplication bt, ViewPager pager) {
         myBT = bt;

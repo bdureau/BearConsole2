@@ -141,7 +141,7 @@ public class AltimeterConfig3Fragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item, itemsUseTelemetryPort);
         dropdownUseTelemetryPort.setAdapter(adapterUseTelemetryPort);
 
-        Log.d("UseTelemetryPort","after UseTelemetryPort" );
+        //Log.d("UseTelemetryPort","after UseTelemetryPort" );
         //units
         dropdownUnits = (Spinner) view.findViewById(R.id.spinnerUnit);
         //"Meters", "Feet"
@@ -150,7 +150,7 @@ public class AltimeterConfig3Fragment extends Fragment {
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, items2);
         dropdownUnits.setAdapter(adapter2);
-        Log.d("UseTelemetryPort","after dropdownUnits" );
+        //Log.d("UseTelemetryPort","after dropdownUnits" );
         // Tool tip
         view.findViewById(R.id.txtAltiUnit).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,7 +218,6 @@ public class AltimeterConfig3Fragment extends Fragment {
         if (lAltiCfg != null) {
             altiName.setText(lAltiCfg.getAltimeterName() + " ver: " +
                     lAltiCfg.getAltiMajorVersion() + "." + lAltiCfg.getAltiMinorVersion());
-
             dropdownBipMode.setSelection(lAltiCfg.getBeepingMode());
             dropdownUnits.setSelection(lAltiCfg.getUnits());
             Freq.setText(String.valueOf(lAltiCfg.getBeepingFrequency()));
@@ -227,12 +226,11 @@ public class AltimeterConfig3Fragment extends Fragment {
                 dropdownServoStayOn.setSelection(lAltiCfg.getServoStayOn());
                 dropdownServoSwitch.setSelection(lAltiCfg.getServoSwitch());
             }
-            //Log.d("UseTelemetryPort","before  getting config" );
+
             dropdownUseTelemetryPort.setSelection(lAltiCfg.getUseTelemetryPort());
-            //Log.d("UseTelemetryPort","after getting config" );
+
         }
         ViewCreated = true;
         return view;
     }
-
 }

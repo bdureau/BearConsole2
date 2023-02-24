@@ -116,7 +116,8 @@ public class FlightViewMpFragment extends Fragment {
                 ArrayList<Entry> yValues = new ArrayList<>();
 
                 for (int k = 0; k < nbrData; k++) {
-                    yValues.add(new Entry(allFlightData.getSeries(i).getX(k).floatValue()*timeFactor, allFlightData.getSeries(i).getY(k).floatValue()));
+                    yValues.add(new Entry(allFlightData.getSeries(i).getX(k).floatValue()*timeFactor,
+                            allFlightData.getSeries(i).getY(k).floatValue()));
                 }
 
                 LineDataSet set1 = new LineDataSet(yValues, getResources().getString(R.string.flight_time));

@@ -51,21 +51,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapReadyCallback {
-    SupportMapFragment mapFragment;
-    GoogleMap mMap;
-    Marker marker, markerDest;
-    Polyline polyline1 = null;
+    private SupportMapFragment mapFragment;
+    private GoogleMap mMap;
+    private Marker marker, markerDest;
+    private Polyline polyline1 = null;
     Thread altiStatus;
-    boolean status = true;
-    float rocketLatitude = 48.8698f, rocketLongitude = 2.2190f;
+    private boolean status = true;
+    private float rocketLatitude = 48.8698f, rocketLongitude = 2.2190f;
     private TextView textViewdistance;
 
     Button btnDismiss, butShareMap, butMapType;
-    LocationBroadCastReceiver receiver = null;
-    LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
-    boolean recording = false;
+    private LocationBroadCastReceiver receiver = null;
+    private LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
+    private boolean recording = false;
 
-    Integer MapType;
+    private int MapType;
 
     private ConsoleApplication myBT;
     Handler handler = new Handler() {
@@ -176,10 +176,6 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         butShareMap = (Button) findViewById(R.id.butShareMap);
         butMapType = (Button) findViewById(R.id.butMap);
-        //textViewRecording = (TextView) findViewById(R.id.textViewRecording);
-
-        //if(!recording)
-        //    textViewRecording.setVisibility(View.INVISIBLE);
 
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -310,7 +306,8 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
-                double distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude, longitude, rocketLongitude);
+                double distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude,
+                        longitude, rocketLongitude);
                 textViewdistance.setText(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
                 Log.d("coordinate", "latitude is:" + latitude + " longitude is: " + longitude);
                 if (mMap != null) {
@@ -368,7 +365,8 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     private void shareScreenshot(Bitmap bitmap) {
         try {
             // Save the screenshot to a file
-            String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
+            String filePath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,
+                    "Title", null);
             Uri fileUri = Uri.parse(filePath);
             // Share the screenshot
             Intent share = new Intent(Intent.ACTION_SEND);

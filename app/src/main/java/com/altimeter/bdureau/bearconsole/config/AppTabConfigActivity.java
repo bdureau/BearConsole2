@@ -97,7 +97,6 @@ public class AppTabConfigActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //restore the application default configuration
                 RestoreToDefault();
-
             }
         });
 
@@ -205,29 +204,19 @@ public class AppTabConfigActivity extends AppCompatActivity {
             appConfigPage1.setBaudRate(myBT.getAppConf().getBaudRate());
             appConfigPage1.setConnectionType(myBT.getAppConf().getConnectionType());
             appConfigPage1.setGraphicsLibType(myBT.getAppConf().getGraphicsLibType());
-
             appConfigPage1.setAllowMainDrogue(myBT.getAppConf().getAllowMultipleDrogueMain());
-
             appConfigPage1.setFullUSBSupport(myBT.getAppConf().getFullUSBSupport());
         }
         if(appConfigPage2.isViewCreated()) {
             //config page 2
             appConfigPage2.setAltitudeEvent(myBT.getAppConf().getAltitude_event());
-
             appConfigPage2.setApogeeAltitude(myBT.getAppConf().getApogee_altitude());
-
             appConfigPage2.setBurnoutEvent(myBT.getAppConf().getBurnout_event());
-
             appConfigPage2.setMainAltitude(myBT.getAppConf().getMain_altitude());
-
             appConfigPage2.setDrogueEvent(myBT.getAppConf().getDrogue_event());
-
             appConfigPage2.setLandingEvent(myBT.getAppConf().getDrogue_event());
-
             appConfigPage2.setMainEvent(myBT.getAppConf().getMain_event());
-
             appConfigPage2.setWarningEvent(myBT.getAppConf().getWarning_event());
-
             appConfigPage2.setLiftOffEvent(myBT.getAppConf().getLiftOff_event());
             appConfigPage2.setTelemetryVoice(myBT.getAppConf().getTelemetryVoice());
         }

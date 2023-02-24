@@ -30,6 +30,7 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.ShareHandler;
+import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -182,7 +183,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         // Read the application config
         myBT.getAppConf().ReadConfig();
         //metrics
-        if (myBT.getAppConf().getUnits()==0) {
+        if (myBT.getAppConf().getUnits()== GlobalConfig.AltitudeUnit.METERS) {
             //Meters
             units[0] = "(" + getResources().getString(R.string.Meters_fview) + ")";
             units[3] = "(m/secs)";
@@ -191,7 +192,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         //imperial
         else {
             //Feet
-            units[0] = getResources().getString(R.string.Feet_fview);
+            units[0] ="(" + getResources().getString(R.string.Feet_fview)+ ")";
             //(feet/secs)
             units[3] = "(" + getResources().getString(R.string.unit_feet_per_secs) + ")";
             //(feet/secs²)

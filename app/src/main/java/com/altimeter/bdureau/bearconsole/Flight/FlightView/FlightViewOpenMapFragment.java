@@ -137,7 +137,8 @@ public class FlightViewOpenMapFragment extends Fragment {
             Log.d("map", "lat:" + (double) flightData.getSeries(6).getY(i));
             Log.d("map", "long:" + (double) flightData.getSeries(7).getY(i));
             if (res > 0.0d) {
-                GeoPoint c = new GeoPoint((double) flightData.getSeries(6).getY(i), (double) flightData.getSeries(7).getY(i));
+                GeoPoint c = new GeoPoint((double) flightData.getSeries(6).getY(i),
+                        (double) flightData.getSeries(7).getY(i));
                 pathPoints.add(c);
                 if(firstPoint == null)
                     firstPoint = c;

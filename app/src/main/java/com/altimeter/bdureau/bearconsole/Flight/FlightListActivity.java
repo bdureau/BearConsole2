@@ -120,7 +120,8 @@ public class FlightListActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
+        //while the progress dialog is shown, the connection is done in background
+        protected Void doInBackground(Void... devices)
         {
             //get flights
             if (myBT.getConnected()) {
@@ -210,7 +211,8 @@ public class FlightListActivity extends AppCompatActivity {
                     for (int i = 1; i < nbrData; i++) {
                         double X, Y;
                         X = serie.getX(i).doubleValue();
-                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / (((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000.0));
+                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue())
+                                / (((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000.0));
                         myflight.AddToFlight((long) X, (long) (Y), flight, 3);
                     }
                 }
@@ -221,7 +223,8 @@ public class FlightListActivity extends AppCompatActivity {
                     for (int i = 1; i < nbrData; i++) {
                         double X, Y;
                         X = serie.getX(i).doubleValue();
-                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue()) / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000.0);
+                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue())
+                                / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000.0);
                         myflight.AddToFlight((long) X, (long) (Y), flight, 4);
                     }
                 }
@@ -234,7 +237,8 @@ public class FlightListActivity extends AppCompatActivity {
         {
             super.onPostExecute(result);
 
-            final ArrayAdapter adapter = new ArrayAdapter(FlightListActivity.this, android.R.layout.simple_list_item_1, flightNames);
+            final ArrayAdapter adapter = new ArrayAdapter(FlightListActivity.this,
+                    android.R.layout.simple_list_item_1, flightNames);
             adapter.sort(new Comparator<String>() {
                 public int compare(String object1, String object2) {
                     return object1.compareTo(object2);

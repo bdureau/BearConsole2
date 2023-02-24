@@ -113,7 +113,6 @@ public class FlightViewFcFragment extends Fragment {
         final ValueAxis YAxis = plot.getRangeAxis();
         YAxis.setAxisLinePaintType(new SolidColor(axisColor));
 
-
         Xaxis.setTickLabelFont(font);
         Xaxis.setLabelFont(font);
 

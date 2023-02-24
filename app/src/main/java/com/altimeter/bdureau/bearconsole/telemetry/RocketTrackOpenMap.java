@@ -58,18 +58,18 @@ import java.util.Date;
 
 public class RocketTrackOpenMap extends AppCompatActivity {
     private MapView mMap= null;
-    Marker marker,markerDest;
-    Polyline polyline= null;
-    IMapController mapController  = null;
-    Thread altiStatus;
+    private Marker marker,markerDest;
+    private Polyline polyline= null;
+    private IMapController mapController  = null;
+    private Thread altiStatus;
     boolean status = true;
-    float rocketLatitude=48.8698f, rocketLongitude=2.2190f;
+    private float rocketLatitude=48.8698f, rocketLongitude=2.2190f;
     private TextView textViewdistance;
 
-    Button btnDismiss, butShareMap;
-    LocationBroadCastReceiver receiver=null;
+    private Button btnDismiss, butShareMap;
+    private LocationBroadCastReceiver receiver=null;
 
-    GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
+    private GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
 
 
     private ConsoleApplication myBT;
@@ -303,7 +303,6 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.d ("coordinate",intent.getAction());
 
-
             dest = new GeoPoint(rocketLatitude, rocketLongitude);
             if(intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
@@ -364,30 +363,10 @@ public class RocketTrackOpenMap extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
             fileOutputStream.flush();
             fileOutputStream.close();
-            //shareScreenShot(imageFile);
+
             ShareHandler.shareScreenShot(imageFile, this);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    /*private  void shareScreenShot(File imageFile ) {
-        Log.d("Package Name", "Package Name" + this.getPackageName());
-        Uri uri = FileProvider.getUriForFile(
-                this,
-                this.getPackageName() +  ".provider",
-                imageFile);
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.bearconsole_has_shared3));
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-
-        try {
-            this.startActivity(Intent.createChooser(intent, getString(R.string.share_with3)));
-        } catch (ActivityNotFoundException e) {
-            //Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
-        }
-    }*/
 }

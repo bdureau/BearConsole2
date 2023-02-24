@@ -24,6 +24,7 @@ import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.LocationUtils;
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.afree.data.xy.XYSeries;
@@ -131,7 +132,7 @@ public class FlightViewInfoFragment extends Fragment {
             numberOfCurves = 5;
         }
 
-        if (myBT.getAppConf().getUnits()==0) {//meters
+        if (myBT.getAppConf().getUnits()== GlobalConfig.AltitudeUnit.METERS) {//meters
             FEET_IN_METER = 1;
         } else {
             FEET_IN_METER = 3.28084;

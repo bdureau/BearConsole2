@@ -26,7 +26,8 @@ public class AltimeterConfig1Fragment extends Fragment {
     private Spinner dropdownOut1, dropdownOut2, dropdownOut3, dropdownOut4;
     private EditText OutDelay1, OutDelay2, OutDelay3, OutDelay4;
     private EditText MainAltitude;
-    private TextView txtOut1, txtOut2, txtOut3, txtViewDelay3, txtOut4, txtViewDelay4, txtViewDelay2, txtViewDelay1;
+    private TextView txtOut1, txtOut2, txtOut3, txtViewDelay3, txtOut4, txtViewDelay4,
+            txtViewDelay2, txtViewDelay1;
 
     private boolean ViewCreated = false;
 
@@ -63,14 +64,17 @@ public class AltimeterConfig1Fragment extends Fragment {
     }
 
     public int getDropdownOut4() {
-        if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32") || lAltiCfg.getAltimeterName().equals("AltiGPS") || lAltiCfg.getAltimeterName().equals("AltiServo"))
+        if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32") || lAltiCfg.getAltimeterName().equals("AltiGPS")
+                || lAltiCfg.getAltimeterName().equals("AltiServo"))
             return (int) this.dropdownOut4.getSelectedItemId();
         else
             return -1;
     }
 
     public void setDropdownOut4(int Out4) {
-        if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32") || lAltiCfg.getAltimeterName().equals("AltiGPS") || lAltiCfg.getAltimeterName().equals("AltiServo")) {
+        if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32")
+                || lAltiCfg.getAltimeterName().equals("AltiGPS")
+                || lAltiCfg.getAltimeterName().equals("AltiServo")) {
             this.dropdownOut4.setSelection(Out4);
             this.dropdownOut4.setVisibility(View.VISIBLE);
             txtOut4.setVisibility(View.VISIBLE);
@@ -78,7 +82,6 @@ public class AltimeterConfig1Fragment extends Fragment {
             this.dropdownOut4.setVisibility(View.INVISIBLE);
             txtOut4.setVisibility(View.INVISIBLE);
         }
-
     }
 
     public void setOutDelay1(int OutDelay1) {
@@ -124,7 +127,9 @@ public class AltimeterConfig1Fragment extends Fragment {
     }
 
     public void setOutDelay4(int OutDelay4) {
-        if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32") || lAltiCfg.getAltimeterName().equals("AltiGPS") || lAltiCfg.getAltimeterName().equals("AltiServo")) {
+        if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32")
+                || lAltiCfg.getAltimeterName().equals("AltiGPS")
+                || lAltiCfg.getAltimeterName().equals("AltiServo")) {
             this.OutDelay4.setText(String.valueOf(OutDelay4));
             this.OutDelay4.setVisibility(View.VISIBLE);
             txtViewDelay4.setVisibility(View.VISIBLE);
@@ -136,7 +141,9 @@ public class AltimeterConfig1Fragment extends Fragment {
     }
 
     public int getOutDelay4() {
-        if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32") || lAltiCfg.getAltimeterName().equals("AltiGPS") || lAltiCfg.getAltimeterName().equals("AltiServo")) {
+        if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32")
+                || lAltiCfg.getAltimeterName().equals("AltiGPS")
+                || lAltiCfg.getAltimeterName().equals("AltiServo")) {
             int ret;
             try {
                 ret = Integer.parseInt(OutDelay4.getText().toString());
@@ -379,7 +386,9 @@ public class AltimeterConfig1Fragment extends Fragment {
                 dropdownOut3.setVisibility(View.INVISIBLE);
                 txtOut3.setVisibility(View.INVISIBLE);
             }
-            if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32") || lAltiCfg.getAltimeterName().equals("AltiGPS") || lAltiCfg.getAltimeterName().equals("AltiServo")) {
+            if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32")
+                    || lAltiCfg.getAltimeterName().equals("AltiGPS")
+                    || lAltiCfg.getAltimeterName().equals("AltiServo")) {
                 dropdownOut4.setSelection(lAltiCfg.getOutput4());
                 dropdownOut4.setVisibility(View.VISIBLE);
                 txtOut4.setVisibility(View.VISIBLE);
@@ -421,7 +430,9 @@ public class AltimeterConfig1Fragment extends Fragment {
                 OutDelay3.setVisibility(View.INVISIBLE);
                 txtViewDelay3.setVisibility(View.INVISIBLE);
             }
-            if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32") || lAltiCfg.getAltimeterName().equals("AltiGPS") || lAltiCfg.getAltimeterName().equals("AltiServo")) {
+            if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32")
+                    || lAltiCfg.getAltimeterName().equals("AltiGPS")
+                    || lAltiCfg.getAltimeterName().equals("AltiServo")) {
                 OutDelay4.setText(String.valueOf(lAltiCfg.getOutput4Delay()));
                 OutDelay4.setVisibility(View.VISIBLE);
                 txtViewDelay4.setVisibility(View.VISIBLE);

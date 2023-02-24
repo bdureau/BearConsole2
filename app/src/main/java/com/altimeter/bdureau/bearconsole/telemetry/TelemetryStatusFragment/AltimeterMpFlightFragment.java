@@ -202,14 +202,14 @@ public class AltimeterMpFlightFragment extends Fragment {
         // Read the application config
         lBT.getAppConf().ReadConfig();
 
-        int graphBackColor;//= Color.WHITE;
-        graphBackColor = lBT.getAppConf().ConvertColor(lBT.getAppConf().getGraphBackColor());
+        //int graphBackColor;//= Color.WHITE;
+        int graphBackColor = lBT.getAppConf().ConvertColor(lBT.getAppConf().getGraphBackColor());
 
-        int fontSize;
-        fontSize = lBT.getAppConf().ConvertFont(lBT.getAppConf().getFontSize());
+        //int fontSize;
+        int fontSize = lBT.getAppConf().ConvertFont(lBT.getAppConf().getFontSize());
 
-        int axisColor;//=Color.BLACK;
-        axisColor = lBT.getAppConf().ConvertColor(lBT.getAppConf().getGraphColor());
+        //int axisColor;//=Color.BLACK;
+        int axisColor = lBT.getAppConf().ConvertColor(lBT.getAppConf().getGraphColor());
 
         int labelColor = Color.BLACK;
 

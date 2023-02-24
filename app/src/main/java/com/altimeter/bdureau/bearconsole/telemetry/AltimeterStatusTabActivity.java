@@ -68,23 +68,23 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
     private LinearLayout linearDots;
     public LocationBroadCastReceiver receiver = null;
     SectionsStatusPageAdapter adapter;
-    AltimeterInfoFragment statusPage1 = null;
-    AltimeterOutputFragment statusPage1bis = null;
-    GPSStatusFragment statusPage2 = null;
-    GPSGoogleMapStatusFragment statusPage3 = null;
-    GPSOpenMapStatusFragment statusPage4 = null;
+    private AltimeterInfoFragment statusPage1 = null;
+    private AltimeterOutputFragment statusPage1bis = null;
+    private GPSStatusFragment statusPage2 = null;
+    private GPSGoogleMapStatusFragment statusPage3 = null;
+    private GPSOpenMapStatusFragment statusPage4 = null;
 
-    Marker marker, markerDest;
-    Polyline polyline1 = null;
-    public Float rocketLatitude = 48.8698f;
-    public Float rocketLongitude = 2.2190f;
-    LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
+    //Marker marker, markerDest;
+    //Polyline polyline1 = null;
+    private float rocketLatitude = 48.8698f;
+    private float rocketLongitude = 2.2190f;
+    //LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
 
-    Button btnDismiss, btnRecording;
+    private Button btnDismiss, btnRecording;
     private ConsoleApplication myBT;
     Thread altiStatus;
-    boolean status = true;
-    boolean recording = false;
+    private boolean status = true;
+    private boolean recording = false;
     public String TAG = "AltimeterStatus.class";
 
 

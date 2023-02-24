@@ -54,10 +54,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     SectionsPageAdapter adapter;
-    /*Tab1Fragment configPage1 = null;
-    Tab2Fragment configPage2 = null;
-    Tab3Fragment configPage3 = null;
-    Tab4Fragment configPage4 = null;*/
+
     AltimeterConfig1Fragment configPage1 = null;
     AltimeterConfig2Fragment configPage2 = null;
     AltimeterConfig3Fragment configPage3 = null;
@@ -144,7 +141,6 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         if(dotsSlide.length>0){
             dotsSlide[pos].setTextColor(getResources().getColor(R.color.colorWhite));
         }
-
     }
 
     ViewPager.OnPageChangeListener viewListener=new ViewPager.OnPageChangeListener() {
@@ -287,7 +283,6 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             AltiCfg.setAltimeterResolution(configPage2.getAltimeterResolution());
             AltiCfg.setEepromSize(configPage2.getEEpromSize());
             AltiCfg.setBeepOnOff(configPage2.getBeepOnOff());
-            // msg("ret" +configPage2.getRecordTempOnOff());
             AltiCfg.setEndRecordAltitude(configPage2.getEndRecordAltitude());
             AltiCfg.setTelemetryType(configPage2.getRecordTempOnOff());
             AltiCfg.setSupersonicDelay(configPage2.getSupersonicDelayOnOff());
@@ -429,84 +424,46 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
                 Log.d("conftab", "switch off main loop ok");
             }
         }
-        String altiCfgStr = "";
 
-        //altiCfgStr = "s," +
-        //        AltiCfg.getUnits() + "," +
         SendParam("p,1,"+ AltiCfg.getUnits());
-        //        AltiCfg.getBeepingMode() + "," +
         SendParam("p,2,"+AltiCfg.getBeepingMode());
-        //        AltiCfg.getOutput1() + "," +
         SendParam("p,3,"+AltiCfg.getOutput1());
-        //       AltiCfg.getOutput2() + "," +
         SendParam("p,4,"+ AltiCfg.getOutput2());
-        //        AltiCfg.getOutput3() + "," +
         SendParam("p,5,"+AltiCfg.getOutput3());
-        //        AltiCfg.getMainAltitude() + "," +
         SendParam("p,6,"+AltiCfg.getMainAltitude());
-        //        AltiCfg.getSupersonicYesNo() + "," +
         SendParam("p,7,"+AltiCfg.getSupersonicYesNo());
-        //        AltiCfg.getOutput1Delay() + "," +
         SendParam("p,8,"+AltiCfg.getOutput1Delay());
-        //        AltiCfg.getOutput2Delay() + "," +
         SendParam("p,9,"+AltiCfg.getOutput2Delay());
-        //        AltiCfg.getOutput3Delay() + "," +
         SendParam("p,10,"+AltiCfg.getOutput3Delay());
-        //        AltiCfg.getBeepingFrequency() + "," +
         SendParam("p,11,"+AltiCfg.getBeepingFrequency());
-        //        AltiCfg.getNbrOfMeasuresForApogee() + "," +
         SendParam("p,12,"+AltiCfg.getNbrOfMeasuresForApogee());
-        //        AltiCfg.getEndRecordAltitude() + "," +
         SendParam("p,13,"+AltiCfg.getEndRecordAltitude());
-        //        AltiCfg.getRecordTemperature() + "," +
         SendParam("p,14,"+AltiCfg.getTelemetryType());
-        //        AltiCfg.getSupersonicDelay() + "," +
         SendParam("p,15,"+AltiCfg.getSupersonicDelay());
-        //        AltiCfg.getConnectionSpeed() + "," +
         SendParam("p,16,"+AltiCfg.getConnectionSpeed());
-        //        AltiCfg.getAltimeterResolution() + "," +
         SendParam("p,17,"+AltiCfg.getAltimeterResolution());
-        //        AltiCfg.getEepromSize() + "," +
         SendParam("p,18,"+AltiCfg.getEepromSize());
-        //        AltiCfg.getBeepOnOff();
         SendParam("p,19,"+AltiCfg.getBeepOnOff());
-        //altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4();
         SendParam("p,20,"+AltiCfg.getOutput4());
-        //altiCfgStr = altiCfgStr + "," + AltiCfg.getOutput4Delay();
         SendParam("p,21,"+ AltiCfg.getOutput4Delay());
-        //altiCfgStr = altiCfgStr + "," + AltiCfg.getLiftOffAltitude();
         SendParam("p,22,"+AltiCfg.getLiftOffAltitude());
-        //altiCfgStr = altiCfgStr + "," + AltiCfg.getBatteryType();
         SendParam("p,23,"+AltiCfg.getBatteryType());
-        //altiCfgStr = altiCfgStr + "," + AltiCfg.getRecordingTimeout();
         SendParam("p,24,"+AltiCfg.getRecordingTimeout());
-        //    altiCfgStr = altiCfgStr + ",0";
         SendParam("p,25,"+AltiCfg.getAltiID());
-//    altiCfgStr = altiCfgStr + ",0";//reserved 2
         Log.d("UseTelemetryPort", "before getUseTelemetryPort" );
         SendParam("p,26,"+AltiCfg.getUseTelemetryPort());
         Log.d("UseTelemetryPort", "after getUseTelemetryPort" );
 
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
-        //    altiCfgStr = altiCfgStr + ",0";
             SendParam("p,27,"+AltiCfg.getServoSwitch());
-        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OnPos();
             SendParam("p,28,"+AltiCfg.getServo1OnPos());
-        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo2OnPos();
             SendParam("p,29,"+AltiCfg.getServo2OnPos());
-        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo3OnPos();
             SendParam("p,30,"+AltiCfg.getServo3OnPos());
-        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo4OnPos();
             SendParam("p,31,"+AltiCfg.getServo4OnPos());
-        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo1OffPos();
             SendParam("p,32,"+AltiCfg.getServo1OffPos());
-        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo2OffPos();
             SendParam("p,33,"+AltiCfg.getServo2OffPos());
-        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo3OffPos();
             SendParam("p,34,"+AltiCfg.getServo3OffPos());
-        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServo4OffPos();
             SendParam("p,35,"+AltiCfg.getServo4OffPos());
-        //    altiCfgStr = altiCfgStr + "," + AltiCfg.getServoStayOn();
             SendParam("p,36,"+AltiCfg.getServoStayOn());
         }
 
@@ -562,7 +519,6 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
 
 
         if (myBT.getConnected()) {
-
             String myMessage = "";
 
             myBT.flush();

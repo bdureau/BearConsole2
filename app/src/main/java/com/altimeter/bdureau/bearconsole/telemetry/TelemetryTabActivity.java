@@ -150,7 +150,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
                         // Tell altitude every 5 secondes
                         if ((altitudeTime - lastSpeakTime) > 5000 && liftOffSaid) {
                             if (myBT.getAppConf().getAltitude_event()) {
-                                mTTS.speak(getResources().getString(R.string.altitude) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                mTTS.speak(getResources().getString(R.string.altitude) + " " + String.valueOf(altitude) + " "
+                                        + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                             }
                             lastSpeakTime = altitudeTime;
                         }
@@ -236,7 +237,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
                                     if (!apogeeSaid) {
                                         //first check if say it is enabled
                                         if (myBT.getAppConf().getApogee_altitude()) {
-                                            mTTS.speak(getResources().getString(R.string.telemetry_apogee) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                            mTTS.speak(getResources().getString(R.string.telemetry_apogee) + " " + String.valueOf(altitude) + " "
+                                                    + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                                         }
                                         apogeeSaid = true;
                                     }
@@ -252,7 +254,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
                                     if (!apogeeSaid) {
                                         //first check if say it is enabled
                                         if (myBT.getAppConf().getApogee_altitude()) {
-                                            mTTS.speak(getResources().getString(R.string.telemetry_apogee) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                            mTTS.speak(getResources().getString(R.string.telemetry_apogee) + " " + String.valueOf(altitude) + " "
+                                                    + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                                         }
                                         apogeeSaid = true;
                                     }
@@ -296,7 +299,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
                                     statusPage0bis.setMainAltitude(String.valueOf(altitude));
                                     if (!mainSaid) {
                                         if (myBT.getAppConf().getMain_event()) {
-                                            mTTS.speak(getResources().getString(R.string.main_deployed) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                            mTTS.speak(getResources().getString(R.string.main_deployed) + " " + String.valueOf(altitude) + " "
+                                                    + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                                         }
                                         mainSaid = true;
                                     }
@@ -310,7 +314,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
                                     statusPage0.setMainAltitude(String.valueOf(altitude));
                                     if (!mainSaid) {
                                         if (myBT.getAppConf().getMain_event()) {
-                                            mTTS.speak(getResources().getString(R.string.main_deployed) + " " + String.valueOf(altitude) + " " + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                                            mTTS.speak(getResources().getString(R.string.main_deployed) + " " + String.valueOf(altitude) + " "
+                                                    + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                                         }
                                         mainSaid = true;
                                     }

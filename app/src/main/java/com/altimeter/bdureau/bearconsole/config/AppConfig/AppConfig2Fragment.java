@@ -113,7 +113,8 @@ public class AppConfig2Fragment extends Fragment {
 
     public void setVoices(String itemsVoices[]) {
         nbrVoices = itemsVoices.length;
-        ArrayAdapter<String> adapterVoice = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, itemsVoices);
+        ArrayAdapter<String> adapterVoice = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, itemsVoices);
         spTelemetryVoice.setAdapter(adapterVoice);
         if (BT.getAppConf().getTelemetryVoice() < nbrVoices)
             spTelemetryVoice.setSelection(BT.getAppConf().getTelemetryVoice());
@@ -152,52 +153,18 @@ public class AppConfig2Fragment extends Fragment {
         cbLiftOffEvent = (CheckBox) view.findViewById(R.id.checkBoxAllowTelemetryEvent9);
         spTelemetryVoice = (Spinner) view.findViewById(R.id.spinnerTelemetryVoice);
 
-        if (BT.getAppConf().getMain_event()) {
-            cbMainEvent.setChecked(true);
-        } else {
-            cbMainEvent.setChecked(false);
-        }
-        if (BT.getAppConf().getDrogue_event()) {
-            cbDrogueEvent.setChecked(true);
-        } else {
-            cbDrogueEvent.setChecked(false);
-        }
-        if (BT.getAppConf().getAltitude_event()) {
-            cbAltitudeEvent.setChecked(true);
-        } else {
-            cbAltitudeEvent.setChecked(false);
-        }
-        if (BT.getAppConf().getLanding_event()) {
-            cbLandingEvent.setChecked(true);
-        } else {
-            cbLandingEvent.setChecked(false);
-        }
-        if (BT.getAppConf().getBurnout_event()) {
-            cbBurnoutEvent.setChecked(true);
-        } else {
-            cbBurnoutEvent.setChecked(false);
-        }
-        if (BT.getAppConf().getWarning_event()) {
-            cbWarningEvent.setChecked(true);
-        } else {
-            cbWarningEvent.setChecked(false);
-        }
-        if (BT.getAppConf().getApogee_altitude()) {
-            cbApogeeAltitude.setChecked(true);
-        } else {
-            cbApogeeAltitude.setChecked(false);
-        }
-        if (BT.getAppConf().getMain_altitude()) {
-            cbMainAltitude.setChecked(true);
-        } else {
-            cbMainAltitude.setChecked(false);
-        }
+        cbMainEvent.setChecked(BT.getAppConf().getMain_event());
+        cbDrogueEvent.setChecked(BT.getAppConf().getDrogue_event());
+        cbAltitudeEvent.setChecked(BT.getAppConf().getAltitude_event());
+        cbLandingEvent.setChecked(BT.getAppConf().getLanding_event());
+        cbBurnoutEvent.setChecked(BT.getAppConf().getBurnout_event());
+        cbWarningEvent.setChecked(BT.getAppConf().getWarning_event());
+        cbApogeeAltitude.setChecked(BT.getAppConf().getApogee_altitude());
+
+        cbMainAltitude.setChecked(BT.getAppConf().getMain_altitude());
+
         //cbLiftOffEvent
-        if (BT.getAppConf().getLiftOff_event()) {
-            cbLiftOffEvent.setChecked(true);
-        } else {
-            cbLiftOffEvent.setChecked(false);
-        }
+        cbLiftOffEvent.setChecked(BT.getAppConf().getLiftOff_event());
 
 
         btnTestVoice = (Button) view.findViewById(R.id.butTestVoice);
@@ -211,23 +178,23 @@ public class AppConfig2Fragment extends Fragment {
                         if (status == TextToSpeech.SUCCESS) {
                             int result = 0;
 
-                            if (Locale.getDefault().getLanguage() == "en")
+                            if (Locale.getDefault().getLanguage().equals("en"))
                                 //result = mTTS.setLanguage(Locale.ENGLISH);
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage() == "fr")
+                            else if (Locale.getDefault().getLanguage().equals("fr"))
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage() == "es")
+                            else if (Locale.getDefault().getLanguage().equals("es"))
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
                                 //result = mTTS.setLanguage(Locale.FRENCH);
-                            else if (Locale.getDefault().getLanguage() == "tr")
+                            else if (Locale.getDefault().getLanguage().equals("tr"))
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage() == "nl")
+                            else if (Locale.getDefault().getLanguage().equals("nl"))
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage() == "it")
+                            else if (Locale.getDefault().getLanguage().equals("it"))
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage() == "hu")
+                            else if (Locale.getDefault().getLanguage().equals("hu"))
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage() == "ru")
+                            else if (Locale.getDefault().getLanguage().equals("ru"))
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
                             else
                                 result = mTTS.setLanguage(Locale.ENGLISH);
@@ -249,21 +216,21 @@ public class AppConfig2Fragment extends Fragment {
 
                             mTTS.setPitch(1.0f);
                             mTTS.setSpeechRate(1.0f);
-                            if (Locale.getDefault().getLanguage() == "en")
+                            if (Locale.getDefault().getLanguage().equals("en"))
                                 mTTS.speak("Bearaltimeter altimeters are the best", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage() == "fr")
+                            if (Locale.getDefault().getLanguage().equals("fr"))
                                 mTTS.speak("Les altimètres Bearaltimeter sont les meilleurs", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage() == "es")
+                            if (Locale.getDefault().getLanguage().equals("es"))
                                 mTTS.speak("Los altimietros Bearaltimeter son los mejores", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage() == "it")
+                            if (Locale.getDefault().getLanguage().equals("it"))
                                 mTTS.speak("Gli altimetri Bearaltimeter sono i migliori", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage() == "tr")
+                            if (Locale.getDefault().getLanguage().equals("tr"))
                                 mTTS.speak("Roket inis yapti", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage() == "nl")
+                            if (Locale.getDefault().getLanguage().equals("nl"))
                                 mTTS.speak("De Bearaltimeter-hoogtemeters zijn de beste", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage() == "hu")
+                            if (Locale.getDefault().getLanguage().equals("hu"))
                                 mTTS.speak("A Bearaltiméter a legjobb", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage() == "ru")
+                            if (Locale.getDefault().getLanguage().equals("ru"))
                                 mTTS.speak("Медвежатник - это лучшее", TextToSpeech.QUEUE_FLUSH, null);
                             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                                 Log.e("TTS", "Language not supported");

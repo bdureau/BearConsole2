@@ -125,47 +125,54 @@ public class AppConfig1Fragment extends Fragment {
         spAppLanguage = (Spinner) view.findViewById(R.id.spinnerLanguage);
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsLanguages());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsLanguages());
         spAppLanguage.setAdapter(adapter);
-        //spAppLanguage.setEnabled(false); //disable it for the moment because it is causing troubles
 
         // graph color
         spGraphColor = (Spinner) view.findViewById(R.id.spinnerGraphColor);
-        ArrayAdapter<String> adapterColor = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsColor());
+        ArrayAdapter<String> adapterColor = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsColor());
         spGraphColor.setAdapter(adapterColor);
 
         // graph back color
         spGraphBackColor = (Spinner) view.findViewById(R.id.spinnerGraphBackColor);
-        ArrayAdapter<String> adapterGraphColor = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsColor());
+        ArrayAdapter<String> adapterGraphColor = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsColor());
         spGraphBackColor.setAdapter(adapterGraphColor);
 
         //units
         spAppUnit = (Spinner) view.findViewById(R.id.spinnerUnits);
 
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsUnits());
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsUnits());
         spAppUnit.setAdapter(adapter2);
 
         //font size
         spFontSize = (Spinner) view.findViewById(R.id.spinnerFontSize);
 
-        ArrayAdapter<String> adapterFontSize = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsFontSize());
+        ArrayAdapter<String> adapterFontSize = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsFontSize());
         spFontSize.setAdapter(adapterFontSize);
 
         //Baud Rate
         spBaudRate = (Spinner) view.findViewById(R.id.spinnerBaudRate);
 
-        ArrayAdapter<String> adapterBaudRate = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsBaudRate());
+        ArrayAdapter<String> adapterBaudRate = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsBaudRate());
         spBaudRate.setAdapter(adapterBaudRate);
 
         //connection type
         spConnectionType = (Spinner) view.findViewById(R.id.spinnerConnectionType);
 
-        ArrayAdapter<String> adapterConnectionType = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsConnectionType());
+        ArrayAdapter<String> adapterConnectionType = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsConnectionType());
         spConnectionType.setAdapter(adapterConnectionType);
 
         //Graphics lib type
         spGraphicsLibType = (Spinner) view.findViewById(R.id.spinnerGraphicLibType);
-        ArrayAdapter<String> adapterGraphicsLibType = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsGraphicsLib());
+        ArrayAdapter<String> adapterGraphicsLibType = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsGraphicsLib());
         spGraphicsLibType.setAdapter(adapterGraphicsLibType);
 
         //Allow multiple main and drogue
@@ -188,18 +195,12 @@ public class AppConfig1Fragment extends Fragment {
             spGraphicsLibType.setSelection(1);
             spGraphicsLibType.setEnabled(false);
         }
-        if (BT.getAppConf().getAllowMultipleDrogueMain()) {
-            cbAllowMainDrogue.setChecked(true);
-        } else {
-            cbAllowMainDrogue.setChecked(false);
-        }
-        if (BT.getAppConf().getFullUSBSupport()) {
-            cbFullUSBSupport.setChecked(true);
-        } else {
-            cbFullUSBSupport.setChecked(false);
-        }
+
+        cbAllowMainDrogue.setChecked(BT.getAppConf().getAllowMultipleDrogueMain());
+
+        cbFullUSBSupport.setChecked(BT.getAppConf().getFullUSBSupport());
+
         ViewCreated = true;
         return view;
     }
-
 }

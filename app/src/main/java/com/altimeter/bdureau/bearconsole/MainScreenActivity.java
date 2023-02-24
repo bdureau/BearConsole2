@@ -38,6 +38,7 @@ import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.config.ConfigModules.Config3DR;
 import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigBT;
 import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigLora;
+import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
 import com.altimeter.bdureau.bearconsole.connection.TestConnection;
 import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatusTabActivity;
@@ -315,9 +316,11 @@ public class MainScreenActivity extends AppCompatActivity {
 
                                 PendingIntent pi;
                                 if(android.os.Build.VERSION.SDK_INT >= 31) {
-                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0, new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
+                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
+                                            new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
                                 } else {
-                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
+                                            new Intent(ACTION_USB_PERMISSION), 0);
                                 }
 
                                 usbManager.requestPermission(device, pi);
@@ -435,7 +438,8 @@ public class MainScreenActivity extends AppCompatActivity {
                 setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
             } else {
                 //enable it for bT or USB only if full support
-                if (myBT.getAppConf().getConnectionType()==0 || (myBT.getAppConf().getConnectionType()==1 && myBT.getAppConf().getFullUSBSupport()))
+                if (myBT.getAppConf().getConnectionType()==0 ||
+                        (myBT.getAppConf().getConnectionType()==1 && myBT.getAppConf().getFullUSBSupport()))
                     setEnabledCard(true, btnContinuityOnOff, image_continuity, text_continuity);
                 else
                     setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
@@ -446,7 +450,8 @@ public class MainScreenActivity extends AppCompatActivity {
                 setEnabledCard(false, btnReadFlights, image_flights, text_flights);
             } else {
                 //enable it for bT or USB only if full support
-                if (myBT.getAppConf().getConnectionType()==0 || (myBT.getAppConf().getConnectionType()==1 && myBT.getAppConf().getFullUSBSupport()))
+                if (myBT.getAppConf().getConnectionType()==GlobalConfig.ConnectionType.BT ||
+                        (myBT.getAppConf().getConnectionType()==GlobalConfig.ConnectionType.USB && myBT.getAppConf().getFullUSBSupport()))
                     setEnabledCard(true, btnReadFlights, image_flights, text_flights);
                 else
                     setEnabledCard(false, btnReadFlights, image_flights, text_flights);
@@ -458,7 +463,8 @@ public class MainScreenActivity extends AppCompatActivity {
                 setEnabledCard(false, btnTrack, image_track, text_track);
             }
             //enable it for bT or USB only if full support
-            if (myBT.getAppConf().getConnectionType()== 0 || (myBT.getAppConf().getConnectionType()==1 && myBT.getAppConf().getFullUSBSupport())) {
+            if (myBT.getAppConf().getConnectionType()== GlobalConfig.ConnectionType.BT ||
+                    (myBT.getAppConf().getConnectionType()== GlobalConfig.ConnectionType.USB && myBT.getAppConf().getFullUSBSupport())) {
                 setEnabledCard(true, btnAltiSettings, image_settings, text_settings);
                 setEnabledCard(true, btnReset, image_reset, text_reset);
                 setEnabledCard(true, btnStatus, image_status, text_status);
@@ -472,7 +478,8 @@ public class MainScreenActivity extends AppCompatActivity {
             setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
 
             if(!firmCompat.IsCompatible(myBT.getAltiConfigData().getAltimeterName(),
-                    myBT.getAltiConfigData().getAltiMajorVersion()+ "."+ myBT.getAltiConfigData().getAltiMinorVersion())) {
+                    myBT.getAltiConfigData().getAltiMajorVersion()+ "."+
+                            myBT.getAltiConfigData().getAltiMinorVersion())) {
                 msg(getString(R.string.flash_advice_msg));
             }
             else {

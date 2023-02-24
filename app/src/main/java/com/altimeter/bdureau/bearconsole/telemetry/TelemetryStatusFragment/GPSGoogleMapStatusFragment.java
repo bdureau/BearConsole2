@@ -37,17 +37,17 @@ import java.util.List;
 public class GPSGoogleMapStatusFragment extends Fragment {
     private static final String TAG = "Tab3StatusFragment";
     private boolean ViewCreated = false;
-    Integer MapType;
+    private Integer MapType;
     private GoogleMap mMap = null;
     private ConsoleApplication myBT;
     private ViewPager lPager;
     private Button butBack, butShareMap, butMapType;
 
-    Marker marker, markerDest;
-    Polyline polyline1 = null;
-    public double rocketLatitude = 48.8698;
-    public double rocketLongitude = 2.2190;
-    LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
+    private Marker marker, markerDest;
+    private Polyline polyline1 = null;
+    private double rocketLatitude = 48.8698;
+    private double rocketLongitude = 2.2190;
+    private LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
 
     public GPSGoogleMapStatusFragment(ConsoleApplication bt, ViewPager pager) {
         myBT = bt;
