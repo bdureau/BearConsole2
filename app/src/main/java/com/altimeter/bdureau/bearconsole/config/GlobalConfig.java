@@ -18,9 +18,9 @@ public class GlobalConfig {
     private int units = 0;
 
     //flight retrieval timeout
-    private long flightRetrievalTimeout;
+    //private long flightRetrievalTimeout;
     //data retrieval timeout
-    private long configRetrievalTimeout;
+    //private long configRetrievalTimeout;
 
     //graph background color
     private int graphBackColor = 1;
@@ -524,5 +524,10 @@ public class GlobalConfig {
     {
         public static int BT = 0;
         public static int USB = 1;
+    }
+    public static class GraphLib
+    {
+        public static int AfreeChart =0;
+        public static int MPChart =1;
     }
 }
