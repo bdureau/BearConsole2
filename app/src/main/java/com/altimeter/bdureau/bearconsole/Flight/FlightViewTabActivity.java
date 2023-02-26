@@ -152,7 +152,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         butSelectCurves = (Button) findViewById(R.id.butSelectCurves);
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-            numberOfCurves = 8;
+            numberOfCurves = 12;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")) {
@@ -170,7 +170,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
         FlightName = newint.getStringExtra(FlightListActivity.SELECTED_FLIGHT);
         myflight = myBT.getFlightData();
         // get all the data that we have recorded for the current flight
-        allFlightData = null; //remove???
+        //allFlightData = null; //remove???
         allFlightData = myflight.GetFlightData(FlightName);
 
         Log.d("numberOfCurves", "numberOfCurves:" + allFlightData.getSeries().size());
@@ -203,6 +203,15 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
         if(numberOfCurves > 5)
             units[5] = getString(R.string.volts);
+
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+            units[6] = "";
+            units[7] = "";
+            units[8] = getResources().getString(R.string.Meters_fview);
+            units[9] = "";
+            units[10] = "(m/secs)";
+            units[11] = getResources().getString(R.string.Meters_fview);
+        }
 
 
         if (currentCurvesNames == null) {

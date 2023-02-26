@@ -563,14 +563,16 @@ public class ConsoleApplication extends Application {
                                         // Value 2 contain the time
                                         // Value 3 contain the altitude
                                         // To do
-                                        int value2 = 0, value3 = 0, value4 = 0, value5 = 0, value6 = 0, value7 = 0, value8 = 0;
+                                        int value2 = 0, value3 = 0, value4 = 0, value5 = 0;
+                                        int value6 = 0, value7 = 0, value8 = 0, value9 = 0;
+                                        int value10 = 0, value11 = 0, value12 = 0;
                                         if (currentSentence.length > 2)
                                             if (currentSentence[2].matches("\\d+(?:\\.\\d+)?"))
                                                 value2 = Integer.valueOf(currentSentence[2]);
                                             else
                                                 value2 = 0;
                                         if (currentSentence.length > 3) {
-                                            if (currentSentence[3].matches("\\d+(?:\\.\\d+)?"))
+                                            if (currentSentence[3].matches("^-?\\d+(?:\\.\\d+)?"))
                                                 value3 = Integer.valueOf(currentSentence[3]);
                                             else
                                                 value3 = 0;
@@ -581,7 +583,7 @@ public class ConsoleApplication extends Application {
                                         }
                                         //value 4 contains temperature
                                         if (currentSentence.length > 4) {
-                                            if (currentSentence[4].matches("\\d+(?:\\.\\d+)?"))
+                                            if (currentSentence[4].matches("^-?\\d+(?:\\.\\d+)?"))
                                                 value4 = Integer.valueOf(currentSentence[4]);
                                             else
                                                 value4 = 0;
@@ -618,7 +620,7 @@ public class ConsoleApplication extends Application {
                                         if (AltiCfg.getAltimeterName().equals("AltiGPS")) {
                                             //Latitude
                                             if (currentSentence.length > 7) {
-                                                if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
+                                                if (currentSentence[7].matches("^-?\\d+(?:\\.\\d+)?"))
                                                     value7 = Integer.valueOf(currentSentence[7]);
                                                 else
                                                     value7 = 0;
@@ -629,13 +631,57 @@ public class ConsoleApplication extends Application {
 
                                             //longitude
                                             if (currentSentence.length > 8) {
-                                                if (currentSentence[8].matches("\\d+(?:\\.\\d+)?"))
+                                                if (currentSentence[8].matches("^-?\\d+(?:\\.\\d+)?"))
                                                     value8 = Integer.valueOf(currentSentence[8]);
                                                 else
                                                     value8 = 0;
                                                 //add the longitude
                                                 MyFlight.AddToFlight(value2,
                                                         (float) (value8)/100000, flightName, 7);
+                                            }
+                                            // GPS altitude
+                                            if (currentSentence.length > 9) {
+                                                if (currentSentence[9].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                    value9 = Integer.valueOf(currentSentence[9]);
+                                                else
+                                                    value9 = 0;
+                                                //add the longitude
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value9), flightName, 8);
+                                            }
+                                            //satelites
+                                            if (currentSentence.length > 10) {
+                                                if (currentSentence[10].matches("\\d+(?:\\.\\d+)?"))
+                                                    value10 = Integer.valueOf(currentSentence[10]);
+                                                else
+                                                    value10 = 0;
+                                                //add the longitude
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value10), flightName, 9);
+                                            }
+                                            //gps speed
+                                            if (currentSentence.length > 11) {
+                                                if (currentSentence[11].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                    value11 = Integer.valueOf(currentSentence[11]);
+                                                else
+                                                    value11 = 0;
+                                                //add the gps speed
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value11), flightName, 10);
+                                            }
+                                            //sea altitude
+                                            if (currentSentence.length > 12) {
+                                                if (currentSentence[12].matches("^-?\\d+(?:\\.\\d+)?")) {
+                                                    value12 = Integer.valueOf(currentSentence[12]);
+                                                    Log.d("TAG", value12 +"");
+                                                }
+                                                else {
+                                                    value12 = 0;
+                                                    Log.d("TAG2", value12 +"");
+                                                }
+                                                //add the sea altitude
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value12), flightName, 11);
                                             }
                                         }
                                     }

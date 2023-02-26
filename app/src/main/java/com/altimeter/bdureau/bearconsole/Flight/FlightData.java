@@ -169,6 +169,14 @@ public class FlightData {
             ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_latitude)));
             //longitude
             ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_longitude)));
+            //GPS altitude
+            ret.addSeries(new XYSeries("gps altitude"));
+            //GPS sat
+            ret.addSeries(new XYSeries("satelites"));
+            //GPS speed
+            ret.addSeries(new XYSeries("gps speed"));
+            //sea altitude
+            ret.addSeries(new XYSeries("sea altitude"));
         }
         return ret; // new XYSeriesCollection (series);
     }
