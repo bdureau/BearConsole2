@@ -801,14 +801,14 @@ public class MainScreenActivity extends AppCompatActivity {
             hm =null;
             hm = new HashMap();
             //init compatible versions
-            Add("AltiMulti", "1.27");
-            Add("AltiMultiV2", "1.27");
+            Add("AltiMulti", "1.28");
+            Add("AltiMultiV2", "1.28");
            // Add("AltiMultiV2", "1.25");
-            Add("AltiMultiSTM32", "1.27");
-            Add("AltiServo", "1.5");
-            Add("AltiGPS", "1.6");
-            Add("AltiDuo", "1.8");
-            Add("AltiMultiESP32", "1.27");
+            Add("AltiMultiSTM32", "1.28");
+            Add("AltiServo", "1.6");
+            Add("AltiGPS", "1.7");
+            Add("AltiDuo", "1.9");
+            Add("AltiMultiESP32", "1.28");
 
         }
         public void Add ( String altiName, String verList) {

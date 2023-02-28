@@ -68,14 +68,14 @@ public class FlashFirmware extends AppCompatActivity {
 
     private static final String ASSET_FILE_NAME_ALTIMULTIV2 = "firmwares/2023-02-26-V1_28.altimultiV2.hex";
     private static final String ASSET_FILE_NAME_ALTIMULTI = "firmwares/2023-02-26-V1_28.altimulti.hex";
-    private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2022-06-25-AltiServoV1_5.hex";
-    private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2022-06-25-V1_8.AltiDuo.hex";
+    private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2023-02-27-AltiServoV1_6.ino.hex";
+    private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2023-02-27-AltiDuoV1_9_console.ino.hex";
     private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/2023-02-26-V1_28.altimultiSTM32.bin";
     private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2023-02-26-RocketGPSLoggerV1.7.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/RocketFlightLoggerV1_27.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/RocketFlightLoggerV1_27.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE4 = "firmwares/ESP32/RocketFlightLoggerV1_27.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE4 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.partitions.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
@@ -83,9 +83,9 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_RESET_ALTISTM32 = "recover_firmwares/ResetAltiConfigAltimultiSTM32.ino.bin";
 
     private static final String ASSET_FILE_RESET_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
-    private static final String ASSET_FILE_RESET_ALTIESP32_FILE2 = "firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bootloader.bin";
-    private static final String ASSET_FILE_RESET_ALTIESP32_FILE3 = "firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bin";
-    private static final String ASSET_FILE_RESET_ALTIESP32_FILE4 = "firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.partitions.bin";
+    private static final String ASSET_FILE_RESET_ALTIESP32_FILE2 = "firmwares/old/ResetAltiConfigAltimultiESP32.ino.bootloader.bin";
+    private static final String ASSET_FILE_RESET_ALTIESP32_FILE3 = "firmwares/old/ResetAltiConfigAltimultiESP32.ino.bin";
+    private static final String ASSET_FILE_RESET_ALTIESP32_FILE4 = "firmwares/old/ResetAltiConfigAltimultiESP32.ino.partitions.bin";
 
     private String[] itemsBaudRate;
     private String[] itemsFirmwares;

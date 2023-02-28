@@ -296,6 +296,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         if (this.mMap == null) {
             this.mMap = googleMap;
             this.mMap.setMapType(MapType);
+            this.mMap.getUiSettings().setCompassEnabled(true);
         }
     }
 
@@ -315,7 +316,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                     if (marker != null) {
                         marker.setPosition(latLng);
                     } else {
-                        MarkerOptions markerOptions = new MarkerOptions();
+                        //MarkerOptions markerOptions = new MarkerOptions();
                         BitmapDescriptor manIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_person_map);
                         marker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
                     }

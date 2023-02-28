@@ -49,6 +49,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polyline;
+import org.osmdroid.views.overlay.compass.CompassOverlay;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -172,6 +173,8 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         marker.setIcon(getResources().getDrawable(R.drawable.ic_person_map));
         mMap.getOverlays().add(marker);
 
+
+
         markerDest = new Marker(mMap);
         markerDest.setIcon(getResources().getDrawable(R.drawable.ic_rocket_map));
         mMap.getOverlays().add(markerDest);
@@ -181,8 +184,14 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         polyline.setWidth(10);
         mMap.getOverlays().add(polyline);
 
+
         mapController = mMap.getController();
         mapController.setZoom(18.0);
+
+        CompassOverlay compassOverlay = new CompassOverlay(this, mMap);
+        compassOverlay.enableCompass();
+        mMap.getOverlays().add(compassOverlay);
+
 
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         butShareMap = (Button) findViewById(R.id.butShareMap);
@@ -329,10 +338,14 @@ public class RocketTrackOpenMap extends AppCompatActivity {
                         pathPoints.add(dest);
                         polyline.setPoints(pathPoints);
                         if(mMap.getZoomLevelDouble() > 10.0) {
-                            mapController.setCenter(latLng);
+                            //mapController.setCenter(latLng);
+                            //mapController.animateTo(latLng, 10.0, 10L);
+                            mapController.animateTo(latLng);
+                            //mMap.set
                         } else {
-                            mapController.setCenter(latLng);
-                            mapController.setZoom(15.0);
+                            //mapController.setCenter(latLng);
+                            //mapController.setZoom(15.0);
+                            mapController.animateTo(latLng, 15.0, 10L);
                         }
                     }
                 }

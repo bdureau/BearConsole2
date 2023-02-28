@@ -33,6 +33,7 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
             @Override
@@ -41,6 +42,7 @@ public class LocationService extends Service {
                 Intent intent = new Intent("ACT_LOC");
                 intent.putExtra("latitude", locationResult.getLastLocation().getLatitude());
                 intent.putExtra("longitude", locationResult.getLastLocation().getLongitude());
+
                 sendBroadcast(intent);
             }
 

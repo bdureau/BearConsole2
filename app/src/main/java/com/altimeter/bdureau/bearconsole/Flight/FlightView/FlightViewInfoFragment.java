@@ -229,7 +229,9 @@ public class FlightViewInfoFragment extends Fragment {
                     coord[i] = c;
                 }
             }
-            flightDistanceValue.setText(String.format("%.2f",LocationUtils.distanceBetweenCoordinates(coord))+" " + myBT.getAppConf().getUnitsValue());
+
+            flightDistanceValue.setText(String.format("%.2f", LocationUtils.distanceBetweenCoordinates(coord)) + " " + myBT.getAppConf().getUnitsValue());
+
         }
 
         //butExportAndShare
