@@ -22,6 +22,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -64,6 +65,9 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     private LocationBroadCastReceiver receiver = null;
     private LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
     private boolean recording = false;
+    private TextToSpeech mTTS;
+    private long lastSpeakTime = 1000;
+    private long distanceTime = 0;
 
     private int MapType;
 
@@ -310,6 +314,14 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                 double distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude,
                         longitude, rocketLongitude);
                 textViewdistance.setText(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
+                // Tell distance every 15 secondes
+                if ((distanceTime - lastSpeakTime) > 15000 ) {
+                    if (myBT.getAppConf().getAltitude_event()) {
+                        mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
+                                + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    lastSpeakTime = distanceTime;
+                }
                 Log.d("coordinate", "latitude is:" + latitude + " longitude is: " + longitude);
                 if (mMap != null) {
                     LatLng latLng = new LatLng(latitude, longitude);

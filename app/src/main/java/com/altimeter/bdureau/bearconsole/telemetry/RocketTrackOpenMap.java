@@ -24,6 +24,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +58,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class RocketTrackOpenMap extends AppCompatActivity {
     private MapView mMap= null;
@@ -67,10 +70,15 @@ public class RocketTrackOpenMap extends AppCompatActivity {
     private float rocketLatitude=48.8698f, rocketLongitude=2.2190f;
     private TextView textViewdistance;
 
+
     private Button btnDismiss, butShareMap;
     private LocationBroadCastReceiver receiver=null;
 
     private GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
+
+    private TextToSpeech mTTS;
+    private long lastSpeakTime = 1000;
+    private long distanceTime = 0;
 
 
     private ConsoleApplication myBT;
@@ -192,6 +200,66 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         compassOverlay.enableCompass();
         mMap.getOverlays().add(compassOverlay);
 
+        //init text to speech
+        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = 0;
+
+                    if (Locale.getDefault().getLanguage().equals("en"))
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+                    else if (Locale.getDefault().getLanguage().equals("fr"))
+                        result = mTTS.setLanguage(Locale.FRENCH);
+                    else if (Locale.getDefault().getLanguage().equals("tr"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage().equals("nl"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage().equals("es"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage().equals("it"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage().equals("hu"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage().equals("ru"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+
+                    Log.d("Voice", myBT.getAppConf().getTelemetryVoice() + "");
+
+                    int i = 0;
+                    try {
+                        for (Voice tmpVoice : mTTS.getVoices()) {
+
+                            if (tmpVoice.getName().startsWith(Locale.getDefault().getLanguage())) {
+                                Log.d("Voice", tmpVoice.getName());
+                                if (myBT.getAppConf().getTelemetryVoice() == i) {
+                                    mTTS.setVoice(tmpVoice);
+                                    Log.d("Voice", "Found voice");
+                                    break;
+                                }
+                                i++;
+                            }
+                        }
+                    } catch (Exception e) {
+
+                    }
+
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "Language not supported");
+                    } else {
+
+                    }
+                } else {
+                    Log.e("TTS", "Init failed");
+                }
+            }
+        });
+        mTTS.setPitch(1.0f);
+        mTTS.setSpeechRate(1.0f);
+
 
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         butShareMap = (Button) findViewById(R.id.butShareMap);
@@ -311,13 +379,21 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d ("coordinate",intent.getAction());
-
+            distanceTime = System.currentTimeMillis();
             dest = new GeoPoint(rocketLatitude, rocketLongitude);
             if(intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
                 double distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude, longitude, rocketLongitude);
                 textViewdistance.setText(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
+                // Tell distance every 15 secondes
+                if ((distanceTime - lastSpeakTime) > 15000 ) {
+                    if (myBT.getAppConf().getAltitude_event()) {
+                        mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
+                                + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    lastSpeakTime = distanceTime;
+                }
                 Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
                 Log.d ("coordinate","rocketLatitude is:" + latitude + " rocketLongitude is: " + longitude );
                 if(mMap !=null){
