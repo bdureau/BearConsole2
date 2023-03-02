@@ -735,7 +735,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
 
         }
         String myMessage = "";
-        long timeOut = 10000;
+        //long timeOut = 10000;
         //long startTime = System.currentTimeMillis();
 
         myMessage = myBT.ReadResult(100000);

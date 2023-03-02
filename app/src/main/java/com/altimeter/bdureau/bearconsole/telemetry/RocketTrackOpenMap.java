@@ -71,7 +71,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
     private TextView textViewdistance;
 
 
-    private Button btnDismiss, butShareMap;
+    private Button btnDismiss, butShareMap, butAudio;
     private LocationBroadCastReceiver receiver=null;
 
     private GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
@@ -79,6 +79,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
     private TextToSpeech mTTS;
     private long lastSpeakTime = 1000;
     private long distanceTime = 0;
+    private boolean soundOn=true;
 
 
     private ConsoleApplication myBT;
@@ -263,6 +264,9 @@ public class RocketTrackOpenMap extends AppCompatActivity {
 
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         butShareMap = (Button) findViewById(R.id.butShareMap);
+        butAudio= (Button) findViewById(R.id.butAudio);
+        butAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.audio_on32x32,
+                0,0,0);
 
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,6 +281,24 @@ public class RocketTrackOpenMap extends AppCompatActivity {
             public void onClick(View v)
             {
                 takeMapScreenshot();
+            }
+        });
+
+        butAudio.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(soundOn) {
+                    soundOn = false;
+                    butAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.audio_off_32x32,
+                            0,0,0);
+                }
+                else {
+                    soundOn = true;
+                    butAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.audio_on32x32,
+                            0,0,0);
+                }
             }
         });
 
@@ -388,7 +410,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
                 textViewdistance.setText(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
                 // Tell distance every 15 secondes
                 if ((distanceTime - lastSpeakTime) > 15000 ) {
-                    if (myBT.getAppConf().getAltitude_event()) {
+                    if (soundOn) {
                         mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
                                 + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                     }
