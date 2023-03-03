@@ -41,7 +41,7 @@ public class LocationUtils {
         double distance = 0.0;
         if(pathPoints !=null) {
             for (int i = 0; i < (pathPoints.length - 1); i++) {
-                if(pathPoints[i] !=null) {
+                if(pathPoints[i] !=null & pathPoints[i + 1] != null) {
                     double currentDistance = distanceBetweenCoordinate(pathPoints[i].getLatitude(),
                             pathPoints[i + 1].getLatitude(),
                             pathPoints[i].getLongitude(),
