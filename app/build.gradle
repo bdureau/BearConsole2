@@ -9,12 +9,15 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }*/
+    aaptOptions {
+        cruncherEnabled = false
+    }
     defaultConfig {
         applicationId 'com.altimeter.bdureau.bearconsole'
         minSdk 21
         targetSdk 33
         versionName '2.0.2'
-        versionCode 26
+        versionCode 27
         multiDexEnabled true
     }
     buildTypes {
