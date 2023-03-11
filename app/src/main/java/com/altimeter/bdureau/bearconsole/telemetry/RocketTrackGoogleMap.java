@@ -23,6 +23,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -50,6 +51,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapReadyCallback {
     private SupportMapFragment mapFragment;
@@ -60,14 +62,16 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     private boolean status = true;
     private float rocketLatitude = 48.8698f, rocketLongitude = 2.2190f;
     private TextView textViewdistance;
+    Intent locIntent = null;
 
-    Button btnDismiss, butShareMap, butMapType;
+    Button btnDismiss, butShareMap, butMapType, butAudio;
     private LocationBroadCastReceiver receiver = null;
     private LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
     private boolean recording = false;
     private TextToSpeech mTTS;
     private long lastSpeakTime = 1000;
     private long distanceTime = 0;
+    private boolean soundOn=true;
 
     private int MapType;
 
@@ -180,6 +184,68 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         butShareMap = (Button) findViewById(R.id.butShareMap);
         butMapType = (Button) findViewById(R.id.butMap);
+        butAudio= (Button) findViewById(R.id.butAudio);
+        butAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.audio_on32x32,
+                0,0,0);
+
+        //init text to speech
+        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = 0;
+
+                    if (Locale.getDefault().getLanguage().equals("en"))
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+                    else if (Locale.getDefault().getLanguage().equals("fr"))
+                        result = mTTS.setLanguage(Locale.FRENCH);
+                    else if (Locale.getDefault().getLanguage().equals("tr"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage().equals("nl"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage().equals("es"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage().equals("it"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage().equals("hu"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (Locale.getDefault().getLanguage().equals("ru"))
+                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+
+                    Log.d("Voice", myBT.getAppConf().getTelemetryVoice() + "");
+
+                    int i = 0;
+                    try {
+                        for (Voice tmpVoice : mTTS.getVoices()) {
+
+                            if (tmpVoice.getName().startsWith(Locale.getDefault().getLanguage())) {
+                                Log.d("Voice", tmpVoice.getName());
+                                if (myBT.getAppConf().getTelemetryVoice() == i) {
+                                    mTTS.setVoice(tmpVoice);
+                                    Log.d("Voice", "Found voice");
+                                    break;
+                                }
+                                i++;
+                            }
+                        }
+                    } catch (Exception e) {
+
+                    }
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "Language not supported");
+                    } else {
+
+                    }
+                } else {
+                    Log.e("TTS", "Init failed");
+                }
+            }
+        });
+        mTTS.setPitch(1.0f);
+        mTTS.setSpeechRate(1.0f);
 
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,13 +270,30 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                 mMap.setMapType(MapType);
             }
         });
+        butAudio.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(soundOn) {
+                    soundOn = false;
+                    butAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.audio_off_32x32,
+                            0,0,0);
+                }
+                else {
+                    soundOn = true;
+                    butAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.audio_on32x32,
+                            0,0,0);
+                }
+            }
+        });
         Runnable r = new Runnable() {
             @Override
             public void run() {
                 while (true) {
                     if (!status) break;
                     if (!myBT.getConnected()) break;
-                    myBT.ReadResult(10000);
+                        myBT.ReadResult(10000);
                 }
             }
         };
@@ -226,17 +309,21 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         IntentFilter filter = new IntentFilter("ACT_LOC");
         registerReceiver(receiver, filter);
 
-        Intent intent = new Intent(RocketTrackGoogleMap.this, LocationService.class);
-        startService(intent);
+        locIntent = new Intent(RocketTrackGoogleMap.this, LocationService.class);
+        startService(locIntent);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (locIntent !=null)
+            stopService(locIntent);
+
         if (receiver != null) {
             unregisterReceiver(receiver);
             receiver = null;
         }
+        mTTS.shutdown();
         if (status & myBT.getConnected()) {
 
             status = false;
@@ -288,10 +375,10 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         if (receiver != null) {
             try {
                 unregisterReceiver(receiver);
+                receiver = null;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            receiver = null;
         }
     }
 
@@ -308,6 +395,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("coordinate", intent.getAction());
+            distanceTime = System.currentTimeMillis();
             if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
@@ -316,7 +404,8 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                 textViewdistance.setText(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
                 // Tell distance every 15 secondes
                 if ((distanceTime - lastSpeakTime) > 15000 ) {
-                    if (myBT.getAppConf().getAltitude_event()) {
+                    Log.d("coordinate", "speak distance");
+                    if (soundOn) {
                         mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
                                 + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                     }

@@ -62,7 +62,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AltimeterStatusTabActivity extends AppCompatActivity {
-    private static ViewPager mViewPager;
+    public String TAG = "AltimeterStatusTabActivity";
+    private static ViewPager mViewPager; //static so that the map does not disapear
 
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
@@ -74,18 +75,14 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
     private GPSGoogleMapStatusFragment statusPage3 = null;
     private GPSOpenMapStatusFragment statusPage4 = null;
 
-    //Marker marker, markerDest;
-    //Polyline polyline1 = null;
     private float rocketLatitude = 48.8698f;
     private float rocketLongitude = 2.2190f;
-    //LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
 
     private Button btnDismiss, btnRecording;
     private ConsoleApplication myBT;
     Thread altiStatus;
     private boolean status = true;
     private boolean recording = false;
-    public String TAG = "AltimeterStatus.class";
 
 
     Handler handler = new Handler() {

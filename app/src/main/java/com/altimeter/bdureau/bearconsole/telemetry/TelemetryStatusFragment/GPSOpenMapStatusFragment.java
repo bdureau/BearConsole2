@@ -52,8 +52,8 @@ public class GPSOpenMapStatusFragment extends Fragment {
     private Marker marker,markerDest;
     private Polyline polyline= null;
     private IMapController mapController  = null;
-    double rocketLatitude=48.8698, rocketLongitude=2.2190;
-    private GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
+    //double rocketLatitude=48.8698, rocketLongitude=2.2190;
+    //private GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
 
     public GPSOpenMapStatusFragment(ConsoleApplication bt, ViewPager pager) {
         myBT = bt;
@@ -134,7 +134,7 @@ public class GPSOpenMapStatusFragment extends Fragment {
         }
     }
     public void updateLocation(double latitude, double longitude, double rocketLat, double rocketLong) {
-        dest = new GeoPoint(rocketLat, rocketLong);
+        GeoPoint dest = new GeoPoint(rocketLat, rocketLong);
         if(mMap !=null){
             GeoPoint latLng = new GeoPoint(latitude, longitude);
             mapController.setCenter(latLng);

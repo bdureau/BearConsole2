@@ -61,6 +61,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class RocketTrackOpenMap extends AppCompatActivity {
+    private static final String TAG = "RocketTrackOpenMap";
     private MapView mMap= null;
     private Marker marker,markerDest;
     private Polyline polyline= null;
@@ -69,14 +70,14 @@ public class RocketTrackOpenMap extends AppCompatActivity {
     boolean status = true;
     private float rocketLatitude=48.8698f, rocketLongitude=2.2190f;
     private TextView textViewdistance;
-
+    Intent locIntent = null;
 
     private Button btnDismiss, butShareMap, butAudio;
     private LocationBroadCastReceiver receiver=null;
 
     private GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
 
-    private TextToSpeech mTTS;
+    private TextToSpeech mTTS = null;
     private long lastSpeakTime = 1000;
     private long distanceTime = 0;
     private boolean soundOn=true;
@@ -323,19 +324,25 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("ACT_LOC");
         registerReceiver(receiver, filter);
 
-        Intent intent = new Intent( RocketTrackOpenMap.this, LocationService.class);
-        startService(intent);
+        //Intent intent = new Intent( RocketTrackOpenMap.this, LocationService.class);
+        //startService(intent);
+        locIntent = new Intent( RocketTrackOpenMap.this, LocationService.class);
+        startService(locIntent);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(TAG,"onDestroy()" );
+        if (locIntent !=null)
+            stopService(locIntent);
         if (receiver !=null) {
+            Log.d(TAG,"unregisterReceiver(receiver)" );
             unregisterReceiver(receiver);
             receiver = null;
         }
+        mTTS.shutdown();
         if (status & myBT.getConnected()) {
-
             status = false;
             myBT.write("h;\n".toString());
 
@@ -365,6 +372,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG,"onResume()" );
         Configuration.getInstance().load(getApplicationContext(),
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         if (mMap != null) {
@@ -378,10 +386,19 @@ public class RocketTrackOpenMap extends AppCompatActivity {
             status = true;
             altiStatus.start();
         }
+        if (receiver ==null) {
+            try {
+                Log.d(TAG,"onPause() - registerReceiver(receiver)" );
+                startService();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG,"onPause()" );
         Configuration.getInstance().save(getApplicationContext(),
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         if (mMap != null) {
@@ -389,11 +406,12 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         }
         if (receiver !=null) {
             try {
+                Log.d(TAG,"onPause() - unregisterReceiver(receiver)" );
                 unregisterReceiver(receiver);
+                receiver = null;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            receiver = null;
         }
     }
 
@@ -419,7 +437,6 @@ public class RocketTrackOpenMap extends AppCompatActivity {
                 Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
                 Log.d ("coordinate","rocketLatitude is:" + latitude + " rocketLongitude is: " + longitude );
                 if(mMap !=null){
-
                     GeoPoint latLng = new GeoPoint(latitude, longitude);
                     mapController.setCenter(latLng);
                     if(marker != null) {
