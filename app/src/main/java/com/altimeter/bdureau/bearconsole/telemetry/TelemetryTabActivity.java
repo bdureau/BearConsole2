@@ -108,7 +108,9 @@ public class TelemetryTabActivity extends AppCompatActivity {
 
     private Button dismissButton;
 
-    private TextToSpeech mTTS;
+    private TextToSpeech mTTS = null;
+
+    Intent locIntent = null;
 
     Handler handler = new Handler() {
         @Override
@@ -672,6 +674,16 @@ public class TelemetryTabActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        if(locIntent != null)
+            stopService(locIntent);
+
+        if (receiver != null) {
+            unregisterReceiver(receiver);
+            receiver = null;
+        }
+        mTTS.shutdown();
+
         if (telemetry) {
             telemetry = false;
             myBT.write("h;".toString());
@@ -703,7 +715,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                 public void run() {
                     while (true) {
                         if (!telemetry) break;
-                        myBT.ReadResult(10000);
+                        myBT.ReadResult(2000);
                     }
                 }
             };
@@ -871,8 +883,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("ACT_LOC");
         registerReceiver(receiver, filter);
 
-        Intent intent = new Intent(TelemetryTabActivity.this, LocationService.class);
-        startService(intent);
+        locIntent = new Intent(TelemetryTabActivity.this, LocationService.class);
+        startService(locIntent);
     }
 
     public void startTelemetry() {

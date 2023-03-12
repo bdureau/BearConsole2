@@ -83,6 +83,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
     Thread altiStatus;
     private boolean status = true;
     private boolean recording = false;
+    Intent locIntent = null;
 
 
     Handler handler = new Handler() {
@@ -440,6 +441,14 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         //switch off output
         statusPage1bis.resetSwitches();
 
+        if(locIntent != null)
+            stopService(locIntent);
+
+        if (receiver != null) {
+            unregisterReceiver(receiver);
+            receiver = null;
+        }
+
         //turn off telemetry
         myBT.flush();
         myBT.clearInput();
@@ -684,8 +693,8 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("ACT_LOC");
         registerReceiver(receiver, filter);
 
-        Intent intent = new Intent(AltimeterStatusTabActivity.this, LocationService.class);
-        startService(intent);
+        locIntent = new Intent(AltimeterStatusTabActivity.this, LocationService.class);
+        startService(locIntent);
     }
 
     // fast way to call Toast

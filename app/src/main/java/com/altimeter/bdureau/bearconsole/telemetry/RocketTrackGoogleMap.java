@@ -293,7 +293,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                 while (true) {
                     if (!status) break;
                     if (!myBT.getConnected()) break;
-                        myBT.ReadResult(10000);
+                    myBT.ReadResult(10000);
                 }
             }
         };

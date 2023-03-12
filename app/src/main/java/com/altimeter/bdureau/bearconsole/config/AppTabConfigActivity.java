@@ -312,7 +312,11 @@ public class AppTabConfigActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mTTS.shutdown();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
