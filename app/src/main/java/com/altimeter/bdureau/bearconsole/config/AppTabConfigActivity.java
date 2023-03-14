@@ -14,7 +14,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,11 +36,13 @@ import com.altimeter.bdureau.bearconsole.config.AppConfig.AppConfig3Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AppTabConfigActivity extends AppCompatActivity {
     Button btnDismiss, btnSave, bdtDefault;
     private ViewPager mViewPager;
     private SectionsPageAdapter adapter;
+    private TextToSpeech mTTS;
 
     private AppConfig1Fragment appConfigPage1 = null;
     private AppConfig2Fragment appConfigPage2 = null;
@@ -93,6 +98,50 @@ public class AppTabConfigActivity extends AppCompatActivity {
                 RestoreToDefault();
             }
         });
+        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = 0;
+
+                    if (Locale.getDefault().getLanguage() == "en")
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+                    else if (Locale.getDefault().getLanguage() == "fr")
+                        result = mTTS.setLanguage(Locale.FRENCH);
+                    else if (Locale.getDefault().getLanguage() == "nl")
+                        result = mTTS.setLanguage(new Locale("nl_NL"));
+                    else
+                        result = mTTS.setLanguage(Locale.ENGLISH);
+                    try {
+                        String[] itemsVoices;
+                        String items = "";
+                        for (Voice tmpVoice : mTTS.getVoices()) {
+                            if (tmpVoice.getName().startsWith(Locale.getDefault().getLanguage())) {
+                                if (items.equals(""))
+                                    items = tmpVoice.getName();
+                                else
+                                    items = items + "," + tmpVoice.getName();
+                                Log.d("Voice", tmpVoice.getName());
+                            }
+                        }
+
+                        itemsVoices = items.split(",");
+
+                        appConfigPage2.setVoices(itemsVoices);
+                        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                            Log.e("TTS", "Language not supported");
+                        } else {
+
+                        }
+                    } catch (Exception e) {
+
+                    }
+                } else {
+                    Log.e("TTS", "Init failed");
+                }
+            }
+        }, "com.google.android.tts");
+
     }
 
     private void SaveConfig() {
