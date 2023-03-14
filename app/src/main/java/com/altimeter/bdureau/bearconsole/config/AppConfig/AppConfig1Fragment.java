@@ -123,8 +123,6 @@ public class AppConfig1Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_app_config_tab1, container, false);
         //Language
         spAppLanguage = (Spinner) view.findViewById(R.id.spinnerLanguage);
-
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsLanguages());
         spAppLanguage.setAdapter(adapter);

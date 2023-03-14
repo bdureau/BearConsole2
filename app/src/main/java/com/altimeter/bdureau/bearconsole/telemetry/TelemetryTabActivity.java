@@ -901,7 +901,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
             public void run() {
                 while (true) {
                     if (!telemetry) break;
-                    myBT.ReadResult(100000);
+                    myBT.ReadResult(10000);
                 }
             }
         };
