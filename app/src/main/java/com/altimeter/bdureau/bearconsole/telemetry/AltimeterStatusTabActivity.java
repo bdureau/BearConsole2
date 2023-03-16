@@ -53,9 +53,6 @@ import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.Altim
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSGoogleMapStatusFragment;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSOpenMapStatusFragment;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSStatusFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.Polyline;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -288,7 +285,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                     .show();
         }
 
-        setContentView(R.layout.fragment_altimeter_status_tab);
+        setContentView(R.layout.activity_altimeter_status_tab);
         rocketLatitude = myBT.getAppConf().getRocketLatitude();
 
         rocketLongitude = myBT.getAppConf().getRocketLongitude();

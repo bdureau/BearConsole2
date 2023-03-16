@@ -323,7 +323,11 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
             unregisterReceiver(receiver);
             receiver = null;
         }
-        mTTS.shutdown();
+        try {
+            mTTS.shutdown();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (status & myBT.getConnected()) {
 
             status = false;

@@ -341,7 +341,11 @@ public class RocketTrackOpenMap extends AppCompatActivity {
             unregisterReceiver(receiver);
             receiver = null;
         }
-        mTTS.shutdown();
+        try {
+            mTTS.shutdown();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (status & myBT.getConnected()) {
             status = false;
             myBT.write("h;\n".toString());

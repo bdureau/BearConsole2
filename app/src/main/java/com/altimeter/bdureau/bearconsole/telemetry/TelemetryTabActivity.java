@@ -682,7 +682,11 @@ public class TelemetryTabActivity extends AppCompatActivity {
             unregisterReceiver(receiver);
             receiver = null;
         }
-        mTTS.shutdown();
+        try {
+            mTTS.shutdown();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (telemetry) {
             telemetry = false;
