@@ -75,7 +75,6 @@ public class CommandInterfaceSTM32 {
                 System.arraycopy(tmpbuf, 0, buf, totalRetval, retval);
                 totalRetval += retval;
                 startTime = System.currentTimeMillis();
-
             }
             if(totalRetval >= length){break;}
 

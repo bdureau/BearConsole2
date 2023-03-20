@@ -128,10 +128,6 @@ public class MainScreenActivity extends AppCompatActivity {
 
         //This will check if the firmware is compatible with the app and advice on flashing the firmware
         firmCompat = new FirmwareCompatibility();
-
-        //Check the local and force it if needed
-        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
-
         setContentView(R.layout.activity_main_screen);
 
         IntentFilter filter = new IntentFilter();

@@ -807,7 +807,7 @@ public class FlashFirmware extends AppCompatActivity {
         });
     }
 
-    private void setRadioButton(RadioButton rb, boolean state) {
+    /*private void setRadioButton(RadioButton rb, boolean state) {
         final RadioButton frb = rb;
         final boolean fstate = state;
         mHandler.post(new Runnable() {
@@ -816,7 +816,7 @@ public class FlashFirmware extends AppCompatActivity {
                 frb.setChecked(fstate);
             }
         });
-    }
+    }*/
 
     private void dialogAppend(CharSequence text) {
         final CharSequence ftext = text;
