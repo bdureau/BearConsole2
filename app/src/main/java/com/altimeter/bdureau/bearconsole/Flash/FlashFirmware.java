@@ -25,7 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import android.widget.ImageView;
-import android.widget.RadioButton;
+
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -262,7 +262,6 @@ public class FlashFirmware extends AppCompatActivity {
                         .setCancelable(false)
                         .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, final int id) {
-
                                 dialog.cancel();
                                 mPhysicaloid.cancelUpload();
                             }
@@ -400,27 +399,21 @@ public class FlashFirmware extends AppCompatActivity {
             tvAppend(tvRead, getString(R.string.firmware_version_not_detected) + version + "\n");
 
             if (version.equals("AltiMulti")) {
-                //setRadioButton (rbAltiMulti,true);
                 spinnerFirmware.setSelection(0);
             }
             if (version.equals("AltiMultiV2")) {
-                //setRadioButton (rbAltiMultiV2,true);
                 spinnerFirmware.setSelection(1);
             }
             if (version.equals("AltiServo")) {
-                //setRadioButton (rbAltiServo,true);
                 spinnerFirmware.setSelection(2);
             }
             if (version.equals("AltiDuo")) {
-                //setRadioButton (rbAltiDuo,true);
                 spinnerFirmware.setSelection(3);
             }
             if (version.equals("AltiMultiSTM32")) {
-                //setRadioButton (rbAltiMultiSTM32,true);
                 spinnerFirmware.setSelection(4);
             }
             if (version.equals("AltiGPS")) {
-                //setRadioButton (rbAltiGPS,true);
                 spinnerFirmware.setSelection(5);
             }
             return null;
