@@ -6,6 +6,7 @@ package com.altimeter.bdureau.bearconsole.telemetry;
  * @author: boris.dureau@neuf.fr
  **/
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -35,10 +36,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.LocationUtils;
 import com.altimeter.bdureau.bearconsole.R;
@@ -81,7 +84,12 @@ public class RocketTrackOpenMap extends AppCompatActivity {
     private long lastSpeakTime = 1000;
     private long distanceTime = 0;
     private boolean soundOn=true;
-
+    //Permissions
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static final String[] PERMISSION_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    };
 
     private ConsoleApplication myBT;
     Handler handler = new Handler() {
@@ -148,6 +156,9 @@ public class RocketTrackOpenMap extends AppCompatActivity {
             startService();
         }
 
+        if(Build.VERSION.SDK_INT>=23) {
+            verifyStoragePermission(RocketTrackOpenMap.this);
+        }
         LocationManager lm = (LocationManager)this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
@@ -416,6 +427,17 @@ public class RocketTrackOpenMap extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static void verifyStoragePermission(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSION_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
         }
     }
 

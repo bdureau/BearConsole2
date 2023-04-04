@@ -12,6 +12,7 @@ package com.altimeter.bdureau.bearconsole.telemetry;
  **/
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -25,6 +26,7 @@ import android.os.Message;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -111,7 +113,12 @@ public class TelemetryTabActivity extends AppCompatActivity {
     private TextToSpeech mTTS = null;
 
     Intent locIntent = null;
-
+    //Permissions
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static final String[] PERMISSION_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    };
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -542,6 +549,9 @@ public class TelemetryTabActivity extends AppCompatActivity {
             startService();
         }
 
+        if(Build.VERSION.SDK_INT>=23) {
+            verifyStoragePermission(TelemetryTabActivity.this);
+        }
         LocationManager lm = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
@@ -915,7 +925,16 @@ public class TelemetryTabActivity extends AppCompatActivity {
 
     }
 
+    public static void verifyStoragePermission(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSION_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

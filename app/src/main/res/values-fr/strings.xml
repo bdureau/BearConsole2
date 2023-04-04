@@ -426,6 +426,7 @@
     <string name="location_age">age Localisation</string>
     <string name="time_sat_acquisition">Temps acquisition sat</string>
     <string name="use_telemetryport">Utiliser le port telémetrie</string>
+    <!-- Lora module-->
     <string name="lora_configure_module_title">Configuration du module Lora</string>
     <string name="lora_module_channel">Canal:</string>
     <string name="lora_module_trans_mode">Trans mode:</string>
