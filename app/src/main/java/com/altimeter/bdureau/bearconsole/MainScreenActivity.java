@@ -37,7 +37,8 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.config.ConfigModules.Config3DR;
 import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigBT;
-import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigLora;
+import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigLoraE220;
+import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigLoraE32;
 import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
 import com.altimeter.bdureau.bearconsole.connection.TestConnection;
@@ -682,7 +683,13 @@ public class MainScreenActivity extends AppCompatActivity {
         }
         //Open the lora module config
         if (id == R.id.action_modlora_settings) {
-            Intent i = new Intent(MainScreenActivity.this, ConfigLora.class);
+            Intent i = new Intent(MainScreenActivity.this, ConfigLoraE220.class);
+            startActivity(i);
+            return true;
+        }
+        //Open the lora module config
+        if (id == R.id.action_modlorae32_settings) {
+            Intent i = new Intent(MainScreenActivity.this, ConfigLoraE32.class);
             startActivity(i);
             return true;
         }

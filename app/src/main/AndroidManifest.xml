@@ -72,7 +72,7 @@
                  android:resource="@xml/device_filter" />
          </activity>
          <activity
-             android:name=".config.ConfigModules.ConfigLora"
+             android:name=".config.ConfigModules.ConfigLoraE220"
              android:exported="true"
              android:screenOrientation="portrait">
              <intent-filter>
@@ -82,6 +82,17 @@
                  android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                  android:resource="@xml/device_filter" />
          </activity>
+        <activity
+            android:name=".config.ConfigModules.ConfigLoraE32"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
          <activity
              android:name=".Flash.FlashFirmware"
              android:exported="true"

@@ -11,7 +11,7 @@
         android:id="@+id/textLoraConfigTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lora_configure_module_title"
+        android:text="Configure Lora E32 module"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textLoraConfigTitle"
         android:layout_alignBaseline="@+id/textLoraModule"
-        android:layout_toRightOf="@id/textLoraChannelRSSI"
+        android:layout_toRightOf="@id/textLoraFixedMode"
         android:text=""
         android:textSize="12sp" />
 
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textLoraBaud"
         android:spinnerMode="dropdown"
-        android:layout_toRightOf="@id/textLoraChannelRSSI"
+        android:layout_toRightOf="@id/textLoraFixedMode"
         android:textAlignment="textEnd" />
 
     <TextView
@@ -79,19 +79,19 @@
         android:textAlignment="textEnd"/>
     <!-- second line -->
     <TextView
-        android:id="@+id/textLoraTransMode"
+        android:id="@+id/textLoraIOMode"
         android:layout_below="@+id/textLoraBaud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:text="@string/lora_module_trans_mode" />
+        android:text="IO Mode" />
 
     <Spinner
-        android:id="@+id/spinnerLoraTransMode"
+        android:id="@+id/spinnerLoraIOMode"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textLoraTransMode"
-        android:layout_toRightOf="@id/textLoraChannelRSSI"
+        android:layout_alignBaseline="@+id/textLoraIOMode"
+        android:layout_toRightOf="@id/textLoraFixedMode"
         android:spinnerMode="dropdown"
         android:textAlignment="textEnd" />
 
@@ -100,7 +100,7 @@
         android:layout_below="@+id/textLoraBaud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/spinnerLoraChannelRSSI"
+        android:layout_toRightOf="@id/spinnerLoraFixedMode"
         android:text="@string/lora_module_address"
         android:layout_marginTop="18dp" />
 
@@ -118,46 +118,27 @@
 
     <!-- Third line -->
     <TextView
-        android:id="@+id/textLoraChannelRSSI"
-        android:layout_below="@+id/textLoraTransMode"
+        android:id="@+id/textLoraFixedMode"
+        android:layout_below="@+id/textLoraIOMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lora_module_channel_rssi"
+        android:text="Fixed Mode"
         android:layout_marginTop="18dp" />
 
     <Spinner
-        android:id="@+id/spinnerLoraChannelRSSI"
+        android:id="@+id/spinnerLoraFixedMode"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textLoraChannelRSSI"
+        android:layout_alignBaseline="@+id/textLoraFixedMode"
         android:spinnerMode="dropdown"
-        android:layout_toRightOf="@id/textLoraChannelRSSI"
+        android:layout_toRightOf="@id/textLoraFixedMode"
         android:textAlignment="textEnd" />
 
-    <TextView
-        android:id="@+id/textLoraKey"
-        android:layout_below="@+id/textLoraTransMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/spinnerLoraChannelRSSI"
-        android:text="@string/lora_module_key"
-        android:layout_marginTop="18dp" />
-
-    <EditText
-        android:id="@+id/textLoraKeyValue"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textLoraTransMode"
-        android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@+id/textLoraChannelRSSI"
-        android:layout_marginTop="18dp"
-        android:text=""
-        android:textSize="12sp" />
 
     <!-- fourth line -->
     <TextView
         android:id="@+id/textLoraParity"
-        android:layout_below="@+id/textLoraChannelRSSI"
+        android:layout_below="@+id/textLoraFixedMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lora_module_parity"
@@ -169,46 +150,46 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textLoraParity"
         android:spinnerMode="dropdown"
-        android:layout_toRightOf="@id/textLoraChannelRSSI"
+        android:layout_toRightOf="@id/textLoraFixedMode"
         android:textAlignment="textEnd" />
 
     <TextView
-        android:id="@+id/textLoraWoreCycle"
+        android:id="@+id/textLoraWakeupTime"
         android:layout_below="@+id/textLoraParity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lora_module_wor_cycle"
+        android:text="WOR timing:"
         android:layout_marginTop="18dp" />
 
     <Spinner
-        android:id="@+id/spinnerLoraWoreCycle"
+        android:id="@+id/spinnerLoraWakeupTime"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textLoraWoreCycle"
-        android:layout_toRightOf="@id/textLoraChannelRSSI"
+        android:layout_alignBaseline="@+id/textLoraWakeupTime"
+        android:layout_toRightOf="@id/textLoraFixedMode"
         android:spinnerMode="dropdown"
         android:textAlignment="textEnd" />
 
     <TextView
-        android:id="@+id/textLoraLBT"
-        android:layout_below="@+id/textLoraWoreCycle"
+        android:id="@+id/textLoraFECswitch"
+        android:layout_below="@+id/textLoraWakeupTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lora_module_lbt"
+        android:text="FEC:"
         android:layout_marginTop="18dp" />
 
     <Spinner
-        android:id="@+id/spinnerLoraLBT"
+        android:id="@+id/spinnerLoraFECswitch"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textLoraLBT"
+        android:layout_alignBaseline="@+id/textLoraFECswitch"
         android:spinnerMode="dropdown"
-        android:layout_toRightOf="@id/textLoraChannelRSSI"
+        android:layout_toRightOf="@id/textLoraFixedMode"
         android:textAlignment="textEnd" />
 
     <TextView
         android:id="@+id/textLoraAirRate"
-        android:layout_below="@+id/textLoraLBT"
+        android:layout_below="@+id/textLoraFECswitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lora_module_air_rate"
@@ -220,7 +201,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textLoraAirRate"
         android:spinnerMode="dropdown"
-        android:layout_toRightOf="@id/textLoraChannelRSSI"
+        android:layout_toRightOf="@id/textLoraFixedMode"
         android:textAlignment="textEnd" />
 
     <TextView
@@ -237,42 +218,11 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textLoraPower"
         android:spinnerMode="dropdown"
-        android:layout_toRightOf="@id/textLoraChannelRSSI"
+        android:layout_toRightOf="@id/textLoraFixedMode"
         android:textAlignment="textEnd" />
 
-    <TextView
-        android:id="@+id/textLoraPacketRSSI"
-        android:layout_below="@+id/textLoraPower"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/lora_module_packet_rssi"
-        android:layout_marginTop="18dp" />
 
-    <Spinner
-        android:id="@+id/spinnerLoraPacketRSSI"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textLoraPacketRSSI"
-        android:spinnerMode="dropdown"
-        android:layout_toRightOf="@id/textLoraChannelRSSI"
-        android:textAlignment="textEnd" />
 
-    <TextView
-        android:id="@+id/textLoraPacketSize"
-        android:layout_below="@+id/textLoraPacketRSSI"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/lora_module_packet_size"
-        android:layout_marginTop="18dp" />
-
-    <Spinner
-        android:id="@+id/spinnerLoraPacketSize"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textLoraPacketSize"
-        android:spinnerMode="dropdown"
-        android:layout_toRightOf="@id/textLoraChannelRSSI"
-        android:textAlignment="textEnd" />
 
     <Button
         android:id="@+id/butLoraRetrieveConfig"

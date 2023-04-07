@@ -25,6 +25,9 @@ import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.altimeter.bdureau.bearconsole.config.AppTabConfigActivity;
 import com.physicaloid.lib.Physicaloid;
+
+import java.nio.ByteBuffer;
+
 /**
  * @description: This allows the configuration of Lora Ebytes telemetry modules from an Android
  * phone or tablet using a ttl cable.
@@ -32,8 +35,9 @@ import com.physicaloid.lib.Physicaloid;
  * Make sure that you report any bugs or suggestions so that it can be improved
  * @author: boris.dureau@neuf.fr
  **/
-public class ConfigLora extends AppCompatActivity {
+public class ConfigLoraE220 extends AppCompatActivity {
     Physicaloid mPhysicaloid;
+    public String TAG = "ConfigLoraE220.class";
 
     private Button btRetrieveConfig, btSaveConfig;
 
@@ -54,7 +58,7 @@ public class ConfigLora extends AppCompatActivity {
 
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
-    ConfigLora.ModuleInfo mInfo;
+    ConfigLoraE220.ModuleInfo mInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -268,7 +272,7 @@ public class ConfigLora extends AppCompatActivity {
 
         mPhysicaloid = new Physicaloid(this);
         mPhysicaloid.open();
-        mInfo = new ConfigLora.ModuleInfo(mPhysicaloid);
+        mInfo = new ConfigLoraE220.ModuleInfo(mPhysicaloid);
 
         DisableUI();
         btRetrieveConfig.setEnabled(true);
@@ -357,14 +361,27 @@ public class ConfigLora extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed()");
+        finish();
+    }
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy()");
+        super.onDestroy();
+        if(mPhysicaloid.isOpened())
+            mPhysicaloid.close();
+    }
+
     public void onClickRetrieveConfig(View v) {
         // go to AT mode
         Log.d("Config Lora", "retrieving config");
-        new ConfigLora.connectRetrieveAsyc().execute();
+        new ConfigLoraE220.connectRetrieveAsyc().execute();
     }
 
     public void onClickSaveConfig(View v) {
-        new ConfigLora.connectSaveAsyc().execute();
+        new ConfigLoraE220.connectSaveAsyc().execute();
     }
 
 
@@ -473,7 +490,7 @@ public class ConfigLora extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLora.this);
+            builder = new AlertDialog.Builder(ConfigLoraE220.this);
             //Recover firmware...
             builder.setMessage(R.string.lora_module_loading_config_msg)
                     .setTitle(getResources().getString(R.string.m3DR_retrieving_cfg))
@@ -496,7 +513,9 @@ public class ConfigLora extends AppCompatActivity {
                 if (value[0] == (byte) 0xC1) {
                     Log.d("Lora config", "We have a good config return");
                 }
-                int module_address = (value[3] << 8) | value[4];
+                //int module_address = (value[3] << 8) | value[4];
+                byte [] bytes = {value[3] , value[4]};
+                int module_address = ByteBuffer.wrap(bytes).getShort();
                 Log.d("Lora Config", "module_address:" + module_address);
                 setLoraAddressValue(module_address + "");
 
@@ -610,7 +629,7 @@ public class ConfigLora extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLora.this);
+            builder = new AlertDialog.Builder(ConfigLoraE220.this);
             //Running Saving commands
             builder.setMessage(getResources().getString(R.string.m3DR_run_save))
                     .setTitle(getResources().getString(R.string.m3DR_save_cfg))
@@ -682,7 +701,13 @@ public class ConfigLora extends AppCompatActivity {
                 //first split the address in 2 bytes
                 //sAddress
                 byte addh = 0;
-                byte addl = 3;
+                byte addl = 0;
+                int iAddress = Integer.valueOf(sAddress);
+                byte [] add = new byte[] {(byte)(iAddress >> 8),  (byte)iAddress };
+                addh = add[0];
+                addl = add[1];
+                Log.d(TAG,"addh:" +addh );
+                Log.d(TAG,"addl:" +addl );
                 dialogAppend(getString(R.string.lora_module_updating_address_msg));
                 byte cmd[] = {(byte) 0xC2, 0x00, 0x02, (byte) addh, (byte) addl};
                 byte[] value = mInfo.runCommand(cmd);
@@ -780,7 +805,7 @@ public class ConfigLora extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLora.this);
+            builder = new AlertDialog.Builder(ConfigLoraE220.this);
             //
             builder.setMessage(R.string.lora_module_connecting_msg)
                     .setTitle(getResources().getString(R.string.m3DR_connecting))
@@ -821,7 +846,7 @@ public class ConfigLora extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLora.this);
+            builder = new AlertDialog.Builder(ConfigLoraE220.this);
             //.
             builder.setMessage(R.string.lora_module_connecting_msg)
                     .setTitle(getResources().getString(R.string.m3DR_connecting))
@@ -1020,20 +1045,20 @@ public class ConfigLora extends AppCompatActivity {
 
         //open application settings screen
         if (id == R.id.action_settings) {
-            Intent i = new Intent(ConfigLora.this, AppTabConfigActivity.class);
+            Intent i = new Intent(ConfigLoraE220.this, AppTabConfigActivity.class);
             startActivity(i);
             return true;
         }
         //open Lora config help screen
         if (id == R.id.action_help) {
-            Intent i = new Intent(ConfigLora.this, HelpActivity.class);
+            Intent i = new Intent(ConfigLoraE220.this, HelpActivity.class);
             i.putExtra("help_file", "help_configLora");
             startActivity(i);
             return true;
         }
         //open about screen
         if (id == R.id.action_about) {
-            Intent i = new Intent(ConfigLora.this, AboutActivity.class);
+            Intent i = new Intent(ConfigLoraE220.this, AboutActivity.class);
             startActivity(i);
             return true;
         }

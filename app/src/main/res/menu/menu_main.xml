@@ -20,7 +20,12 @@
     <item
         android:id="@+id/action_modlora_settings"
         android:orderInCategory="100"
-        android:title="Lora settings..."
+        android:title="Lora settings E220..."
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_modlorae32_settings"
+        android:orderInCategory="100"
+        android:title="Lora settings E32..."
         app:showAsAction="never" />
     <item
         android:id="@+id/action_help"
