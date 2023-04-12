@@ -58,6 +58,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class MainScreenActivity extends AppCompatActivity {
+    public String TAG = "MainScreenActivity";
     String address = null;
     CardView btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
     CardView btnTelemetry, btnStatus, btnFlashFirmware, btnTrack, btnInfo;
