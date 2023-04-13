@@ -240,7 +240,7 @@ public class CommandInterfaceESP32 {
         int numRead = 0;
         
         for (i = 0; i < 10; i++) {
-            numRead = recv(retVal.retValue, retVal.retValue.length, timeout/10);
+            numRead = recv(retVal.retValue, retVal.retValue.length, timeout/5);
             // mUpCallback.onInfo("num read:" + numRead);
             if (numRead == 0) {
                 retVal.retCode = -1;
