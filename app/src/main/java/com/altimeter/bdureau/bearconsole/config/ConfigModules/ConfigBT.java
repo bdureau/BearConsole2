@@ -158,8 +158,8 @@ public class ConfigBT extends AppCompatActivity {
 
     public void EnableUI() {
         dropdownBaudRate.setEnabled(true);
-        txtPin.setEnabled(false);
-        txtModuleName.setEnabled(false);
+        txtPin.setEnabled(true);
+        txtModuleName.setEnabled(true);
     }
 
     public void DisableUI() {
