@@ -50,5 +50,23 @@
         android:layout_below="@+id/txtViewTitle"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp" />
+    <TextView
+        android:id="@+id/txtViewThanks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtViewCopyright"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/credit_goes_to_philippe_huguenin_bergenat_n_for_all_the_testing"
+        android:textAlignment="center" />
 
+    <TextView
+        android:id="@+id/txtViewThanks2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtViewThanks"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:autoLink="web"
+        android:text="https://www.dr-cluster-rocketpropulsion.com" />
 </RelativeLayout>

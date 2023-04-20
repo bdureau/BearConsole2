@@ -137,6 +137,7 @@
     <string name="about_screen">Over</string>
     <string name="bear_console_version">Bear Console-versie</string>
     <string name="dismiss_about">Afwijzen</string>
+    <string name="credit_goes_to_philippe_huguenin_bergenat_n_for_all_the_testing">Credit goes to Philippe Huguenin-Bergenat \n for all the testing</string>
 
     <!-- Messages -->
     <!-- AltimeterConfigActivity -->
