@@ -411,8 +411,8 @@
     <string name="g_secs">G/secs</string>
     <string name="export_to_csv">Exporter en CSV</string>
     <string name="failed_create_flight_file_msg">Echec de la création de fichiers de vols</string>
-    <string name="module_name_cannot_be_empty_msg">Le nom du module ne peut pas etre vide\n</string>
-    <string name="module_pin_cannot_be_empty_msg">Le code pin ne peut pas etre vide\n</string>
+    <string name="module_name_cannot_be_empty_msg">Le nom du module ne peut pas être vide\n</string>
+    <string name="module_pin_cannot_be_empty_msg">Le code pin ne peut pas être vide\n</string>
     <string name="attempting_connect_msg">Tentative de connexion au module bluetooth</string>
     <string name="attempting_connect_bt_msg">Tentative de connexion au module bluetooth</string>
     <string name="share">Partager</string>
@@ -447,9 +447,9 @@
     <string name="lora_module_loading_config_msg">Chargement de la configuration du module Lora</string>
     <string name="lora_module_channel_msg">Le canal du module ne peut pas etre vide</string>
     <string name="lora_module_invalid_channel">Le Canal est invalid</string>
-    <string name="lora_module_channel_value_msg">Canal doit etre entre 0 et 83</string>
-    <string name="lora_module_address_empty_msg">L\'addresse du module ne peut pas etre vide</string>
-    <string name="lora_module_address_range">L\'addresse doit etre entre 0 et 65535</string>
+    <string name="lora_module_channel_value_msg">Canal doit être entre 0 et 83</string>
+    <string name="lora_module_address_empty_msg">L\'addresse du module ne peut pas être vide</string>
+    <string name="lora_module_address_range">L\'addresse doit être entre 0 et 65535</string>
     <string name="lora_module_address_invalid">L\'addresse n\'est pas valide</string>
     <string name="lora_module_updating_address_msg">Mise à jour de l\'addresse du module</string>
     <string name="lora_module_updating_msg2">Mise à jour serial speed, parity et air rate</string>
@@ -501,7 +501,7 @@
     <string name="share_file4">Partager Fichier</string>
     <string name="no_app_available4">Pas d\'application disponible</string>
     <string name="share_with5">Partager avec</string>
-    <string name="bear_console_has_shared6">BearConsole has shared with you some info</string>
-    <string name="share_with6">Share With</string>
+    <string name="bear_console_has_shared6">BearConsole a partagé avec vous des informations</string>
+    <string name="share_with6">Partager avec</string>
 
 </resources>
