@@ -36,12 +36,12 @@
     <string name="altitude3">Altitude3 (mètres)</string>
     <string name="altitude4">Altitude4 (mètres)</string>
     <!-- Config tab1 tooltips -->
-    <string name="main_altitude_tooltip">Enter the altitude for the main chute</string>
+    <string name="main_altitude_tooltip">Entrer l\'altitude pour le parachute principale</string>
     <string name="OutDelay1_tooltip">Entrer le retard de mise à feux en ms pour la 1ere sortie</string>
     <string name="OutDelay2_tooltip">Entrer le retard de mise à feux en ms pour la 2eme sortie</string>
     <string name="OutDelay3_tooltip">Entrer le retard de mise à feux en ms pour la 3eme sortie</string>
     <string name="OutDelay4_tooltip">Entrer le retard de mise à feux en ms pour la 4eme sortie</string>
-    <string name="txtOut1_tooltip">Choisissez la fonction de la 1er sortie</string>
+    <string name="txtOut1_tooltip">Choisissez la fonction de la 1ere sortie</string>
     <string name="txtOut2_tooltip">Choisissez la fonction de la 2eme sortie</string>
     <string name="txtOut3_tooltip">Choisissez la fonction de la 3eme sortie</string>
     <string name="txtOut4_tooltip">Choisissez la fonction de la 4eme sortie</string>
@@ -53,16 +53,16 @@
     <string name="EndRecordAltitude_tooltip">Altitude à laquelle on considère que la fusée a attèrie</string>
     <string name="LiftOffAltitude_tooltip">Altitude à laquelle on considère que la fusée a décollée</string>
     <string name="txtViewBatteryType_tooltip">Entrer le type de batterie utilisé pour s\'assurer de ne pas trop la décharger</string>
-    <string name="txtAltiUnit_tooltip">Choisiez les unités pour l\'altitude avec lesquelle vous etes familié</string>
+    <string name="txtAltiUnit_tooltip">Choisiez les unités pour l\'altitude avec lesquelle vous êtes familié</string>
     <string name="editTxtBipFreq_tooltip">Choisissez la fréquence des bip en Hz</string>
 
     <!-- Config tab2 -->
     <string name="altimeter_config_tab2">Config de l\'altimètre</string>
     <string name="baudRate">Baud Rate</string>
     <string name="apogeeMeasures">Nbr Mesures Apogée</string>
-    <string name="altimeterResolution">Resolution Alti</string>
+    <string name="altimeterResolution">Résolution Alti</string>
     <string name="eepromSize">Capacité EEprom</string>
-    <string name="beepOnOff">Bip Marche/Arret</string>
+    <string name="beepOnOff">Bip Marche/Arrêt</string>
     <string name="RecordTemp">Enregistrer temp</string>
     <string name="SupersonicDelay">Mode Supersonic</string>
     <string name="EndRecordAltitude">Alt fin enr</string>
@@ -94,7 +94,7 @@
     <string name="config_yes">Oui</string>
     <!-- Main Screen -->
     <string name="altimeter_settings">Configuration\naltimètre</string>
-    <string name="continuity_on_off">Continuité\nmarche/arret</string>
+    <string name="continuity_on_off">Continuité\nmarche/arrêt</string>
     <string name="read_flights">Vols</string>
     <string name="reset_settings">Réinit\nconfig</string>
     <string name="disconnect">Déconnecter</string>
@@ -120,12 +120,12 @@
     <string name="close">Fermer</string>
 
     <!-- Reset screen -->
-    <string name="reset_msg1">Vous allez effacer toutes vos données de vol, etes vous certain de vouloir le faire?</string>
-    <string name="reset_msg2">Vous allez réinitialiser la configuration de votre altimètre, etes vous certain de vouloir le faire?</string>
-    <string name="reset_msg3">Vous allez effacer votre dernier vol, etes vous certain de vouloir le faire?</string>
+    <string name="reset_msg1">Vous allez effacer toutes vos données de vol, êtes vous certain de vouloir le faire?</string>
+    <string name="reset_msg2">Vous allez réinitialiser la configuration de votre altimètre, êtes vous certain de vouloir le faire?</string>
+    <string name="reset_msg3">Vous allez effacer votre dernier vol, êtes vous certain de vouloir le faire?</string>
 
     <!-- bluetooth messages -->
-    <string name="BT_msg1">Périphérique Bluetooth non disponible</string>
+    <string name="BT_msg1">Périphérique bluetooth non disponible</string>
     <string name="BT_msg2">Aucun périphérique bluetooth trouvé.</string>
 
     <!-- main screen msg-->
@@ -143,7 +143,7 @@
     <string name="about_screen">A propos</string>
     <string name="bear_console_version">Version Bear Console</string>
     <string name="dismiss_about">Fermer</string>
-    <string name="credit_goes_to_philippe_huguenin_bergenat_n_for_all_the_testing">Credit goes to Philippe Huguenin-Bergenat \n for all the testing</string>
+    <string name="credit_goes_to_philippe_huguenin_bergenat_n_for_all_the_testing">Merci à Philippe Huguenin-Bergenat \n pour tous les tests</string>
 
     <!-- Messages -->
     <!-- AltimeterConfigActivity -->
@@ -155,7 +155,7 @@
     <string name="msg6">Attendez s\'il vous plait!!!</string>
     <string name="msg7">Chargement des vols...</string>
     <string name="msg8">Attendez s\'il vous plait!!!</string>
-    <string name="msg9">Vous avez changé le baud rate, attention l\'altimètre ne pourra peut etre pas se connecter. Etes vous certains?</string>
+    <string name="msg9">Vous avez changé le baud rate, attention l\'altimètre ne pourra peut être pas se connecter. Etes vous certains?</string>
 
     <!-- flight views screen -->
     <string name="Meters_fview">Mètres</string>
@@ -379,7 +379,7 @@
     <string name="chip_has_not_been_init">Le microcontroleur n\'a pas été initialisé:</string>
     <string name="flash_firmware_msg">Cela vous permettra de mettre à jour le firmware de votre altimètre
         pour vous assurer qu\'il est compatible avec cette application.
-        Vous aurez besoin d\'un cable ttl et d\'un adaptateur pour connecter votre carte altimètre à votre appareil Android.
+        Vous aurez besoin d\'un câble ttl et d\'un adaptateur pour connecter votre carte altimètre à votre appareil Android.
         Merci de consulter l\'aide en ligne</string>
     <string name="flash_firmware_title">Flash firmware</string>
     <string name="flash_firmware_ok">OK</string>
@@ -431,7 +431,7 @@
     <string name="lora_configure_module_title">Configuration du module Lora</string>
     <string name="lora_module_channel">Canal:</string>
     <string name="lora_module_trans_mode">Trans mode:</string>
-    <string name="lora_module_address">Addresse:</string>
+    <string name="lora_module_address">Adresse:</string>
     <string name="lora_module_channel_rssi">Canal RSSI</string>
     <string name="lora_module_key">Key:</string>
     <string name="lora_module_parity">Parité</string>
@@ -445,14 +445,14 @@
     <string name="lora_module_config_msg_title">Configuration des modules de telémetrie Lora</string>
     <string name="lora_module_config_button_ok">OK</string>
     <string name="lora_module_loading_config_msg">Chargement de la configuration du module Lora</string>
-    <string name="lora_module_channel_msg">Le canal du module ne peut pas etre vide</string>
+    <string name="lora_module_channel_msg">Le canal du module ne peut pas être vide</string>
     <string name="lora_module_invalid_channel">Le Canal est invalid</string>
     <string name="lora_module_channel_value_msg">Canal doit être entre 0 et 83</string>
-    <string name="lora_module_address_empty_msg">L\'addresse du module ne peut pas être vide</string>
-    <string name="lora_module_address_range">L\'addresse doit être entre 0 et 65535</string>
-    <string name="lora_module_address_invalid">L\'addresse n\'est pas valide</string>
-    <string name="lora_module_updating_address_msg">Mise à jour de l\'addresse du module</string>
-    <string name="lora_module_updating_msg2">Mise à jour serial speed, parity et air rate</string>
+    <string name="lora_module_address_empty_msg">L\'adresse du module ne peut pas être vide</string>
+    <string name="lora_module_address_range">L\'adresse doit être entre 0 et 65535</string>
+    <string name="lora_module_address_invalid">L\'adresse n\'est pas valide</string>
+    <string name="lora_module_updating_address_msg">Mise à jour de l\'adresse du module</string>
+    <string name="lora_module_updating_msg2">Mise à jour serial speed, paritée et air rate</string>
     <string name="lora_module_updating_msg3">Mise à jour packet , RSSI noise et transmitting power</string>
     <string name="lora_module_updating_msg4">Mise à jour channel</string>
     <string name="lora_module_updating_msg5">Mise à jour RSSI Byte, trans Mode, LBT et WOR Cycle</string>
