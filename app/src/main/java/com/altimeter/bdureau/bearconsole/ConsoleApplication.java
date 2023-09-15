@@ -488,55 +488,96 @@ public class ConsoleApplication extends Application {
                                                     mHandler.obtainMessage(17, String.valueOf(currentSentence[17])).sendToTarget();
                                                 else
                                                     mHandler.obtainMessage(17, String.valueOf(0)).sendToTarget();
-                                            // Value 18 contains the latitude
-                                            if (currentSentence.length > 18)
-                                                if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
-                                                    mHandler.obtainMessage(18, String.valueOf(currentSentence[18])).sendToTarget();
-                                                else
-                                                    mHandler.obtainMessage(18, String.valueOf(0)).sendToTarget();
-                                            // Value 19 contains the longitude
-                                            if (currentSentence.length > 19)
-                                                if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
-                                                    mHandler.obtainMessage(19, String.valueOf(currentSentence[19])).sendToTarget();
-                                                else
-                                                    mHandler.obtainMessage(19, String.valueOf(0)).sendToTarget();
-                                            // Value 20 contains the number of satellites
-                                            if (currentSentence.length > 20)
-                                                if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
-                                                    mHandler.obtainMessage(20, String.valueOf(currentSentence[20])).sendToTarget();
-                                                else
-                                                    mHandler.obtainMessage(20, String.valueOf(0)).sendToTarget();
-                                            // Value 21 contains hdop
-                                            if (currentSentence.length > 21)
-                                                if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
-                                                    mHandler.obtainMessage(21, String.valueOf(currentSentence[21])).sendToTarget();
-                                                else
-                                                    mHandler.obtainMessage(21, String.valueOf(0)).sendToTarget();
-                                            // Value 22 contains location age
-                                            if (currentSentence.length > 22)
-                                                if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
-                                                    mHandler.obtainMessage(22, String.valueOf(currentSentence[22])).sendToTarget();
-                                                else
-                                                    mHandler.obtainMessage(22, String.valueOf(0)).sendToTarget();
-                                            // Value 23 contains the GPS altitude
-                                            if (currentSentence.length > 23)
-                                                if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
-                                                    mHandler.obtainMessage(23, String.valueOf(currentSentence[23])).sendToTarget();
-                                                else
-                                                    mHandler.obtainMessage(23, String.valueOf(0)).sendToTarget();
-                                            // Value 24 contains the GPS Speed
-                                            if (currentSentence.length > 24)
-                                                if (currentSentence[24].matches("\\d+(?:\\.\\d+)?"))
-                                                    mHandler.obtainMessage(24, String.valueOf(currentSentence[24])).sendToTarget();
-                                                else
-                                                    mHandler.obtainMessage(24, String.valueOf(0)).sendToTarget();
-                                            // Value 25 contains the time for sat acquisition
-                                            if (currentSentence.length > 25)
-                                                if (currentSentence[25].matches("\\d+(?:\\.\\d+)?"))
-                                                    mHandler.obtainMessage(25, String.valueOf(currentSentence[25])).sendToTarget();
-                                                else
-                                                    mHandler.obtainMessage(25, String.valueOf(0)).sendToTarget();
 
+                                            if (AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel")) {
+                                                // Value 18 contains the accel375 X
+                                                if (currentSentence.length > 18)
+                                                    if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(26, String.valueOf(currentSentence[18])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(26, String.valueOf(0)).sendToTarget();
+                                                // Value 19 contains the accel375 Y
+                                                if (currentSentence.length > 19)
+                                                    if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(27, String.valueOf(currentSentence[18])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(27, String.valueOf(0)).sendToTarget();
+                                                // Value 20 contains the accel375 Z
+                                                if (currentSentence.length > 20)
+                                                    if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(28, String.valueOf(currentSentence[18])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(28, String.valueOf(0)).sendToTarget();
+
+                                                // Value 21 contains the accel345 X
+                                                if (currentSentence.length > 21)
+                                                    if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(29, String.valueOf(currentSentence[18])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(29, String.valueOf(0)).sendToTarget();
+                                                // Value 22 contains the accel345 Y
+                                                if (currentSentence.length > 22)
+                                                    if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(30, String.valueOf(currentSentence[18])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(30, String.valueOf(0)).sendToTarget();
+                                                // Value 23 contains the accel345 Z
+                                                if (currentSentence.length > 23)
+                                                    if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(31, String.valueOf(currentSentence[18])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(31, String.valueOf(0)).sendToTarget();
+                                            }
+                                            if (AltiCfg.getAltimeterName().equals("AltiGPS")) {
+                                                // Value 18 contains the latitude
+                                                if (currentSentence.length > 18)
+                                                    if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(18, String.valueOf(currentSentence[18])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(18, String.valueOf(0)).sendToTarget();
+                                                // Value 19 contains the longitude
+                                                if (currentSentence.length > 19)
+                                                    if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(19, String.valueOf(currentSentence[19])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(19, String.valueOf(0)).sendToTarget();
+                                                // Value 20 contains the number of satellites
+                                                if (currentSentence.length > 20)
+                                                    if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(20, String.valueOf(currentSentence[20])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(20, String.valueOf(0)).sendToTarget();
+                                                // Value 21 contains hdop
+                                                if (currentSentence.length > 21)
+                                                    if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(21, String.valueOf(currentSentence[21])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(21, String.valueOf(0)).sendToTarget();
+                                                // Value 22 contains location age
+                                                if (currentSentence.length > 22)
+                                                    if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(22, String.valueOf(currentSentence[22])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(22, String.valueOf(0)).sendToTarget();
+                                                // Value 23 contains the GPS altitude
+                                                if (currentSentence.length > 23)
+                                                    if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(23, String.valueOf(currentSentence[23])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(23, String.valueOf(0)).sendToTarget();
+                                                // Value 24 contains the GPS Speed
+                                                if (currentSentence.length > 24)
+                                                    if (currentSentence[24].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(24, String.valueOf(currentSentence[24])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(24, String.valueOf(0)).sendToTarget();
+                                                // Value 25 contains the time for sat acquisition
+                                                if (currentSentence.length > 25)
+                                                    if (currentSentence[25].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(25, String.valueOf(currentSentence[25])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(25, String.valueOf(0)).sendToTarget();
+                                            }
                                         }
                                     }
                                     break;
@@ -602,6 +643,7 @@ public class ConsoleApplication extends Application {
                                         //Voltage (only for AltiGPS, AltiMultiESP32 and SMT32
                                         if (AltiCfg.getAltimeterName().equals("AltiGPS") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+                                                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiSTM32")) {
                                             if (currentSentence.length > 6) {
                                                 if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
@@ -611,6 +653,69 @@ public class ConsoleApplication extends Application {
                                                 //add the voltage
                                                 MyFlight.AddToFlight(value2,
                                                         (float) (value6) / 100, flightName, 5);
+                                            }
+                                        }
+                                        // AltiMultiESP32_accel has 2 accelerometers
+                                        if (AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel")) {
+                                            //Accel375 X
+                                            if (currentSentence.length > 7) {
+                                                if (currentSentence[7].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                    value7 = Integer.valueOf(currentSentence[7]);
+                                                else
+                                                    value7 = 0;
+                                                //add the accel X
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value7)/100, flightName, 6);
+                                            }
+                                            //Accel375 Y
+                                            if (currentSentence.length > 8) {
+                                                if (currentSentence[8].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                    value8 = Integer.valueOf(currentSentence[8]);
+                                                else
+                                                    value8 = 0;
+                                                //add the accel Y
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value8)/100, flightName, 7);
+                                            }
+                                            //Accel375 Z
+                                            if (currentSentence.length > 9) {
+                                                if (currentSentence[9].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                    value9 = Integer.valueOf(currentSentence[9]);
+                                                else
+                                                    value9 = 0;
+                                                //add the accel Z
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value9)/100, flightName, 8);
+                                            }
+                                            //Accel345 X
+                                            if (currentSentence.length > 10) {
+                                                if (currentSentence[10].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                    value10 = Integer.valueOf(currentSentence[10]);
+                                                else
+                                                    value10 = 0;
+                                                //add the accel X
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value10)/100, flightName, 9);
+                                            }
+                                            //Accel345 Y
+                                            if (currentSentence.length > 11) {
+                                                if (currentSentence[11].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                    value11 = Integer.valueOf(currentSentence[11]);
+                                                else
+                                                    value11 = 0;
+                                                //add the accel Y
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value11)/100, flightName, 10);
+                                            }
+                                            //Accel345 Z
+                                            if (currentSentence.length > 12) {
+                                                if (currentSentence[12].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                    value12 = Integer.valueOf(currentSentence[12]);
+                                                else
+                                                    value12 = 0;
+                                                //add the accel Z
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value12)/100, flightName, 11);
                                             }
                                         }
                                         //Alti GPS does a lot more !!!!

@@ -101,7 +101,8 @@ public class AltimeterInfoFragment extends Fragment {
         txtStatusAltiNameValue.setText(lBT.getAltiConfigData().getAltimeterName());
         if (lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32")
                 || lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")
-                || lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+                || lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")
+                || lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
             txtViewVoltage.setVisibility(View.VISIBLE);
             txtViewBatteryVoltage.setVisibility(View.VISIBLE);
         } else {

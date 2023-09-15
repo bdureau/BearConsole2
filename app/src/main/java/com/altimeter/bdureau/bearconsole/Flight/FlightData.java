@@ -160,10 +160,11 @@ public class FlightData {
         ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_accel)));
         //voltage
         if(altimeterName.equals("AltiGPS") || altimeterName.equals("AltiMultiSTM32") ||
-                altimeterName.equals("AltiMultiESP32") ) {
+                altimeterName.equals("AltiMultiESP32") || altimeterName.equals("AltiMultiESP32_accel")) {
             ret.addSeries(new XYSeries("voltage"));
         }
 
+        // if Alti GPS
         if(altimeterName.equals("AltiGPS")) {
             //latitude
             ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_latitude)));
@@ -177,6 +178,22 @@ public class FlightData {
             ret.addSeries(new XYSeries("gps speed"));
             //sea altitude
             ret.addSeries(new XYSeries("sea altitude"));
+        }
+
+        // if AltiMultiESP32_accel we also have 6 curves that contains accel values
+        if(altimeterName.equals("AltiMultiESP32_accel")) {
+            //accel375x
+            ret.addSeries(new XYSeries("accel375x"));
+            //accel375y
+            ret.addSeries(new XYSeries("accel375y"));
+            //accel375z
+            ret.addSeries(new XYSeries("accel375z"));
+            //accel345x
+            ret.addSeries(new XYSeries("accel345x"));
+            //accel345y
+            ret.addSeries(new XYSeries("accel345y"));
+            //accel345z
+            ret.addSeries(new XYSeries("accel345z"));
         }
         return ret; // new XYSeriesCollection (series);
     }

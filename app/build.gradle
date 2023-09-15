@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation files('libs/usbserial-6.1.0.aar') //special version of usbserial that work with Android 12
     //implementation 'com.github.felHR85:UsbSerial:6.1.0' //that does not work with Android 12
-    implementation 'com.squareup.okio:okio:3.3.0' //this is needed so that my local userial lib work
+    implementation 'com.squareup.okio:okio:3.3.0' //this is needed so that my local usbserial lib work
     implementation files('libs/physicaloid.aar')
     implementation files('libs/viewtooltip.aar')
     implementation 'com.google.android.gms:play-services-maps:18.1.0'

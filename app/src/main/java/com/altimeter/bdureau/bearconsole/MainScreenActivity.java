@@ -430,7 +430,8 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")) {
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
             Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
                 setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
@@ -813,6 +814,7 @@ public class MainScreenActivity extends AppCompatActivity {
             Add("AltiGPS", "1.7");
             Add("AltiDuo", "1.9");
             Add("AltiMultiESP32", "1.28");
+            Add("AltiMultiESP32_accel", "1.28");
 
         }
         public void Add ( String altiName, String verList) {

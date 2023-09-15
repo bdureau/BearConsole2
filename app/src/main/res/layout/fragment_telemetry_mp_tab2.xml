@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+
+    <TextView
+        android:id="@+id/txtViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Accelerometer Status"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accel375x"
+        android:id="@+id/txtViewAccel375x"
+        android:layout_below="@+id/txtViewTitle"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/txtViewAccel375xValue"
+        android:layout_below="@+id/txtViewTitle"
+        android:layout_alignParentRight="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accel375y"
+        android:id="@+id/txtViewAccel375y"
+        android:layout_below="@+id/txtViewAccel375x"
+        android:layout_alignParentLeft="true"
+         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewAccel375yValue"
+        android:text=""
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewAccel375x"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accel375z"
+        android:id="@+id/txtViewAccel375z"
+        android:layout_below="@+id/txtViewAccel375y"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewAccel375zValue"
+        android:text=""
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewAccel375y"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accel345x"
+        android:id="@+id/txtViewAccel345x"
+        android:layout_below="@+id/txtViewAccel375z"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewAccel345xValue"
+        android:text=""
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewAccel375z"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accel345y"
+        android:id="@+id/txtViewAccel345y"
+        android:layout_below="@+id/txtViewAccel345x"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewAccel345yValue"
+        android:text=""
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewAccel345x"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accel345z"
+        android:id="@+id/txtViewAccel345z"
+        android:layout_below="@+id/txtViewAccel345yValue"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtViewAccel345zValue"
+        android:text=""
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtViewAccel345yValue"/>
+
+
+</RelativeLayout>

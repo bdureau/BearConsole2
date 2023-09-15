@@ -118,7 +118,8 @@ public class FlightViewInfoFragment extends Fragment {
         accel = allFlightData.getSeries(getResources().getString(R.string.curve_accel));
         altitude = allFlightData.getSeries(getResources().getString(R.string.curve_altitude));
 
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
             numberOfCurves = 8;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
@@ -229,9 +230,7 @@ public class FlightViewInfoFragment extends Fragment {
                     coord[i] = c;
                 }
             }
-
             flightDistanceValue.setText(String.format("%.2f", LocationUtils.distanceBetweenCoordinates(coord)) + " " + myBT.getAppConf().getUnitsValue());
-
         }
 
         //butExportAndShare

@@ -50,6 +50,7 @@ import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.ShareHandler;
+import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.AltimeterAccelFragment;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.AltimeterInfoFragment;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.AltimeterOutputFragment;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSGoogleMapStatusFragment;
@@ -69,6 +70,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
     public LocationBroadCastReceiver receiver = null;
     SectionsStatusPageAdapter adapter;
     private AltimeterInfoFragment statusPage1 = null;
+    private AltimeterAccelFragment statusPage1ter = null;
     private AltimeterOutputFragment statusPage1bis = null;
     private GPSStatusFragment statusPage2 = null;
     private GPSGoogleMapStatusFragment statusPage3 = null;
@@ -224,6 +226,66 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                         if (TimeSat.matches("\\d+(?:\\.\\d+)?")) {
                             int TimeSatVal = Integer.parseInt(TimeSat);
                             statusPage2.setTimeSatValue(String.format("%.2f", (double) (TimeSatVal / 1000)) + " secs");
+                        }
+                    }
+                    break;
+                case 26:
+                    //Value 26 contains Accel375X
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                        String accel375x = (String) msg.obj;
+                        if (accel375x.matches("\\d+(?:\\.\\d+)?")) {
+                            int accel375xVal = Integer.parseInt(accel375x);
+                            statusPage1ter.setAccel375x(String.format("%.2f", (double) (accel375xVal / 100)));
+                        }
+                    }
+                    break;
+                case 27:
+                    //Value 27 contains Accel375Y
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                        String accel375y = (String) msg.obj;
+                        if (accel375y.matches("\\d+(?:\\.\\d+)?")) {
+                            int accel375yVal = Integer.parseInt(accel375y);
+                            statusPage1ter.setAccel375y(String.format("%.2f", (double) (accel375yVal / 100)));
+                        }
+                    }
+                    break;
+                case 28:
+                    //Value 28 contains Accel375Z
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                        String accel375z = (String) msg.obj;
+                        if (accel375z.matches("\\d+(?:\\.\\d+)?")) {
+                            int accel375zVal = Integer.parseInt(accel375z);
+                            statusPage1ter.setAccel375z(String.format("%.2f", (double) (accel375zVal / 100)));
+                        }
+                    }
+                    break;
+                case 29:
+                    //Value 29 contains Accel345X
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                        String accel345x = (String) msg.obj;
+                        if (accel345x.matches("\\d+(?:\\.\\d+)?")) {
+                            int accel345xVal = Integer.parseInt(accel345x);
+                            statusPage1ter.setAccel345x(String.format("%.2f", (double) (accel345xVal / 100)));
+                        }
+                    }
+                    break;
+                case 30:
+                    //Value 30 contains Accel345Y
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                        String accel345y = (String) msg.obj;
+                        if (accel345y.matches("\\d+(?:\\.\\d+)?")) {
+                            int accel345yVal = Integer.parseInt(accel345y);
+                            statusPage1ter.setAccel345y(String.format("%.2f", (double) (accel345yVal / 100)));
+                        }
+                    }
+                    break;
+                case 31:
+                    //Value 31 contains Accel345z
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                        String accel345z = (String) msg.obj;
+                        if (accel345z.matches("\\d+(?:\\.\\d+)?")) {
+                            int accel345zVal = Integer.parseInt(accel345z);
+                            statusPage1ter.setAccel345z(String.format("%.2f", (double) (accel345zVal / 100)));
                         }
                     }
                     break;
@@ -583,7 +645,13 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         statusPage1 = new AltimeterInfoFragment(myBT);
         statusPage1bis = new AltimeterOutputFragment(myBT);
 
+
         adapter.addFragment(statusPage1, "TAB1");
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+            statusPage1ter = new AltimeterAccelFragment(myBT);
+            adapter.addFragment(statusPage1ter, "TAB1TER");
+        }
+
         adapter.addFragment(statusPage1bis, "TAB1BIS");
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
             statusPage2 = new GPSStatusFragment(myBT);

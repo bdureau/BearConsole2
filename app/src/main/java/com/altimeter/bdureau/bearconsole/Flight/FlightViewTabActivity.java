@@ -151,7 +151,8 @@ public class FlightViewTabActivity extends AppCompatActivity {
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         butSelectCurves = (Button) findViewById(R.id.butSelectCurves);
 
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
             numberOfCurves = 12;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
@@ -211,6 +212,15 @@ public class FlightViewTabActivity extends AppCompatActivity {
             units[9] = "";
             units[10] = "(m/secs)";
             units[11] = getResources().getString(R.string.Meters_fview);
+        }
+
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+            units[6] = "";
+            units[7] = "";
+            units[8] = "";
+            units[9] = "";
+            units[10] = "";
+            units[11] = "";
         }
 
 
