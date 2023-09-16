@@ -225,7 +225,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                         String TimeSat = (String) msg.obj;
                         if (TimeSat.matches("\\d+(?:\\.\\d+)?")) {
                             int TimeSatVal = Integer.parseInt(TimeSat);
-                            statusPage2.setTimeSatValue(String.format("%.2f", (double) (TimeSatVal / 1000)) + " secs");
+                            statusPage2.setTimeSatValue(String.format("%.2f",  ((double) TimeSatVal / (double) 1000)) + " secs");
                         }
                     }
                     break;
@@ -235,7 +235,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                         String accel375x = (String) msg.obj;
                         if (accel375x.matches("\\d+(?:\\.\\d+)?")) {
                             int accel375xVal = Integer.parseInt(accel375x);
-                            statusPage1ter.setAccel375x(String.format("%.2f", (double) (accel375xVal / 100)));
+                            statusPage1ter.setAccel375x(String.format("%.2f",  ((double)accel375xVal / (double)1000)));
                         }
                     }
                     break;
@@ -245,7 +245,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                         String accel375y = (String) msg.obj;
                         if (accel375y.matches("\\d+(?:\\.\\d+)?")) {
                             int accel375yVal = Integer.parseInt(accel375y);
-                            statusPage1ter.setAccel375y(String.format("%.2f", (double) (accel375yVal / 100)));
+                            statusPage1ter.setAccel375y(String.format("%.2f", ((double) accel375yVal / (double) 1000)));
                         }
                     }
                     break;
@@ -255,7 +255,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                         String accel375z = (String) msg.obj;
                         if (accel375z.matches("\\d+(?:\\.\\d+)?")) {
                             int accel375zVal = Integer.parseInt(accel375z);
-                            statusPage1ter.setAccel375z(String.format("%.2f", (double) (accel375zVal / 100)));
+                            statusPage1ter.setAccel375z(String.format("%.2f",  ((double)accel375zVal / (double)1000)));
                         }
                     }
                     break;
@@ -265,7 +265,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                         String accel345x = (String) msg.obj;
                         if (accel345x.matches("\\d+(?:\\.\\d+)?")) {
                             int accel345xVal = Integer.parseInt(accel345x);
-                            statusPage1ter.setAccel345x(String.format("%.2f", (double) (accel345xVal / 100)));
+                            statusPage1ter.setAccel345x(String.format("%.2f", ((double)accel345xVal / (double)1000)));
                         }
                     }
                     break;
@@ -275,7 +275,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                         String accel345y = (String) msg.obj;
                         if (accel345y.matches("\\d+(?:\\.\\d+)?")) {
                             int accel345yVal = Integer.parseInt(accel345y);
-                            statusPage1ter.setAccel345y(String.format("%.2f", (double) (accel345yVal / 100)));
+                            statusPage1ter.setAccel345y(String.format("%.2f",  ((double)accel345yVal / (double)1000)));
                         }
                     }
                     break;
@@ -285,7 +285,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                         String accel345z = (String) msg.obj;
                         if (accel345z.matches("\\d+(?:\\.\\d+)?")) {
                             int accel345zVal = Integer.parseInt(accel345z);
-                            statusPage1ter.setAccel345z(String.format("%.2f", (double) (accel345zVal / 100)));
+                            statusPage1ter.setAccel345z(String.format("%.2f",  ((double)accel345zVal / (double)1000)));
                         }
                     }
                     break;

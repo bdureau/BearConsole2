@@ -25,26 +25,28 @@ public class AltimeterOutputFragment extends Fragment {
     }
 
     public void resetSwitches() {
-        //switch off output
-        if (this.switchOutput1.isChecked()) {
-            lBT.write("k1F;\n".toString());
-            lBT.clearInput();
-            lBT.flush();
-        }
-        if (this.switchOutput2.isChecked()) {
-            lBT.write("k2F;\n".toString());
-            lBT.clearInput();
-            lBT.flush();
-        }
-        if (this.switchOutput3.isChecked()) {
-            lBT.write("k3F;\n".toString());
-            lBT.clearInput();
-            lBT.flush();
-        }
-        if (this.switchOutput4.isChecked()) {
-            lBT.write("k4F;\n".toString());
-            lBT.clearInput();
-            lBT.flush();
+        if(ViewCreated) {
+            //switch off output
+            if (this.switchOutput1.isChecked()) {
+                lBT.write("k1F;\n".toString());
+                lBT.clearInput();
+                lBT.flush();
+            }
+            if (this.switchOutput2.isChecked()) {
+                lBT.write("k2F;\n".toString());
+                lBT.clearInput();
+                lBT.flush();
+            }
+            if (this.switchOutput3.isChecked()) {
+                lBT.write("k3F;\n".toString());
+                lBT.clearInput();
+                lBT.flush();
+            }
+            if (this.switchOutput4.isChecked()) {
+                lBT.write("k4F;\n".toString());
+                lBT.clearInput();
+                lBT.flush();
+            }
         }
     }
 

@@ -499,32 +499,32 @@ public class ConsoleApplication extends Application {
                                                 // Value 19 contains the accel375 Y
                                                 if (currentSentence.length > 19)
                                                     if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(27, String.valueOf(currentSentence[18])).sendToTarget();
+                                                        mHandler.obtainMessage(27, String.valueOf(currentSentence[19])).sendToTarget();
                                                     else
                                                         mHandler.obtainMessage(27, String.valueOf(0)).sendToTarget();
                                                 // Value 20 contains the accel375 Z
                                                 if (currentSentence.length > 20)
                                                     if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(28, String.valueOf(currentSentence[18])).sendToTarget();
+                                                        mHandler.obtainMessage(28, String.valueOf(currentSentence[20])).sendToTarget();
                                                     else
                                                         mHandler.obtainMessage(28, String.valueOf(0)).sendToTarget();
 
                                                 // Value 21 contains the accel345 X
                                                 if (currentSentence.length > 21)
                                                     if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(29, String.valueOf(currentSentence[18])).sendToTarget();
+                                                        mHandler.obtainMessage(29, String.valueOf(currentSentence[21])).sendToTarget();
                                                     else
                                                         mHandler.obtainMessage(29, String.valueOf(0)).sendToTarget();
                                                 // Value 22 contains the accel345 Y
                                                 if (currentSentence.length > 22)
                                                     if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(30, String.valueOf(currentSentence[18])).sendToTarget();
+                                                        mHandler.obtainMessage(30, String.valueOf(currentSentence[22])).sendToTarget();
                                                     else
                                                         mHandler.obtainMessage(30, String.valueOf(0)).sendToTarget();
                                                 // Value 23 contains the accel345 Z
                                                 if (currentSentence.length > 23)
                                                     if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(31, String.valueOf(currentSentence[18])).sendToTarget();
+                                                        mHandler.obtainMessage(31, String.valueOf(currentSentence[23])).sendToTarget();
                                                     else
                                                         mHandler.obtainMessage(31, String.valueOf(0)).sendToTarget();
                                             }
@@ -659,63 +659,63 @@ public class ConsoleApplication extends Application {
                                         if (AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel")) {
                                             //Accel375 X
                                             if (currentSentence.length > 7) {
-                                                if (currentSentence[7].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
                                                     value7 = Integer.valueOf(currentSentence[7]);
                                                 else
                                                     value7 = 0;
                                                 //add the accel X
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value7)/100, flightName, 6);
+                                                        (float) (value7)/(float)1000, flightName, 6);
                                             }
                                             //Accel375 Y
                                             if (currentSentence.length > 8) {
-                                                if (currentSentence[8].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                if (currentSentence[8].matches("\\d+(?:\\.\\d+)?"))
                                                     value8 = Integer.valueOf(currentSentence[8]);
                                                 else
                                                     value8 = 0;
                                                 //add the accel Y
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value8)/100, flightName, 7);
+                                                        (float) (value8)/(float)1000, flightName, 7);
                                             }
                                             //Accel375 Z
                                             if (currentSentence.length > 9) {
-                                                if (currentSentence[9].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                if (currentSentence[9].matches("\\d+(?:\\.\\d+)?"))
                                                     value9 = Integer.valueOf(currentSentence[9]);
                                                 else
                                                     value9 = 0;
                                                 //add the accel Z
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value9)/100, flightName, 8);
+                                                        (float) (value9)/(float)1000, flightName, 8);
                                             }
                                             //Accel345 X
                                             if (currentSentence.length > 10) {
-                                                if (currentSentence[10].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                if (currentSentence[10].matches("\\d+(?:\\.\\d+)?"))
                                                     value10 = Integer.valueOf(currentSentence[10]);
                                                 else
                                                     value10 = 0;
                                                 //add the accel X
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value10)/100, flightName, 9);
+                                                        (float) (value10)/(float)1000, flightName, 9);
                                             }
                                             //Accel345 Y
                                             if (currentSentence.length > 11) {
-                                                if (currentSentence[11].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                if (currentSentence[11].matches("\\d+(?:\\.\\d+)?"))
                                                     value11 = Integer.valueOf(currentSentence[11]);
                                                 else
                                                     value11 = 0;
                                                 //add the accel Y
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value11)/100, flightName, 10);
+                                                        (float) (value11)/(float)1000, flightName, 10);
                                             }
                                             //Accel345 Z
                                             if (currentSentence.length > 12) {
-                                                if (currentSentence[12].matches("^-?\\d+(?:\\.\\d+)?"))
+                                                if (currentSentence[12].matches("\\d+(?:\\.\\d+)?"))
                                                     value12 = Integer.valueOf(currentSentence[12]);
                                                 else
                                                     value12 = 0;
                                                 //add the accel Z
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value12)/100, flightName, 11);
+                                                        (float) (value12)/(float)1000, flightName, 11);
                                             }
                                         }
                                         //Alti GPS does a lot more !!!!
