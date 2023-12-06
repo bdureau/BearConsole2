@@ -549,11 +549,11 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     }
                     break;
                 case 31:
-                    //Value 31 contains Accel375z
+                    //Value 31 contains Accel345z
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
-                        String accel375z = (String) msg.obj;
-                        if (accel375z.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel375zVal = Integer.parseInt(accel375z);
+                        String accel345z = (String) msg.obj;
+                        if (accel345z.matches("\\d+(?:\\.\\d+)?")) {
+                            int accel345zVal = Integer.parseInt(accel345z);
                         }
                     }
                     break;

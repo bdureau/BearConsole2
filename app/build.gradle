@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId 'com.altimeter.bdureau.bearconsole'
         minSdk 21
-        targetSdk 33
+        targetSdk 34
 
         versionName '2.0.3'
         versionCode 28
@@ -36,6 +36,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'com.altimeter.bdureau.bearconsole'
 }
 
 dependencies {
@@ -48,21 +49,22 @@ dependencies {
     implementation 'com.squareup.okio:okio:3.3.0' //this is needed so that my local usbserial lib work
     implementation files('libs/physicaloid.aar')
     implementation files('libs/viewtooltip.aar')
-    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation files('libs/processing-core.jar')
+    implementation 'com.google.android.gms:play-services-maps:18.2.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
-    implementation 'androidx.navigation:navigation-fragment:2.7.0'
-    implementation 'androidx.navigation:navigation-ui:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
+    implementation 'androidx.navigation:navigation-fragment:2.7.5'
+    implementation 'androidx.navigation:navigation-ui:2.7.5'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     // required to avoid crash on Android 12 API 31
     //implementation 'androidx.work:work-runtime-ktx:2.7.1'
-    implementation 'androidx.work:work-runtime:2.8.1'
+    implementation 'androidx.work:work-runtime:2.9.0'
 
     //for openmap
     implementation 'androidx.preference:preference:1.2.1'
