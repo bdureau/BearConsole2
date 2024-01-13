@@ -45,7 +45,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Copyright (c) Boris du Reau 2016-2023"
+        android:text="Copyright (c) Boris du Reau 2016-2024"
         android:id="@+id/txtViewCopyright"
         android:layout_below="@+id/txtViewTitle"
         android:layout_centerHorizontal="true"
@@ -67,6 +67,5 @@
         android:layout_below="@+id/txtViewThanks"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:autoLink="web"
-        android:text="https://www.dr-cluster-rocketpropulsion.com" />
+         />
 </RelativeLayout>

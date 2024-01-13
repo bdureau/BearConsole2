@@ -313,13 +313,13 @@ public class MainScreenActivity extends AppCompatActivity {
                                 int deviceVID = device.getVendorId();
 
                                 PendingIntent pi;
-                                if(android.os.Build.VERSION.SDK_INT >= 31) {
+                                //if(android.os.Build.VERSION.SDK_INT >= 31) {
                                     pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
                                             new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
-                                } else {
+                                /*} else {
                                     pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
                                             new Intent(ACTION_USB_PERMISSION), 0);
-                                }
+                                }*/
 
                                 usbManager.requestPermission(device, pi);
                                 keep = false;
@@ -626,6 +626,7 @@ public class MainScreenActivity extends AppCompatActivity {
             menu.findItem(R.id.action_modbt_settings).setEnabled(false);
             // same goes for the lora module
             menu.findItem(R.id.action_modlora_settings).setEnabled(false);
+            menu.findItem(R.id.action_modlorae32_settings).setEnabled(false);
             // Allow connection testing
             menu.findItem(R.id.action_test_connection).setEnabled(true);
         } else {
@@ -633,6 +634,7 @@ public class MainScreenActivity extends AppCompatActivity {
             menu.findItem(R.id.action_mod3dr_settings).setEnabled(true);
             menu.findItem(R.id.action_modbt_settings).setEnabled(true);
             menu.findItem(R.id.action_modlora_settings).setEnabled(true);
+            menu.findItem(R.id.action_modlorae32_settings).setEnabled(true);
             //cannot do connection testing until we are connected
             menu.findItem(R.id.action_test_connection).setEnabled(false);
         }
