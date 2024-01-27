@@ -288,8 +288,42 @@ public class MainScreenActivity extends AppCompatActivity {
                 } else {
                     if (myBT.getConnectionType().equals("bluetooth")) {
                         address = myBT.getAddress();
+                        AlertDialog.Builder builder = null;
+                        AlertDialog alert;
 
+                        builder = new AlertDialog.Builder(MainScreenActivity.this);
                         if (address != null) {
+                            builder.setMessage("Do you want to connect to module " + myBT.getModuleName())
+                                    .setTitle("")
+                                    .setCancelable(false)
+                                    .setPositiveButton(getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {
+                                        public void onClick(final DialogInterface dialog, final int id) {
+                                            dialog.cancel();
+                                            new ConnectBT().execute();
+                                            if (myBT.getConnected()) {
+                                                EnableUI();
+                                                // cannot flash firmware if connected
+                                                setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
+                                                text_connect.setText(getResources().getString(R.string.disconnect));
+                                            }
+                                        }
+                                    })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        public void onClick(final DialogInterface dialog, final int id) {
+                                            dialog.cancel();
+                                            // choose the bluetooth device
+                                            Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
+                                            startActivity(i);
+                                        }
+                                    });
+                            alert = builder.create();
+                            alert.show();
+                        } else {
+                            // choose the bluetooth device
+                            Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
+                            startActivity(i);
+                        }
+                        /*if (address != null) {
                             new ConnectBT().execute(); //Call the class to connect
                             if (myBT.getConnected()) {
                                 EnableUI();
@@ -301,7 +335,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             // choose the bluetooth device
                             Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
                             startActivity(i);
-                        }
+                        }*/
                     } else {
                         myBT.setModuleName("USB");
                         //this is a USB connection
@@ -808,15 +842,17 @@ public class MainScreenActivity extends AppCompatActivity {
             hm =null;
             hm = new HashMap();
             //init compatible versions
-            Add("AltiMulti", "1.28");
-            Add("AltiMultiV2", "1.28");
+            Add("AltiMulti", "2.0");
+            Add("AltiMultiV2", "2.0");
            // Add("AltiMultiV2", "1.25");
-            Add("AltiMultiSTM32", "1.28");
+            Add("AltiMultiSTM32", "2.0");
             Add("AltiServo", "1.6");
             Add("AltiGPS", "1.7");
             Add("AltiDuo", "1.9");
             Add("AltiMultiESP32", "1.28");
+            Add("AltiMultiESP32", "2.0");
             Add("AltiMultiESP32_accel", "1.28");
+            Add("AltiMultiESP32_accel", "2.0");
 
         }
         public void Add ( String altiName, String verList) {

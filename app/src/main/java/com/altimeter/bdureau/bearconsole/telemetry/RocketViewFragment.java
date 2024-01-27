@@ -71,7 +71,7 @@ public class RocketViewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        fragment.onResume(); //perahps we can remove that
+        fragment.onResume(); //perhaps we can remove that
         //This is the only way I can redraw the rocket after leaving the tab
         getChildFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();
     }
@@ -89,8 +89,12 @@ public class RocketViewFragment extends Fragment {
         double qy = cos(roll/2) * sin(pitch/2) * cos(yaw/2) + sin(roll/2) * cos(pitch/2) * sin(yaw/2);
         double qz = cos(roll/2) * cos(pitch/2) * sin(yaw/2) - sin(roll/2) * sin(pitch/2) * cos(yaw/2);
         double qw = cos(roll/2) * cos(pitch/2) * cos(yaw/2) + sin(roll/2) * sin(pitch/2) * sin(yaw/2);
-        setInputString(String.format("%.2f",qx)+","+String.format("%.2f",qy)+","+String.format("%.2f",qz)+
-                ","+String.format("%.2f",qw)+ ",\\r\\n");
+        /*setInputString(String.format("%.2f",qx)+","+String.format("%.2f",qy)+","+String.format("%.2f",qz)+
+                ","+String.format("%.2f",qw)+ ",\\r\\n");*/
+        String value2 = String.format("%.2f",qx)+","+String.format("%.2f",qy)+","+String.format("%.2f",qz)+
+                ","+String.format("%.2f",qw)+ ",\\r\\n";
+        if(view != null)
+            ((Rocket) myRocket).setInputString2(value2);
     }
     //send the quaternion to the processing widget
     public void setInputString(String value) {
@@ -98,6 +102,7 @@ public class RocketViewFragment extends Fragment {
         if(view != null)
             ((Rocket) myRocket).setInputString(value);
     }
+
     public void setInputCorrect(String value) {
         if(view != null)
             ((Rocket) myRocket).setInputCorrect(value);

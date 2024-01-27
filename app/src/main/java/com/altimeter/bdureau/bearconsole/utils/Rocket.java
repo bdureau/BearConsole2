@@ -52,6 +52,18 @@ public class Rocket extends PApplet {
             q[2] = decodeFloat(inputStringArr[2]);
             q[3] = decodeFloat(inputStringArr[3]);
         }
+        Log.d("Rocket-setInputCorrect", inputString);
+        useQuaternion = true;
+    }
+    public void setInputString2(String inputString) {
+        String[] inputStringArr = split(inputString, ",");
+        if (inputStringArr.length >= 5) { // q1,q2,q3,q4,\r\n so we have 5 elements
+            q[0] = Float.valueOf(inputStringArr[0]);
+            q[1] = Float.valueOf(inputStringArr[1]);
+            q[2] = Float.valueOf(inputStringArr[2]);
+            q[3] = Float.valueOf(inputStringArr[3]);
+        }
+        Log.d("Rocket-setInputCorrect", inputString);
         useQuaternion = true;
     }
 
