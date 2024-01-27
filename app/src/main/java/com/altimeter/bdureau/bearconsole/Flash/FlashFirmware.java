@@ -74,25 +74,25 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2023-02-26-RocketGPSLoggerV1.7.bin";
     // ESP32
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE4 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/RocketFlightLoggerV2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/RocketFlightLoggerV2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE4 = "firmwares/ESP32/RocketFlightLoggerV2.ino.partitions.bin";
 
     //ESP32 accelero
-    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE1 = "firmwares/ESP32/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE2 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE3 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE4 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE1 = "firmwares/ESP32_accelero/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE2 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE3 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE4 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.ino.partitions.bin";
     //ESP32 ADXL345
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE1 = "firmwares/ESP32/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE2 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE3 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE4 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE1 = "firmwares/ESP32_ADXL345/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE2 = "firmwares/ESP32_ADXL345/RocketFlightLoggerV2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE3 = "firmwares/ESP32_ADXL345/RocketFlightLoggerV2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE4 = "firmwares/ESP32_ADXL345/RocketFlightLoggerV2.ino.partitions.bin";
     //ESP32 ADXL375
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE1 = "firmwares/ESP32/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE2 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE3 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE4 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE1 = "firmwares/ESP32_ADXL375/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE2 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE3 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE4 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.ino.partitions.bin";
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
     private static final String ASSET_FILE_RESET_ALTISERVO = "recover_firmwares/ResetAltiConfigAltiServo.ino.hex";
@@ -603,17 +603,11 @@ public class FlashFirmware extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             String firmwareFileName[] = new String[4];
             if (!recorverFirmware) {
-                firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_FILE1;
-                firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_FILE2;
-                firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_FILE3;
-                firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_FILE4;
-                uploadESP32(firmwareFileName, mUploadSTM32Callback);
-            } else {
                 if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32")) {
-                    firmwareFileName[0] = ASSET_FILE_RESET_ALTIESP32_FILE1;
-                    firmwareFileName[1] = ASSET_FILE_RESET_ALTIESP32_FILE2;
-                    firmwareFileName[2] = ASSET_FILE_RESET_ALTIESP32_FILE3;
-                    firmwareFileName[3] = ASSET_FILE_RESET_ALTIESP32_FILE4;
+                    firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_FILE1;
+                    firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_FILE2;
+                    firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_FILE3;
+                    firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_FILE4;
                 }
                 else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero")){
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_accelero_FILE1;
@@ -633,6 +627,14 @@ public class FlashFirmware extends AppCompatActivity {
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE4;
                 }
+                uploadESP32(firmwareFileName, mUploadSTM32Callback);
+            } else {
+
+                    firmwareFileName[0] = ASSET_FILE_RESET_ALTIESP32_FILE1;
+                    firmwareFileName[1] = ASSET_FILE_RESET_ALTIESP32_FILE2;
+                    firmwareFileName[2] = ASSET_FILE_RESET_ALTIESP32_FILE3;
+                    firmwareFileName[3] = ASSET_FILE_RESET_ALTIESP32_FILE4;
+
                 uploadESP32(firmwareFileName, mUploadSTM32Callback);
             }
             return null;
