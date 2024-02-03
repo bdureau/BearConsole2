@@ -392,8 +392,6 @@ public class FlashFirmware extends AppCompatActivity {
             recorverFirmware = false;
             new UploadESP32Asyc().execute();
         }
-
-
     }
 
     private class DetectAsyc extends AsyncTask<Void, Void, Void>  // UI thread

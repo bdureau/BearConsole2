@@ -505,7 +505,9 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     break;
                 case 26:
                     //Value 26 contains Accel375X
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375x = (String) msg.obj;
                         if (accel375x.matches("\\d+(?:\\.\\d+)?")) {
                             int accel375xVal = Integer.parseInt(accel375x);
@@ -514,7 +516,9 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     break;
                 case 27:
                     //Value 27 contains Accel375Y
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375y = (String) msg.obj;
                         if (accel375y.matches("\\d+(?:\\.\\d+)?")) {
                             int accel375yVal = Integer.parseInt(accel375y);
@@ -523,7 +527,9 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     break;
                 case 28:
                     //Value 28 contains Accel375Z
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375z = (String) msg.obj;
                         if (accel375z.matches("\\d+(?:\\.\\d+)?")) {
                             int accel375zVal = Integer.parseInt(accel375z);
@@ -532,7 +538,9 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     break;
                 case 29:
                     //Value 29 contains Accel345X
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345x = (String) msg.obj;
                         if (accel345x.matches("\\d+(?:\\.\\d+)?")) {
                             int accel345xVal = Integer.parseInt(accel345x);
@@ -541,7 +549,9 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     break;
                 case 30:
                     //Value 30 contains Accel345Y
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345y = (String) msg.obj;
                         if (accel345y.matches("\\d+(?:\\.\\d+)?")) {
                             int accel345yVal = Integer.parseInt(accel345y);
@@ -550,7 +560,9 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     break;
                 case 31:
                     //Value 31 contains Accel345z
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
+                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345z = (String) msg.obj;
                         if (accel345z.matches("\\d+(?:\\.\\d+)?")) {
                             int accel345zVal = Integer.parseInt(accel345z);

@@ -152,7 +152,9 @@ public class FlightViewTabActivity extends AppCompatActivity {
         butSelectCurves = (Button) findViewById(R.id.butSelectCurves);
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
             numberOfCurves = 12;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
@@ -214,13 +216,15 @@ public class FlightViewTabActivity extends AppCompatActivity {
             units[11] = getResources().getString(R.string.Meters_fview);
         }
 
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
-            units[6] = "";
-            units[7] = "";
-            units[8] = "";
-            units[9] = "";
-            units[10] = "";
-            units[11] = "";
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
+            units[6] = "(m/secs)";
+            units[7] = "(m/secs)";
+            units[8] = "(m/secs)";
+            units[9] = "(m/secs)";
+            units[10] = "(m/secs)";
+            units[11] = "(m/secs)";
         }
 
 

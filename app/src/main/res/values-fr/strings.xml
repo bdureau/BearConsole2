@@ -503,5 +503,7 @@
     <string name="share_with5">Partager avec</string>
     <string name="bear_console_has_shared6">BearConsole a partagé avec vous des informations</string>
     <string name="share_with6">Partager avec</string>
+    <string name="do_you_want_to_connect_to_module">"Voulez vous vous connecter au module "</string>
+    <string name="no">Non</string>
 
 </resources>

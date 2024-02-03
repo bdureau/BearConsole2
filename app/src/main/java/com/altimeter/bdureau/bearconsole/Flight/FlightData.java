@@ -160,7 +160,8 @@ public class FlightData {
         ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_accel)));
         //voltage
         if(altimeterName.equals("AltiGPS") || altimeterName.equals("AltiMultiSTM32") ||
-                altimeterName.equals("AltiMultiESP32") || altimeterName.equals("AltiMultiESP32_accel")) {
+                altimeterName.equals("AltiMultiESP32") || altimeterName.equals("AltiMultiESP32_accel")||
+                altimeterName.equals("AltiMultiESP32_accel_345")|| altimeterName.equals("AltiMultiESP32_accel_375")) {
             ret.addSeries(new XYSeries("voltage"));
         }
 
@@ -181,7 +182,8 @@ public class FlightData {
         }
 
         // if AltiMultiESP32_accel we also have 6 curves that contains accel values
-        if(altimeterName.equals("AltiMultiESP32_accel")) {
+        if(altimeterName.equals("AltiMultiESP32_accel")||
+                altimeterName.equals("AltiMultiESP32_accel_345")|| altimeterName.equals("AltiMultiESP32_accel_375")) {
             //accel375x
             ret.addSeries(new XYSeries("accel375x"));
             //accel375y

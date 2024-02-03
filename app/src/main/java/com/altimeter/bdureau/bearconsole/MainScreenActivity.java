@@ -293,7 +293,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
                         builder = new AlertDialog.Builder(MainScreenActivity.this);
                         if (address != null) {
-                            builder.setMessage("Do you want to connect to module " + myBT.getModuleName())
+                            builder.setMessage(getString(R.string.do_you_want_to_connect_to_module) + myBT.getModuleName())
                                     .setTitle("")
                                     .setCancelable(false)
                                     .setPositiveButton(getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {
@@ -308,7 +308,7 @@ public class MainScreenActivity extends AppCompatActivity {
                                             }
                                         }
                                     })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                                         public void onClick(final DialogInterface dialog, final int id) {
                                             dialog.cancel();
                                             // choose the bluetooth device
@@ -323,19 +323,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
                             startActivity(i);
                         }
-                        /*if (address != null) {
-                            new ConnectBT().execute(); //Call the class to connect
-                            if (myBT.getConnected()) {
-                                EnableUI();
-                                // cannot flash firmware if connected
-                                setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
-                                text_connect.setText(getResources().getString(R.string.disconnect));
-                            }
-                        } else {
-                            // choose the bluetooth device
-                            Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
-                            startActivity(i);
-                        }*/
+
                     } else {
                         myBT.setModuleName("USB");
                         //this is a USB connection
@@ -465,7 +453,9 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")) {
             Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
                 setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
@@ -519,7 +509,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 msg(getResources().getString(R.string.MS_msg4));
             }
         } else {
-            msg(getString(R.string.unsuported_firmware_msg));
+            msg(getString(R.string.unsuported_firmware_msg) + ": " + myBT.getAltiConfigData().getAltimeterName());
             myBT.Disconnect();
         }
         // now enable or disable the menu entries by invalidating it
@@ -844,15 +834,16 @@ public class MainScreenActivity extends AppCompatActivity {
             //init compatible versions
             Add("AltiMulti", "2.0");
             Add("AltiMultiV2", "2.0");
-           // Add("AltiMultiV2", "1.25");
             Add("AltiMultiSTM32", "2.0");
             Add("AltiServo", "1.6");
             Add("AltiGPS", "1.7");
             Add("AltiDuo", "1.9");
-            Add("AltiMultiESP32", "1.28");
+            //Add("AltiMultiESP32", "1.28");
             Add("AltiMultiESP32", "2.0");
-            Add("AltiMultiESP32_accel", "1.28");
+            //Add("AltiMultiESP32_accel", "1.28");
             Add("AltiMultiESP32_accel", "2.0");
+            Add("AltiMultiESP32_accel_375", "2.0");
+            Add("AltiMultiESP32_accel_345", "2.0");
 
         }
         public void Add ( String altiName, String verList) {

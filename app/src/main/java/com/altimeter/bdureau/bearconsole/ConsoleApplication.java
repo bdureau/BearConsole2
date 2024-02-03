@@ -489,7 +489,9 @@ public class ConsoleApplication extends Application {
                                                 else
                                                     mHandler.obtainMessage(17, String.valueOf(0)).sendToTarget();
 
-                                            if (AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel")) {
+                                            if (AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                                                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
+                                                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                                                 // Value 18 contains the accel375 X
                                                 if (currentSentence.length > 18)
                                                     if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
@@ -644,6 +646,8 @@ public class ConsoleApplication extends Application {
                                         if (AltiCfg.getAltimeterName().equals("AltiGPS") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                                                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                                                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiSTM32")) {
                                             if (currentSentence.length > 6) {
                                                 if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
@@ -656,7 +660,9 @@ public class ConsoleApplication extends Application {
                                             }
                                         }
                                         // AltiMultiESP32_accel has 2 accelerometers
-                                        if (AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel")) {
+                                        if (AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                                                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                                                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) {
                                             //Accel375 X
                                             if (currentSentence.length > 7) {
                                                 if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
