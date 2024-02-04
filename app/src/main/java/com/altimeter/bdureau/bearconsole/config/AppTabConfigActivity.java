@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
@@ -54,7 +55,9 @@ public class AppTabConfigActivity extends AppCompatActivity {
 
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
-
+    private void msg(String s) {
+        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -156,6 +159,10 @@ public class AppTabConfigActivity extends AppCompatActivity {
             myBT.getAppConf().setGraphicsLibType(appConfigPage1.getGraphicsLibType());
             myBT.getAppConf().setAllowMultipleDrogueMain(appConfigPage1.getAllowMainDrogue());
             myBT.getAppConf().setFullUSBSupport(appConfigPage1.getFullUSBSupport());
+            if(appConfigPage1.getGraphColor() == appConfigPage1.getGraphBackColor()){
+                msg("Graph color and graph back color cannot be the same");
+                return;
+            }
         }
         //page2
         if(appConfigPage2.isViewCreated()) {

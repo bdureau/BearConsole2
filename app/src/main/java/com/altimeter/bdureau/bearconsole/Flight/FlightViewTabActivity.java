@@ -31,6 +31,7 @@ import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
+import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewInfoAccelFragment;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -79,6 +80,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
     private FlightViewMpFragment flightPage1 = null;
     private FlightViewFcFragment flightPage1bis = null;
     private FlightViewInfoFragment flightPage2 = null;
+    private FlightViewInfoAccelFragment flightPage2bis = null;
     private FlightViewGoogleMapFragment flightPage3 = null;
     private FlightViewOpenMapFragment flightPage4 = null;
 
@@ -365,6 +367,18 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 FlightName);
 
         adapter.addFragment(flightPage2, "TAB2");
+
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
+            flightPage2bis = new FlightViewInfoAccelFragment(myflight,
+                    allFlightData,
+                    myBT,
+                    units,
+                    FlightName);
+
+            adapter.addFragment(flightPage2bis, "TAB2");
+        }
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
             if (!myBT.getAppConf().getUseOpenMap()) {
