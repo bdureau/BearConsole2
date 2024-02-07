@@ -293,7 +293,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
                         builder = new AlertDialog.Builder(MainScreenActivity.this);
                         if (address != null) {
-                            builder.setMessage(getString(R.string.do_you_want_to_connect_to_module) + myBT.getModuleName())
+                            builder.setMessage(getString(R.string.do_you_want_to_connect_to_module) + myBT.getModuleName() + " ?")
                                     .setTitle("")
                                     .setCancelable(false)
                                     .setPositiveButton(getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {

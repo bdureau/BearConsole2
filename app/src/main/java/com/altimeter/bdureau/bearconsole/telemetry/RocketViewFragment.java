@@ -94,7 +94,8 @@ public class RocketViewFragment extends Fragment {
         String value2 = String.format("%.2f",qx)+","+String.format("%.2f",qy)+","+String.format("%.2f",qz)+
                 ","+String.format("%.2f",qw)+ ",\\r\\n";
         if(view != null)
-            ((Rocket) myRocket).setInputString2(value2);
+            //((Rocket) myRocket).setInputString2(value2);
+            ((Rocket) myRocket).setInputString((float) x, (float) y, (float) z, 0);
     }
     //send the quaternion to the processing widget
     public void setInputString(String value) {

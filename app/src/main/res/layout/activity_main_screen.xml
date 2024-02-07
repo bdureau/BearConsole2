@@ -356,7 +356,7 @@
                     android:id="@+id/text_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="About"
+                    android:text="@string/about"
                     android:textAlignment="center"
                     android:gravity="center"
                     android:lines="2"
