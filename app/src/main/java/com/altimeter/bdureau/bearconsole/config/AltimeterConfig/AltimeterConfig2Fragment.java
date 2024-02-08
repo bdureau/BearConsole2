@@ -19,30 +19,24 @@ import com.github.florent37.viewtooltip.ViewTooltip;
 
 public class AltimeterConfig2Fragment extends Fragment {
     private static final String TAG = "AltimeterConfig2Fragment";
-    private AltiConfigData lAltiCfg=null;
-    private String[] itemsBaudRate;
-    private String[] itemsAltimeterResolution;
-    private String[] itemsEEpromSize;
-    private String[] itemsBeepOnOff;
-    private String[] itemsTelemetryType;
-    private String[] itemsSupersonicDelayOnOff;
-    private String[] itemsBatteryType;
-
-    private Spinner dropdownBeepOnOff;
-    private Spinner dropdownBaudRate;
+    private AltiConfigData lAltiCfg = null;
+    private String[] itemsBaudRate, itemsAltimeterResolution, itemsEEpromSize, itemsBeepOnOff;
+    private String[] itemsTelemetryType, itemsSupersonicDelayOnOff, itemsBatteryType;
+    private Spinner dropdownBeepOnOff, dropdownBaudRate;
+    //private Spinner dropdownBaudRate;
     private EditText ApogeeMeasures;
     private Spinner dropdownAltimeterResolution, dropdownEEpromSize;
-    private Spinner dropdownTelemetryType;
-    private Spinner dropdownSupersonicDelay;
-    private Spinner dropdownBatteryType;
-    private EditText EndRecordAltitude;
-    private EditText LiftOffAltitude, RecordingTimeout;
-    private boolean ViewCreated = false;
-    private TextView txtViewTelemetryType, txtViewEEpromSize;
+    private Spinner dropdownTelemetryType, dropdownSupersonicDelay, dropdownBatteryType;
 
-    public AltimeterConfig2Fragment (AltiConfigData cfg) {
-        lAltiCfg=cfg;
+    private EditText EndRecordAltitude, LiftOffAltitude, RecordingTimeout;
+    private boolean ViewCreated = false;
+    private TextView txtViewTelemetryType, txtViewEEpromSize, txtViewEndRecordAltitude, txtViewBatteryType;
+    private TextView txtViewRecordingTimeOut;
+
+    public AltimeterConfig2Fragment(AltiConfigData cfg) {
+        lAltiCfg = cfg;
     }
+
     public boolean isViewCreated() {
         return ViewCreated;
     }
@@ -166,9 +160,11 @@ public class AltimeterConfig2Fragment extends Fragment {
         }
         return ret;
     }
+
     public void setRecordingTimeout(int RecordingTimeout) {
         this.RecordingTimeout.setText(String.valueOf(RecordingTimeout));
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -338,6 +334,18 @@ public class AltimeterConfig2Fragment extends Fragment {
                         .show();
             }
         });
+
+        txtViewEndRecordAltitude = (TextView) view.findViewById(R.id.txtViewEndRecordAltitude);
+        if (lAltiCfg != null) {
+            if (lAltiCfg.getAltimeterName().equals("AltiServo") ||
+                    lAltiCfg.getAltimeterName().equals("AltiDuo")) {
+                EndRecordAltitude.setVisibility(View.INVISIBLE);
+                txtViewEndRecordAltitude.setVisibility(View.INVISIBLE);
+            } else {
+                EndRecordAltitude.setVisibility(View.VISIBLE);
+                txtViewEndRecordAltitude.setVisibility(View.VISIBLE);
+            }
+        }
         // nbr of meters to consider that we have a lift off
         LiftOffAltitude = (EditText) view.findViewById(R.id.editTxtLiftOffAltitude);
 
@@ -375,23 +383,64 @@ public class AltimeterConfig2Fragment extends Fragment {
                         .show();
             }
         });
+        txtViewBatteryType = (TextView) view.findViewById(R.id.txtViewBatteryType);
+        if (lAltiCfg != null) {
+            if (lAltiCfg.getAltimeterName().equals("AltiServo") ||
+                    lAltiCfg.getAltimeterName().equals("AltiDuo")||
+                    lAltiCfg.getAltimeterName().equals("AltiMulti")||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiV2")) {
+                dropdownBatteryType.setVisibility(View.INVISIBLE);
+                txtViewBatteryType.setVisibility(View.INVISIBLE);
+            } else {
+                dropdownBatteryType.setVisibility(View.VISIBLE);
+                txtViewBatteryType.setVisibility(View.VISIBLE);
+            }
+        }
 
         //Max recording time in seconds
-        RecordingTimeout =(EditText) view.findViewById(R.id.editTxtRecordingTimeOut);
+        RecordingTimeout = (EditText) view.findViewById(R.id.editTxtRecordingTimeOut);
+        txtViewRecordingTimeOut = (TextView) view.findViewById(R.id.txtViewRecordingTimeOut);
+        if (lAltiCfg != null) {
+            if (lAltiCfg.getAltimeterName().equals("AltiServo") ||
+                    lAltiCfg.getAltimeterName().equals("AltiDuo") ) {
+                RecordingTimeout.setVisibility(View.INVISIBLE);
+                txtViewRecordingTimeOut.setVisibility(View.INVISIBLE);
+            } else {
+                RecordingTimeout.setVisibility(View.VISIBLE);
+                txtViewRecordingTimeOut.setVisibility(View.VISIBLE);
+            }
+        }
+
         if (lAltiCfg != null) {
             dropdownBaudRate.setSelection(lAltiCfg.arrayIndex(itemsBaudRate,
                     String.valueOf(lAltiCfg.getConnectionSpeed())));
             ApogeeMeasures.setText(String.valueOf(lAltiCfg.getNbrOfMeasuresForApogee()));
             dropdownAltimeterResolution.setSelection(lAltiCfg.getAltimeterResolution());
-            dropdownEEpromSize.setSelection(lAltiCfg.arrayIndex(itemsEEpromSize,
-                    String.valueOf(lAltiCfg.getEepromSize())));
+            LiftOffAltitude.setText(String.valueOf(lAltiCfg.getLiftOffAltitude()));
             dropdownBeepOnOff.setSelection(lAltiCfg.getBeepOnOff());
             dropdownTelemetryType.setSelection(lAltiCfg.getTelemetryType());
             dropdownSupersonicDelay.setSelection(lAltiCfg.getSupersonicDelay());
-            EndRecordAltitude.setText(String.valueOf(lAltiCfg.getEndRecordAltitude()));
-            LiftOffAltitude.setText(String.valueOf(lAltiCfg.getLiftOffAltitude()));
-            dropdownBatteryType.setSelection(lAltiCfg.getBatteryType());
-            RecordingTimeout.setText(String.valueOf(lAltiCfg.getRecordingTimeout()));
+            if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiV2") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMulti") ||
+                    lAltiCfg.getAltimeterName().equals("AltiGPS")) {
+                dropdownEEpromSize.setSelection(lAltiCfg.arrayIndex(itemsEEpromSize,
+                        String.valueOf(lAltiCfg.getEepromSize())));
+                EndRecordAltitude.setText(String.valueOf(lAltiCfg.getEndRecordAltitude()));
+                RecordingTimeout.setText(String.valueOf(lAltiCfg.getRecordingTimeout()));
+            }
+            if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
+                    lAltiCfg.getAltimeterName().equals("AltiGPS") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) {
+                dropdownBatteryType.setSelection(lAltiCfg.getBatteryType());
+            }
         }
         ViewCreated = true;
         return view;

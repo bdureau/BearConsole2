@@ -323,6 +323,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                 AltiCfg.getAltimeterName().equals("AltiServo") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiV2") ||
                 AltiCfg.getAltimeterName().equals("AltiGPS") ||
@@ -344,6 +346,8 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                 AltiCfg.getAltimeterName().equals("AltiServo") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiV2") ||
                 AltiCfg.getAltimeterName().equals("AltiGPS") ||

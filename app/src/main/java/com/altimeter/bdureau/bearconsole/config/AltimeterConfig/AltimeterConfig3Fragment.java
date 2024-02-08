@@ -20,21 +20,20 @@ import com.github.florent37.viewtooltip.ViewTooltip;
 
 public class AltimeterConfig3Fragment extends Fragment {
     private static final String TAG = "AltimeterConfig3Fragment";
-    private TextView altiName;
-    private Spinner dropdownUnits;
-    private Spinner dropdownBipMode;
-    private EditText Freq;
-    private EditText altiID;
-    private Spinner dropdownUseTelemetryPort;
-    private Spinner dropdownServoStayOn;
-    private TextView txtServoStayOn;
-    private Spinner dropdownServoSwitch;
-    private TextView txtServoSwitch;
-    private AltiConfigData lAltiCfg=null;
+    private TextView altiName, txtAltimeterID;
+    private Spinner dropdownUnits, dropdownBipMode, dropdownUseTelemetryPort;
+    private EditText Freq, altiID;
+    private Spinner dropdownServoStayOn, dropdownServoSwitch;
+    private TextView txtServoStayOn, txtServoSwitch;
+
+    //txtAltimeterID
+    //editTxtAltiIDValue
+    private AltiConfigData lAltiCfg = null;
 
     public AltimeterConfig3Fragment(AltiConfigData cfg) {
         lAltiCfg = cfg;
     }
+
     private boolean ViewCreated = false;
 
     public boolean isViewCreated() {
@@ -110,6 +109,7 @@ public class AltimeterConfig3Fragment extends Fragment {
     public void setServoStayOn(int ServoStayOn) {
         this.dropdownServoStayOn.setSelection(ServoStayOn);
     }
+
     public int getServoSwitch() {
         return (int) this.dropdownServoSwitch.getSelectedItemId();
     }
@@ -131,7 +131,7 @@ public class AltimeterConfig3Fragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item, items);
         dropdownBipMode.setAdapter(adapter);
 
-        Log.d("UseTelemetryPort","before UseTelemetryPort" );
+        Log.d("UseTelemetryPort", "before UseTelemetryPort");
         //UseTelemetryPort
         dropdownUseTelemetryPort = (Spinner) view.findViewById(R.id.spinnerUseTelemetryPort);
         //"No", "Yes"
@@ -141,7 +141,6 @@ public class AltimeterConfig3Fragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item, itemsUseTelemetryPort);
         dropdownUseTelemetryPort.setAdapter(adapterUseTelemetryPort);
 
-        //Log.d("UseTelemetryPort","after UseTelemetryPort" );
         //units
         dropdownUnits = (Spinner) view.findViewById(R.id.spinnerUnit);
         //"Meters", "Feet"
@@ -150,7 +149,7 @@ public class AltimeterConfig3Fragment extends Fragment {
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, items2);
         dropdownUnits.setAdapter(adapter2);
-        //Log.d("UseTelemetryPort","after dropdownUnits" );
+
         // Tool tip
         view.findViewById(R.id.txtAltiUnit).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,7 +183,7 @@ public class AltimeterConfig3Fragment extends Fragment {
         });
 
         altiID = (EditText) view.findViewById(R.id.editTxtAltiIDValue);
-        dropdownServoStayOn= (Spinner) view.findViewById(R.id.spinnerServoStayOn);
+        dropdownServoStayOn = (Spinner) view.findViewById(R.id.spinnerServoStayOn);
         //"No", "Yes"
         String[] items3 = new String[]{getResources().getString(R.string.config_no),
                 getResources().getString(R.string.config_yes)};
@@ -193,7 +192,7 @@ public class AltimeterConfig3Fragment extends Fragment {
         dropdownServoStayOn.setAdapter(adapter3);
 
         txtServoStayOn = (TextView) view.findViewById(R.id.txtServoStayOn);
-        if(lAltiCfg.getAltimeterName().equals("AltiServo")) {
+        if (lAltiCfg.getAltimeterName().equals("AltiServo")) {
             dropdownServoStayOn.setVisibility(View.VISIBLE);
             txtServoStayOn.setVisibility(View.VISIBLE);
         } else {
@@ -207,12 +206,25 @@ public class AltimeterConfig3Fragment extends Fragment {
 
         txtServoSwitch = (TextView) view.findViewById(R.id.txtServoSwitch);
 
-        if(lAltiCfg.getAltimeterName().equals("AltiServo")) {
+        if (lAltiCfg.getAltimeterName().equals("AltiServo")) {
             dropdownServoSwitch.setVisibility(View.VISIBLE);
             txtServoSwitch.setVisibility(View.VISIBLE);
         } else {
             dropdownServoSwitch.setVisibility(View.INVISIBLE);
             txtServoSwitch.setVisibility(View.INVISIBLE);
+        }
+
+        txtAltimeterID = (TextView) view.findViewById(R.id.txtAltimeterID);
+        if (lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) {
+            txtAltimeterID.setVisibility(View.VISIBLE);
+            altiID.setVisibility(View.VISIBLE);
+
+        } else {
+            txtAltimeterID.setVisibility(View.INVISIBLE);
+            altiID.setVisibility(View.INVISIBLE);
         }
 
         if (lAltiCfg != null) {
@@ -221,14 +233,18 @@ public class AltimeterConfig3Fragment extends Fragment {
             dropdownBipMode.setSelection(lAltiCfg.getBeepingMode());
             dropdownUnits.setSelection(lAltiCfg.getUnits());
             Freq.setText(String.valueOf(lAltiCfg.getBeepingFrequency()));
-            altiID.setText(String.valueOf(lAltiCfg.getAltiID()));
+            if (lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) {
+                altiID.setText(String.valueOf(lAltiCfg.getAltiID()));
+            }
             if (lAltiCfg.getAltimeterName().equals("AltiServo")) {
                 dropdownServoStayOn.setSelection(lAltiCfg.getServoStayOn());
                 dropdownServoSwitch.setSelection(lAltiCfg.getServoSwitch());
             }
 
             dropdownUseTelemetryPort.setSelection(lAltiCfg.getUseTelemetryPort());
-
         }
         ViewCreated = true;
         return view;
