@@ -66,11 +66,11 @@ public class FlashFirmware extends AppCompatActivity {
     private ArrayList<Boards> mBoardList;
     private UartConfig uartConfig;
 
-    private static final String ASSET_FILE_NAME_ALTIMULTIV2 = "firmwares/2023-02-26-V1_28.altimultiV2.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTI = "firmwares/2023-02-26-V1_28.altimulti.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTIV2 = "firmwares/Altimulti/AltiMultiV2-2.0.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTI = "firmwares/Altimulti/AltiMulti-2.0.hex";
     private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2023-02-27-AltiServoV1_6.ino.hex";
     private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2023-02-27-AltiDuoV1_9_console.ino.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/2023-02-26-V1_28.altimultiSTM32.bin";
+    private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/STM32/RocketFlightLoggerV2.ino.bin";
     private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2023-02-26-RocketGPSLoggerV1.7.bin";
     // ESP32
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
@@ -98,10 +98,10 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_RESET_ALTISERVO = "recover_firmwares/ResetAltiConfigAltiServo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTISTM32 = "recover_firmwares/ResetAltiConfigAltimultiSTM32.ino.bin";
 
-    private static final String ASSET_FILE_RESET_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
-    private static final String ASSET_FILE_RESET_ALTIESP32_FILE2 = "firmwares/old/ResetAltiConfigAltimultiESP32.ino.bootloader.bin";
-    private static final String ASSET_FILE_RESET_ALTIESP32_FILE3 = "firmwares/old/ResetAltiConfigAltimultiESP32.ino.bin";
-    private static final String ASSET_FILE_RESET_ALTIESP32_FILE4 = "firmwares/old/ResetAltiConfigAltimultiESP32.ino.partitions.bin";
+    private static final String ASSET_FILE_RESET_ALTIESP32_FILE1 = "recover_firmwares/ESP32/boot_app0.bin";
+    private static final String ASSET_FILE_RESET_ALTIESP32_FILE2 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bootloader.bin";
+    private static final String ASSET_FILE_RESET_ALTIESP32_FILE3 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bin";
+    private static final String ASSET_FILE_RESET_ALTIESP32_FILE4 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.partitions.bin";
 
     private String[] itemsBaudRate;
     private String[] itemsFirmwares;

@@ -832,13 +832,16 @@ public class MainScreenActivity extends AppCompatActivity {
             hm =null;
             hm = new HashMap();
             //init compatible versions
+            Add("AltiMulti", "1.28");
             Add("AltiMulti", "2.0");
+            Add("AltiMultiV2", "1.28");
             Add("AltiMultiV2", "2.0");
+            Add("AltiMultiSTM32", "1.28");
             Add("AltiMultiSTM32", "2.0");
             Add("AltiServo", "1.6");
             Add("AltiGPS", "1.7");
             Add("AltiDuo", "1.9");
-            //Add("AltiMultiESP32", "1.28");
+            Add("AltiMultiESP32", "1.28");
             Add("AltiMultiESP32", "2.0");
             //Add("AltiMultiESP32_accel", "1.28");
             Add("AltiMultiESP32_accel", "2.0");
