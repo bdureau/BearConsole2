@@ -960,7 +960,12 @@ public class TelemetryTabActivity extends AppCompatActivity {
     private void startService() {
 
         IntentFilter filter = new IntentFilter("ACT_LOC");
-        registerReceiver(receiver, filter);
+        //registerReceiver(receiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(receiver, filter);
+        }
 
         locIntent = new Intent(TelemetryTabActivity.this, LocationService.class);
         startService(locIntent);
