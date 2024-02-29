@@ -191,8 +191,10 @@ public class FlightListActivity extends AppCompatActivity {
                 flightNames = new ArrayList<String>();
 
                 myflight = myBT.getFlightData();
+                Log.d("FlightList", "myflight.getAllFlightNames2()");
                 flightNames = myflight.getAllFlightNames2();
                 if (canceled) {
+                    Log.d("FlightList", "canceled2");
                     //order the names in the collection
                     Collections.sort(flightNames);
                     try {
@@ -206,6 +208,7 @@ public class FlightListActivity extends AppCompatActivity {
 
                 //calculate the speed
                 for (String flight : flightNames) {
+                    Log.d("FlightList", "calculate the speed");
                     XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_altitude));
                     int nbrData = serie.getItemCount();
                     for (int i = 1; i < nbrData; i++) {
@@ -218,6 +221,7 @@ public class FlightListActivity extends AppCompatActivity {
                 }
                 //calculate the acceleration
                 for (String flight : flightNames) {
+                    Log.d("FlightList", "calculate the acceleration");
                     XYSeries serie = myflight.GetFlightData(flight).getSeries(3);
                     int nbrData = serie.getItemCount();
                     for (int i = 1; i < nbrData; i++) {

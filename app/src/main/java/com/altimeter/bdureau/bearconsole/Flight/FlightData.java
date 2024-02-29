@@ -7,6 +7,7 @@ package com.altimeter.bdureau.bearconsole.Flight;
  *
  **/
 import android.content.Context;
+import android.util.Log;
 
 import com.altimeter.bdureau.bearconsole.R;
 
@@ -46,15 +47,17 @@ public class FlightData {
     public List<String> getAllFlightNames2()
     {
         List<String> flightNames = new ArrayList<String>();
-
+        Log.d("FlightList", "in getAllFlightNames2");
         Set set = hm.entrySet();
         // Get an iterator
         Iterator i = set.iterator();
 
         // Display elements
         while(i.hasNext()) {
+            Log.d("FlightList","in While");
             Map.Entry me = (Map.Entry)i.next();
             flightNames.add((String)me.getKey());
+            Log.d("FlightList", (String)me.getKey());
         }
         return flightNames;
     }
@@ -161,7 +164,8 @@ public class FlightData {
         //voltage
         if(altimeterName.equals("AltiGPS") || altimeterName.equals("AltiMultiSTM32") ||
                 altimeterName.equals("AltiMultiESP32") || altimeterName.equals("AltiMultiESP32_accel")||
-                altimeterName.equals("AltiMultiESP32_accel_345")|| altimeterName.equals("AltiMultiESP32_accel_375")) {
+                altimeterName.equals("AltiMultiESP32_accel_345")|| altimeterName.equals("AltiMultiESP32_accel_375")||
+                altimeterName.equals("TTGOBearAltimeter")) {
             ret.addSeries(new XYSeries("voltage"));
         }
 
@@ -179,6 +183,15 @@ public class FlightData {
             ret.addSeries(new XYSeries("gps speed"));
             //sea altitude
             ret.addSeries(new XYSeries("sea altitude"));
+        }
+
+        if(altimeterName.equals("TTGOBearAltimeter")){
+            //accel345x
+            ret.addSeries(new XYSeries("accel345x"));
+            //accel345y
+            ret.addSeries(new XYSeries("accel345y"));
+            //accel345z
+            ret.addSeries(new XYSeries("accel345z"));
         }
 
         // if AltiMultiESP32_accel we also have 6 curves that contains accel values

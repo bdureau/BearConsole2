@@ -466,9 +466,11 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")) {
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
             Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
-            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
+                    myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
                 setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
             } else {
                 //enable it for bT or USB only if full support
@@ -506,6 +508,10 @@ public class MainScreenActivity extends AppCompatActivity {
                 setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
                 setEnabledCard(false, btnReset, image_reset, text_reset);
                 setEnabledCard(true, btnStatus, image_status, text_status);
+            }
+
+            if(myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")){
+                setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
             }
 
             text_connect.setText(getResources().getString(R.string.disconnect));
@@ -858,6 +864,7 @@ public class MainScreenActivity extends AppCompatActivity {
             Add("AltiMultiESP32_accel", "2.0");
             Add("AltiMultiESP32_accel_375", "2.0");
             Add("AltiMultiESP32_accel_345", "2.0");
+            Add("TTGOBearAltimeter", "0.2");
 
         }
         public void Add ( String altiName, String verList) {

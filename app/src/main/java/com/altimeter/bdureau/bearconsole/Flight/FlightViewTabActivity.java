@@ -160,8 +160,11 @@ public class FlightViewTabActivity extends AppCompatActivity {
             numberOfCurves = 12;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")) {
+                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32") ) {
             numberOfCurves = 6;
+        }
+        if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
+            numberOfCurves = 9;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||

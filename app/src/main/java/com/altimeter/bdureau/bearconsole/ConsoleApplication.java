@@ -648,7 +648,8 @@ public class ConsoleApplication extends Application {
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                                                AltiCfg.getAltimeterName().equals("AltiMultiSTM32")) {
+                                                AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
+                                                AltiCfg.getAltimeterName().equals("TTGOBearAltimeter")) {
                                             if (currentSentence.length > 6) {
                                                 if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
                                                     value6 = Integer.valueOf(currentSentence[6]);
@@ -657,6 +658,38 @@ public class ConsoleApplication extends Application {
                                                 //add the voltage
                                                 MyFlight.AddToFlight(value2,
                                                         (float) (value6) / 100, flightName, 5);
+                                            }
+                                        }
+                                        if(AltiCfg.getAltimeterName().equals("TTGOBearAltimeter")){
+                                            //Accel345 X
+                                            if (currentSentence.length > 7) {
+                                                if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
+                                                    value7 = Integer.valueOf(currentSentence[7]);
+                                                else
+                                                    value7 = 0;
+                                                //add the accel X
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value7)/(float)1000, flightName, 6);
+                                            }
+                                            //Accel345 Y
+                                            if (currentSentence.length > 8) {
+                                                if (currentSentence[8].matches("\\d+(?:\\.\\d+)?"))
+                                                    value8 = Integer.valueOf(currentSentence[8]);
+                                                else
+                                                    value8 = 0;
+                                                //add the accel Y
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value8)/(float)1000, flightName, 7);
+                                            }
+                                            //Accel345 Z
+                                            if (currentSentence.length > 9) {
+                                                if (currentSentence[9].matches("\\d+(?:\\.\\d+)?"))
+                                                    value9 = Integer.valueOf(currentSentence[9]);
+                                                else
+                                                    value9 = 0;
+                                                //add the accel Z
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value9)/(float)1000, flightName, 8);
                                             }
                                         }
                                         // AltiMultiESP32_accel has 2 accelerometers
