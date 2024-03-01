@@ -22,7 +22,8 @@ public class AltimeterInfoFragment extends Fragment {
     private TextView txtStatusAltiName, txtStatusAltiNameValue;
     private TextView txtViewOutput1Status, txtViewOutput2Status, txtViewOutput3Status, txtViewOutput4Status;
     private TextView txtViewAltitude, txtViewVoltage, txtViewLink, txtTemperature, txtEEpromUsage, txtNbrOfFlight;
-    private TextView txtViewOutput3, txtViewOutput4, txtViewBatteryVoltage, txtViewEEprom, txtViewFlight;
+    private TextView txtViewOutput1, txtViewOutput2, txtViewOutput3, txtViewOutput4,
+            txtViewBatteryVoltage, txtViewEEprom, txtViewFlight;
     ConsoleApplication lBT;
 
     public AltimeterInfoFragment(ConsoleApplication bt) {
@@ -88,6 +89,8 @@ public class AltimeterInfoFragment extends Fragment {
         txtViewAltitude = (TextView) view.findViewById(R.id.txtViewAltitude);
         txtViewVoltage = (TextView) view.findViewById(R.id.txtViewVoltage);
         txtViewLink = (TextView) view.findViewById(R.id.txtViewLink);
+        txtViewOutput1 = (TextView) view.findViewById(R.id.txtViewOutput1);
+        txtViewOutput2 = (TextView) view.findViewById(R.id.txtViewOutput2);
         txtViewOutput3 = (TextView) view.findViewById(R.id.txtViewOutput3);
         txtViewOutput4 = (TextView) view.findViewById(R.id.txtViewOutput4);
 
@@ -104,14 +107,29 @@ public class AltimeterInfoFragment extends Fragment {
                 || lBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")
                 || lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")
                 || lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")
-                || lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
+                || lBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")
+                || lBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
             txtViewVoltage.setVisibility(View.VISIBLE);
             txtViewBatteryVoltage.setVisibility(View.VISIBLE);
         } else {
             txtViewVoltage.setVisibility(View.INVISIBLE);
             txtViewBatteryVoltage.setVisibility(View.INVISIBLE);
         }
-        if (!lBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
+
+        if (!lBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
+            txtViewOutput1Status.setVisibility(View.VISIBLE);
+            txtViewOutput1.setVisibility(View.VISIBLE);
+            txtViewOutput2Status.setVisibility(View.VISIBLE);
+            txtViewOutput2.setVisibility(View.VISIBLE);
+        } else {
+            txtViewOutput1Status.setVisibility(View.INVISIBLE);
+            txtViewOutput1.setVisibility(View.INVISIBLE);
+            txtViewOutput2Status.setVisibility(View.INVISIBLE);
+            txtViewOutput2.setVisibility(View.INVISIBLE);
+        }
+
+        if (!lBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")
+                && !lBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
             txtViewOutput3Status.setVisibility(View.VISIBLE);
             txtViewOutput3.setVisibility(View.VISIBLE);
         } else {
