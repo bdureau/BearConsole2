@@ -530,6 +530,28 @@ public class ConsoleApplication extends Application {
                                                     else
                                                         mHandler.obtainMessage(31, String.valueOf(0)).sendToTarget();
                                             }
+
+                                            if(AltiCfg.getAltimeterName().equals("TTGOBearAltimeter")) {
+                                                // Value 18 contains the accel345 X
+                                                if (currentSentence.length > 18)
+                                                    if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(26, String.valueOf(currentSentence[18])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(26, String.valueOf(0)).sendToTarget();
+                                                // Value 19 contains the accel345 Y
+                                                if (currentSentence.length > 19)
+                                                    if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(27, String.valueOf(currentSentence[19])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(27, String.valueOf(0)).sendToTarget();
+                                                // Value 20 contains the accel345 Z
+                                                if (currentSentence.length > 20)
+                                                    if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
+                                                        mHandler.obtainMessage(28, String.valueOf(currentSentence[20])).sendToTarget();
+                                                    else
+                                                        mHandler.obtainMessage(28, String.valueOf(0)).sendToTarget();
+
+                                            }
                                             if (AltiCfg.getAltimeterName().equals("AltiGPS")) {
                                                 // Value 18 contains the latitude
                                                 if (currentSentence.length > 18)

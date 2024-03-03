@@ -93,6 +93,12 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE2 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.ino.bootloader.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE3 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.ino.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE4 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.ino.partitions.bin";
+
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE1 = "firmwares/TTGO/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE2 = "firmwares/TTGO/TTGOBearAltimeter0.2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3 = "firmwares/TTGO/TTGOBearAltimeter0.2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4 = "firmwares/TTGO/TTGOBearAltimeter0.2.ino.partitions.bin";
+
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
     private static final String ASSET_FILE_RESET_ALTISERVO = "recover_firmwares/ResetAltiConfigAltiServo.ino.hex";
@@ -102,6 +108,11 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_RESET_ALTIESP32_FILE2 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bootloader.bin";
     private static final String ASSET_FILE_RESET_ALTIESP32_FILE3 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bin";
     private static final String ASSET_FILE_RESET_ALTIESP32_FILE4 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.partitions.bin";
+
+    /*private static final String ASSET_FILE_RESET_TTGO_FILE1 = "recover_firmwares/ESP32/boot_app0.bin";
+    private static final String ASSET_FILE_RESET_TTGO_FILE2 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bootloader.bin";
+    private static final String ASSET_FILE_RESET_TTGO_FILE3 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bin";
+    private static final String ASSET_FILE_RESET_TTGO_FILE4 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.partitions.bin";*/
 
     private String[] itemsBaudRate;
     private String[] itemsFirmwares;
@@ -130,7 +141,8 @@ public class FlashFirmware extends AppCompatActivity {
                 "AltiESP32",
                 "AltiESP32_accelero",
                 "AltiESP32_ADXL345",
-                "AltiESP32_ADXL375"
+                "AltiESP32_ADXL375",
+                "TTGOAltimeter"
         };
 
         ArrayAdapter<String> adapterFirmware = new ArrayAdapter<String>(this,
@@ -205,11 +217,20 @@ public class FlashFirmware extends AppCompatActivity {
                         itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultistm32_small, getApplicationContext().getTheme()));
 
-                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32") ||
-                    itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero") ||
-                    itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345") ||
-                        itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375"))
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32") )
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiesp32_small, getApplicationContext().getTheme()));
+
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero")  )
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiesp32_accelero_small, getApplicationContext().getTheme()));
+
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345")  )
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiesp32_adxl345_small, getApplicationContext().getTheme()));
+
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375")  )
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiesp32_adxl375_small, getApplicationContext().getTheme()));
+
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter"))
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ttgo_altimeter_plash_screen315x160, getApplicationContext().getTheme()));
             }
 
             @Override
@@ -303,7 +324,8 @@ public class FlashFirmware extends AppCompatActivity {
         } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345") ||
-                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375")) {
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375") ||
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter")) {
             recorverFirmware = true;
             new UploadESP32Asyc().execute();
         }
@@ -387,7 +409,8 @@ public class FlashFirmware extends AppCompatActivity {
         } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345") ||
-                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375")) {
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375") ||
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter")) {
             tvRead.setText("Loading ESP32 firmware\n");
             recorverFirmware = false;
             new UploadESP32Asyc().execute();
@@ -625,6 +648,12 @@ public class FlashFirmware extends AppCompatActivity {
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE4;
                 }
+                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter")){
+                    firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE1;
+                    firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE2;
+                    firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3;
+                    firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4;
+                }
                 uploadESP32(firmwareFileName, mUploadSTM32Callback);
             } else {
 
@@ -719,6 +748,7 @@ public class FlashFirmware extends AppCompatActivity {
                 //dialogAppend("Chip is ESP32");
                 tvAppend(tvRead, "Chip is ESP32\n");
 
+            tvAppend(tvRead, itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()]);
             // now that we have initialized the chip we can change the baud rate to 921600
             // first we tell the chip the new baud rate
             dialogAppend("Changing baudrate to 921600");
@@ -727,13 +757,18 @@ public class FlashFirmware extends AppCompatActivity {
 
             // Those are the files you want to flush
             dialogAppend("Flashing file 1 0xe000");
+            tvAppend(tvRead,fileName[0]+"\n");
+            tvAppend(tvRead, "Chip is ESP32\n");
             cmd.flashData(readFile(file1), 0xe000, 0);
             dialogAppend("Flashing file 2 0x1000");
+            tvAppend(tvRead,fileName[1]+"\n");
             cmd.flashData(readFile(file2), 0x1000, 0);
 
             dialogAppend("Flashing file 3 0x10000");
+            tvAppend(tvRead,fileName[2]+"\n");
             cmd.flashData(readFile(file3), 0x10000, 0);
             dialogAppend("Flashing file 4 0x8000");
+            tvAppend(tvRead,fileName[3]+"\n");
             cmd.flashData(readFile(file4), 0x8000, 0);
 
             // we have finish flashing lets reset the board so that the program can start
