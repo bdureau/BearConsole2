@@ -17,8 +17,8 @@ android {
         minSdk 21
         targetSdk 34
 
-        versionName '2.0.4'
-        versionCode 29
+        versionName '2.0.5'
+        versionCode 30
         multiDexEnabled true
     }
     buildTypes {
