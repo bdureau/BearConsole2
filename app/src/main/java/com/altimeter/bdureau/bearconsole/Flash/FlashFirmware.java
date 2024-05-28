@@ -95,9 +95,9 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE4 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.ino.partitions.bin";
 
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE1 = "firmwares/TTGO/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE2 = "firmwares/TTGO/TTGOBearAltimeter0.2.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3 = "firmwares/TTGO/TTGOBearAltimeter0.2.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4 = "firmwares/TTGO/TTGOBearAltimeter0.2.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE2 = "firmwares/TTGO/TTGOBearAltimeter0.4.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3 = "firmwares/TTGO/TTGOBearAltimeter0.4.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4 = "firmwares/TTGO/TTGOBearAltimeter0.4.ino.partitions.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
