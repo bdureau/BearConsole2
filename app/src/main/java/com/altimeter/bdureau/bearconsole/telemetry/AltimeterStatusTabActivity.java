@@ -517,6 +517,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         Log.d(TAG, "onBackPressed()");
         //super.onBackPressed();
         if (recording) {
@@ -610,9 +611,9 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         }
         String myMessage = "";
         long timeOut = 10000;
-        long startTime = System.currentTimeMillis();
+        //long startTime = System.currentTimeMillis();
 
-        myMessage = myBT.ReadResult(10000);
+        myMessage = myBT.ReadResult(timeOut);
 
         /////////////////////////////
 
