@@ -563,7 +563,12 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
             stopService(locIntent);
 
         if (receiver != null) {
-            unregisterReceiver(receiver);
+         try {
+             unregisterReceiver(receiver);
+         }
+         catch (IllegalArgumentException  e) {
+             Log.d(TAG, "error");
+         }
             receiver = null;
         }
 
