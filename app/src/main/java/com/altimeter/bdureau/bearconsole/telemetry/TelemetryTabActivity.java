@@ -45,6 +45,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -603,6 +604,12 @@ public class TelemetryTabActivity extends AppCompatActivity {
         setContentView(R.layout.activity_telemetry_tab);
         yValues = new ArrayList<>();
 
+        org.osmdroid.config.IConfigurationProvider osmConf = org.osmdroid.config.Configuration.getInstance();
+        File basePath = new File(getCacheDir().getAbsolutePath(), "osmdroid");
+        osmConf.setOsmdroidBasePath(basePath);
+        File tileCache = new File(osmConf.getOsmdroidBasePath().getAbsolutePath(), "tile");
+        osmConf.setOsmdroidTileCache(tileCache);
+
         receiver = new LocationBroadCastReceiver();
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -614,9 +621,9 @@ public class TelemetryTabActivity extends AppCompatActivity {
             startService();
         }
 
-        if(Build.VERSION.SDK_INT>=23) {
+        /*if(Build.VERSION.SDK_INT>=23) {
             verifyStoragePermission(TelemetryTabActivity.this);
-        }
+        }*/
         LocationManager lm = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
@@ -962,7 +969,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("ACT_LOC");
         //registerReceiver(receiver, filter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
+            //registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
+            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
         } else {
             registerReceiver(receiver, filter);
         }

@@ -77,6 +77,8 @@ public class GPSOpenMapStatusFragment extends Fragment {
         mMap.setBuiltInZoomControls(true);
         mMap.setMultiTouchControls(true);
 
+
+
         marker = new Marker(mMap);
         marker.setIcon(getResources().getDrawable(R.drawable.ic_person_map));
         mMap.getOverlays().add(marker);

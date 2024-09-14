@@ -55,6 +55,7 @@ import java.util.Locale;
 
 public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapReadyCallback {
     private SupportMapFragment mapFragment;
+    private static final String TAG = "RocketTrackGoogleMapWin";
     private GoogleMap mMap;
     private Marker marker, markerDest;
     private Polyline polyline1 = null;
@@ -79,14 +80,16 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Log.d(TAG, "Current msg:" +msg.what);
             switch (msg.what) {
                 case 18:
                     //Value 18 contains the latitude
-                    Log.d("status", "latitude");
+                    Log.d("TAG", "latitude:" + (String) msg.obj);
                     setLatitudeValue((String) msg.obj);
                     break;
                 case 19:
                     //Value 19 contains the longitude
+                    Log.d("TAG", "longitude:" + (String) msg.obj);
                     setLongitudeValue((String) msg.obj);
                     break;
             }
@@ -96,7 +99,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     private void setLatitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
             float val = Float.parseFloat(value);
-            Log.d("track", "latitude:" + value);
+            Log.d(TAG, "latitude:" + value);
             if (val != 0.0f) {
                 rocketLatitude = Float.parseFloat(value) / 100000;
                 myBT.getAppConf().setRocketLatitude(rocketLatitude);
@@ -126,6 +129,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         textViewdistance = (TextView) findViewById(R.id.textViewdistance);
 
         MapType = myBT.getAppConf().getMapType();
+        Log.d(TAG, "Started: "+TAG);
         // See if we are called from the status activity
         try {
             Intent newint = getIntent();
@@ -145,9 +149,11 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             } else {
                 startService();
+                Log.d(TAG, "startService 1");
             }
         } else {
             startService();
+            Log.d(TAG, "startService 2");
         }
 
         LocationManager lm = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
@@ -309,9 +315,12 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         IntentFilter filter = new IntentFilter("ACT_LOC");
         //registerReceiver(receiver, filter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
+            //registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
+            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
+            Log.d(TAG, "registerReceiver 1");
         } else {
             registerReceiver(receiver, filter);
+            Log.d(TAG, "registerReceiver 2");
         }
 
         locIntent = new Intent(RocketTrackGoogleMap.this, LocationService.class);

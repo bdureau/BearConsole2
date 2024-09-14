@@ -146,6 +146,16 @@ public class RocketTrackOpenMap extends AppCompatActivity {
 
         rocketLongitude = myBT.getAppConf().getRocketLongitude();
 
+        org.osmdroid.config.IConfigurationProvider osmConf = org.osmdroid.config.Configuration.getInstance();
+        File basePath = new File(getCacheDir().getAbsolutePath(), "osmdroid");
+        osmConf.setOsmdroidBasePath(basePath);
+        File tileCache = new File(osmConf.getOsmdroidBasePath().getAbsolutePath(), "tile");
+        osmConf.setOsmdroidTileCache(tileCache);
+
+        /*if(Build.VERSION.SDK_INT>=23) {
+            verifyStoragePermission(RocketTrackOpenMap.this);
+        }*/
+
         if(Build.VERSION.SDK_INT>=23) {
             if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
@@ -156,9 +166,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
             startService();
         }
 
-        if(Build.VERSION.SDK_INT>=23) {
-            verifyStoragePermission(RocketTrackOpenMap.this);
-        }
+
         LocationManager lm = (LocationManager)this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
@@ -335,7 +343,8 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("ACT_LOC");
         //registerReceiver(receiver, filter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
+            //registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
+            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
         } else {
             registerReceiver(receiver, filter);
         }
@@ -383,9 +392,11 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         switch (requestCode) {
             case 1:
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startService();
+                    //startService();
+                    Toast.makeText(this, "permission granted", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(this, "permission need to be granted", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, "permission need to be granted" + permissions[0], Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, permissions[0], Toast.LENGTH_LONG).show();
                 }
         }
     }
@@ -443,6 +454,13 @@ public class RocketTrackOpenMap extends AppCompatActivity {
                     activity,
                     PERMISSION_STORAGE,
                     REQUEST_EXTERNAL_STORAGE);
+        }
+        int permission2 = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (permission2 != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSION_STORAGE,
+                    0);
         }
     }
 

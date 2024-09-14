@@ -57,6 +57,7 @@ import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSGo
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSOpenMapStatusFragment;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSStatusFragment;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -364,6 +365,13 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         myBT = (ConsoleApplication) getApplication();
+
+        org.osmdroid.config.IConfigurationProvider osmConf = org.osmdroid.config.Configuration.getInstance();
+        File basePath = new File(getCacheDir().getAbsolutePath(), "osmdroid");
+        osmConf.setOsmdroidBasePath(basePath);
+        File tileCache = new File(osmConf.getOsmdroidBasePath().getAbsolutePath(), "tile");
+        osmConf.setOsmdroidTileCache(tileCache);
+
         receiver = new LocationBroadCastReceiver();
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -375,9 +383,9 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
             startService();
         }
 
-        if(Build.VERSION.SDK_INT>=23) {
+        /*if(Build.VERSION.SDK_INT>=23) {
             verifyStoragePermission(AltimeterStatusTabActivity.this);
-        }
+        }*/
         LocationManager lm = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
@@ -846,7 +854,8 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("ACT_LOC");
         //registerReceiver(receiver, filter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
+            //registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
+            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
         } else {
             registerReceiver(receiver, filter);
         }

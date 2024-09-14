@@ -42,7 +42,7 @@ public class LocationService extends Service {
                 Intent intent = new Intent("ACT_LOC");
                 intent.putExtra("latitude", locationResult.getLastLocation().getLatitude());
                 intent.putExtra("longitude", locationResult.getLastLocation().getLongitude());
-
+                Log.d("location", "latitude:" + locationResult.getLastLocation().getLatitude());
                 sendBroadcast(intent);
             }
 
