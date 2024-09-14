@@ -2,6 +2,7 @@ package com.altimeter.bdureau.bearconsole;
 /**
  * @description: Main screen of the altimeter console. Here you will find all the buttons.
  * @author: boris.dureau@neuf.fr
+ *
  **/
 
 import android.app.AlertDialog;
