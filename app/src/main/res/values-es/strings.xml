@@ -275,7 +275,7 @@
     <string name="flight_have_been_recorded">No se han registrado vuelos</string>
     <string name="main_screen_actity">Cancelar</string>
     <string name="title_activity_flight_view_maps">Mapa</string>
-    <string name="flight">Flight</string>
+    <string name="flight">Vuelo</string>
     <string name="title_activity_flight_view_tab">FlightViewTabActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
