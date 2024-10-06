@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 34
-    //buildToolsVersion '30.0.3'
+    compileSdk 35
+//buildToolsVersion '30.0.3'
     /* lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -17,8 +17,8 @@ android {
         minSdk 21
         targetSdk 34
 
-        versionName '2.0.6'
-        versionCode 31
+        versionName '2.0.8'
+        versionCode 33
         multiDexEnabled true
     }
     buildTypes {
@@ -28,8 +28,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     productFlavors {
     }
@@ -37,7 +37,7 @@ android {
         viewBinding true
     }
     namespace 'com.altimeter.bdureau.bearconsole'
-    buildToolsVersion '34.0.0'
+    buildToolsVersion '35.0.0'
     ndkVersion '23.1.7779620'
 }
 

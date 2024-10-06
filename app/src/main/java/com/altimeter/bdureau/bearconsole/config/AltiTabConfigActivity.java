@@ -43,22 +43,22 @@ import java.util.List;
 
 //tooltip library
 import com.altimeter.bdureau.bearconsole.ShareHandler;
-import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltimeterConfig1Fragment;
-import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltimeterConfig2Fragment;
-import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltimeterConfig3Fragment;
-import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltimeterConfig4Fragment;
+import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltiConfig1Fragment;
+import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltiConfig2Fragment;
+import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltiConfig3Fragment;
+import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltiConfig4Fragment;
 
 
-public class AltimeterTabConfigActivity extends AppCompatActivity {
-    private static final String TAG = "AltimeterTabConfigActivity";
+public class AltiTabConfigActivity extends AppCompatActivity {
+    private static final String TAG = "AltiTabConfigActivity";
 
     private ViewPager mViewPager;
     SectionsPageAdapter adapter;
 
-    AltimeterConfig1Fragment configPage1 = null;
-    AltimeterConfig2Fragment configPage2 = null;
-    AltimeterConfig3Fragment configPage3 = null;
-    AltimeterConfig4Fragment configPage4 = null;
+    AltiConfig1Fragment configPage1 = null;
+    AltiConfig2Fragment configPage2 = null;
+    AltiConfig3Fragment configPage3 = null;
+    AltiConfig4Fragment configPage4 = null;
 
     private Button btnDismiss, btnUpload;
     ConsoleApplication myBT;
@@ -107,15 +107,15 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsPageAdapter(getSupportFragmentManager());
 
-        configPage1 = new AltimeterConfig1Fragment(AltiCfg);
-        configPage2 = new AltimeterConfig2Fragment(AltiCfg);
-        configPage3 = new AltimeterConfig3Fragment(AltiCfg);
+        configPage1 = new AltiConfig1Fragment(AltiCfg);
+        configPage2 = new AltiConfig2Fragment(AltiCfg);
+        configPage3 = new AltiConfig3Fragment(AltiCfg);
         adapter.addFragment(configPage1, "TAB1");
         adapter.addFragment(configPage2, "TAB2");
         adapter.addFragment(configPage3, "TAB3");
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-            configPage4 = new AltimeterConfig4Fragment(AltiCfg);
+            configPage4 = new AltiConfig4Fragment(AltiCfg);
             adapter.addFragment(configPage4, "TAB4");
         }
 
@@ -301,6 +301,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             }
             AltiCfg.setAltiID(configPage3.getAltiID());
             AltiCfg.setUseTelemetryPort(configPage3.getDropdownUseTelemetryPort());
+            if (AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") &&
+                    (AltiCfg.getAltiMajorVersion() == 2 && AltiCfg.getAltiMinorVersion() > 0)) {
+                    AltiCfg.setBluetoothName(configPage3.getBluetoothName());
+            }
         }
 
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
@@ -459,6 +466,13 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         Log.d("UseTelemetryPort", "before getUseTelemetryPort" );
         SendParam("p,26,"+AltiCfg.getUseTelemetryPort());
         Log.d("UseTelemetryPort", "after getUseTelemetryPort" );
+        if (AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") &&
+                (AltiCfg.getAltiMajorVersion() >= 2 && AltiCfg.getAltiMinorVersion() > 0)) {
+            SendParam("z,"+AltiCfg.getBluetoothName());
+        }
 
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
             SendParam("p,27,"+AltiCfg.getServoSwitch());
@@ -482,7 +496,7 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
             myBT.clearInput();
             //Write the config structure
             myBT.write("q;".toString());
-            Log.d("conftab", "write config");
+            Log.d(TAG, "write config");
 
             //wait for the result to come back
             try {
@@ -626,14 +640,14 @@ public class AltimeterTabConfigActivity extends AppCompatActivity {
         }
         //open help screen
         if (id == R.id.action_help) {
-            Intent i = new Intent(AltimeterTabConfigActivity.this, HelpActivity.class);
+            Intent i = new Intent(AltiTabConfigActivity.this, HelpActivity.class);
             i.putExtra("help_file", "help_config_alti");
             startActivity(i);
             return true;
         }
 
         if (id == R.id.action_about) {
-            Intent i = new Intent(AltimeterTabConfigActivity.this, AboutActivity.class);
+            Intent i = new Intent(AltiTabConfigActivity.this, AboutActivity.class);
             startActivity(i);
             return true;
         }

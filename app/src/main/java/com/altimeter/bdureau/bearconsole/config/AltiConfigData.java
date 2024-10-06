@@ -8,7 +8,7 @@ package com.altimeter.bdureau.bearconsole.config;
  *
  **/
 public class AltiConfigData {
-
+    private static final String TAG = "AltiConfigData";
     //Altimeter config variable
     private int units = 0;
     private int beepingMode = 0;
@@ -49,6 +49,7 @@ public class AltiConfigData {
     private int recordingTimeout = 120;
     private int altiID = 0;
     private int useTelemetryPort = 0;
+    private String bluetoothName;
 
     public AltiConfigData()
     {
@@ -344,4 +345,8 @@ public class AltiConfigData {
     //useTelemetryPort
     public void setUseTelemetryPort(int value) {useTelemetryPort =value;}
     public int getUseTelemetryPort(){return useTelemetryPort;}
+
+    //bluetoothName
+    public void setBluetoothName(String value) { bluetoothName = value;}
+    public String getBluetoothName() {return bluetoothName;}
 }

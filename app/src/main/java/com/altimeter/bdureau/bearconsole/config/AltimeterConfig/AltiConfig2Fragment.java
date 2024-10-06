@@ -17,8 +17,8 @@ import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.github.florent37.viewtooltip.ViewTooltip;
 
-public class AltimeterConfig2Fragment extends Fragment {
-    private static final String TAG = "AltimeterConfig2Fragment";
+public class AltiConfig2Fragment extends Fragment {
+    private static final String TAG = "AltiConfig2Fragment";
     private AltiConfigData lAltiCfg = null;
     private String[] itemsBaudRate, itemsAltimeterResolution, itemsEEpromSize, itemsBeepOnOff;
     private String[] itemsTelemetryType, itemsSupersonicDelayOnOff, itemsBatteryType;
@@ -33,7 +33,7 @@ public class AltimeterConfig2Fragment extends Fragment {
     private TextView txtViewTelemetryType, txtViewEEpromSize, txtViewEndRecordAltitude, txtViewBatteryType;
     private TextView txtViewRecordingTimeOut;
 
-    public AltimeterConfig2Fragment(AltiConfigData cfg) {
+    public AltiConfig2Fragment(AltiConfigData cfg) {
         lAltiCfg = cfg;
     }
 

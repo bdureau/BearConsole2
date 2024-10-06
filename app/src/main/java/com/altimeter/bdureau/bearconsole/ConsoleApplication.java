@@ -34,6 +34,7 @@ import java.util.Locale;
  * @author: boris.dureau@neuf.fr
  **/
 public class ConsoleApplication extends Application {
+    private static final String TAG = "ConsoleApplication";
     private boolean isConnected = false;
     // Store number of flight
     public int NbrOfFlight = 0;
@@ -836,11 +837,11 @@ public class ConsoleApplication extends Application {
                                             if (currentSentence.length > 12) {
                                                 if (currentSentence[12].matches("^-?\\d+(?:\\.\\d+)?")) {
                                                     value12 = Integer.valueOf(currentSentence[12]);
-                                                    Log.d("TAG", value12 +"");
+                                                    Log.d(TAG, value12 +"");
                                                 }
                                                 else {
                                                     value12 = 0;
-                                                    Log.d("TAG2", value12 +"");
+                                                    Log.d(TAG, value12 +"");
                                                 }
                                                 //add the sea altitude
                                                 MyFlight.AddToFlight(value2,
@@ -1028,20 +1029,34 @@ public class ConsoleApplication extends Application {
 
                                         // value 29 useTelemetryPort
                                         if (currentSentence.length > 29) {
-                                            Log.d("useTelemetryPort", "currentSentence:" + currentSentence[29]);
+                                            Log.d(TAG, "currentSentence:" + currentSentence[29]);
                                             if (currentSentence[29].matches("\\d+(?:\\.\\d+)?"))
                                                 AltiCfg.setUseTelemetryPort(Integer.valueOf(currentSentence[29]));
                                             else
                                                 AltiCfg.setUseTelemetryPort(0);
                                         }
 
-                                        // value 30 servoSwitch
-                                        if (currentSentence.length > 30)
-                                            if (currentSentence[30].matches("\\d+(?:\\.\\d+)?"))
-
-                                                AltiCfg.setServoSwitch(Integer.valueOf(currentSentence[30]));
-                                            else
-                                                AltiCfg.setServoSwitch(0);
+                                        if (AltiCfg.getAltimeterName().equals("AltiServo")) {
+                                            // value 30 servoSwitch
+                                            if (currentSentence.length > 30) {
+                                                if (currentSentence[30].matches("\\d+(?:\\.\\d+)?"))
+                                                    AltiCfg.setServoSwitch(Integer.valueOf(currentSentence[30]));
+                                                else
+                                                    AltiCfg.setServoSwitch(0);
+                                            }
+                                        } else {
+                                            if (AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+                                                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                                                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                                                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") &&
+                                                    (AltiCfg.getAltiMajorVersion() == 2 && AltiCfg.getAltiMinorVersion() > 0)) {
+                                                // value 30 ESP32 bluetooth name
+                                                if (currentSentence.length > 30) {
+                                                    Log.d(TAG, "currentSentence:" + currentSentence[30]);
+                                                    AltiCfg.setBluetoothName(currentSentence[30]);
+                                                }
+                                            }
+                                        }
 
                                         // Value 31 contains the servo 1 On position
                                         if (currentSentence.length > 31)

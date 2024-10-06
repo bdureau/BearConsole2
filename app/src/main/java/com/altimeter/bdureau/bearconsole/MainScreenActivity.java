@@ -33,7 +33,7 @@ import android.widget.Toast;
 import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
 import com.altimeter.bdureau.bearconsole.Flight.FlightListActivity;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
-import com.altimeter.bdureau.bearconsole.config.AltimeterTabConfigActivity;
+import com.altimeter.bdureau.bearconsole.config.AltiTabConfigActivity;
 import com.altimeter.bdureau.bearconsole.config.AppTabConfigActivity;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
@@ -195,7 +195,7 @@ public class MainScreenActivity extends AppCompatActivity {
         btnAltiSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainScreenActivity.this, AltimeterTabConfigActivity.class);
+                Intent i = new Intent(MainScreenActivity.this, AltiTabConfigActivity.class);
                 //Change the activity.
                 startActivity(i);
             }
@@ -861,10 +861,13 @@ public class MainScreenActivity extends AppCompatActivity {
             Add("AltiDuo", "1.9");
             Add("AltiMultiESP32", "1.28");
             Add("AltiMultiESP32", "2.0");
-            //Add("AltiMultiESP32_accel", "1.28");
+            Add("AltiMultiESP32", "2.1");
             Add("AltiMultiESP32_accel", "2.0");
             Add("AltiMultiESP32_accel_375", "2.0");
             Add("AltiMultiESP32_accel_345", "2.0");
+            Add("AltiMultiESP32_accel", "2.1");
+            Add("AltiMultiESP32_accel_375", "2.1");
+            Add("AltiMultiESP32_accel_345", "2.1");
             Add("TTGOBearAltimeter", "0.4");
 
         }

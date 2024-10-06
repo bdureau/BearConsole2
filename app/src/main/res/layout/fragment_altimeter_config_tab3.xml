@@ -137,12 +137,34 @@
         android:textIsSelectable="false"
         android:textSize="13sp" />
 
+    <TextView
+        android:id="@+id/txtBluetoothName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtBeepFrequency"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:text="Bluetooth Name"
+        />
+
+    <EditText
+        android:id="@+id/editBluetoothName"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/txtBluetoothName"
+        android:inputType="text"
+        android:singleLine="true"
+        android:text="Rocket"
+        android:textAlignment="textEnd"
+        android:textIsSelectable="false"
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/txtServoStayOn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtBeepFrequency"
+        android:layout_below="@+id/txtBluetoothName"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:text="@string/servo_stay_on"

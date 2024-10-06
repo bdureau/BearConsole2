@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 
-public class AltimeterConfig4Fragment extends Fragment {
-    private static final String TAG = "AltimeterConfig4Fragment";
+public class AltiConfig4Fragment extends Fragment {
+    private static final String TAG = "AltiConfig4Fragment";
 
     private EditText servo1OnPos, servo2OnPos, servo3OnPos, servo4OnPos;
     private EditText servo1OffPos, servo2OffPos, servo3OffPos, servo4OffPos;
@@ -24,7 +24,7 @@ public class AltimeterConfig4Fragment extends Fragment {
     private boolean ViewCreated = false;
     private AltiConfigData lAltiCfg;
 
-    public AltimeterConfig4Fragment(AltiConfigData cfg) {
+    public AltiConfig4Fragment(AltiConfigData cfg) {
         lAltiCfg = cfg;
     }
     public boolean isViewCreated() {

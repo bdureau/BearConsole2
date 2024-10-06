@@ -134,7 +134,7 @@
              android:label="@string/select_bluetooth_device"
              android:screenOrientation="portrait" />
          <activity
-             android:name=".config.AltimeterTabConfigActivity"
+             android:name=".config.AltiTabConfigActivity"
              android:label="@string/altimeter_config"
              android:screenOrientation="portrait" />
          <activity

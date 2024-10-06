@@ -19,8 +19,8 @@ import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.github.florent37.viewtooltip.ViewTooltip;
 
-public class AltimeterConfig1Fragment extends Fragment {
-    private static final String TAG = "AltimeterConfig1Fragment";
+public class AltiConfig1Fragment extends Fragment {
+    private static final String TAG = "AltiConfig1Fragment";
     private AltiConfigData lAltiCfg;
 
     private Spinner dropdownOut1, dropdownOut2, dropdownOut3, dropdownOut4;
@@ -31,7 +31,7 @@ public class AltimeterConfig1Fragment extends Fragment {
 
     private boolean ViewCreated = false;
 
-    public AltimeterConfig1Fragment(AltiConfigData cfg) {
+    public AltiConfig1Fragment(AltiConfigData cfg) {
         lAltiCfg = cfg;
     }
 

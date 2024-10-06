@@ -18,19 +18,19 @@ import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.github.florent37.viewtooltip.ViewTooltip;
 
-public class AltimeterConfig3Fragment extends Fragment {
-    private static final String TAG = "AltimeterConfig3Fragment";
+public class AltiConfig3Fragment extends Fragment {
+    private static final String TAG = "AltiConfig3Fragment";
     private TextView altiName, txtAltimeterID;
     private Spinner dropdownUnits, dropdownBipMode, dropdownUseTelemetryPort;
-    private EditText Freq, altiID;
+    private EditText Freq, altiID, bluetoothName;
     private Spinner dropdownServoStayOn, dropdownServoSwitch;
-    private TextView txtServoStayOn, txtServoSwitch;
+    private TextView txtServoStayOn, txtServoSwitch, txtBluetoothName;
 
     //txtAltimeterID
     //editTxtAltiIDValue
     private AltiConfigData lAltiCfg = null;
 
-    public AltimeterConfig3Fragment(AltiConfigData cfg) {
+    public AltiConfig3Fragment(AltiConfigData cfg) {
         lAltiCfg = cfg;
     }
 
@@ -118,6 +118,8 @@ public class AltimeterConfig3Fragment extends Fragment {
         this.dropdownServoSwitch.setSelection(ServoSwitch);
     }
 
+    public String getBluetoothName() { return this.bluetoothName.getText().toString();}
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -200,6 +202,24 @@ public class AltimeterConfig3Fragment extends Fragment {
             txtServoStayOn.setVisibility(View.INVISIBLE);
         }
 
+        //bluetoothName
+        //Altimeter name
+        txtBluetoothName = (TextView) view.findViewById(R.id.txtBluetoothName);
+        bluetoothName = (EditText) view.findViewById(R.id.editBluetoothName);
+        if ((lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
+                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
+                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) &&
+                (lAltiCfg.getAltiMajorVersion() >= 2 && lAltiCfg.getAltiMinorVersion() > 0)) {
+            Log.d( TAG, "Version greater  than 2.0");
+            txtBluetoothName.setVisibility(View.VISIBLE);
+            bluetoothName.setVisibility(View.VISIBLE);
+        } else {
+            txtBluetoothName.setVisibility(View.INVISIBLE);
+            bluetoothName.setVisibility(View.INVISIBLE);
+        }
+
+
         //ServoSwitch
         dropdownServoSwitch = (Spinner) view.findViewById(R.id.spinnerServoSwitch);
         dropdownServoSwitch.setAdapter(adapter3);
@@ -215,13 +235,14 @@ public class AltimeterConfig3Fragment extends Fragment {
         }
 
         txtAltimeterID = (TextView) view.findViewById(R.id.txtAltimeterID);
-        if (lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+        if ((lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
                 lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
                 lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) {
+                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) &&
+                (lAltiCfg.getAltiMajorVersion() <= 2 && lAltiCfg.getAltiMinorVersion() < 1)) {
+            Log.d( TAG, "Version less than 2.1");
             txtAltimeterID.setVisibility(View.VISIBLE);
             altiID.setVisibility(View.VISIBLE);
-
         } else {
             txtAltimeterID.setVisibility(View.INVISIBLE);
             altiID.setVisibility(View.INVISIBLE);
@@ -238,6 +259,7 @@ public class AltimeterConfig3Fragment extends Fragment {
                     lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
                     lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) {
                 altiID.setText(String.valueOf(lAltiCfg.getAltiID()));
+                bluetoothName.setText(lAltiCfg.getBluetoothName());
             }
             if (lAltiCfg.getAltimeterName().equals("AltiServo")) {
                 dropdownServoStayOn.setSelection(lAltiCfg.getServoStayOn());
