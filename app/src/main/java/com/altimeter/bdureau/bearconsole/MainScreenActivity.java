@@ -54,6 +54,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -850,34 +851,38 @@ public class MainScreenActivity extends AppCompatActivity {
             hm =null;
             hm = new HashMap();
             //init compatible versions
-            Add("AltiMulti", "1.28");
-            Add("AltiMulti", "2.0");
-            Add("AltiMultiV2", "1.28");
-            Add("AltiMultiV2", "2.0");
-            Add("AltiMultiSTM32", "1.28");
-            Add("AltiMultiSTM32", "2.0");
+            //Add("AltiMulti", "1.28");
+            Add("AltiMulti", "1.28,2.0");
+            //Add("AltiMultiV2", "1.28");
+            Add("AltiMultiV2", "1.28,2.0");
+            Add("AltiMultiSTM32", "1.28,2.0");
+            //Add("AltiMultiSTM32", "2.0");
             Add("AltiServo", "1.6");
             Add("AltiGPS", "1.7");
             Add("AltiDuo", "1.9");
-            Add("AltiMultiESP32", "1.28");
-            Add("AltiMultiESP32", "2.0");
-            Add("AltiMultiESP32", "2.1");
-            Add("AltiMultiESP32_accel", "2.0");
+            //Add("AltiMultiESP32", "1.28");
+            //Add("AltiMultiESP32", "2.0");
+            Add("AltiMultiESP32", "1.28,2.0,2.1");
+            /*Add("AltiMultiESP32_accel", "2.0");
             Add("AltiMultiESP32_accel_375", "2.0");
-            Add("AltiMultiESP32_accel_345", "2.0");
-            Add("AltiMultiESP32_accel", "2.1");
-            Add("AltiMultiESP32_accel_375", "2.1");
-            Add("AltiMultiESP32_accel_345", "2.1");
+            Add("AltiMultiESP32_accel_345", "2.0");*/
+            Add("AltiMultiESP32_accel", "2.0,2.1");
+            Add("AltiMultiESP32_accel_375", "2.0,2.1");
+            Add("AltiMultiESP32_accel_345", "2.0,2.1");
             Add("TTGOBearAltimeter", "0.4");
 
         }
         public void Add ( String altiName, String verList) {
             hm.put(altiName,verList);
+            //Log.d(TAG, altiName + verList);
         }
 
         public boolean IsCompatible(String altiName,String ver) {
             boolean compatible = false;
             String compatFirmwareList="";
+
+            Log.d(TAG, "Check compatibility");
+
             Set set = hm.entrySet();
 
             // Get an iterator
@@ -885,16 +890,23 @@ public class MainScreenActivity extends AppCompatActivity {
             while(i.hasNext()) {
                 Map.Entry me = (Map.Entry)i.next();
 
+                Log.d(TAG,"key:" + me.getKey().toString());
                 if (me.getKey().equals(altiName)){
+                    Log.d(TAG,"name:" +altiName);
                     compatFirmwareList = me.getValue().toString();
+                    Log.d(TAG,"version:" +me.getValue().toString());
                     break;
+
                 }
             }
             String firmwareVersion[] = compatFirmwareList.split(",");
             for (int j = 0; j < firmwareVersion.length; j++ ){
-                if(firmwareVersion[j].equals(ver))
+                if(firmwareVersion[j].equals(ver)) {
                     compatible = true;
+                    Log.d(TAG,"compatible");
+                }
             }
+
             return compatible;
         }
     }
