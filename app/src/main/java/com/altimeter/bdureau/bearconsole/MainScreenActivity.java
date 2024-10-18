@@ -273,7 +273,6 @@ public class MainScreenActivity extends AppCompatActivity {
                 } else {
                     i = new Intent(MainScreenActivity.this, RocketTrackGoogleMap.class);
                 }
-
                 startActivity(i);
             }
         });
