@@ -110,8 +110,10 @@ public class AltiTabConfigActivity extends AppCompatActivity {
         configPage1 = new AltiConfig1Fragment(AltiCfg);
         configPage2 = new AltiConfig2Fragment(AltiCfg);
         configPage3 = new AltiConfig3Fragment(AltiCfg);
-        adapter.addFragment(configPage1, "TAB1");
-        adapter.addFragment(configPage2, "TAB2");
+        if (!myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
+            adapter.addFragment(configPage1, "TAB1");
+            adapter.addFragment(configPage2, "TAB2");
+        }
         adapter.addFragment(configPage3, "TAB3");
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
@@ -301,11 +303,13 @@ public class AltiTabConfigActivity extends AppCompatActivity {
             }
             AltiCfg.setAltiID(configPage3.getAltiID());
             AltiCfg.setUseTelemetryPort(configPage3.getDropdownUseTelemetryPort());
-            if (AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+            if ((AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
                     AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
                     AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
                     AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") &&
-                    (AltiCfg.getAltiMajorVersion() == 2 && AltiCfg.getAltiMinorVersion() > 0)) {
+                    (AltiCfg.getAltiMajorVersion() == 2 && AltiCfg.getAltiMinorVersion() > 0)) ||
+                    (AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") &&
+                            (AltiCfg.getAltiMajorVersion() == 0 && AltiCfg.getAltiMinorVersion() > 4))) {
                     AltiCfg.setBluetoothName(configPage3.getBluetoothName());
             }
         }
@@ -369,7 +373,7 @@ public class AltiTabConfigActivity extends AppCompatActivity {
                 nbrOfDrogue++;
         }
         //if (myBT.getAppConf().getAllowMultipleDrogueMain().equals("false")) {
-        if (!myBT.getAppConf().getAllowMultipleDrogueMain()) {
+        if (!myBT.getAppConf().getAllowMultipleDrogueMain() && ! myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
             if (nbrOfMain > 1) {
                 //Only one main is allowed Please review your config
                 msg(getResources().getString(R.string.msg1));
@@ -466,12 +470,15 @@ public class AltiTabConfigActivity extends AppCompatActivity {
         Log.d("UseTelemetryPort", "before getUseTelemetryPort" );
         SendParam("p,26,"+AltiCfg.getUseTelemetryPort());
         Log.d("UseTelemetryPort", "after getUseTelemetryPort" );
-        if (AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+        if ((AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") &&
-                (AltiCfg.getAltiMajorVersion() >= 2 && AltiCfg.getAltiMinorVersion() > 0)) {
+                (AltiCfg.getAltiMajorVersion() >= 2 && AltiCfg.getAltiMinorVersion() > 0) ||
+                (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") &&
+                        (AltiCfg.getAltiMajorVersion() >= 0 && AltiCfg.getAltiMinorVersion() > 4)))) {
             SendParam("z,"+AltiCfg.getBluetoothName());
+            Log.d(TAG, "BluetoothName: " +AltiCfg.getBluetoothName() );
         }
 
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {

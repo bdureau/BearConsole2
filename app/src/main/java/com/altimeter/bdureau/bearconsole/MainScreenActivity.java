@@ -512,7 +512,7 @@ public class MainScreenActivity extends AppCompatActivity {
             }
 
             if(myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")){
-                setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
+                //setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
             }
 
             text_connect.setText(getResources().getString(R.string.disconnect));
@@ -868,7 +868,7 @@ public class MainScreenActivity extends AppCompatActivity {
             Add("AltiMultiESP32_accel", "2.0,2.1");
             Add("AltiMultiESP32_accel_375", "2.0,2.1");
             Add("AltiMultiESP32_accel_345", "2.0,2.1");
-            Add("TTGOBearAltimeter", "0.4");
+            Add("TTGOBearAltimeter", "0.4,0.5");
 
         }
         public void Add ( String altiName, String verList) {

@@ -26,8 +26,6 @@ public class AltiConfig3Fragment extends Fragment {
     private Spinner dropdownServoStayOn, dropdownServoSwitch;
     private TextView txtServoStayOn, txtServoSwitch, txtBluetoothName;
 
-    //txtAltimeterID
-    //editTxtAltiIDValue
     private AltiConfigData lAltiCfg = null;
 
     public AltiConfig3Fragment(AltiConfigData cfg) {
@@ -206,11 +204,13 @@ public class AltiConfig3Fragment extends Fragment {
         //Altimeter name
         txtBluetoothName = (TextView) view.findViewById(R.id.txtBluetoothName);
         bluetoothName = (EditText) view.findViewById(R.id.editBluetoothName);
-        if ((lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+        if (((lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
                 lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
                 lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
                 lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) &&
-                (lAltiCfg.getAltiMajorVersion() >= 2 && lAltiCfg.getAltiMinorVersion() > 0)) {
+                (lAltiCfg.getAltiMajorVersion() >= 2 && lAltiCfg.getAltiMinorVersion() > 0)) ||
+                (( lAltiCfg.getAltimeterName().equals("TTGOBearAltimeter")) &&
+                        (lAltiCfg.getAltiMajorVersion() >= 0 && lAltiCfg.getAltiMinorVersion() > 4))) {
             Log.d( TAG, "Version greater  than 2.0");
             txtBluetoothName.setVisibility(View.VISIBLE);
             bluetoothName.setVisibility(View.VISIBLE);
@@ -254,10 +254,12 @@ public class AltiConfig3Fragment extends Fragment {
             dropdownBipMode.setSelection(lAltiCfg.getBeepingMode());
             dropdownUnits.setSelection(lAltiCfg.getUnits());
             Freq.setText(String.valueOf(lAltiCfg.getBeepingFrequency()));
-            if (lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+            if ((lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
                     lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
                     lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) {
+                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) ||
+                    (( lAltiCfg.getAltimeterName().equals("TTGOBearAltimeter")) &&
+                            (lAltiCfg.getAltiMajorVersion() >= 0 && lAltiCfg.getAltiMinorVersion() > 4))) {
                 altiID.setText(String.valueOf(lAltiCfg.getAltiID()));
                 bluetoothName.setText(lAltiCfg.getBluetoothName());
             }

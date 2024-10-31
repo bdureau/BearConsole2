@@ -35,35 +35,45 @@ import java.util.Locale;
  **/
 public class ConsoleApplication extends Application {
     private static final String TAG = "ConsoleApplication";
-    private boolean isConnected = false;
+    private static boolean DataReady = false;
     // Store number of flight
     public int NbrOfFlight = 0;
     public int currentFlightNbr = 0;
+    public long lastReceived = 0;
+    public String commandRet = "";
+    public String lastReadResult;
+    public String lastData;
+    private boolean isConnected = false;
     private FlightData MyFlight = null;
     private AltiConfigData AltiCfg = null;
     private TestTrame testTrame = null;
-
-    private static boolean DataReady = false;
-    public long lastReceived = 0;
-    public String commandRet = "";
-
     private double FEET_IN_METER = 1;
     private boolean exit = false;
     private GlobalConfig AppConf = null;
     private String address, moduleName;
     private String myTypeOfConnection = "bluetooth";// "USB";//"bluetooth";
-
     private BluetoothConnection BTCon = null;
     private UsbConnection UsbCon = null;
-
     private Handler mHandler;
+
+    public static Integer generateCheckSum(String value) {
+
+        byte[] data = value.getBytes();
+        long checksum = 0L;
+
+        for (byte b : data) {
+            checksum += b;
+        }
+
+        checksum = checksum % 256;
+
+        return new Long(checksum).intValue();
+
+    }
 
     public void setHandler(Handler mHandler) {
         this.mHandler = mHandler;
     }
-
-    public String lastReadResult;
-    public String lastData;
 
     @Override
     public void onCreate() {
@@ -80,20 +90,20 @@ public class ConsoleApplication extends Application {
         myTypeOfConnection = AppConf.getConnectionTypeValue();
     }
 
-    public void setConnectionType(String TypeOfConnection) {
-        myTypeOfConnection = TypeOfConnection;
-    }
-
     public String getConnectionType() {
         return myTypeOfConnection;
     }
 
-    public void setAddress(String bTAddress) {
-        address = bTAddress;
+    public void setConnectionType(String TypeOfConnection) {
+        myTypeOfConnection = TypeOfConnection;
     }
 
     public String getAddress() {
         return address;
+    }
+
+    public void setAddress(String bTAddress) {
+        address = bTAddress;
     }
 
     public String getModuleName() {
@@ -114,14 +124,6 @@ public class ConsoleApplication extends Application {
         return tmpIn;
     }
 
-    public void setConnected(boolean Connected) {
-        if (myTypeOfConnection.equals("bluetooth")) {
-            BTCon.setBTConnected(Connected);
-        } else {
-            UsbCon.setUSBConnected(Connected);
-        }
-    }
-
     public UsbConnection getUsbCon() {
         return UsbCon;
     }
@@ -136,24 +138,32 @@ public class ConsoleApplication extends Application {
         return ret;
     }
 
-    public void setAltiConfigData(AltiConfigData configData) {
-        AltiCfg = configData;
+    public void setConnected(boolean Connected) {
+        if (myTypeOfConnection.equals("bluetooth")) {
+            BTCon.setBTConnected(Connected);
+        } else {
+            UsbCon.setUSBConnected(Connected);
+        }
     }
 
     public AltiConfigData getAltiConfigData() {
         return AltiCfg;
     }
 
+    public void setAltiConfigData(AltiConfigData configData) {
+        AltiCfg = configData;
+    }
+
     public TestTrame getTestTrame() {
         return testTrame;
     }
 
-    public void setFlightData(FlightData fData) {
-        MyFlight = fData;
-    }
-
     public FlightData getFlightData() {
         return MyFlight;
+    }
+
+    public void setFlightData(FlightData fData) {
+        MyFlight = fData;
     }
 
     public int getNbrOfFlight() {
@@ -194,18 +204,17 @@ public class ConsoleApplication extends Application {
             state = UsbCon.connect(usbManager, device, baudRate);
             setConnectionType("usb");
 
-            for (int i =0; i < 3; i++) {
+            for (int i = 0; i < 3; i++) {
                 if (isConnectionValid()) {
                     state = true;
                     break;
                 }
             }
-            if(!state)
+            if (!state)
                 Disconnect();
         }
         return state;
     }
-
 
     public boolean isConnectionValid() {
         boolean valid = false;
@@ -289,7 +298,7 @@ public class ConsoleApplication extends Application {
 
     public void initFlightData() {
         MyFlight = new FlightData(this, AltiCfg.getAltimeterName());
-        if (AppConf.getUnits()== 0) {
+        if (AppConf.getUnits() == 0) {
             //meters
             FEET_IN_METER = 1;
         } else {
@@ -298,11 +307,9 @@ public class ConsoleApplication extends Application {
 
     }
 
-
     public void setExit(boolean b) {
         this.exit = b;
     }
-
 
     public long calculateSentenceCHK(String currentSentence[]) {
         long chk = 0;
@@ -314,21 +321,6 @@ public class ConsoleApplication extends Application {
         //Log.d("calculateSentenceCHK", sentence);
         chk = generateCheckSum(sentence);
         return chk;
-    }
-
-    public static Integer generateCheckSum(String value) {
-
-        byte[] data = value.getBytes();
-        long checksum = 0L;
-
-        for (byte b : data) {
-            checksum += b;
-        }
-
-        checksum = checksum % 256;
-
-        return new Long(checksum).intValue();
-
     }
 
     public String ReadResult(long timeout) {
@@ -532,7 +524,7 @@ public class ConsoleApplication extends Application {
                                                         mHandler.obtainMessage(31, String.valueOf(0)).sendToTarget();
                                             }
 
-                                            if(AltiCfg.getAltimeterName().equals("TTGOBearAltimeter")) {
+                                            if (AltiCfg.getAltimeterName().equals("TTGOBearAltimeter")) {
                                                 // Value 18 contains the accel345 X
                                                 if (currentSentence.length > 18)
                                                     if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
@@ -683,7 +675,7 @@ public class ConsoleApplication extends Application {
                                                         (float) (value6) / 100, flightName, 5);
                                             }
                                         }
-                                        if(AltiCfg.getAltimeterName().equals("TTGOBearAltimeter")){
+                                        if (AltiCfg.getAltimeterName().equals("TTGOBearAltimeter")) {
                                             //Accel345 X
                                             if (currentSentence.length > 7) {
                                                 if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
@@ -692,7 +684,7 @@ public class ConsoleApplication extends Application {
                                                     value7 = 0;
                                                 //add the accel X
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value7)/(float)1000, flightName, 6);
+                                                        (float) (value7) / (float) 1000, flightName, 6);
                                             }
                                             //Accel345 Y
                                             if (currentSentence.length > 8) {
@@ -702,7 +694,7 @@ public class ConsoleApplication extends Application {
                                                     value8 = 0;
                                                 //add the accel Y
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value8)/(float)1000, flightName, 7);
+                                                        (float) (value8) / (float) 1000, flightName, 7);
                                             }
                                             //Accel345 Z
                                             if (currentSentence.length > 9) {
@@ -712,7 +704,7 @@ public class ConsoleApplication extends Application {
                                                     value9 = 0;
                                                 //add the accel Z
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value9)/(float)1000, flightName, 8);
+                                                        (float) (value9) / (float) 1000, flightName, 8);
                                             }
                                         }
                                         // AltiMultiESP32_accel has 2 accelerometers
@@ -727,7 +719,7 @@ public class ConsoleApplication extends Application {
                                                     value7 = 0;
                                                 //add the accel X
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value7)/(float)1000, flightName, 6);
+                                                        (float) (value7) / (float) 1000, flightName, 6);
                                             }
                                             //Accel375 Y
                                             if (currentSentence.length > 8) {
@@ -737,7 +729,7 @@ public class ConsoleApplication extends Application {
                                                     value8 = 0;
                                                 //add the accel Y
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value8)/(float)1000, flightName, 7);
+                                                        (float) (value8) / (float) 1000, flightName, 7);
                                             }
                                             //Accel375 Z
                                             if (currentSentence.length > 9) {
@@ -747,7 +739,7 @@ public class ConsoleApplication extends Application {
                                                     value9 = 0;
                                                 //add the accel Z
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value9)/(float)1000, flightName, 8);
+                                                        (float) (value9) / (float) 1000, flightName, 8);
                                             }
                                             //Accel345 X
                                             if (currentSentence.length > 10) {
@@ -757,7 +749,7 @@ public class ConsoleApplication extends Application {
                                                     value10 = 0;
                                                 //add the accel X
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value10)/(float)1000, flightName, 9);
+                                                        (float) (value10) / (float) 1000, flightName, 9);
                                             }
                                             //Accel345 Y
                                             if (currentSentence.length > 11) {
@@ -767,7 +759,7 @@ public class ConsoleApplication extends Application {
                                                     value11 = 0;
                                                 //add the accel Y
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value11)/(float)1000, flightName, 10);
+                                                        (float) (value11) / (float) 1000, flightName, 10);
                                             }
                                             //Accel345 Z
                                             if (currentSentence.length > 12) {
@@ -777,7 +769,7 @@ public class ConsoleApplication extends Application {
                                                     value12 = 0;
                                                 //add the accel Z
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value12)/(float)1000, flightName, 11);
+                                                        (float) (value12) / (float) 1000, flightName, 11);
                                             }
                                         }
                                         //Alti GPS does a lot more !!!!
@@ -790,7 +782,7 @@ public class ConsoleApplication extends Application {
                                                     value7 = 0;
                                                 //add the latitude
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value7)/100000, flightName, 6);
+                                                        (float) (value7) / 100000, flightName, 6);
                                             }
 
                                             //longitude
@@ -801,7 +793,7 @@ public class ConsoleApplication extends Application {
                                                     value8 = 0;
                                                 //add the longitude
                                                 MyFlight.AddToFlight(value2,
-                                                        (float) (value8)/100000, flightName, 7);
+                                                        (float) (value8) / 100000, flightName, 7);
                                             }
                                             // GPS altitude
                                             if (currentSentence.length > 9) {
@@ -837,11 +829,10 @@ public class ConsoleApplication extends Application {
                                             if (currentSentence.length > 12) {
                                                 if (currentSentence[12].matches("^-?\\d+(?:\\.\\d+)?")) {
                                                     value12 = Integer.valueOf(currentSentence[12]);
-                                                    Log.d(TAG, value12 +"");
-                                                }
-                                                else {
+                                                    Log.d(TAG, value12 + "");
+                                                } else {
                                                     value12 = 0;
-                                                    Log.d(TAG, value12 +"");
+                                                    Log.d(TAG, value12 + "");
                                                 }
                                                 //add the sea altitude
                                                 MyFlight.AddToFlight(value2,
@@ -1045,11 +1036,13 @@ public class ConsoleApplication extends Application {
                                                     AltiCfg.setServoSwitch(0);
                                             }
                                         } else {
-                                            if (AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
+                                            if ((AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
                                                     AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
                                                     AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
                                                     AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") &&
-                                                    (AltiCfg.getAltiMajorVersion() == 2 && AltiCfg.getAltiMinorVersion() > 0)) {
+                                                            (AltiCfg.getAltiMajorVersion() == 2 && AltiCfg.getAltiMinorVersion() > 0)) ||
+                                                    (AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") &&
+                                                            (AltiCfg.getAltiMajorVersion() == 0 && AltiCfg.getAltiMinorVersion() > 4))) {
                                                 // value 30 ESP32 bluetooth name
                                                 if (currentSentence.length > 30) {
                                                     Log.d(TAG, "currentSentence:" + currentSentence[30]);
@@ -1178,21 +1171,20 @@ public class ConsoleApplication extends Application {
         return myMessage;
     }
 
-    public void setDataReady(boolean value) {
-        DataReady = value;
-    }
-
     public boolean getDataReady() {
         return DataReady;
     }
 
+    public void setDataReady(boolean value) {
+        DataReady = value;
+    }
 
     public Configuration getAppLocal() {
 
         Locale locale = null;
-        if (AppConf.getApplicationLanguage()==1) {
+        if (AppConf.getApplicationLanguage() == 1) {
             locale = Locale.FRENCH;//new Locale("fr_FR");
-        } else if (AppConf.getApplicationLanguage()==2) {
+        } else if (AppConf.getApplicationLanguage() == 2) {
             locale = Locale.ENGLISH;//new Locale("en_US");
         } else {
             locale = Locale.getDefault();
@@ -1219,20 +1211,20 @@ public class ConsoleApplication extends Application {
         private String currentTrame = "";
         private boolean trameStatus = false;
 
-        public void setCurrentTrame(String trame) {
-            currentTrame = trame;
-        }
-
         public String getCurrentTrame() {
             return currentTrame;
         }
 
-        public void setTrameStatus(boolean val) {
-            trameStatus = val;
+        public void setCurrentTrame(String trame) {
+            currentTrame = trame;
         }
 
         public boolean getTrameStatus() {
             return trameStatus;
+        }
+
+        public void setTrameStatus(boolean val) {
+            trameStatus = val;
         }
     }
 }
