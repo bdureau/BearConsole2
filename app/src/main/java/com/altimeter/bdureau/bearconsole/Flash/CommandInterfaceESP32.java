@@ -36,6 +36,7 @@ public class CommandInterfaceESP32 {
     private static final int ESP8266 = 0x8266;
     public static final int ESP32 = 0x32;
     private static final int ESP32S2 = 0x3252;
+    public static final int ESP32S3 = 0x3253;
     private static final int ESP32_DATAREGVALUE = 0x15122500;
     private static final int ESP8266_DATAREGVALUE = 0x00062000;
     private static final int ESP32S2_DATAREGVALUE = 0x500;
@@ -526,6 +527,9 @@ public class CommandInterfaceESP32 {
             ret = ESP32;
         if (chipMagicValue == 0x000007c6)
             ret = ESP32S2;
+        if (chipMagicValue == 0x9)
+            ret = ESP32S3;
+
 
         return ret;
     }

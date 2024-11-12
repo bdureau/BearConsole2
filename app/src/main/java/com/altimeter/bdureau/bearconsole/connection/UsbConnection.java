@@ -1,7 +1,7 @@
 package com.altimeter.bdureau.bearconsole.connection;
 /**
  *
- *   @description: This is the USB connection class. Not that the input strean has been overwritten
+ *   @description: This is the USB connection class. Not that the input stream has been overwritten
  *   from the USB library to fix a bug
  *
  *   @author: boris.dureau@neuf.fr

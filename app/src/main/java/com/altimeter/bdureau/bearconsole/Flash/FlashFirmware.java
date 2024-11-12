@@ -747,6 +747,10 @@ public class FlashFirmware extends AppCompatActivity {
             if (chip == cmd.ESP32)
                 //dialogAppend("Chip is ESP32");
                 tvAppend(tvRead, "Chip is ESP32\n");
+            else if (chip == cmd.ESP32S3)
+                tvAppend(tvRead, "Chip is ESP32S3\n");
+            else
+                tvAppend(tvRead, "unknown Chip\n");
 
             tvAppend(tvRead, itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()]);
             // now that we have initialized the chip we can change the baud rate to 921600
@@ -755,21 +759,41 @@ public class FlashFirmware extends AppCompatActivity {
             cmd.changeBaudeRate();
             cmd.init();
 
-            // Those are the files you want to flush
-            dialogAppend("Flashing file 1 0xe000");
-            tvAppend(tvRead,fileName[0]+"\n");
-            tvAppend(tvRead, "Chip is ESP32\n");
-            cmd.flashData(readFile(file1), 0xe000, 0);
-            dialogAppend("Flashing file 2 0x1000");
-            tvAppend(tvRead,fileName[1]+"\n");
-            cmd.flashData(readFile(file2), 0x1000, 0);
+            if(chip == cmd.ESP32) {
+                // Those are the files you want to flash
+                dialogAppend("Flashing file 1 0xe000");
+                tvAppend(tvRead,fileName[0]+"\n");
+                tvAppend(tvRead, "Chip is ESP32\n");
+                cmd.flashData(readFile(file1), 0xe000, 0);
+                dialogAppend("Flashing file 2 0x1000");
+                tvAppend(tvRead,fileName[1]+"\n");
+                cmd.flashData(readFile(file2), 0x1000, 0);
 
-            dialogAppend("Flashing file 3 0x10000");
-            tvAppend(tvRead,fileName[2]+"\n");
-            cmd.flashData(readFile(file3), 0x10000, 0);
-            dialogAppend("Flashing file 4 0x8000");
-            tvAppend(tvRead,fileName[3]+"\n");
-            cmd.flashData(readFile(file4), 0x8000, 0);
+                dialogAppend("Flashing file 3 0x10000");
+                tvAppend(tvRead,fileName[2]+"\n");
+                cmd.flashData(readFile(file3), 0x10000, 0);
+                dialogAppend("Flashing file 4 0x8000");
+                tvAppend(tvRead,fileName[3]+"\n");
+                cmd.flashData(readFile(file4), 0x8000, 0);
+            }
+             else if (chip == cmd.ESP32S3) {
+                // Those are the files you want to flash
+                dialogAppend("Flashing file 1 0xe000");
+                tvAppend(tvRead,fileName[0]+"\n");
+                tvAppend(tvRead, "Chip is ESP32S3\n");
+                cmd.flashData(readFile(file1), 0xe000, 0);
+                dialogAppend("Flashing file 2 0x0");
+                tvAppend(tvRead,fileName[1]+"\n");
+                cmd.flashData(readFile(file2), 0x0, 0);
+
+                dialogAppend("Flashing file 3 0x10000");
+                tvAppend(tvRead,fileName[2]+"\n");
+                cmd.flashData(readFile(file3), 0x10000, 0);
+                dialogAppend("Flashing file 4 0x8000");
+                tvAppend(tvRead,fileName[3]+"\n");
+                cmd.flashData(readFile(file4), 0x8000, 0);
+            }
+
 
             // we have finish flashing lets reset the board so that the program can start
             cmd.reset();
