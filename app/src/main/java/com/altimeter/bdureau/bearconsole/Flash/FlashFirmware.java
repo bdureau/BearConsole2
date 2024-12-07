@@ -94,15 +94,23 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE3 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.1.ino.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE4 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.1.ino.partitions.bin";
 
+    //TTGO BearAltimeter
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE1 = "firmwares/TTGO/boot_app0.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE2 = "firmwares/TTGO/TTGOBearAltimeter0.5.ino.bootloader.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3 = "firmwares/TTGO/TTGOBearAltimeter0.5.ino.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4 = "firmwares/TTGO/TTGOBearAltimeter0.5.ino.partitions.bin";
 
-    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE1 = "firmwares/TTGO_TQ/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE2 = "firmwares/TTGO_TQ/TTGOSimpleAltimeter0.1.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE3 = "firmwares/TTGO_TQ/TTGOSimpleAltimeter0.1.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE4 = "firmwares/TTGO_TQ/TTGOSimpleAltimeter0.1.ino.partitions.bin";
+    //LILYGO T-QT Mini BearAltimeter
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE1 = "firmwares/TTGO_T-QT_Mini/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE2 = "firmwares/TTGO_T-QT_Mini/TTGOMiniBearAltimeter0.2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE3 = "firmwares/TTGO_T-QT_Mini/TTGOMiniBearAltimeter0.2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE4 = "firmwares/TTGO_T-QT_Mini/TTGOMiniBearAltimeter0.2.ino.partitions.bin";
+
+    //LILYGO T-QT Simple
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE1 = "firmwares/TTGO_T-QT/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE2 = "firmwares/TTGO_T-QT/TTGOSimpleAltimeter0.1.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE3 = "firmwares/TTGO_T-QT/TTGOSimpleAltimeter0.1.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE4 = "firmwares/TTGO_T-QT/TTGOSimpleAltimeter0.1.ino.partitions.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
@@ -240,10 +248,10 @@ public class FlashFirmware extends AppCompatActivity {
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ttgo_altimeter_plash_screen315x160, getApplicationContext().getTheme()));
 
                 if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter"))
-                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ttgo_altimeter_plash_screen315x160, getApplicationContext().getTheme()));
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ttgo_t_qt_mini_altimeter, getApplicationContext().getTheme()));
 
                 if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter"))
-                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ttgo_altimeter_plash_screen315x160, getApplicationContext().getTheme()));
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ttgo_t_qt_simple_altimeter, getApplicationContext().getTheme()));
 
             }
 
@@ -425,7 +433,8 @@ public class FlashFirmware extends AppCompatActivity {
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter") ||
-                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter")) {
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter") ||
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter")) {
             tvRead.setText("Loading ESP32 firmware\n");
             recorverFirmware = false;
             new UploadESP32Asyc().execute();
@@ -671,6 +680,12 @@ public class FlashFirmware extends AppCompatActivity {
                 }
                 //uploadESP32(firmwareFileName, mUploadSTM32Callback);
                 else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter")){
+                    firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE1;
+                    firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE2;
+                    firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE3;
+                    firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE4;
+                }
+                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter")){
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE3;
@@ -678,7 +693,6 @@ public class FlashFirmware extends AppCompatActivity {
                 }
                 uploadESP32(firmwareFileName, mUploadSTM32Callback);
             } else {
-
                     firmwareFileName[0] = ASSET_FILE_RESET_ALTIESP32_FILE1;
                     firmwareFileName[1] = ASSET_FILE_RESET_ALTIESP32_FILE2;
                     firmwareFileName[2] = ASSET_FILE_RESET_ALTIESP32_FILE3;
@@ -711,7 +725,6 @@ public class FlashFirmware extends AppCompatActivity {
             file1 = getAssets().open(fileName[0]);
 
         } catch (IOException e) {
-            //e.printStackTrace();
             tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIESP32_FILE1 + "\n");
         } catch (Exception e) {
             e.printStackTrace();
