@@ -99,6 +99,11 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3 = "firmwares/TTGO/TTGOBearAltimeter0.5.ino.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4 = "firmwares/TTGO/TTGOBearAltimeter0.5.ino.partitions.bin";
 
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE1 = "firmwares/TTGO_TQ/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE2 = "firmwares/TTGO_TQ/TTGOSimpleAltimeter0.1.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE3 = "firmwares/TTGO_TQ/TTGOSimpleAltimeter0.1.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE4 = "firmwares/TTGO_TQ/TTGOSimpleAltimeter0.1.ino.partitions.bin";
+
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
     private static final String ASSET_FILE_RESET_ALTISERVO = "recover_firmwares/ResetAltiConfigAltiServo.ino.hex";
@@ -142,7 +147,9 @@ public class FlashFirmware extends AppCompatActivity {
                 "AltiESP32_accelero",
                 "AltiESP32_ADXL345",
                 "AltiESP32_ADXL375",
-                "TTGOAltimeter"
+                "TTGOAltimeter",
+                "TTGOMiniAltimeter",
+                "TTGOSimpleAltimeter"
         };
 
         ArrayAdapter<String> adapterFirmware = new ArrayAdapter<String>(this,
@@ -231,6 +238,13 @@ public class FlashFirmware extends AppCompatActivity {
 
                 if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ttgo_altimeter_plash_screen315x160, getApplicationContext().getTheme()));
+
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter"))
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ttgo_altimeter_plash_screen315x160, getApplicationContext().getTheme()));
+
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter"))
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ttgo_altimeter_plash_screen315x160, getApplicationContext().getTheme()));
+
             }
 
             @Override
@@ -410,7 +424,8 @@ public class FlashFirmware extends AppCompatActivity {
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375") ||
-                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter")) {
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter") ||
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter")) {
             tvRead.setText("Loading ESP32 firmware\n");
             recorverFirmware = false;
             new UploadESP32Asyc().execute();
@@ -654,6 +669,13 @@ public class FlashFirmware extends AppCompatActivity {
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4;
                 }
+                //uploadESP32(firmwareFileName, mUploadSTM32Callback);
+                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter")){
+                    firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE1;
+                    firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE2;
+                    firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE3;
+                    firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE4;
+                }
                 uploadESP32(firmwareFileName, mUploadSTM32Callback);
             } else {
 
@@ -750,7 +772,7 @@ public class FlashFirmware extends AppCompatActivity {
             else if (chip == cmd.ESP32S3)
                 tvAppend(tvRead, "Chip is ESP32S3\n");
             else
-                tvAppend(tvRead, "unknown Chip\n");
+                tvAppend(tvRead, chip + "is an unknown Chip\n");
 
             tvAppend(tvRead, itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()]);
             // now that we have initialized the chip we can change the baud rate to 921600

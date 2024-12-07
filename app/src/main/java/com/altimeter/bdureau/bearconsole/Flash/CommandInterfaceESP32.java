@@ -16,6 +16,8 @@ package com.altimeter.bdureau.bearconsole.Flash;
  *  Also the reset() and enterBootLoader() do not currently work, you will need to enter the bootloader mode using the reset
  *  and boot buttons on the board
  **/
+import android.util.Log;
+
 import com.physicaloid.lib.Physicaloid;
 
 import java.io.ByteArrayOutputStream;
@@ -26,7 +28,7 @@ import java.util.zip.Deflater;
 
 public class CommandInterfaceESP32 {
     public static int ESP_FLASH_BLOCK = 0x400;
-
+    public String TAG = "CommandInterfaceESP32";
     private static final int ESP_ROM_BAUD = 115200;
     private static final int FLASH_WRITE_SIZE = 0x400;
     private static final int STUBLOADER_FLASH_WRITE_SIZE = 0x4000;
@@ -37,6 +39,7 @@ public class CommandInterfaceESP32 {
     public static final int ESP32 = 0x32;
     private static final int ESP32S2 = 0x3252;
     public static final int ESP32S3 = 0x3253;
+    public static final int ESP32C3 = 0x32C3;
     private static final int ESP32_DATAREGVALUE = 0x15122500;
     private static final int ESP8266_DATAREGVALUE = 0x00062000;
     private static final int ESP32S2_DATAREGVALUE = 0x500;
@@ -93,6 +96,7 @@ public class CommandInterfaceESP32 {
     private static final int ERASE_REGION_TIMEOUT_PER_MB = 30000; // timeout (per megabyte) for erasing a region in ms
     private static final int MEM_END_ROM_TIMEOUT = 500;
     private static final int MD5_TIMEOUT_PER_MB = 8000;
+    private static int chip;
 
     private static boolean IS_STUB = false;
 
@@ -132,7 +136,7 @@ public class CommandInterfaceESP32 {
 
         mUpCallback.onInfo("Sync"  + "\n");
         // first do the sync
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             mUpCallback.onInfo("Sync attempt:"  + (i+1)+ "\n");
             if (sync() == 0) {
 
@@ -355,7 +359,7 @@ public class CommandInterfaceESP32 {
      * currently does not work on the Android port
      */
     public void reset() {
-
+        
         mPhysicaloid.setDtrRts(false, true);
         try { Thread.sleep(100); } catch (InterruptedException e) {}
         mPhysicaloid.setDtrRts(true, false);
@@ -501,6 +505,8 @@ public class CommandInterfaceESP32 {
         byte pkt[] = _appendArray(_int_to_bytearray(write_size), _int_to_bytearray(num_blocks));
         pkt = _appendArray(pkt, _int_to_bytearray(FLASH_WRITE_SIZE));
         pkt = _appendArray(pkt, _int_to_bytearray(offset));
+        if(chip == ESP32S3 || chip == ESP32C3 )
+            pkt = _appendArray(pkt, _int_to_bytearray(0));
 
         // System.out.println("params:" +printHex(pkt));
         sendCommand((byte) ESP_FLASH_DEFL_BEGIN, pkt, 0, timeout);
@@ -519,7 +525,7 @@ public class CommandInterfaceESP32 {
      */
     public int detectChip() {
         int chipMagicValue =readRegister(CHIP_DETECT_MAGIC_REG_ADDR);
-
+        Log.d(TAG, "chipMagicValue:" + chipMagicValue);
         int ret = 0;
         if (chipMagicValue == 0xfff0c101)
             ret = ESP8266;
@@ -527,10 +533,11 @@ public class CommandInterfaceESP32 {
             ret = ESP32;
         if (chipMagicValue == 0x000007c6)
             ret = ESP32S2;
-        if (chipMagicValue == 0x9)
+        if ((chipMagicValue == 0x9) | (chipMagicValue == 538052359))
             ret = ESP32S3;
-
-
+        if ((chipMagicValue == 0x6921506f) | (chipMagicValue == 0x1b31506f))
+            ret = ESP32C3;
+        chip = ret;
         return ret;
     }
     ////////////////////////////////////////////////
