@@ -35,9 +35,12 @@ The following altimeters can be used with the BearConsole
 - [Altimulti](https://github.com/bdureau/RocketFlightLogger)(all versions Atmega328, STM32, ESP32 and ESP32 accelero)
 - [AltiGPS](https://github.com/bdureau/AltiGPS)
 - [TTGOBearAltimeter](https://github.com/bdureau/TTGOBearAltimeter)
+- [TTGOMiniBearAltimeter](https://github.com/bdureau/TTGOMiniBearAltimeter)
+- [TTGOSimpleAltimter](https://github.com/bdureau/TTGOSimpleAltimeter)
+  
 # Ability to flash the altimeter latest firmware
 From your Android device you can flash your altimeter with the latest firmware using an OTG cable, this will make sure that the altimeter firmware is compatible with the board you are using.
-Falshing works for all versions Atmega328, STM32 and ESP32 based altimeters.
+Falshing works for all versions Atmega328, STM32, ESP32, ESP32S3 and ESP32C3 based altimeters.
 
 # Getting altimeter boards
 If you need an altimeter board you can can either build it yourself using Arduino compatible hardware or contact me to get a board
