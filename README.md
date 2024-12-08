@@ -40,6 +40,7 @@ The following altimeters can be used with the BearConsole
   
 # Ability to flash the altimeter latest firmware
 From your Android device you can flash your altimeter with the latest firmware using an OTG cable, this will make sure that the altimeter firmware is compatible with the board you are using.
+
 Falshing works for all versions Atmega328, STM32, ESP32, ESP32S3 and ESP32C3 based altimeters.
 
 # Getting altimeter boards
