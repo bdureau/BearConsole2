@@ -2,12 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdk 35
-    /* lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        abortOnError false
-    }*/
+
     aaptOptions {
         cruncherEnabled = false
     }
@@ -15,8 +10,8 @@ android {
         applicationId 'com.altimeter.bdureau.bearconsole'
         minSdk 21
         targetSdk 34
-        versionName '2.0.8'
-        versionCode 33
+        versionName '2.0.9'
+        versionCode 34
         multiDexEnabled true
     }
     buildTypes {

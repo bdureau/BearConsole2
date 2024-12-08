@@ -246,7 +246,6 @@ public class CommandInterfaceESP32 {
         
         for (i = 0; i < 10; i++) {
             numRead = recv(retVal.retValue, retVal.retValue.length, timeout/5);
-            // mUpCallback.onInfo("num read:" + numRead);
             if (numRead == 0) {
                 retVal.retCode = -1;
                 continue;
@@ -281,7 +280,7 @@ public class CommandInterfaceESP32 {
 
         while (true) {
             retval = mPhysicaloid.read(tmpbuf, length);
-            //            retval = mSerial.read(tmpbuf);
+
             if (retval > 0) {
                 System.arraycopy(tmpbuf, 0, buf, totalRetval, retval);
                 totalRetval += retval;
@@ -393,15 +392,15 @@ public class CommandInterfaceESP32 {
      * @name flash_defl_block Send one compressed block of data to program into SPI Flash memory
      */
 
-    public void flash_defl_block(byte data[], int seq, int timeout) {
-
+    public cmdRet flash_defl_block(byte data[], int seq, int timeout) {
+        cmdRet retVal;
         byte pkt[] = _appendArray(_int_to_bytearray(data.length),_int_to_bytearray(seq));
         pkt = _appendArray(pkt,_int_to_bytearray(0));
         pkt = _appendArray(pkt,_int_to_bytearray(0));
         pkt = _appendArray(pkt, data);
 
-        sendCommand((byte) ESP_FLASH_DEFL_DATA, pkt, _checksum(data), timeout);
-
+        retVal = sendCommand((byte) ESP_FLASH_DEFL_DATA, pkt, _checksum(data), timeout);
+        return retVal;
     }
 
     public void init() {
@@ -473,7 +472,12 @@ public class CommandInterfaceESP32 {
                 block = _appendArray(block, tempArray);*/
             }
 
-            flash_defl_block(block, seq, 100);
+            cmdRet retVal = flash_defl_block(block, seq, 100);
+            if (retVal.retCode ==-1) {
+                //This should fix issue when writing is incorrect by trying again
+                mUpCallback.onInfo("Retry because Ret code:" + retVal.retCode +"\n");
+                retVal = flash_defl_block(block, seq, /*block_timeout*/ 100);
+            }
             seq += 1;
             written += block.length;
             position += FLASH_WRITE_SIZE;
@@ -508,7 +512,7 @@ public class CommandInterfaceESP32 {
         if(chip == ESP32S3 || chip == ESP32C3 )
             pkt = _appendArray(pkt, _int_to_bytearray(0));
 
-        // System.out.println("params:" +printHex(pkt));
+
         sendCommand((byte) ESP_FLASH_DEFL_BEGIN, pkt, 0, timeout);
 
         // end time
@@ -522,6 +526,7 @@ public class CommandInterfaceESP32 {
 
     /*
      * Send a command to the chip to find out what type it is
+     * This is usefull for sending specific commands
      */
     public int detectChip() {
         int chipMagicValue =readRegister(CHIP_DETECT_MAGIC_REG_ADDR);
@@ -631,9 +636,7 @@ public class CommandInterfaceESP32 {
             subArray[3] = ret.retValue[8];
 
             retVals = myRet.unpack("I", subArray);
-            //retVals =_bytearray_to_int(ret.retValue[5], ret.retValue[6], ret.retValue[7], ret.retValue[8]);
 
-            //System.out.println(	"retVals:"+retVals);
         } catch (Exception e) {
             e.printStackTrace();
         }
