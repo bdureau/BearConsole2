@@ -48,3 +48,6 @@ If you need an altimeter board you can can either build it yourself using Arduin
 
 # Disclamer
 This is a work in progress project, not all Android devices might not be fully supported (version 6,7,8, 10 and 12 have been tested) but if you find any bugs please make sure that you do report them so that I can fix them. 
+
+# Important note
+The code is using custom versions of the Physicaloid and usbSerial Usb libraries in order to be able to support more Usb devices
