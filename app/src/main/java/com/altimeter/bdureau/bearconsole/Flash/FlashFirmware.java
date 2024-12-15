@@ -112,6 +112,12 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE3 = "firmwares/TTGO_T-QT/TTGOSimpleAltimeter0.1.ino.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE4 = "firmwares/TTGO_T-QT/TTGOSimpleAltimeter0.1.ino.partitions.bin";
 
+    //UltimateAltimeter
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE1 = "firmwares/UltimateAltimeter/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2 = "firmwares/UltimateAltimeter/UltimateAltimeter0.1.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3 = "firmwares/UltimateAltimeter/UltimateAltimeter0.1.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeter0.1.ino.partitions.bin";
+
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
     private static final String ASSET_FILE_RESET_ALTISERVO = "recover_firmwares/ResetAltiConfigAltiServo.ino.hex";
@@ -122,10 +128,7 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_RESET_ALTIESP32_FILE3 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bin";
     private static final String ASSET_FILE_RESET_ALTIESP32_FILE4 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.partitions.bin";
 
-    /*private static final String ASSET_FILE_RESET_TTGO_FILE1 = "recover_firmwares/ESP32/boot_app0.bin";
-    private static final String ASSET_FILE_RESET_TTGO_FILE2 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bootloader.bin";
-    private static final String ASSET_FILE_RESET_TTGO_FILE3 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.bin";
-    private static final String ASSET_FILE_RESET_TTGO_FILE4 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.partitions.bin";*/
+
 
     private String[] itemsBaudRate;
     private String[] itemsFirmwares;
@@ -157,7 +160,8 @@ public class FlashFirmware extends AppCompatActivity {
                 "AltiESP32_ADXL375",
                 "TTGOAltimeter",
                 "TTGOMiniAltimeter",
-                "TTGOSimpleAltimeter"
+                "TTGOSimpleAltimeter",
+                "UltimateAltimeter"
         };
 
         ArrayAdapter<String> adapterFirmware = new ArrayAdapter<String>(this,
@@ -253,6 +257,9 @@ public class FlashFirmware extends AppCompatActivity {
                 if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ttgo_t_qt_simple_altimeter, getApplicationContext().getTheme()));
 
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter"))
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ultimate_altimeter_small, getApplicationContext().getTheme()));
+
             }
 
             @Override
@@ -347,7 +354,10 @@ public class FlashFirmware extends AppCompatActivity {
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375") ||
-                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter")) {
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter") ||
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter") ||
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter")
+        ) {
             recorverFirmware = true;
             new UploadESP32Asyc().execute();
         }
@@ -434,6 +444,7 @@ public class FlashFirmware extends AppCompatActivity {
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter") ||
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter")) {
             tvRead.setText("Loading ESP32 firmware\n");
             recorverFirmware = false;
@@ -690,6 +701,12 @@ public class FlashFirmware extends AppCompatActivity {
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE4;
+                }
+                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter")){
+                    firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE1;
+                    firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2;
+                    firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3;
+                    firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4;
                 }
                 uploadESP32(firmwareFileName, mUploadSTM32Callback);
             } else {
