@@ -37,7 +37,7 @@ The following altimeters can be used with the BearConsole
 - [TTGOBearAltimeter](https://github.com/bdureau/TTGOBearAltimeter)
 - [TTGOMiniBearAltimeter](https://github.com/bdureau/TTGOMiniBearAltimeter)
 - [TTGOSimpleAltimter](https://github.com/bdureau/TTGOSimpleAltimeter)
-- [UltimateAltimter](https://github.com/bdureau/UltimateAltimeter)
+- [UltimateAltimeter](https://github.com/bdureau/UltimateAltimeter)
   
 # Ability to flash the altimeter latest firmware
 From your Android device you can flash your altimeter with the latest firmware using an OTG cable, this will make sure that the altimeter firmware is compatible with the board you are using.
