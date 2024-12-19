@@ -114,9 +114,9 @@ public class FlashFirmware extends AppCompatActivity {
 
     //UltimateAltimeter
     private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE1 = "firmwares/UltimateAltimeter/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2 = "firmwares/UltimateAltimeter/UltimateAltimeter0.1.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3 = "firmwares/UltimateAltimeter/UltimateAltimeter0.1.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeter0.1.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2 = "firmwares/UltimateAltimeter/UltimateAltimeter0.2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3 = "firmwares/UltimateAltimeter/UltimateAltimeter0.2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeter0.2.ino.partitions.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
@@ -801,6 +801,8 @@ public class FlashFirmware extends AppCompatActivity {
                 tvAppend(tvRead, "Chip is ESP32\n");
             else if (chip == cmd.ESP32S3)
                 tvAppend(tvRead, "Chip is ESP32S3\n");
+            else if (chip == cmd.ESP8266)
+                tvAppend(tvRead, "Chip is ESP8266\n");
             else
                 tvAppend(tvRead, chip + "is an unknown Chip\n");
 
@@ -833,17 +835,23 @@ public class FlashFirmware extends AppCompatActivity {
                 dialogAppend("Flashing file 1 0xe000");
                 tvAppend(tvRead,fileName[0]+"\n");
                 tvAppend(tvRead, "Chip is ESP32S3\n");
-                cmd.flashData(readFile(file1), 0xe000, 0);
+                cmd.flashCompressedData(readFile(file1), 0xe000, 0);
                 dialogAppend("Flashing file 2 0x0");
                 tvAppend(tvRead,fileName[1]+"\n");
-                cmd.flashData(readFile(file2), 0x0, 0);
+                cmd.flashCompressedData(readFile(file2), 0x0, 0);
 
                 dialogAppend("Flashing file 3 0x10000");
                 tvAppend(tvRead,fileName[2]+"\n");
-                cmd.flashData(readFile(file3), 0x10000, 0);
+                cmd.flashCompressedData(readFile(file3), 0x10000, 0);
                 dialogAppend("Flashing file 4 0x8000");
                 tvAppend(tvRead,fileName[3]+"\n");
-                cmd.flashData(readFile(file4), 0x8000, 0);
+                cmd.flashCompressedData(readFile(file4), 0x8000, 0);
+            }
+             else if (chip == cmd.ESP8266) {
+                dialogAppend("Flashing file 1 0x0000");
+                tvAppend(tvRead,fileName[0]+"\n");
+                tvAppend(tvRead, "Chip is ESP8266\n");
+                cmd.flashData(readFile(file1), 0x0000, 0);
             }
 
 

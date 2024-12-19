@@ -35,9 +35,9 @@ public class CommandInterfaceESP32 {
     private static final int FLASH_SECTOR_SIZE = 0x1000; // Flash sector size, minimum unit of erase.
 
     private static final int CHIP_DETECT_MAGIC_REG_ADDR = 0x40001000;
-    private static final int ESP8266 = 0x8266;
+    public static final int ESP8266 = 0x8266;
     public static final int ESP32 = 0x32;
-    private static final int ESP32S2 = 0x3252;
+    public static final int ESP32S2 = 0x3252;
     public static final int ESP32S3 = 0x3253;
     public static final int ESP32C3 = 0x32C3;
     private static final int ESP32_DATAREGVALUE = 0x15122500;
@@ -403,6 +403,17 @@ public class CommandInterfaceESP32 {
         return retVal;
     }
 
+    public cmdRet flash_block(byte data[], int seq, int timeout) {
+        cmdRet retVal;
+        byte pkt[] = _appendArray(_int_to_bytearray(data.length),_int_to_bytearray(seq));
+        pkt = _appendArray(pkt,_int_to_bytearray(0));
+        pkt = _appendArray(pkt,_int_to_bytearray(0));
+        pkt = _appendArray(pkt, data);
+
+        retVal = sendCommand((byte) ESP_FLASH_DATA, pkt, _checksum(data), timeout);
+        return retVal;
+    }
+
     public void init() {
 
         int _flashsize = 4 * 1024 * 1024;
@@ -433,7 +444,7 @@ public class CommandInterfaceESP32 {
      *       given offset. If an ESP32 and md5 string is passed in, will also verify
      *       memory. ESP8266 does not have checksum memory verification in ROM
      */
-    public void flashData(byte binaryData[], int offset, int part) {
+    public void flashCompressedData(byte binaryData[], int offset, int part) {
         int filesize = binaryData.length;
 
         mUpCallback.onInfo("\nWriting data with filesize: " + filesize);
@@ -486,8 +497,98 @@ public class CommandInterfaceESP32 {
         long t2 = System.currentTimeMillis();
         mUpCallback.onInfo("Took " + (t2 - t1) + "ms to write " + filesize + " bytes" + "\n");
     }
+    public void flashData(byte binaryData[], int offset, int part) {
+        int filesize = binaryData.length;
+
+        mUpCallback.onInfo("\nWriting data with filesize: " + filesize);
+
+        byte image[] = binaryData;//compressBytes(binaryData);
+        int blocks = flash_begin(filesize, image.length, offset);
+
+        int seq = 0;
+        int written = 0;
+        int address = offset;
+        int position = 0;
+
+        long t1 = System.currentTimeMillis();
+
+        while (image.length - position > 0) {
+
+            double percentage = Math.floor((double)(100 * (seq + 1)) / (double)blocks);
+
+            mUpCallback.onInfo("percentage: " + percentage + "\n");
+            mUpCallback.onUploading( (int) percentage);
+
+            byte block[];
+
+            if (image.length - position >= FLASH_WRITE_SIZE) {
+                block = _subArray(image, position, FLASH_WRITE_SIZE);
+            } else {
+                // Pad the last block
+                block = _subArray(image, position, image.length - position);
+
+                // we have an incomplete block (ie: less than 1024) so let pad the missing block
+                // with 0xFF
+                /*byte tempArray[] = new byte[FLASH_WRITE_SIZE - block.length];
+                for (int i = 0; i < tempArray.length; i++) {
+                    tempArray[i] = (byte) 0xFF;
+                }
+                block = _appendArray(block, tempArray);*/
+            }
+
+            cmdRet retVal = flash_block(block, seq, 100);
+            if (retVal.retCode ==-1) {
+                //This should fix issue when writing is incorrect by trying again
+                mUpCallback.onInfo("Retry because Ret code:" + retVal.retCode +"\n");
+                retVal = flash_block(block, seq, /*block_timeout*/ 100);
+            }
+            seq += 1;
+            written += block.length;
+            position += FLASH_WRITE_SIZE;
+        }
+
+        long t2 = System.currentTimeMillis();
+        mUpCallback.onInfo("Took " + (t2 - t1) + "ms to write " + filesize + " bytes" + "\n");
+    }
 
     private int flash_defl_begin(int size, int compsize, int offset) {
+
+        int num_blocks = (int) Math.floor((double) (compsize + FLASH_WRITE_SIZE - 1) / (double) FLASH_WRITE_SIZE);
+        int erase_blocks = (int) Math.floor((double) (size + FLASH_WRITE_SIZE - 1) / (double) FLASH_WRITE_SIZE);
+        // Start time
+        long t1 = System.currentTimeMillis();
+
+        int write_size, timeout;
+        if (IS_STUB) {
+            //using a stub (will use it in the future)
+            write_size = size;
+            timeout = 3000;
+        } else {
+            write_size = erase_blocks * FLASH_WRITE_SIZE;
+            timeout = timeout_per_mb(ERASE_REGION_TIMEOUT_PER_MB, write_size);
+        }
+
+        mUpCallback.onInfo("Compressed " + size + " bytes to " + compsize + "..."+ "\n");
+
+        byte pkt[] = _appendArray(_int_to_bytearray(write_size), _int_to_bytearray(num_blocks));
+        pkt = _appendArray(pkt, _int_to_bytearray(FLASH_WRITE_SIZE));
+        pkt = _appendArray(pkt, _int_to_bytearray(offset));
+        if(chip == ESP32S3 || chip == ESP32C3 )
+            pkt = _appendArray(pkt, _int_to_bytearray(0));
+
+
+        sendCommand((byte) ESP_FLASH_DEFL_BEGIN, pkt, 0, timeout);
+
+        // end time
+        long t2 = System.currentTimeMillis();
+        if (size != 0 && IS_STUB == false) {
+            System.out.println("Took " + ((t2 - t1) / 1000) + "." + ((t2 - t1) % 1000) + "s to erase flash block");
+            mUpCallback.onInfo("Took " + ((t2 - t1) / 1000) + "." + ((t2 - t1) % 1000) + "s to erase flash block\n");
+        }
+        return num_blocks;
+    }
+
+    private int flash_begin(int size, int compsize, int offset) {
 
         int num_blocks = (int) Math.floor((double) (compsize + FLASH_WRITE_SIZE - 1) / (double) FLASH_WRITE_SIZE);
         int erase_blocks = (int) Math.floor((double) (size + FLASH_WRITE_SIZE - 1) / (double) FLASH_WRITE_SIZE);
