@@ -129,7 +129,6 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_RESET_ALTIESP32_FILE4 = "recover_firmwares/ESP32/ResetAltiConfigAltimultiESP32.ino.partitions.bin";
 
 
-
     private String[] itemsBaudRate;
     private String[] itemsFirmwares;
     private Spinner dropdownBaudRate;
@@ -236,16 +235,16 @@ public class FlashFirmware extends AppCompatActivity {
                         itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultistm32_small, getApplicationContext().getTheme()));
 
-                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32") )
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiesp32_small, getApplicationContext().getTheme()));
 
-                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero")  )
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiesp32_accelero_small, getApplicationContext().getTheme()));
 
-                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345")  )
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiesp32_adxl345_small, getApplicationContext().getTheme()));
 
-                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375")  )
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiesp32_adxl375_small, getApplicationContext().getTheme()));
 
                 if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter"))
@@ -664,45 +663,39 @@ public class FlashFirmware extends AppCompatActivity {
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_FILE4;
-                }
-                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero")){
+                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_accelero_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_accelero_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_accelero_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_accelero_FILE4;
-                }
-                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345")){
+                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE4;
-                }
-                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375")){
+                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE4;
-                }
-                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter")){
+                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4;
                 }
                 //uploadESP32(firmwareFileName, mUploadSTM32Callback);
-                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter")){
+                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE4;
-                }
-                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter")){
+                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE4;
-                }
-                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter")){
+                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3;
@@ -710,10 +703,10 @@ public class FlashFirmware extends AppCompatActivity {
                 }
                 uploadESP32(firmwareFileName, mUploadSTM32Callback);
             } else {
-                    firmwareFileName[0] = ASSET_FILE_RESET_ALTIESP32_FILE1;
-                    firmwareFileName[1] = ASSET_FILE_RESET_ALTIESP32_FILE2;
-                    firmwareFileName[2] = ASSET_FILE_RESET_ALTIESP32_FILE3;
-                    firmwareFileName[3] = ASSET_FILE_RESET_ALTIESP32_FILE4;
+                firmwareFileName[0] = ASSET_FILE_RESET_ALTIESP32_FILE1;
+                firmwareFileName[1] = ASSET_FILE_RESET_ALTIESP32_FILE2;
+                firmwareFileName[2] = ASSET_FILE_RESET_ALTIESP32_FILE3;
+                firmwareFileName[3] = ASSET_FILE_RESET_ALTIESP32_FILE4;
 
                 uploadESP32(firmwareFileName, mUploadSTM32Callback);
             }
@@ -799,8 +792,16 @@ public class FlashFirmware extends AppCompatActivity {
             if (chip == cmd.ESP32)
                 //dialogAppend("Chip is ESP32");
                 tvAppend(tvRead, "Chip is ESP32\n");
+            else if (chip == cmd.ESP32S2)
+                tvAppend(tvRead, "Chip is ESP32S2\n");
             else if (chip == cmd.ESP32S3)
                 tvAppend(tvRead, "Chip is ESP32S3\n");
+            else if (chip == cmd.ESP32C3)
+                tvAppend(tvRead, "Chip is ESP32C3\n");
+            else if (chip == cmd.ESP32C6)
+                tvAppend(tvRead, "Chip is ESP32C6\n");
+            else if (chip == cmd.ESP32H2)
+                tvAppend(tvRead, "Chip is ESP32H2\n");
             else if (chip == cmd.ESP8266)
                 tvAppend(tvRead, "Chip is ESP8266\n");
             else
@@ -813,47 +814,108 @@ public class FlashFirmware extends AppCompatActivity {
             cmd.changeBaudeRate();
             cmd.init();
 
-            if(chip == cmd.ESP32) {
+            if (chip == cmd.ESP32) {
                 // Those are the files you want to flash
                 dialogAppend("Flashing file 1 0xe000");
-                tvAppend(tvRead,fileName[0]+"\n");
+                tvAppend(tvRead, fileName[0] + "\n");
                 tvAppend(tvRead, "Chip is ESP32\n");
                 cmd.flashData(readFile(file1), 0xe000, 0);
                 dialogAppend("Flashing file 2 0x1000");
-                tvAppend(tvRead,fileName[1]+"\n");
+                tvAppend(tvRead, fileName[1] + "\n");
                 cmd.flashData(readFile(file2), 0x1000, 0);
 
                 dialogAppend("Flashing file 3 0x10000");
-                tvAppend(tvRead,fileName[2]+"\n");
+                tvAppend(tvRead, fileName[2] + "\n");
                 cmd.flashData(readFile(file3), 0x10000, 0);
                 dialogAppend("Flashing file 4 0x8000");
-                tvAppend(tvRead,fileName[3]+"\n");
+                tvAppend(tvRead, fileName[3] + "\n");
                 cmd.flashData(readFile(file4), 0x8000, 0);
-            }
-             else if (chip == cmd.ESP32S3) {
+            } else if (chip == cmd.ESP32C3) {
                 // Those are the files you want to flash
                 dialogAppend("Flashing file 1 0xe000");
-                tvAppend(tvRead,fileName[0]+"\n");
-                tvAppend(tvRead, "Chip is ESP32S3\n");
+                tvAppend(tvRead, fileName[0] + "\n");
+                tvAppend(tvRead, "Chip is ESP32C3\n");
                 cmd.flashCompressedData(readFile(file1), 0xe000, 0);
                 dialogAppend("Flashing file 2 0x0");
-                tvAppend(tvRead,fileName[1]+"\n");
+                tvAppend(tvRead, fileName[1] + "\n");
                 cmd.flashCompressedData(readFile(file2), 0x0, 0);
 
                 dialogAppend("Flashing file 3 0x10000");
-                tvAppend(tvRead,fileName[2]+"\n");
+                tvAppend(tvRead, fileName[2] + "\n");
                 cmd.flashCompressedData(readFile(file3), 0x10000, 0);
                 dialogAppend("Flashing file 4 0x8000");
-                tvAppend(tvRead,fileName[3]+"\n");
+                tvAppend(tvRead, fileName[3] + "\n");
                 cmd.flashCompressedData(readFile(file4), 0x8000, 0);
-            }
-             else if (chip == cmd.ESP8266) {
+            } else if (chip == cmd.ESP32C6) {
+                // Those are the files you want to flash
+                dialogAppend("Flashing file 1 0xe000");
+                tvAppend(tvRead, fileName[0] + "\n");
+                tvAppend(tvRead, "Chip is ESP32C6\n");
+                cmd.flashCompressedData(readFile(file1), 0xe000, 0);
+                dialogAppend("Flashing file 2 0x0");
+                tvAppend(tvRead, fileName[1] + "\n");
+                cmd.flashCompressedData(readFile(file2), 0x0, 0);
+
+                dialogAppend("Flashing file 3 0x10000");
+                tvAppend(tvRead, fileName[2] + "\n");
+                cmd.flashCompressedData(readFile(file3), 0x10000, 0);
+                dialogAppend("Flashing file 4 0x8000");
+                tvAppend(tvRead, fileName[3] + "\n");
+                cmd.flashCompressedData(readFile(file4), 0x8000, 0);
+            } else if (chip == cmd.ESP32S2) {
+                // Those are the files you want to flash
+                dialogAppend("Flashing file 1 0xe000");
+                tvAppend(tvRead, fileName[0] + "\n");
+                tvAppend(tvRead, "Chip is ESP32S2\n");
+                cmd.flashCompressedData(readFile(file1), 0xe000, 0);
+                dialogAppend("Flashing file 2 0x0");
+                tvAppend(tvRead, fileName[1] + "\n");
+                cmd.flashCompressedData(readFile(file2), 0x1000, 0);
+
+                dialogAppend("Flashing file 3 0x10000");
+                tvAppend(tvRead, fileName[2] + "\n");
+                cmd.flashCompressedData(readFile(file3), 0x10000, 0);
+                dialogAppend("Flashing file 4 0x8000");
+                tvAppend(tvRead, fileName[3] + "\n");
+                cmd.flashCompressedData(readFile(file4), 0x8000, 0);
+            } else if (chip == cmd.ESP32S3) {
+                // Those are the files you want to flash
+                dialogAppend("Flashing file 1 0xe000");
+                tvAppend(tvRead, fileName[0] + "\n");
+                tvAppend(tvRead, "Chip is ESP32S3\n");
+                cmd.flashCompressedData(readFile(file1), 0xe000, 0);
+                dialogAppend("Flashing file 2 0x0");
+                tvAppend(tvRead, fileName[1] + "\n");
+                cmd.flashCompressedData(readFile(file2), 0x0, 0);
+
+                dialogAppend("Flashing file 3 0x10000");
+                tvAppend(tvRead, fileName[2] + "\n");
+                cmd.flashCompressedData(readFile(file3), 0x10000, 0);
+                dialogAppend("Flashing file 4 0x8000");
+                tvAppend(tvRead, fileName[3] + "\n");
+                cmd.flashCompressedData(readFile(file4), 0x8000, 0);
+            } else if (chip == cmd.ESP8266) {
                 dialogAppend("Flashing file 1 0x0000");
-                tvAppend(tvRead,fileName[0]+"\n");
+                tvAppend(tvRead, fileName[0] + "\n");
                 tvAppend(tvRead, "Chip is ESP8266\n");
                 cmd.flashData(readFile(file1), 0x0000, 0);
-            }
+            } else if (chip == cmd.ESP32H2) {
+                // Those are the files you want to flash
+                dialogAppend("Flashing file 1 0xe000");
+                tvAppend(tvRead, fileName[0] + "\n");
+                tvAppend(tvRead, "Chip is ESP32H2\n");
+                cmd.flashCompressedData(readFile(file1), 0xe000, 0);
+                dialogAppend("Flashing file 2 0x0");
+                tvAppend(tvRead, fileName[1] + "\n");
+                cmd.flashCompressedData(readFile(file2), 0x1000, 0);
 
+                dialogAppend("Flashing file 3 0x10000");
+                tvAppend(tvRead, fileName[2] + "\n");
+                cmd.flashCompressedData(readFile(file3), 0x10000, 0);
+                dialogAppend("Flashing file 4 0x8000");
+                tvAppend(tvRead, fileName[3] + "\n");
+                cmd.flashCompressedData(readFile(file4), 0x8000, 0);
+            }
 
             // we have finish flashing lets reset the board so that the program can start
             cmd.reset();

@@ -39,7 +39,9 @@ public class CommandInterfaceESP32 {
     public static final int ESP32 = 0x32;
     public static final int ESP32S2 = 0x3252;
     public static final int ESP32S3 = 0x3253;
+    public static final int ESP32H2 = 0x3282;
     public static final int ESP32C3 = 0x32C3;
+    public static final int ESP32C6 = 0x32C6;
     private static final int ESP32_DATAREGVALUE = 0x15122500;
     private static final int ESP8266_DATAREGVALUE = 0x00062000;
     private static final int ESP32S2_DATAREGVALUE = 0x500;
@@ -497,12 +499,15 @@ public class CommandInterfaceESP32 {
         long t2 = System.currentTimeMillis();
         mUpCallback.onInfo("Took " + (t2 - t1) + "ms to write " + filesize + " bytes" + "\n");
     }
+    /*
+    Flash uncompressed data
+     */
     public void flashData(byte binaryData[], int offset, int part) {
         int filesize = binaryData.length;
 
         mUpCallback.onInfo("\nWriting data with filesize: " + filesize);
 
-        byte image[] = binaryData;//compressBytes(binaryData);
+        byte image[] = binaryData;
         int blocks = flash_begin(filesize, image.length, offset);
 
         int seq = 0;
@@ -573,7 +578,7 @@ public class CommandInterfaceESP32 {
         byte pkt[] = _appendArray(_int_to_bytearray(write_size), _int_to_bytearray(num_blocks));
         pkt = _appendArray(pkt, _int_to_bytearray(FLASH_WRITE_SIZE));
         pkt = _appendArray(pkt, _int_to_bytearray(offset));
-        if(chip == ESP32S3 || chip == ESP32C3 )
+        if (chip == ESP32S3 || chip == ESP32C3 || chip == ESP32C6 || chip == ESP32S2 || chip == ESP32H2 )
             pkt = _appendArray(pkt, _int_to_bytearray(0));
 
 
@@ -610,11 +615,11 @@ public class CommandInterfaceESP32 {
         byte pkt[] = _appendArray(_int_to_bytearray(write_size), _int_to_bytearray(num_blocks));
         pkt = _appendArray(pkt, _int_to_bytearray(FLASH_WRITE_SIZE));
         pkt = _appendArray(pkt, _int_to_bytearray(offset));
-        if(chip == ESP32S3 || chip == ESP32C3 )
+        if (chip == ESP32S3 || chip == ESP32C3 || chip == ESP32C6 || chip == ESP32S2 || chip == ESP32H2 )
             pkt = _appendArray(pkt, _int_to_bytearray(0));
 
 
-        sendCommand((byte) ESP_FLASH_DEFL_BEGIN, pkt, 0, timeout);
+        sendCommand((byte) ESP_FLASH_BEGIN, pkt, 0, timeout);
 
         // end time
         long t2 = System.currentTimeMillis();
@@ -643,6 +648,10 @@ public class CommandInterfaceESP32 {
             ret = ESP32S3;
         if ((chipMagicValue == 0x6921506f) | (chipMagicValue == 0x1b31506f))
             ret = ESP32C3;
+        if (chipMagicValue == 0x0da1806f)
+            ret = ESP32C6;
+        if (chipMagicValue == 0xca26cc22)
+            ret = ESP32H2;
         chip = ret;
         return ret;
     }
