@@ -40,6 +40,7 @@ public class CommandInterfaceESP32 {
     public static final int ESP32S2 = 0x3252;
     public static final int ESP32S3 = 0x3253;
     public static final int ESP32H2 = 0x3282;
+    public static final int ESP32C2 = 0x32C2;
     public static final int ESP32C3 = 0x32C3;
     public static final int ESP32C6 = 0x32C6;
     private static final int ESP32_DATAREGVALUE = 0x15122500;
@@ -578,7 +579,7 @@ public class CommandInterfaceESP32 {
         byte pkt[] = _appendArray(_int_to_bytearray(write_size), _int_to_bytearray(num_blocks));
         pkt = _appendArray(pkt, _int_to_bytearray(FLASH_WRITE_SIZE));
         pkt = _appendArray(pkt, _int_to_bytearray(offset));
-        if (chip == ESP32S3 || chip == ESP32C3 || chip == ESP32C6 || chip == ESP32S2 || chip == ESP32H2 )
+        if (chip == ESP32S3 || chip == ESP32C2|| chip == ESP32C3 || chip == ESP32C6 || chip == ESP32S2 || chip == ESP32H2 )
             pkt = _appendArray(pkt, _int_to_bytearray(0));
 
 
@@ -615,7 +616,7 @@ public class CommandInterfaceESP32 {
         byte pkt[] = _appendArray(_int_to_bytearray(write_size), _int_to_bytearray(num_blocks));
         pkt = _appendArray(pkt, _int_to_bytearray(FLASH_WRITE_SIZE));
         pkt = _appendArray(pkt, _int_to_bytearray(offset));
-        if (chip == ESP32S3 || chip == ESP32C3 || chip == ESP32C6 || chip == ESP32S2 || chip == ESP32H2 )
+        if (chip == ESP32S3 || chip == ESP32C2 || chip == ESP32C3 || chip == ESP32C6 || chip == ESP32S2 || chip == ESP32H2 )
             pkt = _appendArray(pkt, _int_to_bytearray(0));
 
 
@@ -646,6 +647,8 @@ public class CommandInterfaceESP32 {
             ret = ESP32S2;
         if ((chipMagicValue == 0x9) | (chipMagicValue == 538052359))
             ret = ESP32S3;
+        if (chipMagicValue == 0x6f51306f)
+            ret = ESP32C2;
         if ((chipMagicValue == 0x6921506f) | (chipMagicValue == 0x1b31506f))
             ret = ESP32C3;
         if (chipMagicValue == 0x0da1806f)

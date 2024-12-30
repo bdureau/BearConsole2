@@ -87,6 +87,8 @@ public class MainScreenActivity extends AppCompatActivity {
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() { //Broadcast Receiver to automatically start and stop the Serial connection.
         @Override
         public void onReceive(Context context, Intent intent) {
+            //msg("in broadcast");
+            msg("Action:" + intent.getAction());
             if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
                 boolean granted = true;
                 if(android.os.Build.VERSION.SDK_INT < 31)
@@ -102,6 +104,8 @@ public class MainScreenActivity extends AppCompatActivity {
                         btnFlashFirmware.setEnabled(false);
                         myBT.setConnectionType("usb");
                         text_connect.setText(getResources().getString(R.string.disconnect));
+                    } else {
+                        msg("Cannot connect");
                     }
 
                 } else {
@@ -340,7 +344,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
                                 device = entry.getValue();
                                 int deviceVID = device.getVendorId();
-
+                                //msg("deviceVID:"+ deviceVID);
                                 PendingIntent pi;
                                 //if(android.os.Build.VERSION.SDK_INT >= 31) {
                                     pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
@@ -468,10 +472,12 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
+                myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")) {
             Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
-                    myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
+                    myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
+                    myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")) {
                 setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
             } else {
                 //enable it for bT or USB only if full support
@@ -514,7 +520,9 @@ public class MainScreenActivity extends AppCompatActivity {
             if(myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")){
                 //setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
             }
-
+            if(myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")){
+                setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
+            }
             text_connect.setText(getResources().getString(R.string.disconnect));
             setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
 
@@ -850,25 +858,18 @@ public class MainScreenActivity extends AppCompatActivity {
             hm =null;
             hm = new HashMap();
             //init compatible versions
-            //Add("AltiMulti", "1.28");
             Add("AltiMulti", "1.28,2.0");
-            //Add("AltiMultiV2", "1.28");
             Add("AltiMultiV2", "1.28,2.0");
             Add("AltiMultiSTM32", "1.28,2.0");
-            //Add("AltiMultiSTM32", "2.0");
             Add("AltiServo", "1.6");
             Add("AltiGPS", "1.7");
             Add("AltiDuo", "1.9");
-            //Add("AltiMultiESP32", "1.28");
-            //Add("AltiMultiESP32", "2.0");
             Add("AltiMultiESP32", "1.28,2.0,2.1");
-            /*Add("AltiMultiESP32_accel", "2.0");
-            Add("AltiMultiESP32_accel_375", "2.0");
-            Add("AltiMultiESP32_accel_345", "2.0");*/
             Add("AltiMultiESP32_accel", "2.0,2.1");
             Add("AltiMultiESP32_accel_375", "2.0,2.1");
             Add("AltiMultiESP32_accel_345", "2.0,2.1");
             Add("TTGOBearAltimeter", "0.4,0.5");
+            Add("UltimateAltimeter", "0.2");
 
         }
         public void Add ( String altiName, String verList) {

@@ -181,9 +181,6 @@ public class ConsoleApplication extends Application {
         if (myTypeOfConnection.equals("bluetooth")) {
             if (ContextCompat.checkSelfPermission(ConsoleApplication.this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    //getApplicationContext()
-
-                    //ActivityCompat.requestPermissions(this.getApplicationContext(), new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
                     return false;
                 }
             }
@@ -242,8 +239,6 @@ public class ConsoleApplication extends Application {
         //get the results
         //wait for the result to come back
         try {
-            /*while (getInputStream().available() <= 0 || diffTime < timeOut) {
-                diffTime = System.currentTimeMillis() - startTime;}*/
             while (getInputStream().available() <= 0) ;
         } catch (IOException e) {
 
@@ -324,10 +319,7 @@ public class ConsoleApplication extends Application {
     }
 
     public String ReadResult(long timeout) {
-
         // Reads in data while data is available
-
-        //setDataReady(false);
         this.exit = false;
         lastData = "";
         String fullBuff = "";
@@ -664,7 +656,8 @@ public class ConsoleApplication extends Application {
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
-                                                AltiCfg.getAltimeterName().equals("TTGOBearAltimeter")) {
+                                                AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") ||
+                                                AltiCfg.getAltimeterName().equals("UltimateAltimeter")) {
                                             if (currentSentence.length > 6) {
                                                 if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
                                                     value6 = Integer.valueOf(currentSentence[6]);
@@ -675,7 +668,8 @@ public class ConsoleApplication extends Application {
                                                         (float) (value6) / 100, flightName, 5);
                                             }
                                         }
-                                        if (AltiCfg.getAltimeterName().equals("TTGOBearAltimeter")) {
+                                        if (AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") ||
+                                                AltiCfg.getAltimeterName().equals("UltimateAltimeter")) {
                                             //Accel345 X
                                             if (currentSentence.length > 7) {
                                                 if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
