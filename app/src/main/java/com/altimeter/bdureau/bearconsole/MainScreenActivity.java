@@ -487,11 +487,15 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")) {
+                myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter")
+        ) {
             Log.d(TAG, "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
                     myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
-                    myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")) {
+                    myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ||
+                    myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter")
+            ) {
                 setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
             } else {
                 //enable it for bT or USB only if full support
@@ -534,8 +538,10 @@ public class MainScreenActivity extends AppCompatActivity {
             if(myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")){
                 //setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
             }
-            if(myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")){
+            if(myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ||
+                    myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter")){
                 setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
+                setEnabledCard(false, btnTelemetry, image_telemetry, text_telemetry);
             }
             text_connect.setText(getResources().getString(R.string.disconnect));
             setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
@@ -883,6 +889,7 @@ public class MainScreenActivity extends AppCompatActivity {
             Add("AltiMultiESP32_accel_375", "2.0,2.1");
             Add("AltiMultiESP32_accel_345", "2.0,2.1");
             Add("TTGOBearAltimeter", "0.4,0.5");
+            Add("TTGOMiniBearAltimeter", "0.2,0.3");
             Add("UltimateAltimeter", "0.2");
 
         }

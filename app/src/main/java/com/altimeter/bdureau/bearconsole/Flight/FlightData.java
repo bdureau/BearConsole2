@@ -39,7 +39,6 @@ public class FlightData {
     public String getFlightName(int FlightNumber)
     {
         String flightName = null;
-
         return flightName;
     }
 
@@ -165,7 +164,7 @@ public class FlightData {
         if(altimeterName.equals("AltiGPS") || altimeterName.equals("AltiMultiSTM32") ||
                 altimeterName.equals("AltiMultiESP32") || altimeterName.equals("AltiMultiESP32_accel")||
                 altimeterName.equals("AltiMultiESP32_accel_345")|| altimeterName.equals("AltiMultiESP32_accel_375")||
-                altimeterName.equals("TTGOBearAltimeter") ) {
+                altimeterName.equals("TTGOBearAltimeter") || altimeterName.equals("TTGOMiniBearAltimeter")) {
             ret.addSeries(new XYSeries("voltage"));
         }
         //humidity
@@ -197,7 +196,7 @@ public class FlightData {
             //accel345z
             ret.addSeries(new XYSeries("accelX"));
         }
-        if(altimeterName.equals("TTGOBearAltimeter")){
+        if(altimeterName.equals("TTGOBearAltimeter")|| altimeterName.equals("TTGOMiniBearAltimeter")){
             //accel345x
             ret.addSeries(new XYSeries("accel345x"));
             //accel345y

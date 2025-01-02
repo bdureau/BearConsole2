@@ -164,6 +164,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
             numberOfCurves = 6;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
+                myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ) {
             numberOfCurves = 9;
         }
@@ -227,7 +228,8 @@ public class FlightViewTabActivity extends AppCompatActivity {
         }
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
+                myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
+        myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter")) {
             units[6] = "(m/secs)";
             units[7] = "(m/secs)";
             units[8] = "(m/secs)";

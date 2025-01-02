@@ -656,7 +656,8 @@ public class ConsoleApplication extends Application {
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
-                                                AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") ) {
+                                                AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") ||
+                                        AltiCfg.getAltimeterName().equals("TTGOMiniBearAltimeter")) {
                                             if (currentSentence.length > 6) {
                                                 if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
                                                     value6 = Integer.valueOf(currentSentence[6]);
@@ -680,6 +681,7 @@ public class ConsoleApplication extends Application {
                                             }
                                         }
                                         if (AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") ||
+                                                AltiCfg.getAltimeterName().equals("TTGOMiniBearAltimeter") ||
                                                 AltiCfg.getAltimeterName().equals("UltimateAltimeter")) {
                                             //Accel345 X
                                             if (currentSentence.length > 7) {

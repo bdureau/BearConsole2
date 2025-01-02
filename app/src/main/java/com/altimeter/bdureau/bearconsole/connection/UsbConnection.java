@@ -16,9 +16,9 @@ import android.util.Log;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
-import java.io.BufferedWriter;
+/*import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileWriter;*/
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -38,13 +38,11 @@ public class UsbConnection {
         serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
         if (serialPort != null) {
             if (serialPort.open()) { //Set Serial Connection Parameters.
-
                 serialPort.setBaudRate(baudRate);
                 serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
                 serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
                 serialPort.setParity(UsbSerialInterface.PARITY_NONE);
                 serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);//ok
-
                 usbInputStream = new SerialInputStream(serialPort);
 
                 connected = true;
