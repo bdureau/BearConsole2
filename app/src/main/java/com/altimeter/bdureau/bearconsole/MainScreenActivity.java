@@ -48,13 +48,14 @@ import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatusTabActivity;
 import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackGoogleMap;
 import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackOpenMap;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryTabActivity;
+import com.felhr.usbserial.UsbSerialDevice;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -71,9 +72,9 @@ public class MainScreenActivity extends AppCompatActivity {
     TextView text_settings, text_flights, text_telemetry, text_continuity, text_reset,
             text_status, text_track, text_flash, text_info, text_connect;
 
-    UsbManager usbManager;
-    UsbDevice device;
-    public final String ACTION_USB_PERMISSION = "com.altimeter.bdureau.bearconsole.USB_PERMISSION";
+    private UsbManager usbManager;
+    private UsbDevice device;
+    private static final String ACTION_USB_PERMISSION = "com.altimeter.bdureau.bearconsole.USB_PERMISSION";
 
     ConsoleApplication myBT;
     private AltiConfigData AltiCfg = null;
@@ -88,18 +89,22 @@ public class MainScreenActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             //msg("in broadcast");
-            msg("Action:" + intent.getAction());
-            if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
+            Log.d(TAG,"in broadcast");
+            Log.d(TAG,"Action1:" + intent.getAction());
+                    //msg("Action1:" + intent.getAction());
+            String action = intent.getAction();
+            if (action.equals(ACTION_USB_PERMISSION)) {
+                Log.d(TAG, "ACTION_USB_PERMISSION");
                 boolean granted = true;
                 if(android.os.Build.VERSION.SDK_INT < 31)
                     granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
 
                 if (granted) {
-                    Log.d("Flight win", "Permission granted");
-                    if (myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRateValue()))) {
-                        Log.d("baud rate", "baud:"+myBT.getAppConf().getBaudRateValue());
+                    Log.d(TAG, "Permission granted");
+                    if (myBT.connect(usbManager, device, Integer.parseInt(/*myBT.getAppConf().getBaudRateValue()*/ "38400"))) {
+                        Log.d(TAG, "baud:"+myBT.getAppConf().getBaudRateValue());
                         myBT.setConnected(true);
-                        Log.d("Flight win", "about to enableUI");
+                        Log.d(TAG, "about to enableUI");
                         EnableUI();
                         btnFlashFirmware.setEnabled(false);
                         myBT.setConnectionType("usb");
@@ -111,9 +116,11 @@ public class MainScreenActivity extends AppCompatActivity {
                 } else {
                     msg("PERM NOT GRANTED");
                 }
-            } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
+            } else if (action.equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
+                //usbManager = (UsbManager) getSystemService(getApplicationContext().USB_SERVICE);
+                //myBT.setConnected(false);
                 msg("I can connect via usb");
-            } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
+            } else if (action.equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
                 if (myBT.getConnectionType().equals("usb"))
                     if (myBT.getConnected()) {
                         myBT.Disconnect();
@@ -130,7 +137,7 @@ public class MainScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        usbManager = (UsbManager) getSystemService(this.USB_SERVICE);
+        usbManager = (UsbManager) getSystemService(getApplicationContext().USB_SERVICE);
 
         //get the bluetooth and USB Application pointer
         myBT = (ConsoleApplication) getApplication();
@@ -143,9 +150,9 @@ public class MainScreenActivity extends AppCompatActivity {
         filter.addAction(ACTION_USB_PERMISSION);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        //registerReceiver(broadcastReceiver, filter);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(broadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
+            registerReceiver(broadcastReceiver, filter, getApplicationContext().RECEIVER_EXPORTED);
         } else {
             registerReceiver(broadcastReceiver, filter);
         }
@@ -340,25 +347,24 @@ public class MainScreenActivity extends AppCompatActivity {
                         //this is a USB connection
                         HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
                         if (!usbDevices.isEmpty()) {
-                            boolean keep = true;
+
                             for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
                                 device = entry.getValue();
-                                int deviceVID = device.getVendorId();
-                                //msg("deviceVID:"+ deviceVID);
-                                PendingIntent pi;
-                                //if(android.os.Build.VERSION.SDK_INT >= 31) {
-                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
-                                            new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
-                                /*} else {
-                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
-                                            new Intent(ACTION_USB_PERMISSION), 0);
-                                }*/
+                                Log.d(TAG, String.format("USBDevice.HashMap (vid:pid) (%X:%X)-%b class:%X:%X name:%s",
+                                        device.getVendorId(), device.getProductId(),
+                                        UsbSerialDevice.isSupported(device),
+                                        device.getDeviceClass(), device.getDeviceSubclass(),
+                                        device.getDeviceName()));
 
-                                usbManager.requestPermission(device, pi);
-                                keep = false;
+                                if (UsbSerialDevice.isSupported(device)) {
+                                    PendingIntent pi;
+                                    int flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_IMMUTABLE : 0;
+                                    pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(ACTION_USB_PERMISSION), flags);
+                                    Log.d(TAG, "Requesting permission: vendor" + device.getVendorId());
+                                    usbManager.requestPermission(device, pi);
 
-                                if (!keep)
                                     break;
+                                }
                             }
                         }
                     }
@@ -394,23 +400,25 @@ public class MainScreenActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume");
         super.onResume();
-        IntentFilter filter = new IntentFilter();
+        /*IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_USB_PERMISSION);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        //registerReceiver(broadcastReceiver, filter);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(broadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
+            registerReceiver(broadcastReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
         } else {
             registerReceiver(broadcastReceiver, filter);
-        }
+        }*/
     }
 
     @Override
     public void onPause() {
+        Log.d(TAG, "onPause");
         super.onPause();
-        unregisterReceiver(broadcastReceiver);
+        //unregisterReceiver(broadcastReceiver);
 
     }
 
@@ -444,14 +452,20 @@ public class MainScreenActivity extends AppCompatActivity {
         try { Thread.sleep(1000); } catch (InterruptedException e) {}
         success = readConfig();
         //second attempt
-        if (!success)
+        if (!success) {
+            Log.d(TAG,"Config attempt 2");
             success = readConfig();
+        }
         //third attempt
-        if (!success)
+        if (!success) {
+            Log.d(TAG,"Config attempt 3");
             success = readConfig();
+        }
         //fourth and last
-        if (!success)
+        if (!success) {
+            Log.d(TAG,"Config attempt 4");
             success = readConfig();
+        }
 
         /*
         supported firmware
@@ -474,7 +488,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")) {
-            Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
+            Log.d(TAG, "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
             if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
                     myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
                     myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")) {
@@ -557,23 +571,23 @@ public class MainScreenActivity extends AppCompatActivity {
         boolean success = false;
         if (myBT.getConnected()) {
 
-            Log.d("MainScreen", "Retreiving altimeter config...");
+            Log.d(TAG, "Retreiving altimeter config...");
             myBT.setDataReady(false);
             myBT.flush();
             myBT.clearInput();
             //switch off the main loop before sending the config
             myBT.write("m0;".toString());
-            Log.d("MainScreen", "after m0");
+            Log.d(TAG, "after m0");
             //wait for the result to come back
             try {
                 while (myBT.getInputStream().available() <= 0) ;
             } catch (IOException e) {
 
             }
-            Log.d("MainScreen", "before myMessage");
+            Log.d(TAG, "before myMessage");
             String myMessage = "";
             myMessage = myBT.ReadResult(3000);
-            Log.d("MainScreen", myMessage);
+            Log.d(TAG, myMessage);
             if (myMessage.equals("OK")) {
                 myBT.setDataReady(false);
                 myBT.flush();
@@ -589,7 +603,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
                 }
                 myMessage = myBT.ReadResult(3000);
-                Log.d("MainScreen", myMessage);
+                Log.d(TAG, myMessage);
                 //reading the config
                 if (myMessage.equals("start alticonfig end")) {
                     try {
@@ -642,7 +656,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 }
             }
         } else {
-            Log.d("MainScreen", "Not connected");
+            Log.d(TAG, "Not connected");
         }
         return success;
     }

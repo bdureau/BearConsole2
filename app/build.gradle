@@ -40,30 +40,39 @@ dependencies {
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation files('libs/usbserial-6.1.0.aar') //special version of usbserial that work with Android 12
+    //implementation files('libs/usbserial.jar')
     //implementation 'com.github.felHR85:UsbSerial:6.1.0' //that does not work with Android 12
     implementation 'com.squareup.okio:okio:3.3.0' //this is needed so that my local usbserial lib work
+    //implementation 'com.squareup.okio:okio:2.1.0'
     implementation files('libs/physicaloid.aar')
     implementation files('libs/viewtooltip.aar')
     implementation files('libs/processing-core.jar')
     implementation 'com.google.android.gms:play-services-maps:19.0.0'
     implementation 'com.google.android.gms:play-services-location:21.3.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    //implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
     //implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.0'//issue crashes the application
     //implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.6'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
+    //implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'//02/01
     //implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0' //issue crashes the application
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
-    implementation 'androidx.navigation:navigation-fragment:2.8.1'
-    implementation 'androidx.navigation:navigation-ui:2.8.1'
+    //implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7' //02/01
+    //implementation 'androidx.navigation:navigation-fragment:2.8.1'
+    implementation 'androidx.navigation:navigation-fragment:2.8.5'//02/01
+    //implementation 'androidx.navigation:navigation-ui:2.8.1'
+    implementation 'androidx.navigation:navigation-ui:2.8.5'//02/01
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    //implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'//02/01
     implementation 'com.google.android.material:material:1.12.0'
     //implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     // required to avoid crash on Android 12 API 31
     //implementation 'androidx.work:work-runtime-ktx:2.7.1'
-    implementation 'androidx.work:work-runtime:2.9.1'
+    //implementation 'androidx.work:work-runtime:2.9.1'
+    implementation 'androidx.work:work-runtime:2.10.0'//02/01
 
     //for openmap
     implementation 'androidx.preference:preference:1.2.1'

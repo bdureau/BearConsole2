@@ -165,8 +165,12 @@ public class FlightData {
         if(altimeterName.equals("AltiGPS") || altimeterName.equals("AltiMultiSTM32") ||
                 altimeterName.equals("AltiMultiESP32") || altimeterName.equals("AltiMultiESP32_accel")||
                 altimeterName.equals("AltiMultiESP32_accel_345")|| altimeterName.equals("AltiMultiESP32_accel_375")||
-                altimeterName.equals("TTGOBearAltimeter")) {
+                altimeterName.equals("TTGOBearAltimeter") ) {
             ret.addSeries(new XYSeries("voltage"));
+        }
+        //humidity
+        if(altimeterName.equals("UltimateAltimeter")) {
+            ret.addSeries(new XYSeries("humidity"));
         }
 
         // if Alti GPS
@@ -185,6 +189,14 @@ public class FlightData {
             ret.addSeries(new XYSeries("sea altitude"));
         }
 
+        if(altimeterName.equals("UltimateAltimeter")){
+            //accel345x
+            ret.addSeries(new XYSeries("accelX"));
+            //accel345y
+            ret.addSeries(new XYSeries("accelX"));
+            //accel345z
+            ret.addSeries(new XYSeries("accelX"));
+        }
         if(altimeterName.equals("TTGOBearAltimeter")){
             //accel345x
             ret.addSeries(new XYSeries("accel345x"));

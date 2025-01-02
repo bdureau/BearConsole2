@@ -20,7 +20,8 @@
   tools:ignore="ScopedStorage"
   />
     -->
-    <uses-feature android:name="android.hardware.usb.host" />
+    <uses-feature android:name="android.hardware.usb.host"
+        android:required="true"/>
 
     <application
         android:name=".ConsoleApplication"

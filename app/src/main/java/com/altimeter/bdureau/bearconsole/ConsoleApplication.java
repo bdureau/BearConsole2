@@ -656,8 +656,7 @@ public class ConsoleApplication extends Application {
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                                                 AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
-                                                AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") ||
-                                                AltiCfg.getAltimeterName().equals("UltimateAltimeter")) {
+                                                AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") ) {
                                             if (currentSentence.length > 6) {
                                                 if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
                                                     value6 = Integer.valueOf(currentSentence[6]);
@@ -666,6 +665,18 @@ public class ConsoleApplication extends Application {
                                                 //add the voltage
                                                 MyFlight.AddToFlight(value2,
                                                         (float) (value6) / 100, flightName, 5);
+                                            }
+                                        }
+                                        // humidity
+                                        if(AltiCfg.getAltimeterName().equals("UltimateAltimeter")) {
+                                            if (currentSentence.length > 6) {
+                                                if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
+                                                    value6 = Integer.valueOf(currentSentence[6]);
+                                                else
+                                                    value6 = 0;
+                                                //add the voltage
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value6) , flightName, 5);
                                             }
                                         }
                                         if (AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") ||
