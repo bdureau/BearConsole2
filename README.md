@@ -29,20 +29,20 @@ You will need to use Android studio (I am no longer using Eclipse for Android de
 Please make sure you report any bugs so that I can fix them. If you have any ideas to improve the app please feel free to contact me.
 
 # Supported altimeters
-The following altimeters can be used with the BearConsole
-- [AltiDuo](https://github.com/bdureau/AltiDuo_console) (this has a special firmware)
-- [AltiServo](https://github.com/bdureau/AltiServo)
+The following altimeters can be used with the BearConsole using a cable or bluetooth
+- [AltiDuo](https://github.com/bdureau/AltiDuo_console) (this has a special firmware, require an additionnal bluetooth module)
+- [AltiServo](https://github.com/bdureau/AltiServo) (require an additionnal bluetooth module)
 - [Altimulti](https://github.com/bdureau/RocketFlightLogger)(all versions Atmega328, STM32, ESP32 and ESP32 accelero)
-- [AltiGPS](https://github.com/bdureau/AltiGPS)
+- [AltiGPS](https://github.com/bdureau/AltiGPS) (require an additionnal bluetooth module)
 - [TTGOBearAltimeter](https://github.com/bdureau/TTGOBearAltimeter)
-- [TTGOMiniBearAltimeter](https://github.com/bdureau/TTGOMiniBearAltimeter) (Firmware flashing only) 
+- [TTGOMiniBearAltimeter](https://github.com/bdureau/TTGOMiniBearAltimeter) (Firmware flashing and cable communication) 
 - [TTGOSimpleAltimter](https://github.com/bdureau/TTGOSimpleAltimeter) (Firmware flashing only)
-- [UltimateAltimeter](https://github.com/bdureau/UltimateAltimeter) (Firmware flashing only)
+- [UltimateAltimeter](https://github.com/bdureau/UltimateAltimeter) (Firmware flashing and cable communication)
   
 # Ability to flash the altimeter latest firmware
 From your Android device you can flash your altimeter with the latest firmware using an OTG cable, this will make sure that the altimeter firmware is compatible with the board you are using.
 
-Falshing works for all versions Atmega328, STM32, ESP32, ESP32S3 and ESP32C3 based altimeters.
+Falshing works for all versions Atmega328, STM32, ESP32, ESP32S3, ESP32C3 based altimeters.
 
 # Getting altimeter boards
 If you need an altimeter board you can can either build it yourself using Arduino compatible hardware or contact me to get a board
