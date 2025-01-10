@@ -890,7 +890,7 @@ public class MainScreenActivity extends AppCompatActivity {
             Add("AltiMultiESP32_accel_345", "2.0,2.1");
             Add("TTGOBearAltimeter", "0.4,0.5");
             Add("TTGOMiniBearAltimeter", "0.2,0.3");
-            Add("UltimateAltimeter", "0.2");
+            Add("UltimateAltimeter", "0.2,0.3");
 
         }
         public void Add ( String altiName, String verList) {

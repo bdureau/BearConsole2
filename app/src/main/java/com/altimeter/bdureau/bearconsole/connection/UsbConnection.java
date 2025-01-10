@@ -16,9 +16,6 @@ import android.util.Log;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
-/*import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;*/
 import java.io.IOException;
 import java.io.InputStream;
 
