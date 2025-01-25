@@ -10,8 +10,8 @@ android {
         applicationId 'com.altimeter.bdureau.bearconsole'
         minSdk 21
         targetSdk 35
-        versionName '2.0.13'
-        versionCode 38
+        versionName '2.0.14'
+        versionCode 39
         multiDexEnabled true
     }
     buildTypes {

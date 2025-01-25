@@ -163,9 +163,11 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32") ) {
             numberOfCurves = 6;
         }
+        if (myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ) {
+            numberOfCurves = 8;
+        }
         if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ) {
+                myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter") ) {
             numberOfCurves = 9;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
@@ -214,9 +216,9 @@ public class FlightViewTabActivity extends AppCompatActivity {
         if(numberOfCurves > 5)
             units[5] = getString(R.string.volts);
 
-        if (myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")) {
+        /*if (myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")) {
             units[5] = "(%)";
-        }
+        }*/
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
             units[6] = "";
@@ -227,12 +229,16 @@ public class FlightViewTabActivity extends AppCompatActivity {
             units[11] = getResources().getString(R.string.Meters_fview);
         }
 
-        if (myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
+        if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
         myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter")) {
             units[6] = "(m/secs)";
             units[7] = "(m/secs)";
             units[8] = "(m/secs)";
+        }
+        if (myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ) {
+            units[5] = "(m/secs)";
+            units[6] = "(m/secs)";
+            units[7] = "(m/secs)";
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||

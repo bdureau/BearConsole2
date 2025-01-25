@@ -168,9 +168,9 @@ public class FlightData {
             ret.addSeries(new XYSeries("voltage"));
         }
         //humidity
-        if(altimeterName.equals("UltimateAltimeter")) {
+        /*if(altimeterName.equals("UltimateAltimeter")) {
             ret.addSeries(new XYSeries("humidity"));
-        }
+        }*/
 
         // if Alti GPS
         if(altimeterName.equals("AltiGPS")) {

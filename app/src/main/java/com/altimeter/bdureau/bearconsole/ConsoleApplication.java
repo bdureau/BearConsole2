@@ -669,20 +669,19 @@ public class ConsoleApplication extends Application {
                                             }
                                         }
                                         // humidity
-                                        if(AltiCfg.getAltimeterName().equals("UltimateAltimeter")) {
+                                        /*if(AltiCfg.getAltimeterName().equals("UltimateAltimeter")) {
                                             if (currentSentence.length > 6) {
                                                 if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
                                                     value6 = Integer.valueOf(currentSentence[6]);
                                                 else
                                                     value6 = 0;
-                                                //add the voltage
+                                                //add the humidity
                                                 MyFlight.AddToFlight(value2,
                                                         (float) (value6) , flightName, 5);
                                             }
-                                        }
+                                        }*/
                                         if (AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") ||
-                                                AltiCfg.getAltimeterName().equals("TTGOMiniBearAltimeter") ||
-                                                AltiCfg.getAltimeterName().equals("UltimateAltimeter")) {
+                                                AltiCfg.getAltimeterName().equals("TTGOMiniBearAltimeter") ) {
                                             //Accel345 X
                                             if (currentSentence.length > 7) {
                                                 if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
@@ -712,6 +711,38 @@ public class ConsoleApplication extends Application {
                                                 //add the accel Z
                                                 MyFlight.AddToFlight(value2,
                                                         (float) (value9) / (float) 1000, flightName, 8);
+                                            }
+                                        }
+                                        if (AltiCfg.getAltimeterName().equals("UltimateAltimeter")) {
+                                            // X
+                                            if (currentSentence.length > 6) {
+                                                if (currentSentence[6].matches("\\d+(?:\\.\\d+)?"))
+                                                    value7 = Integer.valueOf(currentSentence[6]);
+                                                else
+                                                    value7 = 0;
+                                                //add the accel X
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value7) / (float) 1000, flightName, 5);
+                                            }
+                                            //Accel Y
+                                            if (currentSentence.length > 7) {
+                                                if (currentSentence[7].matches("\\d+(?:\\.\\d+)?"))
+                                                    value8 = Integer.valueOf(currentSentence[7]);
+                                                else
+                                                    value8 = 0;
+                                                //add the accel Y
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value8) / (float) 1000, flightName, 6);
+                                            }
+                                            //AccelZ
+                                            if (currentSentence.length > 8) {
+                                                if (currentSentence[8].matches("\\d+(?:\\.\\d+)?"))
+                                                    value9 = Integer.valueOf(currentSentence[8]);
+                                                else
+                                                    value9 = 0;
+                                                //add the accel Z
+                                                MyFlight.AddToFlight(value2,
+                                                        (float) (value9) / (float) 1000, flightName, 7);
                                             }
                                         }
                                         // AltiMultiESP32_accel has 2 accelerometers

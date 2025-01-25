@@ -116,7 +116,10 @@ public class AltimeterInfoFragment extends Fragment {
             txtViewBatteryVoltage.setVisibility(View.INVISIBLE);
         }
 
-        if (!lBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
+        if (!lBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") &&
+                !lBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter") &&
+                !lBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")
+        ) {
             txtViewOutput1Status.setVisibility(View.VISIBLE);
             txtViewOutput1.setVisibility(View.VISIBLE);
             txtViewOutput2Status.setVisibility(View.VISIBLE);
@@ -129,7 +132,9 @@ public class AltimeterInfoFragment extends Fragment {
         }
 
         if (!lBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")
-                && !lBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
+                && !lBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")
+                && !lBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter")
+                && !lBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")) {
             txtViewOutput3Status.setVisibility(View.VISIBLE);
             txtViewOutput3.setVisibility(View.VISIBLE);
         } else {
