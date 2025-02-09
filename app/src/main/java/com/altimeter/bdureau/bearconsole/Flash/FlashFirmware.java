@@ -113,15 +113,15 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE4 = "firmwares/TTGO_T-QT/TTGOSimpleAltimeter0.1.ino.partitions.bin";
 
     //UltimateAltimeter
-    /*private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE1 = "firmwares/UltimateAltimeter/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2 = "firmwares/UltimateAltimeter/UltimateAltimeter0.2.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3 = "firmwares/UltimateAltimeter/UltimateAltimeter0.2.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeter0.2.ino.partitions.bin";
-*/
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE1 = "firmwares/UltimateAltimeter/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE2 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.5.nosleep.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE3 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.5.nosleep.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.5.nosleep.partitions.bin";
+
     private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE1 = "firmwares/UltimateAltimeter/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.4.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.4.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.4.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.5.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.5.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.5.ino.partitions.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
@@ -165,7 +165,9 @@ public class FlashFirmware extends AppCompatActivity {
                 "TTGOAltimeter",
                 "TTGOMiniAltimeter",
                 "TTGOSimpleAltimeter",
-                "UltimateAltimeter"
+                "UltimateAltimeter",
+                "UltimateAltimeterNoSleep"
+
         };
 
         ArrayAdapter<String> adapterFirmware = new ArrayAdapter<String>(this,
@@ -263,6 +265,8 @@ public class FlashFirmware extends AppCompatActivity {
 
                 if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ultimate_altimeter_small, getApplicationContext().getTheme()));
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeterNoSleep"))
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ultimate_altimeter_small_nosleep, getApplicationContext().getTheme()));
 
             }
 
@@ -360,7 +364,8 @@ public class FlashFirmware extends AppCompatActivity {
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter") ||
-                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter")
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter") ||
+        itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeterNoSleep")
         ) {
             recorverFirmware = true;
             new UploadESP32Asyc().execute();
@@ -449,6 +454,7 @@ public class FlashFirmware extends AppCompatActivity {
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter") ||
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeterNoSleep") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter")) {
             tvRead.setText("Loading ESP32 firmware\n");
             recorverFirmware = false;
@@ -705,6 +711,11 @@ public class FlashFirmware extends AppCompatActivity {
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4;
+                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeterNoSleep")) {
+                    firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE1;
+                    firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE2;
+                    firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE3;
+                    firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE4;
                 }
                 uploadESP32(firmwareFileName, mUploadSTM32Callback);
             } else {
