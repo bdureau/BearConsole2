@@ -892,7 +892,7 @@ public class MainScreenActivity extends AppCompatActivity {
             Add("TTGOMiniBearAltimeter", "0.2,0.3");
             //Add("TTGOMiniBearAltimeter", "0.4");
             //Add("UltimateAltimeter", "0.2,0.3");
-            Add("UltimateAltimeter", "0.4");
+            Add("UltimateAltimeter", "0.5");
 
         }
         public void Add ( String altiName, String verList) {
