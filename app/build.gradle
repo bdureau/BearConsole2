@@ -10,8 +10,8 @@ android {
         applicationId 'com.altimeter.bdureau.bearconsole'
         minSdk 21
         targetSdk 35
-        versionName '2.0.14'
-        versionCode 39
+        versionName '2.0.15'
+        versionCode 40
         multiDexEnabled true
     }
     buildTypes {
@@ -50,8 +50,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'//02/01
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7' //02/01
-    implementation 'androidx.navigation:navigation-fragment:2.8.5'//02/01
-    implementation 'androidx.navigation:navigation-ui:2.8.5'//02/01
+    //implementation 'androidx.navigation:navigation-fragment:2.8.5'//02/01
+    implementation 'androidx.navigation:navigation-fragment:2.8.6'//09/02
+    //implementation 'androidx.navigation:navigation-ui:2.8.5'//02/01
+    implementation 'androidx.navigation:navigation-ui:2.8.6'//09/02
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0'//02/01
