@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BearConsole.iml" filepath="$PROJECT_DIR$/BearConsole.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BearConsole.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BearConsole.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BearConsole.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BearConsole.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BearConsole.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BearConsole.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BearConsole.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BearConsole.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BearConsole2.iml" filepath="$PROJECT_DIR$/.idea/modules/BearConsole2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BearConsole2.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BearConsole2.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BearConsole2.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BearConsole2.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BearConsole2.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BearConsole2.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BearConsole2.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BearConsole2.app.unitTest.iml" />
     </modules>
   </component>
 </project>
