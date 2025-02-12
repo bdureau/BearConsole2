@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/mini_raptor_ap_silicon"
+    android:fitsSystemWindows="true"
     tools:context=".MainScreenActivity">
 
     <GridLayout
