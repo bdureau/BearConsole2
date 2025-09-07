@@ -884,10 +884,10 @@ public class MainScreenActivity extends AppCompatActivity {
             Add("AltiServo", "1.6");
             Add("AltiGPS", "1.7");
             Add("AltiDuo", "1.9");
-            Add("AltiMultiESP32", "1.28,2.0,2.1");
-            Add("AltiMultiESP32_accel", "2.0,2.1");
-            Add("AltiMultiESP32_accel_375", "2.0,2.1");
-            Add("AltiMultiESP32_accel_345", "2.0,2.1");
+            Add("AltiMultiESP32", "1.28,2.0,2.1,2.2");
+            Add("AltiMultiESP32_accel", "2.0,2.1,2.2");
+            Add("AltiMultiESP32_accel_375", "2.0,2.1,2.2");
+            Add("AltiMultiESP32_accel_345", "2.0,2.1,2.2");
             Add("TTGOBearAltimeter", "0.4,0.5");
             Add("TTGOMiniBearAltimeter", "0.2,0.3");
             Add("UltimateAltimeter", "0.4,0.5");

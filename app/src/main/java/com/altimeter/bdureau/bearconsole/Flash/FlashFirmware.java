@@ -74,25 +74,25 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2023-02-26-RocketGPSLoggerV1.7.bin";
     // ESP32
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/RocketFlightLoggerV2.1.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/RocketFlightLoggerV2.1.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE4 = "firmwares/ESP32/RocketFlightLoggerV2.1.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/RocketFlightLoggerV2.2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/RocketFlightLoggerV2.2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE4 = "firmwares/ESP32/RocketFlightLoggerV2.2.ino.partitions.bin";
 
     //ESP32 accelero
     private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE1 = "firmwares/ESP32_accelero/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE2 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.1.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE3 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.1.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE4 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.1.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE2 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE3 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE4 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.2.ino.partitions.bin";
     //ESP32 ADXL345
     private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE1 = "firmwares/ESP32_ADXL345/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE2 = "firmwares/ESP32_ADXL345/RocketFlightLoggerV2.1.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE3 = "firmwares/ESP32_ADXL345/RocketFlightLoggerV2.1.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE4 = "firmwares/ESP32_ADXL345/RocketFlightLoggerV2.1.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE2 = "firmwares/ESP32_ADXL345/RocketFlightLoggerV2.2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE3 = "firmwares/ESP32_ADXL345/RocketFlightLoggerV2.2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE4 = "firmwares/ESP32_ADXL345/RocketFlightLoggerV2.2.ino.partitions.bin";
     //ESP32 ADXL375
     private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE1 = "firmwares/ESP32_ADXL375/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE2 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.1.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE3 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.1.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE4 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.1.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE2 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE3 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE4 = "firmwares/ESP32_ADXL375/RocketFlightLoggerV2.2.ino.partitions.bin";
 
     //TTGO BearAltimeter
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE1 = "firmwares/TTGO/boot_app0.bin";
