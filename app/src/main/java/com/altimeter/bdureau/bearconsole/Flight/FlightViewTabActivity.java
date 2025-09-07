@@ -69,6 +69,7 @@ import java.util.List;
 
 
 public class FlightViewTabActivity extends AppCompatActivity {
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 10;
     private FlightData myflight = null;
     private ViewPager mViewPager;
     SectionsPageAdapter adapter;
@@ -359,6 +360,16 @@ public class FlightViewTabActivity extends AppCompatActivity {
                     PERMISSION_STORAGE,
                     REQUEST_EXTERNAL_STORAGE);
         }
+
+        /*int permissionRead = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if (permissionRead != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    //PERMISSION_STORAGE,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }*/
     }
 
     private void setupViewPager(ViewPager viewPager) {

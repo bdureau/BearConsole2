@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 35
+    compileSdk 36
 
     aaptOptions {
         cruncherEnabled = false
@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId 'com.altimeter.bdureau.bearconsole'
         minSdk 21
-        targetSdk 35
+        targetSdk 36
         versionName '2.0.16'
         versionCode 41
         multiDexEnabled true
@@ -30,7 +30,7 @@ android {
         viewBinding true
     }
     namespace 'com.altimeter.bdureau.bearconsole'
-    buildToolsVersion '35.0.0'
+    buildToolsVersion '36.0.0 rc4'
     ndkVersion '23.1.7779620'
 }
 
@@ -41,28 +41,36 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation files('libs/usbserial-6.1.0.aar') //special version of usbserial that work with Android 12
     //implementation 'com.github.felHR85:UsbSerial:6.1.0' //that does not work with Android 12
-    implementation 'com.squareup.okio:okio:3.3.0' //this is needed so that my local usbserial lib work
+    //implementation 'com.squareup.okio:okio:3.3.0' //this is needed so that my local usbserial lib work
+    implementation 'com.squareup.okio:okio:3.16.0' //07/09/25
     implementation files('libs/physicaloid.aar')
     implementation files('libs/viewtooltip.aar')
     implementation files('libs/processing-core.jar')
-    implementation 'com.google.android.gms:play-services-maps:19.0.0'
+    //implementation 'com.google.android.gms:play-services-maps:19.1.0'
+    implementation 'com.google.android.gms:play-services-maps:19.2.0'//07/09/25
     implementation 'com.google.android.gms:play-services-location:21.3.0'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'//02/01
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7' //02/01
-    //implementation 'androidx.navigation:navigation-fragment:2.8.5'//02/01
-    implementation 'androidx.navigation:navigation-fragment:2.8.6'//09/02
-    //implementation 'androidx.navigation:navigation-ui:2.8.5'//02/01
-    implementation 'androidx.navigation:navigation-ui:2.8.6'//09/02
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'//02/01
-    implementation 'com.google.android.material:material:1.12.0'
+    //implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'//07/09/25
+    //implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'//02/01
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.3' //07/09/25
+    //implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7' //02/01
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3'//07/09/25
+    //implementation 'androidx.navigation:navigation-fragment:2.8.8'//09/02
+    implementation 'androidx.navigation:navigation-fragment:2.9.3'
+    implementation 'androidx.navigation:navigation-ui:2.9.3'//07/09/25
+    //implementation 'androidx.navigation:navigation-ui:2.8.8'//09/02
+    //androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
+    //androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0' //07/09/25
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'//02/01
+    //implementation 'com.google.android.material:material:1.12.0'
+    implementation 'com.google.android.material:material:1.13.0'//07/09/25
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     // required to avoid crash on Android 12 API 31
     //implementation 'androidx.work:work-runtime-ktx:2.7.1'
-    implementation 'androidx.work:work-runtime:2.10.0'//02/01
-
+    //implementation 'androidx.work:work-runtime:2.10.0'//02/01
+    implementation 'androidx.work:work-runtime:2.10.3'//07/09/25
     //for openmap
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'org.osmdroid:osmdroid-android:6.0.2'

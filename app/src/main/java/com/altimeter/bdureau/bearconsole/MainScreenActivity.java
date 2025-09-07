@@ -62,14 +62,14 @@ import java.util.Map;
 import java.util.Set;
 
 public class MainScreenActivity extends AppCompatActivity {
-    public String TAG = "MainScreenActivity";
-    String address = null;
-    CardView btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
-    CardView btnTelemetry, btnStatus, btnFlashFirmware, btnTrack, btnInfo;
+    private static final String TAG = "MainScreenActivity";
+    private String address = null;
+    private CardView btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
+    private CardView btnTelemetry, btnStatus, btnFlashFirmware, btnTrack, btnInfo;
 
-    ImageView image_settings, image_flights, image_telemetry, image_continuity, image_reset,
+    private ImageView image_settings, image_flights, image_telemetry, image_continuity, image_reset,
             image_status, image_track, image_flash, image_info, image_connect;
-    TextView text_settings, text_flights, text_telemetry, text_continuity, text_reset,
+    private TextView text_settings, text_flights, text_telemetry, text_continuity, text_reset,
             text_status, text_track, text_flash, text_info, text_connect;
 
     private UsbManager usbManager;

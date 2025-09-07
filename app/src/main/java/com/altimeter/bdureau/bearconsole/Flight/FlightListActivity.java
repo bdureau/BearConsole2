@@ -211,11 +211,11 @@ public class FlightListActivity extends AppCompatActivity {
                     Log.d("FlightList", "calculate the speed");
                     XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_altitude));
                     int nbrData = serie.getItemCount();
-                    for (int i = 1; i < nbrData; i++) {
+                    for (int i = 5; i < nbrData; i++) {
                         double X, Y;
                         X = serie.getX(i).doubleValue();
-                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue())
-                                / (((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000.0));
+                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 5).doubleValue())
+                                / (((serie.getX(i).doubleValue() - serie.getX(i - 5).doubleValue()) / 1000.0));
                         myflight.AddToFlight((long) X, (long) (Y), flight, 3);
                     }
                 }
@@ -224,11 +224,11 @@ public class FlightListActivity extends AppCompatActivity {
                     Log.d("FlightList", "calculate the acceleration");
                     XYSeries serie = myflight.GetFlightData(flight).getSeries(3);
                     int nbrData = serie.getItemCount();
-                    for (int i = 1; i < nbrData; i++) {
+                    for (int i = 10; i < nbrData; i++) {
                         double X, Y;
                         X = serie.getX(i).doubleValue();
-                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 1).doubleValue())
-                                / ((serie.getX(i).doubleValue() - serie.getX(i - 1).doubleValue()) / 1000.0);
+                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 10).doubleValue())
+                                / ((serie.getX(i).doubleValue() - serie.getX(i - 10).doubleValue()) / 1000.0);
                         myflight.AddToFlight((long) X, (long) (Y), flight, 4);
                     }
                 }

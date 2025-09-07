@@ -3,10 +3,12 @@ package com.altimeter.bdureau.bearconsole.Flight.FlightView;
  * @description: This will display altimeter flight summary
  * @author: boris.dureau@neuf.fr
  **/
+
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,11 +20,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.LocationUtils;
+//import com.altimeter.bdureau.bearconsole.Manifest;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import com.google.android.gms.maps.model.LatLng;
@@ -43,7 +48,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class FlightViewInfoFragment extends Fragment {
-
+    private static final String TAG = "FlightViewInfoFragment";
     private FlightData myflight;
     private XYSeriesCollection allFlightData;
     private TextView nbrOfSamplesValue, flightNbrValue;
@@ -138,6 +143,17 @@ public class FlightViewInfoFragment extends Fragment {
         } else {
             FEET_IN_METER = 3.28084;
         }
+
+       /* if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, request it
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        } else {
+            // Permission has already been granted
+            // ... access the file here ...
+        }*/
 
         // flight nbr
         flightNbrValue.setText(FlightName + "");
@@ -240,8 +256,10 @@ public class FlightViewInfoFragment extends Fragment {
                 SavedCurves = "";
                 SavedCurvesOK = true;
 
+                Log.d(TAG, Environment.DIRECTORY_DOWNLOADS);
+                Log.d(TAG, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
                 // Create a file for the zip file
-                File zipFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "flightData.zip");
+                File zipFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "BearConsoleFlights/flightData.zip");
                 try {
                     // Create a zip output stream to write to the zip file
                     FileOutputStream fos = new FileOutputStream(zipFile);
@@ -405,6 +423,7 @@ public class FlightViewInfoFragment extends Fragment {
 
         try {
             this.startActivity(Intent.createChooser(intent, getString(R.string.share_with5)));
+            //this.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getContext(), getString(R.string.no_app_available), Toast.LENGTH_SHORT).show();
         }
