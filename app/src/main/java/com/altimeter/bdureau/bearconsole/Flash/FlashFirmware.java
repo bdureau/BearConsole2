@@ -70,8 +70,8 @@ public class FlashFirmware extends AppCompatActivity {
     private static final String ASSET_FILE_NAME_ALTIMULTI = "firmwares/Altimulti/AltiMulti-2.0.hex";
     private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2023-02-27-AltiServoV1_6.ino.hex";
     private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2023-02-27-AltiDuoV1_9_console.ino.hex";
-    private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/STM32/RocketFlightLoggerV2.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2023-02-26-RocketGPSLoggerV1.7.bin";
+    private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/STM32/RocketFlightLoggerV2.2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/AltiGPS/RocketGPSLoggerV1.8.ino.bin";
     // ESP32
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/RocketFlightLoggerV2.2.ino.bootloader.bin";
