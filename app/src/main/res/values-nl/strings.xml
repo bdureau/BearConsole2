@@ -494,5 +494,6 @@
     <string name="share_with6">Share With</string>
     <string name="do_you_want_to_connect_to_module">"Do you want to connect to module "</string>
     <string name="no">No</string>
+    <string name="recover_flight">Recover flight</string>
 
 </resources>

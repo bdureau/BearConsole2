@@ -490,5 +490,6 @@
     <string name="share_with6">Compartir Con</string>
     <string name="do_you_want_to_connect_to_module">¿Quieres conectarte al módulo?</string>
     <string name="no">No</string>
+    <string name="recover_flight">Recover flight</string>
 
 </resources>

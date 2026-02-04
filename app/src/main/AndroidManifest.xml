@@ -144,7 +144,10 @@
              android:name=".Flight.FlightListActivity"
              android:label="@string/Flight_list"
              android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".Flight.FlightRecoveryActivity"
+            android:label="@string/Flight_list"
+            android:screenOrientation="portrait" />
          <activity
              android:name=".Help.AboutActivity"
              android:label="@string/about_screen"

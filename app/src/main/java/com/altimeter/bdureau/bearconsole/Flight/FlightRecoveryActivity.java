@@ -40,7 +40,7 @@ import java.util.List;
 import static java.lang.Math.abs;
 
 
-public class FlightListActivity extends AppCompatActivity {
+public class FlightRecoveryActivity extends AppCompatActivity {
     public static String SELECTED_FLIGHT = "MyFlight";
 
     ListView flightList = null;
@@ -48,6 +48,7 @@ public class FlightListActivity extends AppCompatActivity {
     List<String> flightNames = null;
     private FlightData myflight = null;
     private AlertDialog alert;
+    private long nbrOfSamples= 0;
 
     private Button buttonDismiss;
 
@@ -56,7 +57,7 @@ public class FlightListActivity extends AppCompatActivity {
             // Get the flight name
             String currentFlight = ((TextView) v).getText().toString();
             Intent i;
-            i = new Intent(FlightListActivity.this, FlightViewTabActivity.class);
+            i = new Intent(FlightRecoveryActivity.this, FlightViewTabActivity.class);
 
             //Change the activity.
             i.putExtra(SELECTED_FLIGHT, currentFlight);
@@ -75,6 +76,14 @@ public class FlightListActivity extends AppCompatActivity {
         //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
         setContentView(R.layout.activity_flight_list);
+
+        Intent newint = getIntent();
+        //String sample = newint.getStringExtra("samples");
+
+        //nbrOfSamples = Long.parseLong(sample);
+        //int nbrOfSamples
+        nbrOfSamples = newint.getIntExtra("samples", 0);
+
         buttonDismiss = (Button) findViewById(R.id.butDismiss);
         new RetrieveFlights().execute();
         buttonDismiss.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +112,7 @@ public class FlightListActivity extends AppCompatActivity {
         protected void onPreExecute() {
 
 
-            builder = new AlertDialog.Builder(FlightListActivity.this);
+            builder = new AlertDialog.Builder(FlightRecoveryActivity.this);
             //Retrieving flights...
             builder.setMessage(getResources().getString(R.string.msg7))
                     .setTitle(getResources().getString(R.string.msg8))
@@ -155,14 +164,15 @@ public class FlightListActivity extends AppCompatActivity {
                     NbrOfFlight = myBT.getNbrOfFlight();
                 }
 
-                if (NbrOfFlight > 0) {
-                    for (int j = 0; j < NbrOfFlight; j++) {
-                        dialogAppend(getString(R.string.retrieving_flight) + (j + 1));
-                        Log.d("FlightList", "FlightNbr:" + j);
+                //if (NbrOfFlight > 0) {
+                    //for (int j = 0; j < NbrOfFlight; j++) {
+                        dialogAppend(getString(R.string.retrieving_flight) + NbrOfFlight);
+                        Log.d("FlightList", "FlightNbr:" + nbrOfSamples);
                         myBT.flush();
                         myBT.clearInput();
 
-                        myBT.write("r" + j + ";".toString());
+                        //myBT.write("r" + j + ";".toString());
+                        myBT.write("R" + nbrOfSamples + ";".toString());
                         myBT.flush();
 
                         try {
@@ -182,10 +192,10 @@ public class FlightListActivity extends AppCompatActivity {
                         if (canceled) {
                             Log.d("FlightList", "Canceled retrieval");
                             //this will exit the for loop and stop asking fo new flight
-                            j = NbrOfFlight;
+                            //j = NbrOfFlight;
                         }
-                    }
-                }
+                    //}
+                //}
 
 
                 flightNames = new ArrayList<String>();
@@ -193,6 +203,8 @@ public class FlightListActivity extends AppCompatActivity {
                 myflight = myBT.getFlightData();
                 Log.d("FlightList", "myflight.getAllFlightNames2()");
                 flightNames = myflight.getAllFlightNames2();
+                Log.d("FlightList", "flightNames.size():"+flightNames.size() );
+                Log.d("FlightList","flightNames:"+flightNames);
                 if (canceled) {
                     Log.d("FlightList", "canceled2");
                     //order the names in the collection
@@ -241,7 +253,7 @@ public class FlightListActivity extends AppCompatActivity {
         {
             super.onPostExecute(result);
 
-            final ArrayAdapter adapter = new ArrayAdapter(FlightListActivity.this,
+            final ArrayAdapter adapter = new ArrayAdapter(FlightRecoveryActivity.this,
                     android.R.layout.simple_list_item_1, flightNames);
             adapter.sort(new Comparator<String>() {
                 public int compare(String object1, String object2) {

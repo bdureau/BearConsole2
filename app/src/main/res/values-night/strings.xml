@@ -13,4 +13,5 @@
     <string name="track">Track</string>
     <string name="flash_nfirmware">Flash\nfirmware</string>
     <string name="export_and_share">Export and Share</string>
+    <string name="recover_flight">Recover flight</string>
 </resources>

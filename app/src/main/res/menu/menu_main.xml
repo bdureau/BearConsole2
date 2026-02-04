@@ -8,6 +8,11 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_recover_flight"
+        android:orderInCategory="100"
+        android:title="@string/recover_flight"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_mod3dr_settings"
         android:orderInCategory="100"
         android:title="@string/_3dr_settings"

@@ -22,16 +22,20 @@ import androidx.cardview.widget.CardView;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
 import com.altimeter.bdureau.bearconsole.Flight.FlightListActivity;
+import com.altimeter.bdureau.bearconsole.Flight.FlightRecoveryActivity;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.altimeter.bdureau.bearconsole.config.AltiTabConfigActivity;
 import com.altimeter.bdureau.bearconsole.config.AppTabConfigActivity;
@@ -699,6 +703,7 @@ public class MainScreenActivity extends AppCompatActivity {
             menu.findItem(R.id.action_modlorae32_settings).setEnabled(false);
             // Allow connection testing
             menu.findItem(R.id.action_test_connection).setEnabled(true);
+            menu.findItem(R.id.action_recover_flight).setEnabled(true);
         } else {
             // not connected so allow those
             menu.findItem(R.id.action_mod3dr_settings).setEnabled(true);
@@ -707,9 +712,65 @@ public class MainScreenActivity extends AppCompatActivity {
             menu.findItem(R.id.action_modlorae32_settings).setEnabled(true);
             //cannot do connection testing until we are connected
             menu.findItem(R.id.action_test_connection).setEnabled(false);
+            menu.findItem(R.id.action_recover_flight).setEnabled(false);
         }
         return true;
 
+    }
+    private void showSamplesDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter number of samples");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setHint("e.g. 1000");
+
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", null); // We override later for validation
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+
+        dialog.setOnShowListener(d -> {
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(v -> {
+                String value = input.getText().toString().trim();
+
+                // Validation
+                if (value.isEmpty()) {
+                    input.setError("Value is required");
+                    return;
+                }
+
+                int samples;
+                try {
+                    samples = Integer.parseInt(value);
+                } catch (NumberFormatException e) {
+                    input.setError("Must be a numeric value");
+                    return;
+                }
+
+                if (samples <= 0) {
+                    input.setError("Value must be greater than 0");
+                    return;
+                }
+
+                if (samples >= 10000) {
+                    input.setError("Value must be less than 10000");
+                    return;
+                }
+
+                // All checks passed → start activity
+                Intent i = new Intent(MainScreenActivity.this, FlightRecoveryActivity.class);
+                i.putExtra("samples", samples); // pass as int, not String
+                startActivity(i);
+
+                dialog.dismiss();
+            });
+        });
+
+        dialog.show();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -723,6 +784,12 @@ public class MainScreenActivity extends AppCompatActivity {
             Intent i = new Intent(MainScreenActivity.this, AppTabConfigActivity.class);
             startActivity(i);
             return true;
+        }
+        if (id == R.id.action_recover_flight) {
+            /*Intent i = new Intent(MainScreenActivity.this, FlightRecoveryActivity.class);
+            i.putExtra("samples", "1000");
+            startActivity(i);*/
+            showSamplesDialog();
         }
         //open help screen
         if (id == R.id.action_help) {

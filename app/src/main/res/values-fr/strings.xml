@@ -505,5 +505,6 @@
     <string name="share_with6">Partager avec</string>
     <string name="do_you_want_to_connect_to_module">"Voulez vous vous connecter au module "</string>
     <string name="no">Non</string>
+    <string name="recover_flight">Recover flight</string>
 
 </resources>

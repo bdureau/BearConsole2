@@ -67,7 +67,7 @@ public class FlashFirmware extends AppCompatActivity {
     private ArrayList<Boards> mBoardList;
     private UartConfig uartConfig;
 
-    private static final String ASSET_FILE_NAME_ALTIMULTIV2 = "firmwares/Altimulti/AltiMultiV2-2.0.hex";
+    private static final String ASSET_FILE_NAME_ALTIMULTIV2 = "firmwares/Altimulti/AltiMultiV2-2.3.hex";
     private static final String ASSET_FILE_NAME_ALTIMULTI = "firmwares/Altimulti/AltiMulti-2.0.hex";
     private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2023-02-27-AltiServoV1_6.ino.hex";
     private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2023-02-27-AltiDuoV1_9_console.ino.hex";

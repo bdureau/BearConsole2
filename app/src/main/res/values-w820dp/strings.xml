@@ -16,4 +16,5 @@
     <string name="location_age">Location age</string>
     <string name="time_sat_acquisition">Time sat acquisition</string>
     <string name="use_telemetryport">Use TelemetryPort</string>
+    <string name="recover_flight">Recover flight</string>
 </resources>

@@ -56,7 +56,7 @@ public class FlightData {
             Log.d("FlightList","in While");
             Map.Entry me = (Map.Entry)i.next();
             flightNames.add((String)me.getKey());
-            Log.d("FlightList", (String)me.getKey());
+            Log.d("FlightList", "key:"+(String)me.getKey());
         }
         return flightNames;
     }
