@@ -175,7 +175,7 @@
     <string name="connection_type">Tipo de conexión</string>
     <string name="graphiclib_type">Librería de gráficos </string>
     <string name="MultipleMainDrogue" >Multiple Main/drogue</string>
-    <string name="FullUSBSupport" >Full USB Support</string>
+    <string name="FullUSBSupport" >Soporte USB completo</string>
     <string name="color_black">BLACK</string>
     <string name="color_white">WHITE</string>
     <string name="color_magenta">MAGENTA</string>
@@ -188,23 +188,23 @@
     <string name="color_ltgray">LTGRAY</string>
     <string name="color_red">RED</string>
 
-    <string name="phone_english">English</string>
-    <string name="phone_french">French</string>
-    <string name="phone_language">Phone language</string>
+    <string name="phone_english">Inglés</string>
+    <string name="phone_french">Francés</string>
+    <string name="phone_language">Idioma del teléfono</string>
     <string name="config_unit_meters">Metros</string>
     <string name="config_unit_feet">Pies</string>
 
     <string name="general_config">General</string>
-    <string name="telemetry_config">Telemetry config</string>
-    <string name="main_event">Main event</string>
-    <string name="apogee_altitude_event">Apogee altitud</string>
+    <string name="telemetry_config">Configuración de telemetría</string>
+    <string name="main_event">Evento Main</string>
+    <string name="apogee_altitude_event">Altitud de apogeo</string>
     <string name="main_altitude_event">Main altitud</string>
-    <string name="drogue_event">Drogue event</string>
-    <string name="altitude_event">Altitud event</string>
-    <string name="landing_event">evento de aterrizaje</string>
-    <string name="burnout_event">Burnout event</string>
-    <string name="warning_event">Warning event</string>
-    <string name="liftoff_event">Lift off event</string>
+    <string name="drogue_event">Evento Drogue</string>
+    <string name="altitude_event">Evento Altitud</string>
+    <string name="landing_event">Evento de aterrizaje</string>
+    <string name="burnout_event">Evento de apagado del motor</string>
+    <string name="warning_event">Evento de advertencia</string>
+    <string name="liftoff_event">Evento de despegue</string>
 
     <!-- Telemetry -->
     <string name="stop_telemetry">Parar telemetría</string>
