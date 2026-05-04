@@ -945,16 +945,16 @@ public class MainScreenActivity extends AppCompatActivity {
             hm =null;
             hm = new HashMap();
             //init compatible versions
-            Add("AltiMulti", "1.28,2.0,2.2");
-            Add("AltiMultiV2", "1.28,2.0,2.2");
-            Add("AltiMultiSTM32", "1.28,2.0,2.2");
+            Add("AltiMulti", "1.28,2.0,2.2,2.3");
+            Add("AltiMultiV2", "1.28,2.0,2.2,2.3");
+            Add("AltiMultiSTM32", "1.28,2.0,2.2,2.3");
             Add("AltiServo", "1.6");
             Add("AltiGPS", "1.7,1.8");
             Add("AltiDuo", "1.9");
-            Add("AltiMultiESP32", "1.28,2.0,2.1,2.2");
-            Add("AltiMultiESP32_accel", "2.0,2.1,2.2");
-            Add("AltiMultiESP32_accel_375", "2.0,2.1,2.2");
-            Add("AltiMultiESP32_accel_345", "2.0,2.1,2.2");
+            Add("AltiMultiESP32", "1.28,2.0,2.1,2.2,2.3");
+            Add("AltiMultiESP32_accel", "2.0,2.1,2.2,2.3");
+            Add("AltiMultiESP32_accel_375", "2.0,2.1,2.2,2.3");
+            Add("AltiMultiESP32_accel_345", "2.0,2.1,2.2,2.3");
             Add("TTGOBearAltimeter", "0.4,0.5");
             Add("TTGOMiniBearAltimeter", "0.2,0.3");
             Add("UltimateAltimeter", "0.4,0.5");

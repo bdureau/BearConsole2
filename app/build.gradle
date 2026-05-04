@@ -1,23 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 36
+    compileSdk 37
 
-    aaptOptions {
-        cruncherEnabled = false
-    }
     defaultConfig {
         applicationId 'com.altimeter.bdureau.bearconsole'
         minSdk 23
         targetSdk 36
-        versionName '2.0.19'
-        versionCode 46
+        versionName '2.0.20'
+        versionCode 47
         multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -28,10 +25,12 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
     namespace 'com.altimeter.bdureau.bearconsole'
     buildToolsVersion '36.0.0 rc4'
     ndkVersion '23.1.7779620'
+    compileSdkMinor 0
 }
 
 dependencies {
