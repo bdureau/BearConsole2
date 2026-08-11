@@ -23,7 +23,7 @@ public class AltiConfig2Fragment extends Fragment {
     private String[] itemsBaudRate, itemsAltimeterResolution, itemsEEpromSize, itemsBeepOnOff;
     private String[] itemsTelemetryType, itemsSupersonicDelayOnOff, itemsBatteryType;
     private Spinner dropdownBeepOnOff, dropdownBaudRate;
-    //private Spinner dropdownBaudRate;
+
     private EditText ApogeeMeasures;
     private Spinner dropdownAltimeterResolution, dropdownEEpromSize;
     private Spinner dropdownTelemetryType, dropdownSupersonicDelay, dropdownBatteryType;

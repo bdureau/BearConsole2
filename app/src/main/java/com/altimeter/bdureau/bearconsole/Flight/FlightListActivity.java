@@ -6,16 +6,11 @@ package com.altimeter.bdureau.bearconsole.Flight;
  **/
 
 import android.app.AlertDialog;
-//import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-//import android.os.Build;
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
-//import androidx.appcompat.app.AppCompatDelegate;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -25,18 +20,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
-
 import org.afree.data.xy.XYSeries;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import static java.lang.Math.abs;
 
 

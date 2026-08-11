@@ -17,11 +17,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 
-    <!--
- android:maxSdkVersion="28"
-  tools:ignore="ScopedStorage"
-  />
-    -->
     <uses-feature android:name="android.hardware.usb.host"
         android:required="true"/>
 
@@ -49,7 +44,7 @@
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <!-- Necessary for apps that target Android 9.0 or higher -->
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
-        <!--  <activity android:name=".Flight.FlightViewMapsActivity" />-->
+
          <activity
              android:name=".config.ConfigModules.Config3DR"
              android:exported="true"
@@ -190,14 +185,7 @@
                  android:name="android.support.FILE_PROVIDER_PATHS"
                  android:resource="@xml/file_path" />
          </provider>
-         <!--
-            ATTENTION: This was auto-generated to add Google Play services to your project for
-            App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-         -->
-        <!--<meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
--->
+
         <service android:name=".LocationService" />
     </application>
 
