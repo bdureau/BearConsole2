@@ -207,7 +207,7 @@ public class FlightListActivity extends AppCompatActivity {
                         X = serie.getX(i).doubleValue();
                         Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 5).doubleValue())
                                 / (((serie.getX(i).doubleValue() - serie.getX(i - 5).doubleValue()) / 1000.0));
-                        myflight.AddToFlight((long) X, (long) (Y), flight, 3);
+                        myflight.AddToFlight((float) X, (float) (Y), flight, 3);
                     }
                 }
                 //calculate the acceleration
@@ -220,7 +220,7 @@ public class FlightListActivity extends AppCompatActivity {
                         X = serie.getX(i).doubleValue();
                         Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 10).doubleValue())
                                 / ((serie.getX(i).doubleValue() - serie.getX(i - 10).doubleValue()) / 1000.0);
-                        myflight.AddToFlight((long) X, (long) (Y), flight, 4);
+                        myflight.AddToFlight((float) X, (float) (Y), flight, 4);
                     }
                 }
             }

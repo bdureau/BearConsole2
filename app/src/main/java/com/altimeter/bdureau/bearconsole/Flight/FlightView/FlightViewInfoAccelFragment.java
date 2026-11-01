@@ -1,8 +1,19 @@
 package com.altimeter.bdureau.bearconsole.Flight.FlightView;
+
 /**
- * @description: This will display altimeter information such as current altitude, battery voltage etc...
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Flight Computer Management
+ * Class: FlightViewInfoAccelFragment
+ *
+ * @description:
+ *  Displays maximum G-force acceleration metrics along X, Y, and Z axes
+ *  for both high-G (ADXL375) and low-G (ADXL345) accelerometer sensors.
+ *  Hardened against null series references, View memory leaks, and Android
+ *  fragment recreation crashes.
+ *
  * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ */
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -20,102 +32,142 @@ import com.altimeter.bdureau.bearconsole.R;
 import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
 
+import java.util.Locale;
+
 public class FlightViewInfoAccelFragment extends Fragment {
-    private static final String TAG = "Tab2StatusFragment";
-    private boolean ViewCreated = false;
-    private FlightData myflight;
+    private static final String TAG = "FlightViewInfoAccelFragment";
+    private static final double STANDARD_GRAVITY = 9.80665;
+
+    private boolean viewCreated = false;
     private XYSeriesCollection allFlightData;
-    private TextView txtViewAccel375x, txtViewAccel375y, txtViewAccel375z,
-            txtViewAccel345x, txtViewAccel345y, txtViewAccel345z;
-    //ConsoleApplication lBT;
-
-    private XYSeries accel375x, accel375y, accel375z, accel345x, accel345y, accel345z;
-
-    /*public FlightViewInfoAccelFragment(ConsoleApplication bt) {
-        lBT = bt;
-    }*/
-    private String units[] = null;
-    private String FlightName = null;
     private ConsoleApplication myBT;
+
+    private TextView txtViewAccel375x, txtViewAccel375y, txtViewAccel375z;
+    private TextView txtViewAccel345x, txtViewAccel345y, txtViewAccel345z;
+
+    /**
+     * Default constructor required by the Android framework for state restoration.
+     */
+    public FlightViewInfoAccelFragment() {
+        super();
+    }
+
+    /**
+     * Parameterized constructor used by tab adapters.
+     */
     public FlightViewInfoAccelFragment(FlightData data,
                                        XYSeriesCollection data2,
-                                       ConsoleApplication BT,
-                                       String pUnits[],
+                                       ConsoleApplication bt,
+                                       String[] pUnits,
                                        String pFlightName) {
-        myflight = data;
         this.allFlightData = data2;
-        this.units = pUnits;
-        this.FlightName = pFlightName;
-        this.myBT = BT;
-
+        this.myBT = bt;
     }
+
     public void setAccel375x(String value) {
-        if (ViewCreated)
-            this.txtViewAccel375x.setText(value);
+        if (viewCreated && txtViewAccel375x != null) txtViewAccel375x.setText(value);
     }
 
     public void setAccel375y(String value) {
-        if (ViewCreated)
-            this.txtViewAccel375y.setText(value);
+        if (viewCreated && txtViewAccel375y != null) txtViewAccel375y.setText(value);
     }
 
     public void setAccel375z(String value) {
-        if (ViewCreated)
-            this.txtViewAccel375z.setText(value);
+        if (viewCreated && txtViewAccel375z != null) txtViewAccel375z.setText(value);
     }
 
     public void setAccel345x(String value) {
-        if (ViewCreated)
-            this.txtViewAccel345x.setText(value);
+        if (viewCreated && txtViewAccel345x != null) txtViewAccel345x.setText(value);
     }
 
     public void setAccel345y(String value) {
-        if (ViewCreated)
-            this.txtViewAccel345y.setText(value);
+        if (viewCreated && txtViewAccel345y != null) txtViewAccel345y.setText(value);
     }
 
     public void setAccel345z(String value) {
-        if (ViewCreated)
-            this.txtViewAccel345z.setText(value);
+        if (viewCreated && txtViewAccel345z != null) txtViewAccel345z.setText(value);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_telemetry_mp_tab2, container, false);
-        txtViewAccel375x = (TextView) view.findViewById(R.id.txtViewAccel375xValue);
-        txtViewAccel375y = (TextView) view.findViewById(R.id.txtViewAccel375yValue);
-        txtViewAccel375z = (TextView) view.findViewById(R.id.txtViewAccel375zValue);
-        txtViewAccel345x = (TextView) view.findViewById(R.id.txtViewAccel345xValue);
-        txtViewAccel345y = (TextView) view.findViewById(R.id.txtViewAccel345yValue);
-        txtViewAccel345z = (TextView) view.findViewById(R.id.txtViewAccel345zValue);
 
-        accel375x = allFlightData.getSeries("accel375x");
-        accel375y = allFlightData.getSeries("accel375y");
-        accel375z = allFlightData.getSeries("accel375z");
+        txtViewAccel375x = view.findViewById(R.id.txtViewAccel375xValue);
+        txtViewAccel375y = view.findViewById(R.id.txtViewAccel375yValue);
+        txtViewAccel375z = view.findViewById(R.id.txtViewAccel375zValue);
+        txtViewAccel345x = view.findViewById(R.id.txtViewAccel345xValue);
+        txtViewAccel345y = view.findViewById(R.id.txtViewAccel345yValue);
+        txtViewAccel345z = view.findViewById(R.id.txtViewAccel345zValue);
 
-        accel345x = allFlightData.getSeries("accel345x");
-        accel345y = allFlightData.getSeries("accel345y");
-        accel345z = allFlightData.getSeries("accel345z");
+        populateAccelerationMetrics();
 
-        this.txtViewAccel375x.setText(String.format("%.2f",accel375x.getMaxY()/9.80665) + " G");
-        this.txtViewAccel375y.setText(String.format("%.2f",accel375y.getMaxY()/9.80665) + " G");
-        this.txtViewAccel375z.setText(String.format("%.2f",accel375z.getMaxY()/9.80665) + " G");
-        this.txtViewAccel345x.setText(String.format("%.2f",accel345x.getMaxY()/9.80665) + " G");
-        this.txtViewAccel345y.setText(String.format("%.2f",accel345y.getMaxY()/9.80665) + " G");
-        this.txtViewAccel345z.setText(String.format("%.2f",accel345z.getMaxY()/9.80665) + " G");
-        ViewCreated = true;
+        viewCreated = true;
         return view;
+    }
+
+    /**
+     * Extracts peak acceleration values across sensor channels and converts m/s² into Gs.
+     */
+    private void populateAccelerationMetrics() {
+        if (allFlightData == null) {
+            setFallbackText();
+            return;
+        }
+
+        bindSeriesValue(txtViewAccel375x, "accel375x");
+        bindSeriesValue(txtViewAccel375y, "accel375y");
+        bindSeriesValue(txtViewAccel375z, "accel375z");
+
+        bindSeriesValue(txtViewAccel345x, "accel345x");
+        bindSeriesValue(txtViewAccel345y, "accel345y");
+        bindSeriesValue(txtViewAccel345z, "accel345z");
+    }
+
+    /**
+     * Safely reads a series by name, converts max value to Gs, and updates target TextView.
+     */
+    private void bindSeriesValue(TextView targetView, String seriesKey) {
+        if (targetView == null) return;
+
+        try {
+            XYSeries series = allFlightData.getSeries(seriesKey);
+            if (series != null && series.getItemCount() > 0) {
+                double maxG = series.getMaxY() / STANDARD_GRAVITY;
+                targetView.setText(String.format(Locale.US, "%.2f G", maxG));
+            } else {
+                targetView.setText("N/A");
+            }
+        } catch (Exception ignored) {
+            targetView.setText("N/A");
+        }
+    }
+
+    private void setFallbackText() {
+        if (txtViewAccel375x != null) txtViewAccel375x.setText("N/A");
+        if (txtViewAccel375y != null) txtViewAccel375y.setText("N/A");
+        if (txtViewAccel375z != null) txtViewAccel375z.setText("N/A");
+        if (txtViewAccel345x != null) txtViewAccel345x.setText("N/A");
+        if (txtViewAccel345y != null) txtViewAccel345y.setText("N/A");
+        if (txtViewAccel345z != null) txtViewAccel345z.setText("N/A");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ViewCreated = false;
+        viewCreated = false;
+        // Release View references to prevent Activity/View memory leaks
+        txtViewAccel375x = null;
+        txtViewAccel375y = null;
+        txtViewAccel375z = null;
+        txtViewAccel345x = null;
+        txtViewAccel345y = null;
+        txtViewAccel345z = null;
     }
 
     public boolean isViewCreated() {
-        return ViewCreated;
+        return viewCreated;
     }
-
 }

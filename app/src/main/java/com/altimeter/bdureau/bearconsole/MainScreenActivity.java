@@ -1,9 +1,24 @@
 package com.altimeter.bdureau.bearconsole;
+
 /**
- * @description: Main screen of the altimeter console. Here you will find all the buttons.
- * @author: boris.dureau@neuf.fr
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: MainScreenActivity
  *
- **/
+ * @description:
+ *  Main dashboard activity for the altimeter console application.
+ *  This activity provides a unified interface to:
+ *    - Manage physical USB Serial and Bluetooth RFCOMM connections to rocket avionics.
+ *    - Query, parse, and validate hardware firmware configuration in the background
+ *      without stalling or freezing the Android UI thread.
+ *    - Handle runtime broadcast events (USB device attached/detached/permission grants)
+ *      complying with modern Android 14+ (API 34+) broadcast security requirements.
+ *    - Route users to specialized operational screens: flight logs retrieval, real-time
+ *      telemetry graphing, GPS map tracking, flash firmware, module settings, and diagnostic tests.
+ *
+ * @author: boris.dureau@neuf.fr
+ * ============================================================================
+ */
 
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -16,32 +31,33 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+
 import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
 import com.altimeter.bdureau.bearconsole.Flight.FlightListActivity;
 import com.altimeter.bdureau.bearconsole.Flight.FlightRecoveryActivity;
+import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
+import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.altimeter.bdureau.bearconsole.config.AltiTabConfigActivity;
 import com.altimeter.bdureau.bearconsole.config.AppTabConfigActivity;
-import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
-import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.config.ConfigModules.Config3DR;
 import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigBT;
 import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigLoraE220;
@@ -58,150 +74,196 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-
 import java.io.IOException;
-//import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainScreenActivity extends AppCompatActivity {
     private static final String TAG = "MainScreenActivity";
+
+    // Bluetooth MAC address or device identifier
     private String address = null;
+
+    // UI Dashboard Cards
     private CardView btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
     private CardView btnTelemetry, btnStatus, btnFlashFirmware, btnTrack, btnInfo;
 
+    // UI Card Icons (used to toggle visual alpha when disabled)
     private ImageView image_settings, image_flights, image_telemetry, image_continuity, image_reset,
             image_status, image_track, image_flash, image_info, image_connect;
+
+    // UI Card Labels
     private TextView text_settings, text_flights, text_telemetry, text_continuity, text_reset,
             text_status, text_track, text_flash, text_info, text_connect;
 
+    // Android USB Host Service & Selected Target Device
     private UsbManager usbManager;
     private UsbDevice device;
+
+    // Custom internal action for USB permission callback
     private static final String ACTION_USB_PERMISSION = "com.altimeter.bdureau.bearconsole.USB_PERMISSION";
 
-    ConsoleApplication myBT;
+    // Application state holder (handles active Bluetooth & USB communication pipelines)
+    private ConsoleApplication myBT;
     private AltiConfigData AltiCfg = null;
-    private FirmwareCompatibility firmCompat =null;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+    private FirmwareCompatibility firmCompat = null;
+
+    // Google App Indexing client
     private GoogleApiClient client;
 
-    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() { //Broadcast Receiver to automatically start and stop the Serial connection.
+    // Background executor for serial communication / non-blocking I/O
+    private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
+
+    // UI Handler for posting results back to the Android Main Thread
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    /**
+     * BroadcastReceiver handling USB runtime lifecycle events and user authorization responses.
+     */
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            //msg("in broadcast");
-            Log.d(TAG,"in broadcast");
-            Log.d(TAG,"Action1:" + intent.getAction());
-                    //msg("Action1:" + intent.getAction());
             String action = intent.getAction();
-            if (action.equals(ACTION_USB_PERMISSION)) {
-                Log.d(TAG, "ACTION_USB_PERMISSION");
-                boolean granted = true;
-                if(android.os.Build.VERSION.SDK_INT < 31)
-                    granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
+            Log.d(TAG, "in broadcast - Action: " + action);
+
+            if (action == null) {
+                return;
+            }
+
+            // Case 1: User responded to the USB permission dialog
+            if (ACTION_USB_PERMISSION.equals(action)) {
+                Log.d(TAG, "ACTION_USB_PERMISSION received");
+
+                // Safely extract the UsbDevice instance across Android versions
+                UsbDevice usbDevice;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    usbDevice = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE, UsbDevice.class);
+                } else {
+                    usbDevice = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+                }
+
+                // Check whether the user granted permission
+                boolean granted = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false);
 
                 if (granted) {
-                    Log.d(TAG, "Permission granted");
-                    if (myBT.connect(usbManager, device, Integer.parseInt(/*myBT.getAppConf().getBaudRateValue()*/ "38400"))) {
-                        Log.d(TAG, "baud:"+myBT.getAppConf().getBaudRateValue());
+                    Log.d(TAG, "USB Permission successfully granted by user");
+                    if (usbDevice != null) {
+                        device = usbDevice;
+                    }
+
+                    // Parse configured baud rate from application settings with fallback
+                    int baudRate = 38400;
+                    try {
+                        baudRate = Integer.parseInt(myBT.getAppConf().getBaudRateValue());
+                    } catch (Exception e) {
+                        Log.w(TAG, "Unable to parse baud rate, fallback to default: 38400", e);
+                    }
+
+                    // Open the USB serial connection
+                    if (device != null && myBT.connect(usbManager, device, baudRate)) {
+                        Log.d(TAG, "Connected to USB device with baud rate: " + baudRate);
                         myBT.setConnected(true);
-                        Log.d(TAG, "about to enableUI");
-                        EnableUI();
-                        btnFlashFirmware.setEnabled(false);
                         myBT.setConnectionType("usb");
                         text_connect.setText(getResources().getString(R.string.disconnect));
+                        btnFlashFirmware.setEnabled(false);
+
+                        // Fetch altimeter configuration asynchronously without blocking UI
+                        loadConfigurationAsync();
                     } else {
                         msg("Cannot connect");
                     }
-
                 } else {
+                    Log.w(TAG, "USB permission was denied by the user");
                     msg("PERM NOT GRANTED");
                 }
-            } else if (action.equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
-                //usbManager = (UsbManager) getSystemService(getApplicationContext().USB_SERVICE);
-                //myBT.setConnected(false);
+
+            }
+            // Case 2: A physical USB OTG cable / device was plugged in
+            else if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
+                Log.d(TAG, "USB device attached event received");
                 msg("I can connect via usb");
-            } else if (action.equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
-                if (myBT.getConnectionType().equals("usb"))
-                    if (myBT.getConnected()) {
-                        myBT.Disconnect();
-                        DisableUI();
-                        // we are disconnected enable flash firmware
-                        setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
-                        text_connect.setText(getResources().getString(R.string.connect));
-                    }
+
+            }
+            // Case 3: The USB cable / device was physically unplugged
+            else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
+                Log.d(TAG, "USB device detached event received");
+                if ("usb".equalsIgnoreCase(myBT.getConnectionType()) && myBT.getConnected()) {
+                    myBT.Disconnect();
+                    DisableUI();
+                    setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
+                    text_connect.setText(getResources().getString(R.string.connect));
+                }
             }
         }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        usbManager = (UsbManager) getSystemService(getApplicationContext().USB_SERVICE);
+        usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 
-        //get the bluetooth and USB Application pointer
+        // Retrieve global application state and instantiate firmware version checker
         myBT = (ConsoleApplication) getApplication();
-
-        //This will check if the firmware is compatible with the app and advice on flashing the firmware
         firmCompat = new FirmwareCompatibility();
         setContentView(R.layout.activity_main_screen);
-        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        // Configure USB event filters
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_USB_PERMISSION);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(broadcastReceiver, filter, getApplicationContext().RECEIVER_EXPORTED);
-        } else {
-            registerReceiver(broadcastReceiver, filter);
-        }
+        // Register receiver securely using ContextCompat (enforces RECEIVER_NOT_EXPORTED on API 34+)
+        ContextCompat.registerReceiver(
+                this,
+                broadcastReceiver,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
 
-        //cards
-        btnAltiSettings = (CardView) findViewById(R.id.settings_card);
-        btnReadFlights = (CardView) findViewById(R.id.flights_card);
-        btnTelemetry = (CardView) findViewById(R.id.telemetry_card);
-        btnStatus = (CardView) findViewById(R.id.status_card);
-        btnFlashFirmware = (CardView) findViewById(R.id.flash_card);
-        btnConnectDisconnect = (CardView) findViewById(R.id.connect_card);
-        btnContinuityOnOff = (CardView) findViewById(R.id.continuity_card);
-        btnReset = (CardView) findViewById(R.id.reset_card);
-        btnTrack = (CardView) findViewById(R.id.track_card);
-        btnInfo = (CardView) findViewById(R.id.info_card);
+        // Bind CardView controls
+        btnAltiSettings = findViewById(R.id.settings_card);
+        btnReadFlights = findViewById(R.id.flights_card);
+        btnTelemetry = findViewById(R.id.telemetry_card);
+        btnStatus = findViewById(R.id.status_card);
+        btnFlashFirmware = findViewById(R.id.flash_card);
+        btnConnectDisconnect = findViewById(R.id.connect_card);
+        btnContinuityOnOff = findViewById(R.id.continuity_card);
+        btnReset = findViewById(R.id.reset_card);
+        btnTrack = findViewById(R.id.track_card);
+        btnInfo = findViewById(R.id.info_card);
 
-        // images
-        image_settings = (ImageView) findViewById(R.id.image_settings);
-        image_flights = (ImageView) findViewById(R.id.image_flights);
-        image_telemetry = (ImageView) findViewById(R.id.image_telemetry);
-        image_continuity = (ImageView) findViewById(R.id.image_continuity);
-        image_reset = (ImageView) findViewById(R.id.image_reset);
-        image_status = (ImageView) findViewById(R.id.image_status);
-        image_track = (ImageView) findViewById(R.id.image_status);
-        image_flash = (ImageView) findViewById(R.id.image_flash);
-        image_info = (ImageView) findViewById(R.id.image_info);
-        image_connect = (ImageView) findViewById(R.id.image_connect);
+        // Bind CardView icon images
+        image_settings = findViewById(R.id.image_settings);
+        image_flights = findViewById(R.id.image_flights);
+        image_telemetry = findViewById(R.id.image_telemetry);
+        image_continuity = findViewById(R.id.image_continuity);
+        image_reset = findViewById(R.id.image_reset);
+        image_status = findViewById(R.id.image_status);
+        image_track = findViewById(R.id.image_status);
+        image_flash = findViewById(R.id.image_flash);
+        image_info = findViewById(R.id.image_info);
+        image_connect = findViewById(R.id.image_connect);
 
-        // text
-        text_settings = (TextView) findViewById(R.id.text_settings);
-        text_flights = (TextView) findViewById(R.id.text_flights);
-        text_telemetry = (TextView) findViewById(R.id.text_telemetry);
-        text_continuity = (TextView) findViewById(R.id.text_continuity);
-        text_reset = (TextView) findViewById(R.id.text_reset);
-        text_status = (TextView) findViewById(R.id.text_status);
-        text_track = (TextView) findViewById(R.id.text_track);
-        text_flash = (TextView) findViewById(R.id.text_flash);
-        text_info = (TextView) findViewById(R.id.text_info);
-        text_connect = (TextView) findViewById(R.id.text_connect);
+        // Bind CardView text labels
+        text_settings = findViewById(R.id.text_settings);
+        text_flights = findViewById(R.id.text_flights);
+        text_telemetry = findViewById(R.id.text_telemetry);
+        text_continuity = findViewById(R.id.text_continuity);
+        text_reset = findViewById(R.id.text_reset);
+        text_status = findViewById(R.id.text_status);
+        text_track = findViewById(R.id.text_track);
+        text_flash = findViewById(R.id.text_flash);
+        text_info = findViewById(R.id.text_info);
+        text_connect = findViewById(R.id.text_connect);
 
+        // Initialize UI state depending on existing active connection
         if (myBT.getConnected()) {
-            EnableUI();
-            //btnFlashFirmware.setEnabled(false);
+            loadConfigurationAsync();
             setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
         } else {
             DisableUI();
@@ -209,168 +271,133 @@ public class MainScreenActivity extends AppCompatActivity {
             setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
         }
 
-        //commands to be sent to bluetooth
-        btnAltiSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainScreenActivity.this, AltiTabConfigActivity.class);
-                //Change the activity.
-                startActivity(i);
-            }
+        // Setup click listeners for all interactive dashboard cards
+        btnAltiSettings.setOnClickListener(v -> {
+            Intent i = new Intent(MainScreenActivity.this, AltiTabConfigActivity.class);
+            startActivity(i);
         });
 
-        // about
-        btnInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainScreenActivity.this, AboutActivity.class);
-                //Change the activity.
-                startActivity(i);
-            }
-        });
-        //commands to be sent to flash the firmware
-        btnFlashFirmware.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myBT.getAppConf().ReadConfig();
-                Intent i = new Intent(MainScreenActivity.this, FlashFirmware.class);
-                //Change the activity.
-                startActivity(i);
-            }
+        btnInfo.setOnClickListener(v -> {
+            Intent i = new Intent(MainScreenActivity.this, AboutActivity.class);
+            startActivity(i);
         });
 
-        btnReadFlights.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainScreenActivity.this, FlightListActivity.class);
-                startActivity(i);
-            }
+        btnFlashFirmware.setOnClickListener(v -> {
+            myBT.getAppConf().ReadConfig();
+            Intent i = new Intent(MainScreenActivity.this, FlashFirmware.class);
+            startActivity(i);
         });
 
-        btnTelemetry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //turn on telemetry
-                if (myBT.getConnected()) {
+        btnReadFlights.setOnClickListener(v -> {
+            Intent i = new Intent(MainScreenActivity.this, FlightListActivity.class);
+            startActivity(i);
+        });
+
+        // Telemetry mode: activate live stream ('y1;') asynchronously before opening tab
+        btnTelemetry.setOnClickListener(v -> {
+            if (myBT.getConnected()) {
+                ioExecutor.execute(() -> {
                     myBT.flush();
                     myBT.clearInput();
-                    myBT.write("y1;".toString());
-                }
-                Intent i = new Intent(MainScreenActivity.this, TelemetryTabActivity.class);
-                startActivity(i);
+                    myBT.write("y1;");
+                });
             }
+            Intent i = new Intent(MainScreenActivity.this, TelemetryTabActivity.class);
+            startActivity(i);
         });
 
-        btnStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //turn on telemetry
-                if (myBT.getConnected()) {
+        // Altimeter status mode: activate stream ('y1;') asynchronously before opening tab
+        btnStatus.setOnClickListener(v -> {
+            if (myBT.getConnected()) {
+                ioExecutor.execute(() -> {
                     myBT.flush();
                     myBT.clearInput();
-                    myBT.write("y1;".toString());
-                }
-                Intent i = new Intent(MainScreenActivity.this, AltimeterStatusTabActivity.class);
-                startActivity(i);
+                    myBT.write("y1;");
+                });
             }
+            Intent i = new Intent(MainScreenActivity.this, AltimeterStatusTabActivity.class);
+            startActivity(i);
         });
 
-        btnTrack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //turn on telemetry
-                if (myBT.getConnected()) {
+        // GPS Rocket Tracking: launch Google Maps or OpenStreetMap based on user preferences
+        btnTrack.setOnClickListener(v -> {
+            if (myBT.getConnected()) {
+                ioExecutor.execute(() -> {
                     myBT.flush();
                     myBT.clearInput();
-                    myBT.write("y1;".toString());
-                }
-                Intent i = null;
-                if (myBT.getAppConf().getUseOpenMap()) {
-                    i = new Intent(MainScreenActivity.this, RocketTrackOpenMap.class);
-                } else {
-                    i = new Intent(MainScreenActivity.this, RocketTrackGoogleMap.class);
-                }
-                startActivity(i);
+                    myBT.write("y1;");
+                });
             }
+            Intent i;
+            if (myBT.getAppConf().getUseOpenMap()) {
+                i = new Intent(MainScreenActivity.this, RocketTrackOpenMap.class);
+            } else {
+                i = new Intent(MainScreenActivity.this, RocketTrackGoogleMap.class);
+            }
+            startActivity(i);
         });
 
-        btnConnectDisconnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myBT.getAppConf().ReadConfig();
-                if (myBT.getAppConf().getConnectionType()==0)
-                    myBT.setConnectionType("bluetooth");
-                else
-                    myBT.setConnectionType("usb");
+        // Primary Connect / Disconnect toggle handler
+        btnConnectDisconnect.setOnClickListener(v -> {
+            myBT.getAppConf().ReadConfig();
+            if (myBT.getAppConf().getConnectionType() == 0)
+                myBT.setConnectionType("bluetooth");
+            else
+                myBT.setConnectionType("usb");
 
-                if (myBT.getConnected()) {
-                    Disconnect(); //close connection
-                    DisableUI();
-                    // we are disconnected enable flash firmware
-                    setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
-                    text_connect.setText(getResources().getString(R.string.connect));
-                } else {
-                    if (myBT.getConnectionType().equals("bluetooth")) {
-                        address = myBT.getAddress();
-                        AlertDialog.Builder builder = null;
-                        AlertDialog alert;
-
-                        builder = new AlertDialog.Builder(MainScreenActivity.this);
-                        if (address != null) {
-                            builder.setMessage(getString(R.string.do_you_want_to_connect_to_module) + myBT.getModuleName() + " ?")
-                                    .setTitle("")
-                                    .setCancelable(false)
-                                    .setPositiveButton(getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {
-                                        public void onClick(final DialogInterface dialog, final int id) {
-                                            dialog.cancel();
-                                            new ConnectBT().execute();
-                                            if (myBT.getConnected()) {
-                                                EnableUI();
-                                                // cannot flash firmware if connected
-                                                setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
-                                                text_connect.setText(getResources().getString(R.string.disconnect));
-                                            }
-                                        }
-                                    })
-                                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                        public void onClick(final DialogInterface dialog, final int id) {
-                                            dialog.cancel();
-                                            // choose the bluetooth device
-                                            Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
-                                            startActivity(i);
-                                        }
-                                    });
-                            alert = builder.create();
-                            alert.show();
-                        } else {
-                            // choose the bluetooth device
-                            Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
-                            startActivity(i);
-                        }
-
+            // If already connected, initiate disconnection sequence
+            if (myBT.getConnected()) {
+                Disconnect();
+                DisableUI();
+                setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
+                text_connect.setText(getResources().getString(R.string.connect));
+            } else {
+                // Handling Bluetooth connection path
+                if (myBT.getConnectionType().equals("bluetooth")) {
+                    address = myBT.getAddress();
+                    if (address != null) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainScreenActivity.this);
+                        builder.setMessage(getString(R.string.do_you_want_to_connect_to_module) + myBT.getModuleName() + " ?")
+                                .setTitle("")
+                                .setCancelable(false)
+                                .setPositiveButton(getResources().getString(R.string.Yes), (dialog, id) -> {
+                                    dialog.cancel();
+                                    new ConnectBT().execute();
+                                })
+                                .setNegativeButton(R.string.no, (dialog, id) -> {
+                                    dialog.cancel();
+                                    Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
+                                    startActivity(i);
+                                });
+                        builder.create().show();
                     } else {
-                        myBT.setModuleName("USB");
-                        //this is a USB connection
-                        HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
-                        if (!usbDevices.isEmpty()) {
+                        // No remembered address, open device discovery
+                        Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
+                        startActivity(i);
+                    }
+                } else {
+                    // Handling USB connection path
+                    myBT.setModuleName("USB");
+                    HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
+                    if (!usbDevices.isEmpty()) {
+                        for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
+                            device = entry.getValue();
+                            Log.d(TAG, String.format("USBDevice detected (vid:pid) (%X:%X)-%b class:%X:%X name:%s",
+                                    device.getVendorId(), device.getProductId(),
+                                    UsbSerialDevice.isSupported(device),
+                                    device.getDeviceClass(), device.getDeviceSubclass(),
+                                    device.getDeviceName()));
 
-                            for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
-                                device = entry.getValue();
-                                Log.d(TAG, String.format("USBDevice.HashMap (vid:pid) (%X:%X)-%b class:%X:%X name:%s",
-                                        device.getVendorId(), device.getProductId(),
-                                        UsbSerialDevice.isSupported(device),
-                                        device.getDeviceClass(), device.getDeviceSubclass(),
-                                        device.getDeviceName()));
+                            // Request USB permission if device contains a recognized serial chip
+                            if (UsbSerialDevice.isSupported(device)) {
+                                int flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
+                                Intent intent = new Intent(ACTION_USB_PERMISSION);
+                                intent.setPackage(getPackageName()); // Explicit package for security
 
-                                if (UsbSerialDevice.isSupported(device)) {
-                                    PendingIntent pi;
-                                    int flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_IMMUTABLE : 0;
-                                    pi = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(ACTION_USB_PERMISSION), flags);
-                                    Log.d(TAG, "Requesting permission: vendor" + device.getVendorId());
-                                    usbManager.requestPermission(device, pi);
-
-                                    break;
-                                }
+                                PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, flags);
+                                Log.d(TAG, "Requesting permission for vendor ID: " + device.getVendorId());
+                                usbManager.requestPermission(device, pi);
+                                break;
                             }
                         }
                     }
@@ -378,160 +405,120 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         });
 
-        btnReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainScreenActivity.this, ResetSettingsActivity.class);
-                startActivity(i);
-            }
+        btnReset.setOnClickListener(v -> {
+            Intent i = new Intent(MainScreenActivity.this, ResetSettingsActivity.class);
+            startActivity(i);
         });
 
-        btnContinuityOnOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (myBT.getConnected()) {
-                    // Send command to turn the continuity on or off
-                    myBT.write("c;".toString());
+        // Toggle deployment channel continuity beeper
+        btnContinuityOnOff.setOnClickListener(v -> {
+            if (myBT.getConnected()) {
+                ioExecutor.execute(() -> {
+                    myBT.write("c;");
                     myBT.flush();
                     myBT.clearInput();
-                }
-                msg(getString(R.string.continuity_changed));
+                });
             }
+            msg(getString(R.string.continuity_changed));
         });
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        // Initialize Google App Indexing client
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    @Override
-    public void onResume() {
-        Log.d(TAG, "onResume");
-        super.onResume();
-        /*IntentFilter filter = new IntentFilter();
-        filter.addAction(ACTION_USB_PERMISSION);
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+    /**
+     * Executes the configuration retrieval flow in a background thread to prevent UI lockups.
+     * Retries up to 4 times before declaring failure.
+     */
+    private void loadConfigurationAsync() {
+        ioExecutor.execute(() -> {
+            try {
+                // Allow the newly opened serial port 1000ms to stabilize
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) {}
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(broadcastReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
-        } else {
-            registerReceiver(broadcastReceiver, filter);
-        }*/
+            boolean success = false;
+            for (int attempt = 1; attempt <= 4 && !success; attempt++) {
+                if (attempt > 1) {
+                    Log.d(TAG, "Config attempt " + attempt);
+                }
+                success = readConfig();
+            }
+
+            final boolean configLoaded = success;
+            // Dispatch UI modifications back to the main thread
+            mainHandler.post(() -> {
+                if (isFinishing() || isDestroyed()) return;
+                applyConfigToUI(configLoaded);
+            });
+        });
     }
 
-    @Override
-    public void onPause() {
-        Log.d(TAG, "onPause");
-        super.onPause();
-        //unregisterReceiver(broadcastReceiver);
-
-    }
-
-    private void DisableUI() {
-        setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
-
-        setEnabledCard(false, btnReadFlights, image_flights, text_flights);
-
-        setEnabledCard(false, btnTelemetry, image_telemetry, text_telemetry);
-
-        setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
-
-        setEnabledCard(false, btnReset, image_reset, text_reset);
-
-        setEnabledCard(false, btnStatus, image_status, text_status);
-
-        // now enable or disable the menu entries by invalidating it
-        invalidateOptionsMenu();
-    }
-
-    private void setEnabledCard(boolean enable, CardView card, ImageView image, TextView text) {
-        card.setEnabled(enable);
-        image.setImageAlpha(enable? 0xFF : 0x3F);
-
-    }
-
-    private void EnableUI() {
-
-        boolean success;
-        //wait so that the port open
-        try { Thread.sleep(1000); } catch (InterruptedException e) {}
-        success = readConfig();
-        //second attempt
-        if (!success) {
-            Log.d(TAG,"Config attempt 2");
-            success = readConfig();
-        }
-        //third attempt
-        if (!success) {
-            Log.d(TAG,"Config attempt 3");
-            success = readConfig();
-        }
-        //fourth and last
-        if (!success) {
-            Log.d(TAG,"Config attempt 4");
-            success = readConfig();
+    /**
+     * Inspects the retrieved altimeter configuration and selectively enables/disables
+     * dashboard cards according to the capabilities of the specific hardware firmware.
+     */
+    private void applyConfigToUI(boolean success) {
+        if (!success || myBT.getAltiConfigData() == null) {
+            msg(getString(R.string.unsuported_firmware_msg));
+            return;
         }
 
-        /*
-        supported firmware
-        AltiMultiSTM32
-        AltiServo
-        AltiMultiV2
-        AltiGPS
-        AltiMulti
-        AltiDuo
-         */
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiV2") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter")
-        ) {
-            Log.d(TAG, "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
-            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
-                    myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
-                    myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ||
-                    myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter")
-            ) {
+        String altiName = myBT.getAltiConfigData().getAltimeterName();
+        Log.d(TAG, "Altimeter model confirmed: " + altiName);
+
+        // Verify known altimeter families
+        if (altiName.equals("AltiMultiSTM32") ||
+                altiName.equals("AltiServo") ||
+                altiName.equals("AltiMultiV2") ||
+                altiName.equals("AltiGPS") ||
+                altiName.equals("AltiDuo") ||
+                altiName.equals("AltiMulti") ||
+                altiName.equals("AltiMultiESP32") ||
+                altiName.equals("AltiMultiESP32_accel") ||
+                altiName.equals("AltiMultiESP32_accel_375") ||
+                altiName.equals("AltiMultiESP32_accel_345") ||
+                altiName.equals("TTGOBearAltimeter") ||
+                altiName.equals("UltimateAltimeter") ||
+                altiName.equals("TTGOMiniBearAltimeter")) {
+
+            // Continuity beeper feature support check
+            if (altiName.equals("AltiServo") ||
+                    altiName.equals("TTGOBearAltimeter") ||
+                    altiName.equals("UltimateAltimeter") ||
+                    altiName.equals("TTGOMiniBearAltimeter")) {
                 setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
             } else {
-                //enable it for bT or USB only if full support
-                if (myBT.getAppConf().getConnectionType()==0 ||
-                        (myBT.getAppConf().getConnectionType()==1 && myBT.getAppConf().getFullUSBSupport()))
+                if (myBT.getAppConf().getConnectionType() == 0 ||
+                        (myBT.getAppConf().getConnectionType() == 1 && myBT.getAppConf().getFullUSBSupport()))
                     setEnabledCard(true, btnContinuityOnOff, image_continuity, text_continuity);
                 else
                     setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
             }
 
-            if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
-                    myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
+            // Flash memory flight read support check
+            if (altiName.equals("AltiServo") || altiName.equals("AltiDuo")) {
                 setEnabledCard(false, btnReadFlights, image_flights, text_flights);
             } else {
-                //enable it for bT or USB only if full support
-                if (myBT.getAppConf().getConnectionType()==GlobalConfig.ConnectionType.BT ||
-                        (myBT.getAppConf().getConnectionType()==GlobalConfig.ConnectionType.USB && myBT.getAppConf().getFullUSBSupport()))
+                if (myBT.getAppConf().getConnectionType() == GlobalConfig.ConnectionType.BT ||
+                        (myBT.getAppConf().getConnectionType() == GlobalConfig.ConnectionType.USB && myBT.getAppConf().getFullUSBSupport()))
                     setEnabledCard(true, btnReadFlights, image_flights, text_flights);
                 else
                     setEnabledCard(false, btnReadFlights, image_flights, text_flights);
             }
+
             setEnabledCard(true, btnTelemetry, image_telemetry, text_telemetry);
-            if(myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+
+            // GPS tracking map card visibility
+            if (altiName.equals("AltiGPS")) {
                 setEnabledCard(true, btnTrack, image_track, text_track);
             } else {
                 setEnabledCard(false, btnTrack, image_track, text_track);
             }
-            //enable it for bT or USB only if full support
-            if (myBT.getAppConf().getConnectionType()== GlobalConfig.ConnectionType.BT ||
-                    (myBT.getAppConf().getConnectionType()== GlobalConfig.ConnectionType.USB && myBT.getAppConf().getFullUSBSupport())) {
+
+            // Altimeter settings and reset controls
+            if (myBT.getAppConf().getConnectionType() == GlobalConfig.ConnectionType.BT ||
+                    (myBT.getAppConf().getConnectionType() == GlobalConfig.ConnectionType.USB && myBT.getAppConf().getFullUSBSupport())) {
                 setEnabledCard(true, btnAltiSettings, image_settings, text_settings);
                 setEnabledCard(true, btnReset, image_reset, text_reset);
                 setEnabledCard(true, btnStatus, image_status, text_status);
@@ -541,184 +528,202 @@ public class MainScreenActivity extends AppCompatActivity {
                 setEnabledCard(true, btnStatus, image_status, text_status);
             }
 
-            if(myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")){
-                //setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
-            }
-            if(myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ||
-                    myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter")){
+            // TTGO/Ultimate variants overrides
+            if (altiName.equals("UltimateAltimeter") || altiName.equals("TTGOMiniBearAltimeter")) {
                 setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
                 setEnabledCard(false, btnTelemetry, image_telemetry, text_telemetry);
             }
+
             text_connect.setText(getResources().getString(R.string.disconnect));
             setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
 
-            if(!firmCompat.IsCompatible(myBT.getAltiConfigData().getAltimeterName(),
-                    myBT.getAltiConfigData().getAltiMajorVersion()+ "."+
+            // Validate running firmware version against compatibility database
+            if (!firmCompat.IsCompatible(altiName,
+                    myBT.getAltiConfigData().getAltiMajorVersion() + "." +
                             myBT.getAltiConfigData().getAltiMinorVersion())) {
                 msg(getString(R.string.flash_advice_msg));
-            }
-            else {
+            } else {
                 msg(getResources().getString(R.string.MS_msg4));
             }
         } else {
-            msg(getString(R.string.unsuported_firmware_msg) + ": " + myBT.getAltiConfigData().getAltimeterName());
+            msg(getString(R.string.unsuported_firmware_msg) + ": " + altiName);
             myBT.Disconnect();
         }
-        // now enable or disable the menu entries by invalidating it
+
+        // Refresh options menu items state
         invalidateOptionsMenu();
     }
 
-    // fast way to call Toast
+    /**
+     * Disables functional cards when no communication link is active.
+     */
+    private void DisableUI() {
+        setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
+        setEnabledCard(false, btnReadFlights, image_flights, text_flights);
+        setEnabledCard(false, btnTelemetry, image_telemetry, text_telemetry);
+        setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
+        setEnabledCard(false, btnReset, image_reset, text_reset);
+        setEnabledCard(false, btnStatus, image_status, text_status);
+        invalidateOptionsMenu();
+    }
+
+    /**
+     * Enables or disables a CardView and adjusts icon opacity for visual feedback.
+     */
+    private void setEnabledCard(boolean enable, CardView card, ImageView image, TextView text) {
+        card.setEnabled(enable);
+        image.setImageAlpha(enable ? 0xFF : 0x3F);
+    }
+
+    /**
+     * Helper to show a long Toast notification.
+     */
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Closes the active serial connection in the background.
+     */
     private void Disconnect() {
-        myBT.Disconnect();
+        ioExecutor.execute(() -> myBT.Disconnect());
     }
 
-
+    /**
+     * Interrogates the altimeter over the serial stream using the protocol:
+     * 1. Send "m0;" -> Halt main sensor sampling loop
+     * 2. Send "b;"  -> Request EEPROM configuration dump
+     * 3. Send "m1;" -> Resume main sensor loop
+     *
+     * Runs strictly on the background executor thread.
+     */
     private boolean readConfig() {
-        // ask for config
         boolean success = false;
-        if (myBT.getConnected()) {
+        if (!myBT.getConnected()) {
+            Log.d(TAG, "readConfig: Connection not ready");
+            return false;
+        }
 
-            Log.d(TAG, "Retreiving altimeter config...");
+        Log.d(TAG, "Retrieving altimeter config...");
+        myBT.setDataReady(false);
+        myBT.flush();
+        myBT.clearInput();
+        myBT.write("m0;");
+        Log.d(TAG, "Sent m0; command");
+
+        waitForDataAvailable(3000);
+
+        String myMessage = myBT.ReadResult(3000);
+        Log.d(TAG, "Response to m0;: " + myMessage);
+
+        if ("OK".equals(myMessage)) {
+            // Request binary/text config data
             myBT.setDataReady(false);
             myBT.flush();
             myBT.clearInput();
-            //switch off the main loop before sending the config
-            myBT.write("m0;".toString());
-            Log.d(TAG, "after m0");
-            //wait for the result to come back
-            try {
-                while (myBT.getInputStream().available() <= 0) ;
-            } catch (IOException e) {
+            myBT.write("b;");
+            myBT.flush();
 
-            }
-            Log.d(TAG, "before myMessage");
-            String myMessage = "";
+            waitForDataAvailable(3000);
+
             myMessage = myBT.ReadResult(3000);
-            Log.d(TAG, myMessage);
-            if (myMessage.equals("OK")) {
+            Log.d(TAG, "Response to b; attempt 1: " + myMessage);
+
+            if ("start alticonfig end".equals(myMessage)) {
+                try {
+                    AltiCfg = myBT.getAltiConfigData();
+                    success = true;
+                } catch (Exception ignored) {}
+            } else {
+                // Secondary retry for slow microcontrollers
                 myBT.setDataReady(false);
                 myBT.flush();
                 myBT.clearInput();
-                myBT.write("b;".toString());
+                myBT.write("b;");
                 myBT.flush();
 
-                //get the results
-                //wait for the result to come back
-                try {
-                    while (myBT.getInputStream().available() <= 0) ;
-                } catch (IOException e) {
+                waitForDataAvailable(3000);
 
-                }
                 myMessage = myBT.ReadResult(3000);
-                Log.d(TAG, myMessage);
-                //reading the config
-                if (myMessage.equals("start alticonfig end")) {
+                if ("start alticonfig end".equals(myMessage)) {
                     try {
                         AltiCfg = myBT.getAltiConfigData();
                         success = true;
-                    } catch (Exception e) {
-                        //  msg("pb ready data");
-                    }
-                } else {
-                    // msg("data not ready");
-                    //try again
-                    myBT.setDataReady(false);
-                    myBT.flush();
-                    myBT.clearInput();
-                    myBT.write("b;".toString());
-                    myBT.flush();
-                    //get the results
-                    //wait for the result to come back
-                    try {
-                        while (myBT.getInputStream().available() <= 0) ;
-                    } catch (IOException e) {
-
-                    }
-                    myMessage = myBT.ReadResult(3000);
-                    //reading the config
-                    if (myMessage.equals("start alticonfig end")) {
-                        try {
-                            AltiCfg = myBT.getAltiConfigData();
-                            success = true;
-                        } catch (Exception e) {
-                            //  msg("pb ready data");
-                        }
-                    }
-                }
-                myBT.setDataReady(false);
-                myBT.flush();
-                myBT.clearInput();
-                //switch on the main loop before sending the config
-                myBT.write("m1;".toString());
-
-                //wait for the result to come back
-                try {
-                    while (myBT.getInputStream().available() <= 0) ;
-                } catch (IOException e) {
-
-                }
-                myMessage = myBT.ReadResult(3000);
-                if (myMessage.equals("OK")) {
-                    myBT.flush();
+                    } catch (Exception ignored) {}
                 }
             }
-        } else {
-            Log.d(TAG, "Not connected");
+
+            // Restore normal altimeter sampling loop
+            myBT.setDataReady(false);
+            myBT.flush();
+            myBT.clearInput();
+            myBT.write("m1;");
+
+            waitForDataAvailable(3000);
+
+            myMessage = myBT.ReadResult(3000);
+            if ("OK".equals(myMessage)) {
+                myBT.flush();
+            }
         }
         return success;
     }
 
+    /**
+     * Non-blocking cooperative polling that waits for stream data availability.
+     * Prevents pegging CPU cores at 100% unlike standard busy-wait loops.
+     */
+    private void waitForDataAvailable(long timeoutMs) {
+        long startTime = System.currentTimeMillis();
+        try {
+            while (myBT.getInputStream() != null &&
+                    myBT.getInputStream().available() <= 0 &&
+                    (System.currentTimeMillis() - startTime) < timeoutMs) {
+                Thread.sleep(20);
+            }
+        } catch (IOException | InterruptedException ignored) {}
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
         myBT.getAppConf().ReadConfig();
-       //only enable bluetooth module search if connection type is bluetooth
-        if(myBT.getAppConf().getConnectionType()==1) {
+
+        // Control availability of Bluetooth search depending on connection type
+        if (myBT.getAppConf().getConnectionType() == 1) {
             menu.findItem(R.id.action_bluetooth).setEnabled(false);
-        }
-        else {
+        } else {
             menu.findItem(R.id.action_bluetooth).setEnabled(true);
         }
 
-        //if we are connected then enable some menu options and if not disable them
-        if(myBT.getConnected()){
-            // We are connected so no need to choose the bluetooth
+        // Toggle configuration menus depending on whether hardware is connected
+        if (myBT.getConnected()) {
             menu.findItem(R.id.action_bluetooth).setEnabled(false);
-            // We are connected so we do not want to configure the 3DR module
             menu.findItem(R.id.action_mod3dr_settings).setEnabled(false);
-            // same goes for the BT module
             menu.findItem(R.id.action_modbt_settings).setEnabled(false);
-            // same goes for the lora module
             menu.findItem(R.id.action_modlora_settings).setEnabled(false);
             menu.findItem(R.id.action_modlorae32_settings).setEnabled(false);
-            // Allow connection testing
             menu.findItem(R.id.action_test_connection).setEnabled(true);
             menu.findItem(R.id.action_recover_flight).setEnabled(true);
         } else {
-            // not connected so allow those
             menu.findItem(R.id.action_mod3dr_settings).setEnabled(true);
             menu.findItem(R.id.action_modbt_settings).setEnabled(true);
             menu.findItem(R.id.action_modlora_settings).setEnabled(true);
             menu.findItem(R.id.action_modlorae32_settings).setEnabled(true);
-            //cannot do connection testing until we are connected
             menu.findItem(R.id.action_test_connection).setEnabled(false);
             menu.findItem(R.id.action_recover_flight).setEnabled(false);
         }
         return true;
-
     }
+
+    /**
+     * Displays a numeric input dialog allowing the user to select the sample recovery size.
+     */
     private void showSamplesDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter number of samples");
@@ -728,18 +733,16 @@ public class MainScreenActivity extends AppCompatActivity {
         input.setHint("e.g. 1000");
 
         builder.setView(input);
-
-        builder.setPositiveButton("OK", null); // We override later for validation
+        builder.setPositiveButton("OK", null);
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
-
         dialog.setOnShowListener(d -> {
             Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(v -> {
                 String value = input.getText().toString().trim();
 
-                // Validation
+                // Validation checks
                 if (value.isEmpty()) {
                     input.setError("Value is required");
                     return;
@@ -763,37 +766,30 @@ public class MainScreenActivity extends AppCompatActivity {
                     return;
                 }
 
-                // All checks passed → start activity
+                // Proceed to FlightRecoveryActivity with validated sample count
                 Intent i = new Intent(MainScreenActivity.this, FlightRecoveryActivity.class);
-                i.putExtra("samples", samples); // pass as int, not String
+                i.putExtra("samples", samples);
                 startActivity(i);
-
                 dialog.dismiss();
             });
         });
 
         dialog.show();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //Open application configuration
         if (id == R.id.action_settings) {
             Intent i = new Intent(MainScreenActivity.this, AppTabConfigActivity.class);
             startActivity(i);
             return true;
         }
         if (id == R.id.action_recover_flight) {
-            /*Intent i = new Intent(MainScreenActivity.this, FlightRecoveryActivity.class);
-            i.putExtra("samples", "1000");
-            startActivity(i);*/
             showSamplesDialog();
+            return true;
         }
-        //open help screen
         if (id == R.id.action_help) {
             Intent i = new Intent(MainScreenActivity.this, HelpActivity.class);
             i.putExtra("help_file", "help");
@@ -801,42 +797,35 @@ public class MainScreenActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_bluetooth) {
-            // choose the bluetooth device
             Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
             startActivity(i);
             return true;
         }
-        //Open the about screen
         if (id == R.id.action_about) {
             Intent i = new Intent(MainScreenActivity.this, AboutActivity.class);
             startActivity(i);
             return true;
         }
-        //Open the 3DR module config
         if (id == R.id.action_mod3dr_settings) {
             Intent i = new Intent(MainScreenActivity.this, Config3DR.class);
             startActivity(i);
             return true;
         }
-        //Open the bluetooth module config
         if (id == R.id.action_modbt_settings) {
             Intent i = new Intent(MainScreenActivity.this, ConfigBT.class);
             startActivity(i);
             return true;
         }
-        //Open the lora module config
         if (id == R.id.action_modlora_settings) {
             Intent i = new Intent(MainScreenActivity.this, ConfigLoraE220.class);
             startActivity(i);
             return true;
         }
-        //Open the lora module config
         if (id == R.id.action_modlorae32_settings) {
             Intent i = new Intent(MainScreenActivity.this, ConfigLoraE32.class);
             startActivity(i);
             return true;
         }
-        //Test current connection
         if (id == R.id.action_test_connection) {
             Intent i = new Intent(MainScreenActivity.this, TestConnection.class);
             startActivity(i);
@@ -848,18 +837,11 @@ public class MainScreenActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
         Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "MainScreen Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
+                Action.TYPE_VIEW,
+                "MainScreen Page",
                 Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
                 Uri.parse("android-app://com.altimeter.bdureau.bearconsole/http/host/path")
         );
         AppIndex.AppIndexApi.start(client, viewAction);
@@ -868,85 +850,82 @@ public class MainScreenActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "MainScreen Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
+                Action.TYPE_VIEW,
+                "MainScreen Page",
                 Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
                 Uri.parse("android-app://com.altimeter.bdureau.bearconsole/http/host/path")
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
 
-    /* This is the Bluetooth connection sub class */
-    private class ConnectBT extends AsyncTask<Void, Void, Void>  // UI thread
-    {
-        private AlertDialog.Builder builder = null;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Unregister receiver to avoid Activity leak
+        try {
+            unregisterReceiver(broadcastReceiver);
+        } catch (IllegalArgumentException ignored) {}
+
+        // Shut down background executor service
+        ioExecutor.shutdown();
+    }
+
+    /**
+     * Asynchronous background task for establishing Bluetooth RFCOMM connections.
+     */
+    private class ConnectBT extends AsyncTask<Void, Void, Void> {
         private AlertDialog alert;
-        private boolean ConnectSuccess = true; //if it's here, it's almost connected
+        private boolean ConnectSuccess = true;
 
         @Override
         protected void onPreExecute() {
-            //"Connecting...", "Please wait!!!"
-            builder = new AlertDialog.Builder(MainScreenActivity.this);
-            //Connecting...
-            builder.setMessage(getResources().getString(R.string.MS_msg1)+ "\n"+ myBT.getModuleName())
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainScreenActivity.this);
+            builder.setMessage(getResources().getString(R.string.MS_msg1) + "\n" + myBT.getModuleName())
                     .setTitle(getResources().getString(R.string.MS_msg2))
                     .setCancelable(false)
-                    .setNegativeButton(getResources().getString(R.string.main_screen_actity), new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-                            dialog.cancel();
-                            myBT.setExit(true);
-                            myBT.Disconnect();
-                        }
+                    .setNegativeButton(getResources().getString(R.string.main_screen_actity), (dialog, id) -> {
+                        dialog.cancel();
+                        myBT.setExit(true);
+                        myBT.Disconnect();
                     });
             alert = builder.create();
             alert.show();
         }
 
         @Override
-        protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
-        {
-
+        protected Void doInBackground(Void... devices) {
             if (!myBT.getConnected()) {
-                if (myBT.connect())
-                    ConnectSuccess = true;
-                else
-                    ConnectSuccess = false;
+                ConnectSuccess = myBT.connect();
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-
-            if (!ConnectSuccess) {
-
-            } else {
-                //Connected.
+            if (ConnectSuccess) {
                 myBT.setConnected(true);
-                EnableUI();
+                // Trigger configuration reading on the background thread
+                loadConfigurationAsync();
             }
-            alert.dismiss();
+            // Safely dismiss dialog to avoid View not attached exceptions
+            if (alert != null && alert.isShowing() && !isFinishing() && !isDestroyed()) {
+                alert.dismiss();
+            }
         }
     }
 
+    /**
+     * Helper mapping table to verify if the altimeter firmware version is compatible
+     * with the current Android BearConsole release.
+     */
     public class FirmwareCompatibility {
-        // Create a hash map
         public HashMap<String, String> hm;
+
         FirmwareCompatibility() {
-            hm =null;
-            hm = new HashMap();
-            //init compatible versions
+            hm = new HashMap<>();
             Add("AltiMulti", "1.28,2.0,2.2,2.3");
             Add("AltiMultiV2", "1.28,2.0,2.2,2.3");
             Add("AltiMultiSTM32", "1.28,2.0,2.2,2.3");
@@ -960,43 +939,35 @@ public class MainScreenActivity extends AppCompatActivity {
             Add("TTGOBearAltimeter", "0.4,0.5");
             Add("TTGOMiniBearAltimeter", "0.2,0.3");
             Add("UltimateAltimeter", "0.4,0.5");
-
-        }
-        public void Add ( String altiName, String verList) {
-            hm.put(altiName,verList);
-            //Log.d(TAG, altiName + verList);
         }
 
-        public boolean IsCompatible(String altiName,String ver) {
+        public void Add(String altiName, String verList) {
+            hm.put(altiName, verList);
+        }
+
+        public boolean IsCompatible(String altiName, String ver) {
             boolean compatible = false;
-            String compatFirmwareList="";
+            String compatFirmwareList = "";
 
-            Log.d(TAG, "Check compatibility");
-
+            Log.d(TAG, "Checking firmware compatibility for: " + altiName);
             Set set = hm.entrySet();
-
-            // Get an iterator
             Iterator i = set.iterator();
-            while(i.hasNext()) {
-                Map.Entry me = (Map.Entry)i.next();
-
-                Log.d(TAG,"key:" + me.getKey().toString());
-                if (me.getKey().equals(altiName)){
-                    Log.d(TAG,"name:" +altiName);
+            while (i.hasNext()) {
+                Map.Entry me = (Map.Entry) i.next();
+                if (me.getKey().equals(altiName)) {
                     compatFirmwareList = me.getValue().toString();
-                    Log.d(TAG,"version:" +me.getValue().toString());
                     break;
-
                 }
             }
-            String firmwareVersion[] = compatFirmwareList.split(",");
-            for (int j = 0; j < firmwareVersion.length; j++ ){
-                if(firmwareVersion[j].equals(ver)) {
+
+            String[] firmwareVersion = compatFirmwareList.split(",");
+            for (String s : firmwareVersion) {
+                if (s.equals(ver)) {
                     compatible = true;
-                    Log.d(TAG,"compatible");
+                    Log.d(TAG, "Firmware " + ver + " is compatible");
+                    break;
                 }
             }
-
             return compatible;
         }
     }

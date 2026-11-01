@@ -28,9 +28,9 @@ android {
         buildConfig true
     }
     namespace 'com.altimeter.bdureau.bearconsole'
-    buildToolsVersion '36.0.0 rc4'
+    buildToolsVersion '37.0.0'
     ndkVersion '23.1.7779620'
-    compileSdkMinor 0
+    compileSdkMinor 2
 }
 
 dependencies {

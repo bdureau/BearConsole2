@@ -1,21 +1,37 @@
 package com.altimeter.bdureau.bearconsole.Flight.FlightView;
+
 /**
- * @description: This will display altimeter MAP that has been recorded when using the altiGPS
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Flight Computer Management
+ * Class: FlightViewOpenMapFragment
+ *
+ * @description:
+ *  Displays recorded GPS flight trajectories on OpenStreetMap tiles using osmdroid.
+ *  Includes asynchronous map screenshot generation, safe lifecycle management,
+ *  and sharing via FileProvider compliant with modern Android standards.
+ *
  * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ */
+
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -26,83 +42,97 @@ import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.R;
 
+import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Polyline;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FlightViewOpenMapFragment extends Fragment {
-    private static final String TAG = "Tab4StatusFragment";
-    private boolean ViewCreated = false;
+    private static final String TAG = "FlightViewOpenMap";
 
-    private MapView mMap= null;
+    private MapView mMap = null;
     private ConsoleApplication myBT;
     private ViewPager lPager;
     private Button butBack, butShareMap;
     private FlightData myflight;
-    private String FlightName;
+    private String flightName;
+
+    private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    /**
+     * Default zero-argument constructor required for Fragment lifecycle restoration.
+     */
+    public FlightViewOpenMapFragment() {
+        super();
+    }
 
     public FlightViewOpenMapFragment(ConsoleApplication bt,
-                                       ViewPager pager,
-                                       FlightData pFlight,
-                                       String pFlightName) {
-        myBT = bt;
-        lPager = pager;
-        myflight = pFlight;
-        FlightName = pFlightName;
+                                     ViewPager pager,
+                                     FlightData pFlight,
+                                     String pFlightName) {
+        this.myBT = bt;
+        this.lPager = pager;
+        this.myflight = pFlight;
+        this.flightName = pFlightName;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        Context context = requireContext();
+        Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
 
-        Configuration.getInstance().load(this.getContext(),
-                PreferenceManager.getDefaultSharedPreferences(this.getContext()));
         View view = inflater.inflate(R.layout.fragment_flight_view_open_map, container, false);
 
-        butBack = (Button) view.findViewById(R.id.butBack);
-        butShareMap = (Button) view.findViewById(R.id.butShareMap);
+        butBack = view.findViewById(R.id.butBack);
+        butShareMap = view.findViewById(R.id.butShareMap);
+        mMap = view.findViewById(R.id.mapOpenMapFlight);
 
-        mMap = (MapView) view.findViewById(R.id.mapOpenMapFlight);
-        mMap.setTileSource(TileSourceFactory.MAPNIK);
-        mMap.setBuiltInZoomControls(true);
-        mMap.setMultiTouchControls(true);
+        if (mMap != null) {
+            mMap.setTileSource(TileSourceFactory.MAPNIK);
+            mMap.setBuiltInZoomControls(true);
+            mMap.setMultiTouchControls(true);
+            drawMap();
+        }
 
-        drawMap();
+        if (butBack != null) {
+            butBack.setOnClickListener(v -> {
+                if (lPager != null) {
+                    lPager.setCurrentItem(0);
+                }
+            });
+        }
 
+        if (butShareMap != null) {
+            butShareMap.setOnClickListener(v -> takeMapScreenshotAsync(view));
+        }
 
-        butBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lPager.setCurrentItem(0);
-
-            }
-        });
-        butShareMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takeMapScreenshot(view);
-            }
-        });
-
-        ViewCreated = true;
         return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        Configuration.getInstance().load(getView().getContext(),
-                PreferenceManager.getDefaultSharedPreferences(getView().getContext()));
+        if (getContext() != null) {
+            Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
+        }
         if (mMap != null) {
             mMap.onResume();
         }
@@ -111,99 +141,145 @@ public class FlightViewOpenMapFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Configuration.getInstance().save(getView().getContext(),
-                PreferenceManager.getDefaultSharedPreferences(getView().getContext()));
+        if (getContext() != null) {
+            Configuration.getInstance().save(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
+        }
         if (mMap != null) {
             mMap.onPause();
         }
     }
 
+    /**
+     * Extracts coordinates from flight dataset and plots the polyline route.
+     */
     private void drawMap() {
-        XYSeriesCollection flightData;
-        flightData = myflight.GetFlightData(FlightName);
-        GeoPoint firstPoint = null;
+        if (myflight == null || flightName == null || mMap == null) {
+            return;
+        }
 
-        Polyline polyline;
-        ArrayList<GeoPoint> pathPoints=new ArrayList();
+        XYSeriesCollection flightData = myflight.GetFlightData(flightName);
+        if (flightData == null || flightData.getSeriesCount() < 8) {
+            return;
+        }
 
-        polyline = new Polyline();
-        polyline.setColor(myBT.getAppConf().ConvertColor(myBT.getAppConf().getMapColor()));
-        polyline.setWidth(5);
+        XYSeries latSeries = flightData.getSeries(6);
+        XYSeries lonSeries = flightData.getSeries(7);
+        int itemCount = Math.min(latSeries.getItemCount(), lonSeries.getItemCount());
+
+        ArrayList<GeoPoint> pathPoints = new ArrayList<>(itemCount);
+        for (int i = 0; i < itemCount; i++) {
+            double lat = latSeries.getY(i).doubleValue();
+            double lon = lonSeries.getY(i).doubleValue();
+            if (lat > 0.0 && lon > 0.0) {
+                pathPoints.add(new GeoPoint(lat, lon));
+            }
+        }
+
+        if (pathPoints.isEmpty()) {
+            return;
+        }
+
+        Polyline polyline = new Polyline();
+        if (myBT != null && myBT.getAppConf() != null) {
+            polyline.setColor(myBT.getAppConf().ConvertColor(myBT.getAppConf().getMapColor()));
+        }
+        polyline.setWidth(5f);
+        polyline.setPoints(pathPoints);
+
+        mMap.getOverlays().clear();
         mMap.getOverlays().add(polyline);
 
-        int j = 0;
-        for (int i = 0; i < flightData.getSeries(6).getItemCount(); i++) {
-            double res = (double) flightData.getSeries(6).getY(i);
-            Log.d("map", "lat:" + (double) flightData.getSeries(6).getY(i));
-            Log.d("map", "long:" + (double) flightData.getSeries(7).getY(i));
-            if (res > 0.0d) {
-                GeoPoint c = new GeoPoint((double) flightData.getSeries(6).getY(i),
-                        (double) flightData.getSeries(7).getY(i));
-                pathPoints.add(c);
-                if(firstPoint == null)
-                    firstPoint = c;
-                j++;
-            }
-        }
-
-        polyline.setPoints(pathPoints);
         IMapController mapController = mMap.getController();
-
-        if(firstPoint !=null) {
-            GeoPoint startPoint = new GeoPoint(firstPoint);
-            if (pathPoints.size() > 0)
-                mapController.setCenter(pathPoints.get((int) (pathPoints.size()/2)));
+        if (mapController != null) {
+            GeoPoint centerPoint = pathPoints.get(pathPoints.size() / 2);
+            mapController.setCenter(centerPoint);
             mapController.setZoom(15.0);
-
         }
+
+        mMap.invalidate();
     }
 
-    private  void takeMapScreenshot(View view) {
-        Date date = new Date();
-        CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
+    /**
+     * Captures view bitmap on UI thread, then writes and compresses in background.
+     */
+    private void takeMapScreenshotAsync(View view) {
+        if (view == null || view.getWidth() <= 0 || view.getHeight() <= 0) {
+            return;
+        }
 
-        try {
-            File mainDir = new File(
-                    this.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FilShare");
-            if (!mainDir.exists()) {
-                boolean mkdir = mainDir.mkdir();
+        // Capture modern Canvas rendering without deprecated getDrawingCache()
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+
+        Context context = getContext();
+        if (context == null) return;
+
+        ioExecutor.execute(() -> {
+            CharSequence format = DateFormat.format("MM-dd-yyyy_hh-mm-ss", new Date());
+            File shareDir = new File(context.getCacheDir(), "MapShare");
+            if (!shareDir.exists()) {
+                shareDir.mkdirs();
             }
 
-            String path = mainDir + "/" + "AltiMultiCurve" + "-" + format + ".jpeg";
-            view.setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
-            view.setDrawingCacheEnabled(false);
+            File imageFile = new File(shareDir, "AltiMultiMap-" + format + ".png");
+            try (FileOutputStream fos = new FileOutputStream(imageFile);
+                 BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, bos);
+                bos.flush();
 
-
-            File imageFile = new File(path);
-            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
-            fileOutputStream.flush();
-            fileOutputStream.close();
-            shareScreenShot(imageFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                mainHandler.post(() -> {
+                    if (isAdded()) {
+                        shareScreenshot(imageFile);
+                    }
+                });
+            } catch (IOException e) {
+                Log.e(TAG, "Failed to write map screenshot", e);
+            }
+        });
     }
 
-    private  void shareScreenShot(File imageFile ) {
-        Log.d("Package Name", "Package Name" + this.getContext().getPackageName());
+    /**
+     * Launches system share sheet with proper URI grant permissions.
+     */
+    private void shareScreenshot(File imageFile) {
+        Context context = getContext();
+        if (context == null || imageFile == null || !imageFile.exists()) {
+            return;
+        }
+
         Uri uri = FileProvider.getUriForFile(
-                this.getContext(),
-                this.getContext().getPackageName() +  ".provider",
+                context,
+                context.getPackageName() + ".provider",
                 imageFile);
 
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.bearconsole_has_shared));
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/png");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.bearconsole_has_shared));
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         try {
-            this.startActivity(Intent.createChooser(intent, getString(R.string.share_with)));
+            startActivity(Intent.createChooser(intent, getString(R.string.share_with)));
         } catch (ActivityNotFoundException e) {
-            //Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, getString(R.string.no_app_available), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mMap != null) {
+            mMap.onDetach(); // Clean up osmdroid workers and avoid leaks
+            mMap = null;
+        }
+        butBack = null;
+        butShareMap = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ioExecutor.shutdown();
     }
 }

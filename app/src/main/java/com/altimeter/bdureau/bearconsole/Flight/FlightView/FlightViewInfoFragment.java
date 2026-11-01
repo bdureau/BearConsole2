@@ -1,17 +1,28 @@
 package com.altimeter.bdureau.bearconsole.Flight.FlightView;
+
 /**
- * @description: This will display altimeter flight summary
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Flight Computer Management
+ * Class: FlightViewInfoFragment
+ *
+ * @description:
+ *  Displays comprehensive post-flight summary analytics (apogee, burn time,
+ *  max velocity, acceleration in Gs, landing speed, and GPS ground distance).
+ *  Includes asynchronous background CSV flight export and ZIP sharing compatible
+ *  with modern scoped storage.
+ *
  * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ */
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,85 +30,88 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.LocationUtils;
-//import com.altimeter.bdureau.bearconsole.Manifest;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
 import org.osmdroid.util.GeoPoint;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class FlightViewInfoFragment extends Fragment {
     private static final String TAG = "FlightViewInfoFragment";
+
     private FlightData myflight;
     private XYSeriesCollection allFlightData;
+    private String[] units = null;
+    private String flightName = null;
+    private ConsoleApplication myBT;
+
     private TextView nbrOfSamplesValue, flightNbrValue;
     private TextView apogeeAltitudeValue, flightDurationValue, burnTimeValue, maxVelociyValue, maxAccelerationValue;
     private TextView timeToApogeeValue, mainAltitudeValue, maxDescentValue, landingSpeedValue, flightDistanceValue;
-    private double FEET_IN_METER = 1;
-
-    private AlertDialog.Builder builder = null;
-    private AlertDialog alert;
-
-    private String SavedCurves = "";
-    private boolean SavedCurvesOK = false;
     private Button buttonExportToCsv, butExportAndShare;
-    private String units[] = null;
-    private String FlightName = null;
-    private ConsoleApplication myBT;
-    private XYSeries altitude;
-    private XYSeries speed;
-    private XYSeries accel;
-    private int numberOfCurves = 0;
 
-    int nbrSeries;
+    private int numberOfCurves = 0;
+    private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    /**
+     * Default zero-argument constructor required for Fragment state restoration.
+     */
+    public FlightViewInfoFragment() {
+        super();
+    }
 
     public FlightViewInfoFragment(FlightData data,
                                   XYSeriesCollection data2,
-                                  ConsoleApplication BT,
-                                  String pUnits[],
+                                  ConsoleApplication bt,
+                                  String[] pUnits,
                                   String pFlightName) {
-        myflight = data;
+        this.myflight = data;
         this.allFlightData = data2;
         this.units = pUnits;
-        this.FlightName = pFlightName;
-        this.myBT = BT;
+        this.flightName = pFlightName;
+        this.myBT = bt;
     }
 
-    public void msg(String s) {
-        Toast.makeText(getActivity().getApplicationContext(), s, Toast.LENGTH_LONG).show();
+    private void msg(String message) {
+        if (getContext() != null) {
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
-
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_flight_info, container, false);
 
-        buttonExportToCsv = (Button) view.findViewById(R.id.butExportToCsv);
-        butExportAndShare = (Button) view.findViewById(R.id.butExportAndShare);
+        buttonExportToCsv = view.findViewById(R.id.butExportToCsv);
+        butExportAndShare = view.findViewById(R.id.butExportAndShare);
         apogeeAltitudeValue = view.findViewById(R.id.apogeeAltitudeValue);
         flightDurationValue = view.findViewById(R.id.flightDurationValue);
         burnTimeValue = view.findViewById(R.id.burnTimeValue);
@@ -110,384 +124,344 @@ public class FlightViewInfoFragment extends Fragment {
         nbrOfSamplesValue = view.findViewById(R.id.nbrOfSamplesValue);
         flightNbrValue = view.findViewById(R.id.flightNbrValue);
         flightDistanceValue = view.findViewById(R.id.flightDistanceValue);
-        if (!myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-            flightDistanceValue.setVisibility(View.INVISIBLE);
-        }
-        XYSeriesCollection flightData;
 
-        flightData = myflight.GetFlightData(FlightName);
-        int nbrData = flightData.getSeries(0).getItemCount();
-        nbrSeries = flightData.getSeriesCount();
-
-        speed = allFlightData.getSeries(getResources().getString(R.string.curve_speed));
-        accel = allFlightData.getSeries(getResources().getString(R.string.curve_accel));
-        altitude = allFlightData.getSeries(getResources().getString(R.string.curve_altitude));
-
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
-            numberOfCurves = 8;
-        }
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32")) {
-            numberOfCurves = 6;
-        }
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiV2") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti")) {
-            numberOfCurves = 5;
-        }
-
-        if (myBT.getAppConf().getUnits()== GlobalConfig.AltitudeUnit.METERS) {//meters
-            FEET_IN_METER = 1;
-        } else {
-            FEET_IN_METER = 3.28084;
-        }
-
-       /* if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted, request it
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-        } else {
-            // Permission has already been granted
-            // ... access the file here ...
-        }*/
-
-        // flight nbr
-        flightNbrValue.setText(FlightName + "");
-
-        //nbr of samples
-        nbrOfSamplesValue.setText(nbrData + "");
-
-        //flight duration
-        double flightDuration = flightData.getSeries(0).getMaxX() / 1000;
-        if(flightDuration < 60.0)
-            flightDurationValue.setText(String.format("%.2f", flightDuration) + " secs");
-        else
-            flightDurationValue.setText(String.format("%.2f", flightDuration/60) + " minutes");
-        //apogee altitude
-        double apogeeAltitude = flightData.getSeries(0).getMaxY();
-        apogeeAltitudeValue.setText(String.format("%.0f", apogeeAltitude) + " " + myBT.getAppConf().getUnitsValue());
-
-        //apogee time
-        int pos = searchX(flightData.getSeries(0), apogeeAltitude);
-        Log.d("apogeetime", "pos:"+pos);
-        double apogeeTime = 0;
-        if (pos !=-1) {
-            apogeeTime = (double) flightData.getSeries(0).getX(pos);
-            timeToApogeeValue.setText(String.format("%.2f", apogeeTime / 1000) + " secs");
-        }
-        //calculate max speed
-        double maxSpeed = speed.getMaxY();
-        //speed.getMaxY()
-        Log.d("maxSpeed", "maxSpeed:"+maxSpeed);
-        maxVelociyValue.setText((long) maxSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
-
-        //landing speed
-        double landingSpeed = 0;
-        int timeBeforeLanding =searchXBack(altitude, 30);
-        if (timeBeforeLanding != -1)
-            if (searchY(speed, altitude.getX(timeBeforeLanding).doubleValue() )!= -1) {
-                int posLanding =searchY(speed, altitude.getX(timeBeforeLanding).doubleValue() );
-                landingSpeed = speed.getY(posLanding).doubleValue();
-                Log.d("landingSpeed", "landingSpeed:"+landingSpeed);
-                landingSpeedValue.setText((long) landingSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
-            } else {
-                landingSpeedValue.setText("N/A");
+        if (myBT != null && myBT.getAltiConfigData() != null) {
+            if (!myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+                flightDistanceValue.setVisibility(View.INVISIBLE);
             }
-
-        //max descente speed
-        double maxDescentSpeed = 0;
-
-        if (searchY(speed, apogeeTime + 100) != -1) {
-            int pos1 = searchY(speed, apogeeTime + 100);
-            XYSeries partialSpeed;
-            partialSpeed = new XYSeries("partial_speed");
-            for(int i = pos1; i < speed.getItemCount(); i++ ) {
-                partialSpeed.add(speed.getX(i), speed.getY(i));
-            }
-            maxDescentSpeed = partialSpeed.getMaxY();
-            //maxDescentSpeed = speed.getY(searchY(speed, apogeeTime + 500)).doubleValue();
-            maxDescentValue.setText((long) maxDescentSpeed + " " + myBT.getAppConf().getUnitsValue() + "/secs");
-        } else {
-            maxDescentValue.setText("N/A");
+            determineNumberOfCurves();
         }
 
-        //max acceleration value
-        double maxAccel = accel.getMaxY();
-        maxAccel = (maxAccel * FEET_IN_METER) / 9.80665;
+        populateFlightStatistics();
 
-        maxAccelerationValue.setText((long) maxAccel + " G");
-
-        //burntime value
-        double burnTime = 0;
-        if (searchX(speed, maxSpeed) != -1)
-            burnTime = speed.getX(searchX(speed, maxSpeed)).doubleValue();
-        if (burnTime != 0)
-            burnTimeValue.setText(String.format("%.2f", burnTime / 1000) + " secs");
-        else
-            burnTimeValue.setText("N/A");
-        //main value
-        // remain TODO!!!
-        mainAltitudeValue.setText(" " + myBT.getAppConf().getUnitsValue());
-
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-            // flight distance
-            GeoPoint coord[];
-            coord = new GeoPoint[flightData.getSeries(6).getItemCount()];
-
-            for (int i = 0; i < flightData.getSeries(6).getItemCount(); i++) {
-                double res = (double) flightData.getSeries(6).getY(i);
-
-                if ((double)flightData.getSeries(6).getY(i) > 0.0d & (double)flightData.getSeries(7).getY(i) > 0.0d) {
-                    GeoPoint c = new GeoPoint((double) flightData.getSeries(6).getY(i), (double) flightData.getSeries(7).getY(i));
-                    coord[i] = c;
-                }
-            }
-            flightDistanceValue.setText(String.format("%.2f", LocationUtils.distanceBetweenCoordinates(coord)) + " " + myBT.getAppConf().getUnitsValue());
-        }
-
-        //butExportAndShare
-        butExportAndShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SavedCurves = "";
-                SavedCurvesOK = true;
-
-                Log.d(TAG, Environment.DIRECTORY_DOWNLOADS);
-                Log.d(TAG, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
-                // Create a file for the zip file
-                File zipFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "BearConsoleFlights/flightData.zip");
-                try {
-                    // Create a zip output stream to write to the zip file
-                    FileOutputStream fos = new FileOutputStream(zipFile);
-                    ZipOutputStream zos = new ZipOutputStream(fos);
-                    //export the data to a csv file
-                    for (int j = 0; j < numberOfCurves; j++) {
-                        Log.d("Flight win", "Saving curve:" + j);
-                        String fileName =saveData(j, allFlightData);
-                        // Create a new zip entry with the file's name
-                        ZipEntry ze = new ZipEntry(fileName);
-                        // Add the zip entry to the zip output stream
-                        zos.putNextEntry(ze);
-                        // Read the file and write it to the zip output stream
-                        File filetoZip = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "BearConsoleFlights/"+ fileName);
-                        FileInputStream fis = new FileInputStream(filetoZip);
-                        byte[] buffer = new byte[1024];
-                        int len;
-                        while ((len = fis.read(buffer)) > 0) {
-                            zos.write(buffer, 0, len);
-                        }
-                        // Close the zip entry and the file input stream
-                        zos.closeEntry();
-                        fis.close();
-                    }
-
-                    // Close the zip output stream
-                    zos.close();
-                    fos.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                shareFile(zipFile);
-            }
-        });
-
-        buttonExportToCsv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SavedCurves = "";
-                SavedCurvesOK = true;
-                //export the data to a csv file
-                for (int j = 0; j < numberOfCurves; j++) {
-                    Log.d("Flight win", "Saving curve:" + j);
-                    saveData(j, allFlightData);
-                }
-                builder = new AlertDialog.Builder(view.getContext());
-                //Running Saving commands
-                //getResources().getString(R.string.flight_time)
-                if (SavedCurvesOK) {
-                    builder.setMessage(getResources().getString(R.string.save_curve_msg) + Environment.DIRECTORY_DOWNLOADS + "\\BearConsoleFlights \n" + SavedCurves)
-                            .setTitle(getResources().getString(R.string.save_curves_title))
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.save_curve_ok, new DialogInterface.OnClickListener() {
-                                public void onClick(final DialogInterface dialog, final int id) {
-                                    dialog.cancel();
-                                }
-                            });
-
-                    alert = builder.create();
-                    alert.show();
-                    msg(getResources().getString(R.string.curves_saved_msg));
-                } else {
-                    msg("Failed saving flights");
-                }
-            }
-        });
+        butExportAndShare.setOnClickListener(v -> exportAndShareZipAsync());
+        buttonExportToCsv.setOnClickListener(v -> exportCsvAsync());
 
         return view;
     }
 
-    private String saveData(int nbr, XYSeriesCollection Data) {
-        String fileName ="";
-        String valHeader = "altitude";
-
-        if (nbr == 0) {
-            valHeader = getResources().getString(R.string.curve_altitude);
-        } else if (nbr == 1) {
-            valHeader = getResources().getString(R.string.curve_temperature);
-        } else if (nbr == 2) {
-            valHeader = getResources().getString(R.string.curve_pressure);
-        } else if (nbr == 3) {
-            valHeader = getResources().getString(R.string.curve_speed);
-        } else if (nbr == 4) {
-            valHeader = getResources().getString(R.string.curve_accel);
-        } else if (nbr == 5) {
-            valHeader = "voltage";
-        } else if (nbr == 6) {
-            valHeader = getResources().getString(R.string.curve_latitude);
-        } else if (nbr == 7) {
-            valHeader = getResources().getString(R.string.curve_longitude);
+    private void determineNumberOfCurves() {
+        String altiName = myBT.getAltiConfigData().getAltimeterName();
+        if (altiName.equals("AltiGPS") || altiName.equals("AltiMultiESP32_accel")) {
+            numberOfCurves = 8;
+        } else if (altiName.equals("AltiMultiSTM32") || altiName.equals("AltiMultiESP32")) {
+            numberOfCurves = 6;
+        } else if (altiName.equals("AltiServo") || altiName.equals("AltiDuo") ||
+                altiName.equals("AltiMultiV2") || altiName.equals("AltiMulti")) {
+            numberOfCurves = 5;
+        } else {
+            numberOfCurves = allFlightData != null ? allFlightData.getSeriesCount() : 0;
         }
-
-
-        String csv_data = "time(ms)," + valHeader + " " + units[nbr] + "\n";/// your csv data as string;
-
-        int nbrData = Data.getSeries(nbr).getItemCount();
-        for (int i = 0; i < nbrData; i++) {
-            csv_data = csv_data + (double) Data.getSeries(nbr).getX(i) + "," + (double) Data.getSeries(nbr).getY(i) + "\n";
-        }
-        File root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-
-        //if you want to create a sub-dir
-        root = new File(root, "BearConsoleFlights");
-        root.mkdir();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("_dd-MM-yyyy_hh-mm-ss");
-        String date = sdf.format(System.currentTimeMillis());
-
-        fileName = FlightName + "-" + Data.getSeries(nbr).getKey().toString() + date + ".csv";
-        // select the name for your file
-        root = new File(root, fileName);
-        Log.d("Flight win", fileName);
-        try {
-            Log.d("Flight win", "attempt to write");
-            FileOutputStream fout = new FileOutputStream(root);
-            fout.write(csv_data.getBytes());
-            fout.close();
-            Log.d("Flight win", "write done");
-            SavedCurves = SavedCurves + fileName + "\n";
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-
-            boolean bool = false;
-            try {
-                // try to create the file
-                bool = root.createNewFile();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-            if (bool) {
-                // call the method again
-                saveData(nbr, Data);
-            } else {
-                Log.d("Flight win", "Failed to create flight files");
-                //msg("failed");
-                SavedCurvesOK = false;
-                //throw new IllegalStateException(getString(R.string.failed_create_flight_file_msg));// DOES NOT WORK !!
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return fileName;
     }
 
-    //Share file
+    private void populateFlightStatistics() {
+        if (myflight == null || allFlightData == null || flightName == null) {
+            return;
+        }
+
+        XYSeriesCollection flightData = myflight.GetFlightData(flightName);
+        if (flightData == null || flightData.getSeriesCount() == 0) {
+            return;
+        }
+
+        XYSeries altitudeSeries = flightData.getSeries(0);
+        int nbrData = altitudeSeries.getItemCount();
+
+        XYSeries speed = allFlightData.getSeries(getString(R.string.curve_speed));
+        XYSeries accel = allFlightData.getSeries(getString(R.string.curve_accel));
+
+        double feetInMeter = (myBT.getAppConf().getUnits() == GlobalConfig.AltitudeUnit.METERS) ? 1.0 : 3.28084;
+        String unitsLabel = myBT.getAppConf().getUnitsValue();
+
+        flightNbrValue.setText(String.valueOf(flightName));
+        nbrOfSamplesValue.setText(String.valueOf(nbrData));
+
+        // Total flight duration
+        double flightDuration = altitudeSeries.getMaxX() / 1000.0;
+        if (flightDuration < 60.0) {
+            flightDurationValue.setText(String.format(Locale.US, "%.2f secs", flightDuration));
+        } else {
+            flightDurationValue.setText(String.format(Locale.US, "%.2f minutes", flightDuration / 60.0));
+        }
+
+        // Apogee and time to apogee
+        double apogeeAltitude = altitudeSeries.getMaxY();
+        apogeeAltitudeValue.setText(String.format(Locale.US, "%.0f %s", apogeeAltitude, unitsLabel));
+
+        int apogeePos = searchX(altitudeSeries, apogeeAltitude);
+        double apogeeTime = 0.0;
+        if (apogeePos != -1) {
+            apogeeTime = altitudeSeries.getX(apogeePos).doubleValue();
+            timeToApogeeValue.setText(String.format(Locale.US, "%.2f secs", apogeeTime / 1000.0));
+        }
+
+        // Maximum velocity
+        if (speed != null) {
+            double maxSpeed = speed.getMaxY();
+            maxVelociyValue.setText(String.format(Locale.US, "%d %s/secs", (long) maxSpeed, unitsLabel));
+
+            // Burn time derived from peak velocity timing
+            int maxSpeedPos = searchX(speed, maxSpeed);
+            if (maxSpeedPos != -1) {
+                double burnTime = speed.getX(maxSpeedPos).doubleValue();
+                burnTimeValue.setText(String.format(Locale.US, "%.2f secs", burnTime / 1000.0));
+            } else {
+                burnTimeValue.setText("N/A");
+            }
+
+            // Landing velocity evaluation
+            int timeBeforeLanding = searchXBack(altitudeSeries, 30);
+            if (timeBeforeLanding != -1) {
+                int posLanding = searchY(speed, altitudeSeries.getX(timeBeforeLanding).doubleValue());
+                if (posLanding != -1) {
+                    double landingSpeed = speed.getY(posLanding).doubleValue();
+                    landingSpeedValue.setText(String.format(Locale.US, "%d %s/secs", (long) landingSpeed, unitsLabel));
+                } else {
+                    landingSpeedValue.setText("N/A");
+                }
+            } else {
+                landingSpeedValue.setText("N/A");
+            }
+
+            // Descent speed after apogee
+            int descentStartPos = searchY(speed, apogeeTime + 100);
+            if (descentStartPos != -1) {
+                double maxDescentSpeed = 0.0;
+                for (int i = descentStartPos; i < speed.getItemCount(); i++) {
+                    double y = speed.getY(i).doubleValue();
+                    if (y > maxDescentSpeed) {
+                        maxDescentSpeed = y;
+                    }
+                }
+                maxDescentValue.setText(String.format(Locale.US, "%d %s/secs", (long) maxDescentSpeed, unitsLabel));
+            } else {
+                maxDescentValue.setText("N/A");
+            }
+        }
+
+        // Maximum acceleration
+        if (accel != null) {
+            double maxAccel = (accel.getMaxY() * feetInMeter) / 9.80665;
+            maxAccelerationValue.setText(String.format(Locale.US, "%d G", (long) maxAccel));
+        }
+
+        mainAltitudeValue.setText(String.format(" %s", unitsLabel));
+
+        // GPS surface distance
+        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") && flightData.getSeriesCount() > 7) {
+            XYSeries latSeries = flightData.getSeries(6);
+            XYSeries lonSeries = flightData.getSeries(7);
+            int count = latSeries.getItemCount();
+            List<GeoPoint> points = new ArrayList<>(count);
+
+            for (int i = 0; i < count; i++) {
+                double lat = latSeries.getY(i).doubleValue();
+                double lon = lonSeries.getY(i).doubleValue();
+                if (lat > 0.0 && lon > 0.0) {
+                    points.add(new GeoPoint(lat, lon));
+                }
+            }
+
+            if (!points.isEmpty()) {
+                GeoPoint[] coord = points.toArray(new GeoPoint[0]);
+                flightDistanceValue.setText(String.format(Locale.US, "%.2f %s",
+                        LocationUtils.distanceBetweenCoordinates(coord), unitsLabel));
+            }
+        }
+    }
+
+    private File getFlightExportDirectory() {
+        Context context = requireContext();
+        File exportDir = new File(context.getExternalFilesDir(null), "BearConsoleFlights");
+        if (!exportDir.exists()) {
+            exportDir.mkdirs();
+        }
+        return exportDir;
+    }
+
+    private void exportCsvAsync() {
+        ioExecutor.execute(() -> {
+            StringBuilder savedCurves = new StringBuilder();
+            boolean allSaved = true;
+
+            for (int j = 0; j < numberOfCurves; j++) {
+                String fileName = writeCurveToCsv(j, allFlightData);
+                if (fileName != null) {
+                    savedCurves.append(fileName).append("\n");
+                } else {
+                    allSaved = false;
+                }
+            }
+
+            final boolean success = allSaved;
+            final String filesSummary = savedCurves.toString();
+
+            mainHandler.post(() -> {
+                if (!isAdded()) return;
+                if (success) {
+                    new AlertDialog.Builder(requireContext())
+                            .setTitle(getString(R.string.save_curves_title))
+                            .setMessage(getString(R.string.save_curve_msg) + "\n" + filesSummary)
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.save_curve_ok, (dialog, id) -> dialog.dismiss())
+                            .show();
+                    msg(getString(R.string.curves_saved_msg));
+                } else {
+                    msg("Failed saving some flight curves");
+                }
+            });
+        });
+    }
+
+    private void exportAndShareZipAsync() {
+        ioExecutor.execute(() -> {
+            File exportDir = getFlightExportDirectory();
+            File zipFile = new File(exportDir, "flightData.zip");
+
+            try (FileOutputStream fos = new FileOutputStream(zipFile);
+                 BufferedOutputStream bos = new BufferedOutputStream(fos);
+                 ZipOutputStream zos = new ZipOutputStream(bos)) {
+
+                byte[] buffer = new byte[8192];
+                for (int j = 0; j < numberOfCurves; j++) {
+                    String fileName = writeCurveToCsv(j, allFlightData);
+                    if (fileName == null) continue;
+
+                    File csvFile = new File(exportDir, fileName);
+                    if (!csvFile.exists()) continue;
+
+                    try (FileInputStream fis = new FileInputStream(csvFile)) {
+                        ZipEntry ze = new ZipEntry(fileName);
+                        zos.putNextEntry(ze);
+                        int len;
+                        while ((len = fis.read(buffer)) > 0) {
+                            zos.write(buffer, 0, len);
+                        }
+                        zos.closeEntry();
+                    }
+                }
+
+                mainHandler.post(() -> {
+                    if (isAdded()) {
+                        shareFile(zipFile);
+                    }
+                });
+
+            } catch (IOException e) {
+                Log.e(TAG, "Error generating flight ZIP archive", e);
+                mainHandler.post(() -> {
+                    if (isAdded()) msg("Failed creating ZIP archive");
+                });
+            }
+        });
+    }
+
+    private String writeCurveToCsv(int curveIndex, XYSeriesCollection data) {
+        if (data == null || curveIndex >= data.getSeriesCount()) {
+            return null;
+        }
+
+        String valHeader;
+        switch (curveIndex) {
+            case 0: valHeader = getString(R.string.curve_altitude); break;
+            case 1: valHeader = getString(R.string.curve_temperature); break;
+            case 2: valHeader = getString(R.string.curve_pressure); break;
+            case 3: valHeader = getString(R.string.curve_speed); break;
+            case 4: valHeader = getString(R.string.curve_accel); break;
+            case 5: valHeader = "voltage"; break;
+            case 6: valHeader = getString(R.string.curve_latitude); break;
+            case 7: valHeader = getString(R.string.curve_longitude); break;
+            default: valHeader = "curve_" + curveIndex; break;
+        }
+
+        String unit = (units != null && curveIndex < units.length) ? units[curveIndex] : "";
+        SimpleDateFormat sdf = new SimpleDateFormat("_dd-MM-yyyy_HH-mm-ss", Locale.US);
+        String dateSuffix = sdf.format(System.currentTimeMillis());
+        String curveKey = data.getSeries(curveIndex).getKey().toString();
+        String fileName = flightName + "-" + curveKey + dateSuffix + ".csv";
+
+        File file = new File(getFlightExportDirectory(), fileName);
+
+        XYSeries series = data.getSeries(curveIndex);
+        int count = series.getItemCount();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file), 16384)) {
+            writer.write("time(ms)," + valHeader + " " + unit + "\n");
+            for (int i = 0; i < count; i++) {
+                writer.write(series.getX(i).doubleValue() + "," + series.getY(i).doubleValue() + "\n");
+            }
+            return fileName;
+        } catch (IOException e) {
+            Log.e(TAG, "Failed writing CSV: " + fileName, e);
+            return null;
+        }
+    }
+
     private void shareFile(File file) {
+        Context context = getContext();
+        if (context == null) return;
 
         Uri uri = FileProvider.getUriForFile(
-                this.getContext(),
-                this.getContext().getPackageName() +  ".provider",
+                context,
+                context.getPackageName() + ".provider",
                 file);
 
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.setType("file/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.bearconsole_has_shared2));
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("application/zip");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.bearconsole_has_shared2));
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         try {
-            this.startActivity(Intent.createChooser(intent, getString(R.string.share_with5)));
-            //this.startActivity(intent);
+            startActivity(Intent.createChooser(intent, getString(R.string.share_with5)));
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getContext(), getString(R.string.no_app_available), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, getString(R.string.no_app_available), Toast.LENGTH_SHORT).show();
         }
-    }
-    /*
-    Return the position of the first X value it finds from the beginning
-     */
-    public int searchX(XYSeries serie, double searchVal) {
-        int nbrData = serie.getItemCount();
-        int pos = -1;
-        for (int i = 1; i < nbrData; i++) {
-            if ((searchVal >= serie.getY(i - 1).doubleValue()) && (searchVal <= serie.getY(i).doubleValue())) {
-                pos = i;
-                break;
-            }
-        }
-        return pos;
     }
 
-    /*
-    Return the position of the first X value it finds from the beginning
-     */
-    public int searchXBack(XYSeries serie, double searchVal) {
-        int nbrData = serie.getItemCount();
-        int pos = -1;
-        for (int i = 1; i < nbrData; i++) {
-            Log.d("I","i="+ i + " nbrData= "+ nbrData + "  Y = " + serie.getY((nbrData - i) - 1));
-            if ((searchVal <= serie.getY((nbrData - i) - 1).doubleValue()) && (searchVal >= serie.getY(nbrData - i).doubleValue())) {
-                pos = (nbrData - i);
-                break;
+    public int searchX(XYSeries series, double searchVal) {
+        int count = series.getItemCount();
+        for (int i = 1; i < count; i++) {
+            if (searchVal >= series.getY(i - 1).doubleValue() && searchVal <= series.getY(i).doubleValue()) {
+                return i;
             }
         }
-        Log.d("I","pos = " + pos);
-        return pos;
+        return -1;
     }
 
-    /*
-    Return the position of the first Y value it finds from the beginning
-     */
-    public int searchY(XYSeries serie, double searchVal) {
-        int nbrData = serie.getItemCount();
-        int pos = -1;
-        for (int i = 1; i < nbrData; i++) {
-            if ((searchVal >= serie.getX(i - 1).doubleValue()) && (searchVal <= serie.getX(i).doubleValue())) {
-                pos = i;
-                break;
+    public int searchXBack(XYSeries series, double searchVal) {
+        int count = series.getItemCount();
+        for (int i = count - 1; i >= 1; i--) {
+            if (searchVal <= series.getY(i - 1).doubleValue() && searchVal >= series.getY(i).doubleValue()) {
+                return i;
             }
         }
-        return pos;
+        return -1;
     }
 
-    /*
-    Return the position of the first Y value it finds from the end
-    */
-    public int searchYBack(XYSeries serie, double searchVal) {
-        int nbrData = serie.getItemCount();
-        int pos = -1;
-        for (int i = 1; i < nbrData; i++) {
-            if ((searchVal >= serie.getX((nbrData -i)+1 ).doubleValue()) && (searchVal <= serie.getX(nbrData-i).doubleValue())) {
-                pos = (nbrData -i);
-                break;
+    public int searchY(XYSeries series, double searchVal) {
+        int count = series.getItemCount();
+        for (int i = 1; i < count; i++) {
+            if (searchVal >= series.getX(i - 1).doubleValue() && searchVal <= series.getX(i).doubleValue()) {
+                return i;
             }
         }
-        return pos;
+        return -1;
+    }
+
+    public int searchYBack(XYSeries series, double searchVal) {
+        int count = series.getItemCount();
+        for (int i = count - 1; i >= 1; i--) {
+            if (searchVal >= series.getX(i - 1).doubleValue() && searchVal <= series.getX(i).doubleValue()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ioExecutor.shutdown();
     }
 }
-

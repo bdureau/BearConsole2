@@ -1,227 +1,187 @@
 package com.altimeter.bdureau.bearconsole.Flight;
 
-
 /**
- *   @description: This class has all the flight arrays and methods to add or remove flight data
- *   @author: boris.dureau@neuf.fr
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Flight Computer Management
+ * Class: FlightData
  *
- **/
+ * @description:
+ *  Data repository holding rocket flight profiles organized by flight name.
+ *  Maintains JFreeChart/AFreeChart XYSeriesCollection structures for altitude,
+ *  velocity, acceleration, voltages, GPS telemetry, and IMU sensor data.
+ *  Optimized for O(1) hash lookups, memory leak prevention, and fast packet insertion.
+ *
+ * @author: boris.dureau@neuf.fr
+ * ============================================================================
+ */
+
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.altimeter.bdureau.bearconsole.R;
-
-import java.util.*;
-
 
 import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class FlightData {
-    //context so that we can use the translations
-    private Context context;
-    //pass the altimeter name so that we can do specific
-    private String altimeterName;
-    // Create a hash map
-    public static HashMap<String,XYSeriesCollection > hm;// = new HashMap<String,XYSeriesCollection>();
-    public FlightData (Context current, String name)
-    {
-        this.context = current;
+    private static final String TAG = "FlightData";
+
+    // Application context to prevent Activity context leaks
+    private final Context context;
+    private final String altimeterName;
+
+    // Flight repository: flightName -> XYSeriesCollection
+    private final Map<String, XYSeriesCollection> flightsMap;
+
+    public FlightData(@NonNull Context current, @NonNull String name) {
+        // Use ApplicationContext to prevent leaking UI components
+        this.context = current.getApplicationContext();
         this.altimeterName = name;
-        hm = new HashMap<String,XYSeriesCollection>();
-    }
-    //this might be a usefull function that I will write later
-    public int getNbrOfFlight()
-    {
-        return hm.entrySet().size();
+        this.flightsMap = new HashMap<>();
     }
 
-    public String getFlightName(int FlightNumber)
-    {
-        String flightName = null;
-        return flightName;
+    /**
+     * Returns the total number of flights stored.
+     */
+    public synchronized int getNbrOfFlight() {
+        return flightsMap.size();
     }
 
-
-    public List<String> getAllFlightNames2()
-    {
-        List<String> flightNames = new ArrayList<String>();
-        Log.d("FlightList", "in getAllFlightNames2");
-        Set set = hm.entrySet();
-        // Get an iterator
-        Iterator i = set.iterator();
-
-        // Display elements
-        while(i.hasNext()) {
-            Log.d("FlightList","in While");
-            Map.Entry me = (Map.Entry)i.next();
-            flightNames.add((String)me.getKey());
-            Log.d("FlightList", "key:"+(String)me.getKey());
-        }
+    /**
+     * Returns a sorted list of all recorded flight names.
+     */
+    @NonNull
+    public synchronized List<String> getAllFlightNames2() {
+        List<String> flightNames = new ArrayList<>(flightsMap.keySet());
+        Collections.sort(flightNames);
         return flightNames;
     }
 
-    public void ClearFlight()
-    {
-        hm =null;
-        hm = new HashMap();
-
+    /**
+     * Clears all flight datasets from memory.
+     */
+    public synchronized void ClearFlight() {
+        flightsMap.clear();
     }
 
-    public XYSeriesCollection  GetFlightData(String flightName)
-    {
-        XYSeriesCollection  flightData=null;
-
-        Set set = hm.entrySet();
-        // Get an iterator
-        Iterator i = set.iterator();
-
-
-        // Display elements
-        while(i.hasNext()) {
-            Map.Entry me = (Map.Entry)i.next();
-            if (me.getKey().equals(flightName))
-                flightData = (XYSeriesCollection ) me.getValue();
-        }
-        return flightData;
+    /**
+     * Fast O(1) retrieval of flight data series.
+     */
+    @Nullable
+    public synchronized XYSeriesCollection GetFlightData(@NonNull String flightName) {
+        return flightsMap.get(flightName);
     }
-    public boolean FlightExist(String flightName)
-    {
-        boolean exist = false;
 
-        Set set = hm.entrySet();
-        // Get an iterator
-        Iterator i = set.iterator();
-
-        // Display elements
-        while(i.hasNext()) {
-            Map.Entry me = (Map.Entry)i.next();
-
-            if (me.getKey().equals(flightName))
-                exist=true;
-        }
-
-        return exist;
+    /**
+     * Fast O(1) check for flight record presence.
+     */
+    public synchronized boolean FlightExist(@NonNull String flightName) {
+        return flightsMap.containsKey(flightName);
     }
-    public void AddToFlight (float X, float Y, String flightName)
-    {
 
-        //Find out if the flight exist
-        //If it exist append the data to the flight and if not create a new flight
-        XYSeriesCollection  flightData=null;
-        if (!FlightExist(flightName))
-        {
+    /**
+     * Adds an (X, Y) point to the primary series (Index 0: Altitude).
+     */
+    public void AddToFlight(float x, float y, @NonNull String flightName) {
+        AddToFlight(x, y, flightName, 0);
+    }
 
-            //if the flight name does not exist let's create it first
-            hm.put(flightName, createFlight(flightName));
+    /**
+     * Inserts an (X, Y) telemetry point into the specified data series index.
+     * Creates the flight structure automatically if not yet present.
+     */
+    public synchronized void AddToFlight(float x, float y, @NonNull String flightName, int serieIndex) {
+        XYSeriesCollection flightData = flightsMap.get(flightName);
+
+        if (flightData == null) {
+            flightData = createFlight(flightName);
+            flightsMap.put(flightName, flightData);
         }
 
-        flightData = GetFlightData(flightName);
-        flightData.getSeries(0).add(X, Y);
-    }
-
-    public void AddToFlight (float X, float Y, String flightName, int serie)
-    {
-        //Find out if the flight exist
-        //If it exist append the data to the flight and if not create a new flight
-        XYSeriesCollection  flightData=null;
-        if (!FlightExist(flightName))
-        {
-            //if the flight name does not exist let's create it first
-            hm.put(flightName, createFlight(flightName));
+        if (serieIndex >= 0 && serieIndex < flightData.getSeriesCount()) {
+            flightData.getSeries(serieIndex).add(x, y);
+        } else {
+            Log.w(TAG, "Invalid series index: " + serieIndex + " for flight: " + flightName);
         }
-
-        flightData = GetFlightData(flightName);
-        flightData.getSeries(serie).add(X, Y);
-    }
-    //not sure that I will be using that one
-    public void AddFlightData (XYSeriesCollection  flightData, String flightName)
-    {
-        hm.put(flightName, flightData);
     }
 
-    public void AddData (int flightNbr , int X, int Y )
-    {
-
+    /**
+     * Manually registers a pre-built dataset for a flight.
+     */
+    public synchronized void AddFlightData(@NonNull XYSeriesCollection flightData, @NonNull String flightName) {
+        flightsMap.put(flightName, flightData);
     }
 
+    /**
+     * Initializes the telemetry series schema according to the altimeter model.
+     */
+    @NonNull
+    private XYSeriesCollection createFlight(final String name) {
+        final XYSeriesCollection collection = new XYSeriesCollection();
 
-    private XYSeriesCollection  createFlight(final String name) {
-        XYSeriesCollection ret;
+        // 0: Altitude
+        collection.addSeries(new XYSeries(context.getString(R.string.curve_altitude)));
+        // 1: Temperature
+        collection.addSeries(new XYSeries(context.getString(R.string.curve_temperature)));
+        // 2: Pressure
+        collection.addSeries(new XYSeries(context.getString(R.string.curve_pressure)));
+        // 3: Speed (Computed)
+        collection.addSeries(new XYSeries(context.getString(R.string.curve_speed)));
+        // 4: Acceleration (Computed)
+        collection.addSeries(new XYSeries(context.getString(R.string.curve_accel)));
 
-        //altitude
-        final XYSeries series = new XYSeries(context.getResources().getString(R.string.curve_altitude)) ;
-        ret = new XYSeriesCollection (series);
-        //temperature
-        ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_temperature)));
-        //pressure
-        ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_pressure)));
-        //speed
-        ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_speed)));
-        //acceleration
-        ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_accel)));
-        //voltage
-        if(altimeterName.equals("AltiGPS") || altimeterName.equals("AltiMultiSTM32") ||
-                altimeterName.equals("AltiMultiESP32") || altimeterName.equals("AltiMultiESP32_accel")||
-                altimeterName.equals("AltiMultiESP32_accel_345")|| altimeterName.equals("AltiMultiESP32_accel_375")||
+        // Battery voltage channel
+        if (altimeterName.equals("AltiGPS") || altimeterName.equals("AltiMultiSTM32") ||
+                altimeterName.equals("AltiMultiESP32") || altimeterName.equals("AltiMultiESP32_accel") ||
+                altimeterName.equals("AltiMultiESP32_accel_345") || altimeterName.equals("AltiMultiESP32_accel_375") ||
                 altimeterName.equals("TTGOBearAltimeter") || altimeterName.equals("TTGOMiniBearAltimeter")) {
-            ret.addSeries(new XYSeries("voltage"));
-        }
-        //humidity
-        /*if(altimeterName.equals("UltimateAltimeter")) {
-            ret.addSeries(new XYSeries("humidity"));
-        }*/
-
-        // if Alti GPS
-        if(altimeterName.equals("AltiGPS")) {
-            //latitude
-            ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_latitude)));
-            //longitude
-            ret.addSeries(new XYSeries(context.getResources().getString(R.string.curve_longitude)));
-            //GPS altitude
-            ret.addSeries(new XYSeries("gps altitude"));
-            //GPS sat
-            ret.addSeries(new XYSeries("satelites"));
-            //GPS speed
-            ret.addSeries(new XYSeries("gps speed"));
-            //sea altitude
-            ret.addSeries(new XYSeries("sea altitude"));
+            collection.addSeries(new XYSeries("voltage"));
         }
 
-        if(altimeterName.equals("UltimateAltimeter")){
-            //accel345x
-            ret.addSeries(new XYSeries("accelX"));
-            //accel345y
-            ret.addSeries(new XYSeries("accelX"));
-            //accel345z
-            ret.addSeries(new XYSeries("accelX"));
-        }
-        if(altimeterName.equals("TTGOBearAltimeter")|| altimeterName.equals("TTGOMiniBearAltimeter")){
-            //accel345x
-            ret.addSeries(new XYSeries("accel345x"));
-            //accel345y
-            ret.addSeries(new XYSeries("accel345y"));
-            //accel345z
-            ret.addSeries(new XYSeries("accel345z"));
+        // GPS Telemetry channels
+        if (altimeterName.equals("AltiGPS")) {
+            collection.addSeries(new XYSeries(context.getString(R.string.curve_latitude)));
+            collection.addSeries(new XYSeries(context.getString(R.string.curve_longitude)));
+            collection.addSeries(new XYSeries("gps altitude"));
+            collection.addSeries(new XYSeries("satelites"));
+            collection.addSeries(new XYSeries("gps speed"));
+            collection.addSeries(new XYSeries("sea altitude"));
         }
 
-        // if AltiMultiESP32_accel we also have 6 curves that contains accel values
-        if(altimeterName.equals("AltiMultiESP32_accel")||
-                altimeterName.equals("AltiMultiESP32_accel_345")|| altimeterName.equals("AltiMultiESP32_accel_375")) {
-            //accel375x
-            ret.addSeries(new XYSeries("accel375x"));
-            //accel375y
-            ret.addSeries(new XYSeries("accel375y"));
-            //accel375z
-            ret.addSeries(new XYSeries("accel375z"));
-            //accel345x
-            ret.addSeries(new XYSeries("accel345x"));
-            //accel345y
-            ret.addSeries(new XYSeries("accel345y"));
-            //accel345z
-            ret.addSeries(new XYSeries("accel345z"));
+        // Fixed duplicate naming for UltimateAltimeter channels
+        if (altimeterName.equals("UltimateAltimeter")) {
+            collection.addSeries(new XYSeries("accelX"));
+            collection.addSeries(new XYSeries("accelY"));
+            collection.addSeries(new XYSeries("accelZ"));
         }
-        return ret; // new XYSeriesCollection (series);
+
+        if (altimeterName.equals("TTGOBearAltimeter") || altimeterName.equals("TTGOMiniBearAltimeter")) {
+            collection.addSeries(new XYSeries("accel345x"));
+            collection.addSeries(new XYSeries("accel345y"));
+            collection.addSeries(new XYSeries("accel345z"));
+        }
+
+        // Dual accelerometer variants (ADXL375 + ADXL345)
+        if (altimeterName.equals("AltiMultiESP32_accel") ||
+                altimeterName.equals("AltiMultiESP32_accel_345") ||
+                altimeterName.equals("AltiMultiESP32_accel_375")) {
+            collection.addSeries(new XYSeries("accel375x"));
+            collection.addSeries(new XYSeries("accel375y"));
+            collection.addSeries(new XYSeries("accel375z"));
+            collection.addSeries(new XYSeries("accel345x"));
+            collection.addSeries(new XYSeries("accel345y"));
+            collection.addSeries(new XYSeries("accel345z"));
+        }
+
+        return collection;
     }
-
 }
