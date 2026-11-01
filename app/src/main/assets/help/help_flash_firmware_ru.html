@@ -1,0 +1,114 @@
+<h1>Прошивка altimeter</h1>
+<p>Сначала необходимо выбрать прошивку[cite: 20]. Выбор прошивки зависит от конкретной модели высотомера, которую вы хотите прошить[cite: 20].</p>
+<p>Затем решите, хотите ли вы сразу прошить рабочую версию или сначала использовать прошивку для восстановления (recovery)[cite: 20].</p>
+<p>Используйте восстановительную прошивку, если конфигурация повреждена и высотомер больше не может подключиться[cite: 20].</p>
+<p>После использования восстановительной прошивки потребуется заново прошить рабочую версию[cite: 20].</p>
+<p>Обратите внимание: прошивка неподходящей версии приведет к тому, что высотомер вообще не будет работать или будет работать некорректно[cite: 20].</p>
+<p>Для прошивки высотомера вам понадобятся переходной кабель USB-TTL и адаптер для подключения к телефону или планшету[cite: 20, 22]:</p>
+<p><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Кабель USB TTL"/></p>
+<p>USB OTG-адаптер (USB-C или Micro-USB в зависимости от вашего Android-устройства)[cite: 20, 22]:</p>
+<p><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Адаптер USB"/></p>
+<p>Также потребуются соединительные провода с разъемами JST[cite: 20, 22].</p>
+<p>&nbsp;</p>
+
+<p>Следующие модели высотомеров поддерживают прошивку. Внимательно ознакомьтесь с приведенными ниже изображениями для точной идентификации вашего устройства[cite: 20, 22]:</p>
+<p><strong>AltiDuo</strong> (большая версия)[cite: 20, 22]</p>
+<p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+
+<p><strong>AltiServo</strong>[cite: 20]</p>
+<p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+
+<p><strong>AltiMulti</strong>[cite: 20]</p>
+<p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti"/></p>
+
+<p><strong>AltiMultiV2</strong>[cite: 20]</p>
+<p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMultiV2"/></p>
+
+<p><strong>AltiMultiSTM32 или AltiGPS</strong>[cite: 20]</p>
+<p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMultiSTM32 / AltiGPS"/></p>
+
+<p><strong>AltiMultiESP32</strong>[cite: 20]</p>
+<p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMultiESP32"/></p>
+
+<p><strong>AltiMulti ESP32 accel</strong>[cite: 20]</p>
+<p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+
+<p><strong>AltiMulti ESP32 accel 345</strong>[cite: 20]</p>
+<p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+
+<p><strong>AltiMulti ESP32 accel 375</strong>[cite: 20]</p>
+<p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+
+<p><strong>TTGO BearAltimeter</strong>[cite: 20]</p>
+<p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
+<p>&nbsp;</p>
+
+<p>Кроме того, вы можете запустить автоматическое определение прошивки[cite: 20, 22].</p>
+<p>В настоящее время существует 3 основных семейства высотомеров: на базе ATMega328, на базе STM32 и на базе ESP32[cite: 20, 22].</p>
+
+<h3>Прошивка высотомеров на базе ATMega328 (AltiDuo, AltiServo, AltiMulti, AltiMultiV2)</h3>
+<ul>
+    <li>Подключите кабель USB-TTL к высотомеру[cite: 20, 22].</li>
+    <li>Выберите правильную прошивку или запустите автоопределение[cite: 20, 22].</li>
+    <li>Нажмите и отпустите кнопку <strong>reset</strong> на высотомере, затем нажмите кнопку <strong>[Flash Firmware]</strong>[cite: 20, 22].</li>
+</ul>
+<p><img src="file:///android_asset/help/images/alti-reset.jpg" alt="Кнопка сброса ATMega328"/></p>
+
+<h3>Прошивка высотомеров на базе STM32 (AltiMultiSTM32, AltiGPS)</h3>
+<ul>
+    <li>Подключите кабель USB-TTL[cite: 20, 22].</li>
+    <li>Выберите нужную прошивку или запустите автоопределение[cite: 20, 22].</li>
+    <li>Переместите перемычку <strong>BOOT0</strong> вправо (режим программирования)[cite: 20, 22]:</li>
+</ul>
+<p><img src="file:///android_asset/help/images/stm32-prog2-small.jpg" alt="Перемычка STM32 BOOT0 вправо"/></p>
+<ul>
+    <li>Нажмите кнопку <strong>reset</strong> на плате[cite: 20, 22].</li>
+    <li>Нажмите кнопку <strong>[Flash Firmware]</strong>[cite: 20, 22].</li>
+    <li>Начнется загрузка прошивки[cite: 20, 22]. По завершении верните перемычку <strong>BOOT0</strong> обратно влево (рабочий режим)[cite: 20, 22]:</li>
+</ul>
+<p><img src="file:///android_asset/help/images/stm32-prog1-small.jpg" alt="Перемычка STM32 BOOT0 влево"/></p>
+<ul>
+    <li>Нажмите кнопку <strong>reset</strong> для перезапуска высотомера в обычном режиме[cite: 20, 22].</li>
+</ul>
+
+<h3>Прошивка высотомеров на базе ESP32 (AltiMultiESP32, AltiMultiESP32Accel)</h3>
+<ul>
+    <li>Подключите кабель[cite: 20, 22].</li>
+    <li>Выберите нужную прошивку или запустите автоопределение[cite: 20, 22].</li>
+    <li>На плате нажмите и удерживайте кнопку <strong>BOOT</strong>[cite: 20, 22].</li>
+    <li>Кратковременно нажмите и отпустите кнопку <strong>RESET</strong>, продолжая удерживать кнопку BOOT[cite: 20, 22].</li>
+    <li>Отпустите кнопку <strong>BOOT</strong>[cite: 20, 22]:</li>
+</ul>
+<p><img src="file:///android_asset/help/images/esp32-altimulti-button-small.jpg" alt="Кнопки ESP32"/></p>
+<ul>
+    <li>Нажмите кнопку <strong>[Flash Firmware]</strong>[cite: 20, 22].</li>
+    <li>Начнется загрузка прошивки (в случае сбоя повторите попытку)[cite: 20, 22]. После завершения нажмите кнопку <strong>reset</strong>[cite: 20, 22].</li>
+</ul>
+
+<h3>Прошивка высотомера TTGO BearAltimeter</h3>
+<ul>
+    <li>Подключите кабель USB-C напрямую[cite: 20, 22].</li>
+    <li>Выберите подходящую прошивку для высотомера TTGO[cite: 20, 22].</li>
+    <li>Нажмите кнопку <strong>[Flash Firmware]</strong>[cite: 20, 22].</li>
+    <li>Начнется загрузка прошивки[cite: 20, 22]. По завершении нажмите кнопку <strong>reset</strong>[cite: 20, 22].</li>
+</ul>
+
+<h3>Прошивка высотомера TTGO Mini или Simple Altimeter</h3>
+<ul>
+    <li>Подключите кабель USB-C[cite: 20, 22].</li>
+    <li>На плате нажмите и удерживайте кнопку <strong>BOOT</strong>[cite: 20, 22].</li>
+    <li>Нажмите и отпустите кнопку <strong>RESET</strong>, продолжая удерживать кнопку BOOT[cite: 20, 22].</li>
+    <li>Отпустите кнопку <strong>BOOT</strong> и выберите правильную модель высотомера[cite: 20, 22].</li>
+    <li>Нажмите кнопку <strong>[Flash Firmware]</strong>. После завершения нажмите кнопку <strong>reset</strong>[cite: 20, 22].</li>
+</ul>
+
+<h3>Прошивка высотомера на плате TS-ESP32-S3</h3>
+<ul>
+    <li>Подключите кабель USB-C[cite: 20, 22].</li>
+    <li>На плате нажмите и удерживайте кнопку <strong>BOOT</strong>[cite: 20, 22].</li>
+    <li>Нажмите и отпустите кнопку <strong>RESET</strong>, продолжая удерживать кнопку BOOT[cite: 20, 22].</li>
+    <li>Отпустите кнопку <strong>BOOT</strong> и выберите соответствующую модель высотомера[cite: 20, 22].</li>
+    <li>Нажмите кнопку <strong>[Flash Firmware]</strong>. После завершения нажмите кнопку <strong>reset</strong>[cite: 20, 22].</li>
+</ul>
+
+<p><span style="color: #ff0000;"><strong>ВАЖНОЕ ПРИМЕЧАНИЕ:</strong> Во время прошивки высотомера ни в коем случае не отсоединяйте кабель[cite: 20, 22]. Это приведет к повреждению прошивки и потребует повторения всей процедуры заново[cite: 20, 22].</span></p>
