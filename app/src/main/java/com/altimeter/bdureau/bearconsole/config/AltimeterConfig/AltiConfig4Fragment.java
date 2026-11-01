@@ -7,221 +7,152 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
+import com.altimeter.bdureau.bearconsole.config.AltiTabConfigActivity;
 
 public class AltiConfig4Fragment extends Fragment {
-    private static final String TAG = "AltiConfig4Fragment";
-
     private EditText servo1OnPos, servo2OnPos, servo3OnPos, servo4OnPos;
     private EditText servo1OffPos, servo2OffPos, servo3OffPos, servo4OffPos;
     private TextView txtServo1OnPos, txtServo2OnPos, txtServo3OnPos, txtServo4OnPos;
     private TextView txtServo1OffPos, txtServo2OffPos, txtServo3OffPos, txtServo4OffPos;
 
-    private boolean ViewCreated = false;
+    private boolean viewCreated = false;
     private AltiConfigData lAltiCfg;
 
+    public AltiConfig4Fragment() {
+        super();
+    }
+
     public AltiConfig4Fragment(AltiConfigData cfg) {
-        lAltiCfg = cfg;
+        this.lAltiCfg = cfg;
     }
+
     public boolean isViewCreated() {
-        return ViewCreated;
+        return viewCreated;
     }
 
+    public int getServo1OnPos() { return parseInteger(servo1OnPos, 0); }
+    public int getServo2OnPos() { return parseInteger(servo2OnPos, 0); }
+    public int getServo3OnPos() { return parseInteger(servo3OnPos, 0); }
+    public int getServo4OnPos() { return parseInteger(servo4OnPos, 0); }
 
-    public int getServo1OnPos() {
-        int ret;
+    public int getServo1OffPos() { return parseInteger(servo1OffPos, 0); }
+    public int getServo2OffPos() { return parseInteger(servo2OffPos, 0); }
+    public int getServo3OffPos() { return parseInteger(servo3OffPos, 0); }
+    public int getServo4OffPos() { return parseInteger(servo4OffPos, 0); }
+
+    public void setServo1OnPos(int pos) { if (servo1OnPos != null) servo1OnPos.setText(String.valueOf(pos)); }
+    public void setServo2OnPos(int pos) { if (servo2OnPos != null) servo2OnPos.setText(String.valueOf(pos)); }
+    public void setServo3OnPos(int pos) { if (servo3OnPos != null) servo3OnPos.setText(String.valueOf(pos)); }
+    public void setServo4OnPos(int pos) { if (servo4OnPos != null) servo4OnPos.setText(String.valueOf(pos)); }
+
+    public void setServo1OffPos(int pos) { if (servo1OffPos != null) servo1OffPos.setText(String.valueOf(pos)); }
+    public void setServo2OffPos(int pos) { if (servo2OffPos != null) servo2OffPos.setText(String.valueOf(pos)); }
+    public void setServo3OffPos(int pos) { if (servo3OffPos != null) servo3OffPos.setText(String.valueOf(pos)); }
+    public void setServo4OffPos(int pos) { if (servo4OffPos != null) servo4OffPos.setText(String.valueOf(pos)); }
+
+    private int parseInteger(EditText editText, int fallback) {
+        if (editText == null || editText.getText() == null) return fallback;
         try {
-            ret = Integer.parseInt(this.servo1OnPos.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
+            return Integer.parseInt(editText.getText().toString().trim());
+        } catch (NumberFormatException e) {
+            return fallback;
         }
-        return ret;
-    }
-
-    public int getServo2OnPos() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.servo2OnPos.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-    }
-
-    public int getServo3OnPos() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.servo3OnPos.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-    }
-
-    public int getServo4OnPos() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.servo4OnPos.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-    }
-
-    public int getServo1OffPos() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.servo1OffPos.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-    }
-
-    public int getServo2OffPos() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.servo2OffPos.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-    }
-
-    public int getServo3OffPos() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.servo3OffPos.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-    }
-
-    public int getServo4OffPos() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.servo4OffPos.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-    }
-
-    public void setServo1OnPos(int pos) {
-        this.servo1OnPos.setText(pos);
-    }
-
-    public void setServo2OnPos(int pos) {
-        this.servo2OnPos.setText(pos);
-    }
-
-    public void setServo3OnPos(int pos) {
-        this.servo3OnPos.setText(pos);
-    }
-
-    public void setServo4OnPos(int pos) {
-        this.servo4OnPos.setText(pos);
-    }
-
-    public void setServo1OffPos(int pos) {
-        this.servo1OffPos.setText(pos);
-    }
-
-    public void setServo2OffPos(int pos) {
-        this.servo2OffPos.setText(pos);
-    }
-
-    public void setServo3OffPos(int pos) {
-        this.servo3OffPos.setText(pos);
-    }
-
-    public void setServo4OffPos(int pos) {
-        this.servo4OffPos.setText(pos);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_altimeter_config_tab4, container, false);
 
-
-        servo1OnPos = (EditText) view.findViewById(R.id.editTxtServo1OnPos);
-        servo2OnPos = (EditText) view.findViewById(R.id.editTxtServo2OnPos);
-        servo3OnPos = (EditText) view.findViewById(R.id.editTxtServo3OnPos);
-        servo4OnPos = (EditText) view.findViewById(R.id.editTxtServo4OnPos);
-
-        txtServo1OnPos = (TextView) view.findViewById(R.id.servo1OnPos);
-        txtServo2OnPos = (TextView) view.findViewById(R.id.servo2OnPos);
-        txtServo3OnPos = (TextView) view.findViewById(R.id.servo3OnPos);
-        txtServo4OnPos = (TextView) view.findViewById(R.id.servo4OnPos);
-
-        servo1OffPos = (EditText) view.findViewById(R.id.editTxtServo1OffPos);
-        servo2OffPos = (EditText) view.findViewById(R.id.editTxtServo2OffPos);
-        servo3OffPos = (EditText) view.findViewById(R.id.editTxtServo3OffPos);
-        servo4OffPos = (EditText) view.findViewById(R.id.editTxtServo4OffPos);
-
-        txtServo1OffPos = (TextView) view.findViewById(R.id.servo1OffPos);
-        txtServo2OffPos = (TextView) view.findViewById(R.id.servo2OffPos);
-        txtServo3OffPos = (TextView) view.findViewById(R.id.servo3OffPos);
-        txtServo4OffPos = (TextView) view.findViewById(R.id.servo4OffPos);
-
-        if (lAltiCfg != null) {
-
-            //Freq.setText(String.valueOf(AltiCfg.getBeepingFrequency()));
-            servo1OnPos.setText(String.valueOf(lAltiCfg.getServo1OnPos()));
-            servo2OnPos.setText(String.valueOf(lAltiCfg.getServo2OnPos()));
-            servo3OnPos.setText(String.valueOf(lAltiCfg.getServo3OnPos()));
-            servo4OnPos.setText(String.valueOf(lAltiCfg.getServo4OnPos()));
-
-            servo1OffPos.setText(String.valueOf(lAltiCfg.getServo1OffPos()));
-            servo2OffPos.setText(String.valueOf(lAltiCfg.getServo2OffPos()));
-            servo3OffPos.setText(String.valueOf(lAltiCfg.getServo3OffPos()));
-            servo4OffPos.setText(String.valueOf(lAltiCfg.getServo4OffPos()));
+        if (lAltiCfg == null && getActivity() instanceof AltiTabConfigActivity) {
+            lAltiCfg = ((AltiTabConfigActivity) getActivity()).getAltiConfigData();
         }
-        if (lAltiCfg.getAltimeterName().equals("AltiServo")) {
-            servo1OnPos.setVisibility(View.VISIBLE);
-            servo2OnPos.setVisibility(View.VISIBLE);
-            servo3OnPos.setVisibility(View.VISIBLE);
-            servo4OnPos.setVisibility(View.VISIBLE);
-            servo1OffPos.setVisibility(View.VISIBLE);
-            servo2OffPos.setVisibility(View.VISIBLE);
-            servo3OffPos.setVisibility(View.VISIBLE);
-            servo4OffPos.setVisibility(View.VISIBLE);
 
-            txtServo1OnPos.setVisibility(View.VISIBLE);
-            txtServo2OnPos.setVisibility(View.VISIBLE);
-            txtServo3OnPos.setVisibility(View.VISIBLE);
-            txtServo4OnPos.setVisibility(View.VISIBLE);
-            txtServo1OffPos.setVisibility(View.VISIBLE);
-            txtServo2OffPos.setVisibility(View.VISIBLE);
-            txtServo3OffPos.setVisibility(View.VISIBLE);
-            txtServo4OffPos.setVisibility(View.VISIBLE);
-        } else {
-            servo1OnPos.setVisibility(View.INVISIBLE);
-            servo2OnPos.setVisibility(View.INVISIBLE);
-            servo3OnPos.setVisibility(View.INVISIBLE);
-            servo4OnPos.setVisibility(View.INVISIBLE);
-            servo1OffPos.setVisibility(View.INVISIBLE);
-            servo2OffPos.setVisibility(View.INVISIBLE);
-            servo3OffPos.setVisibility(View.INVISIBLE);
-            servo4OffPos.setVisibility(View.INVISIBLE);
+        servo1OnPos = view.findViewById(R.id.editTxtServo1OnPos);
+        servo2OnPos = view.findViewById(R.id.editTxtServo2OnPos);
+        servo3OnPos = view.findViewById(R.id.editTxtServo3OnPos);
+        servo4OnPos = view.findViewById(R.id.editTxtServo4OnPos);
 
-            txtServo1OnPos.setVisibility(View.INVISIBLE);
-            txtServo2OnPos.setVisibility(View.INVISIBLE);
-            txtServo3OnPos.setVisibility(View.INVISIBLE);
-            txtServo4OnPos.setVisibility(View.INVISIBLE);
-            txtServo1OffPos.setVisibility(View.INVISIBLE);
-            txtServo2OffPos.setVisibility(View.INVISIBLE);
-            txtServo3OffPos.setVisibility(View.INVISIBLE);
-            txtServo4OffPos.setVisibility(View.INVISIBLE);
-        }
-        ViewCreated = true;
+        txtServo1OnPos = view.findViewById(R.id.servo1OnPos);
+        txtServo2OnPos = view.findViewById(R.id.servo2OnPos);
+        txtServo3OnPos = view.findViewById(R.id.servo3OnPos);
+        txtServo4OnPos = view.findViewById(R.id.servo4OnPos);
+
+        servo1OffPos = view.findViewById(R.id.editTxtServo1OffPos);
+        servo2OffPos = view.findViewById(R.id.editTxtServo2OffPos);
+        servo3OffPos = view.findViewById(R.id.editTxtServo3OffPos);
+        servo4OffPos = view.findViewById(R.id.editTxtServo4OffPos);
+
+        txtServo1OffPos = view.findViewById(R.id.servo1OffPos);
+        txtServo2OffPos = view.findViewById(R.id.servo2OffPos);
+        txtServo3OffPos = view.findViewById(R.id.servo3OffPos);
+        txtServo4OffPos = view.findViewById(R.id.servo4OffPos);
+
+        populateFields();
+
+        viewCreated = true;
         return view;
     }
 
+    private void populateFields() {
+        if (lAltiCfg == null) return;
+
+        servo1OnPos.setText(String.valueOf(lAltiCfg.getServo1OnPos()));
+        servo2OnPos.setText(String.valueOf(lAltiCfg.getServo2OnPos()));
+        servo3OnPos.setText(String.valueOf(lAltiCfg.getServo3OnPos()));
+        servo4OnPos.setText(String.valueOf(lAltiCfg.getServo4OnPos()));
+
+        servo1OffPos.setText(String.valueOf(lAltiCfg.getServo1OffPos()));
+        servo2OffPos.setText(String.valueOf(lAltiCfg.getServo2OffPos()));
+        servo3OffPos.setText(String.valueOf(lAltiCfg.getServo3OffPos()));
+        servo4OffPos.setText(String.valueOf(lAltiCfg.getServo4OffPos()));
+
+        int visibility = "AltiServo".equals(lAltiCfg.getAltimeterName()) ? View.VISIBLE : View.INVISIBLE;
+
+        servo1OnPos.setVisibility(visibility);
+        servo2OnPos.setVisibility(visibility);
+        servo3OnPos.setVisibility(visibility);
+        servo4OnPos.setVisibility(visibility);
+        servo1OffPos.setVisibility(visibility);
+        servo2OffPos.setVisibility(visibility);
+        servo3OffPos.setVisibility(visibility);
+        servo4OffPos.setVisibility(visibility);
+
+        txtServo1OnPos.setVisibility(visibility);
+        txtServo2OnPos.setVisibility(visibility);
+        txtServo3OnPos.setVisibility(visibility);
+        txtServo4OnPos.setVisibility(visibility);
+        txtServo1OffPos.setVisibility(visibility);
+        txtServo2OffPos.setVisibility(visibility);
+        txtServo3OffPos.setVisibility(visibility);
+        txtServo4OffPos.setVisibility(visibility);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewCreated = false;
+        servo1OnPos = null;
+        servo2OnPos = null;
+        servo3OnPos = null;
+        servo4OnPos = null;
+        servo1OffPos = null;
+        servo2OffPos = null;
+        servo3OffPos = null;
+        servo4OffPos = null;
+        txtServo1OnPos = null;
+        txtServo2OnPos = null;
+        txtServo3OnPos = null;
+        txtServo4OnPos = null;
+        txtServo1OffPos = null;
+        txtServo2OffPos = null;
+        txtServo3OffPos = null;
+        txtServo4OffPos = null;
+    }
 }

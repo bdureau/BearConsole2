@@ -10,439 +10,252 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
+import com.altimeter.bdureau.bearconsole.config.AltiTabConfigActivity;
 import com.github.florent37.viewtooltip.ViewTooltip;
 
 public class AltiConfig2Fragment extends Fragment {
-    private static final String TAG = "AltiConfig2Fragment";
     private AltiConfigData lAltiCfg = null;
-    private String[] itemsBaudRate, itemsAltimeterResolution, itemsEEpromSize, itemsBeepOnOff;
-    private String[] itemsTelemetryType, itemsSupersonicDelayOnOff, itemsBatteryType;
-    private Spinner dropdownBeepOnOff, dropdownBaudRate;
 
-    private EditText ApogeeMeasures;
-    private Spinner dropdownAltimeterResolution, dropdownEEpromSize;
+    private static final String[] ITEMS_BAUD_RATE = {
+            "300", "1200", "2400", "4800", "9600", "14400", "19200", "28800", "38400", "57600", "115200", "230400"
+    };
+    private static final String[] ITEMS_RESOLUTION = {"ULTRALOWPOWER", "STANDARD", "HIGHRES", "ULTRAHIGHRES"};
+    private static final String[] ITEMS_EEPROM = {"32", "64", "128", "256", "512", "1024"};
+    private static final String[] ITEMS_TELEMETRY = {"Fast", "Average", "Slow", "VerySlow"};
+
+    private Spinner dropdownBeepOnOff, dropdownBaudRate, dropdownAltimeterResolution, dropdownEEpromSize;
     private Spinner dropdownTelemetryType, dropdownSupersonicDelay, dropdownBatteryType;
+    private EditText apogeeMeasures, endRecordAltitude, liftOffAltitude, recordingTimeout;
+    private TextView txtViewTelemetryType, txtViewEEpromSize, txtViewEndRecordAltitude, txtViewBatteryType, txtViewRecordingTimeOut;
 
-    private EditText EndRecordAltitude, LiftOffAltitude, RecordingTimeout;
-    private boolean ViewCreated = false;
-    private TextView txtViewTelemetryType, txtViewEEpromSize, txtViewEndRecordAltitude, txtViewBatteryType;
-    private TextView txtViewRecordingTimeOut;
+    private boolean viewCreated = false;
+
+    public AltiConfig2Fragment() {
+        super();
+    }
 
     public AltiConfig2Fragment(AltiConfigData cfg) {
-        lAltiCfg = cfg;
+        this.lAltiCfg = cfg;
     }
 
     public boolean isViewCreated() {
-        return ViewCreated;
+        return viewCreated;
     }
 
     public int getApogeeMeasures() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.ApogeeMeasures.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-    }
-
-    public void setApogeeMeasures(int apogeeMeasures) {
-        ApogeeMeasures.setText(String.valueOf(apogeeMeasures));
+        return parseInteger(apogeeMeasures, 5);
     }
 
     public int getAltimeterResolution() {
-        return (int) this.dropdownAltimeterResolution.getSelectedItemId();
-    }
-
-    public void setAltimeterResolution(int AltimeterResolution) {
-        this.dropdownAltimeterResolution.setSelection(AltimeterResolution);
+        return dropdownAltimeterResolution != null ? (int) dropdownAltimeterResolution.getSelectedItemId() : 0;
     }
 
     public int getEEpromSize() {
-        int ret;
-        try {
-            ret = Integer.parseInt(itemsEEpromSize[(int) dropdownEEpromSize.getSelectedItemId()]);
-        } catch (Exception e) {
-            ret = 0;
+        if (dropdownEEpromSize != null && dropdownEEpromSize.getSelectedItem() != null) {
+            try {
+                return Integer.parseInt(dropdownEEpromSize.getSelectedItem().toString());
+            } catch (NumberFormatException ignored) {}
         }
-        return ret;
-    }
-
-    public void setEEpromSize(int EEpromSize) {
-        this.dropdownEEpromSize.setSelection(lAltiCfg.arrayIndex(itemsEEpromSize, String.valueOf(EEpromSize)));
+        return 512;
     }
 
     public long getBaudRate() {
-        int ret;
-        try {
-            ret = Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]);
-        } catch (Exception e) {
-            ret = 0;
+        if (dropdownBaudRate != null && dropdownBaudRate.getSelectedItem() != null) {
+            try {
+                return Long.parseLong(dropdownBaudRate.getSelectedItem().toString());
+            } catch (NumberFormatException ignored) {}
         }
-        return ret;
-    }
-
-    public void setBaudRate(long BaudRate) {
-        this.dropdownBaudRate.setSelection(lAltiCfg.arrayIndex(itemsBaudRate, String.valueOf(BaudRate)));
+        return 38400;
     }
 
     public int getBeepOnOff() {
-        return (int) this.dropdownBeepOnOff.getSelectedItemId();
-    }
-
-    public void setBeepOnOff(int BeepOnOff) {
-        dropdownBeepOnOff.setSelection(BeepOnOff);
+        return dropdownBeepOnOff != null ? (int) dropdownBeepOnOff.getSelectedItemId() : 0;
     }
 
     public int getRecordTempOnOff() {
-        return (int) this.dropdownTelemetryType.getSelectedItemId();
-    }
-
-    public void setRecordTempOnOff(int RecordTempOnOff) {
-        this.dropdownTelemetryType.setSelection(RecordTempOnOff);
+        return dropdownTelemetryType != null ? (int) dropdownTelemetryType.getSelectedItemId() : 0;
     }
 
     public int getSupersonicDelayOnOff() {
-        return (int) this.dropdownSupersonicDelay.getSelectedItemId();
-    }
-
-    public void setSupersonicDelayOnOff(int SupersonicDelayOnOff) {
-        this.dropdownSupersonicDelay.setSelection(SupersonicDelayOnOff);
+        return dropdownSupersonicDelay != null ? (int) dropdownSupersonicDelay.getSelectedItemId() : 0;
     }
 
     public int getEndRecordAltitude() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.EndRecordAltitude.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-    }
-
-    public void setEndRecordAltitude(int EndRecordAltitude) {
-        this.EndRecordAltitude.setText(String.valueOf(EndRecordAltitude));
+        return parseInteger(endRecordAltitude, 3);
     }
 
     public int getLiftOffAltitude() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.LiftOffAltitude.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-    }
-
-    public void setLiftOffAltitude(int LiftOffAltitude) {
-        this.LiftOffAltitude.setText(String.valueOf(LiftOffAltitude));
+        return parseInteger(liftOffAltitude, 20);
     }
 
     public int getBatteryType() {
-        return (int) this.dropdownBatteryType.getSelectedItemId();
-    }
-
-    public void setBatteryType(int BatteryType) {
-        dropdownBatteryType.setSelection(BatteryType);
+        return dropdownBatteryType != null ? (int) dropdownBatteryType.getSelectedItemId() : 0;
     }
 
     public int getRecordingTimeout() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.RecordingTimeout.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
+        return parseInteger(recordingTimeout, 120);
     }
 
-    public void setRecordingTimeout(int RecordingTimeout) {
-        this.RecordingTimeout.setText(String.valueOf(RecordingTimeout));
+    private int parseInteger(EditText editText, int fallback) {
+        if (editText == null || editText.getText() == null) return fallback;
+        try {
+            return Integer.parseInt(editText.getText().toString().trim());
+        } catch (NumberFormatException e) {
+            return fallback;
+        }
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_altimeter_config_tab2, container, false);
 
-        //baud rate
-        dropdownBaudRate = (Spinner) view.findViewById(R.id.spinnerBaudRate);
-        itemsBaudRate = new String[]{"300",
-                "1200",
-                "2400",
-                "4800",
-                "9600",
-                "14400",
-                "19200",
-                "28800",
-                "38400",
-                "57600",
-                "115200",
-                "230400"};
-        ArrayAdapter<String> adapterBaudRate = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, itemsBaudRate);
-        dropdownBaudRate.setAdapter(adapterBaudRate);
-        // Tool tip
-        view.findViewById(R.id.txtViewBaudRate).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewTooltip
-                        .on(v)
-                        .color(Color.BLACK)
-                        .position(ViewTooltip.Position.TOP)
-                        //Choose the altimeter baud rate. Be carefull you might not be able to communicate
-                        .text(getResources().getString(R.string.txtViewBaudRate_tooltip))
-                        .show();
-            }
-        });
-        // nbr of measures to determine apogee
-        ApogeeMeasures = (EditText) view.findViewById(R.id.editTxtApogeeMeasures);
-        // Tool tip
-        ApogeeMeasures.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewTooltip
-                        .on(v)
-                        .color(Color.BLACK)
-                        .position(ViewTooltip.Position.TOP)
-                        //Number of measures to determine the apogee
-                        .text(getResources().getString(R.string.editTxtApogeeMeasures_tooltip))
-                        .show();
-            }
-        });
-        // altimeter resolution
-        dropdownAltimeterResolution = (Spinner) view.findViewById(R.id.spinnerAltimeterResolution);
-        itemsAltimeterResolution = new String[]{"ULTRALOWPOWER", "STANDARD", "HIGHRES", "ULTRAHIGHRES"};
-        ArrayAdapter<String> adapterAltimeterResolution = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, itemsAltimeterResolution);
-        dropdownAltimeterResolution.setAdapter(adapterAltimeterResolution);
-
-        // Tool tip
-        view.findViewById(R.id.txtViewAltimeterResolution).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewTooltip
-                        .on(v)
-                        .color(Color.BLACK)
-                        .position(ViewTooltip.Position.TOP)
-                        //Choose the altimeter resolution. The faster you rocket goes the lower it has to be
-                        .text(getResources().getString(R.string.txtViewAltimeterResolution_tooltip))
-                        .show();
-            }
-        });
-        //Altimeter external eeprom size
-        txtViewEEpromSize = (TextView) view.findViewById(R.id.txtViewEEpromSize);
-        dropdownEEpromSize = (Spinner) view.findViewById(R.id.spinnerEEpromSize);
-        itemsEEpromSize = new String[]{"32", "64", "128", "256", "512", "1024"};
-        ArrayAdapter<String> adapterEEpromSize = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, itemsEEpromSize);
-        dropdownEEpromSize.setAdapter(adapterEEpromSize);
-
-        if (lAltiCfg != null) {
-            if (lAltiCfg.getAltimeterName().equals("AltiServo") ||
-                    lAltiCfg.getAltimeterName().equals("AltiDuo")) {
-                dropdownEEpromSize.setVisibility(View.INVISIBLE);
-                txtViewEEpromSize.setVisibility(View.INVISIBLE);
-            } else {
-                dropdownEEpromSize.setVisibility(View.VISIBLE);
-                txtViewEEpromSize.setVisibility(View.VISIBLE);
-            }
-        }
-        // Tool tip
-        view.findViewById(R.id.txtViewEEpromSize).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewTooltip
-                        .on(v)
-                        .color(Color.BLACK)
-                        .position(ViewTooltip.Position.TOP)
-                        //Choose the altimeter eeprom size depending on which eeprom is used
-                        .text(getResources().getString(R.string.txtViewEEpromSize_tooltip))
-                        .show();
-            }
-        });
-        // Switch beeping on or off
-        // 0 is On and 1 is Off
-        dropdownBeepOnOff = (Spinner) view.findViewById(R.id.spinnerBeepOnOff);
-        //On
-        //Off
-        itemsBeepOnOff = new String[]{getResources().getString(R.string.config_on),
-                getResources().getString(R.string.config_off)};
-        ArrayAdapter<String> adapterBeepOnOff = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, itemsBeepOnOff);
-        dropdownBeepOnOff.setAdapter(adapterBeepOnOff);
-
-        // Telemetry type
-        txtViewTelemetryType = (TextView) view.findViewById(R.id.txtViewTelemetryType);
-        dropdownTelemetryType = (Spinner) view.findViewById(R.id.spinnerTelemetryType);
-        //Fast,Average, Slow, VerySlow
-        itemsTelemetryType = new String[]{"Fast", "Average", "Slow", "VerySlow"};
-        ArrayAdapter<String> adapterTelemetryType = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, itemsTelemetryType);
-        dropdownTelemetryType.setAdapter(adapterTelemetryType);
-
-        if (lAltiCfg != null) {
-            if (lAltiCfg.getAltimeterName().equals("AltiServo") ||
-                    lAltiCfg.getAltimeterName().equals("AltiDuo")) {
-                dropdownTelemetryType.setVisibility(View.INVISIBLE);
-                txtViewTelemetryType.setVisibility(View.INVISIBLE);
-            } else {
-                dropdownTelemetryType.setVisibility(View.VISIBLE);
-                txtViewTelemetryType.setVisibility(View.VISIBLE);
-            }
+        if (lAltiCfg == null && getActivity() instanceof AltiTabConfigActivity) {
+            lAltiCfg = ((AltiTabConfigActivity) getActivity()).getAltiConfigData();
         }
 
-        // Tool tip
-        txtViewTelemetryType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewTooltip
-                        .on(v)
-                        .color(Color.BLACK)
-                        .position(ViewTooltip.Position.TOP)
-                        //Choose if you want to record the temperature
-                        .text("Choose the type of telemetry module you use")
-                        .show();
-            }
-        });
-        // supersonic delay on/off
-        dropdownSupersonicDelay = (Spinner) view.findViewById(R.id.spinnerSupersonicDelay);
-        //Off
-        //On
-        itemsSupersonicDelayOnOff = new String[]{getResources().getString(R.string.config_off), getResources().getString(R.string.config_on)};
-        ArrayAdapter<String> adapterSupersonicDelayOnOff = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, itemsSupersonicDelayOnOff);
-        dropdownSupersonicDelay.setAdapter(adapterSupersonicDelayOnOff);
+        dropdownBaudRate = view.findViewById(R.id.spinnerBaudRate);
+        apogeeMeasures = view.findViewById(R.id.editTxtApogeeMeasures);
+        dropdownAltimeterResolution = view.findViewById(R.id.spinnerAltimeterResolution);
+        txtViewEEpromSize = view.findViewById(R.id.txtViewEEpromSize);
+        dropdownEEpromSize = view.findViewById(R.id.spinnerEEpromSize);
+        dropdownBeepOnOff = view.findViewById(R.id.spinnerBeepOnOff);
+        txtViewTelemetryType = view.findViewById(R.id.txtViewTelemetryType);
+        dropdownTelemetryType = view.findViewById(R.id.spinnerTelemetryType);
+        dropdownSupersonicDelay = view.findViewById(R.id.spinnerSupersonicDelay);
+        endRecordAltitude = view.findViewById(R.id.editTxtEndRecordAltitude);
+        txtViewEndRecordAltitude = view.findViewById(R.id.txtViewEndRecordAltitude);
+        liftOffAltitude = view.findViewById(R.id.editTxtLiftOffAltitude);
+        dropdownBatteryType = view.findViewById(R.id.spinnerBatteryType);
+        txtViewBatteryType = view.findViewById(R.id.txtViewBatteryType);
+        recordingTimeout = view.findViewById(R.id.editTxtRecordingTimeOut);
+        txtViewRecordingTimeOut = view.findViewById(R.id.txtViewRecordingTimeOut);
 
-        // nbr of meters to stop recording altitude
-        EndRecordAltitude = (EditText) view.findViewById(R.id.editTxtEndRecordAltitude);
-        // Tool tip
-        EndRecordAltitude.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewTooltip
-                        .on(v)
-                        .color(Color.BLACK)
-                        .position(ViewTooltip.Position.TOP)
-                        //At which altitude do you consider that we have landed
-                        .text(getResources().getString(R.string.EndRecordAltitude_tooltip))
-                        .show();
-            }
-        });
+        setupSpinners(view);
+        setupTooltips(view);
+        populateFields();
 
-        txtViewEndRecordAltitude = (TextView) view.findViewById(R.id.txtViewEndRecordAltitude);
-        if (lAltiCfg != null) {
-            if (lAltiCfg.getAltimeterName().equals("AltiServo") ||
-                    lAltiCfg.getAltimeterName().equals("AltiDuo")) {
-                EndRecordAltitude.setVisibility(View.INVISIBLE);
-                txtViewEndRecordAltitude.setVisibility(View.INVISIBLE);
-            } else {
-                EndRecordAltitude.setVisibility(View.VISIBLE);
-                txtViewEndRecordAltitude.setVisibility(View.VISIBLE);
-            }
-        }
-        // nbr of meters to consider that we have a lift off
-        LiftOffAltitude = (EditText) view.findViewById(R.id.editTxtLiftOffAltitude);
+        viewCreated = true;
+        return view;
+    }
 
-        // Tool tip
-        LiftOffAltitude.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewTooltip
-                        .on(v)
-                        .color(Color.BLACK)
-                        .position(ViewTooltip.Position.TOP)
-                        //At which altitude do you consider that we have lift off
-                        .text(getResources().getString(R.string.LiftOffAltitude_tooltip))
-                        .show();
-            }
-        });
-        dropdownBatteryType = (Spinner) view.findViewById(R.id.spinnerBatteryType);
-        //"Unknown",
-        itemsBatteryType = new String[]{getResources().getString(R.string.config_unknown),
-                "2S (7.4 Volts)", "9 Volts", "3S (11.1 Volts)"};
-        ArrayAdapter<String> adapterBatteryType = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, itemsBatteryType);
-        dropdownBatteryType.setAdapter(adapterBatteryType);
+    private void setupSpinners(View view) {
+        dropdownBaudRate.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, ITEMS_BAUD_RATE));
+        dropdownAltimeterResolution.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, ITEMS_RESOLUTION));
+        dropdownEEpromSize.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, ITEMS_EEPROM));
 
-        // Tool tip
-        view.findViewById(R.id.txtViewBatteryType).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewTooltip
-                        .on(v)
-                        .color(Color.BLACK)
-                        .position(ViewTooltip.Position.TOP)
-                        //Enter battery type used to make sure that we do not discharge it too much
-                        .text(getResources().getString(R.string.txtViewBatteryType_tooltip))
-                        .show();
-            }
-        });
-        txtViewBatteryType = (TextView) view.findViewById(R.id.txtViewBatteryType);
-        if (lAltiCfg != null) {
-            if (lAltiCfg.getAltimeterName().equals("AltiServo") ||
-                    lAltiCfg.getAltimeterName().equals("AltiDuo")||
-                    lAltiCfg.getAltimeterName().equals("AltiMulti")||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiV2")) {
+        String[] beepOptions = {getString(R.string.config_on), getString(R.string.config_off)};
+        dropdownBeepOnOff.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, beepOptions));
+
+        dropdownTelemetryType.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, ITEMS_TELEMETRY));
+
+        String[] supersonicOptions = {getString(R.string.config_off), getString(R.string.config_on)};
+        dropdownSupersonicDelay.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, supersonicOptions));
+
+        String[] batteryOptions = {getString(R.string.config_unknown), "2S (7.4 Volts)", "9 Volts", "3S (11.1 Volts)"};
+        dropdownBatteryType.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, batteryOptions));
+    }
+
+    private void setupTooltips(View view) {
+        view.findViewById(R.id.txtViewBaudRate).setOnClickListener(v -> showTooltip(v, getString(R.string.txtViewBaudRate_tooltip)));
+        apogeeMeasures.setOnClickListener(v -> showTooltip(v, getString(R.string.editTxtApogeeMeasures_tooltip)));
+        view.findViewById(R.id.txtViewAltimeterResolution).setOnClickListener(v -> showTooltip(v, getString(R.string.txtViewAltimeterResolution_tooltip)));
+        txtViewEEpromSize.setOnClickListener(v -> showTooltip(v, getString(R.string.txtViewEEpromSize_tooltip)));
+        txtViewTelemetryType.setOnClickListener(v -> showTooltip(v, "Choose the type of telemetry module you use"));
+        endRecordAltitude.setOnClickListener(v -> showTooltip(v, getString(R.string.EndRecordAltitude_tooltip)));
+        liftOffAltitude.setOnClickListener(v -> showTooltip(v, getString(R.string.LiftOffAltitude_tooltip)));
+        view.findViewById(R.id.txtViewBatteryType).setOnClickListener(v -> showTooltip(v, getString(R.string.txtViewBatteryType_tooltip)));
+    }
+
+    private void showTooltip(View v, String text) {
+        if (v == null || getContext() == null) return;
+        ViewTooltip.on(v).color(Color.BLACK).position(ViewTooltip.Position.TOP).text(text).show();
+    }
+
+    private void populateFields() {
+        if (lAltiCfg == null) return;
+
+        setSpinnerToValue(dropdownBaudRate, ITEMS_BAUD_RATE, String.valueOf(lAltiCfg.getConnectionSpeed()));
+        apogeeMeasures.setText(String.valueOf(lAltiCfg.getNbrOfMeasuresForApogee()));
+        dropdownAltimeterResolution.setSelection(lAltiCfg.getAltimeterResolution());
+        liftOffAltitude.setText(String.valueOf(lAltiCfg.getLiftOffAltitude()));
+        dropdownBeepOnOff.setSelection(lAltiCfg.getBeepOnOff());
+        dropdownTelemetryType.setSelection(lAltiCfg.getTelemetryType());
+        dropdownSupersonicDelay.setSelection(lAltiCfg.getSupersonicDelay());
+
+        String altiName = lAltiCfg.getAltimeterName();
+
+        if ("AltiServo".equals(altiName) || "AltiDuo".equals(altiName)) {
+            dropdownEEpromSize.setVisibility(View.INVISIBLE);
+            txtViewEEpromSize.setVisibility(View.INVISIBLE);
+            dropdownTelemetryType.setVisibility(View.INVISIBLE);
+            txtViewTelemetryType.setVisibility(View.INVISIBLE);
+            endRecordAltitude.setVisibility(View.INVISIBLE);
+            txtViewEndRecordAltitude.setVisibility(View.INVISIBLE);
+            recordingTimeout.setVisibility(View.INVISIBLE);
+            txtViewRecordingTimeOut.setVisibility(View.INVISIBLE);
+            dropdownBatteryType.setVisibility(View.INVISIBLE);
+            txtViewBatteryType.setVisibility(View.INVISIBLE);
+        } else {
+            dropdownEEpromSize.setVisibility(View.VISIBLE);
+            txtViewEEpromSize.setVisibility(View.VISIBLE);
+            dropdownTelemetryType.setVisibility(View.VISIBLE);
+            txtViewTelemetryType.setVisibility(View.VISIBLE);
+            endRecordAltitude.setVisibility(View.VISIBLE);
+            txtViewEndRecordAltitude.setVisibility(View.VISIBLE);
+            recordingTimeout.setVisibility(View.VISIBLE);
+            txtViewRecordingTimeOut.setVisibility(View.VISIBLE);
+
+            setSpinnerToValue(dropdownEEpromSize, ITEMS_EEPROM, String.valueOf(lAltiCfg.getEepromSize()));
+            endRecordAltitude.setText(String.valueOf(lAltiCfg.getEndRecordAltitude()));
+            recordingTimeout.setText(String.valueOf(lAltiCfg.getRecordingTimeout()));
+
+            if ("AltiMulti".equals(altiName) || "AltiMultiV2".equals(altiName)) {
                 dropdownBatteryType.setVisibility(View.INVISIBLE);
                 txtViewBatteryType.setVisibility(View.INVISIBLE);
             } else {
                 dropdownBatteryType.setVisibility(View.VISIBLE);
                 txtViewBatteryType.setVisibility(View.VISIBLE);
-            }
-        }
-
-        //Max recording time in seconds
-        RecordingTimeout = (EditText) view.findViewById(R.id.editTxtRecordingTimeOut);
-        txtViewRecordingTimeOut = (TextView) view.findViewById(R.id.txtViewRecordingTimeOut);
-        if (lAltiCfg != null) {
-            if (lAltiCfg.getAltimeterName().equals("AltiServo") ||
-                    lAltiCfg.getAltimeterName().equals("AltiDuo") ) {
-                RecordingTimeout.setVisibility(View.INVISIBLE);
-                txtViewRecordingTimeOut.setVisibility(View.INVISIBLE);
-            } else {
-                RecordingTimeout.setVisibility(View.VISIBLE);
-                txtViewRecordingTimeOut.setVisibility(View.VISIBLE);
-            }
-        }
-
-        if (lAltiCfg != null) {
-            dropdownBaudRate.setSelection(lAltiCfg.arrayIndex(itemsBaudRate,
-                    String.valueOf(lAltiCfg.getConnectionSpeed())));
-            ApogeeMeasures.setText(String.valueOf(lAltiCfg.getNbrOfMeasuresForApogee()));
-            dropdownAltimeterResolution.setSelection(lAltiCfg.getAltimeterResolution());
-            LiftOffAltitude.setText(String.valueOf(lAltiCfg.getLiftOffAltitude()));
-            dropdownBeepOnOff.setSelection(lAltiCfg.getBeepOnOff());
-            dropdownTelemetryType.setSelection(lAltiCfg.getTelemetryType());
-            dropdownSupersonicDelay.setSelection(lAltiCfg.getSupersonicDelay());
-            if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiV2") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMulti") ||
-                    lAltiCfg.getAltimeterName().equals("AltiGPS")) {
-                dropdownEEpromSize.setSelection(lAltiCfg.arrayIndex(itemsEEpromSize,
-                        String.valueOf(lAltiCfg.getEepromSize())));
-                EndRecordAltitude.setText(String.valueOf(lAltiCfg.getEndRecordAltitude()));
-                RecordingTimeout.setText(String.valueOf(lAltiCfg.getRecordingTimeout()));
-            }
-            if (lAltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
-                    lAltiCfg.getAltimeterName().equals("AltiGPS") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) {
                 dropdownBatteryType.setSelection(lAltiCfg.getBatteryType());
             }
         }
-        ViewCreated = true;
-        return view;
+    }
+
+    private void setSpinnerToValue(Spinner spinner, String[] array, String value) {
+        if (spinner == null || array == null || value == null) return;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equals(value)) {
+                spinner.setSelection(i);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewCreated = false;
+        dropdownBaudRate = null;
+        apogeeMeasures = null;
+        dropdownAltimeterResolution = null;
+        txtViewEEpromSize = null;
+        dropdownEEpromSize = null;
+        dropdownBeepOnOff = null;
+        txtViewTelemetryType = null;
+        dropdownTelemetryType = null;
+        dropdownSupersonicDelay = null;
+        endRecordAltitude = null;
+        txtViewEndRecordAltitude = null;
+        liftOffAltitude = null;
+        dropdownBatteryType = null;
+        txtViewBatteryType = null;
+        recordingTimeout = null;
+        txtViewRecordingTimeOut = null;
     }
 }

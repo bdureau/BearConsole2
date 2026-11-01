@@ -1,154 +1,235 @@
 package com.altimeter.bdureau.bearconsole.config;
+
 /**
- * @description: Retrieve altimeter configuration and show it in tabs
- * The user can then load it back to the altimeter
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AltiTabConfigActivity
+ *
+ * @description:
+ *  Retrieves altimeter hardware EEPROM configuration asynchronously and displays
+ *  it across modular category tabs. Sends modified parameters back to the
+ *  altimeter in the background without locking the Android UI thread.
+ *
  * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ */
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-
-import androidx.annotation.Nullable;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-//tooltip library
 import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltiConfig1Fragment;
 import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltiConfig2Fragment;
 import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltiConfig3Fragment;
 import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltiConfig4Fragment;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AltiTabConfigActivity extends AppCompatActivity {
     private static final String TAG = "AltiTabConfigActivity";
 
     private ViewPager mViewPager;
-    SectionsPageAdapter adapter;
+    private SectionsPageAdapter adapter;
 
-    AltiConfig1Fragment configPage1 = null;
-    AltiConfig2Fragment configPage2 = null;
-    AltiConfig3Fragment configPage3 = null;
-    AltiConfig4Fragment configPage4 = null;
+    private AltiConfig1Fragment configPage1 = null;
+    private AltiConfig2Fragment configPage2 = null;
+    private AltiConfig3Fragment configPage3 = null;
+    private AltiConfig4Fragment configPage4 = null;
 
-    private Button btnDismiss, btnUpload;
-    ConsoleApplication myBT;
-    private AltiConfigData AltiCfg = null;
-    private ProgressDialog progress;
+    private ConsoleApplication myBT;
+    private AltiConfigData altiCfg = null;
+    private ProgressDialog progressDialog;
 
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
 
+    // Background executor for serial communication
+    private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        //get the bluetooth connection pointer
         myBT = (ConsoleApplication) getApplication();
-
-        readConfig();
-        //Assync config does not work so do not use it for now
-        //new RetrieveConfig().execute();
-        //Check the local and force it if needed
-        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         setContentView(R.layout.activity_altimeter_tab_config);
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        setupViewPager(mViewPager);
+        mViewPager = findViewById(R.id.container);
+        Button btnDismiss = findViewById(R.id.butDismiss);
+        Button btnUpload = findViewById(R.id.butUpload);
 
-        btnDismiss = (Button) findViewById(R.id.butDismiss);
-        btnDismiss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();      //exit the application configuration activity
+        btnDismiss.setOnClickListener(v -> finish());
+        btnUpload.setOnClickListener(v -> validateAndSendConfig());
+
+        // Asynchronous config read on launch
+        retrieveConfigAsync();
+    }
+
+    public AltiConfigData getAltiConfigData() {
+        if (altiCfg == null && myBT != null) {
+            altiCfg = myBT.getAltiConfigData();
+        }
+        return altiCfg;
+    }
+
+    private void showProgress(String message) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setCancelable(false);
+        }
+        progressDialog.setMessage(message);
+        if (!isFinishing() && !isDestroyed()) {
+            progressDialog.show();
+        }
+    }
+
+    private void hideProgress() {
+        if (progressDialog != null && progressDialog.isShowing() && !isFinishing() && !isDestroyed()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    private void retrieveConfigAsync() {
+        showProgress(getString(R.string.msg7));
+
+        ioExecutor.execute(() -> {
+            boolean success = false;
+            if (myBT.getConnected()) {
+                success = performReadConfig();
             }
+
+            final boolean isSuccess = success;
+            mainHandler.post(() -> {
+                hideProgress();
+                if (isFinishing() || isDestroyed()) return;
+
+                if (isSuccess && altiCfg != null) {
+                    setupViewPager(mViewPager);
+                } else {
+                    msg("Failed to retrieve altimeter configuration");
+                    finish();
+                }
+            });
         });
+    }
 
-        btnUpload = (Button) findViewById(R.id.butUpload);
-        btnUpload.setOnClickListener(new View.OnClickListener() {
+    private boolean performReadConfig() {
+        boolean success = false;
+        try {
+            myBT.setDataReady(false);
+            myBT.flush();
+            myBT.clearInput();
+            myBT.write("m0;");
 
-            @Override
-            public void onClick(View v) {
-                //send back the config to the altimeter and exit if successful
-                sendConfig();
+            waitForStreamData(3000);
+            String response = myBT.ReadResult(3000);
+
+            if ("OK".equals(response)) {
+                for (int attempt = 1; attempt <= 2 && !success; attempt++) {
+                    myBT.setDataReady(false);
+                    myBT.flush();
+                    myBT.clearInput();
+                    myBT.write("b;");
+                    myBT.flush();
+
+                    waitForStreamData(3000);
+                    String configMsg = myBT.ReadResult(3000);
+
+                    if ("start alticonfig end".equals(configMsg)) {
+                        altiCfg = myBT.getAltiConfigData();
+                        success = (altiCfg != null);
+                    }
+                }
+
+                // Resume main loop on device
+                myBT.setDataReady(false);
+                myBT.flush();
+                myBT.clearInput();
+                myBT.write("m1;");
+                waitForStreamData(3000);
+                myBT.ReadResult(3000);
+                myBT.flush();
             }
-        });
+        } catch (Exception e) {
+            Log.e(TAG, "Error during config retrieval", e);
+            success = false;
+        }
+        return success;
     }
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsPageAdapter(getSupportFragmentManager());
 
-        configPage1 = new AltiConfig1Fragment(AltiCfg);
-        configPage2 = new AltiConfig2Fragment(AltiCfg);
-        configPage3 = new AltiConfig3Fragment(AltiCfg);
-        if (!myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
+        configPage1 = new AltiConfig1Fragment();
+        configPage2 = new AltiConfig2Fragment();
+        configPage3 = new AltiConfig3Fragment();
+
+        String altiName = myBT.getAltiConfigData().getAltimeterName();
+
+        if (!"TTGOBearAltimeter".equals(altiName)) {
             adapter.addFragment(configPage1, "TAB1");
             adapter.addFragment(configPage2, "TAB2");
         }
         adapter.addFragment(configPage3, "TAB3");
 
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-            configPage4 = new AltiConfig4Fragment(AltiCfg);
+        if ("AltiServo".equals(altiName)) {
+            configPage4 = new AltiConfig4Fragment();
             adapter.addFragment(configPage4, "TAB4");
         }
 
-        linearDots=findViewById(R.id.idAltiConfigLinearDots);
+        linearDots = findViewById(R.id.idAltiConfigLinearDots);
         agregaIndicateDots(0, adapter.getCount());
         viewPager.setAdapter(adapter);
-
         viewPager.addOnPageChangeListener(viewListener);
     }
 
-    public void agregaIndicateDots(int pos, int nbr){
-        dotsSlide =new TextView[nbr];
+    public void agregaIndicateDots(int pos, int nbr) {
+        dotsSlide = new TextView[nbr];
         linearDots.removeAllViews();
 
-        for (int i=0; i< dotsSlide.length; i++){
-            dotsSlide[i]=new TextView(this);
+        for (int i = 0; i < dotsSlide.length; i++) {
+            dotsSlide[i] = new TextView(this);
             dotsSlide[i].setText(Html.fromHtml("&#8226;"));
             dotsSlide[i].setTextSize(35);
             dotsSlide[i].setTextColor(getResources().getColor(R.color.colorWhiteTransparent));
             linearDots.addView(dotsSlide[i]);
         }
 
-        if(dotsSlide.length>0){
+        if (dotsSlide.length > 0) {
             dotsSlide[pos].setTextColor(getResources().getColor(R.color.colorWhite));
         }
     }
 
-    ViewPager.OnPageChangeListener viewListener=new ViewPager.OnPageChangeListener() {
+    private final ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
         @Override
-        public void onPageScrolled(int i, float v, int i1) {
-        }
+        public void onPageScrolled(int i, float v, int i1) {}
 
         @Override
         public void onPageSelected(int i) {
@@ -156,463 +237,271 @@ public class AltiTabConfigActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onPageScrollStateChanged(int i) {
-        }
+        public void onPageScrollStateChanged(int i) {}
     };
 
-    private boolean readConfig() {
-        // ask for config
-        boolean  success =false;
-        if (myBT.getConnected()) {
-            //msg("Retreiving altimeter config...");
+    private void validateAndSendConfig() {
+        if (altiCfg == null) return;
+
+        // Pull values from active fragments
+        if (configPage1 != null && configPage1.isViewCreated()) {
+            altiCfg.setOutput1Delay(configPage1.getOutDelay1());
+            altiCfg.setOutput2Delay(configPage1.getOutDelay2());
+            altiCfg.setOutput3Delay(configPage1.getOutDelay3());
+            altiCfg.setOutput4Delay(configPage1.getOutDelay4());
+            altiCfg.setOutput1(configPage1.getDropdownOut1());
+            altiCfg.setOutput2(configPage1.getDropdownOut2());
+            altiCfg.setOutput3(configPage1.getDropdownOut3());
+            altiCfg.setOutput4(configPage1.getDropdownOut4());
+            altiCfg.setMainAltitude(configPage1.getMainAltitude());
+        }
+
+        if (configPage2 != null && configPage2.isViewCreated()) {
+            altiCfg.setNbrOfMeasuresForApogee(configPage2.getApogeeMeasures());
+            altiCfg.setAltimeterResolution(configPage2.getAltimeterResolution());
+            altiCfg.setEepromSize(configPage2.getEEpromSize());
+            altiCfg.setBeepOnOff(configPage2.getBeepOnOff());
+            altiCfg.setEndRecordAltitude(configPage2.getEndRecordAltitude());
+            altiCfg.setTelemetryType(configPage2.getRecordTempOnOff());
+            altiCfg.setSupersonicDelay(configPage2.getSupersonicDelayOnOff());
+            altiCfg.setLiftOffAltitude(configPage2.getLiftOffAltitude());
+            altiCfg.setBatteryType(configPage2.getBatteryType());
+            altiCfg.setRecordingTimeout(configPage2.getRecordingTimeout());
+        }
+
+        if (configPage3 != null && configPage3.isViewCreated()) {
+            altiCfg.setBeepingFrequency(configPage3.getFreq());
+            altiCfg.setBeepingMode(configPage3.getDropdownBipMode());
+            altiCfg.setUnits(configPage3.getDropdownUnits());
+            if ("AltiServo".equals(altiCfg.getAltimeterName())) {
+                altiCfg.setServoStayOn(configPage3.getServoStayOn());
+                altiCfg.setServoSwitch(configPage3.getServoSwitch());
+            }
+            altiCfg.setAltiID(configPage3.getAltiID());
+            altiCfg.setUseTelemetryPort(configPage3.getDropdownUseTelemetryPort());
+
+            String altiName = altiCfg.getAltimeterName();
+            if ((("AltiMultiESP32".equals(altiName) || "AltiMultiESP32_accel".equals(altiName)
+                    || "AltiMultiESP32_accel_375".equals(altiName) || "AltiMultiESP32_accel_345".equals(altiName))
+                    && altiCfg.getAltiMajorVersion() >= 2 && altiCfg.getAltiMinorVersion() > 0)
+                    || ("TTGOBearAltimeter".equals(altiName) && altiCfg.getAltiMajorVersion() >= 0 && altiCfg.getAltiMinorVersion() > 4)) {
+                altiCfg.setBluetoothName(configPage3.getBluetoothName());
+            }
+        }
+
+        if ("AltiServo".equals(altiCfg.getAltimeterName()) && configPage4 != null && configPage4.isViewCreated()) {
+            altiCfg.setServo1OnPos(configPage4.getServo1OnPos());
+            altiCfg.setServo2OnPos(configPage4.getServo2OnPos());
+            altiCfg.setServo3OnPos(configPage4.getServo3OnPos());
+            altiCfg.setServo4OnPos(configPage4.getServo4OnPos());
+            altiCfg.setServo1OffPos(configPage4.getServo1OffPos());
+            altiCfg.setServo2OffPos(configPage4.getServo2OffPos());
+            altiCfg.setServo3OffPos(configPage4.getServo3OffPos());
+            altiCfg.setServo4OffPos(configPage4.getServo4OffPos());
+        }
+
+        // Validate deployment outputs
+        int nbrOfMain = 0;
+        int nbrOfDrogue = 0;
+        if (altiCfg.getOutput1() == 0) nbrOfMain++;
+        if (altiCfg.getOutput2() == 0) nbrOfMain++;
+        if (altiCfg.getOutput3() == 0) nbrOfMain++;
+        if (altiCfg.getOutput4() == 0) nbrOfMain++;
+
+        if (altiCfg.getOutput1() == 1) nbrOfDrogue++;
+        if (altiCfg.getOutput2() == 1) nbrOfDrogue++;
+        if (altiCfg.getOutput3() == 1) nbrOfDrogue++;
+        if (altiCfg.getOutput4() == 1) nbrOfDrogue++;
+
+        if (!myBT.getAppConf().getAllowMultipleDrogueMain() && !"TTGOBearAltimeter".equals(altiCfg.getAltimeterName())) {
+            if (nbrOfMain > 1) {
+                msg(getString(R.string.msg1));
+                return;
+            }
+            if (nbrOfDrogue > 1) {
+                msg(getString(R.string.msg2));
+                return;
+            }
+        }
+
+        // Baud rate change confirmation
+        if (configPage2 != null && configPage2.isViewCreated() && altiCfg.getConnectionSpeed() != configPage2.getBaudRate()) {
+            new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.msg9))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.Yes), (dialog, id) -> {
+                        dialog.dismiss();
+                        altiCfg.setConnectionSpeed(configPage2.getBaudRate());
+                        executeSendConfigAsync();
+                    })
+                    .setNegativeButton(getString(R.string.No), (dialog, id) -> dialog.dismiss())
+                    .show();
+        } else {
+            executeSendConfigAsync();
+        }
+    }
+
+    private void executeSendConfigAsync() {
+        showProgress("Uploading configuration...");
+
+        ioExecutor.execute(() -> {
+            boolean success = performSendConfig();
+            mainHandler.post(() -> {
+                hideProgress();
+                if (isFinishing() || isDestroyed()) return;
+
+                if (success) {
+                    msg("Configuration updated successfully");
+                    finish();
+                } else {
+                    msg("Failed to write altimeter configuration");
+                }
+            });
+        });
+    }
+
+    private boolean performSendConfig() {
+        if (!myBT.getConnected()) return false;
+
+        try {
             myBT.setDataReady(false);
             myBT.flush();
             myBT.clearInput();
-            //switch off the main loop before sending the config
-            myBT.write("m0;".toString());
+            myBT.write("m0;");
 
-            //wait for the result to come back
-            try {
-                while (myBT.getInputStream().available() <= 0) ;
-            } catch (IOException e) {
-                success = false;
+            waitForStreamData(3000);
+            myBT.ReadResult(3000);
+
+            sendParamCommand("p,1," + altiCfg.getUnits());
+            sendParamCommand("p,2," + altiCfg.getBeepingMode());
+            sendParamCommand("p,3," + altiCfg.getOutput1());
+            sendParamCommand("p,4," + altiCfg.getOutput2());
+            sendParamCommand("p,5," + altiCfg.getOutput3());
+            sendParamCommand("p,6," + altiCfg.getMainAltitude());
+            sendParamCommand("p,7," + altiCfg.getSupersonicYesNo());
+            sendParamCommand("p,8," + altiCfg.getOutput1Delay());
+            sendParamCommand("p,9," + altiCfg.getOutput2Delay());
+            sendParamCommand("p,10," + altiCfg.getOutput3Delay());
+            sendParamCommand("p,11," + altiCfg.getBeepingFrequency());
+            sendParamCommand("p,12," + altiCfg.getNbrOfMeasuresForApogee());
+            sendParamCommand("p,13," + altiCfg.getEndRecordAltitude());
+            sendParamCommand("p,14," + altiCfg.getTelemetryType());
+            sendParamCommand("p,15," + altiCfg.getSupersonicDelay());
+            sendParamCommand("p,16," + altiCfg.getConnectionSpeed());
+            sendParamCommand("p,17," + altiCfg.getAltimeterResolution());
+            sendParamCommand("p,18," + altiCfg.getEepromSize());
+            sendParamCommand("p,19," + altiCfg.getBeepOnOff());
+            sendParamCommand("p,20," + altiCfg.getOutput4());
+            sendParamCommand("p,21," + altiCfg.getOutput4Delay());
+            sendParamCommand("p,22," + altiCfg.getLiftOffAltitude());
+            sendParamCommand("p,23," + altiCfg.getBatteryType());
+            sendParamCommand("p,24," + altiCfg.getRecordingTimeout());
+            sendParamCommand("p,25," + altiCfg.getAltiID());
+            sendParamCommand("p,26," + altiCfg.getUseTelemetryPort());
+
+            String altiName = altiCfg.getAltimeterName();
+            if ((("AltiMultiESP32".equals(altiName) || "AltiMultiESP32_accel".equals(altiName)
+                    || "AltiMultiESP32_accel_375".equals(altiName) || "AltiMultiESP32_accel_345".equals(altiName))
+                    && altiCfg.getAltiMajorVersion() >= 2 && altiCfg.getAltiMinorVersion() > 0)
+                    || ("TTGOBearAltimeter".equals(altiName) && altiCfg.getAltiMajorVersion() >= 0 && altiCfg.getAltiMinorVersion() > 4)) {
+                sendParamCommand("z," + altiCfg.getBluetoothName());
             }
-            String myMessage = "";
-            myMessage = myBT.ReadResult(3000);
-            if (myMessage.equals("OK")) {
-                myBT.setDataReady(false);
-                myBT.flush();
-                myBT.clearInput();
-                myBT.write("b;".toString());
-                myBT.flush();
 
-                //get the results
-                //wait for the result to come back
-                try {
-                    while (myBT.getInputStream().available() <= 0) ;
-                } catch (IOException e) {
-                    success = false;
-                }
-                myMessage = myBT.ReadResult(3000);
-                //reading the config
-                if (myMessage.equals("start alticonfig end")) {
-                    Log.d("AltiConfig", "attempt 1");
-                    try {
-                        AltiCfg = myBT.getAltiConfigData();
-                        success =true;
-                    } catch (Exception e) {
-                        //  msg("pb ready data");
-                        success = false;
-                    }
-                } else {
-                    //try again
-                    myBT.setDataReady(false);
-                    myBT.flush();
-                    myBT.clearInput();
-                    myBT.write("b;".toString());
-                    myBT.flush();
-                    //get the results
-                    //wait for the result to come back
-                    try {
-                        while (myBT.getInputStream().available() <= 0) ;
-                    } catch (IOException e) {
-                        success = false;
-                    }
-                    myMessage = myBT.ReadResult(3000);
-                    //reading the config
-                    if (myMessage.equals("start alticonfig end")) {
-                        Log.d("AltiConfig", "attempt 2");
-                        try {
-                            AltiCfg = myBT.getAltiConfigData();
-                            if(AltiCfg == null )
-                                Log.d("AltiConfig", "AltiCfg is null");
-                            success = true;
-                        } catch (Exception e) {
-                            //  msg("pb ready data");
-                            success = false;
-                        }
-                    }
-                }
-                myBT.setDataReady(false);
-                myBT.flush();
-                myBT.clearInput();
-                //switch on the main loop before sending the config
-                myBT.write("m1;".toString());
-
-
-                //wait for the result to come back
-                try {
-                    while (myBT.getInputStream().available() <= 0) ;
-                } catch (IOException e) {
-                    success = false;
-                }
-                myMessage = myBT.ReadResult(3000);
-                myBT.flush();
+            if ("AltiServo".equals(altiName)) {
+                sendParamCommand("p,27," + altiCfg.getServoSwitch());
+                sendParamCommand("p,28," + altiCfg.getServo1OnPos());
+                sendParamCommand("p,29," + altiCfg.getServo2OnPos());
+                sendParamCommand("p,30," + altiCfg.getServo3OnPos());
+                sendParamCommand("p,31," + altiCfg.getServo4OnPos());
+                sendParamCommand("p,32," + altiCfg.getServo1OffPos());
+                sendParamCommand("p,33," + altiCfg.getServo2OffPos());
+                sendParamCommand("p,34," + altiCfg.getServo3OffPos());
+                sendParamCommand("p,35," + altiCfg.getServo4OffPos());
+                sendParamCommand("p,36," + altiCfg.getServoStayOn());
             }
+
+            // Write EEPROM command
+            myBT.setDataReady(false);
+            myBT.flush();
+            myBT.clearInput();
+            myBT.write("q;");
+            waitForStreamData(3000);
+            myBT.ReadResult(3000);
+
+            // Re-enable main loop
+            myBT.setDataReady(false);
+            myBT.flush();
+            myBT.clearInput();
+            myBT.write("m1;");
+            waitForStreamData(3000);
+            myBT.ReadResult(3000);
+            myBT.flush();
+
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "Error writing config", e);
+            return false;
         }
+    }
 
-    return success;
+    private void sendParamCommand(String command) {
+        String stripped = command.replace("p", "").replace(",", "");
+        String payload = command + "," + generateCheckSum(stripped) + ";";
+
+        if (myBT.getConnected()) {
+            myBT.flush();
+            myBT.clearInput();
+            myBT.setDataReady(false);
+            myBT.write(payload);
+            myBT.flush();
+
+            waitForStreamData(3000);
+            myBT.ReadResult(3000);
+        }
+    }
+
+    private void waitForStreamData(long timeoutMs) {
+        long start = System.currentTimeMillis();
+        try {
+            while (myBT.getInputStream() != null
+                    && myBT.getInputStream().available() <= 0
+                    && (System.currentTimeMillis() - start) < timeoutMs) {
+                Thread.sleep(20);
+            }
+        } catch (IOException | InterruptedException ignored) {}
+    }
+
+    public static int generateCheckSum(String value) {
+        byte[] data = value.getBytes();
+        int checksum = 0;
+        for (byte b : data) {
+            checksum += (b & 0xFF);
+        }
+        return checksum % 256;
     }
 
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
 
-    private boolean sendConfig() {
-        //final boolean exit_no_save = false;
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        long prevBaudRate = AltiCfg.getConnectionSpeed();
-        long nbrOfMain = 0;
-        long nbrOfDrogue = 0;
-        // check if the baud rate has changed
-
-        if (configPage1.isViewCreated()) {
-            AltiCfg.setOutput1Delay(configPage1.getOutDelay1());
-            AltiCfg.setOutput2Delay(configPage1.getOutDelay2());
-            AltiCfg.setOutput3Delay(configPage1.getOutDelay3());
-            AltiCfg.setOutput4Delay(configPage1.getOutDelay4());
-            AltiCfg.setOutput1(configPage1.getDropdownOut1());
-            AltiCfg.setOutput2(configPage1.getDropdownOut2());
-            AltiCfg.setOutput3(configPage1.getDropdownOut3());
-            AltiCfg.setOutput4(configPage1.getDropdownOut4());
-            AltiCfg.setMainAltitude(configPage1.getMainAltitude());
-        }
-        if (configPage2.isViewCreated()) {
-
-            // AltiCfg.setConnectionSpeed(configPage2.getBaudRate());
-            AltiCfg.setNbrOfMeasuresForApogee(configPage2.getApogeeMeasures());
-            AltiCfg.setAltimeterResolution(configPage2.getAltimeterResolution());
-            AltiCfg.setEepromSize(configPage2.getEEpromSize());
-            AltiCfg.setBeepOnOff(configPage2.getBeepOnOff());
-            AltiCfg.setEndRecordAltitude(configPage2.getEndRecordAltitude());
-            AltiCfg.setTelemetryType(configPage2.getRecordTempOnOff());
-            AltiCfg.setSupersonicDelay(configPage2.getSupersonicDelayOnOff());
-            AltiCfg.setLiftOffAltitude(configPage2.getLiftOffAltitude());
-            AltiCfg.setBatteryType(configPage2.getBatteryType());
-            AltiCfg.setRecordingTimeout(configPage2.getRecordingTimeout());
-        }
-
-        if (configPage3.isViewCreated()) {
-            AltiCfg.setBeepingFrequency(configPage3.getFreq());
-            AltiCfg.setBeepingMode(configPage3.getDropdownBipMode());
-            AltiCfg.setUnits(configPage3.getDropdownUnits());
-            if (AltiCfg.getAltimeterName().equals("AltiServo")) {
-                AltiCfg.setServoStayOn(configPage3.getServoStayOn());
-                AltiCfg.setServoSwitch(configPage3.getServoSwitch());
-            }
-            AltiCfg.setAltiID(configPage3.getAltiID());
-            AltiCfg.setUseTelemetryPort(configPage3.getDropdownUseTelemetryPort());
-            if ((AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
-                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
-                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") &&
-                    (AltiCfg.getAltiMajorVersion() == 2 && AltiCfg.getAltiMinorVersion() > 0)) ||
-                    (AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") &&
-                            (AltiCfg.getAltiMajorVersion() == 0 && AltiCfg.getAltiMinorVersion() > 4))) {
-                    AltiCfg.setBluetoothName(configPage3.getBluetoothName());
-            }
-        }
-
-        if (AltiCfg.getAltimeterName().equals("AltiServo")) {
-            if (configPage4.isViewCreated()) {
-                AltiCfg.setServo1OnPos(configPage4.getServo1OnPos());
-                AltiCfg.setServo2OnPos(configPage4.getServo2OnPos());
-                AltiCfg.setServo3OnPos(configPage4.getServo3OnPos());
-                AltiCfg.setServo4OnPos(configPage4.getServo4OnPos());
-                AltiCfg.setServo1OffPos(configPage4.getServo1OffPos());
-                AltiCfg.setServo2OffPos(configPage4.getServo2OffPos());
-                AltiCfg.setServo3OffPos(configPage4.getServo3OffPos());
-                AltiCfg.setServo4OffPos(configPage4.getServo4OffPos());
-            }
-        }
-        if (AltiCfg.getOutput1() == 0)
-            nbrOfMain++;
-        if (AltiCfg.getOutput2() == 0)
-            nbrOfMain++;
-
-        if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                AltiCfg.getAltimeterName().equals("AltiServo") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiV2") ||
-                AltiCfg.getAltimeterName().equals("AltiGPS") ||
-                AltiCfg.getAltimeterName().equals("AltiMulti")) {
-            if (AltiCfg.getOutput3() == 0)
-                nbrOfMain++;
-        }
-        if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
-                AltiCfg.getAltimeterName().equals("AltiGPS") ||
-                AltiCfg.getAltimeterName().equals("AltiServo")) {
-            if (AltiCfg.getOutput4() == 0)
-                nbrOfMain++;
-        }
-
-        if (AltiCfg.getOutput1() == 1)
-            nbrOfDrogue++;
-        if (AltiCfg.getOutput2() == 1)
-            nbrOfDrogue++;
-        if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                AltiCfg.getAltimeterName().equals("AltiServo") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiV2") ||
-                AltiCfg.getAltimeterName().equals("AltiGPS") ||
-                AltiCfg.getAltimeterName().equals("AltiMulti")) {
-            if (AltiCfg.getOutput3() == 1)
-                nbrOfDrogue++;
-        }
-        if (AltiCfg.getAltimeterName().equals("AltiMultiSTM32") ||
-                AltiCfg.getAltimeterName().equals("AltiGPS") ||
-                AltiCfg.getAltimeterName().equals("AltiServo")) {
-            if (AltiCfg.getOutput4() == 1)
-                nbrOfDrogue++;
-        }
-        //if (myBT.getAppConf().getAllowMultipleDrogueMain().equals("false")) {
-        if (!myBT.getAppConf().getAllowMultipleDrogueMain() && ! myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
-            if (nbrOfMain > 1) {
-                //Only one main is allowed Please review your config
-                msg(getResources().getString(R.string.msg1));
-                return false;
-            }
-            if (nbrOfDrogue > 1) {
-                //Only one Drogue is allowed Please review your config
-                msg(getResources().getString(R.string.msg2));
-                return false;
-            }
-        }
-
-        if (configPage2.isViewCreated()) {
-            if (AltiCfg.getConnectionSpeed() != configPage2.getBaudRate()) {
-                //final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                //You are about to change the baud rate, are you sure you want to do it?
-                builder.setMessage(getResources().getString(R.string.msg9))
-                        .setCancelable(false)
-                        .setPositiveButton(getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {
-                            public void onClick(final DialogInterface dialog, final int id) {
-                                dialog.cancel();
-                                AltiCfg.setConnectionSpeed(configPage2.getBaudRate());
-                                sendAltiCfgV2();
-                                finish();
-                            }
-                        })
-                        .setNegativeButton(getResources().getString(R.string.No), new DialogInterface.OnClickListener() {
-                            public void onClick(final DialogInterface dialog, final int id) {
-                                dialog.cancel();
-
-                            }
-                        });
-                final AlertDialog alert = builder.create();
-                alert.show();
-            } else {
-                sendAltiCfgV2();
-                finish();
-            }
-        } else {
-            sendAltiCfgV2();
-            finish();
-        }
-
-        return true;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        hideProgress();
+        ioExecutor.shutdown();
     }
 
-    private void sendAltiCfgV2() {
+    public static class SectionsPageAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        if (myBT.getConnected()) {
-            myBT.setDataReady(false);
-            myBT.flush();
-            myBT.clearInput();
-            //switch off the main loop before sending the config
-            myBT.write("m0;".toString());
-            Log.d("conftab", "switch off main loop");
-            //wait for the result to come back
-            try {
-                while (myBT.getInputStream().available() <= 0) ;
-            } catch (IOException e) {
-
-            }
-            String myMessage = "";
-            myMessage = myBT.ReadResult(3000);
-            if (myMessage.equals("OK")) {
-                Log.d("conftab", "switch off main loop ok");
-            }
+        public SectionsPageAdapter(FragmentManager fm) {
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
-
-        SendParam("p,1,"+ AltiCfg.getUnits());
-        SendParam("p,2,"+AltiCfg.getBeepingMode());
-        SendParam("p,3,"+AltiCfg.getOutput1());
-        SendParam("p,4,"+ AltiCfg.getOutput2());
-        SendParam("p,5,"+AltiCfg.getOutput3());
-        SendParam("p,6,"+AltiCfg.getMainAltitude());
-        SendParam("p,7,"+AltiCfg.getSupersonicYesNo());
-        SendParam("p,8,"+AltiCfg.getOutput1Delay());
-        SendParam("p,9,"+AltiCfg.getOutput2Delay());
-        SendParam("p,10,"+AltiCfg.getOutput3Delay());
-        SendParam("p,11,"+AltiCfg.getBeepingFrequency());
-        SendParam("p,12,"+AltiCfg.getNbrOfMeasuresForApogee());
-        SendParam("p,13,"+AltiCfg.getEndRecordAltitude());
-        SendParam("p,14,"+AltiCfg.getTelemetryType());
-        SendParam("p,15,"+AltiCfg.getSupersonicDelay());
-        SendParam("p,16,"+AltiCfg.getConnectionSpeed());
-        SendParam("p,17,"+AltiCfg.getAltimeterResolution());
-        SendParam("p,18,"+AltiCfg.getEepromSize());
-        SendParam("p,19,"+AltiCfg.getBeepOnOff());
-        SendParam("p,20,"+AltiCfg.getOutput4());
-        SendParam("p,21,"+ AltiCfg.getOutput4Delay());
-        SendParam("p,22,"+AltiCfg.getLiftOffAltitude());
-        SendParam("p,23,"+AltiCfg.getBatteryType());
-        SendParam("p,24,"+AltiCfg.getRecordingTimeout());
-        SendParam("p,25,"+AltiCfg.getAltiID());
-        Log.d("UseTelemetryPort", "before getUseTelemetryPort" );
-        SendParam("p,26,"+AltiCfg.getUseTelemetryPort());
-        Log.d("UseTelemetryPort", "after getUseTelemetryPort" );
-        if ((AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") &&
-                (AltiCfg.getAltiMajorVersion() >= 2 && AltiCfg.getAltiMinorVersion() > 0) ||
-                (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") &&
-                        (AltiCfg.getAltiMajorVersion() >= 0 && AltiCfg.getAltiMinorVersion() > 4)))) {
-            SendParam("z,"+AltiCfg.getBluetoothName());
-            Log.d(TAG, "BluetoothName: " +AltiCfg.getBluetoothName() );
-        }
-
-        if (AltiCfg.getAltimeterName().equals("AltiServo")) {
-            SendParam("p,27,"+AltiCfg.getServoSwitch());
-            SendParam("p,28,"+AltiCfg.getServo1OnPos());
-            SendParam("p,29,"+AltiCfg.getServo2OnPos());
-            SendParam("p,30,"+AltiCfg.getServo3OnPos());
-            SendParam("p,31,"+AltiCfg.getServo4OnPos());
-            SendParam("p,32,"+AltiCfg.getServo1OffPos());
-            SendParam("p,33,"+AltiCfg.getServo2OffPos());
-            SendParam("p,34,"+AltiCfg.getServo3OffPos());
-            SendParam("p,35,"+AltiCfg.getServo4OffPos());
-            SendParam("p,36,"+AltiCfg.getServoStayOn());
-        }
-
-        if (myBT.getConnected()) {
-
-            String myMessage = "";
-
-            myBT.setDataReady(false);
-            myBT.flush();
-            myBT.clearInput();
-            //Write the config structure
-            myBT.write("q;".toString());
-            Log.d(TAG, "write config");
-
-            //wait for the result to come back
-            try {
-                while (myBT.getInputStream().available() <= 0) ;
-            } catch (IOException e) {
-
-            }
-            myMessage = "";
-            myMessage = myBT.ReadResult(3000);
-            //msg(getResources().getString(R.string.msg3));
-
-            myBT.setDataReady(false);
-            myBT.flush();
-            myBT.clearInput();
-            //switch on the main loop before sending the config
-            myBT.write("m1;".toString());
-            Log.d("conftab", "switch on main loop");
-
-            //wait for the result to come back
-            try {
-                while (myBT.getInputStream().available() <= 0) ;
-            } catch (IOException e) {
-
-            }
-            myMessage = "";
-            myMessage = myBT.ReadResult(3000);
-            //msg(getResources().getString(R.string.msg3));
-
-            myBT.flush();
-        }
-    }
-
-    private void SendParam (String altiCfgStr) {
-        String cfg = altiCfgStr;
-        cfg = cfg.replace("p", "");
-        cfg = cfg.replace(",", "");
-        Log.d("conftab", cfg.toString());
-
-        altiCfgStr = altiCfgStr + "," + generateCheckSum(cfg) + ";";
-
-
-        if (myBT.getConnected()) {
-            String myMessage = "";
-
-            myBT.flush();
-            myBT.clearInput();
-            myBT.setDataReady(false);
-
-            //send back the config
-            myBT.write(altiCfgStr.toString());
-            Log.d("conftab", altiCfgStr.toString());
-            myBT.flush();
-            //get the results
-            //wait for the result to come back
-            try {
-                while (myBT.getInputStream().available() <= 0) ;
-            } catch (IOException e) {
-
-            }
-            myMessage = "";
-            myMessage = myBT.ReadResult(3000);
-            if (myMessage.equals("OK")) {
-                //msg("Sent OK:" + altiCfgStr.toString());
-                Log.d("conftab", "config sent succesfully");
-
-            } else {
-                //  msg(myMessage);
-                Log.d("conftab", "config not sent succesfully");
-                Log.d("conftab", myMessage);
-            }
-            if (myMessage.equals("KO")) {
-             //   msg(getResources().getString(R.string.msg2));
-            }
-        }
-    }
-
-    public static Integer generateCheckSum(String value) {
-
-        byte[] data = value.getBytes();
-        long checksum = 0L;
-
-        for (byte b : data) {
-            checksum += b;
-        }
-
-        checksum = checksum % 256;
-
-        return new Long(checksum).intValue();
-
-    }
-
-    public class SectionsPageAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList();
-        private final List<String> mFragmentTitleList = new ArrayList();
 
         public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
-        }
-
-        public SectionsPageAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return super.getPageTitle(position);
         }
 
         @Override
@@ -624,37 +513,35 @@ public class AltiTabConfigActivity extends AppCompatActivity {
         public int getCount() {
             return mFragmentList.size();
         }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_application_config, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //share screen
         if (id == R.id.action_share) {
             ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this);
             return true;
         }
-        //open help screen
         if (id == R.id.action_help) {
-            Intent i = new Intent(AltiTabConfigActivity.this, HelpActivity.class);
+            Intent i = new Intent(this, HelpActivity.class);
             i.putExtra("help_file", "help_config_alti");
             startActivity(i);
             return true;
         }
-
         if (id == R.id.action_about) {
-            Intent i = new Intent(AltiTabConfigActivity.this, AboutActivity.class);
+            Intent i = new Intent(this, AboutActivity.class);
             startActivity(i);
             return true;
         }

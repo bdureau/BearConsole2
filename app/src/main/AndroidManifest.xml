@@ -1,192 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
+
+    <!-- Location permissions for GPS tracking and map rendering -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!-- Legacy Bluetooth permissions for Android 11 (API level 30) and lower -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
 
-    <uses-feature android:name="android.hardware.usb.host"
-        android:required="true"/>
+    <!-- Modern Bluetooth permissions for Android 12+ (API level 31+) -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
+
+    <!-- Legacy external storage permissions for Android 9 and lower -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"
+        tools:ignore="ScopedStorage" />
+
+    <!-- Set USB host feature to optional so Bluetooth-only devices can download the app from Google Play -->
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="false" />
 
     <application
         android:name=".ConsoleApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BearConsole">
 
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
+        <!-- Google Maps API key configuration -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-        <!-- Necessary for apps that target Android 9.0 or higher -->
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
-         <activity
-             android:name=".config.ConfigModules.Config3DR"
-             android:exported="true"
-             android:screenOrientation="portrait">
-             <intent-filter>
-                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-             </intent-filter>
+        <!-- Apache HTTP legacy client library support -->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
-             <meta-data
-                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                 android:resource="@xml/device_filter" />
-         </activity>
-         <activity
-             android:name=".config.ConfigModules.ConfigBT"
-             android:exported="true"
-             android:screenOrientation="portrait">
-             <intent-filter>
-                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-             </intent-filter>
-
-             <meta-data
-                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                 android:resource="@xml/device_filter" />
-         </activity>
-         <activity
-             android:name=".config.ConfigModules.ConfigLoraE220"
-             android:exported="true"
-             android:screenOrientation="portrait">
-             <intent-filter>
-                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-             </intent-filter>
-             <meta-data
-                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                 android:resource="@xml/device_filter" />
-         </activity>
+        <!-- Main dashboard activity: designated as the single automatic USB device attachment entry point -->
         <activity
-            android:name=".config.ConfigModules.ConfigLoraE32"
+            android:name=".MainScreenActivity"
             android:exported="true"
+            android:label="@string/app_name"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
         </activity>
-         <activity
-             android:name=".Flash.FlashFirmware"
-             android:exported="true"
-             android:screenOrientation="portrait">
-             <intent-filter>
-                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-             </intent-filter>
-             <meta-data
-                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                 android:resource="@xml/device_filter" />
-         </activity>
-         <!--<activity android:name=".Flight.FlightViewMpActivity" />-->
-         <activity
-             android:name=".Flight.FlightViewTabActivity"
-             android:screenOrientation="portrait" />
-         <activity
-             android:name=".MainScreenActivity"
-             android:exported="true"
-             android:label="@string/app_name"
-             android:screenOrientation="portrait">
-             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
-             <intent-filter>
-                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-             </intent-filter>
 
-             <meta-data
-                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                 android:resource="@xml/device_filter" />
-         </activity>
-         <activity
-             android:name=".connection.TestConnection"
-             android:label="Test connection"
-             android:screenOrientation="portrait" />
-         <activity
-             android:name=".connection.SearchBluetooth"
-             android:label="@string/select_bluetooth_device"
-             android:screenOrientation="portrait" />
-         <activity
-             android:name=".config.AltiTabConfigActivity"
-             android:label="@string/altimeter_config"
-             android:screenOrientation="portrait" />
-         <activity
-             android:name=".Flight.FlightListActivity"
-             android:label="@string/Flight_list"
-             android:screenOrientation="portrait" />
+        <!-- Hardware configuration activities (USB intent-filters removed to prevent intent chooser collisions) -->
         <activity
-            android:name=".Flight.FlightRecoveryActivity"
+            android:name=".config.ConfigModules.Config3DR"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".config.ConfigModules.ConfigBT"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".config.ConfigModules.ConfigLoraE220"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".config.ConfigModules.ConfigLoraE32"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Flash.FlashFirmware"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Application UI and flight analysis activities -->
+        <activity
+            android:name=".Flight.FlightViewTabActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".connection.TestConnection"
+            android:exported="false"
+            android:label="Test connection"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".connection.SearchBluetooth"
+            android:exported="false"
+            android:label="@string/select_bluetooth_device"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".config.AltiTabConfigActivity"
+            android:exported="false"
+            android:label="@string/altimeter_config"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Flight.FlightListActivity"
+            android:exported="false"
             android:label="@string/Flight_list"
             android:screenOrientation="portrait" />
-         <activity
-             android:name=".Help.AboutActivity"
-             android:label="@string/about_screen"
-             android:screenOrientation="portrait" />
-         <activity
-             android:name=".config.AppTabConfigActivity"
-             android:label="@string/titre_application_pref"
-             android:screenOrientation="portrait" />
-         <activity android:name=".Help.HelpActivity" />
-         <activity
-             android:name=".ResetSettingsActivity"
-             android:label="@string/reset_settings"
-             android:screenOrientation="portrait" />
-         <activity
-             android:name=".telemetry.TelemetryTabActivity"
-             android:label="@string/telemetry_screen"
-             android:screenOrientation="portrait" />
-         <activity
-             android:name=".telemetry.AltimeterStatusTabActivity"
-             android:label="@string/status_screen"
-             android:screenOrientation="portrait" />
-         <activity
-             android:name=".telemetry.RocketTrackGoogleMap"
-             android:label="Track"
-             android:screenOrientation="portrait" />
         <activity
-            android:name=".telemetry.RocketTrackOpenMap"
+            android:name=".Flight.FlightRecoveryActivity"
+            android:exported="false"
+            android:label="@string/Flight_list"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Help.AboutActivity"
+            android:exported="false"
+            android:label="@string/about_screen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".config.AppTabConfigActivity"
+            android:exported="false"
+            android:label="@string/titre_application_pref"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Help.HelpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ResetSettingsActivity"
+            android:exported="false"
+            android:label="@string/reset_settings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".telemetry.TelemetryTabActivity"
+            android:exported="false"
+            android:label="@string/telemetry_screen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".telemetry.AltimeterStatusTabActivity"
+            android:exported="false"
+            android:label="@string/status_screen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".telemetry.RocketTrackGoogleMap"
+            android:exported="false"
             android:label="Track"
             android:screenOrientation="portrait" />
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            tools:node="remove" />
-         <provider
-             android:name="androidx.core.content.FileProvider"
-             android:authorities="com.altimeter.bdureau.bearconsole.provider"
-             android:exported="false"
-             android:grantUriPermissions="true">
-             <meta-data
-                 android:name="android.support.FILE_PROVIDER_PATHS"
-                 android:resource="@xml/file_path" />
-         </provider>
+        <activity
+            android:name=".telemetry.RocketTrackOpenMap"
+            android:exported="false"
+            android:label="Track"
+            android:screenOrientation="portrait" />
 
-        <service android:name=".LocationService" />
+        <!-- FileProvider for sharing CSV logs, ZIP archives, and screenshot bitmaps securely -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+        <!-- Background telemetry location tracking service -->
+        <service
+            android:name=".LocationService"
+            android:exported="false" />
+
     </application>
 
 </manifest>

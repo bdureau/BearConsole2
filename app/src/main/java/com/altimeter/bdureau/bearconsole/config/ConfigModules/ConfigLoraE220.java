@@ -3,11 +3,10 @@ package com.altimeter.bdureau.bearconsole.config.ConfigModules;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,277 +25,185 @@ import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.altimeter.bdureau.bearconsole.config.AppTabConfigActivity;
 import com.physicaloid.lib.Physicaloid;
 
-import java.nio.ByteBuffer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
- * @description: This allows the configuration of Lora Ebytes telemetry modules from an Android
- * phone or tablet using a ttl cable.
- * This is not perfect code but should work. Feel free to re-use it for your own project.
- * Make sure that you report any bugs or suggestions so that it can be improved
- * @author: boris.dureau@neuf.fr
- **/
+ * @author Boris Dureau (boris.dureau@neuf.fr)
+ * @description Activity dedicated to reading, validating, and writing configuration
+ *              parameters for Ebyte LoRa E220 telemetry modules over a USB-TTL serial link.
+ *              Executes I/O operations asynchronously to prevent UI freeze and memory leaks.
+ */
 public class ConfigLoraE220 extends AppCompatActivity {
-    Physicaloid mPhysicaloid;
-    public String TAG = "ConfigLoraE220.class";
+    private static final String TAG = "ConfigLoraE220";
 
+    // USB serial communication driver handle
+    private Physicaloid mPhysicaloid;
+
+    // UI action triggers and telemetry configuration controls
     private Button btRetrieveConfig, btSaveConfig;
-
     private Spinner spinnerLoraBaudRate, spinnerLoraTransMode, spinnerLoraChannelRSSI,
             spinnerLoraParity, spinnerLoraWoreCycle, spinnerLoraLBT, spinnerLoraAirRate,
             spinnerLoraPower, spinnerLoraPacketRSSI, spinnerLoraPacketSize;
-    private String[] itemsLoraBaudRate, itemsLoraTransMode, itemsLoraChannelRSSI,
-            itemsLoraParity, itemsLoraWoreCycle, itemsLoraLBT, itemsLoraAirRate, itemsLoraPower,
-            itemsLoraPacketRSSI, itemsLoraPacketSize;
-
-    private StringBit[] strBLoraBaudRateVal, strBLoraTransModeVal, strBLoraChannelRSSIVal,
-            strBLoraParityVal, strBLoraWoreCycleVal, strBLoraLBTVal, strBLoraAirRateVal,
-            strBLoraPowerVal, strBLoraPacketRSSIVal, strBLoraPacketSizeVal;
-
     private TextView textLoraModuleValue;
-
     private EditText textLoraAddressValue, textLoraChannelValue;
 
-    private AlertDialog.Builder builder = null;
+    // Display labels and corresponding register bitmask arrays for LoRa configuration
+    private final String[] itemsLoraBaudRate = {"1200", "2400", "4800", "9600", "19200", "38400", "57600", "115200"};
+    private final int[] valuesLoraBaudRate = {0b000, 0b001, 0b010, 0b011, 0b100, 0b101, 0b110, 0b111};
+
+    private final String[] itemsLoraTransMode = {"Normal", "Fixed"};
+    private final int[] valuesLoraTransMode = {0b0, 0b1};
+
+    private final String[] itemsLoraChannelRSSI = {"Disable", "Enable"};
+    private final int[] valuesLoraChannelRSSI = {0b0, 0b1};
+
+    private final String[] itemsLoraParity = {"8N1", "8O1", "8E1"};
+    private final int[] valuesLoraParity = {0b00, 0b01, 0b10};
+
+    private final String[] itemsLoraWoreCycle = {"500ms", "1000ms", "1500ms", "2000ms", "2500ms", "3000ms", "3500ms", "4000ms"};
+    private final int[] valuesLoraWoreCycle = {0b000, 0b001, 0b010, 0b011, 0b100, 0b101, 0b110, 0b111};
+
+    private final String[] itemsLoraLBT = {"Disable", "Enable"};
+    private final int[] valuesLoraLBT = {0b0, 0b1};
+
+    private final String[] itemsLoraAirRate = {"2.4Kbps", "4.8Kbps", "9.6Kbps", "19.2Kbps", "38.4Kbps", "62.5Kbps"};
+    private final int[] valuesLoraAirRate = {0b010, 0b011, 0b100, 0b101, 0b110, 0b111};
+
+    private final String[] itemsLoraPower = {"22dbm", "17dbm", "13dbm", "10dbm"};
+    private final int[] valuesLoraPower = {0b00, 0b01, 0b10, 0b11};
+
+    private final String[] itemsLoraPacketRSSI = {"Disable", "Enable"};
+    private final int[] valuesLoraPacketRSSI = {0b0, 0b1};
+
+    private final String[] itemsLoraPacketSize = {"200 Bytes", "128 Bytes", "64 Bytes", "32 Bytes"};
+    private final int[] valuesLoraPacketSize = {0b00, 0b01, 0b10, 0b11};
+
     private AlertDialog alert;
-    ConfigLoraE220.ModuleInfo mInfo;
+    private ModuleInfo mInfo;
+
+    // Single-thread pool for serialized UART operations and main looper handler for UI synchronization
+    private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    private volatile boolean isTaskCancelled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_lora);
 
-        btRetrieveConfig = (Button) findViewById(R.id.butLoraRetrieveConfig);
-        btSaveConfig = (Button) findViewById(R.id.butLoraSaveConfig);
-        spinnerLoraBaudRate = (Spinner) findViewById(R.id.spinnerLoraBaudRate);
-        spinnerLoraTransMode = (Spinner) findViewById(R.id.spinnerLoraTransMode);
-        spinnerLoraChannelRSSI = (Spinner) findViewById(R.id.spinnerLoraChannelRSSI);
-        spinnerLoraParity = (Spinner) findViewById(R.id.spinnerLoraParity);
-        spinnerLoraWoreCycle = (Spinner) findViewById(R.id.spinnerLoraWoreCycle);
-        spinnerLoraLBT = (Spinner) findViewById(R.id.spinnerLoraLBT);
-        spinnerLoraAirRate = (Spinner) findViewById(R.id.spinnerLoraAirRate);
-        spinnerLoraPower = (Spinner) findViewById(R.id.spinnerLoraPower);
-        spinnerLoraPacketRSSI = (Spinner) findViewById(R.id.spinnerLoraPacketRSSI);
-        spinnerLoraPacketSize = (Spinner) findViewById(R.id.spinnerLoraPacketSize);
+        initViews();
+        setupAdapters();
 
-        textLoraModuleValue = (TextView) findViewById(R.id.textLoraModuleValue);
-
-        textLoraAddressValue = (EditText) findViewById(R.id.textLoraAddressValue);
-        textLoraChannelValue = (EditText) findViewById(R.id.textLoraChannelValue);
-
-        // baud rate
-        itemsLoraBaudRate = new String[]{
-                "1200",
-                "2400",
-                "4800",
-                "9600",
-                "19200",
-                "38400",
-                "57600",
-                "115200"
-        };
-        strBLoraBaudRateVal = new StringBit[]{
-                new StringBit("1200", 0b000),
-                new StringBit("2400", 0b001),
-                new StringBit("4800", 0b010),
-                new StringBit("9600", 0b011),
-                new StringBit("19200", 0b100),
-                new StringBit("38400", 0b101),
-                new StringBit("57600", 0b110),
-                new StringBit("115200", 0b111)
-
-        };
-        ArrayAdapter<String> adapterLoraBaudRate = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraBaudRate);
-
-        adapterLoraBaudRate.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraBaudRate.setAdapter(adapterLoraBaudRate);
-
-        // Trans Mode
-        itemsLoraTransMode = new String[]{
-                "Normal",
-                "Fixed"
-        };
-        strBLoraTransModeVal = new StringBit[]{
-                new StringBit("Normal", 0b0),
-                new StringBit("Fixed", 0b1)
-        };
-        ArrayAdapter<String> adapterLoraTransModeVal = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraTransMode);
-        adapterLoraTransModeVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraTransMode.setAdapter(adapterLoraTransModeVal);
-
-        // Channel RSSI
-        itemsLoraChannelRSSI = new String[]{
-                "Disable",
-                "Enable"
-        };
-        strBLoraChannelRSSIVal = new StringBit[]{
-                new StringBit("Disable", 0b0),
-                new StringBit("Enable", 0b1)
-        };
-        ArrayAdapter<String> adapterLoraChannelRSSIVal = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraChannelRSSI);
-        adapterLoraChannelRSSIVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraChannelRSSI.setAdapter(adapterLoraChannelRSSIVal);
-
-        // Parity
-        itemsLoraParity = new String[]{
-                "8N1",
-                "8O1",
-                "8E1"
-        };
-        strBLoraParityVal = new StringBit[]{
-                new StringBit("8N1", 0b00),
-                new StringBit("8O1", 0b01),
-                new StringBit("8E1", 0b10),
-                new StringBit("8N1", 0b11)
-        };
-        ArrayAdapter<String> adapterLoraParityVal = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraParity);
-        adapterLoraParityVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraParity.setAdapter(adapterLoraParityVal);
-
-        // Wore Cycle
-        itemsLoraWoreCycle = new String[]{
-                "500ms",
-                "1000ms",
-                "1500ms",
-                "2000ms",
-                "2500ms",
-                "3000ms",
-                "3500ms",
-                "4000ms"
-        };
-        strBLoraWoreCycleVal = new StringBit[]{
-                new StringBit("500ms", 0b000),
-                new StringBit("1000ms", 0b001),
-                new StringBit("1500ms", 0b010),
-                new StringBit("2000ms", 0b011),
-                new StringBit("2500ms", 0b100),
-                new StringBit("3000ms", 0b101),
-                new StringBit("3500ms", 0b110),
-                new StringBit("4000ms", 0b111)
-        };
-        ArrayAdapter<String> adapterLoraWoreCycleVal = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraWoreCycle);
-        adapterLoraWoreCycleVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraWoreCycle.setAdapter(adapterLoraWoreCycleVal);
-
-        //LBT
-        itemsLoraLBT = new String[]{
-                "Disable",
-                "Enable"
-        };
-        strBLoraLBTVal = new StringBit[]{
-                new StringBit("Disable", 0b0),
-                new StringBit("Enable", 0b1)
-        };
-        ArrayAdapter<String> adapterLoraLBTVal = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraLBT);
-        adapterLoraLBTVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraLBT.setAdapter(adapterLoraLBTVal);
-
-        // AirRate
-        itemsLoraAirRate = new String[]{
-                "2.4Kbps",
-                "4.8Kbps",
-                "9.6Kbps",
-                "19.2Kbps",
-                "38.4Kbps",
-                "65.2Kbps"
-        };
-        strBLoraAirRateVal = new StringBit[]{
-                new StringBit("2.4Kbps", 0b000),
-                new StringBit("2.4Kbps", 0b001),
-                new StringBit("2.4Kbps", 0b010),
-                new StringBit("4.8Kbps", 0b011),
-                new StringBit("9.6Kbps", 0b100),
-                new StringBit("19.2Kbps", 0b101),
-                new StringBit("38.4Kbps", 0b110),
-                new StringBit("65.2Kbps", 0b111)
-        };
-        ArrayAdapter<String> adapterAirRateVal = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraAirRate);
-        adapterAirRateVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraAirRate.setAdapter(adapterAirRateVal);
-
-        // Power
-        itemsLoraPower = new String[]{
-                "30dbm",
-                "27dbm",
-                "24dbm",
-                "21dbm"
-        };
-        strBLoraPowerVal = new StringBit[]{
-                new StringBit("30dbm", 0b00),
-                new StringBit("27dbm", 0b01),
-                new StringBit("24dbm", 0b10),
-                new StringBit("21dbm", 0b11)
-        };
-        ArrayAdapter<String> adapterPowerVal = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraPower);
-        adapterPowerVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraPower.setAdapter(adapterPowerVal);
-
-        // PacketRSSI
-        itemsLoraPacketRSSI = new String[]{
-                "Disable",
-                "Enable"
-        };
-        strBLoraPacketRSSIVal = new StringBit[]{
-                new StringBit("Disable", 0b0),
-                new StringBit("Enable", 0b1)
-        };
-        ArrayAdapter<String> adapterPacketRSSIVal = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraPacketRSSI);
-        adapterPacketRSSIVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraPacketRSSI.setAdapter(adapterPacketRSSIVal);
-
-        // Packet Size
-        itemsLoraPacketSize = new String[]{
-                "200 Bytes",
-                "128 Bytes",
-                "64 Bytes",
-                "32 Bytes"
-        };
-        strBLoraPacketSizeVal = new StringBit[]{
-                new StringBit("200 Bytes", 0b00),
-                new StringBit("128 Bytes", 0b01),
-                new StringBit("64 Bytes", 0b10),
-                new StringBit("32 Bytes", 0b11)
-        };
-        ArrayAdapter<String> adapterPacketSizeVal = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraPacketSize);
-        adapterPacketSizeVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraPacketSize.setAdapter(adapterPacketSizeVal);
-
+        // Initialize USB serial peripheral interface
         mPhysicaloid = new Physicaloid(this);
         mPhysicaloid.open();
-        mInfo = new ConfigLoraE220.ModuleInfo(mPhysicaloid);
+        mInfo = new ModuleInfo(mPhysicaloid);
 
+        // Lock form inputs until configuration has been read from hardware
         DisableUI();
         btRetrieveConfig.setEnabled(true);
         btSaveConfig.setEnabled(false);
 
-        builder = new AlertDialog.Builder(this);
-        //Display info message
-        builder.setMessage(R.string.lora_module_config_msg)
+        showInitialDialog();
+    }
+
+    /**
+     * Binds view elements from layout XML.
+     */
+    private void initViews() {
+        btRetrieveConfig = findViewById(R.id.butLoraRetrieveConfig);
+        btSaveConfig = findViewById(R.id.butLoraSaveConfig);
+        spinnerLoraBaudRate = findViewById(R.id.spinnerLoraBaudRate);
+        spinnerLoraTransMode = findViewById(R.id.spinnerLoraTransMode);
+        spinnerLoraChannelRSSI = findViewById(R.id.spinnerLoraChannelRSSI);
+        spinnerLoraParity = findViewById(R.id.spinnerLoraParity);
+        spinnerLoraWoreCycle = findViewById(R.id.spinnerLoraWoreCycle);
+        spinnerLoraLBT = findViewById(R.id.spinnerLoraLBT);
+        spinnerLoraAirRate = findViewById(R.id.spinnerLoraAirRate);
+        spinnerLoraPower = findViewById(R.id.spinnerLoraPower);
+        spinnerLoraPacketRSSI = findViewById(R.id.spinnerLoraPacketRSSI);
+        spinnerLoraPacketSize = findViewById(R.id.spinnerLoraPacketSize);
+
+        textLoraModuleValue = findViewById(R.id.textLoraModuleValue);
+        textLoraAddressValue = findViewById(R.id.textLoraAddressValue);
+        textLoraChannelValue = findViewById(R.id.textLoraChannelValue);
+    }
+
+    /**
+     * Populates all configuration dropdown selectors.
+     */
+    private void setupAdapters() {
+        setupSpinner(spinnerLoraBaudRate, itemsLoraBaudRate);
+        setupSpinner(spinnerLoraTransMode, itemsLoraTransMode);
+        setupSpinner(spinnerLoraChannelRSSI, itemsLoraChannelRSSI);
+        setupSpinner(spinnerLoraParity, itemsLoraParity);
+        setupSpinner(spinnerLoraWoreCycle, itemsLoraWoreCycle);
+        setupSpinner(spinnerLoraLBT, itemsLoraLBT);
+        setupSpinner(spinnerLoraAirRate, itemsLoraAirRate);
+        setupSpinner(spinnerLoraPower, itemsLoraPower);
+        setupSpinner(spinnerLoraPacketRSSI, itemsLoraPacketRSSI);
+        setupSpinner(spinnerLoraPacketSize, itemsLoraPacketSize);
+    }
+
+    private void setupSpinner(Spinner spinner, String[] items) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+    }
+
+    /**
+     * Displays initial instructions advising the user on module wiring and configuration mode (M0/M1).
+     */
+    private void showInitialDialog() {
+        if (isFinishing() || isDestroyed()) return;
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.lora_module_config_msg)
                 .setTitle(R.string.lora_module_config_msg_title)
                 .setCancelable(false)
-                .setPositiveButton(R.string.lora_module_config_button_ok, new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                    }
-                });
+                .setPositiveButton(R.string.lora_module_config_button_ok, (dialog, id) -> dialog.dismiss())
+                .show();
+    }
 
-        alert = builder.create();
+    /**
+     * Displays an asynchronous progress dialog with cancellation capability.
+     */
+    private void showProgressDialog(String title, String message) {
+        dismissProgressDialog();
+        if (isFinishing() || isDestroyed()) return;
+
+        alert = new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setNegativeButton(R.string.m3DR_Cancel, (dialog, which) -> {
+                    isTaskCancelled = true;
+                    dialog.dismiss();
+                })
+                .create();
         alert.show();
     }
 
-    public void msg(String s) {
-        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+    private void dismissProgressDialog() {
+        if (alert != null && alert.isShowing() && !isFinishing() && !isDestroyed()) {
+            try {
+                alert.dismiss();
+            } catch (Exception ignored) {}
+        }
+        alert = null;
     }
 
+    private void updateProgressMessage(String message) {
+        mHandler.post(() -> {
+            if (alert != null && alert.isShowing() && !isFinishing() && !isDestroyed()) {
+                alert.setMessage(message);
+            }
+        });
+    }
+
+    /**
+     * Unlocks UI controls once valid parameters have been read.
+     */
     public void EnableUI() {
         spinnerLoraBaudRate.setEnabled(true);
         spinnerLoraTransMode.setEnabled(true);
@@ -308,8 +215,13 @@ public class ConfigLoraE220 extends AppCompatActivity {
         spinnerLoraPower.setEnabled(true);
         spinnerLoraPacketRSSI.setEnabled(true);
         spinnerLoraPacketSize.setEnabled(true);
+        textLoraAddressValue.setEnabled(true);
+        textLoraChannelValue.setEnabled(true);
     }
 
+    /**
+     * Disables UI controls during transactions or before read operations.
+     */
     public void DisableUI() {
         spinnerLoraBaudRate.setEnabled(false);
         spinnerLoraTransMode.setEnabled(false);
@@ -321,745 +233,267 @@ public class ConfigLoraE220 extends AppCompatActivity {
         spinnerLoraPower.setEnabled(false);
         spinnerLoraPacketRSSI.setEnabled(false);
         spinnerLoraPacketSize.setEnabled(false);
+        textLoraAddressValue.setEnabled(false);
+        textLoraChannelValue.setEnabled(false);
     }
 
-    public static String searchStringFromBit(StringBit[] in, int search) {
-        String ret = "";
-        for (int i = 0; i < in.length; i++) {
-            if (in[i].val == search) {
-                ret = in[i].str;
-                break;
-            }
+    /**
+     * Maps binary register values to matching dropdown item positions.
+     */
+    private int findIndexForValue(int[] values, int target) {
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] == target) return i;
         }
-        return ret;
+        return 0;
     }
 
-    public static int searchBitFromString(StringBit[] in, String search) {
-        int ret = 0;
-        for (int i = 0; i < in.length; i++) {
-            if (in[i].str == search) {
-                ret = in[i].val;
-                break;
+    /**
+     * Queries configuration registers over serial:
+     * Sends command 0xC1 0x00 0x08 (Read 8 bytes starting from address 0x00).
+     */
+    public void onClickRetrieveConfig(View v) {
+        isTaskCancelled = false;
+        showProgressDialog(getString(R.string.m3DR_connecting), getString(R.string.lora_module_connecting_msg));
+
+        ioExecutor.execute(() -> {
+            if (!mPhysicaloid.isOpened()) {
+                mPhysicaloid.open();
             }
-        }
-        return ret;
+            // E220 configuration mode operates at 9600 8N1
+            mPhysicaloid.setBaudrate(9600);
+
+            updateProgressMessage(getString(R.string.lora_module_loading_config_msg));
+
+            byte[] cmd = {(byte) 0xC1, 0x00, 0x08};
+            byte[] response = mInfo.runCommand(cmd);
+
+            // Valid response starts with 0xC1 and must contain at least 9 bytes (Header + start + length + 6 payload bytes)
+            boolean valid = response.length >= 9 && (response[0] & 0xFF) == 0xC1;
+
+            mHandler.post(() -> {
+                dismissProgressDialog();
+                if (isFinishing() || isDestroyed()) return;
+
+                if (valid && !isTaskCancelled) {
+                    // Module Address: 16-bit unsigned (Bytes 3 and 4)
+                    int moduleAddress = ((response[3] & 0xFF) << 8) | (response[4] & 0xFF);
+                    textLoraAddressValue.setText(String.valueOf(moduleAddress));
+
+                    // Byte 5 (REG0): UART Baud [7:5], Parity [4:3], Air Data Rate [2:0]
+                    int baudRate = (response[5] & 0xFF) >> 5;
+                    spinnerLoraBaudRate.setSelection(findIndexForValue(valuesLoraBaudRate, baudRate));
+
+                    int parity = ((response[5] & 0xFF) >> 3) & 0x03;
+                    spinnerLoraParity.setSelection(findIndexForValue(valuesLoraParity, parity));
+
+                    int airRate = response[5] & 0x07;
+                    spinnerLoraAirRate.setSelection(findIndexForValue(valuesLoraAirRate, airRate));
+
+                    // Byte 6 (REG1): Sub-packet size [7:6], Ambient noise RSSI enable [5], TX Power [1:0]
+                    int packetSize = (response[6] & 0xFF) >> 6;
+                    spinnerLoraPacketSize.setSelection(findIndexForValue(valuesLoraPacketSize, packetSize));
+
+                    int channelRssi = (response[6] >> 5) & 0x01;
+                    spinnerLoraChannelRSSI.setSelection(findIndexForValue(valuesLoraChannelRSSI, channelRssi));
+
+                    int power = response[6] & 0x03;
+                    spinnerLoraPower.setSelection(findIndexForValue(valuesLoraPower, power));
+
+                    // Byte 7 (REG2): Channel frequency offset (0 - 83)
+                    int channel = response[7] & 0xFF;
+                    textLoraChannelValue.setText(String.valueOf(channel));
+
+                    // Byte 8 (REG3): RSSI byte [7], Transmission method [6], LBT [4], WOR cycle [2:0]
+                    int packetRssi = (response[8] & 0xFF) >> 7;
+                    spinnerLoraPacketRSSI.setSelection(findIndexForValue(valuesLoraPacketRSSI, packetRssi));
+
+                    int transMode = ((response[8] & 0xFF) >> 6) & 0x01;
+                    spinnerLoraTransMode.setSelection(findIndexForValue(valuesLoraTransMode, transMode));
+
+                    int lbt = ((response[8] & 0xFF) >> 4) & 0x01;
+                    spinnerLoraLBT.setSelection(findIndexForValue(valuesLoraLBT, lbt));
+
+                    int worCycle = response[8] & 0x07;
+                    spinnerLoraWoreCycle.setSelection(findIndexForValue(valuesLoraWoreCycle, worCycle));
+
+                    EnableUI();
+                    btSaveConfig.setEnabled(true);
+                } else {
+                    Toast.makeText(ConfigLoraE220.this, "Erreur de lecture du module", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
-    //index in an array
-    public int arrayIndex(String stringArray[], String pattern) {
-        for (int i = 0; i < stringArray.length; i++) {
-            if (stringArray[i].equals(pattern)) {
-                //Log.d("Config Lora", pattern + ":" + i);
-                return i;
-            }
+    /**
+     * Validates input values and writes parameters into EEPROM/registers using single atomic command:
+     * 0xC0 + Start (0x00) + Length (0x06) + 6 configuration payload bytes.
+     */
+    public void onClickSaveConfig(View v) {
+        String sAddress = textLoraAddressValue.getText().toString().trim();
+        String sChannel = textLoraChannelValue.getText().toString().trim();
+
+        // Strict numeric check for address range (0 to 65535)
+        if (!sAddress.matches("^\\d+$") || Integer.parseInt(sAddress) > 65535) {
+            Toast.makeText(this, R.string.lora_module_address_range, Toast.LENGTH_SHORT).show();
+            return;
         }
-        return -1;
+
+        // Strict numeric check for channel range (0 to 83)
+        if (!sChannel.matches("^\\d+$") || Integer.parseInt(sChannel) > 83) {
+            Toast.makeText(this, R.string.lora_module_channel_value_msg, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int iAddress = Integer.parseInt(sAddress);
+        byte addh = (byte) ((iAddress >> 8) & 0xFF);
+        byte addl = (byte) (iAddress & 0xFF);
+
+        // Build REG0 byte
+        int byteReg0 = (valuesLoraBaudRate[spinnerLoraBaudRate.getSelectedItemPosition()] << 5)
+                | (valuesLoraParity[spinnerLoraParity.getSelectedItemPosition()] << 3)
+                | valuesLoraAirRate[spinnerLoraAirRate.getSelectedItemPosition()];
+
+        // Build REG1 byte
+        int byteReg1 = (valuesLoraPacketSize[spinnerLoraPacketSize.getSelectedItemPosition()] << 6)
+                | (valuesLoraChannelRSSI[spinnerLoraChannelRSSI.getSelectedItemPosition()] << 5)
+                | valuesLoraPower[spinnerLoraPower.getSelectedItemPosition()];
+
+        // Build REG2 byte (Channel)
+        int byteReg2 = Integer.parseInt(sChannel) & 0xFF;
+
+        // Build REG3 byte
+        int byteReg3 = (valuesLoraPacketRSSI[spinnerLoraPacketRSSI.getSelectedItemPosition()] << 7)
+                | (valuesLoraTransMode[spinnerLoraTransMode.getSelectedItemPosition()] << 6)
+                | (valuesLoraLBT[spinnerLoraLBT.getSelectedItemPosition()] << 4)
+                | valuesLoraWoreCycle[spinnerLoraWoreCycle.getSelectedItemPosition()];
+
+        // 0xC0 signifies saving configuration permanently to EEPROM
+        byte[] cmd = {
+                (byte) 0xC0, 0x00, 0x06,
+                addh, addl,
+                (byte) byteReg0, (byte) byteReg1, (byte) byteReg2, (byte) byteReg3
+        };
+
+        isTaskCancelled = false;
+        showProgressDialog(getString(R.string.m3DR_save_cfg), getString(R.string.m3DR_run_save));
+
+        ioExecutor.execute(() -> {
+            byte[] response = mInfo.runCommand(cmd);
+            // Module acknowledges persistent write with 0xC1 echo header
+            boolean success = response.length >= 3 && (response[0] & 0xFF) == 0xC1;
+
+            mHandler.post(() -> {
+                dismissProgressDialog();
+                if (isFinishing() || isDestroyed()) return;
+
+                if (success) {
+                    DisableUI();
+                    btSaveConfig.setEnabled(false);
+                    Toast.makeText(ConfigLoraE220.this, "Configuration enregistrée", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ConfigLoraE220.this, "Échec de sauvegarde", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     public void onClickDismiss(View v) {
-        //close();
         finish();
     }
 
     @Override
-    public void onBackPressed() {
-        Log.d(TAG, "onBackPressed()");
-        finish();
-    }
-    @Override
-    public void onDestroy() {
-        Log.d(TAG, "onDestroy()");
+    protected void onDestroy() {
         super.onDestroy();
-        if(mPhysicaloid.isOpened())
+        dismissProgressDialog();
+        ioExecutor.shutdown();
+        if (mPhysicaloid != null && mPhysicaloid.isOpened()) {
             mPhysicaloid.close();
-    }
-
-    public void onClickRetrieveConfig(View v) {
-        // go to AT mode
-        Log.d("Config Lora", "retrieving config");
-        new ConfigLoraE220.connectRetrieveAsyc().execute();
-    }
-
-    public void onClickSaveConfig(View v) {
-        new ConfigLoraE220.connectSaveAsyc().execute();
-    }
-
-
-    public class StringBit {
-        public String str;
-        public int val;
-
-        StringBit(String s, int i) {
-            str = s;
-            val = i;
         }
     }
 
+    /**
+     * Low-level helper encapsulating serial flush, write, and timeout-based reception.
+     */
     public class ModuleInfo {
+        ModuleInfo(Physicaloid mPhysi) {}
 
-
-        ModuleInfo(Physicaloid mPhysi) {
-
-        }
-
-        public void open() {
-            mPhysicaloid.open();
-        }
-
-        public void setBaudrate(int baudRate) {
-            mPhysicaloid.setBaudrate(baudRate);
-        }
-
-
-        public byte[] runCommand(byte command[]) {
+        /**
+         * Clears input buffer, transmits command, and captures returned byte stream.
+         */
+        public byte[] runCommand(byte[] command) {
             drain();
-            drain();
-            //byte[] cmd0 = command.getBytes();
             mPhysicaloid.write(command, command.length);
-
-            byte buf[] = new byte[200];
-            int retval = 0;
-            retval = recv(buf, 200, 1000);
-
-            return buf;
+            byte[] buf = new byte[64];
+            int retval = recv(buf, buf.length, 600);
+            byte[] result = new byte[retval];
+            System.arraycopy(buf, 0, result, 0, retval);
+            return result;
         }
 
-        public int drain() {
-            byte[] buf = new byte[1];
-            int retval = 0;
-            long endTime;
+        /**
+         * Flushes stale serial data before issuing a new command.
+         */
+        public void drain() {
+            byte[] buf = new byte[64];
             long startTime = System.currentTimeMillis();
-            while (true) {
-                retval = mPhysicaloid.read(buf, 1);
-                if (retval > 0) {
-
+            try {
+                while ((System.currentTimeMillis() - startTime) < 150) {
+                    int r = mPhysicaloid.read(buf, buf.length);
+                    if (r <= 0) Thread.sleep(15);
                 }
-                endTime = System.currentTimeMillis();
-                if ((endTime - startTime) > 1000) {
-                    break;
-                }
-            }
-            return retval;
+            } catch (InterruptedException ignored) {}
         }
 
+        /**
+         * Reads serial bytes up to length or until timeout expires.
+         */
         private int recv(byte[] buf, int length, int timeout) {
-            int retval = 0;
-            int totalRetval = 0;
-            long endTime;
+            int total = 0;
             long startTime = System.currentTimeMillis();
-            byte[] tmpbuf = new byte[length];
+            byte[] tmp = new byte[length];
 
-            while (true) {
-                retval = mPhysicaloid.read(tmpbuf, length);
-
-                if (retval > 0) {
-                    System.arraycopy(tmpbuf, 0, buf, totalRetval, retval);
-                    totalRetval += retval;
-                    startTime = System.currentTimeMillis();
-
-                }
-                if (totalRetval >= length) {
-                    break;
-                }
-
-                endTime = System.currentTimeMillis();
-                if ((endTime - startTime) > timeout) {
-                    break;
-                }
-            }
-            return totalRetval;
-        }
-
-        public void close() {
-            mPhysicaloid.close();
-        }
-
-    }
-
-
-    /*
-        GetAllConfig
-
-    */
-    private class getAllConfigAsyc extends AsyncTask<Void, Void, Void>  // UI thread
-    {
-
-        byte[] value;
-        long error = 0;
-        boolean cancelled = false;
-
-        @Override
-        protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLoraE220.this);
-            //Recover firmware...
-            builder.setMessage(R.string.lora_module_loading_config_msg)
-                    .setTitle(getResources().getString(R.string.m3DR_retrieving_cfg))
-                    .setCancelable(false)
-                    .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-                            cancelled = true;
-                            dialog.cancel();
-                        }
-                    });
-            alert = builder.create();
-            alert.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            if (!cancelled) {
-                byte[] cmd = {(byte) 0xC1, 0x00, 0x08};
-                value = mInfo.runCommand(cmd);
-                if (value[0] == (byte) 0xC1) {
-                    Log.d("Lora config", "We have a good config return");
-                }
-                //int module_address = (value[3] << 8) | value[4];
-                byte [] bytes = {value[3] , value[4]};
-                int module_address = ByteBuffer.wrap(bytes).getShort();
-                Log.d("Lora Config", "module_address:" + module_address);
-                setLoraAddressValue(module_address + "");
-
-                //first 3 bits are the baud rate
-                int baud_rate = (value[5] & 0xFF) >> 5;
-                Log.d("Lora Config", "baud_rate:" + baud_rate);
-                String sBaud = searchStringFromBit(strBLoraBaudRateVal, baud_rate);
-                int iBaud = arrayIndex(itemsLoraBaudRate, sBaud);
-                setLoraBaudRate(iBaud);
-
-                //next 2 bits are the parity
-                int parity = ((value[5] & 0xFF) & 0b00011000) >> 3;
-                Log.d("Lora Config", "parity:" + parity);
-                String sParity = searchStringFromBit(strBLoraParityVal, parity);
-                int iParity = arrayIndex(itemsLoraParity, sParity);
-                setLoraParity(iParity);
-
-                //next 3 bits are the air data rate
-                int air_data_rate = (value[5] & 0xFF) & 0b00000111;
-                Log.d("Lora Config", "air_data_rate:" + air_data_rate);
-                String sAirRate = searchStringFromBit(strBLoraAirRateVal, air_data_rate);
-                int iAirRate = arrayIndex(itemsLoraAirRate, sAirRate);
-                setLoraAirRate(iAirRate);
-
-                // next 2 are the packet
-                int packet = (value[6] & 0xFF) >> 6;
-                Log.d("Lora Config", "packet:" + packet);
-                String sPacketSize = searchStringFromBit(strBLoraPacketSizeVal, packet);
-                int iPacketSize = arrayIndex(itemsLoraPacketSize, sPacketSize);
-                setLoraPacketSize(iPacketSize);
-
-                // next 1 RSSI
-                int RSSI_ambient_noise = ((value[6] & 0xFF) & 0x00100000) >> 5;
-                Log.d("Lora Config", "RSSI_ambient_noise:" + RSSI_ambient_noise);
-                String sChannelRSSI = searchStringFromBit(strBLoraChannelRSSIVal, RSSI_ambient_noise);
-                int iChannelRSSI = arrayIndex(itemsLoraChannelRSSI, sChannelRSSI);
-                setLoraChannelRSSI(iChannelRSSI);
-
-                // next 3 are reserved so let's live them
-                //next 2 are the transmitting power
-                int transmitting_power = (value[6] & 0xFF) & 0b00000011;
-                Log.d("Lora Config", "transmitting_power:" + transmitting_power);
-                String sPower = searchStringFromBit(strBLoraPowerVal, transmitting_power);
-                int iPower = arrayIndex(itemsLoraPower, sPower);
-                setLoraPower(iPower);
-
-                // value[7] frequency (0-83)
-                int channel = value[7] & 0xFF;
-                Log.d("Lora Config", "channel:" + channel);
-                setLoraChannelValue(channel + "");
-                // next 1 is RSSI byte
-                int RSSI_byte = ((value[8] & 0xFF) & 0b10000000) >> 7;
-                Log.d("Lora Config", "RSSI_byte:" + RSSI_byte);
-                String sRSSI_byte = searchStringFromBit(strBLoraPacketRSSIVal, RSSI_byte);
-                int iRSSI_byte = arrayIndex(itemsLoraPacketRSSI, sRSSI_byte);
-                setLoraPacketRSSI(iRSSI_byte);
-
-                // next 1 is transmission method
-                int transmission_method = ((value[8] & 0xFF) & 0b01000000) >> 6;
-                Log.d("Lora Config", "transmission_method:" + transmission_method);
-                String sTransMode = searchStringFromBit(strBLoraTransModeVal, transmission_method);
-                int iTransMode = arrayIndex(itemsLoraTransMode, sTransMode);
-                setLoraTransMode(iTransMode);
-
-                // next 1  is reserved
-                // next 1 is LBT
-                int LBT = ((value[8] & 0xFF) & 0b00010000) >> 4;
-                Log.d("Lora Config", "LBT:" + LBT);
-                String sLBT = searchStringFromBit(strBLoraLBTVal, LBT);
-                int iLBT = arrayIndex(itemsLoraLBT, sLBT);
-                setLoraLBT(iLBT);
-
-                // next 1  is reserved
-                // next 1 is WOR Cycle
-                int wor_cycle = (value[8] & 0xFF) & 0b00000111;
-                Log.d("Lora Config", "wor_cycle:" + wor_cycle);
-                String sWorCycle = searchStringFromBit(strBLoraWoreCycleVal, wor_cycle);
-                int iWorCycle = arrayIndex(itemsLoraWoreCycle, sWorCycle);
-                setLoraWoreCycle(iWorCycle);
-                // ignore value[7] and value[8]
-            }
-            if (cancelled) {
-                //dialogAppend(getResources().getString(R.string.m3DR_cancel_retrieve));
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
-        {
-            alert.dismiss();
-            if (!cancelled & error == 0) {
-                EnableUI();
-                btSaveConfig.setEnabled(true);
-            }
-        }
-    }
-
-    private class saveAllConfigAsyc extends AsyncTask<Void, Void, Void>  // UI thread
-    {
-
-        String value = "";
-        long error = 0;
-
-        String sBaudRate, sTransMode, sChannelRSSI, sParity, sWoreCycle, sLBT,
-                sAiRate, sPower, sPacketRSSI, sPacketSize, sChannel, sAddress;
-
-        String cancelMsg = "";
-
-        boolean cancelled = false;
-
-        @Override
-        protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLoraE220.this);
-            //Running Saving commands
-            builder.setMessage(getResources().getString(R.string.m3DR_run_save))
-                    .setTitle(getResources().getString(R.string.m3DR_save_cfg))
-                    .setCancelable(false)
-                    .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-
-                            cancelled = true;
-                            dialog.cancel();
-
-                        }
-                    });
-
-            sBaudRate = spinnerLoraBaudRate.getSelectedItem().toString();
-            sTransMode = spinnerLoraTransMode.getSelectedItem().toString();
-            sChannelRSSI = spinnerLoraChannelRSSI.getSelectedItem().toString();
-            sParity = spinnerLoraParity.getSelectedItem().toString();
-            sWoreCycle = spinnerLoraWoreCycle.getSelectedItem().toString();
-            sLBT = spinnerLoraLBT.getSelectedItem().toString();
-            sAiRate = spinnerLoraAirRate.getSelectedItem().toString();
-            sPower = spinnerLoraPower.getSelectedItem().toString();
-            sPacketRSSI = spinnerLoraPacketRSSI.getSelectedItem().toString();
-            sPacketSize = spinnerLoraPacketSize.getSelectedItem().toString();
-            sChannel = textLoraChannelValue.getText().toString();
-            sAddress = textLoraAddressValue.getText().toString();
-
-            //check channel
-            if (sChannel.trim().equals("")) {
-                cancelMsg = getString(R.string.lora_module_channel_msg);
-                cancelled = true;
-            } else {
-                // check that we have a channel between 0 and 83
-                if (sAddress.matches("\\d+(?:\\.\\d+)?")) {
-                    if (!(Integer.valueOf(sChannel) >= 0 & Integer.valueOf(sChannel) < 84)) {
-                        cancelMsg = cancelMsg + getString(R.string.lora_module_channel_value_msg);
-                        cancelled = true;
+            try {
+                while ((System.currentTimeMillis() - startTime) < timeout && total < length) {
+                    int r = mPhysicaloid.read(tmp, length - total);
+                    if (r > 0) {
+                        System.arraycopy(tmp, 0, buf, total, r);
+                        total += r;
+                        startTime = System.currentTimeMillis();
+                    } else {
+                        Thread.sleep(10);
                     }
-                } else {
-                    cancelMsg = cancelMsg + getString(R.string.lora_module_invalid_channel);
-                    cancelled = true;
                 }
-            }
-
-            // check the address
-            if (sAddress.trim().equals("")) {
-                cancelMsg = cancelMsg + getString(R.string.lora_module_address_empty_msg);
-                cancelled = true;
-            } else {
-                //check that the non empty address is a valid one
-                // ie 0 to FFFF (65535)
-                if (sAddress.matches("\\d+(?:\\.\\d+)?")) {
-                    if (!(Integer.valueOf(sAddress) >= 0 & Integer.valueOf(sAddress) < 65535)) {
-                        cancelMsg = cancelMsg + getString(R.string.lora_module_address_range);
-                        cancelled = true;
-                    }
-                } else {
-                    cancelMsg = cancelMsg + getString(R.string.lora_module_address_invalid);
-                    cancelled = true;
-                }
-            }
-            alert = builder.create();
-            alert.show();
+            } catch (InterruptedException ignored) {}
+            return total;
         }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            // change address
-            if (!cancelled) {
-                //first split the address in 2 bytes
-                //sAddress
-                byte addh = 0;
-                byte addl = 0;
-                int iAddress = Integer.valueOf(sAddress);
-                byte [] add = new byte[] {(byte)(iAddress >> 8),  (byte)iAddress };
-                addh = add[0];
-                addl = add[1];
-                Log.d(TAG,"addh:" +addh );
-                Log.d(TAG,"addl:" +addl );
-                dialogAppend(getString(R.string.lora_module_updating_address_msg));
-                byte cmd[] = {(byte) 0xC0, 0x00, 0x02, (byte) addh, (byte) addl};
-                byte[] value = mInfo.runCommand(cmd);
-                if (value[0] != (byte) 0xC1)
-                    error++;
-            }
-            //change Baud Rate, parity and air rate
-            if (!cancelled) {
-                int c;
-                //serial speed, parity and air rate
-                dialogAppend(getString(R.string.lora_module_updating_msg2));
-
-                int iBaudeRate = searchBitFromString(strBLoraBaudRateVal, sBaudRate);
-                int iParity = searchBitFromString(strBLoraParityVal, sParity);
-                int iAiRate = searchBitFromString(strBLoraAirRateVal, sAiRate);
-                c = iBaudeRate << 5 | iParity << 3 | iAiRate;
-                byte cmd[] = {(byte) 0xC0, 0x02, 0x01, (byte) c};
-                byte[] value = mInfo.runCommand(cmd);
-                if (value[0] != (byte) 0xC1)
-                    error++;
-            }
-            //updating packet , RSSI noise and transmitting power
-            if (!cancelled) {
-                dialogAppend(getString(R.string.lora_module_updating_msg3));
-                //sPacketSize
-                int iPacketSize = searchBitFromString(strBLoraPacketSizeVal, sPacketSize);
-                //sChannelRSSI
-                int iChannelRSSI = searchBitFromString(strBLoraPacketRSSIVal, sChannelRSSI);
-                //sPower
-                int iPower = searchBitFromString(strBLoraPowerVal, sPower);
-                int c;
-                c = iPacketSize << 6 | iChannelRSSI << 5 | iPower;
-                byte cmd[] = {(byte) 0xC0, 0x03, 0x01, (byte) c};
-                byte[] value = mInfo.runCommand(cmd);
-                if (value[0] != (byte) 0xC1)
-                    error++;
-            }
-            //updating channel 0-83
-            if (!cancelled) {
-                dialogAppend(getString(R.string.lora_module_updating_msg4));
-                Log.d("Lora Config:", sChannel);
-                int channel = Integer.valueOf(sChannel);
-                byte cmd[] = {(byte) 0xC0, 0x04, 0x01, (byte) channel};
-                byte[] value = mInfo.runCommand(cmd);
-                if (value[0] != (byte) 0xC1)
-                    error++;
-            }
-
-            //updating RSSI Byte, trans Mode, LBT and WOR Cycle
-            if (!cancelled) {
-                dialogAppend(getString(R.string.lora_module_updating_msg5));
-                //sPacketRSSI
-                int iPacketRSSI = searchBitFromString(strBLoraPacketRSSIVal, sPacketRSSI);
-                //sTransMode
-                int iTransMode = searchBitFromString(strBLoraTransModeVal, sTransMode);
-                //sLBT
-                int iLBT = searchBitFromString(strBLoraLBTVal, sLBT);
-                // sWoreCycle
-                int iWoreCycle = searchBitFromString(strBLoraWoreCycleVal, sWoreCycle);
-                int c;
-                c = iPacketRSSI << 7 | iTransMode << 6 | iLBT << 4 | iWoreCycle;
-                byte cmd[] = {(byte) 0xC0, 0x05, 0x01, (byte) c};
-                byte[] value = mInfo.runCommand(cmd);
-                if (value[0] != (byte) 0xC1)
-                    error++;
-            }
-
-            //updating Key
-            if (!cancelled) {
-                dialogAppend(getString(R.string.lora_module_updating_msg6));
-            }
-
-            //Exit AT mode
-            //value = mInfo.runCommand("ATO");
-            //Log.d("Flight win", "ATO" + value);
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
-        {
-            alert.dismiss();
-            if (!cancelled & error == 0) {
-                DisableUI();
-                btSaveConfig.setEnabled(false);
-            }
-            if (cancelled)
-                msg(cancelMsg);
-        }
-    }
-
-    private class connectRetrieveAsyc extends AsyncTask<Void, Void, Void>  // UI thread
-    {
-
-        @Override
-        protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLoraE220.this);
-            //
-            builder.setMessage(R.string.lora_module_connecting_msg)
-                    .setTitle(getResources().getString(R.string.m3DR_connecting))
-                    .setCancelable(false)
-                    .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-                            dialog.cancel();
-                        }
-                    });
-            alert = builder.create();
-            alert.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            if (!mPhysicaloid.isOpened()) {
-                mPhysicaloid.open();
-            }
-            mPhysicaloid.setBaudrate(9600);
-            dialogAppend(getResources().getString(R.string.m3DR_attempt_con2) + 9600);
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
-        {
-            alert.dismiss();
-            if (mPhysicaloid.isOpened())
-                new getAllConfigAsyc().execute();
-            else
-                msg("Not connected!!");
-        }
-    }
-
-    private class connectSaveAsyc extends AsyncTask<Void, Void, Void>  // UI thread
-    {
-
-        @Override
-        protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLoraE220.this);
-            //.
-            builder.setMessage(R.string.lora_module_connecting_msg)
-                    .setTitle(getResources().getString(R.string.m3DR_connecting))
-                    .setCancelable(false)
-                    .setNegativeButton(getResources().getString(R.string.m3DR_Cancel), new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-                            dialog.cancel();
-                        }
-                    });
-            alert = builder.create();
-            alert.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            if (!mPhysicaloid.isOpened()) {
-                mPhysicaloid.open();
-            }
-
-            if (mPhysicaloid.isOpened())
-                mPhysicaloid.setBaudrate(9600);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
-        {
-            alert.dismiss();
-            new saveAllConfigAsyc().execute();
-        }
-    }
-
-    Handler mHandler = new Handler();
-
-    private void dialogAppend(CharSequence text) {
-        final CharSequence ftext = text;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                alert.setMessage(ftext);
-            }
-        });
-    }
-
-    private void tvAppend(TextView tv, CharSequence text) {
-        final TextView ftv = tv;
-        final CharSequence ftext = text;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                ftv.append(ftext);
-
-            }
-        });
-    }
-
-    private void setLoraAddressValue(CharSequence text) {
-        final CharSequence ftext = text;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                textLoraAddressValue.setText(ftext);
-            }
-        });
-    }
-
-    private void setLoraChannelValue(CharSequence text) {
-        final CharSequence ftext = text;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                textLoraChannelValue.setText(ftext);
-            }
-        });
-    }
-
-    private void setLoraBaudRate(int index) {
-        final int findex = index;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                spinnerLoraBaudRate.setSelection(findex);
-            }
-        });
-    }
-
-    private void setLoraTransMode(int index) {
-        final int findex = index;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                spinnerLoraTransMode.setSelection(findex);
-            }
-        });
-    }
-
-    private void setLoraChannelRSSI(int index) {
-        final int findex = index;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                spinnerLoraChannelRSSI.setSelection(findex);
-            }
-        });
-    }
-
-    private void setLoraParity(int index) {
-        final int findex = index;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                spinnerLoraParity.setSelection(findex);
-            }
-        });
-    }
-
-    private void setLoraWoreCycle(int index) {
-        final int findex = index;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                spinnerLoraWoreCycle.setSelection(findex);
-            }
-        });
-    }
-
-    private void setLoraLBT(int index) {
-        final int findex = index;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                spinnerLoraLBT.setSelection(findex);
-            }
-        });
-    }
-
-    private void setLoraAirRate(int index) {
-        final int findex = index;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                spinnerLoraAirRate.setSelection(findex);
-            }
-        });
-    }
-
-    private void setLoraPower(int index) {
-        final int findex = index;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                spinnerLoraPower.setSelection(findex);
-            }
-        });
-    }
-
-    private void setLoraPacketRSSI(int index) {
-        final int findex = index;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                spinnerLoraPacketRSSI.setSelection(findex);
-            }
-        });
-    }
-
-    private void setLoraPacketSize(int index) {
-        final int findex = index;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                spinnerLoraPacketSize.setSelection(findex);
-            }
-        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_application_config, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //share screen
         if (id == R.id.action_share) {
             ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this);
             return true;
         }
-
-        //open application settings screen
         if (id == R.id.action_settings) {
-            Intent i = new Intent(ConfigLoraE220.this, AppTabConfigActivity.class);
-            startActivity(i);
+            startActivity(new Intent(this, AppTabConfigActivity.class));
             return true;
         }
-        //open Lora config help screen
         if (id == R.id.action_help) {
-            Intent i = new Intent(ConfigLoraE220.this, HelpActivity.class);
+            Intent i = new Intent(this, HelpActivity.class);
             i.putExtra("help_file", "help_configLora");
             startActivity(i);
             return true;
         }
-        //open about screen
         if (id == R.id.action_about) {
-            Intent i = new Intent(ConfigLoraE220.this, AboutActivity.class);
-            startActivity(i);
+            startActivity(new Intent(this, AboutActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

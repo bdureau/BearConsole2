@@ -2,7 +2,6 @@ package com.altimeter.bdureau.bearconsole.config.AltimeterConfig;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,266 +10,216 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
+import com.altimeter.bdureau.bearconsole.config.AltiTabConfigActivity;
 import com.github.florent37.viewtooltip.ViewTooltip;
 
 public class AltiConfig3Fragment extends Fragment {
-    private static final String TAG = "AltiConfig3Fragment";
     private TextView altiName, txtAltimeterID;
     private Spinner dropdownUnits, dropdownBipMode, dropdownUseTelemetryPort;
-    private EditText Freq, altiID, bluetoothName;
+    private EditText freq, altiID, bluetoothName;
     private Spinner dropdownServoStayOn, dropdownServoSwitch;
     private TextView txtServoStayOn, txtServoSwitch, txtBluetoothName;
 
     private AltiConfigData lAltiCfg = null;
+    private boolean viewCreated = false;
 
-    public AltiConfig3Fragment(AltiConfigData cfg) {
-        lAltiCfg = cfg;
+    public AltiConfig3Fragment() {
+        super();
     }
 
-    private boolean ViewCreated = false;
+    public AltiConfig3Fragment(AltiConfigData cfg) {
+        this.lAltiCfg = cfg;
+    }
 
     public boolean isViewCreated() {
-        return ViewCreated;
+        return viewCreated;
     }
 
     public int getFreq() {
-        int ret;
-        try {
-            ret = Integer.parseInt(this.Freq.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-
+        return parseInteger(freq, 440);
     }
 
-    public void setFreq(int freq) {
-        Freq.setText(freq);
-    }
-
-    public void setAltiName(String altiName) {
-        this.altiName.setText(altiName);
-    }
-
-    public String getAltiName() {
-        return (String) this.altiName.getText();
-    }
-
-    public void setAltiID(int ID) {
-        this.altiID.setText(ID);
+    public void setFreq(int frequency) {
+        if (freq != null) freq.setText(String.valueOf(frequency));
     }
 
     public int getAltiID() {
+        return parseInteger(altiID, 0);
+    }
 
-        int ret;
-        try {
-            ret = Integer.parseInt(this.altiID.getText().toString());
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
+    public void setAltiID(int id) {
+        if (altiID != null) altiID.setText(String.valueOf(id));
     }
 
     public int getDropdownUseTelemetryPort() {
-        return (int) this.dropdownUseTelemetryPort.getSelectedItemId();
-    }
-
-    public void setDropdownUseTelemetryPort(int UseTelemetryPort) {
-        this.dropdownUseTelemetryPort.setSelection(UseTelemetryPort);
+        return dropdownUseTelemetryPort != null ? (int) dropdownUseTelemetryPort.getSelectedItemId() : 0;
     }
 
     public int getDropdownUnits() {
-        return (int) this.dropdownUnits.getSelectedItemId();
-    }
-
-    public void setDropdownUnits(int Units) {
-        this.dropdownUnits.setSelection(Units);
+        return dropdownUnits != null ? (int) dropdownUnits.getSelectedItemId() : 0;
     }
 
     public int getDropdownBipMode() {
-        return (int) this.dropdownBipMode.getSelectedItemId();
-    }
-
-    public void setDropdownBipMode(int BipMode) {
-        this.dropdownBipMode.setSelection(BipMode);
+        return dropdownBipMode != null ? (int) dropdownBipMode.getSelectedItemId() : 0;
     }
 
     public int getServoStayOn() {
-        return (int) this.dropdownServoStayOn.getSelectedItemId();
-    }
-
-    public void setServoStayOn(int ServoStayOn) {
-        this.dropdownServoStayOn.setSelection(ServoStayOn);
+        return dropdownServoStayOn != null ? (int) dropdownServoStayOn.getSelectedItemId() : 0;
     }
 
     public int getServoSwitch() {
-        return (int) this.dropdownServoSwitch.getSelectedItemId();
+        return dropdownServoSwitch != null ? (int) dropdownServoSwitch.getSelectedItemId() : 0;
     }
 
-    public void setServoSwitch(int ServoSwitch) {
-        this.dropdownServoSwitch.setSelection(ServoSwitch);
+    public String getBluetoothName() {
+        return bluetoothName != null && bluetoothName.getText() != null
+                ? bluetoothName.getText().toString().trim()
+                : "";
     }
 
-    public String getBluetoothName() { return this.bluetoothName.getText().toString();}
+    private int parseInteger(EditText editText, int fallback) {
+        if (editText == null || editText.getText() == null) return fallback;
+        try {
+            return Integer.parseInt(editText.getText().toString().trim());
+        } catch (NumberFormatException e) {
+            return fallback;
+        }
+    }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_altimeter_config_tab3, container, false);
-        //Beep mode
-        dropdownBipMode = (Spinner) view.findViewById(R.id.spinnerBipMode);
-        //"Mode1", "Mode2", "Off"
-        String[] items = new String[]{"Mode1", "Mode2",
-                getResources().getString(R.string.config_off)};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, items);
-        dropdownBipMode.setAdapter(adapter);
 
-        Log.d("UseTelemetryPort", "before UseTelemetryPort");
-        //UseTelemetryPort
-        dropdownUseTelemetryPort = (Spinner) view.findViewById(R.id.spinnerUseTelemetryPort);
-        //"No", "Yes"
-        String[] itemsUseTelemetryPort = new String[]{"No",
-                "Yes"};
-        ArrayAdapter<String> adapterUseTelemetryPort = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, itemsUseTelemetryPort);
-        dropdownUseTelemetryPort.setAdapter(adapterUseTelemetryPort);
+        if (lAltiCfg == null && getActivity() instanceof AltiTabConfigActivity) {
+            lAltiCfg = ((AltiTabConfigActivity) getActivity()).getAltiConfigData();
+        }
 
-        //units
-        dropdownUnits = (Spinner) view.findViewById(R.id.spinnerUnit);
-        //"Meters", "Feet"
-        String[] items2 = new String[]{getResources().getString(R.string.unit_meter),
-                getResources().getString(R.string.unit_feet)};
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, items2);
-        dropdownUnits.setAdapter(adapter2);
+        dropdownBipMode = view.findViewById(R.id.spinnerBipMode);
+        dropdownUseTelemetryPort = view.findViewById(R.id.spinnerUseTelemetryPort);
+        dropdownUnits = view.findViewById(R.id.spinnerUnit);
+        altiName = view.findViewById(R.id.txtAltiNameValue);
+        freq = view.findViewById(R.id.editTxtBipFreq);
+        altiID = view.findViewById(R.id.editTxtAltiIDValue);
+        dropdownServoStayOn = view.findViewById(R.id.spinnerServoStayOn);
+        txtServoStayOn = view.findViewById(R.id.txtServoStayOn);
+        txtBluetoothName = view.findViewById(R.id.txtBluetoothName);
+        bluetoothName = view.findViewById(R.id.editBluetoothName);
+        dropdownServoSwitch = view.findViewById(R.id.spinnerServoSwitch);
+        txtServoSwitch = view.findViewById(R.id.txtServoSwitch);
+        txtAltimeterID = view.findViewById(R.id.txtAltimeterID);
 
-        // Tool tip
-        view.findViewById(R.id.txtAltiUnit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewTooltip
-                        .on(v)
-                        .color(Color.BLACK)
-                        .position(ViewTooltip.Position.TOP)
-                        //Choose the altitude units you are familiar with
-                        .text(getResources().getString(R.string.txtAltiUnit_tooltip))
-                        .show();
-            }
-        });
-        //Altimeter name
-        altiName = (TextView) view.findViewById(R.id.txtAltiNameValue);
-        //here you can set the beep frequency
-        Freq = (EditText) view.findViewById(R.id.editTxtBipFreq);
+        setupSpinners(view);
+        setupTooltips(view);
+        populateFields();
 
-        // Tool tip
-        Freq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewTooltip
-                        .on(v)
-                        .color(Color.BLACK)
-                        .position(ViewTooltip.Position.TOP)
-                        //Choose the beeping frequency in Hz
-                        .text(getResources().getString(R.string.editTxtBipFreq_tooltip))
-                        .show();
-            }
-        });
+        viewCreated = true;
+        return view;
+    }
 
-        altiID = (EditText) view.findViewById(R.id.editTxtAltiIDValue);
-        dropdownServoStayOn = (Spinner) view.findViewById(R.id.spinnerServoStayOn);
-        //"No", "Yes"
-        String[] items3 = new String[]{getResources().getString(R.string.config_no),
-                getResources().getString(R.string.config_yes)};
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, items3);
-        dropdownServoStayOn.setAdapter(adapter3);
+    private void setupSpinners(View view) {
+        String[] bipOptions = {"Mode1", "Mode2", getString(R.string.config_off)};
+        dropdownBipMode.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, bipOptions));
 
-        txtServoStayOn = (TextView) view.findViewById(R.id.txtServoStayOn);
-        if (lAltiCfg.getAltimeterName().equals("AltiServo")) {
+        String[] telemetryPortOptions = {"No", "Yes"};
+        dropdownUseTelemetryPort.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, telemetryPortOptions));
+
+        String[] unitOptions = {getString(R.string.unit_meter), getString(R.string.unit_feet)};
+        dropdownUnits.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, unitOptions));
+
+        String[] yesNoOptions = {getString(R.string.config_no), getString(R.string.config_yes)};
+        ArrayAdapter<String> yesNoAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, yesNoOptions);
+        dropdownServoStayOn.setAdapter(yesNoAdapter);
+        dropdownServoSwitch.setAdapter(yesNoAdapter);
+    }
+
+    private void setupTooltips(View view) {
+        view.findViewById(R.id.txtAltiUnit).setOnClickListener(v -> showTooltip(v, getString(R.string.txtAltiUnit_tooltip)));
+        freq.setOnClickListener(v -> showTooltip(v, getString(R.string.editTxtBipFreq_tooltip)));
+    }
+
+    private void showTooltip(View v, String text) {
+        if (v == null || getContext() == null) return;
+        ViewTooltip.on(v).color(Color.BLACK).position(ViewTooltip.Position.TOP).text(text).show();
+    }
+
+    private void populateFields() {
+        if (lAltiCfg == null) return;
+
+        altiName.setText(String.format("%s ver: %d.%d",
+                lAltiCfg.getAltimeterName(), lAltiCfg.getAltiMajorVersion(), lAltiCfg.getAltiMinorVersion()));
+        dropdownBipMode.setSelection(lAltiCfg.getBeepingMode());
+        dropdownUnits.setSelection(lAltiCfg.getUnits());
+        freq.setText(String.valueOf(lAltiCfg.getBeepingFrequency()));
+        dropdownUseTelemetryPort.setSelection(lAltiCfg.getUseTelemetryPort());
+
+        String name = lAltiCfg.getAltimeterName();
+
+        if ("AltiServo".equals(name)) {
             dropdownServoStayOn.setVisibility(View.VISIBLE);
             txtServoStayOn.setVisibility(View.VISIBLE);
+            dropdownServoSwitch.setVisibility(View.VISIBLE);
+            txtServoSwitch.setVisibility(View.VISIBLE);
+
+            dropdownServoStayOn.setSelection(lAltiCfg.getServoStayOn());
+            dropdownServoSwitch.setSelection(lAltiCfg.getServoSwitch());
         } else {
             dropdownServoStayOn.setVisibility(View.INVISIBLE);
             txtServoStayOn.setVisibility(View.INVISIBLE);
+            dropdownServoSwitch.setVisibility(View.INVISIBLE);
+            txtServoSwitch.setVisibility(View.INVISIBLE);
         }
 
-        //bluetoothName
-        //Altimeter name
-        txtBluetoothName = (TextView) view.findViewById(R.id.txtBluetoothName);
-        bluetoothName = (EditText) view.findViewById(R.id.editBluetoothName);
-        if (((lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
-                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
-                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) &&
-                (lAltiCfg.getAltiMajorVersion() >= 2 && lAltiCfg.getAltiMinorVersion() > 0)) ||
-                (( lAltiCfg.getAltimeterName().equals("TTGOBearAltimeter")) &&
-                        (lAltiCfg.getAltiMajorVersion() >= 0 && lAltiCfg.getAltiMinorVersion() > 4))) {
-            Log.d( TAG, "Version greater  than 2.0");
+        boolean supportsBluetoothName = (("AltiMultiESP32".equals(name) || "AltiMultiESP32_accel".equals(name)
+                || "AltiMultiESP32_accel_375".equals(name) || "AltiMultiESP32_accel_345".equals(name))
+                && lAltiCfg.getAltiMajorVersion() >= 2 && lAltiCfg.getAltiMinorVersion() > 0)
+                || ("TTGOBearAltimeter".equals(name) && lAltiCfg.getAltiMajorVersion() >= 0 && lAltiCfg.getAltiMinorVersion() > 4);
+
+        if (supportsBluetoothName) {
             txtBluetoothName.setVisibility(View.VISIBLE);
             bluetoothName.setVisibility(View.VISIBLE);
+            bluetoothName.setText(lAltiCfg.getBluetoothName());
         } else {
             txtBluetoothName.setVisibility(View.INVISIBLE);
             bluetoothName.setVisibility(View.INVISIBLE);
         }
 
+        boolean supportsAltiID = ("AltiMultiESP32".equals(name) || "AltiMultiESP32_accel".equals(name)
+                || "AltiMultiESP32_accel_375".equals(name) || "AltiMultiESP32_accel_345".equals(name))
+                && lAltiCfg.getAltiMajorVersion() <= 2 && lAltiCfg.getAltiMinorVersion() < 1;
 
-        //ServoSwitch
-        dropdownServoSwitch = (Spinner) view.findViewById(R.id.spinnerServoSwitch);
-        dropdownServoSwitch.setAdapter(adapter3);
-
-        txtServoSwitch = (TextView) view.findViewById(R.id.txtServoSwitch);
-
-        if (lAltiCfg.getAltimeterName().equals("AltiServo")) {
-            dropdownServoSwitch.setVisibility(View.VISIBLE);
-            txtServoSwitch.setVisibility(View.VISIBLE);
-        } else {
-            dropdownServoSwitch.setVisibility(View.INVISIBLE);
-            txtServoSwitch.setVisibility(View.INVISIBLE);
-        }
-
-        txtAltimeterID = (TextView) view.findViewById(R.id.txtAltimeterID);
-        if ((lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
-                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
-                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) &&
-                (lAltiCfg.getAltiMajorVersion() <= 2 && lAltiCfg.getAltiMinorVersion() < 1)) {
-            Log.d( TAG, "Version less than 2.1");
+        if (supportsAltiID) {
             txtAltimeterID.setVisibility(View.VISIBLE);
             altiID.setVisibility(View.VISIBLE);
+            altiID.setText(String.valueOf(lAltiCfg.getAltiID()));
         } else {
             txtAltimeterID.setVisibility(View.INVISIBLE);
             altiID.setVisibility(View.INVISIBLE);
         }
+    }
 
-        if (lAltiCfg != null) {
-            altiName.setText(lAltiCfg.getAltimeterName() + " ver: " +
-                    lAltiCfg.getAltiMajorVersion() + "." + lAltiCfg.getAltiMinorVersion());
-            dropdownBipMode.setSelection(lAltiCfg.getBeepingMode());
-            dropdownUnits.setSelection(lAltiCfg.getUnits());
-            Freq.setText(String.valueOf(lAltiCfg.getBeepingFrequency()));
-            if ((lAltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                    lAltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345")) ||
-                    (( lAltiCfg.getAltimeterName().equals("TTGOBearAltimeter")) &&
-                            (lAltiCfg.getAltiMajorVersion() >= 0 && lAltiCfg.getAltiMinorVersion() > 4))) {
-                altiID.setText(String.valueOf(lAltiCfg.getAltiID()));
-                bluetoothName.setText(lAltiCfg.getBluetoothName());
-            }
-            if (lAltiCfg.getAltimeterName().equals("AltiServo")) {
-                dropdownServoStayOn.setSelection(lAltiCfg.getServoStayOn());
-                dropdownServoSwitch.setSelection(lAltiCfg.getServoSwitch());
-            }
-
-            dropdownUseTelemetryPort.setSelection(lAltiCfg.getUseTelemetryPort());
-        }
-        ViewCreated = true;
-        return view;
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewCreated = false;
+        altiName = null;
+        txtAltimeterID = null;
+        dropdownUnits = null;
+        dropdownBipMode = null;
+        dropdownUseTelemetryPort = null;
+        freq = null;
+        altiID = null;
+        bluetoothName = null;
+        dropdownServoStayOn = null;
+        dropdownServoSwitch = null;
+        txtServoStayOn = null;
+        txtServoSwitch = null;
+        txtBluetoothName = null;
     }
 }
