@@ -1,26 +1,34 @@
-<h1>Paramétrage de l'application Bear Console</h1>
-<p>La configuration est répartie en 2 écrans</p>
-<p><strong>Générale</strong></p>
-<p>- Langue de l'application(non utilisé pour le moment car la langue de l'application est la langue du téléphone)</p>
-<p>- Couleur du graphique</p>
-<p>- Unité de l'application</p>
-<p>- Couleur de fond du graphique (attention à ce que cela ne soit pas la même que la couleur du graphique!!!) </p>
-<p>- Taille de la police</p>
-<p>- Baud rate (Ceci est pour le câble USB, cela doit être identique au baud rate de l'altimètre) </p>
-<p>- Le type de connexion qui peut etre bluetooth ou USB si vous voulez faire de la télémétrie longue distance ou lire les données avec un câble ) </p>
-<p>- Bibliothèque graphique (permet de choisir entre 2 bibliothèques graphique; attention pour les versions 8 et suivantes d'Android votre téléphone crashera si vous n'utilisez pas la bibliotheque MPAndroid chart) </p>
-<p>- Multiple Main/drogue
-    Permet de définir plus d'une sortie main ou droque</p>
-<p>- Support USB complet
-    Activez le uniquement si vous utilisez un câble USB. Si vous utilisez un module de télémétrie
-    longue distance ne l'activez pas pour éviter de corrompre la configuration de votre altimètre </p>
-<p> </p>
-<p><strong>Configuration télémétrie</strong></p>
-<p>Permet de sélectionner quels événements de la télémétrie sont dit. Permet de choisir la voix de la télémétrie.
-    Si vous voulez tester la voix de la télémétrie cliquez sur le bouton [Tester la voix]</p>
-<p> </p>
-<p>Lorsque vous avez terminé cliquer sur le bouton sauvegarder. Vous pouvez également quitter la config sans sauvegarder ou réinitialiser la config par défaut.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<h1>Configuration de l'application Bear Console</h1>
+<p>Les paramètres de l'application sont organisés en deux onglets distincts : <strong>Général</strong> et <strong>Télémétrie</strong>[cite: 11].</p>
+
+<h2>1. Paramètres Généraux</h2>
+<ul>
+    <li><strong>Langue de l'application :</strong> Affiche la langue courante (par défaut, l'application suit automatiquement la langue de votre appareil Android)[cite: 11].</li>
+    <li><strong>Couleur du graphique :</strong> Définit la teinte du tracé des courbes de vol (altitude, vitesse, accélération)[cite: 11].</li>
+    <li><strong>Unités de l'application :</strong> Permet de basculer entre le système métrique (mètres, m/s) et le système impérial (pieds, ft/s)[cite: 11].</li>
+    <li><strong>Couleur de fond du graphique :</strong> Définit la couleur d'arrière-plan du graphique. <em>Veillez à choisir une couleur contrastant nettement avec la courbe[cite: 11] !</em></li>
+    <li><strong>Taille de la police :</strong> Ajuste la lisibilité des textes et relevés sur le graphique et dans la console[cite: 11].</li>
+    <li><strong>Vitesse en bauds (Baud rate) :</strong> Vitesse de transmission via le câble USB (doit impérativement être identique à celle configurée sur l'altimètre, généralement 38400 bauds)[cite: 11].</li>
+    <li><strong>Type de connexion :</strong> Sélectionne le protocole de liaison, soit <strong>Bluetooth</strong> (courte portée), soit <strong>USB</strong> (câble direct ou liaisons radio longue distance)[cite: 11].</li>
+    <li><strong>Bibliothèque graphique :</strong> Permet de basculer entre deux moteurs d'affichage. <em>Attention : à partir d'Android 8.0, vous devez impérativement utiliser la bibliothèque <strong>MPAndroidChart</strong> pour éviter tout blocage ou plantage de l'application[cite: 11].</em></li>
+    <li><strong>Multiples Main / Drogue :</strong> Permet d'affecter plus d'une sortie pyrotechnique aux parachutes principal (Main) ou extracteur (Drogue)[cite: 11].</li>
+    <li><strong>Support USB complet :</strong> À activer <strong>uniquement</strong> en cas de connexion filaire directe par câble USB[cite: 11]. <strong>Laissez désactivé</strong> si vous utilisez un module radio longue portée (LoRa ou 3DR) afin d'éviter toute corruption de la mémoire de l'altimètre[cite: 11].</li>
+</ul>
+
+<h2>2. Configuration de la Télémétrie</h2>
+<ul>
+    <li><strong>Annonces vocales :</strong> Permet de choisir quels événements de vol sont énoncés vocalement en direct (décollage, apogée, ouverture du parachute, etc.)[cite: 11].</li>
+    <li><strong>Voix de la synthèse :</strong> Sélectionne la voix du moteur de synthèse vocale (TTS)[cite: 11].</li>
+    <li><strong>Test audio :</strong> Cliquez sur le bouton <strong>[Tester la voix]</strong> pour vérifier la clarté et le volume de la synthèse vocale[cite: 11].</li>
+</ul>
+
+<h2>Sauvegarde des modifications</h2>
+<p>Cliquez sur <strong>[Sauvegarder]</strong> pour enregistrer vos modifications[cite: 11]. Vous pouvez également quitter l'écran sans enregistrer ou rétablir les paramètres par défaut d'origine[cite: 11].</p>
+</body>
+</html>

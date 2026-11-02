@@ -1,25 +1,34 @@
-<h1>Configure Bear Console Application</h1>
-<p>The configuration is divided in 2 screens</p>
-<p><strong>General</strong></p>
-<p>- Application langage (not used for now because the application langage will be the phone language)</p>
-<p>- Graph color</p>
-<p>- Application Units </p>
-<p>- Graph background color (make sure that it is different from the graph color!!!) </p>
-<p>- font size </p>
-<p>- Baud rate (this is for the USB cable, it has to be the same as the altimeter baud rate) </p>
-<p>- Connection type can be bluetooth or USB if you want to do long distance telemetry) </p>
-<p>- Graphics library (allow to choose between 2 lib type, be carefull that on Android 8 and above you will crash your phone if you do not use the MPAndroid chart lib) </p>
-<p>- Multiple Main/drogue
-Alow you to define more than one output as a main or a drogue</p>
-<p>- Full USB support
-Only enable it if you use USB with a cable. If using longue range telemetry do not use it to avoid corrupting your altimeter configs</p>
-<p> </p>
-<p><strong>Telemetry config</strong></p>
-<p>Allow to configure which telemetry event are said. Allow also to change the telemetry voice.
-If you want to test the telemetry voice just press the [Test voice] button</p>
-<p> </p>
-<p>Whenever you are done click on the save button. You can also exit the config without saving or restore it to the default one.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<h1>Bear Console Application Settings</h1>
+<p>The application settings are organized into two dedicated tabs: <strong>General</strong> and <strong>Telemetry</strong>[cite: 9].</p>
+
+<h2>1. General Settings</h2>
+<ul>
+    <li><strong>Application Language:</strong> Displays the selected language (by default, it automatically follows your Android system language)[cite: 9].</li>
+    <li><strong>Graph Color:</strong> Configures the plot line color for flight curves (altitude, acceleration, velocity)[cite: 9].</li>
+    <li><strong>Application Units:</strong> Toggles between Metric (meters, m/s) and Imperial (feet, ft/s) units[cite: 9].</li>
+    <li><strong>Graph Background Color:</strong> Sets the background color of the chart view. <em>Ensure it contrasts sufficiently with the plot line color[cite: 9]!</em></li>
+    <li><strong>Font Size:</strong> Adjusts text size across graphs and console displays[cite: 9].</li>
+    <li><strong>Baud Rate:</strong> Configures the communication speed for direct USB OTG cable connections (must match the altimeter's serial baud rate, typically 38400)[cite: 9].</li>
+    <li><strong>Connection Type:</strong> Selects between <strong>Bluetooth</strong> (short-range) or <strong>USB</strong> (direct cable or long-range LoRa/3DR radio transceivers)[cite: 9].</li>
+    <li><strong>Graphics Library:</strong> Allows switching between rendering backends. <em>Note: Devices running Android 8.0 and above must use the <strong>MPAndroidChart</strong> library to prevent application crashes[cite: 9].</em></li>
+    <li><strong>Multiple Main / Drogue:</strong> Enables defining more than one pyrotechnic output as a main chute or drogue chute deployment event[cite: 9].</li>
+    <li><strong>Full USB Support:</strong> Enable only when wired directly to the altimeter board via a USB-TTL cable[cite: 9]. <strong>Keep disabled</strong> when using wireless long-range telemetry modules (LoRa / 3DR) to prevent EEPROM configuration corruption[cite: 9].</li>
+</ul>
+
+<h2>2. Telemetry Settings</h2>
+<ul>
+    <li><strong>Audio Events:</strong> Selects which flight events are announced verbally in real time (e.g., Liftoff, Apogee, Main deployment, Altitude)[cite: 9].</li>
+    <li><strong>Speech Synthesis Voice:</strong> Selects the Text-to-Speech (TTS) voice used for callouts[cite: 9].</li>
+    <li><strong>Voice Test:</strong> Tap the <strong>[Test Voice]</strong> button to verify audio volume and synthesized voice clarity[cite: 9].</li>
+</ul>
+
+<h2>Saving Changes</h2>
+<p>Tap <strong>[Save]</strong> to apply and store your new parameters[cite: 9]. You may also exit without saving changes or reset to factory defaults via the corresponding menu options[cite: 9].</p>
+</body>
+</html>

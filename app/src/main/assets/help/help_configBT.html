@@ -1,41 +1,44 @@
-<h1>Bluetooth module configuration</h1>
-<p>In order to configure your bluetooth module to connect your altimeter to your phone you will first
-    need to configure it so that it works at the same speed as your altimeter board.</p>
-<p></p>
-<p>The following screen will help you to configure a bluetooth module so that you can use it with your board.</p>
-<p>Module such as the HC05, HC06 etc ... should work</p>
-<p><img  src="file:///android_asset/help/images/bluetooth_module.jpg"/></p>
-<p>To program the module you need a TTL cable</p>
-<p><img  src="file:///android_asset/help/images/ttl_cable-small.jpg"/></p>
-<p>a USB adapter (USBC or micro USB depending on your Android device)</p>
-<p><img  src="file:///android_asset/help/images/usb_adpter-small.jpg"/></p>
-<p>a jst adapter and some jst cables are required</p>
-<p> </p>
-<p>You will need to configure the module so that it works with your altimeter board.</p>
-<p>Note that those modules usually come pre-set to work at 9600 bauds. However your altimeter board
-by default will work at 38400 bauds so will need to make sure that you are connecting at the correct speed.</p>
-<p></p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<h1>Bluetooth Module Configuration</h1>
 
-<p><span style="color: #ff0000;">CAUTION: make sure that you do not unplug the module while doing the following</span></p>
-<p></p>
-<p><strong>Retrieving the module configuration</strong></p>
-<p>Plug the module in your Android device using a TTL cable and a USB adaptor that can work with
-micro USB or type C USB</p>
-<p>You will need to select the bluetooth module that you have. If you do not know which one you have
-    select the default one or any other one that is compatible. If you cannot use any of the module,
-    send me the module references and/or pictures of the module.</p>
-<p>Then click on [retrieve cfg] this will try to connect to the module using the default 38600 baud.
-    If it fails try again, it will use various baudrates until it connects.
-It will then retrieve the module config so that you can change it</p>
-<p></p>
-<p><strong>Saving the module configuration</strong></p>
-<p>Change the settings that you want to change such as the module name or speed. Make sure that you have selected a baudrate that will
-work with your board and click [Save cfg]. This will save the configuration.
-    If any error occur while saving it will abort the save</p>
-<p></p>
-<p>Note that you will need to repeat the same steps for each bluetooth module that you want to configure</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>To connect your altimeter to your Android smartphone or tablet via Bluetooth, the module must operate at the same communication baud rate as the altimeter board.</p>
 
+<p>This utility enables you to configure compatible modules such as <strong>HC-05, HC-06, JDY-30, JDY-31, SPP, and AT-09</strong>.</p>
+
+<p><img src="file:///android_asset/help/images/bluetooth_module.jpg" alt="Bluetooth module"/></p>
+
+<h2>Required Hardware</h2>
+<ul>
+    <li><strong>A USB-to-TTL serial adapter cable</strong></li>
+    <li><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="TTL cable"/></li>
+    <li><strong>An OTG USB adapter</strong> (USB-C or Micro-USB depending on your Android device)</li>
+    <li><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB adapter"/></li>
+    <li><strong>A JST adapter and matching JST connector cables</strong></li>
+</ul>
+
+<p>Most commercial Bluetooth modules arrive preconfigured at <strong>9600 baud</strong>. However, the altimeter flight computer communicates by default at <strong>38400 baud</strong>. You must configure your module to match this speed.</p>
+
+<p style="color: #d9534f; font-weight: bold;">CAUTION: Do not disconnect the module or cable during the read or write sequence.</p>
+
+<h2>Retrieving the Module Configuration</h2>
+<ol>
+    <li>Connect the Bluetooth module to your Android device using the TTL cable and USB-OTG adapter.</li>
+    <li>Select your module type from the dropdown menu. If uncertain, select <em>HC-05</em>, <em>HC-06</em>, or <em>Unknown</em>. If no profile works, contact support with clear pictures and references of your module.</li>
+    <li>Tap <strong>[Retrieve cfg]</strong>. The application will first attempt to communicate at <strong>38400 baud</strong>. If unacknowledged, it will scan through alternate standard baud rates until synchronization is achieved.</li>
+    <li>Once connected, the current settings (Name, Baud Rate, PIN) will load automatically.</li>
+</ol>
+
+<h2>Saving the Configuration</h2>
+<ol>
+    <li>Adjust the parameters as required (Module Name, PIN, and Baud Rate). Ensure the selected baud rate matches your altimeter board (typically <strong>38400 baud</strong>).</li>
+    <li>Tap <strong>[Save cfg]</strong>. The configuration commands will be written to the module. If a command error is detected, the process will halt safely.</li>
+</ol>
+
+<p><em>Note: Repeat this configuration procedure individually for any additional Bluetooth modules you intend to use.</em></p>
+</body>
+</html>
