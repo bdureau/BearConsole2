@@ -2,8 +2,22 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
 </head>
 <body>
+
 <h1>Configuración del módulo Bluetooth</h1>
 
 <p>Para conectar su altímetro a su teléfono o tableta Android mediante Bluetooth, el módulo debe funcionar exactamente a la misma velocidad de comunicación que la placa del altímetro.</p>
@@ -14,31 +28,52 @@
 
 <h2>Material necesario</h2>
 <ul>
-    <li><strong>Un cable adaptador USB a serie TTL</strong></li>
-    <li><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Cable TTL"/></li>
-    <li><strong>Un adaptador USB OTG</strong> (USB-C o Micro-USB según su dispositivo Android)</li>
-    <li><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adaptador USB"/></li>
-    <li><strong>Un adaptador JST y cables de conexión JST</strong></li>
+    <li>Un cable adaptador USB a serie TTL.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Cable TTL"/>
+    </li>
+    <li>Un adaptador USB OTG (USB-C o Micro-USB según su dispositivo Android).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adaptador USB"/>
+    </li>
+    <li>Un adaptador JST y cables de conexión JST.</li>
 </ul>
 
+<h2>Ajuste de velocidad en baudios</h2>
 <p>La mayoría de estos módulos vienen configurados de fábrica a <strong>9600 baudios</strong>. Sin embargo, su altímetro funciona por defecto a <strong>38400 baudios</strong>. Por lo tanto, debe adaptar la velocidad del módulo a la de su placa.</p>
 
-<p style="color: #d9534f; font-weight: bold;">ATENCIÓN: No desconecte el módulo ni el cable durante la lectura o escritura de datos.</p>
+<div class="warning-box">
+    <div class="warning-title">&#9888; ATENCIÓN</div>
+    <div>No desconecte el módulo ni el cable durante la lectura o escritura de datos para evitar daños en la memoria interna.</div>
+</div>
 
 <h2>Recuperar la configuración del módulo</h2>
 <ol>
-    <li>Conecte el módulo a su dispositivo Android usando el cable TTL y el adaptador USB OTG.</li>
-    <li>Seleccione el tipo de módulo Bluetooth en el menú desplegable. Si no está seguro, elija <em>HC-05</em>, <em>HC-06</em> o <em>Unknown</em>. Si ningún modelo responde, envíe fotos y referencias del módulo al soporte.</li>
-    <li>Pulse en <strong>[Recuperar cfg]</strong>. La aplicación intentará conectarse inicialmente a <strong>38400 baudios</strong>. Si falla, escaneará distintas velocidades de transmisión hasta lograr la conexión.</li>
-    <li>Una vez establecida la comunicación, se cargarán los parámetros actuales en la pantalla.</li>
+    <li class="step-item">
+        <strong>Conexión física:</strong> Conecte el módulo a su dispositivo Android usando el cable TTL y el adaptador USB OTG.
+    </li>
+    <li class="step-item">
+        <strong>Seleccionar tipo:</strong> Seleccione el tipo de módulo Bluetooth en el menú desplegable. Si no está seguro, elija <em>HC-05</em>, <em>HC-06</em> o <em>Unknown</em>. Si ningún modelo responde, envíe fotos y referencias del módulo al soporte.
+    </li>
+    <li class="step-item">
+        <strong>Leer parámetros:</strong> Pulse en <strong>[Recuperar cfg]</strong>. La aplicación intentará conectarse inicialmente a <strong>38400 baudios</strong>. Si falla, escaneará distintas velocidades de transmisión hasta lograr la conexión.
+    </li>
+    <li class="step-item">
+        <strong>Carga de datos:</strong> Una vez establecida la comunicación, se cargarán los parámetros actuales en la pantalla.
+    </li>
 </ol>
 
 <h2>Guardar la nueva configuración</h2>
 <ol>
-    <li>Modifique los parámetros deseados (Nombre, PIN o Velocidad). Asegúrese de haber seleccionado la velocidad compatible con su altímetro (habitualmente <strong>38400 baudios</strong>).</li>
-    <li>Pulse en <strong>[Guardar cfg]</strong> para programar el módulo. Si ocurre algún error durante la transmisión, el proceso se detendrá de forma segura.</li>
+    <li class="step-item">
+        <strong>Modificar campos:</strong> Modifique los parámetros deseados (Nombre, PIN o Velocidad). Asegúrese de haber seleccionado la velocidad compatible con su altímetro (habitualmente <strong>38400 baudios</strong>).
+    </li>
+    <li class="step-item">
+        <strong>Grabar parámetros:</strong> Pulse en <strong>[Guardar cfg]</strong> para programar el módulo. Si ocurre algún error durante la transmisión, el proceso se detendrá de forma segura.
+    </li>
 </ol>
 
-<p><em>Nota: Deberá repetir este procedimiento de forma individual para cada módulo Bluetooth que necesite configurar.</em></p>
+<div class="info-box">
+    <strong>Nota:</strong> Deberá repetir este procedimiento de forma individual para cada módulo Bluetooth que necesite configurar.
+</div>
+
 </body>
 </html>

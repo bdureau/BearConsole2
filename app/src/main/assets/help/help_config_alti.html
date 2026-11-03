@@ -1,43 +1,84 @@
-<h1>Configure altimeter</h1>
-<p>The altimeter configuration can be up to 4 differents screens depending of the altimeter you are connected to.
-    When opening these screens you are connected to the altimeter and retrieving the altimeter configuration stored on the board memory</p>
-<p><strong>Altimeter Outputs</strong></p>
-<p>Each output of the altimeter can be configured and assigned a functionnality. Fonctionnalities are event driven. The
-following events are available:</p>
-<p>- Lift off (fire at lift off)</p>
-<p>- Timer (fire X miliseconds after liftoff)</p>
-<p>- Altitude (fire at the specified altidude)</p>
-<p>- Apogee (fire at apogee)</p>
-<p>- Main (fire X meters before landing)</p>
-<p>- Landing (fire on landing)</p>
-<p>Note that for each events you can also have a delay in miliseconds</p>
-<p> </p>
-<p><strong>Altimeter config</strong></p>
-<p>- Baud Rate
-    Allow to change the altimeter communication speed (reboot required)</p>
-<p>-Apogee measures
-    The number of measures required to detect apogee</p>
-<p>- Altimeter Res
-    The altimeter resolution(be carefull changing it will reduce the number of measures do not do it if you use the altimeter to deploy parachutes)</p>
-<p>- EEprom size
-    Allow you to change the on board memory size</p>
-<p>- Beep ON/Off
-    You can turn ON or OFF the continuity beep</p>
-<p>- End of rec altitude
-    At which altitude do you stop recording</p>
-<p>- Record temp</p>
-<p>- Supersonic delay</p>
-<p>- Lift Off Altitude
-At which altitude do we consider that lift off as occured</p>
-<p>- Battery type
-Define the battery type used, the is used by some altimeters to warn on battery low voltage</p>
-<p> </p>
-<p> </p>
-<p><strong>Altimeter config (page 2)</strong></p>
-<p>Allow to choose the altimeter units, the beep mode and the beep frequency</p>
-<p><strong>Servo config</strong></p>
-<p>This is only available when connected to the altiServo, It will allow to choose the servo start ans stop position</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .param-item { margin-bottom: 12px; }
+        .param-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Configure Altimeter</h1>
+
+<p>The altimeter configuration can span up to 4 different screens depending on the altimeter model connected. When opening these screens, the app connects to the altimeter and retrieves the configuration stored in onboard memory.</p>
+
+<div class="info-box">
+    <strong>Connection Status:</strong> Ensure the altimeter is powered on and connected via Bluetooth or USB before updating parameters.
+</div>
+
+<h2>Altimeter Outputs</h2>
+<p>Each output channel can be configured and assigned a specific event-driven function:</p>
+<ul>
+    <li><strong>Liftoff:</strong> Fires immediately at liftoff.</li>
+    <li><strong>Timer:</strong> Fires X milliseconds after liftoff.</li>
+    <li><strong>Altitude:</strong> Fires at the specified altitude threshold.</li>
+    <li><strong>Apogee:</strong> Fires at detected apogee (peak altitude).</li>
+    <li><strong>Main:</strong> Fires X meters before landing for main parachute recovery.</li>
+    <li><strong>Landing:</strong> Fires upon ground touchdown.</li>
+</ul>
+<p><em>Note: Each event can also be configured with an additional delay in milliseconds.</em></p>
+
+<h2>Altimeter Settings (Page 1)</h2>
+<div class="param-item">
+    <p><strong>Baud Rate:</strong> Sets communication port speed (reboot required).</p>
+</div>
+<div class="param-item">
+    <p><strong>Apogee Measures:</strong> Number of consecutive descending samples needed to confirm apogee.</p>
+</div>
+<div class="param-item">
+    <p><strong>Altimeter Resolution:</strong> Sensor sampling resolution.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; CAUTION</div>
+    <div>Changing resolution can reduce the total number of flight measures. Do not lower it if the unit is used for primary parachute deployment.</div>
+</div>
+<div class="param-item">
+    <p><strong>EEPROM Size:</strong> Defines onboard flash/memory capacity.</p>
+</div>
+<div class="param-item">
+    <p><strong>Beep ON / OFF:</strong> Toggles continuity beeper audio.</p>
+</div>
+<div class="param-item">
+    <p><strong>End of Recording Altitude:</strong> Altitude threshold below which flight recording stops.</p>
+</div>
+<div class="param-item">
+    <p><strong>Record Temperature:</strong> Enables or disables onboard temperature recording.</p>
+</div>
+<div class="param-item">
+    <p><strong>Supersonic Delay:</strong> Ignores barometric pressure anomalies caused by shockwaves during the initial seconds of high-speed flight.</p>
+</div>
+<div class="param-item">
+    <p><strong>Liftoff Altitude:</strong> Altitude threshold to confirm launch has occurred.</p>
+</div>
+<div class="param-item">
+    <p><strong>Battery Type:</strong> Defines battery chemistry to configure low-voltage threshold alarms.</p>
+</div>
+
+<h2>Altimeter Settings (Page 2)</h2>
+<p>Allows configuring measurement units (Metric/Imperial), continuity beep modes, and beep frequency tone.</p>
+
+<h2>Servo Configuration</h2>
+<p>Available exclusively when connected to <strong>AltiServo</strong> boards. Allows defining start, neutral, and deployed positions for each servo.</p>
+
+</body>
+</html>

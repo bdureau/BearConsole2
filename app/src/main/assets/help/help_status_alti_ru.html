@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .status-item { margin-bottom: 12px; }
+        .status-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Статус высотомера</h1>
+
+<p>В этом разделе доступно несколько экранов диагностики для проверки работоспособности и текущего состояния высотомера.</p>
+
+<h2>Доступная информация и функции</h2>
+<ul>
+    <li><strong>Диагностика и телеметрия:</strong> Отображение системных данных: модель высотомера, версия прошивки, целостность цепей запалов (целостность линий), напряжение батареи и текущая высота.</li>
+    <li><strong>Проверка выходов и сервоприводов:</strong> Возможность принудительного ручного тестирования пиротехнических выходов и крайних положений сервоприводов.</li>
+    <li><strong>GPS-координаты (AltiGPS):</strong> Для высотомеров с GPS на дополнительном экране выводятся точные координаты, курс и дистанция от смартфона до ракеты.</li>
+    <li><strong>Карта отслеживания (AltiGPS):</strong> Интерактивная карта с отображением текущего местоположения телефона и ракеты для упрощения поиска после приземления.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ВАЖНОЕ ПРЕДУПРЕЖДЕНИЕ ПО БЕЗОПАСНОСТИ</div>
+    <div>Используйте проверку пиротехнических каналов с максимальной осторожностью. Всегда проверяйте, чтобы к плате <strong>не были подключены реальные пиропатроны или запалы</strong> во время проведения тестов на земле.</div>
+</div>
+
+</body>
+</html>

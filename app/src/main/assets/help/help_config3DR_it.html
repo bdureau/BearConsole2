@@ -1,32 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
 <h1>Configurazione del modulo 3DR</h1>
+
 <p>Per effettuare la telemetria a lungo raggio, dovrai sostituire il tuo modulo Bluetooth con un modulo di telemetria 3DR.</p>
-<p><img  src="file:///android_asset/help/images/3DR_module-small.png"/></p>
-<p></p>
-<p>Nota che la batteria del tuo dispositivo Android deve essere abbastanza potente per alimentare il modulo 3DR. Prendi in considerazione l'uso di una batteria esterna se hai un modulo potente</p>
-<p></p>
-<p>Per programmare il modulo è necessario un cavo TTL</p>
-<p><img  src="file:///android_asset/help/images/ttl_cable-small.jpg"/></p>
-<p>un adattatore USB (USBC o micro USB a seconda del tuo dispositivo Android)</p>
-<p><img  src="file:///android_asset/help/images/usb_adpter-small.jpg"/></p>
-<p>è necessario un adattatore JST e alcuni cavi JST</p>
-<p> </p>
-<p>Devi configurare il modulo in modo che funzioni con la tua scheda altimetro.</p>
-<p>Nota che questi moduli di solito vengono preimpostati per funzionare a 57600 bauds. Tuttavia la tua scheda altimetro funzionerà in modo predefinito a 38400 bauds, quindi dovrai assicurarti di connetterti alla velocità corretta.</p>
-<p></p>
-<p>Nota che i moduli 3DR vengono forniti in coppia, quindi dovrai configurare sia il trasmettitore che il ricevitore</p>
-<p></p>
-<p><span style="color: #ff0000;">ATTENZIONE: assicurati di non scollegare il modulo durante le seguenti operazioni</span></p>
-<p></p>
-<p><strong>Recupero della configurazione del modulo</strong></p>
-<p>Collega il modulo al tuo dispositivo Android utilizzando un cavo OTG o qualsiasi adattatore USB che possa funzionare con micro USB o USB di tipo C.</p>
-<p>Quindi fai clic su [recupera cfg] questo cercherà di connettersi al modulo utilizzando varie velocità di trasmissione finché non si connette.
-    Recupererà quindi la configurazione del modulo in modo che tu possa modificarla</p>
-<p></p>
-<p><strong>Salvataggio della configurazione del modulo</strong></p>
-<p>Modificare le impostazioni che si desidera modificare. Assicurarsi di aver selezionato una velocità di trasmissione che funzionerà con la scheda e fare clic su [Salva cfg]. Questo salverà la configurazione.
-    Se si verificano errori durante il salvataggio, verrà annullato il salvataggio</p>
-<p>Nota che dovrete ripetere lo stesso passaggio per ogni modulo</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+
+<p><img src="file:///android_asset/help/images/3DR_module-small.png" alt="Modulo 3DR"/></p>
+
+<div class="info-box">
+    <strong>Alimentazione elettrica:</strong> Nota che la batteria del tuo dispositivo Android deve essere abbastanza potente per alimentare il modulo 3DR. Prendi in considerazione l'uso di una batteria esterna se utilizzi un modulo ad alta potenza.
+</div>
+
+<h2>Hardware necessario</h2>
+<ul>
+    <li>Un cavo adattatore seriale da USB a TTL.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Cavo TTL"/>
+    </li>
+    <li>Un adattatore USB (USB-C o Micro-USB a seconda del tuo dispositivo Android).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adattatore USB"/>
+    </li>
+    <li>Un adattatore JST e cavi di collegamento JST.</li>
+</ul>
+
+<h2>Compatibilità della velocità (Baud Rate)</h2>
+<p>Devi configurare il modulo in modo che funzioni con la tua scheda altimetro. Nota che questi moduli di solito vengono preimpostati per funzionare a 57600 baud. Tuttavia la tua scheda altimetro funzionerà in modo predefinito a 38400 baud, quindi dovrai assicurarti di connetterti alla velocità corretta.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ATTENZIONE</div>
+    <div>Assicurati di non scollegare il modulo durante le seguenti operazioni per evitare il danneggiamento della memoria.</div>
+</div>
+
+<h2>Procedura di configurazione</h2>
+<ol>
+    <li class="step-item">
+        <strong>Recupero della configurazione:</strong> Collega il modulo al dispositivo Android mediante un cavo OTG o un adattatore USB. Fai clic su <strong>[Recupera cfg]</strong>: l'app proverà varie velocità finché non si connette, quindi visualizzerà la configurazione.
+    </li>
+    <li class="step-item">
+        <strong>Salvataggio della configurazione:</strong> Modifica le impostazioni desiderate. Assicurati di aver selezionato una velocità compatibile con la scheda (38400 baud) e fai clic su <strong>[Salva cfg]</strong>. In caso di errore durante il salvataggio, l'operazione verrà annullata.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Moduli in coppia:</strong> Nota che i moduli 3DR vengono forniti in coppia, pertanto sarà necessario ripetere lo stesso passaggio sia per il trasmettitore che per il ricevitore.
+</div>
+
+</body>
+</html>

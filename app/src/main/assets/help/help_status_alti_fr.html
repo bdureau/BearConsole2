@@ -1,6 +1,38 @@
-<h1>Altimeter status</h1>
-<p>This provides several screens to check the altimeter status.</p>
-<p>- Information about the altimeter such as altimeter type/firmware, output continuity, current altitude etc..</p>
-<p>- Gives the ability to test the pyro output or servos. Use it with caution and make sure that no pyro charges are connected while testing</p>
-<p>- For the alti GPS this provide an aditionnal screen to display phone and rocket location informations using their GPS</p>
-<p>- For the alti GPS this provide a map which shows the phone and rocket positions on the map</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .status-item { margin-bottom: 12px; }
+        .status-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>État de l'Altimètre</h1>
+
+<p>Cette section met à votre disposition plusieurs écrans de diagnostic pour vérifier le fonctionnement et l'état général de votre altimètre.</p>
+
+<h2>Informations et fonctionnalités disponibles</h2>
+<ul>
+    <li><strong>Diagnostic et télémétrie :</strong> Affiche les caractéristiques matérielles (modèle de l'altimètre, version du firmware), la continuité des lignes pyrotechniques, la tension de la batterie et l'altitude en temps réel.</li>
+    <li><strong>Test des sorties et servomoteurs :</strong> Permet de tester manuellement l'activation des charges d'éjection ou le débattement des servos.</li>
+    <li><strong>Coordonnées GPS (AltiGPS) :</strong> Pour les modèles équipés d'un GPS, un écran dédié affiche les coordonnées détaillées, le cap et la distance séparant votre smartphone de la fusée.</li>
+    <li><strong>Carte de localisation en direct (AltiGPS) :</strong> Affiche une carte interactive indiquant en temps réel la position relative du téléphone et celle de la fusée pour faciliter la récupération au sol.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; CONSIGNE DE SÉCURITÉ CRITIQUE</div>
+    <div>Utilisez la fonction de test des sorties avec la plus grande prudence. Assurez-vous impérativement qu'<strong>aucune charge pyrotechnique ni aucun inflammateur ne soit raccordé</strong> à la carte pendant les essais au sol.</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .btn-entry { margin-bottom: 14px; }
+        .btn-entry strong { color: #0277BD; }
+        .hardware-item { margin-bottom: 12px; }
+        img { vertical-align: middle; margin: 4px 6px 4px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Handleiding Bear Hoogtemeter Console</h1>
+
+<p>Dit is een beknopte handleiding voor het gebruik van uw Android Bear Hoogtemeter Console. De Android-console is een zeer handige tool om uw hoogtemeter direct op het lanceerveld opnieuw te configureren.</p>
+
+<div class="info-box">
+    <strong>Opmerking:</strong> De helpfunctie is contextgevoelig; per scherm wordt specifieke informatie getoond over de op dat moment geopende functie.
+</div>
+
+<h2>Eerste configuratie en Bluetooth-koppeling</h2>
+<ol>
+    <li><strong>Firmware-controle:</strong> Controleer of uw hoogtemeter compatibel is (d.w.z. dat de juiste firmwareversie is geladen).</li>
+    <li><strong>Module aansluiten:</strong> Zorg ervoor dat de Bluetooth-module correct is aangesloten op de hoogtemeter.</li>
+    <li><strong>Systeemkoppeling:</strong> Ga naar de Bluetooth-instellingen van uw Android-toestel en zoek naar beschikbare HC-05, HC-06 of HC-07 modules. Voer bij het koppelen de standaard pincode in (standaard <strong>1234</strong>).</li>
+</ol>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; WAARSCHUWING</div>
+    <div>Geef elk gekoppeld Bluetooth-apparaat op uw telefoon een duidelijke herkenbare naam om te voorkomen dat u verbinding maakt met de verkeerde hoogtemeter.</div>
+</div>
+
+<ol start="4">
+    <li><strong>Inschakelen:</strong> Schakel de hoogtemeter in en wacht tot deze pieptonen laat horen ter bevestiging van de circuitcontinuïteit.</li>
+    <li><strong>Verbinding maken:</strong> Start de BearConsole-applicatie op uw Android-apparaat, tik op gekoppelde apparaten en kies uw module (HC-05 of HC-06). De console probeert nu verbinding te maken met de hoogtemeter.</li>
+</ol>
+
+<p>Zodra de verbinding actief is, kunt u de console gebruiken om instellingen aan te passen of opgeslagen vluchten uit te lezen. Als het verbinden mislukt, controleer dan of de hoogtemeter van stroom is voorzien en de juiste Bluetooth-adapter is geselecteerd.</p>
+
+<h2>Gebruik van de Hoogtemeter Console</h2>
+
+<h3>Hoofdscherm functies</h3>
+<p>Het hoofdscherm bevat verschillende actieknoppen:</p>
+
+<div class="btn-entry">
+    <p><strong>[Hoogtemeter Instellingen]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Altimeters Settings75x92.png" alt="Instellingen"/>
+        Leest de actuele configuratie van de hoogtemeter uit en geeft de mogelijkheid deze aan te passen.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Vluchten]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flights75x92.png" alt="Vluchten"/>
+        Downloadt alle opgeslagen vluchtgegevens uit het geheugen (EEPROM/Flash) en tekent de vluchtcurven.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Telemetrie]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Telemetry75x91.png" alt="Telemetrie"/>
+        Toont de realtime telemetriestroom vanaf de vluchtcomputer.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Continuïteit AAN/UIT]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Continuity on-off75x93.png" alt="Continuïteit"/>
+        Schakelt de akoestische continuïteitstoon (pieper) in of uit.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Instellingen Herstellen]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Reset settings75x92.png" alt="Reset"/>
+        Herstelt de fabrieksinstellingen van de hoogtemeter. Maakt het tevens mogelijk om alle opgeslagen vluchten of alleen de laatste vlucht te wissen.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Status]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Status75x90.png" alt="Status"/>
+        Opent het diagnosescherm met informatie over de ontplooiingskanalen, geheugengebruik, sensorsignalen en de actuele hoogte.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Firmware Flashen]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flash firmware75x92.png" alt="Firmware Flashen"/>
+        Biedt de mogelijkheid om nieuwe firmware te installeren via een USB-OTG kabel (beschikbaar voor ATmega328-, STM32- en ESP32-platforms).</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Verbinden / Verbreken]</strong></p>
+    <p>
+        <img src="file:///android_asset/help/images/console connect75x93.png" alt="Verbinden"/>
+        <img src="file:///android_asset/help/images/console Disconnect75x91.png" alt="Verbreken"/>
+    </p>
+    <p>Start of beëindigt de seriële communicatielink met de hoogtemeter.</p>
+</div>
+
+<h3>Optiemenu</h3>
+<p>Via het optiemenu kunt u deze documentatie openen, de "Over"-pagina met versie-informatie raadplegen, het visuele thema aanpassen en de instellingen beheren voor 3DR Radio-, Bluetooth- en LoRa-telemetriemodules.</p>
+
+<h3>Ondersteunde Hoogtemeters</h3>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (volledige uitvoering met ATmega328)</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V1</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti V1"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V2</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMulti V2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiGPS</strong></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti STM32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMulti STM32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMulti ESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
+
+</body>
+</html>

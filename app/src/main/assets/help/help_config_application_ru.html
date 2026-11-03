@@ -2,33 +2,71 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .setting-item { margin-bottom: 12px; }
+        .setting-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
 </head>
 <body>
+
 <h1>Настройка приложения Bear Console</h1>
+
 <p>Настройки приложения разделены на две основные вкладки: <strong>Общие</strong> и <strong>Телеметрия</strong>.</p>
 
 <h2>1. Общие настройки</h2>
-<ul>
-    <li><strong>Язык приложения:</strong> Отображает текущий язык (по умолчанию соответствует языку системы Android).</li>
-    <li><strong>Цвет графика:</strong> Настройка цвета линий графиков полета (высота, скорость, ускорение).</li>
-    <li><strong>Единицы измерения:</strong> Переключение между метрической (метры, м/с) и имперской (футы, фут/с) системами.</li>
-    <li><strong>Цвет фона графика:</strong> Выбор цвета фона. <em>Убедитесь, что фон контрастирует с цветом линий графика!</em></li>
-    <li><strong>Размер шрифта:</strong> Настройка размера текста для удобства чтения параметров.</li>
-    <li><strong>Скорость (Baud rate):</strong> Скорость передачи данных по USB-кабелю (должна совпадать со скоростью высотомера, обычно 38400 бод).</li>
-    <li><strong>Тип подключения:</strong> Выбор между <strong>Bluetooth</strong> (ближняя связь) и <strong>USB</strong> (прямое кабельное подключение или радиомодули дальней связи).</li>
-    <li><strong>Графическая библиотека:</strong> Выбор библиотеки построения графиков. <em>Внимание: на устройствах с Android 8.0 и выше обязательно используйте библиотеку <strong>MPAndroidChart</strong> во избежание сбоев в работе приложения.</em></li>
-    <li><strong>Несколько каналов Main / Drogue:</strong> Позволяет назначить более одного пиропатрона для основного или тормозного парашюта.</li>
-    <li><strong>Полная поддержка USB:</strong> Включайте <strong>только</strong> при прямом проводном подключении через USB-кабель. <strong>Не включайте</strong> при использовании радиомодулей дальней связи (LoRa / 3DR), чтобы избежать повреждения прошивки и настроек высотомера.</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Язык приложения:</strong> Отображает текущий язык (по умолчанию соответствует языку системы Android).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Цвет графика:</strong> Настройка цвета линий графиков полета (высота, скорость, ускорение).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Единицы измерения:</strong> Переключение между метрической (метры, м/с) и имперской (футы, фут/с) системами.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Цвет фона графика:</strong> Выбор цвета фона. <em>Убедитесь, что фон контрастирует с цветом линий графика!</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Размер шрифта:</strong> Настройка размера текста для удобства чтения параметров.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Скорость (Baud rate):</strong> Скорость передачи данных по USB-кабелю (должна совпадать со скоростью высотомера, обычно 38400 бод).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Тип подключения:</strong> Выбор между <strong>Bluetooth</strong> (ближняя связь) и <strong>USB</strong> (прямое кабельное подключение или радиомодули дальней связи).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Графическая библиотека:</strong> Выбор библиотеки построения графиков. <em>Внимание: на устройствах с Android 8.0 и выше обязательно используйте библиотеку <strong>MPAndroidChart</strong> во избежание сбоев в работе приложения.</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Несколько каналов Main / Drogue:</strong> Позволяет назначить более одного пиропатрона для основного или тормозного парашюта.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; ВНИМАНИЕ: НАСТРОЙКА USB</div>
+    <div><strong>Полная поддержка USB:</strong> Включайте <strong>только</strong> при прямом проводном подключении через USB-кабель. <strong>Не включайте</strong> при использовании радиомодулей дальней связи (LoRa / 3DR), чтобы избежать повреждения прошивки и настроек высотомера.</div>
+</div>
 
 <h2>2. Настройка телеметрии</h2>
-<ul>
-    <li><strong>Голосовые оповещения:</strong> Выбор событий полета, которые озвучиваются в реальном времени (старт, апогей, раскрытие парашюта и т. д.).</li>
-    <li><strong>Голос телеметрии:</strong> Выбор голоса системы синтеза речи (TTS).</li>
-    <li><strong>Проверка звука:</strong> Нажмите кнопку <strong>[Проверить голос]</strong> для проверки громкости и разборчивости речи.</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Голосовые оповещения:</strong> Выбор событий полета, которые озвучиваются в реальном времени (старт, апогей, раскрытие парашюта и т. д.).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Голос телеметрии:</strong> Выбор голоса системы синтеза речи (TTS).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Проверка звука:</strong> Нажмите кнопку <strong>[Проверить голос]</strong> для проверки громкости и разборчивости речи.</p>
+</div>
 
 <h2>Сохранение настроек</h2>
 <p>Нажмите <strong>[Сохранить]</strong>, чтобы применить внесенные изменения. Вы также можете выйти без сохранения или сбросить все параметры к заводским значениям.</p>
+
 </body>
 </html>

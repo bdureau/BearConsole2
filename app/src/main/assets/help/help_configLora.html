@@ -1,52 +1,91 @@
-<h1>eByte Lora E220 module configuration</h1>
-<p>In order to do long range telemetry you will need to replace your bluetooth module by
-    a long range telemetry module such as the Lora E22O.</p>
-<p>The following modules have been successfully configured</p>
-<p>E220-400T30D</p>
-<p>E220-400T30S</p>
-<p>E220-900T30D</p>
-<p>E220-900T30S</p>
-<p>E220-400T22D</p>
-<p>etc ...</p>
-<p><img  src="file:///android_asset/help/images/E220-900T22S.jpg"/></p>
-<p><img  src="file:///android_asset/help/images/E220-900T30D.jpg"/></p>
-<p> </p>
-<p>To program the module you need a TTL cable</p>
-<p><img  src="file:///android_asset/help/images/ttl_cable-small.jpg"/></p>
-<p>a USB adapter (USBC or micro USB depending on your Android device)</p>
-<p><img  src="file:///android_asset/help/images/usb_adpter-small.jpg"/></p>
-<p>a jst adapter and some jst cables are required</p>
-<p> </p>
-<p>Note that your Android device battery must be strong enought to power the Lora module. Consider using
-    an external battery if you have a powerfull module</p>
-<p></p>
-<p>In order to enter the configuration mode you will need to put both jumpers</p>
-<p>You will need to configure the module so that it works with your altimeter board.</p>
-<p>Note that those modules usually come pre-set to work at 57600 bauds. However your altimeter board
-    by default will work at 38400 bauds so will need to make sure that you are connecting at the correct speed.</p>
-<p></p>
-<p>Note that Lora modules comes in pair so you will need to configure both the transmitter and receiver</p>
-<p></p>
-<p><span style="color: #ff0000;">CAUTION: make sure that you do not unplug the module while doing the following</span></p>
-<p></p>
-<p><strong>Retrieving the module configuration</strong></p>
-<p>Plug the module in your Android device using an OTG cable or any USB adaptor that can work with
-    micro USB or type C USB</p>
-<p>Then click on [retrieve cfg] this will try to connect to the module using 9600 baud.
-    It will then retrieve the module config so that you can change it.</p>
-<p></p>
-<p><strong>Saving the module configuration</strong></p>
-<p>Change the settings that you want to change. Make sure that you have selected a baudrate that will
-    work with your board (by default 38400). Make sure that the channels are the same for the transmitter
-    and receiver. If you set an encryption key make sure it is the same on both. When done click [Save cfg].
-    This will save the configuration.
-    If any error occur while saving it will abort the save</p>
-<p></p>
-<p>Note that you will need to repeat the same step for each module</p>
-<p>Before you use it make sure you remove both jumpers to exit the configuration mode</p>
-<p></p>
-<p>Lora telemetry modules currently do not work with ESP32 board.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>eByte LoRa E220 Module Configuration</h1>
+
+<p>In order to do long range telemetry you will need to replace your Bluetooth module with a long range telemetry module such as the LoRa E220.</p>
+
+<h3>Successfully Tested Modules</h3>
+<ul>
+    <li>E220-400T30D</li>
+    <li>E220-400T30S</li>
+    <li>E220-900T30D</li>
+    <li>E220-900T30S</li>
+    <li>E220-400T22D</li>
+    <li>E220-900T22S</li>
+</ul>
+
+<p>
+    <img src="file:///android_asset/help/images/E220-900T22S.jpg" alt="LoRa E220 SMD Module"/>
+    <img src="file:///android_asset/help/images/E220-900T30D.jpg" alt="LoRa E220 DIP Module"/>
+</p>
+
+<div class="info-box">
+    <strong>Power Note:</strong> Note that your Android device battery must be strong enough to power the LoRa module. Consider using an external battery or a powered USB hub if you have a powerful module (such as 30dBm / 1W models).
+</div>
+
+<h2>Required Hardware</h2>
+<ul>
+    <li>A USB-to-TTL serial adapter cable.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="TTL Cable"/>
+    </li>
+    <li>A USB adapter (USB-C or Micro-USB depending on your Android device).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB Adapter"/>
+    </li>
+    <li>A JST adapter and matching JST connector cables.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; CRITICAL: HARDWARE JUMPERS (M0 / M1)</div>
+    <div>In order to enter configuration mode, you will need to install <strong>both jumpers</strong> (M0 and M1 set to HIGH). Before you use it in flight, make sure you <strong>remove both jumpers</strong> to exit configuration mode and return to normal transmission.</div>
+</div>
+
+<h2>Baud Rate Alignment</h2>
+<p>You will need to configure the module so that it works with your altimeter board. Note that these modules usually come preset to work at 57600 baud. However, your altimeter board by default will work at 38400 baud, so you need to make sure that you are connecting at the correct operating speed.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; CAUTION</div>
+    <div>Make sure that you do not unplug or disconnect the module while performing configuration steps.</div>
+</div>
+
+<h2>Configuration Steps</h2>
+<ol>
+    <li class="step-item">
+        <strong>Hardware Setup:</strong> Place both jumpers on the module. Connect the module to your Android device using the USB-TTL cable and OTG adapter.
+    </li>
+    <li class="step-item">
+        <strong>Retrieving Configuration:</strong> Tap <strong>[Retrieve cfg]</strong>. This will attempt to connect to the module using 9600 baud. It will then load the module configuration so that you can edit it.
+    </li>
+    <li class="step-item">
+        <strong>Saving Configuration:</strong> Change the parameters you want to modify. Ensure you select a baud rate compatible with your board (by default 38400). Make sure that the channels and air rates are identical on both the transmitter and receiver. If you set an encryption key, verify it matches on both. Tap <strong>[Save cfg]</strong> to write the configuration. If an error occurs, the save process will abort.
+    </li>
+    <li class="step-item">
+        <strong>Return to Normal Mode:</strong> Unplug the module and <strong>remove both jumpers</strong> before installation into the rocket or ground station.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Paired Setup:</strong> LoRa modules come in pairs, so you will need to repeat the same configuration procedure for both the transmitter and receiver.<br/>
+    <em>Note: LoRa telemetry modules currently do not work with ESP32 boards.</em>
+</div>
+
+</body>
+</html>

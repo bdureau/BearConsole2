@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Настройка модуля телеметрии 3DR</h1>
+
+<p>Для передачи телеметрических данных на большие расстояния необходимо заменить модуль Bluetooth на радиомодуль 3DR.</p>
+
+<p><img src="file:///android_asset/help/images/3DR_module-small.png" alt="Модуль 3DR"/></p>
+
+<div class="info-box">
+    <strong>Питание:</strong> Обратите внимание, что аккумулятор вашего устройства Android должен быть достаточно мощным для питания модуля 3DR. При использовании мощного модуля рассмотрите возможность применения внешнего источника питания.
+</div>
+
+<h2>Необходимое оборудование</h2>
+<ul>
+    <li>Кабель-переходник USB-TTL.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Кабель TTL"/>
+    </li>
+    <li>Переходник USB (USB-C или Micro-USB в зависимости от разъема вашего устройства).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Адаптер USB"/>
+    </li>
+    <li>Переходник JST и комплект соединительных проводов JST.</li>
+</ul>
+
+<h2>Согласование скорости передачи (Baud Rate)</h2>
+<p>Модуль необходимо настроить для работы с платой высотомера. Заводская скорость большинства радиомодемов 3DR составляет 57600 бод. Однако плата высотомера по умолчанию работает со скоростью 38400 бод, поэтому необходимо убедиться, что скорость интерфейса согласована верно.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ВНИМАНИЕ</div>
+    <div>Категорически запрещается отключать модуль во время выполнения настроек во избежание сбоя памяти.</div>
+</div>
+
+<h2>Порядок настройки</h2>
+<ol>
+    <li class="step-item">
+        <strong>Считывание конфигурации:</strong> Подключите модуль к устройству Android через кабель OTG или адаптер USB. Нажмите <strong>[Считать cfg]</strong>: приложение переберет скорости до установления связи и загрузит параметры модуля.
+    </li>
+    <li class="step-item">
+        <strong>Запись конфигурации:</strong> Измените необходимые настройки. Убедитесь, что выбрана скорость, совместимая с вашей платой (38400 бод), и нажмите <strong>[Сохранить cfg]</strong>. При возникновении ошибки запись будет отменена.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Парная настройка:</strong> Модули 3DR поставляются парами, поэтому процедуру необходимо повторить для каждого из модулей (передатчика и приемника).
+</div>
+
+</body>
+</html>

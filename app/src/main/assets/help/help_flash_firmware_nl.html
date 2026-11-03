@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .hardware-item { margin-bottom: 12px; }
+        .step-item { margin-bottom: 10px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Firmware Flashen</h1>
+
+<p>Allereerst dient u de gewenste firmware te selecteren. De firmware is afhankelijk van het specifieke model hoogtemeter dat u wilt flashen.</p>
+<p>Bepaal vervolgens of u direct de operationele firmware wilt installeren of eerst herstelfirmware (recovery) wilt gebruiken.</p>
+
+<div class="info-box">
+    <strong>Herstelfirmware:</strong> Gebruik herstelfirmware wanneer de configuratie corrupt is geraakt en de hoogtemeter geen verbinding meer kan maken. Na het laden van de herstelfirmware dient u de operationele firmware opnieuw te installeren.
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; WAARSCHUWING</div>
+    <div>Het installeren van een onjuiste firmware zorgt ervoor dat de hoogtemeter helemaal niet meer functioneert of onvoorspelbaar gedrag vertoont.</div>
+</div>
+
+<h2>Benodigde hardware</h2>
+<ul>
+    <li>Een USB-naar-TTL seriële kabel om aan te sluiten op uw smartphone of tablet.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="USB TTL-kabel"/>
+    </li>
+    <li>Een USB OTG-adapter (USB-C of Micro-USB, afhankelijk van uw Android-apparaat).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB-adapter"/>
+    </li>
+    <li>Aansluitkabels met passende JST-connectoren.</li>
+</ul>
+
+<h2>Ondersteunde hoogtemeters</h2>
+<p>Bekijk de onderstaande afbeeldingen zorgvuldig om uw type printplaat te identificeren:</p>
+
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (Grote uitvoering)</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiV2</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMultiV2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiSTM32 of AltiGPS</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMultiSTM32 / AltiGPS"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiESP32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMultiESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
+
+<h2>Instructies per microcontrollerfamilie</h2>
+<p>Als alternatief kunt u proberen de firmware automatisch te laten detecteren.</p>
+
+<h3>1. Hoogtemeters op basis van ATmega328 (bijv. AltiDuo, AltiServo, AltiMulti, AltiMultiV2)</h3>
+<ul>
+    <li>Sluit de USB-TTL-kabel aan op de hoogtemeter.</li>
+    <li>Selecteer de juiste firmware of gebruik automatische detectie.</li>
+    <li>Druk kort op de <strong>reset</strong>-knop van de hoogtemeter en tik vervolgens op de knop <strong>[Flash Firmware]</strong>.</li>
+</ul>
+<p><img src="file:///android_asset/help/images/alti-reset.jpg" alt="Resetknop ATmega328"/></p>
+
+<h3>2. Hoogtemeters op basis van STM32 (bijv. AltiMultiSTM32, AltiGPS)</h3>
+<ul>
+    <li>Sluit de USB-TTL-kabel aan.</li>
+    <li>Selecteer de juiste firmware of start automatische detectie.</li>
+    <li>Plaats de <strong>BOOT0</strong> jumper naar rechts (programmeerstand):</li>
+</ul>
+<p><img src="file:///android_asset/help/images/stm32-prog2-small.jpg" alt="STM32 BOOT0 naar rechts"/></p>
+<ul>
+    <li>Druk op de <strong>reset</strong>-knop op de printplaat.</li>
+    <li>Tik op de knop <strong>[Flash Firmware]</strong>.</li>
+    <li>De firmware wordt nu geladen. Zet na voltooiing de <strong>BOOT0</strong> jumper weer terug naar links (normale werkstand):</li>
+</ul>
+<p><img src="file:///android_asset/help/images/stm32-prog1-small.jpg" alt="STM32 BOOT0 naar links"/></p>
+<ul>
+    <li>Druk op de <strong>reset</strong>-knop om de hoogtemeter in normale modus te herstarten.</li>
+</ul>
+
+<h3>3. Hoogtemeters op basis van ESP32 (bijv. AltiMultiESP32, AltiMultiESP32Accel)</h3>
+<ul>
+    <li>Sluit de kabel aan.</li>
+    <li>Selecteer de juiste firmware of gebruik automatische detectie.</li>
+    <li>Houd op de printplaat de knop <strong>BOOT</strong> ingedrukt.</li>
+    <li>Druk kort op de knop <strong>RESET</strong> en laat deze los terwijl u de BOOT-knop ingedrukt houdt.</li>
+    <li>Laat vervolgens de knop <strong>BOOT</strong> los:</li>
+</ul>
+<p><img src="file:///android_asset/help/images/esp32-altimulti-button-small.jpg" alt="Knoppen ESP32"/></p>
+<ul>
+    <li>Tik op de knop <strong>[Flash Firmware]</strong>.</li>
+    <li>Het flashen start nu (herhaal bij een time-out). Druk na afloop op de <strong>reset</strong>-knop.</li>
+</ul>
+
+<h3>4. TTGO BearAltimeter</h3>
+<ul>
+    <li>Sluit de USB-C-kabel rechtstreeks aan.</li>
+    <li>Selecteer de TTGO BearAltimeter-firmware.</li>
+    <li>Tik op de knop <strong>[Flash Firmware]</strong>. Druk na voltooiing op de <strong>reset</strong>-knop.</li>
+</ul>
+
+<h3>5. TTGO Mini, Simple Altimeter en TS-ESP32-S3</h3>
+<ul>
+    <li>Sluit de USB-C-kabel aan.</li>
+    <li>Houd de knop <strong>BOOT</strong> op de printplaat ingedrukt.</li>
+    <li>Druk kort op de knop <strong>RESET</strong> en laat deze los terwijl u de knop BOOT vasthoudt.</li>
+    <li>Laat de knop <strong>BOOT</strong> los en selecteer het juiste hoogtemetermodel.</li>
+    <li>Tik op de knop <strong>[Flash Firmware]</strong>. Druk na afloop op de <strong>reset</strong>-knop.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; BELANGRIJKE OPMERKING</div>
+    <div>Koppel de kabel nooit los tijdens het programmeerproces. Hierdoor raakt de firmware beschadigd en moet de procedure van voren af aan worden herhaald.</div>
+</div>
+
+</body>
+</html>

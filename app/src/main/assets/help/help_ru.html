@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .btn-entry { margin-bottom: 14px; }
+        .btn-entry strong { color: #0277BD; }
+        .hardware-item { margin-bottom: 12px; }
+        img { vertical-align: middle; margin: 4px 6px 4px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Руководство консоли высотомера Bear</h1>
+
+<p>Это краткое руководство по использованию Android-консоли высотомера Bear. Консоль на Android — это очень удобный инструмент для перенастройки высотомера непосредственно на стартовой площадке.</p>
+
+<div class="info-box">
+    <strong>Примечание:</strong> Справка является контекстной: на каждом экране отображается информация, относящаяся к текущему открытому разделу.
+</div>
+
+<h2>Начальная настройка и сопряжение по Bluetooth</h2>
+<ol>
+    <li><strong>Проверка прошивки:</strong> Убедитесь, что ваш высотомер совместим с приложением (то есть в него загружена соответствующая версия микропрограммы).</li>
+    <li><strong>Подключение модуля:</strong> Убедитесь, что модуль Bluetooth правильно подключен к плате высотомера.</li>
+    <li><strong>Сопряжение в системе:</strong> Откройте настройки устройства Android, перейдите в меню Bluetooth и выполните поиск модулей HC-05, HC-06 или HC-07. После обнаружения введите PIN-код сопряжения (по умолчанию: <strong>1234</strong>).</li>
+</ol>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ВНИМАНИЕ</div>
+    <div>Настоятельно рекомендуется переименовать каждое сопряженное Bluetooth-устройство на телефоне, чтобы быть уверенным в настройке именно нужного высотомера.</div>
+</div>
+
+<ol start="4">
+    <li><strong>Включение:</strong> Включите питание высотомера и дождитесь звуковых сигналов подтверждения целостности цепей (целостности запалов).</li>
+    <li><strong>Подключение:</strong> Запустите приложение BearConsole на Android, нажмите «Показать сопряженные устройства» и выберите модуль (HC-05 или HC-06). Консоль выполнит попытку подключения к высотомеру.</li>
+</ol>
+
+<p>После подключения вы сможете настраивать параметры высотомера или загружать записанные данные о полетах. Если подключиться не удалось, проверьте питание высотомера и правильность выбора Bluetooth-адаптера.</p>
+
+<h2>Использование консоли высотомера</h2>
+
+<h3>Главный экран высотомера</h3>
+<p>На главном экране расположены карточки основных действий:</p>
+
+<div class="btn-entry">
+    <p><strong>[Настройки высотомера]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Altimeters Settings75x92.png" alt="Настройки высотомера"/>
+        Считывает текущую конфигурацию высотомера и позволяет вносить изменения.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Полеты]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flights75x92.png" alt="Полеты"/>
+        Считывает все сохраненные полеты из энергонезависимой памяти EEPROM/Flash и отображает их в виде интерактивных графиков.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Телеметрия]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Telemetry75x91.png" alt="Телеметрия"/>
+        Обеспечивает прием и отображение телеметрии полетного контроллера в реальном времени.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Прозвонка ВКЛ/ВЫКЛ]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Continuity on-off75x93.png" alt="Прозвонка ВКЛ/ВЫКЛ"/>
+        Включает и выключает звуковой сигнал проверки целостности цепей воспламенения.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Сброс настроек]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Reset settings75x92.png" alt="Сброс настроек"/>
+        Сбрасывает конфигурацию высотомера до заводских настроек. Также позволяет стереть все полеты или удалить только последнюю запись.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Статус]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Status75x90.png" alt="Статус"/>
+        Открывает диагностический экран: состояние каналов системы спасения, занятый объем памяти, исправность датчиков и текущая высота.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Прошивка]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flash firmware75x92.png" alt="Прошивка"/>
+        Позволяет загружать новые версии микропрограммы напрямую через кабель USB OTG (поддерживаются платформы ATmega328, STM32 и ESP32).</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Подключить / Отключить]</strong></p>
+    <p>
+        <img src="file:///android_asset/help/images/console connect75x93.png" alt="Подключить"/>
+        <img src="file:///android_asset/help/images/console Disconnect75x91.png" alt="Отключить"/>
+    </p>
+    <p>Устанавливает или разрывает последовательное соединение с высотомером.</p>
+</div>
+
+<h3>Меню главного экрана</h3>
+<p>Через меню приложения можно открыть эту справку, окно «О программе» с номером сборки, изменить тему оформления интерфейса и настроить радиомодули телеметрии 3DR, Bluetooth и LoRa.</p>
+
+<h3>Поддерживаемые высотомеры</h3>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (полноразмерная плата на базе ATmega328)</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V1</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti V1"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V2</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMulti V2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiGPS</strong></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti STM32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMulti STM32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMulti ESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
+
+</body>
+</html>

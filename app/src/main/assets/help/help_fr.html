@@ -1,101 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .btn-entry { margin-bottom: 14px; }
+        .btn-entry strong { color: #0277BD; }
+        .hardware-item { margin-bottom: 12px; }
+        img { vertical-align: middle; margin: 4px 6px 4px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
 <h1>Fichier d'aide de la Console Bear Altimeter</h1>
+
 <p>Ceci est un guide d'aide rapide pour utiliser votre console d'altimètre Bear sur Android. La console Android est un moyen très pratique de reconfigurer votre altimètre directement sur le terrain de lancement.</p>
-<p>Notez que l'aide est contextuelle : elle affiche les informations relatives à l'écran en cours d'utilisation.</p>
-<p>Tout d'abord, assurez-vous que votre altimètre est compatible (c'est-à-dire que le bon firmware a été préalablement flashé).</p>
 
-<p>Deuxièmement, assurez-vous que le module Bluetooth est correctement raccordé à l'altimètre.</p>
-<p>Troisièmement, ouvrez les paramètres de votre appareil Android, rendez-vous dans la configuration Bluetooth et lancez la recherche des modules HC-05, HC-06 ou HC-07. Une fois détecté, saisissez le code d'association qui est <strong>1234</strong> par défaut.</p>
+<div class="info-box">
+    <strong>Remarque :</strong> L'aide est contextuelle : elle affiche les informations relatives à l'écran en cours d'utilisation.
+</div>
 
-<p><span style="color: #ff0000;"><strong>!!! ATTENTION !!!!</strong></span></p>
-<p><span style="color: #ff0000;"><strong>Il est fortement recommandé de nommer clairement chaque périphérique Bluetooth appairé sur votre téléphone afin d'être certain de configurer le bon altimètre.</strong></span></p>
-<p>&nbsp;</p>
+<h2>Configuration initiale et appairage Bluetooth</h2>
+<ol>
+    <li><strong>Vérification du firmware :</strong> Assurez-vous que votre altimètre est compatible (c'est-à-dire que le bon firmware a été préalablement flashé).</li>
+    <li><strong>Connexion du module :</strong> Assurez-vous que le module Bluetooth est correctement raccordé à l'altimètre.</li>
+    <li><strong>Appairage système :</strong> Ouvrez les paramètres de votre appareil Android, rendez-vous dans la configuration Bluetooth et lancez la recherche des modules HC-05, HC-06 ou HC-07. Une fois détecté, saisissez le code d'association qui est <strong>1234</strong> par défaut.</li>
+</ol>
 
-<p>Allumez ensuite l'altimètre et attendez qu'il émette les bips de confirmation de continuité.</p>
-<p>Démarrez l'application sur votre appareil Android, appuyez sur « Afficher les appareils appairés », puis sélectionnez votre module HC-05 ou HC-06. L'application tente alors de se connecter à l'altimètre.</p>
+<div class="warning-box">
+    <div class="warning-title">&#9888; ATTENTION</div>
+    <div>Il est fortement recommandé de nommer clairement chaque périphérique Bluetooth appairé sur votre téléphone afin d'être certain de configurer le bon altimètre.</div>
+</div>
+
+<ol start="4">
+    <li><strong>Mise sous tension :</strong> Allumez l'altimètre et attendez qu'il émette les bips de confirmation de continuité.</li>
+    <li><strong>Connexion :</strong> Démarrez l'application sur votre appareil Android, appuyez sur « Afficher les appareils appairés », puis sélectionnez votre module HC-05 ou HC-06. L'application tente alors de se connecter à l'altimètre.</li>
+</ol>
+
 <p>Si la mention « Connecté » apparaît, la liaison est établie et vous pouvez utiliser la Console pour configurer votre altimètre ou télécharger les vols. En cas d'échec, vérifiez que l'altimètre est bien allumé et que le bon adaptateur Bluetooth a été sélectionné.</p>
-<p>&nbsp;</p>
 
 <h2>Utilisation de la console altimètre</h2>
 
 <h3>Écran principal de l'altimètre</h3>
 <p>Sur l'écran principal, plusieurs boutons d'action sont disponibles :</p>
 
-<p><strong>[Configuration Altimètre]</strong></p>
-<p><img src="file:///android_asset/help/images/console Altimeters Settings75x92.png" alt="Configuration Altimètre"/></p>
-<p>Lit la configuration actuelle de l'altimètre et vous permet de la modifier.</p>
-<p>&nbsp;</p>
+<div class="btn-entry">
+    <p><strong>[Configuration Altimètre]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Altimeters Settings75x92.png" alt="Configuration Altimètre"/>
+        Lit la configuration actuelle de l'altimètre et vous permet de la modifier.</p>
+</div>
 
-<p><strong>[Chargement Vols]</strong></p>
-<p><img src="file:///android_asset/help/images/console Flights75x92.png" alt="Chargement Vols"/></p>
-<p>Lit l'ensemble des vols enregistrés en mémoire et trace les courbes graphiques associées.</p>
-<p>&nbsp;</p>
+<div class="btn-entry">
+    <p><strong>[Chargement Vols]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flights75x92.png" alt="Chargement Vols"/>
+        Lit l'ensemble des vols enregistrés en mémoire et trace les courbes graphiques associées.</p>
+</div>
 
-<p><strong>[Télémétrie]</strong></p>
-<p><img src="file:///android_asset/help/images/console Telemetry75x91.png" alt="Télémétrie"/></p>
-<p>Affiche le flux de télémétrie en temps réel de l'ordinateur de vol.</p>
-<p>&nbsp;</p>
+<div class="btn-entry">
+    <p><strong>[Télémétrie]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Telemetry75x91.png" alt="Télémétrie"/>
+        Affiche le flux de télémétrie en temps réel de l'ordinateur de vol.</p>
+</div>
 
-<p><strong>[Continuité Marche/Arrêt]</strong></p>
-<p><img src="file:///android_asset/help/images/console Continuity on-off75x93.png" alt="Continuité Marche/Arrêt"/></p>
-<p>Active ou désactive le signal sonore du bipeur de continuité.</p>
-<p>&nbsp;</p>
+<div class="btn-entry">
+    <p><strong>[Continuité Marche/Arrêt]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Continuity on-off75x93.png" alt="Continuité Marche/Arrêt"/>
+        Active ou désactive le signal sonore du bipeur de continuité.</p>
+</div>
 
-<p><strong>[Réinit Config]</strong></p>
-<p><img src="file:///android_asset/help/images/console Reset settings75x92.png" alt="Réinitialisation"/></p>
-<p>Permet de restaurer les paramètres d'usine de l'altimètre. Donne également la possibilité d'effacer tous les vols enregistrés ou seulement le dernier.</p>
-<p>&nbsp;</p>
+<div class="btn-entry">
+    <p><strong>[Réinit Config]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Reset settings75x92.png" alt="Réinitialisation"/>
+        Permet de restaurer les paramètres d'usine de l'altimètre. Donne également la possibilité d'effacer tous les vols enregistrés ou seulement le dernier.</p>
+</div>
 
-<p><strong>[État]</strong></p>
-<p><img src="file:///android_asset/help/images/console Status75x90.png" alt="État diagnostic"/></p>
-<p>Accède à l'écran de diagnostic : affiche la continuité des canaux de déploiement, l'utilisation mémoire, la tension batterie et l'altitude courante.</p>
-<p>&nbsp;</p>
+<div class="btn-entry">
+    <p><strong>[État]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Status75x90.png" alt="État diagnostic"/>
+        Accède à l'écran de diagnostic : affiche la continuité des canaux de déploiement, l'utilisation mémoire, la tension batterie et l'altitude courante.</p>
+</div>
 
-<p><strong>[Flash Firmware]</strong></p>
-<p><img src="file:///android_asset/help/images/console Flash firmware75x92.png" alt="Flash Firmware"/></p>
-<p>Permet de mettre à jour le firmware à l'aide d'un câble USB OTG (disponible pour les cartes à base d'ATmega328, STM32 et ESP32).</p>
-<p>&nbsp;</p>
+<div class="btn-entry">
+    <p><strong>[Flash Firmware]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flash firmware75x92.png" alt="Flash Firmware"/>
+        Permet de mettre à jour le firmware à l'aide d'un câble USB OTG (disponible pour les cartes à base d'ATmega328, STM32 et ESP32).</p>
+</div>
 
-<p><strong>[Connexion / Déconnexion]</strong></p>
-<p>
-    <img src="file:///android_asset/help/images/console connect75x93.png" alt="Connexion"/>
-    <img src="file:///android_asset/help/images/console Disconnect75x91.png" alt="Déconnexion"/>
-</p>
-<p>Établit ou interrompt la connexion avec l'altimètre.</p>
-<p>&nbsp;</p>
+<div class="btn-entry">
+    <p><strong>[Connexion / Déconnexion]</strong></p>
+    <p>
+        <img src="file:///android_asset/help/images/console connect75x93.png" alt="Connexion"/>
+        <img src="file:///android_asset/help/images/console Disconnect75x91.png" alt="Déconnexion"/>
+    </p>
+    <p>Établit ou interrompt la connexion avec l'altimètre.</p>
+</div>
 
 <h3>Menu de l'écran principal</h3>
 <p>Depuis le menu d'options, vous pouvez ouvrir ce guide d'aide, l'écran « À propos » précisant la version logicielle, personnaliser l'apparence visuelle de l'application et configurer les modules de télémétrie 3DR radio, Bluetooth ou LoRa eByte.</p>
-<p>&nbsp;</p>
 
 <h3>Altimètres compatibles</h3>
-<p>- AltiDuo (version grand format avec ATmega328)</p>
-<p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (version grand format avec ATmega328)</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V1</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti V1"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V2</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMulti V2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiGPS</strong></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti STM32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMulti STM32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMulti ESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
 
-<p>- AltiMulti V1</p>
-<p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti V1"/></p>
-
-<p>- AltiMulti V2</p>
-<p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMulti V2"/></p>
-
-<p>- AltiServo</p>
-<p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
-
-<p>- AltiGPS</p>
-
-<p>- AltiMulti STM32</p>
-<p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMulti STM32"/></p>
-
-<p>- AltiMulti ESP32</p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMulti ESP32"/></p>
-
-<p>- AltiMulti ESP32 accel</p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
-
-<p>- AltiMulti ESP32 accel 345</p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
-
-<p>- AltiMulti ESP32 accel 375</p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
-
-<p>- TTGO BearAltimeter</p>
-<p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
+</body>
+</html>

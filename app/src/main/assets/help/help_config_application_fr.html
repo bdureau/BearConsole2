@@ -2,33 +2,71 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .setting-item { margin-bottom: 12px; }
+        .setting-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
 </head>
 <body>
+
 <h1>Configuration de l'application Bear Console</h1>
-<p>Les paramètres de l'application sont organisés en deux onglets distincts : <strong>Général</strong> et <strong>Télémétrie</strong>[cite: 11].</p>
+
+<p>Les paramètres de l'application sont organisés en deux onglets distincts : <strong>Général</strong> et <strong>Télémétrie</strong>.</p>
 
 <h2>1. Paramètres Généraux</h2>
-<ul>
-    <li><strong>Langue de l'application :</strong> Affiche la langue courante (par défaut, l'application suit automatiquement la langue de votre appareil Android)[cite: 11].</li>
-    <li><strong>Couleur du graphique :</strong> Définit la teinte du tracé des courbes de vol (altitude, vitesse, accélération)[cite: 11].</li>
-    <li><strong>Unités de l'application :</strong> Permet de basculer entre le système métrique (mètres, m/s) et le système impérial (pieds, ft/s)[cite: 11].</li>
-    <li><strong>Couleur de fond du graphique :</strong> Définit la couleur d'arrière-plan du graphique. <em>Veillez à choisir une couleur contrastant nettement avec la courbe[cite: 11] !</em></li>
-    <li><strong>Taille de la police :</strong> Ajuste la lisibilité des textes et relevés sur le graphique et dans la console[cite: 11].</li>
-    <li><strong>Vitesse en bauds (Baud rate) :</strong> Vitesse de transmission via le câble USB (doit impérativement être identique à celle configurée sur l'altimètre, généralement 38400 bauds)[cite: 11].</li>
-    <li><strong>Type de connexion :</strong> Sélectionne le protocole de liaison, soit <strong>Bluetooth</strong> (courte portée), soit <strong>USB</strong> (câble direct ou liaisons radio longue distance)[cite: 11].</li>
-    <li><strong>Bibliothèque graphique :</strong> Permet de basculer entre deux moteurs d'affichage. <em>Attention : à partir d'Android 8.0, vous devez impérativement utiliser la bibliothèque <strong>MPAndroidChart</strong> pour éviter tout blocage ou plantage de l'application[cite: 11].</em></li>
-    <li><strong>Multiples Main / Drogue :</strong> Permet d'affecter plus d'une sortie pyrotechnique aux parachutes principal (Main) ou extracteur (Drogue)[cite: 11].</li>
-    <li><strong>Support USB complet :</strong> À activer <strong>uniquement</strong> en cas de connexion filaire directe par câble USB[cite: 11]. <strong>Laissez désactivé</strong> si vous utilisez un module radio longue portée (LoRa ou 3DR) afin d'éviter toute corruption de la mémoire de l'altimètre[cite: 11].</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Langue de l'application :</strong> Affiche la langue courante (par défaut, l'application suit automatiquement la langue de votre appareil Android).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Couleur du graphique :</strong> Définit la teinte du tracé des courbes de vol (altitude, vitesse, accélération).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Unités de l'application :</strong> Permet de basculer entre le système métrique (mètres, m/s) et le système impérial (pieds, ft/s).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Couleur de fond du graphique :</strong> Définit la couleur d'arrière-plan du graphique. <em>Veillez à choisir une couleur contrastant nettement avec la courbe !</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Taille de la police :</strong> Ajuste la lisibilité des textes et relevés sur le graphique et dans la console.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Vitesse en bauds (Baud rate) :</strong> Vitesse de transmission via le câble USB (doit impérativement être identique à celle configurée sur l'altimètre, généralement 38400 bauds).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Type de connexion :</strong> Sélectionne le protocole de liaison, soit <strong>Bluetooth</strong> (courte portée), soit <strong>USB</strong> (câble direct ou liaisons radio longue distance).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Bibliothèque graphique :</strong> Permet de basculer entre deux moteurs d'affichage. <em>Attention : à partir d'Android 8.0, vous devez impérativement utiliser la bibliothèque <strong>MPAndroidChart</strong> pour éviter tout blocage ou plantage de l'application.</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Multiples Main / Drogue :</strong> Permet d'affecter plus d'une sortie pyrotechnique aux parachutes principal (Main) ou extracteur (Drogue).</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; ATTENTION CONFIGURATION USB</div>
+    <div><strong>Support USB complet :</strong> À activer <strong>uniquement</strong> en cas de connexion filaire directe par câble USB. <strong>Laissez désactivé</strong> si vous utilisez un module radio longue portée (LoRa ou 3DR) afin d'éviter toute corruption de la mémoire de l'altimètre.</div>
+</div>
 
 <h2>2. Configuration de la Télémétrie</h2>
-<ul>
-    <li><strong>Annonces vocales :</strong> Permet de choisir quels événements de vol sont énoncés vocalement en direct (décollage, apogée, ouverture du parachute, etc.)[cite: 11].</li>
-    <li><strong>Voix de la synthèse :</strong> Sélectionne la voix du moteur de synthèse vocale (TTS)[cite: 11].</li>
-    <li><strong>Test audio :</strong> Cliquez sur le bouton <strong>[Tester la voix]</strong> pour vérifier la clarté et le volume de la synthèse vocale[cite: 11].</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Annonces vocales :</strong> Permet de choisir quels événements de vol sont énoncés vocalement en direct (décollage, apogée, ouverture du parachute, etc.).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Voix de la synthèse :</strong> Sélectionne la voix du moteur de synthèse vocale (TTS).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Test audio :</strong> Cliquez sur le bouton <strong>[Tester la voix]</strong> pour vérifier la clarté et le volume de la synthèse vocale.</p>
+</div>
 
 <h2>Sauvegarde des modifications</h2>
-<p>Cliquez sur <strong>[Sauvegarder]</strong> pour enregistrer vos modifications[cite: 11]. Vous pouvez également quitter l'écran sans enregistrer ou rétablir les paramètres par défaut d'origine[cite: 11].</p>
+<p>Cliquez sur <strong>[Sauvegarder]</strong> pour enregistrer vos modifications. Vous pouvez également quitter l'écran sans enregistrer ou rétablir les paramètres par défaut d'origine.</p>
+
 </body>
 </html>

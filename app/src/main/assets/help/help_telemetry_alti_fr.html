@@ -1,10 +1,39 @@
-<h1>Telemetry</h1>
-<p>This provides several screens to display telemetry when using a long range telemetry module.</p>
-<p>Note that the telemetry can also talk, you can choose the voice and event that you want to say inthe application configuration</p>
-<p></p>
-<p>The following screens are available:</p>
-<p>- A graph showing the current altitude and events information</p>
-<p>- Information about the altimeter such as altimeter type/firmware, output continuity, current altitude etc..</p>
-<p>- For the alti GPS this provide an aditionnal screen to display phone and rocket location informations using their GPS</p>
-<p>- For the alti GPS this provide a map which shows the phone and rocket positions on the map. This will show you where the rocket is going.</p>
-<p>Note that to track your rocket you should use the track screen which will memorize the last known rocket position</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .feature-item { margin-bottom: 12px; }
+        .feature-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Télémétrie</h1>
+
+<p>Cette section regroupe plusieurs écrans dédiés à l'affichage des flux de télémétrie en direct lors de l'utilisation d'un module radio longue portée.</p>
+
+<div class="info-box">
+    <strong>Synthèse vocale :</strong> Le système de télémétrie peut énoncer vocalement les événements en vol. Vous pouvez choisir la voix et sélectionner les événements à annoncer dans les paramètres de l'application.
+</div>
+
+<h2>Écrans de télémétrie disponibles</h2>
+<ul>
+    <li><strong>Graphique d'altitude et événements :</strong> Un tracé dynamique en temps réel affichant la courbe d'altitude et l'apparition des événements de vol.</li>
+    <li><strong>Diagnostic et état de l'altimètre :</strong> Présente les données courantes de l'altimètre (modèle, firmware, continuité des lignes, tension batterie et altitude instantanée).</li>
+    <li><strong>Coordonnées GPS (AltiGPS) :</strong> Pour les modèles équipés d'un GPS, cet écran fournit la position relative, le cap et la distance séparant votre téléphone de la fusée.</li>
+    <li><strong>Carte en direct (AltiGPS) :</strong> Une carte interactive positionnant en direct votre appareil et la fusée afin de visualiser sa trajectoire et sa zone d'évolution.</li>
+</ul>
+
+<div class="info-box">
+    <strong>Récupération au sol :</strong> Pour retrouver votre fusée après le vol, utilisez l'écran de suivi qui mémorise automatiquement la dernière position GPS valide transmise.
+</div>
+
+</body>
+</html>

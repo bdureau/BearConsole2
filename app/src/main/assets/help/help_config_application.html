@@ -2,33 +2,71 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .setting-item { margin-bottom: 12px; }
+        .setting-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
 </head>
 <body>
+
 <h1>Bear Console Application Settings</h1>
-<p>The application settings are organized into two dedicated tabs: <strong>General</strong> and <strong>Telemetry</strong>[cite: 9].</p>
+
+<p>The application settings are organized into two dedicated tabs: <strong>General</strong> and <strong>Telemetry</strong>.</p>
 
 <h2>1. General Settings</h2>
-<ul>
-    <li><strong>Application Language:</strong> Displays the selected language (by default, it automatically follows your Android system language)[cite: 9].</li>
-    <li><strong>Graph Color:</strong> Configures the plot line color for flight curves (altitude, acceleration, velocity)[cite: 9].</li>
-    <li><strong>Application Units:</strong> Toggles between Metric (meters, m/s) and Imperial (feet, ft/s) units[cite: 9].</li>
-    <li><strong>Graph Background Color:</strong> Sets the background color of the chart view. <em>Ensure it contrasts sufficiently with the plot line color[cite: 9]!</em></li>
-    <li><strong>Font Size:</strong> Adjusts text size across graphs and console displays[cite: 9].</li>
-    <li><strong>Baud Rate:</strong> Configures the communication speed for direct USB OTG cable connections (must match the altimeter's serial baud rate, typically 38400)[cite: 9].</li>
-    <li><strong>Connection Type:</strong> Selects between <strong>Bluetooth</strong> (short-range) or <strong>USB</strong> (direct cable or long-range LoRa/3DR radio transceivers)[cite: 9].</li>
-    <li><strong>Graphics Library:</strong> Allows switching between rendering backends. <em>Note: Devices running Android 8.0 and above must use the <strong>MPAndroidChart</strong> library to prevent application crashes[cite: 9].</em></li>
-    <li><strong>Multiple Main / Drogue:</strong> Enables defining more than one pyrotechnic output as a main chute or drogue chute deployment event[cite: 9].</li>
-    <li><strong>Full USB Support:</strong> Enable only when wired directly to the altimeter board via a USB-TTL cable[cite: 9]. <strong>Keep disabled</strong> when using wireless long-range telemetry modules (LoRa / 3DR) to prevent EEPROM configuration corruption[cite: 9].</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Application Language:</strong> Displays the selected language (by default, it automatically follows your Android system language).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Graph Color:</strong> Configures the plot line color for flight curves (altitude, acceleration, velocity).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Application Units:</strong> Toggles between Metric (meters, m/s) and Imperial (feet, ft/s) units.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Graph Background Color:</strong> Sets the background color of the chart view. <em>Ensure it contrasts sufficiently with the plot line color!</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Font Size:</strong> Adjusts text size across graphs and console displays.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Baud Rate:</strong> Configures the communication speed for direct USB OTG cable connections (must match the altimeter's serial baud rate, typically 38400).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Connection Type:</strong> Selects between <strong>Bluetooth</strong> (short-range) or <strong>USB</strong> (direct cable or long-range LoRa/3DR radio transceivers).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Graphics Library:</strong> Allows switching between rendering backends. <em>Note: Devices running Android 8.0 and above must use the <strong>MPAndroidChart</strong> library to prevent application crashes.</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Multiple Main / Drogue:</strong> Enables defining more than one pyrotechnic output as a main chute or drogue chute deployment event.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; USB CONFIGURATION WARNING</div>
+    <div><strong>Full USB Support:</strong> Enable only when wired directly to the altimeter board via a USB-TTL cable. <strong>Keep disabled</strong> when using wireless long-range telemetry modules (LoRa / 3DR) to prevent EEPROM configuration corruption.</div>
+</div>
 
 <h2>2. Telemetry Settings</h2>
-<ul>
-    <li><strong>Audio Events:</strong> Selects which flight events are announced verbally in real time (e.g., Liftoff, Apogee, Main deployment, Altitude)[cite: 9].</li>
-    <li><strong>Speech Synthesis Voice:</strong> Selects the Text-to-Speech (TTS) voice used for callouts[cite: 9].</li>
-    <li><strong>Voice Test:</strong> Tap the <strong>[Test Voice]</strong> button to verify audio volume and synthesized voice clarity[cite: 9].</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Audio Events:</strong> Selects which flight events are announced verbally in real time (e.g., Liftoff, Apogee, Main deployment, Altitude).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Speech Synthesis Voice:</strong> Selects the Text-to-Speech (TTS) voice used for callouts.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Voice Test:</strong> Tap the <strong>[Test Voice]</strong> button to verify audio volume and synthesized voice clarity.</p>
+</div>
 
 <h2>Saving Changes</h2>
-<p>Tap <strong>[Save]</strong> to apply and store your new parameters[cite: 9]. You may also exit without saving changes or reset to factory defaults via the corresponding menu options[cite: 9].</p>
+<p>Tap <strong>[Save]</strong> to apply and store your new parameters. You may also exit without saving changes or reset to factory defaults via the corresponding menu options.</p>
+
 </body>
 </html>

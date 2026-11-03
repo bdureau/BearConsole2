@@ -1,56 +1,91 @@
-<h1>Configuration d'un module eByte Lora E220  </h1>
-<p>De manière à pouvoir effectuer de la télémétrie longue distance vous devez remplacer votre
-    module bluetooth par un module télémetrie ngue portée comme le Lora E22O.
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Configuration d'un module eByte LoRa E220</h1>
+
+<p>De manière à pouvoir effectuer de la télémétrie longue distance, vous devez remplacer votre module Bluetooth par un module de télémétrie longue portée comme le LoRa E220.</p>
+
+<h3>Modules testés et validés</h3>
+<ul>
+    <li>E220-400T30D</li>
+    <li>E220-400T30S</li>
+    <li>E220-900T30D</li>
+    <li>E220-900T30S</li>
+    <li>E220-400T22D</li>
+    <li>E220-900T22S</li>
+</ul>
+
+<p>
+    <img src="file:///android_asset/help/images/E220-900T22S.jpg" alt="Module LoRa E220 SMD"/>
+    <img src="file:///android_asset/help/images/E220-900T30D.jpg" alt="Module LoRa E220 DIP"/>
 </p>
-<p>Les modules ci-dessous ont été configurés avec succé</p>
-<p>E220-400T30D</p>
-<p>E220-400T30S</p>
-<p>E220-900T30D</p>
-<p>E220-900T30S</p>
-<p>E220-400T22D</p>
-<p>etc ...</p>
-<p><img  src="file:///android_asset/help/images/E220-900T22S.jpg"/></p>
-<p><img  src="file:///android_asset/help/images/E220-900T30D.jpg"/></p>
-<p> </p>
-<p>Pour programmer votre module il est necessaire d'avoir un cable TTL</p>
-<p><img  src="file:///android_asset/help/images/ttl_cable-small.jpg"/></p>
-<p>un adaptateur USB (USBC ou micro USB en fonction de votre apareil Android )</p>
-<p><img  src="file:///android_asset/help/images/usb_adpter-small.jpg"/></p>
-<p>un adaptateur jst et des cables jst</p>
-<p> </p>
-<p>A noter que la batterie de votre appareil Android doit être suffisamment puissante pour
-    alimenter le module Lora. Envisager l'utilisation d'une batterie externe si vous avez
-    un module puissant.</p>
-<p></p>
-<p>De manière à mettre le module en mode configuration il faut mettre les 2 cavaliers</p>
-<p>Vous devez configurer votre module de manière à ce qu'il puisse fonctionner avec votre altimètre.</p>
-<p>A noter que ces modules sont en général préconfigurés à 57600 bauds. Cependant votre altimètre
-    par défaut sera configuré à 38400 bauds vous devez donc vous assurer de vous connecter à la bonne vitesse.</p>
-<p></p>
-<p>A noter que les modules Lora sont vendu par paire donc il sera nécessaire de configurer à la fois
-    l'émetteur et le récepteur</p>
-<p> </p>
-<p><span style="color: #ff0000;">ATTENTION: assurez vous de ne pas débrancher le module lorsque vous faites les opérations qui suivent</span></p>
-<p> </p>
-<p><strong>Charger la configuration du module</strong></p>
-<p>Branchez le module dans votre appareil Android en utilisant un câble OTG ou un adaptateur USB qui peut fonctionner
-    avec micro USB ou USB type C.</p>
-<p>Ensuite cliquez sur [charger cfg] , cela effectuera des tentatives de connexion au module à 9600 baud.
-    Puis la configuration de module sera chargée de manière à ce que vous puissiez la changer.</p>
-<p> </p>
-<p><strong>Sauvegarder la configuration du module</strong></p>
-<p>Change the settings that you want to change. Changez les paramètres que vous voulez changer. Assurez vous que vous avec choisi la vitesse qui fonctionnera
-    avec votre carte (par défaut 38400). Assurez vous que les channels sont les meme pour
-    l'emetteur et le recepteur. Si vous utilisez une clé d'encription assurez vous qu'elle soit
-    la meme des 2 cotés. Lorsque terminé cliquez [Sauver cfg].
-    Cela sauvegardera la configuration.
-    En cas d'erreur lors de la sauvegarde celle-ci sera annulée</p>
-<p></p>
-<p>Note that you will need to repeat the same step for each module</p>
-<p>Avant de l'utilisez assurez vous d'enlever les 2 cavaliers pour sortir du mode configuration</p>
-<p> </p>
-<p>Lora telemetry modules currently do not work with ESP32 board.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+
+<div class="info-box">
+    <strong>Alimentation électrique :</strong> À noter que la batterie de votre appareil Android doit être suffisamment puissante pour alimenter le module LoRa. Envisagez l'utilisation d'une batterie externe si vous avez un module puissant (comme les modèles de 30dBm / 1W).
+</div>
+
+<h2>Matériel requis</h2>
+<ul>
+    <li>Un câble adaptateur USB vers série TTL.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Câble TTL"/>
+    </li>
+    <li>Un adaptateur USB (USB-C ou Micro-USB en fonction de votre appareil Android).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adaptateur USB"/>
+    </li>
+    <li>Un adaptateur JST et des cordons de liaison JST.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; CRITIQUE : CAVALIERS DE MODE (M0 / M1)</div>
+    <div>De manière à mettre le module en mode configuration, il faut impérativement <strong>mettre les 2 cavaliers</strong> (M0 et M1). Avant d'utiliser le module en vol, assurez-vous <strong>d'enlever les 2 cavaliers</strong> pour sortir du mode configuration et rétablir la transmission normale.</div>
+</div>
+
+<h2>Harmonisation de la vitesse (Baud Rate)</h2>
+<p>Vous devez configurer votre module de manière à ce qu'il puisse fonctionner avec votre altimètre. À noter que ces modules sont en général préconfigurés à 57600 bauds. Cependant, votre altimètre par défaut sera configuré à 38400 bauds : vous devez donc vous assurer de configurer la vitesse de communication opérationnelle adéquate.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ATTENTION</div>
+    <div>Assurez-vous de ne pas débrancher le module lorsque vous effectuez les opérations suivantes.</div>
+</div>
+
+<h2>Procédure de configuration</h2>
+<ol>
+    <li class="step-item">
+        <strong>Préparation matérielle :</strong> Mettez les 2 cavaliers sur le module. Branchez le module sur votre appareil Android en utilisant un câble USB-TTL et un adaptateur USB OTG.
+    </li>
+    <li class="step-item">
+        <strong>Charger la configuration :</strong> Cliquez sur <strong>[Charger cfg]</strong>. L'application effectuera des tentatives de connexion au module à 9600 bauds, puis affichera les paramètres actuels pour que vous puissiez les modifier.
+    </li>
+    <li class="step-item">
+        <strong>Sauvegarder la configuration :</strong> Changez les paramètres souhaités. Assurez-vous d'avoir choisi la vitesse qui fonctionnera avec votre carte (par défaut 38400 bauds). Assurez-vous que les canaux de fréquence sont strictement identiques pour l'émetteur et le récepteur. Si vous utilisez une clé de chiffrement, assurez-vous qu'elle soit la même des deux côtés. Cliquez sur <strong>[Sauver cfg]</strong>. En cas d'erreur lors de la sauvegarde, celle-ci sera annulée.
+    </li>
+    <li class="step-item">
+        <strong>Sortie du mode configuration :</strong> Débranchez le module et <strong>enlevez les 2 cavaliers</strong> avant toute installation sur la fusée ou au sol.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Modules par paire :</strong> À noter que les modules LoRa sont vendus par paire, il sera donc nécessaire de répéter la même opération pour l'émetteur et le récepteur.<br/>
+    <em>Remarque : Les modules de télémétrie LoRa ne fonctionnent pas actuellement avec les cartes ESP32.</em>
+</div>
+
+</body>
+</html>

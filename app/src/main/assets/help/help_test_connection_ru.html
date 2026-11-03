@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .metric-item { margin-bottom: 12px; }
+        .metric-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Справка по проверке соединения</h1>
+
+<p>Этот экран позволяет протестировать надежность связи, в частности при работе с модулями телеметрии 3DR. Здесь отображается количество пакетов, потерянных из-за нестабильного соединения.</p>
+
+<div class="info-box">
+    <strong>Рекомендация:</strong> Выполняйте проверку радиоканала непосредственно на стартовой площадке перед пуском, чтобы убедиться в устойчивом приеме и достаточном запасе мощности сигнала.
+</div>
+
+<h2>Контролируемые параметры канала</h2>
+<div class="metric-item">
+    <p><strong>Отправлено / получено пакетов:</strong> Общее количество тестовых кадров данных, переданных по активному каналу связи.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Потерянные пакеты:</strong> Число пакетов, утерянных или поврежденных вследствие радиопомех, рассогласования антенн или предельной дальности передачи.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Процент потерь (%):</strong> Доля потерянных кадров относительно общего объема переданных данных. Для стабильной телеметрии в реальном времени показатель потерь должен быть ниже 2%.</p>
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ПРЕДПУСКОВОЕ ПРЕДОСТЕРЕЖЕНИЕ</div>
+    <div>Воздержитесь от пуска ракеты при постоянных потерях пакетов на стартовой позиции. Это свидетельствует о наличии радиопомех, неверной ориентации антенн или недостаточной мощности питания передатчика.</div>
+</div>
+
+</body>
+</html>

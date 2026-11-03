@@ -1,42 +1,84 @@
-<h1> Configura l'altimetro </h1>
-<p> La configurazione dell'altimetro può essere fino a 4 schermate diverse a seconda dell'altimetro a cui sei connesso.
-    Quando si aprono queste schermate, sei connesso all'altimetro e recuperi la configurazione dell'altimetro memorizzata nella memoria della scheda </p>
-<p><strong> Uscite dell'altimetro </strong></p>
-<p> Ogni uscita dell'altimetro può essere configurata e assegnata una funzionalità. Le funzionalità sono guidate dagli eventi. I seguenti eventi sono disponibili: </p>
-<p>- Decollo (fuoco al decollo) </p>
-<p>- Timer (fuoco X millisecondi dopo il decollo) </p>
-<p>- Altitudine (fuoco all'altitudine specificata) </p>
-<p>- Apogeo (fuoco all'apogeo) </p>
-<p>- Principale (fuoco X metri prima dell'atterraggio) </p>
-<p>- Atterraggio (fuoco all'atterraggio) </p>
-<p> Nota che per ogni evento puoi anche avere un ritardo in millisecondi </p>
-<p> </p>
-<p><strong> Configurazione dell'altimetro </strong></p>
-<p>- Baud Rate
-    Consenti di modificare la velocità di comunicazione dell'altimetro (richiede il riavvio) </p>
-<p>- Misure apogeo
-    Il numero di misure necessarie per rilevare l'apogeo </p>
-<p>- Altimetro Res
-    La risoluzione dell'altimetro (fai attenzione a cambiarlo ridurrà il numero di misure non farlo se utilizzi l'altimetro per distribuire i paracadute) </p>
-<p>- Dimensione EEprom
-    Ti consente di modificare la dimensione della memoria a bordo </p>
-<p>- Beep ON / Off
-    È possibile attivare o disattivare il beep di continuità </p>
-<p>- Fine dell'altitudine di registrazione
-    A quale altitudine smetti di registrare </p>
-<p>- Registra la temperatura </p>
-<p>- Ritardo supersonico </p>
-<p>- Altitudine di decollo
-    A quale altitudine consideriamo che il decollo sia avvenuto</p>
-<p>- Tipo di batteria
-    Definisci il tipo di batteria utilizzata, questa è utilizzata da alcuni altimetri per avvisare sulla bassa tensione della batteria</p>
-<p> </p>
-<p> </p>
-<p><strong> Configurazione dell'altimetro (pagina 2) </strong></p>
-<p> Consente di scegliere le unità dell'altimetro, la modalità di beep e la frequenza di beep </p>
-<p><strong> Configurazione del servo </strong></p>
-<p> Questo è disponibile solo quando connesso all'altiServo, ti consentirà di scegliere la posizione di avvio e di arresto del servo </p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .param-item { margin-bottom: 12px; }
+        .param-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Configura Altimetro</h1>
+
+<p>La configurazione dell'altimetro può comprendere fino a 4 schermate diverse a seconda del modello collegato. Aprendo queste schermate, l'applicazione si connette all'altimetro e carica i dati memorizzati a bordo.</p>
+
+<div class="info-box">
+    <strong>Stato connessione:</strong> Verificare che l'altimetro sia acceso e collegato tramite Bluetooth o USB prima di modificare i parametri.
+</div>
+
+<h2>Uscite dell'Altimetro</h2>
+<p>Ogni canale di uscita può essere configurato e assegnato a un evento di volo specifico:</p>
+<ul>
+    <li><strong>Decollo:</strong> Attivazione immediata al decollo.</li>
+    <li><strong>Timer:</strong> Attivazione X millisecondi dopo il decollo.</li>
+    <li><strong>Altitudine:</strong> Attivazione al raggiungimento della quota impostata.</li>
+    <li><strong>Apogeo:</strong> Attivazione all'apogeo (quota massima).</li>
+    <li><strong>Principale (Main):</strong> Attivazione X metri prima dell'atterraggio per il paracadute principale.</li>
+    <li><strong>Atterraggio:</strong> Attivazione al contatto con il suolo.</li>
+</ul>
+<p><em>Nota: Per ciascun evento è possibile impostare un ritardo aggiuntivo in millisecondi.</em></p>
+
+<h2>Configurazione Altimetro (Pagina 1)</h2>
+<div class="param-item">
+    <p><strong>Baud Rate:</strong> Velocità della porta seriale dell'altimetro (richiede il riavvio della scheda).</p>
+</div>
+<div class="param-item">
+    <p><strong>Misure apogeo:</strong> Numero di campionamenti consecutivi in discesa necessari per confermare l'apogeo.</p>
+</div>
+<div class="param-item">
+    <p><strong>Risoluzione altimetro:</strong> Risoluzione di campionamento del sensore di pressione.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; ATTENZIONE</div>
+    <div>La modifica della risoluzione può ridurre la frequenza complessiva delle letture. Non modificarla se l'altimetro è deputato all'espulsione dei paracadute.</div>
+</div>
+<div class="param-item">
+    <p><strong>Dimensione EEPROM:</strong> Capacità della memoria installata a bordo.</p>
+</div>
+<div class="param-item">
+    <p><strong>Beep ON / OFF:</strong> Abilita o disabilita il segnale sonoro di continuità.</p>
+</div>
+<div class="param-item">
+    <p><strong>Fine altitudine di registrazione:</strong> Quota sotto la quale viene terminata la registrazione dei dati.</p>
+</div>
+<div class="param-item">
+    <p><strong>Registra temperatura:</strong> Abilita o esclude la registrazione termica.</p>
+</div>
+<div class="param-item">
+    <p><strong>Ritardo supersonico:</strong> Esclude le letture barometriche anomale dovute alle onde d'urto nei primi secondi di volo.</p>
+</div>
+<div class="param-item">
+    <p><strong>Altitudine di decollo:</strong> Quota minima per confermare l'avvenuto lancio.</p>
+</div>
+<div class="param-item">
+    <p><strong>Tipo di batteria:</strong> Definisce il tipo di alimentazione per la gestione degli avvisi di bassa tensione.</p>
+</div>
+
+<h2>Configurazione Altimetro (Pagina 2)</h2>
+<p>Permette di scegliere le unità di misura (metriche o imperiali), la modalità di emissione acustica e la frequenza dei beep.</p>
+
+<h2>Configurazione Servocomandi</h2>
+<p>Disponibile esclusivamente quando si è connessi alla scheda <strong>AltiServo</strong>. Consente di definire posizione neutra, corsa minima e corsa massima di ciascun servo.</p>
+
+</body>
+</html>

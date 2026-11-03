@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Configuratie 3DR-module</h1>
+
+<p>Voor telemetrie over lange afstanden dient u de Bluetooth-module te vervangen door een 3DR-telemetriemodule.</p>
+
+<p><img src="file:///android_asset/help/images/3DR_module-small.png" alt="3DR-module"/></p>
+
+<div class="info-box">
+    <strong>Voedingsopmerking:</strong> Houd er rekening mee dat de accu van uw Android-toestel voldoende capaciteit moet leveren om de 3DR-module van stroom te voorzien. Gebruik een externe batterij als u een zendmodule met hoog vermogen gebruikt.
+</div>
+
+<h2>Benodigde hardware</h2>
+<ul>
+    <li>Een USB-naar-TTL seriële kabel.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="TTL-kabel"/>
+    </li>
+    <li>Een USB-adapter (USB-C of Micro-USB, afhankelijk van uw Android-apparaat).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB-adapter"/>
+    </li>
+    <li>Een JST-adapter en bijbehorende JST-bekabeling.</li>
+</ul>
+
+<h2>Baudrate-compatibiliteit</h2>
+<p>U dient de module te configureren zodat deze werkt met uw hoogtemeterprintplaat. Deze modules zijn standaard meestal ingesteld op 57600 baud. Uw hoogtemeter werkt echter standaard op 38400 baud; zorg er daarom voor dat u de juiste snelheid configureert.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; WAARSCHUWING</div>
+    <div>Koppel de module niet los tijdens het uitvoeren van de configuratiestappen om beschadiging van het geheugen te vermijden.</div>
+</div>
+
+<h2>Configuratiestappen</h2>
+<ol>
+    <li class="step-item">
+        <strong>Configuratie inlezen:</strong> Sluit de module aan op uw Android-apparaat via een OTG-kabel of USB-adapter. Tik op <strong>[Retrieve cfg]</strong>: de app test verschillende baudrates tot er verbinding is en laadt vervolgens de configuratie van de module.
+    </li>
+    <li class="step-item">
+        <strong>Configuratie opslaan:</strong> Pas de gewenste instellingen aan. Zorg dat u een baudrate selecteert die werkt met uw printplaat (38400 baud) en tik op <strong>[Save cfg]</strong>. Als er een fout optreedt tijdens het opslaan, wordt het proces afgebroken.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Gekoppeld paar:</strong> 3DR-modules worden geleverd als paar; herhaal deze stappen daarom voor zowel de zend- als de ontvangstmodule.
+</div>
+
+</body>
+</html>

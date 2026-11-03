@@ -2,33 +2,71 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .setting-item { margin-bottom: 12px; }
+        .setting-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
 </head>
 <body>
+
 <h1>Instellingen van de Bear Console-applicatie</h1>
+
 <p>De applicatie-instellingen zijn onderverdeeld in twee afzonderlijke tabbladen: <strong>Algemeen</strong> en <strong>Telemetrie</strong>.</p>
 
 <h2>1. Algemene instellingen</h2>
-<ul>
-    <li><strong>Applicatietaal:</strong> Geeft de actieve taal weer (volgt standaard automatisch de systeemtaal van uw Android-apparaat).</li>
-    <li><strong>Grafiekkleur:</strong> Bepaalt de lijnkleur voor vluchtcurves (hoogte, snelheid, versnelling).</li>
-    <li><strong>Applicatie-eenheden:</strong> Schakelt tussen het metrieke stelsel (meters, m/s) en het imperiale stelsel (voet, ft/s).</li>
-    <li><strong>Achtergrondkleur grafiek:</strong> Stelt de achtergrondkleur van het grafiekvenster in. <em>Zorg voor voldoende contrast met de lijnkleur van de grafiek!</em></li>
-    <li><strong>Lettergrootte:</strong> Past de tekstgrootte aan voor grafieken en weergaven in de console.</li>
-    <li><strong>Baudrate:</strong> Configureert de communicatiesnelheid voor directe USB OTG-kabelverbindingen (moet exact overeenkomen met de baudrate van de hoogtemeter, meestal 38400 baud).</li>
-    <li><strong>Verbindingstype:</strong> Keuze tussen <strong>Bluetooth</strong> (korte afstand) of <strong>USB</strong> (directe kabelverbinding of LoRa/3DR-radiomodules voor lange afstand).</li>
-    <li><strong>Grafische bibliotheek:</strong> Maakt het mogelijk te schakelen tussen twee weergave-engines. <em>Let op: op apparaten met Android 8.0 en hoger moet u verplicht de <strong>MPAndroidChart</strong>-bibliotheek gebruiken om app-crashes te voorkomen.</em></li>
-    <li><strong>Meerdere Main / Drogue:</strong> Hiermee kunt u meer dan één pyrotechnische uitgang toewijzen als hoofdvalscherm (Main) of remvalscherm (Drogue).</li>
-    <li><strong>Volledige USB-ondersteuning:</strong> Schakel dit <strong>alleen</strong> in bij een directe bekabelde verbinding via een USB-TTL-kabel. <strong>Laat dit uitgeschakeld</strong> wanneer u draadloze radiomodules voor lange afstand (LoRa of 3DR) gebruikt, om beschadiging van de configuratie van uw hoogtemeter te voorkomen.</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Applicatietaal:</strong> Geeft de actieve taal weer (volgt standaard automatisch de systeemtaal van uw Android-apparaat).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Grafiekkleur:</strong> Bepaalt de lijnkleur voor vluchtcurves (hoogte, snelheid, versnelling).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Applicatie-eenheden:</strong> Schakelt tussen het metrieke stelsel (meters, m/s) en het imperiale stelsel (voet, ft/s).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Achtergrondkleur grafiek:</strong> Stelt de achtergrondkleur van het grafiekvenster in. <em>Zorg voor voldoende contrast met de lijnkleur van de grafiek!</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Lettergrootte:</strong> Past de tekstgrootte aan voor grafieken en weergaven in de console.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Baudrate:</strong> Configureert de communicatiesnelheid voor directe USB OTG-kabelverbindingen (moet exact overeenkomen met de baudrate van de hoogtemeter, meestal 38400 baud).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Verbindingstype:</strong> Keuze tussen <strong>Bluetooth</strong> (korte afstand) of <strong>USB</strong> (directe kabelverbinding of LoRa/3DR-radiomodules voor lange afstand).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Grafische bibliotheek:</strong> Maakt het mogelijk te schakelen tussen twee weergave-engines. <em>Let op: op apparaten met Android 8.0 en hoger moet u verplicht de <strong>MPAndroidChart</strong>-bibliotheek gebruiken om app-crashes te voorkomen.</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Meerdere Main / Drogue:</strong> Hiermee kunt u meer dan één pyrotechnische uitgang toewijzen als hoofdvalscherm (Main) of remvalscherm (Drogue).</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; WAARSCHUWING USB-CONFIGURATIE</div>
+    <div><strong>Volledige USB-ondersteuning:</strong> Schakel dit <strong>alleen</strong> in bij een directe bekabelde verbinding via een USB-TTL-kabel. <strong>Laat dit uitgeschakeld</strong> wanneer u draadloze radiomodules voor lange afstand (LoRa of 3DR) gebruikt, om beschadiging van de configuratie van uw hoogtemeter te voorkomen.</div>
+</div>
 
 <h2>2. Telemetrie-instellingen</h2>
-<ul>
-    <li><strong>Gesproken meldingen:</strong> Selecteer welke vluchtgebeurtenissen in realtime worden uitgesproken (lancering, apogee, opening van het valscherm, enz.).</li>
-    <li><strong>Spraaksynthese-stem:</strong> Kiest de stem van de tekst-naar-spraakmotor (TTS).</li>
-    <li><strong>Spraaktest:</strong> Tik op de knop <strong>[Stem testen]</strong> (Test voice) om het volume en de duidelijkheid van de spraaksynthese te controleren.</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Gesproken meldingen:</strong> Selecteer welke vluchtgebeurtenissen in realtime worden uitgesproken (lancering, apogee, opening van het valscherm, enz.).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Spraaksynthese-stem:</strong> Kiest de stem van de tekst-naar-spraakmotor (TTS).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Spraaktest:</strong> Tik op de knop <strong>[Stem testen]</strong> (Test voice) om het volume en de duidelijkheid van de spraaksynthese te controleren.</p>
+</div>
 
 <h2>Wijzigingen opslaan</h2>
 <p>Tik op <strong>[Opslaan]</strong> om de nieuwe parameters toe te passen. U kunt het scherm ook verlaten zonder op te slaan of de fabrieksinstellingen herstellen via het menu.</p>
+
 </body>
 </html>

@@ -1,52 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .hardware-item { margin-bottom: 12px; }
+        .step-item { margin-bottom: 10px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
 <h1>Flash del Firmware</h1>
+
 <p>Per prima cosa, è necessario selezionare il firmware. Il firmware dipende dallo specifico modello di altimetro che si desidera flashare.</p>
 <p>Decidere quindi se si desidera caricare direttamente il firmware operativo o utilizzare prima un firmware di ripristino (recovery).</p>
-<p>Utilizzare un firmware di ripristino se la configurazione è corrotta e l'altimetro non riesce più a connettersi.</p>
-<p>Dopo aver caricato un firmware di ripristino, sarà necessario flashare nuovamente il firmware operativo.</p>
-<p>Si noti che l'installazione di un firmware errato renderà l'altimetro del tutto inoperativo o causerà comportamenti imprevisti.</p>
-<p>Per poter programmare l'altimetro, sono necessari un cavo seriale USB-TTL e un adattatore per collegarlo allo smartphone o tablet:</p>
-<p><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Cavo USB TTL"/></p>
-<p>Un adattatore USB OTG (USB-C o Micro-USB a seconda del dispositivo Android):</p>
-<p><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adattatore USB"/></p>
-<p>Sono inoltre richiesti alcuni cavetti di collegamento con connettori JST.</p>
-<p>&nbsp;</p>
 
-<p>I seguenti altimetri possono essere aggiornati. Osservare attentamente le immagini seguenti per identificare con precisione il proprio hardware:</p>
-<p><strong>AltiDuo</strong> (Versione grande)</p>
-<p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+<div class="info-box">
+    <strong>Firmware di ripristino:</strong> Utilizzare un firmware di ripristino se la configurazione è corrotta e l'altimetro non riesce più a connettersi. Dopo aver caricato un firmware di ripristino, sarà necessario flashare nuovamente il firmware operativo.
+</div>
 
-<p><strong>AltiServo</strong></p>
-<p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+<div class="warning-box">
+    <div class="warning-title">&#9888; ATTENZIONE</div>
+    <div>Si noti che l'installazione di un firmware errato renderà l'altimetro del tutto inoperativo o causerà comportamenti imprevisti.</div>
+</div>
 
-<p><strong>AltiMulti</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti"/></p>
+<h2>Hardware necessario</h2>
+<ul>
+    <li>Un cavo seriale USB-TTL per collegarlo allo smartphone o tablet.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Cavo USB TTL"/>
+    </li>
+    <li>Un adattatore USB OTG (USB-C o Micro-USB a seconda del dispositivo Android).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adattatore USB"/>
+    </li>
+    <li>Alcuni cavetti di collegamento con connettori JST.</li>
+</ul>
 
-<p><strong>AltiMultiV2</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMultiV2"/></p>
+<h2>Altimetri supportati</h2>
+<p>Osservare attentamente le immagini seguenti per identificare con precisione il proprio hardware:</p>
 
-<p><strong>AltiMultiSTM32 o AltiGPS</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMultiSTM32 / AltiGPS"/></p>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (Versione grande)</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiV2</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMultiV2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiSTM32 o AltiGPS</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMultiSTM32 / AltiGPS"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiESP32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMultiESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
 
-<p><strong>AltiMultiESP32</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMultiESP32"/></p>
-
-<p><strong>AltiMulti ESP32 accel</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
-
-<p><strong>AltiMulti ESP32 accel 345</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
-
-<p><strong>AltiMulti ESP32 accel 375</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
-
-<p><strong>TTGO BearAltimeter</strong></p>
-<p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
-<p>&nbsp;</p>
-
+<h2>Istruzioni per famiglie di componenti</h2>
 <p>In alternativa, è possibile avviare una procedura di rilevamento automatico del firmware.</p>
-<p>Attualmente esistono tre famiglie principali di microcontrollori: altimetri basati su ATmega328, su STM32 e su ESP32.</p>
 
-<h3>Flash degli altimetri basati su ATmega328 (es.: AltiDuo, AltiServo, AltiMulti, AltiMultiV2)</h3>
+<h3>1. Altimetri basati su ATmega328 (es.: AltiDuo, AltiServo, AltiMulti, AltiMultiV2)</h3>
 <ul>
     <li>Collegare il cavo USB TTL all'altimetro.</li>
     <li>Selezionare il firmware appropriato o avviare il rilevamento automatico.</li>
@@ -54,7 +100,7 @@
 </ul>
 <p><img src="file:///android_asset/help/images/alti-reset.jpg" alt="Pulsante Reset ATmega328"/></p>
 
-<h3>Flash degli altimetri basati su STM32 (es.: AltiMultiSTM32, AltiGPS)</h3>
+<h3>2. Altimetri basati su STM32 (es.: AltiMultiSTM32, AltiGPS)</h3>
 <ul>
     <li>Collegare il cavo USB TTL.</li>
     <li>Selezionare il firmware appropriato o avviare il rilevamento automatico.</li>
@@ -71,7 +117,7 @@
     <li>Premere il pulsante di <strong>reset</strong> per riavviare l'altimetro in modalità operativa.</li>
 </ul>
 
-<h3>Flash degli altimetri basati su ESP32 (es.: AltiMultiESP32, AltiMultiESP32Accel)</h3>
+<h3>3. Altimetri basati su ESP32 (es.: AltiMultiESP32, AltiMultiESP32Accel)</h3>
 <ul>
     <li>Collegare il cavo.</li>
     <li>Selezionare il firmware appropriato o avviare il rilevamento automatico.</li>
@@ -85,15 +131,14 @@
     <li>Il firmware dovrebbe avviarsi in caricamento (riprovare in caso di mancato avvio). Al termine, premere il pulsante di <strong>reset</strong>.</li>
 </ul>
 
-<h3>Flash dell'altimetro TTGO BearAltimeter</h3>
+<h3>4. TTGO BearAltimeter</h3>
 <ul>
     <li>Collegare direttamente il cavo USB-C.</li>
     <li>Selezionare il firmware specifico per TTGO BearAltimeter.</li>
-    <li>Toccare il pulsante <strong>[Flash Firmware]</strong>.</li>
-    <li>Il caricamento avrà inizio. Una volta completato, premere il pulsante di <strong>reset</strong>.</li>
+    <li>Toccare il pulsante <strong>[Flash Firmware]</strong>. Una volta completato, premere il pulsante di <strong>reset</strong>.</li>
 </ul>
 
-<h3>Flash dell'altimetro TTGO Mini o Simple Altimeter</h3>
+<h3>5. TTGO Mini, Simple Altimeter e scheda TS-ESP32-S3</h3>
 <ul>
     <li>Collegare il cavo USB-C.</li>
     <li>Tenere premuto il pulsante <strong>BOOT</strong> sulla scheda.</li>
@@ -102,13 +147,10 @@
     <li>Toccare il pulsante <strong>[Flash Firmware]</strong>. Al termine, premere il pulsante di <strong>reset</strong>.</li>
 </ul>
 
-<h3>Flash della scheda altimetro TS-ESP32-S3</h3>
-<ul>
-    <li>Collegare il cavo USB-C.</li>
-    <li>Tenere premuto il pulsante <strong>BOOT</strong> sulla scheda.</li>
-    <li>Premere e rilasciare il pulsante <strong>RESET</strong> continuando a tenere premuto il pulsante BOOT.</li>
-    <li>Rilasciare il pulsante <strong>BOOT</strong> e selezionare il modello di altimetro corretto.</li>
-    <li>Toccare il pulsante <strong>[Flash Firmware]</strong>. Al termine, premere il pulsante di <strong>reset</strong>.</li>
-</ul>
+<div class="warning-box">
+    <div class="warning-title">&#9888; NOTA IMPORTANTE</div>
+    <div>Non scollegare mai il cavo durante il processo di flash. Tale interruzione corromperà il firmware e renderà necessaria una nuova programmazione completa.</div>
+</div>
 
-<p><span style="color: #ff0000;"><strong>NOTA IMPORTANTE:</strong> Non scollegare mai il cavo durante il processo di flash. Tale interruzione corromperà il firmware e renderà necessaria una nuova programmazione completa.</span></p>
+</body>
+</html>

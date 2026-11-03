@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Configuratie van de eByte LoRa E220-module</h1>
+
+<p>Voor telemetrie over lange afstanden dient u uw Bluetooth-module te vervangen door een zendmodule voor lange afstand, zoals de LoRa E220.</p>
+
+<h3>Succesvol geteste modules</h3>
+<ul>
+    <li>E220-400T30D</li>
+    <li>E220-400T30S</li>
+    <li>E220-900T30D</li>
+    <li>E220-900T30S</li>
+    <li>E220-400T22D</li>
+    <li>E220-900T22S</li>
+</ul>
+
+<p>
+    <img src="file:///android_asset/help/images/E220-900T22S.jpg" alt="LoRa E220 SMD-module"/>
+    <img src="file:///android_asset/help/images/E220-900T30D.jpg" alt="LoRa E220 DIP-module"/>
+</p>
+
+<div class="info-box">
+    <strong>Voedingsopmerking:</strong> Houd er rekening mee dat de accu van uw Android-toestel voldoende krachtig moet zijn om de LoRa-module van stroom te voorzien. Gebruik een externe batterij als u een krachtige module gebruikt (zoals 30dBm / 1W modellen).
+</div>
+
+<h2>Benodigde hardware</h2>
+<ul>
+    <li>Een USB-naar-TTL seriële kabel.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="TTL-kabel"/>
+    </li>
+    <li>Een USB-adapter (USB-C of Micro-USB, afhankelijk van uw Android-apparaat).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB-adapter"/>
+    </li>
+    <li>Een JST-adapter en bijbehorende JST-aansluitkabels.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; CRITIEK: CONFIGURATIEJUMPERS (M0 / M1)</div>
+    <div>Om de configuratiemodus in te schakelen, moet u <strong>beide jumpers</strong> plaatsen (M0 en M1). Voordat u de module gebruikt, moet u ervoor zorgen dat u <strong>beide jumpers verwijdert</strong> om de configuratiemodus te verlaten en terug te keren naar normale transmissie.</div>
+</div>
+
+<h2>Baudrate-compatibiliteit</h2>
+<p>U dient de module te configureren zodat deze samenwerkt met uw hoogtemeterprintplaat. Deze modules zijn standaard meestal ingesteld op 57600 baud. Uw hoogtemeter werkt standaard echter op 38400 baud; zorg er daarom voor dat u de juiste werkingssnelheid instelt.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; WAARSCHUWING</div>
+    <div>Koppel de module of de kabel niet los tijdens het uitvoeren van de configuratiestappen.</div>
+</div>
+
+<h2>Configuratiestappen</h2>
+<ol>
+    <li class="step-item">
+        <strong>Voorbereiding:</strong> Plaats beide jumpers op de module. Sluit de module aan op uw Android-apparaat met behulp van de USB-TTL-kabel en de OTG-adapter.
+    </li>
+    <li class="step-item">
+        <strong>Configuratie inlezen:</strong> Tik op <strong>[Retrieve cfg]</strong> (Configuratie ophalen). De app probeert verbinding te maken op 9600 baud en laadt vervolgens de configuratie van de module zodat u deze kunt aanpassen.
+    </li>
+    <li class="step-item">
+        <strong>Configuratie opslaan:</strong> Pas de gewenste instellingen aan. Zorg ervoor dat u een baudrate selecteert die werkt met uw printplaat (standaard 38400 baud). Zorg ervoor dat de frequentiekanalen exact identiek zijn voor zowel de zender als de ontvanger. Als u een encryptiesleutel instelt, zorg er dan voor dat deze aan beide zijden gelijk is. Tik op <strong>[Save cfg]</strong>. Als er een fout optreedt tijdens het opslaan, wordt dit afgebroken.
+    </li>
+    <li class="step-item">
+        <strong>Configuratiemodus verlaten:</strong> Koppel de module los en <strong>verwijder beide jumpers</strong> voordat u deze installeert in de raket of op het grondstation.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Gekoppeld paar:</strong> LoRa-modules worden geleverd als paar; herhaal deze stappen daarom voor zowel de zend- als de ontvangstmodule.<br/>
+    <em>Opmerking: LoRa-telemetriemodules werken momenteel niet met ESP32-printplaten.</em>
+</div>
+
+</body>
+</html>

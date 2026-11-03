@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .param-item { margin-bottom: 12px; }
+        .param-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Настройка высотомера</h1>
+
+<p>Меню настройки высотомера может содержать до 4 экранов в зависимости от подключенной модели. При открытии этих разделов приложение считывает конфигурацию, сохраненную в памяти платы.</p>
+
+<div class="info-box">
+    <strong>Статус соединения:</strong> Перед изменением настроек убедитесь, что высотомер включен и соединен по Bluetooth или USB.
+</div>
+
+<h2>Выходные каналы высотомера</h2>
+<p>Каждый выходной канал можно настроить на определенное событие полетного цикла:</p>
+<ul>
+    <li><strong>Старт (Liftoff):</strong> Срабатывание в момент отрыва от стартового стола.</li>
+    <li><strong>Таймер:</strong> Срабатывание через X миллисекунд после старта.</li>
+    <li><strong>Высота:</strong> Срабатывание при достижении заданной высоты.</li>
+    <li><strong>Апогей:</strong> Срабатывание в точке наивысшего подъема.</li>
+    <li><strong>Основной парашют (Main):</strong> Срабатывание за X метров до земли для выброса основного купола.</li>
+    <li><strong>Посадка:</strong> Срабатывание при касании грунта.</li>
+</ul>
+<p><em>Примечание: Для каждого события можно задать дополнительную задержку в миллисекундах.</em></p>
+
+<h2>Параметры высотомера (Страница 1)</h2>
+<div class="param-item">
+    <p><strong>Скорость порта (Baud Rate):</strong> Скорость последовательного интерфейса (требуется перезагрузка платы).</p>
+</div>
+<div class="param-item">
+    <p><strong>Измерения апогея:</strong> Количество последовательных нисходящих замеров для подтверждения прохождения апогея.</p>
+</div>
+<div class="param-item">
+    <p><strong>Разрешение высотомера:</strong> Точность оцифровки барометрического датчика.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; ВНИМАНИЕ</div>
+    <div>Изменение разрешения может уменьшить частоту измерений. Не понижайте значение, если высотомер отвечает за раскрытие парашютов.</div>
+</div>
+<div class="param-item">
+    <p><strong>Объем EEPROM:</strong> Размер доступной энергонезависимой памяти на плате.</p>
+</div>
+<div class="param-item">
+    <p><strong>Звуковой сигнал ВКЛ / ВЫКЛ:</strong> Включение или отключение звуковой прозвонки цепей.</p>
+</div>
+<div class="param-item">
+    <p><strong>Высота завершения записи:</strong> Высота, ниже которой запись параметров полета прекращается.</p>
+</div>
+<div class="param-item">
+    <p><strong>Запись температуры:</strong> Включение фиксации температуры в лог-файле.</p>
+</div>
+<div class="param-item">
+    <p><strong>Сверхзвуковая задержка:</strong> Игнорирование скачков давления от ударных волн на первых секундах скоростного полета.</p>
+</div>
+<div class="param-item">
+    <p><strong>Высота фиксации старта:</strong> Порог высоты для подтверждения факта отрыва ракеты.</p>
+</div>
+<div class="param-item">
+    <p><strong>Тип батареи:</strong> Выбор типа питания для калибровки сигналов разряда аккумулятора.</p>
+</div>
+
+<h2>Параметры высотомера (Страница 2)</h2>
+<p>Выбор единиц измерения (метрические или имперские), режимов индикации зуммера и тональности звуковых сигналов.</p>
+
+<h2>Настройка сервоприводов</h2>
+<p>Доступно только при подключении к контроллерам <strong>AltiServo</strong>. Позволяет настраивать крайние и нейтральные углы отклонения рулевых машинок.</p>
+
+</body>
+</html>

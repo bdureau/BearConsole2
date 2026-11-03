@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .param-item { margin-bottom: 12px; }
+        .param-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Hoogtemeter Configureren</h1>
+
+<p>De configuratie van de hoogtemeter kan tot 4 schermen omvatten, afhankelijk van het type printplaat dat is aangesloten. Bij het openen van deze schermen leest de app de actuele instellingen uit het boordgeheugen uit.</p>
+
+<div class="info-box">
+    <strong>Verbindingsstatus:</strong> Zorg dat de hoogtemeter is ingeschakeld en via Bluetooth of USB is verbonden voordat u instellingen wijzigt.
+</div>
+
+<h2>Uitgangen van de Hoogtemeter</h2>
+<p>Elke uitgang kan worden geconfigureerd en gekoppeld aan een gebeurtenis tijdens de vlucht:</p>
+<ul>
+    <li><strong>Lancering (Liftoff):</strong> Wordt direct bij het opstijgen geactiveerd.</li>
+    <li><strong>Timer:</strong> Wordt X milliseconden na lancering geactiveerd.</li>
+    <li><strong>Hoogte:</strong> Wordt geactiveerd bij het bereiken van de ingestelde hoogte.</li>
+    <li><strong>Apogeum:</strong> Wordt geactiveerd op het hoogste punt van de vlucht.</li>
+    <li><strong>Hoofdparachute (Main):</strong> Wordt X meter voor de landing geactiveerd voor de hoofdparachute.</li>
+    <li><strong>Landing:</strong> Wordt geactiveerd bij contact met de grond.</li>
+</ul>
+<p><em>Opmerking: Aan elke gebeurtenis kan een extra vertraging in milliseconden worden toegevoegd.</em></p>
+
+<h2>Hoogtemeter Instellingen (Pagina 1)</h2>
+<div class="param-item">
+    <p><strong>Baudrate:</strong> Seriële communicatiesnelheid (herstart vereist).</p>
+</div>
+<div class="param-item">
+    <p><strong>Metingen apogeum:</strong> Aantal opeenvolgende dalende metingen om het apogeum te bevestigen.</p>
+</div>
+<div class="param-item">
+    <p><strong>Hoogtemeterresolutie:</strong> Bemonsteringsresolutie van de sensor.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; WAARSCHUWING</div>
+    <div>Het wijzigen van de resolutie kan het aantal meetpunten verminderen. Wijzig dit niet als de hoogtemeter wordt gebruikt voor het ontplooien van parachutes.</div>
+</div>
+<div class="param-item">
+    <p><strong>EEPROM-grootte:</strong> Geheugencapaciteit van de printplaat.</p>
+</div>
+<div class="param-item">
+    <p><strong>Pieptoon AAN / UIT:</strong> Schakelt de akoestische continuïteitstoon in of uit.</p>
+</div>
+<div class="param-item">
+    <p><strong>Einde opnamehoogte:</strong> Hoogtedrempel waaronder de vluchtopname stopt.</p>
+</div>
+<div class="param-item">
+    <p><strong>Temperatuur registreren:</strong> Schakelt de registratie van de temperatuur in of uit.</p>
+</div>
+<div class="param-item">
+    <p><strong>Supersone vertraging:</strong> Negeert drukschommelingen door schokgolven tijdens de eerste seconden van de vlucht.</p>
+</div>
+<div class="param-item">
+    <p><strong>Lanceringshoogte:</strong> Hoogtedrempel om een geldige start te bevestigen.</p>
+</div>
+<div class="param-item">
+    <p><strong>Batterijtype:</strong> Bepaalt het batterijtype voor waarschuwingen bij lage accuspanning.</p>
+</div>
+
+<h2>Hoogtemeter Instellingen (Pagina 2)</h2>
+<p>Kies meeteenheden (metrisch of imperiaal), de pieptoonmodus en de frequentie van de zoemer.</p>
+
+<h2>Servoconfiguratie</h2>
+<p>Alleen beschikbaar bij verbinding met een <strong>AltiServo</strong>-printplaat. Hiermee stelt u de begin-, neutraal- en uitslagposities van de servomotoren in.</p>
+
+</body>
+</html>

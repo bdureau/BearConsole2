@@ -1,6 +1,38 @@
-<h1>Altimeter status</h1>
-<p>This provides several screens to check the altimeter status.</p>
-<p>- Information about the altimeter such as altimeter type/firmware, output continuity, current altitude etc..</p>
-<p>- Gives the ability to test the pyro output or servos. Use it with caution and make sure that no pyro charges are connected while testing</p>
-<p>- For the alti GPS this provide an aditionnal screen to display phone and rocket location informations using their GPS</p>
-<p>- For the alti GPS this provide a map which shows the phone and rocket positions on the map</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .status-item { margin-bottom: 12px; }
+        .status-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Stato dell'Altimetro</h1>
+
+<p>Questa sezione fornisce diverse schermate di diagnostica per verificare il corretto funzionamento e lo stato operativo dell'altimetro.</p>
+
+<h2>Informazioni e funzionalità disponibili</h2>
+<ul>
+    <li><strong>Diagnostica e telemetria:</strong> Mostra le informazioni di sistema quali modello dell'altimetro, versione del firmware, continuità delle linee pirotecniche, tensione della batteria e quota in tempo reale.</li>
+    <li><strong>Test delle uscite e dei servocomandi:</strong> Consente di testare manualmente l'attivazione dei canali pirotecnici o il movimento dei servocomandi.</li>
+    <li><strong>Coordinate GPS (AltiGPS):</strong> Per le schede dotate di GPS, una schermata aggiuntiva indica coordinate dettagliate, orientamento e distanza tra lo smartphone e il razzo.</li>
+    <li><strong>Mappa di tracciamento dal vivo (AltiGPS):</strong> Mostra una mappa interattiva con la posizione in tempo reale sia dello smartphone che del razzo per facilitarne il recupero.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; AVVERTENZA DI SICUREZZA CRITICA</div>
+    <div>Utilizzare la funzione di test delle uscite con la massima cautela. Assicurarsi sempre che <strong>nessuna carica pirotecnica o accenditore sia collegato</strong> alla scheda durante i test a terra.</div>
+</div>
+
+</body>
+</html>

@@ -2,33 +2,71 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .setting-item { margin-bottom: 12px; }
+        .setting-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
 </head>
 <body>
+
 <h1>Configurazione dell'applicazione Bear Console</h1>
-<p>La configurazione è suddivisa in due schede: <strong>Generale</strong> e <strong>Telemetria</strong>[cite: 12].</p>
+
+<p>La configurazione è suddivisa in due schede: <strong>Generale</strong> e <strong>Telemetria</strong>.</p>
 
 <h2>1. Impostazioni Generali</h2>
-<ul>
-    <li><strong>Lingua dell'applicazione:</strong> Mostra la lingua attiva (predefinita in base alla lingua del sistema Android)[cite: 12].</li>
-    <li><strong>Colore del grafico:</strong> Imposta il colore della traccia delle curve di volo[cite: 12].</li>
-    <li><strong>Unità dell'applicazione:</strong> Consente di passare dal sistema metrico (metri, m/s) al sistema imperiale (piedi, ft/s)[cite: 12].</li>
-    <li><strong>Colore di sfondo del grafico:</strong> Imposta il colore dello sfondo. <em>Assicurarsi che sia sufficientemente contrastante con il colore della linea[cite: 12]!</em></li>
-    <li><strong>Dimensione del carattere:</strong> Regola la dimensione del testo visualizzato sullo schermo[cite: 12].</li>
-    <li><strong>Baud Rate:</strong> Velocità di comunicazione per il cavo USB (deve corrispondere esattamente alla velocità della scheda altimetro, di norma 38400)[cite: 12].</li>
-    <li><strong>Tipo di connessione:</strong> Seleziona tra <strong>Bluetooth</strong> o <strong>USB</strong> (cavo diretto o moduli radio per telemetria a lungo raggio)[cite: 12].</li>
-    <li><strong>Libreria grafica:</strong> Consente di selezionare il motore di visualizzazione dei grafici. <em>Attenzione: su Android 8 e versioni successive, è obbligatorio utilizzare la libreria <strong>MPAndroidChart</strong> per evitare il blocco dell'applicazione[cite: 12].</em></li>
-    <li><strong>Multiplo Main / Drogue:</strong> Consente di assegnare più di un'uscita pirotecnica come paracadute principale o drogue[cite: 12].</li>
-    <li><strong>Supporto USB completo:</strong> Attivare <strong>solo</strong> se si utilizza un cavo USB diretto[cite: 12]. <strong>Mantenere disattivato</strong> se si utilizzano moduli radio a lunga portata (LoRa o 3DR) per evitare di danneggiare la configurazione dell'altimetro[cite: 12].</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Lingua dell'applicazione:</strong> Mostra la lingua attiva (predefinita in base alla lingua del sistema Android).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Colore del grafico:</strong> Imposta il colore della traccia delle curve di volo.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Unità dell'applicazione:</strong> Consente di passare dal sistema metrico (metri, m/s) al sistema imperiale (piedi, ft/s).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Colore di sfondo del grafico:</strong> Imposta il colore dello sfondo. <em>Assicurarsi che sia sufficientemente contrastante con il colore della linea!</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Dimensione del carattere:</strong> Regola la dimensione del testo visualizzato sullo schermo.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Baud Rate:</strong> Velocità di comunicazione per il cavo USB (deve corrispondere esattamente alla velocità della scheda altimetro, di norma 38400).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Tipo di connessione:</strong> Seleziona tra <strong>Bluetooth</strong> o <strong>USB</strong> (cavo diretto o moduli radio per telemetria a lungo raggio).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Libreria grafica:</strong> Consente di selezionare il motore di visualizzazione dei grafici. <em>Attenzione: su Android 8 e versioni successive, è obbligatorio utilizzare la libreria <strong>MPAndroidChart</strong> per evitare il blocco dell'applicazione.</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Multiplo Main / Drogue:</strong> Consente di assegnare più di un'uscita pirotecnica come paracadute principale o drogue.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; AVVISO CONFIGURAZIONE USB</div>
+    <div><strong>Supporto USB completo:</strong> Attivare <strong>solo</strong> se si utilizza un cavo USB diretto. <strong>Mantenere disattivato</strong> se si utilizzano moduli radio a lunga portata (LoRa o 3DR) per evitare di danneggiare la configurazione dell'altimetro.</div>
+</div>
 
 <h2>2. Configurazione Telemetria</h2>
-<ul>
-    <li><strong>Eventi vocali:</strong> Configura quali eventi di volo vengono annunciati vocalmente in tempo reale (decollo, apogeo, apertura del paracadute, ecc.)[cite: 12].</li>
-    <li><strong>Voce telemetria:</strong> Seleziona la voce del sintetizzatore vocale (TTS)[cite: 12].</li>
-    <li><strong>Test audio:</strong> Premere il pulsante <strong>[Test voce]</strong> per verificare il corretto funzionamento e il volume della sintesi vocale[cite: 12].</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Eventi vocali:</strong> Configura quali eventi di volo vengono annunciati vocalmente in tempo reale (decollo, apogeo, apertura del paracadute, ecc.).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Voce telemetria:</strong> Seleziona la voce del sintetizzatore vocale (TTS).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Test audio:</strong> Premere il pulsante <strong>[Test voce]</strong> per verificare il corretto funzionamento e il volume della sintesi vocale.</p>
+</div>
 
 <h2>Salvataggio delle modifiche</h2>
-<p>Toccare <strong>[Salva]</strong> per registrare le modifiche[cite: 12]. È inoltre possibile uscire senza salvare oppure ripristinare i valori predefiniti di fabbrica[cite: 12].</p>
+<p>Toccare <strong>[Salva]</strong> per registrare le modifiche. È inoltre possibile uscire senza salvare oppure ripristinare i valori predefiniti di fabbrica.</p>
+
 </body>
 </html>

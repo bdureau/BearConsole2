@@ -1,52 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .hardware-item { margin-bottom: 12px; }
+        .step-item { margin-bottom: 10px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
 <h1>Flash Firmware</h1>
+
 <p>First, you need to select the firmware. The firmware depends on the specific altimeter model you want to flash.</p>
 <p>Then decide if you want to directly flash the operational firmware or use a recovery firmware first.</p>
-<p>Use a recovery firmware if the configuration is corrupted and the altimeter can no longer connect.</p>
-<p>After loading a recovery firmware, you will need to re-flash the operational firmware.</p>
-<p>Note that flashing the wrong firmware will result in an altimeter not working at all or not behaving as expected.</p>
-<p>In order to flash your altimeter, you will need a USB to TTL serial cable and an adapter to connect it to your phone/tablet:</p>
-<p><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="USB TTL Cable"/></p>
-<p>A USB OTG adapter (USB-C or Micro-USB depending on your Android device):</p>
-<p><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB Adapter"/></p>
-<p>Some JST connector cables are also required.</p>
-<p>&nbsp;</p>
 
-<p>The following altimeters can be flashed. Please carefully examine the pictures below to identify your hardware:</p>
-<p><strong>AltiDuo</strong> (Large version)</p>
-<p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+<div class="info-box">
+    <strong>Recovery Firmware:</strong> Use a recovery firmware if the configuration is corrupted and the altimeter can no longer connect. After loading a recovery firmware, you will need to re-flash the operational firmware.
+</div>
 
-<p><strong>AltiServo</strong></p>
-<p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+<div class="warning-box">
+    <div class="warning-title">&#9888; CAUTION</div>
+    <div>Flashing the wrong firmware will result in an altimeter not working at all or not behaving as expected.</div>
+</div>
 
-<p><strong>AltiMulti</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti"/></p>
+<h2>Required Hardware</h2>
+<ul>
+    <li>A USB to TTL serial cable to connect to your phone/tablet.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="USB TTL Cable"/>
+    </li>
+    <li>A USB OTG adapter (USB-C or Micro-USB depending on your Android device).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB Adapter"/>
+    </li>
+    <li>Matching JST connector cables.</li>
+</ul>
 
-<p><strong>AltiMultiV2</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMultiV2"/></p>
+<h2>Supported Altimeters</h2>
+<p>Please carefully examine the pictures below to identify your hardware:</p>
 
-<p><strong>AltiMultiSTM32 or AltiGPS</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMultiSTM32 / AltiGPS"/></p>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (Large version)</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiV2</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMultiV2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiSTM32 or AltiGPS</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMultiSTM32 / AltiGPS"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiESP32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMultiESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
 
-<p><strong>AltiMultiESP32</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMultiESP32"/></p>
-
-<p><strong>AltiMulti ESP32 accel</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
-
-<p><strong>AltiMulti ESP32 accel 345</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
-
-<p><strong>AltiMulti ESP32 accel 375</strong></p>
-<p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
-
-<p><strong>TTGO BearAltimeter</strong></p>
-<p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
-<p>&nbsp;</p>
-
+<h2>Microcontroller Flashing Instructions</h2>
 <p>Alternatively, you can attempt to automatically detect the firmware.</p>
-<p>Currently, three primary microcontroller families exist: ATmega328-based altimeters, STM32-based altimeters, and ESP32-based altimeters.</p>
 
-<h3>Flashing ATmega328 based altimeters (e.g. AltiDuo, AltiServo, AltiMulti, AltiMultiV2)</h3>
+<h3>1. ATmega328 Based Altimeters (e.g. AltiDuo, AltiServo, AltiMulti, AltiMultiV2)</h3>
 <ul>
     <li>Connect the USB TTL cable to the altimeter.</li>
     <li>Select the correct firmware or auto-detect it.</li>
@@ -54,7 +100,7 @@
 </ul>
 <p><img src="file:///android_asset/help/images/alti-reset.jpg" alt="ATmega328 Reset Button"/></p>
 
-<h3>Flashing STM32 based altimeters (e.g. AltiMultiSTM32, AltiGPS)</h3>
+<h3>2. STM32 Based Altimeters (e.g. AltiMultiSTM32, AltiGPS)</h3>
 <ul>
     <li>Connect the USB TTL cable.</li>
     <li>Select the correct firmware or auto-detect it.</li>
@@ -71,7 +117,7 @@
     <li>Press the <strong>reset</strong> button to restart the altimeter in normal mode.</li>
 </ul>
 
-<h3>Flashing ESP32 based altimeters (e.g. AltiMultiESP32, AltiMultiESP32Accel variants)</h3>
+<h3>3. ESP32 Based Altimeters (e.g. AltiMultiESP32, AltiMultiESP32Accel variants)</h3>
 <ul>
     <li>Connect the cable.</li>
     <li>Select the correct firmware or auto-detect it.</li>
@@ -85,15 +131,14 @@
     <li>The firmware should now load (retry if it fails). Once complete, press the <strong>reset</strong> button.</li>
 </ul>
 
-<h3>Flashing TTGO BearAltimeter</h3>
+<h3>4. TTGO BearAltimeter</h3>
 <ul>
     <li>Plug in the USB-C cable directly.</li>
     <li>Select the TTGO BearAltimeter firmware.</li>
-    <li>Tap the <strong>[Flash Firmware]</strong> button.</li>
-    <li>The firmware should now load. When complete, press the <strong>reset</strong> button.</li>
+    <li>Tap the <strong>[Flash Firmware]</strong> button. When complete, press the <strong>reset</strong> button.</li>
 </ul>
 
-<h3>Flashing TTGO Mini or Simple Altimeter</h3>
+<h3>5. TTGO Mini, Simple Altimeter &amp; TS-ESP32-S3</h3>
 <ul>
     <li>Plug in the USB-C cable.</li>
     <li>Press and hold the <strong>BOOT</strong> button on the board.</li>
@@ -102,13 +147,10 @@
     <li>Tap the <strong>[Flash Firmware]</strong> button. When complete, press the <strong>reset</strong> button.</li>
 </ul>
 
-<h3>Flashing TS-ESP32-S3 Board Altimeter</h3>
-<ul>
-    <li>Plug in the USB-C cable.</li>
-    <li>Press and hold the <strong>BOOT</strong> button on the board.</li>
-    <li>Press and release the <strong>RESET</strong> button while still holding the BOOT button.</li>
-    <li>Release the <strong>BOOT</strong> button and select the correct altimeter model.</li>
-    <li>Tap the <strong>[Flash Firmware]</strong> button. When complete, press the <strong>reset</strong> button.</li>
-</ul>
+<div class="warning-box">
+    <div class="warning-title">&#9888; IMPORTANT NOTE</div>
+    <div>Never disconnect the cable during flashing. Doing so will corrupt the firmware image and require re-flashing from scratch.</div>
+</div>
 
-<p><span style="color: #ff0000;"><strong>IMPORTANT NOTE:</strong> Never disconnect the cable during flashing. Doing so will corrupt the firmware image and require re-flashing from scratch.</span></p>
+</body>
+</html>

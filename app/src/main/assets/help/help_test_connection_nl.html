@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .metric-item { margin-bottom: 12px; }
+        .metric-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Hulpbestand Verbindingstest</h1>
+
+<p>Met dit scherm kunt u de betrouwbaarheid van de verbinding testen, in het bijzonder bij het gebruik van 3DR-telemetriemodules. Hier wordt het aantal pakketten weergegeven dat verloren gaat door een slechte verbinding.</p>
+
+<div class="info-box">
+    <strong>Aanbeveling voor gebruik:</strong> Voer voorafgaand aan de lancering een signaaltest uit op het platform om zeker te zijn van een stabiele verbinding en voldoende zendbereik.
+</div>
+
+<h2>Bewaakte verbindingsparameters</h2>
+<div class="metric-item">
+    <p><strong>Verzonden / ontvangen pakketten:</strong> Totaal aantal testframes dat via de actieve telemetrieverbinding is verstuurd.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Verloren pakketten:</strong> Het aantal verloren of onbevestigde gegevenspakketten veroorzaakt door radiostoringen, foute antenne-uitlijning of te grote afstand.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Pakketverlies (%):</strong> Percentage verloren pakketten ten opzichte van het totaal aantal verzonden frames. Een percentage lager dan 2% garandeert betrouwbare realtime telemetrie.</p>
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; VEILIGHEIDSWAARSCHUWING VÓÓR LANCERING</div>
+    <div>Lanceer niet wanneer er op het lanceerplatform al een hoog pakketverlies optreedt. Dit wijst meestal op radio-interferentie, een verkeerde antennepolarisatie of een te lage voedingsspanning van de zender.</div>
+</div>
+
+</body>
+</html>

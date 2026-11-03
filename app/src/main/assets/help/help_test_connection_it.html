@@ -1,7 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .metric-item { margin-bottom: 12px; }
+        .metric-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
 <h1>File di aiuto per la prova della connessione</h1>
-<p>Questa schermata ti consentirà di testare la affidabilità della connessione, in particolare con i moduli di telemetria 3DR.
-    Questo mostrerà il numero di pacchetti che vengono persi a causa di una cattiva connessione.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+
+<p>Questa schermata ti consentirà di testare l'affidabilità della connessione, in particolare con i moduli di telemetria 3DR. Questo mostrerà il numero di pacchetti che vengono persi a causa di una cattiva connessione.</p>
+
+<div class="info-box">
+    <strong>Suggerimento operativo:</strong> Esegui un test di copertura radio sulla rampa prima del volo per assicurarti che il collegamento disponga di un margine di segnale adeguato.
+</div>
+
+<h2>Metriche analizzate</h2>
+<div class="metric-item">
+    <p><strong>Pacchetti inviati / ricevuti :</strong> Numero totale di frame di test scambiati sulla linea seriale attiva.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Pacchetti persi :</strong> Numero di pacchetti non confermati a causa di interferenze RF, orientamento non ottimale delle antenne o portata al limite.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Tasso di perdita (%) :</strong> Percentuale di pacchetti persi rispetto al totale inviato. Un valore inferiore al 2% assicura una ricezione corretta in tempo reale.</p>
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; AVVISO PRE-VOLO</div>
+    <div>Evita il lancio se si verifica una perdita continua di pacchetti sulla rampa. Ciò indica spesso interferenze elettromagnetiche locali, polarizzazione errata delle antenne o alimentazione insufficiente del ricetrasmettitore.</div>
+</div>
+
+</body>
+</html>

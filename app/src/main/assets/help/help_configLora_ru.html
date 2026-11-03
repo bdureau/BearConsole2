@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Настройка модуля eByte LoRa E220</h1>
+
+<p>Для передачи телеметрических данных на большие расстояния необходимо заменить модуль Bluetooth на дальнобойный радиомодуль, такой как LoRa E220.</p>
+
+<h3>Успешно протестированные модули</h3>
+<ul>
+    <li>E220-400T30D</li>
+    <li>E220-400T30S</li>
+    <li>E220-900T30D</li>
+    <li>E220-900T30S</li>
+    <li>E220-400T22D</li>
+    <li>E220-900T22S</li>
+</ul>
+
+<p>
+    <img src="file:///android_asset/help/images/E220-900T22S.jpg" alt="Модуль LoRa E220 SMD"/>
+    <img src="file:///android_asset/help/images/E220-900T30D.jpg" alt="Модуль LoRa E220 DIP"/>
+</p>
+
+<div class="info-box">
+    <strong>Питание:</strong> Обратите внимание, что аккумулятор вашего устройства Android должен быть достаточно мощным для питания модуля LoRa. При использовании мощных модулей (например, версий на 30 дБм / 1 Вт) рекомендуется использовать внешний аккумулятор.
+</div>
+
+<h2>Необходимое оборудование</h2>
+<ul>
+    <li>Кабель-переходник USB-TTL.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Кабель TTL"/>
+    </li>
+    <li>Переходник USB (USB-C или Micro-USB в зависимости от вашего устройства Android).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Адаптер USB"/>
+    </li>
+    <li>Переходник JST и комплект проводов JST.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ВНИМАНИЕ: ДЖАМПЕРЫ РЕЖИМА (M0 / M1)</div>
+    <div>Для перехода в режим конфигурирования необходимо <strong>установить оба джампера</strong> (M0 и M1). Перед использованием в полете обязательно <strong>снимите оба джампера</strong> для выхода из режима настройки и возврата к штатной передаче данных.</div>
+</div>
+
+<h2>Согласование скорости передачи (Baud Rate)</h2>
+<p>Модуль необходимо настроить для работы с платой высотомера. Заводская скорость большинства модулей составляет 57600 бод. Однако плата высотомера по умолчанию работает со скоростью 38400 бод, поэтому необходимо убедиться, что скорость интерфейса согласована верно.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ПРЕДОСТЕРЕЖЕНИЕ</div>
+    <div>Категорически запрещается отключать модуль и кабель во время выполнения настроек.</div>
+</div>
+
+<h2>Порядок настройки</h2>
+<ol>
+    <li class="step-item">
+        <strong>Подготовка:</strong> Установите оба джампера на модуль. Подключите модуль к Android-устройству через кабель USB-TTL и OTG-адаптер.
+    </li>
+    <li class="step-item">
+        <strong>Считывание конфигурации:</strong> Нажмите <strong>[Считать cfg]</strong>. Приложение подключится к модулю на скорости 9600 бод и загрузит текущие параметры для изменения.
+    </li>
+    <li class="step-item">
+        <strong>Запись конфигурации:</strong> Измените необходимые настройки. Убедитесь, что выбрана скорость, совместимая с вашей платой (по умолчанию 38400 бод). Убедитесь, что частотные каналы совпадают для передатчика и приемника. Если используется ключ шифрования, убедитесь, что он одинаков на обоих устройствах. Нажмите <strong>[Сохранить cfg]</strong>. При возникновении ошибки процесс записи будет отменен.
+    </li>
+    <li class="step-item">
+        <strong>Выход из режима настройки:</strong> Отключите модуль и <strong>снимите оба джампера</strong> перед установкой в ракету или на наземную станцию.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Парная настройка:</strong> Модули LoRa поставляются парами, поэтому процедуру необходимо повторить для каждого модуля (передатчика и приемника).<br/>
+    <em>Примечание: Модули телеметрии LoRa в настоящее время не поддерживают платы ESP32.</em>
+</div>
+
+</body>
+</html>

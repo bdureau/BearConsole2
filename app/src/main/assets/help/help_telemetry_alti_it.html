@@ -1,10 +1,39 @@
-<h1>Telemetry</h1>
-<p>This provides several screens to display telemetry when using a long range telemetry module.</p>
-<p>Note that the telemetry can also talk, you can choose the voice and event that you want to say inthe application configuration</p>
-<p></p>
-<p>The following screens are available:</p>
-<p>- A graph showing the current altitude and events information</p>
-<p>- Information about the altimeter such as altimeter type/firmware, output continuity, current altitude etc..</p>
-<p>- For the alti GPS this provide an aditionnal screen to display phone and rocket location informations using their GPS</p>
-<p>- For the alti GPS this provide a map which shows the phone and rocket positions on the map. This will show you where the rocket is going.</p>
-<p>Note that to track your rocket you should use the track screen which will memorize the last known rocket position</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .feature-item { margin-bottom: 12px; }
+        .feature-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Telemetria</h1>
+
+<p>Questa sezione offre diverse schermate per visualizzare i dati di telemetria durante l'utilizzo di un modulo a lungo raggio.</p>
+
+<div class="info-box">
+    <strong>Sintesi vocale:</strong> La telemetria include annunci vocali in tempo reale. È possibile scegliere la voce e selezionare gli eventi desiderati nelle impostazioni dell'applicazione.
+</div>
+
+<h2>Schermate di telemetria disponibili</h2>
+<ul>
+    <li><strong>Grafico di quota ed eventi:</strong> Visualizza un grafico in tempo reale con la quota istantanea e i marker degli eventi di volo.</li>
+    <li><strong>Stato e diagnostica altimetro:</strong> Fornisce parametri operativi quali modello dell'altimetro, versione firmware, continuità dei canali, tensione batteria e quota corrente.</li>
+    <li><strong>Coordinate GPS (AltiGPS):</strong> Per i modelli dotati di GPS, questa schermata mostra coordinate dettagliate, prua e distanza tra il proprio dispositivo e il razzo.</li>
+    <li><strong>Mappa dal vivo (AltiGPS):</strong> Una mappa interattiva che mostra la posizione in tempo reale dello smartphone e del razzo per seguire la traiettoria di volo.</li>
+</ul>
+
+<div class="info-box">
+    <strong>Tracciamento per il recupero:</strong> Per ritrovare il razzo dopo l'atterraggio, utilizzare la schermata di tracciamento che memorizza l'ultima posizione GPS nota ricevuta.
+</div>
+
+</body>
+</html>

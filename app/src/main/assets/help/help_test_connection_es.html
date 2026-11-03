@@ -1,6 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .metric-item { margin-bottom: 12px; }
+        .metric-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
 <h1>Archivo de ayuda de conexión de prueba</h1>
-<p>Esta pantalla le permitirá probar la confiabilidad de la conexión, en particular con módulos de telemetría 3DR. Esto mostrará el número de paquetes que se caen debido a una mala conexión.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+
+<p>Esta pantalla le permitirá probar la confiabilidad de la conexión, en particular con módulos de telemetría 3DR. Esto mostrará el número de paquetes que se pierden debido a una mala conexión.</p>
+
+<div class="info-box">
+    <strong>Consejo de uso:</strong> Realice una prueba de enlace en la rampa de lanzamiento antes del vuelo para confirmar que la radioenlace cuenta con suficiente margen de cobertura.
+</div>
+
+<h2>Métricas supervisadas</h2>
+<div class="metric-item">
+    <p><strong>Paquetes enviados / recibidos:</strong> Cantidad total de tramas de prueba enviadas a través del enlace activo.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Paquetes perdidos:</strong> Número de paquetes no recibidos o descartados por interferencias de radio, desalineación de antenas o alcance límite.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Tasa de pérdida (%):</strong> Porcentaje de paquetes descartados respecto al total transmitido. Una tasa inferior al 2% es ideal para telemetría continua.</p>
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ADVERTENCIA PREVIA AL VUELO</div>
+    <div>No realice el lanzamiento si detecta un porcentaje alto de pérdida de paquetes en la rampa. Esto denota interferencias en la zona, polarización cruzada de antenas o alimentación insuficiente del módulo.</div>
+</div>
+
+</body>
+</html>

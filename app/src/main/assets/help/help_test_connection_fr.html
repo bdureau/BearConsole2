@@ -1,8 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .metric-item { margin-bottom: 12px; }
+        .metric-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
 <h1>Test de la connexion</h1>
-<p>Cet écran vous permettra de tester la fiabilité de votre connexion en particulier lorsque
-    vous utilisez un module de télémétrie 3DR.
-    Cela affichera le nombre de paquets perdu à cause d'une mauvaise connexion.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+
+<p>Cet écran vous permettra de tester la fiabilité de votre connexion, en particulier lorsque vous utilisez un module de télémétrie 3DR. Cela affichera le nombre de paquets perdus à cause d'une mauvaise connexion.</p>
+
+<div class="info-box">
+    <strong>Conseil d'utilisation :</strong> Effectuez un test de liaison sur le pas de tir avant le décollage afin de vérifier la qualité de transmission et la marge radioélectrique.
+</div>
+
+<h2>Indicateurs mesurés</h2>
+<div class="metric-item">
+    <p><strong>Paquets émis / reçus :</strong> Nombre total de paquets de test échangés sur la liaison série active.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Paquets perdus :</strong> Nombre de trames perdues ou non acquittées en raison de parasites radio, d'une mauvaise orientation d'antenne ou d'une portée limite.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Taux de perte (%) :</strong> Pourcentage de paquets non reçus par rapport au total émis. Une valeur sous la barre des 2% assure un flux sans coupure.</p>
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; RECOMMANDATION AVANT LE VOL</div>
+    <div>N'effectuez pas de tir si un taux de perte élevé est mesuré sur la rampe. Cela révèle souvent une perturbation locale, un mauvais alignement des antennes ou une batterie insuffisante.</div>
+</div>
+
+</body>
+</html>

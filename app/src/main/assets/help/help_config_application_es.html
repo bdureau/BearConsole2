@@ -2,33 +2,71 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .setting-item { margin-bottom: 12px; }
+        .setting-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
 </head>
 <body>
+
 <h1>Configuración de la aplicación Bear Console</h1>
-<p>Los parámetros de la aplicación se dividen en dos secciones: <strong>General</strong> y <strong>Telemetría</strong>[cite: 10].</p>
+
+<p>Los parámetros de la aplicación se dividen en dos secciones: <strong>General</strong> y <strong>Telemetría</strong>.</p>
 
 <h2>1. Parámetros Generales</h2>
-<ul>
-    <li><strong>Idioma de la aplicación:</strong> Idioma activo (por defecto, sigue automáticamente el idioma del sistema Android)[cite: 10].</li>
-    <li><strong>Color del gráfico:</strong> Ajusta el color del trazo de las curvas de vuelo[cite: 10].</li>
-    <li><strong>Unidades de la aplicación:</strong> Alterna entre el sistema métrico (metros, m/s) e imperial (pies, ft/s)[cite: 10].</li>
-    <li><strong>Color de fondo del gráfico:</strong> Configura el color de fondo. <em>¡Asegúrese de que contraste con el color de la curva[cite: 10]!</em></li>
-    <li><strong>Tamaño de fuente:</strong> Ajusta el tamaño del texto para una lectura óptima[cite: 10].</li>
-    <li><strong>Velocidad en baudios:</strong> Configuración para conexión USB (debe coincidir exactamente con la velocidad del altímetro, normalmente 38400)[cite: 10].</li>
-    <li><strong>Tipo de conexión:</strong> Permite seleccionar entre <strong>Bluetooth</strong> o <strong>USB</strong> (cable directo o radioenlaces de larga distancia)[cite: 10].</li>
-    <li><strong>Biblioteca de gráficos:</strong> Permite elegir entre dos motores de renderizado. <em>Advertencia: en dispositivos con Android 8 o superior, debe utilizar obligatoriamente la biblioteca <strong>MPAndroidChart</strong> para evitar cierres inesperados[cite: 10].</em></li>
-    <li><strong>Múltiples Main / Drogue:</strong> Permite asignar más de una salida pirotécnica para el paracaídas principal o extractor (drogue)[cite: 10].</li>
-    <li><strong>Soporte USB completo:</strong> Habilítelo <strong>únicamente</strong> si se conecta mediante un cable USB[cite: 10]. <strong>Manténgalo desactivado</strong> si utiliza módulos de radio de largo alcance (LoRa o 3DR) para evitar corromper la configuración de su altímetro[cite: 10].</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Idioma de la aplicación:</strong> Idioma activo (por defecto, sigue automáticamente el idioma del sistema Android).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Color del gráfico:</strong> Ajusta el color del trazo de las curvas de vuelo.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Unidades de la aplicación:</strong> Alterna entre el sistema métrico (metros, m/s) e imperial (pies, ft/s).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Color de fondo del gráfico:</strong> Configura el color de fondo. <em>¡Asegúrese de que contraste con el color de la curva!</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Tamaño de fuente:</strong> Ajusta el tamaño del texto para una lectura óptima.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Velocidad en baudios:</strong> Configuración para conexión USB (debe coincidir exactamente con la velocidad del altímetro, normalmente 38400).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Tipo de conexión:</strong> Permite seleccionar entre <strong>Bluetooth</strong> o <strong>USB</strong> (cable directo o radioenlaces de larga distancia).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Biblioteca de gráficos:</strong> Permite elegir entre dos motores de renderizado. <em>Advertencia: en dispositivos con Android 8 o superior, debe utilizar obligatoriamente la biblioteca <strong>MPAndroidChart</strong> para evitar cierres inesperados.</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Múltiples Main / Drogue:</strong> Permite asignar más de una salida pirotécnica para el paracaídas principal o extractor (drogue).</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; ADVERTENCIA DE CONFIGURACIÓN USB</div>
+    <div><strong>Soporte USB completo:</strong> Habilítelo <strong>únicamente</strong> si se conecta mediante un cable USB. <strong>Manténgalo desactivado</strong> si utiliza módulos de radio de largo alcance (LoRa o 3DR) para evitar corromper la configuración de su altímetro.</div>
+</div>
 
 <h2>2. Configuración de Telemetría</h2>
-<ul>
-    <li><strong>Eventos de voz:</strong> Selecciona qué eventos de vuelo se anunciarán por voz en tiempo real (despegue, apogeo, despliegue, etc.)[cite: 10].</li>
-    <li><strong>Voz de telemetría:</strong> Permite seleccionar la voz del sintetizador de voz (TTS)[cite: 10].</li>
-    <li><strong>Prueba de voz:</strong> Pulse el botón <strong>[Probar voz]</strong> para comprobar el volumen y la pronunciación[cite: 10].</li>
-</ul>
+<div class="setting-item">
+    <p><strong>Eventos de voz:</strong> Selecciona qué eventos de vuelo se anunciarán por voz en tiempo real (despegue, apogeo, despliegue, etc.).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Voz de telemetría:</strong> Permite seleccionar la voz del sintetizador de voz (TTS).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Prueba de voz:</strong> Pulse el botón <strong>[Probar voz]</strong> para comprobar el volumen y la pronunciación.</p>
+</div>
 
 <h2>Guardar cambios</h2>
-<p>Haga clic en <strong>[Guardar]</strong> para aplicar las modificaciones[cite: 10]. También puede salir sin guardar o restablecer los valores predeterminados de fábrica[cite: 10].</p>
+<p>Haga clic en <strong>[Guardar]</strong> para aplicar las modificaciones. También puede salir sin guardar o restablecer los valores predeterminados de fábrica.</p>
+
 </body>
 </html>
