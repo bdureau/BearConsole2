@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="version"> pre 2.0.0 candidate 4</string>
+    <string name="app_name">Bear Console</string>
+    <!-- Menu -->
+    <string name="help">Pomoc</string>
+    <string name="about">O aplikacji</string>
+    <string name="action_settings">Ustawienia aplikacji</string>
+    <string name="bluetooth_device">Urządzenie Bluetooth</string>
+
+    <!-- Screen altimeter config-->
+    <string name="altimeter_outputs">Wyjścia wysokościomierza</string>
+    <string name="altimeter_config">Konfiguracja wysokościomierza</string>
+    <string name="main_altitude">Wysokość spadochronu głównego</string>
+    <string name="output_1">Wyjście 1</string>
+    <string name="delay1">Opóźnienie 1 (ms)</string>
+    <string name="output_2">Wyjście 2</string>
+    <string name="delay2">Opóźnienie 2 (ms)</string>
+    <string name="output_3">Wyjście 3</string>
+    <string name="delay3">Opóźnienie 3 (ms)</string>
+    <string name="output_4">Wyjście 4</string>
+    <string name="delay4">Opóźnienie 4 (ms)</string>
+    <string name="upload">Wyślij</string>
+    <string name="dismiss_config">Zamknij</string>
+    <!-- AltimeterConfigActivity Spinners -->
+    <string name="main_config">Główny (Main)</string>
+    <string name="drogue_config">Hamujący (Drogue)</string>
+    <string name="timer_config">Timer</string>
+    <string name="disabled_config">Wyłączone</string>
+    <string name="landing_config">Lądowanie</string>
+    <string name="liftoff_config">Start</string>
+    <string name="altitude_config">Wysokość</string>
+    <string name="altitude1">Wysokość 1 (metry)</string>
+    <string name="altitude2">Wysokość 2 (metry)</string>
+    <string name="altitude3">Wysokość 3 (metry)</string>
+    <string name="altitude4">Wysokość 4 (metry)</string>
+    <!-- Config tab1 tooltips -->
+    <string name="main_altitude_tooltip">Wprowadź wysokość otwarcia spadochronu głównego</string>
+    <string name="OutDelay1_tooltip">Wprowadź opóźnienie zapłonu w ms dla 1. wyjścia</string>
+    <string name="OutDelay2_tooltip">Wprowadź opóźnienie zapłonu w ms dla 2. wyjścia</string>
+    <string name="OutDelay3_tooltip">Wprowadź opóźnienie zapłonu w ms dla 3. wyjścia</string>
+    <string name="OutDelay4_tooltip">Wprowadź opóźnienie zapłonu w ms dla 4. wyjścia</string>
+    <string name="txtOut1_tooltip">Wybierz funkcję dla 1. wyjścia</string>
+    <string name="txtOut2_tooltip">Wybierz funkcję dla 2. wyjścia</string>
+    <string name="txtOut3_tooltip">Wybierz funkcję dla 3. wyjścia</string>
+    <string name="txtOut4_tooltip">Wybierz funkcję dla 4. wyjścia</string>
+    <string name="txtViewBaudRate_tooltip">Wybierz prędkość transmisji wysokościomierza. Uwaga: niewłaściwa wartość może uniemożliwić komunikację</string>
+    <string name="editTxtApogeeMeasures_tooltip">Liczba pomiarów do wyznaczenia apogeum</string>
+    <string name="txtViewAltimeterResolution_tooltip">Wybierz rozdzielczość wysokościomierza. Im szybsza rakieta, tym mniejsza powinna być wartość</string>
+    <string name="txtViewEEpromSize_tooltip">Wybierz rozmiar pamięci EEPROM zależnie od zainstalowanego układu</string>
+    <string name="txtViewRecordTemp_tooltip">Wybierz, czy temperatura ma być rejestrowana</string>
+    <string name="EndRecordAltitude_tooltip">Wysokość, poniżej której uznaje się, że rakieta wylądowała</string>
+    <string name="LiftOffAltitude_tooltip">Wysokość, powyżej której uznaje się, że rakieta wystartowała</string>
+    <string name="txtViewBatteryType_tooltip">Podaj typ baterii, aby zapobiec jej nadmiernemu rozładowaniu</string>
+    <string name="txtAltiUnit_tooltip">Wybierz jednostkę wysokości, do której jesteś przyzwyczajony</string>
+    <string name="editTxtBipFreq_tooltip">Wybierz częstotliwość sygnału dźwiękowego w Hz</string>
+
+    <!-- Config tab2 -->
+    <string name="altimeter_config_tab2">Konfiguracja wysokościomierza</string>
+    <string name="baudRate">Prędkość transmisji (Baud Rate)</string>
+    <string name="apogeeMeasures">Pomiary apogeum</string>
+    <string name="altimeterResolution">Rozdzielczość wysokościomierza</string>
+    <string name="eepromSize">Rozmiar EEPROM</string>
+    <string name="beepOnOff">Dźwięk Wł./Wył.</string>
+    <string name="RecordTemp">Rejestruj temperaturę</string>
+    <string name="SupersonicDelay">Opóźnienie naddźwiękowe</string>
+    <string name="EndRecordAltitude">Wysokość końca zapisu</string>
+    <string name="LiftOffAltitude">Wysokość startu</string>
+    <string name="BatteryType">Typ baterii</string>
+    <string name="config_unknown">Nieznany</string>
+    <string name="config_on">Wł.</string>
+    <string name="config_off">Wył.</string>
+    <!-- Config tab3 -->
+    <string name="altimeter_config_tab3">Konfiguracja wysokościomierza</string>
+    <string name="alti_name">Nazwa wysokościomierza</string>
+    <string name="units">Jednostki</string>
+    <string name="bip_mode">Tryb sygnału dźwiękowego</string>
+    <string name="beep_freq">Częstotliwość sygnału</string>
+    <string name="servo_stay_on">Serwo pozostaje włączone</string>
+    <string name="unit_meter">Metry</string>
+    <string name="unit_feet">Stopy</string>
+    <!-- Config tab4-->
+    <string name="servos_config">Konfiguracja serwomechanizmów</string>
+    <string name="servo1_off_pos">Serwo 1 poz. wył.</string>
+    <string name="servo1_on_pos">Serwo 1 poz. wł.</string>
+    <string name="servo2_off_pos">Serwo 2 poz. wył.</string>
+    <string name="servo2_on_pos">Serwo 2 poz. wł.</string>
+    <string name="servo3_off_pos">Serwo 3 poz. wył.</string>
+    <string name="servo3_on_pos">Serwo 3 poz. wł.</string>
+    <string name="servo4_off_pos">Serwo 4 poz. wył.</string>
+    <string name="servo4_on_pos">Serwo 4 poz. wł.</string>
+    <string name="config_no">Nie</string>
+    <string name="config_yes">Tak</string>
+    <!-- Main Screen -->
+    <string name="altimeter_settings">Ustawienia\nwysokościomierza</string>
+    <string name="continuity_on_off">Ciągłość obwodu\nWł./Wył.</string>
+    <string name="read_flights">Loty</string>
+    <string name="reset_settings">Zresetuj\nustawienia</string>
+    <string name="disconnect">Rozłącz</string>
+    <string name="connect">Połącz</string>
+    <string name="telemetry">Telemetria</string>
+
+    <!--connection screen -->
+    <string name="select_device_to_use">Wybierz urządzenie do połączenia</string>
+    <string name="show_paired_devices">Pokaż sparowane urządzenia</string>
+
+    <!-- Flight graph-->
+    <string name="altitude_time">Wysokość / Czas</string>
+    <string name="close">Zamknij</string>
+    <!-- Reset screen -->
+    <string name="dismiss_reset">Anuluj</string>
+    <string name="clear_flights">Wyczyść loty</string>
+    <string name="reset_msg1">Zamierzasz usunąć wszystkie dane lotu. Czy na pewno chcesz to zrobić?</string>
+    <string name="reset_msg2">Zamierzasz zresetować konfigurację wysokościomierza. Czy na pewno chcesz to zrobić?</string>
+    <string name="reset_msg3">Zamierzasz usunąć dane ostatniego lotu. Czy na pewno chcesz to zrobić?</string>
+    <string name="Yes">Tak</string>
+    <string name="No">Nie</string>
+    <!-- bluetooth messages -->
+    <string name="BT_msg1">Urządzenie Bluetooth jest niedostępne</string>
+    <string name="BT_msg2">Nie znaleziono sparowanych urządzeń Bluetooth.</string>
+
+    <!-- main screen msg-->
+    <string name="MS_msg1">Łączenie...</string>
+    <string name="MS_msg2">Proszę czekać!!!</string>
+    <string name="MS_msg3">Błąd połączenia. Czy to moduł Bluetooth SPP? Spróbuj ponownie.</string>
+    <string name="MS_msg4">Połączono.</string>
+
+    <string name="those_functions_will_reset_the_altimeter">Te funkcje zresetują wysokościomierz</string>
+    <string name="restore_alti_config">Przywróć konfigurację wysokościomierza</string>
+
+    <!--Flight list screen -->
+    <string name="Flight_list">Lista lotów</string>
+    <string name="title_activity_flight_list">Lista lotów</string>
+    <string name="dismiss_flight_list">Zamknij</string>
+
+    <!-- About screen -->
+    <string name="about_screen">O aplikacji</string>
+    <string name="bear_console_version">Wersja Bear Console</string>
+    <string name="dismiss_about">Zamknij</string>
+    <string name="credit_goes_to_philippe_huguenin_bergenat_n_for_all_the_testing">Podziękowania dla Philippe Huguenin-Bergenat \n za przeprowadzenie wszystkich testów</string>
+
+    <!-- Messages -->
+    <!-- AltimeterConfigActivity -->
+    <string name="msg1">Dozwolony jest tylko jeden spadochron główny. Sprawdź swoją konfigurację</string>
+    <string name="msg2">Dozwolony jest tylko jeden spadochron hamujący (drogue). Sprawdź swoją konfigurację</string>
+    <string name="msg3">Konfiguracja została pomyślnie przesłana</string>
+    <string name="msg4">Błąd przesyłania konfiguracji</string>
+    <string name="msg5">Pobieranie konfiguracji wysokościomierza...</string>
+    <string name="msg6">Proszę czekać!!!</string>
+    <string name="msg7">Pobieranie danych lotów...</string>
+    <string name="msg8">Proszę czekać!!!</string>
+    <string name="msg9">Zmieniono prędkość transmisji (baud rate). Wysokościomierz może nie nawiązać połączenia. Czy na pewno kontynuować?</string>
+
+    <!-- flight views screen -->
+    <string name="Meters_fview">Metry</string>
+    <string name="Feet_fview">Stopy</string>
+    <string name="Altitude_time">Wysokość / Czas</string>
+    <string name="Time_fv">Czas (ms)</string>
+    <string name="Altitude">Wysokość</string>
+    <string name="dismiss_flight_list_view">Zamknij</string>
+    <!-- Application preference screen-->
+    <string name="titre_application_pref">Ustawienia aplikacji</string>
+
+    <!-- Config-->
+    <string name="save_config">Zapisz</string>
+    <string name="dismiss_app_config">Zamknij</string>
+    <string name="application_langage_config">Język aplikacji</string>
+    <string name="graph_color_config">Kolor wykresu</string>
+    <string name="application_units_config">Jednostki aplikacji</string>
+    <string name="graph_back_color_config">Kolor tła wykresu</string>
+    <string name="default_config">Domyślne</string>
+    <string name="font_size">Rozmiar czcionki</string>
+    <string name="title_activity_settings">Ustawienia</string>
+    <string name="baud_rate">Prędkość transmisji</string>
+    <string name="connection_type">Typ połączenia</string>
+    <string name="graphiclib_type">Biblioteka graficzna</string>
+    <string name="MultipleMainDrogue">Wiele spadochronów Main/Drogue</string>
+    <string name="FullUSBSupport">Pełna obsługa USB</string>
+    <string name="color_black">CZARNY</string>
+    <string name="color_white">BIAŁY</string>
+    <string name="color_magenta">MAGENTA</string>
+    <string name="color_blue">NIEBIESKI</string>
+    <string name="color_yellow">ŻÓŁTY</string>
+    <string name="color_green">ZIELONY</string>
+    <string name="color_gray">SZARY</string>
+    <string name="color_cyan">CYJAN</string>
+    <string name="color_dkgray">CIEMNOSZARY</string>
+    <string name="color_ltgray">JASNOSZARY</string>
+    <string name="color_red">CZERWONY</string>
+
+    <string name="phone_english">Angielski</string>
+    <string name="phone_french">Francuski</string>
+    <string name="phone_language">Język telefonu</string>
+    <string name="config_unit_meters">Metry</string>
+    <string name="config_unit_feet">Stopy</string>
+
+    <string name="general_config">Ogólne</string>
+    <string name="telemetry_config">Konfiguracja telemetrii</string>
+    <string name="main_event">Zdarzenie spadochronu głównego</string>
+    <string name="apogee_altitude_event">Wysokość apogeum</string>
+    <string name="main_altitude_event">Wysokość spadochronu głównego</string>
+    <string name="drogue_event">Zdarzenie spadochronu hamującego</string>
+    <string name="altitude_event">Zdarzenie wysokości</string>
+    <string name="landing_event">Zdarzenie lądowania</string>
+    <string name="burnout_event">Zdarzenie zakończenia ciągu silnika</string>
+    <string name="warning_event">Zdarzenie ostrzeżenia</string>
+    <string name="liftoff_event">Zdarzenie startu</string>
+
+    <!-- Telemetry -->
+    <string name="stop_telemetry">Zatrzymaj telemetrię</string>
+    <string name="start_telemetry">Uruchom telemetrię</string>
+    <string name="current_phase">Bieżąca faza</string>
+    <string name="altitude">Wysokość</string>
+    <string name="event_time">Czas zdarzenia</string>
+    <string name="lift_off">Start</string>
+    <string name="apogee_drogue">Apogeum / Drogue</string>
+    <string name="main_chute">Spadochron główny</string>
+    <string name="landed">Wylądowano</string>
+    <string name="max_speed">Maks. prędkość</string>
+    <string name="current_altitude">Aktualna wysokość</string>
+    <string name="dis">Rozłącz</string>
+    <string name="tel_telemetry">Telemetria</string>
+    <string name="telemetry_apogee">osiągnięto apogeum</string>
+    <string name="rocket_has_landed">rakieta wylądowała</string>
+    <string name="main_deployed">spadochron główny otworzył się na wysokości</string>
+
+    <!-- Status -->
+    <string name="title_activity_altimeter_status">Stan wysokościomierza</string>
+    <string name="altimeter_status">Status wysokościomierza</string>
+    <string name="altimeter_status_disabled">Wyłączone</string>
+    <string name="altimeter_status_output_1">Wyjście 1</string>
+    <string name="altimeter_status_output_2">Wyjście 2</string>
+    <string name="altimeter_status_output_3">Wyjście 3</string>
+    <string name="altimeter_status_output_4">Wyjście 4</string>
+    <string name="altimeter_status_current_altitude">Aktualna wysokość</string>
+    <string name="altimeter_status_battery_voltage">Napięcie baterii</string>
+    <string name="altimeter_status_link_type">Typ połączenia</string>
+    <string name="altimeter_status_bluetooth">Bluetooth</string>
+    <string name="status">Stan</string>
+    <string name="status_msg1">Opalenie wyjść wysokościomierza \nUpewnij się, że NIE są podłączone \nżadne ładunki pirotechniczne!!!</string>
+    <string name="temperature">Temperatura</string>
+    <string name="switch_output_1">Wyjście 1</string>
+    <string name="switch_output_2">Wyjście 2</string>
+    <string name="switch_output_3">Wyjście 3</string>
+    <string name="switch_output_4">Wyjście 4</string>
+    <string name="no_continuity">Brak ciągłości (obwód otwarty)</string>
+    <string name="continuity">Ciągłość obwodu</string>
+    <string name="disabled">Wyłączone</string>
+    <string name="latitude">Szerokość geograficzna</string>
+    <string name="longitude">Długość geograficzna</string>
+
+    <!-- flash firmware -->
+    <string name="msg10">Wgrywanie oprogramowania sprzętowego...</string>
+    <string name="msg11">Proszę czekać!!!</string>
+    <string name="msg12">Wysyłanie: </string>
+    <string name="msg13">Nie można otworzyć</string>
+    <string name="msg14">Wysyłanie: Rozpoczęto \n</string>
+    <string name="msg15">Wysyłanie: Niepowodzenie\n</string>
+    <string name="msg16">Wysyłanie: Pomyślne\n</string>
+    <string name="msg17">Wysyłanie anulowane\n</string>
+    <string name="msg18">Błąd: </string>
+    <string name="msg19">Wgrywanie oprogramowania ratunkowego...: </string>
+    <string name="firmware_cancel">Anuluj</string>
+    <string name="firmware_dismiss">Zamknij</string>
+    <string name="recover_firmware">Odzyskaj oprogramowanie</string>
+    <string name="flash_firmware">Wgraj oprogramowanie</string>
+    <string name="select_altimeter_model">Wybierz model wysokościomierza:</string>
+    <string name="after_complete_upload">Po zakończeniu przesyłania będzie można wgrać właściwe oprogramowanie</string>
+    <string name="detect_firmware">Wykryj oprogramowanie</string>
+    <string name="msg_detect_firmware">Próba wykrycia oprogramowania sprzętowego!!!</string>
+
+    <!--- other -->
+    <string name="flight_list_cancel">Anuluj</string>
+    <string name="flight_retrieval_canceled">Pobieranie lotów zostało anulowane przez użytkownika</string>
+    <string name="flight_have_been_recorded">Brak zarejestrowanych lotów</string>
+    <string name="main_screen_actity">Anuluj</string>
+    <string name="title_activity_flight_view_maps">Mapa</string>
+    <string name="flight">Lot</string>
+    <string name="title_activity_flight_view_tab">ZakładkiPrzegląduLotu</string>
+    <string name="tab_text_1">Zakładka 1</string>
+    <string name="tab_text_2">Zakładka 2</string>
+    <string name="flight_info">Informacje o locie</string>
+    <string name="apogee_altitude">Wysokość apogeum</string>
+    <string name="max_velocity">Maks. prędkość</string>
+    <string name="main_alti">Wysokość spadochronu głównego</string>
+    <string name="flight_duration">Czas trwania lotu</string>
+    <string name="burn_time">Czas pracy silnika</string>
+    <string name="max_acceleration">Maks. przyspieszenie</string>
+    <string name="time_to_apogee">Czas do apogeum</string>
+    <string name="max_descent_speed">Maks. prędkość opadania</string>
+    <string name="landing_speed">Prędkość lądowania</string>
+    <string name="flight_nbr">Nr lotu</string>
+    <string name="nbr_of_sample">Liczba próbek</string>
+    <string name="select_curve">Wybierz wykres</string>
+    <string name="fv_ok">OK</string>
+    <string name="fv_cancel">Anuluj</string>
+    <string name="telemetry_voice">Głos telemetrii</string>
+    <string name="test_telemetry_voice">Testuj głos</string>
+
+    <!--units -->
+    <string name="unit_meters">metry</string>
+    <string name="unit_time">czas (ms)</string>
+    <string name="unit_feet_per_secs">stopy/s</string>
+    <string name="unit_feet_per_square_secs">stopy/s²</string>
+
+    <!--curves name -->
+    <string name="curve_altitude">wysokość</string>
+    <string name="curve_temperature">temperatura</string>
+    <string name="curve_pressure">ciśnienie</string>
+    <string name="curve_latitude">szerokość geograficzna</string>
+    <string name="curve_longitude">długość geograficzna</string>
+    <string name="curve_speed">prędkość</string>
+    <string name="curve_accel">przyspieszenie</string>
+    <string name="flight_name">Lot</string>
+
+    <string name="select_bluetooth_device">Wybierz urządzenie Bluetooth</string>
+    <string name="telemetry_screen">Telemetria</string>
+    <string name="status_screen">Stan</string>
+    <string name="flight_time">Czas</string>
+
+    <!--telemetry module config -->
+    <string name="m3DR_load_cfg">Ładowanie konfiguracji modułu 3DR</string>
+    <string name="m3DR_retrieving_cfg">Pobieranie konfiguracji</string>
+    <string name="m3DR_no_errors">Brak błędów zapisu danych\nWykonywanie polecenia AT&amp;W</string>
+    <string name="m3DR_we_have_errors">Wystąpił błąd\nNie zapisano danych\nProszę spróbować ponownie</string>
+    <string name="m3DR_saving_cancelled">Zapisywanie zostało anulowane</string>
+    <string name="m3DR_run_command">Wykonywanie polecenia: </string>
+    <string name="m3DR_cancel_retrieve">Anulowanie pobierania</string>
+    <string name="m3DR_run_at0">Wykonywanie polecenia ATO w celu wyjścia z trybu AT</string>
+    <string name="m3DR_run_save">Wykonywanie poleceń zapisu</string>
+    <string name="m3DR_save_cfg">Zapisywanie konfiguracji</string>
+    <string name="m3DR_Cancel">Anuluj</string>
+    <string name="m3DR_attempt_con">Próba połączenia z modułem 3DR</string>
+    <string name="m3DR_attempt_con2">Próba połączenia przy prędkości: </string>
+    <string name="m3DR_connect_ok">Połączenie udane przy prędkości: </string>
+    <string name="m3DR_failed_con">Błąd połączenia.\nOdłącz i podłącz ponownie kabel USB,\nzrestartuj aplikację\ni spróbuj ponownie</string>
+    <string name="m3DR_connecting">Łączenie</string>
+    <string name="configure_telemetry_module">Konfiguracja modułu telemetrii</string>
+    <string name="m3DR_version">Wersja:</string>
+    <string name="rssi">RSSI:</string>
+    <string name="format">Format:</string>
+    <string name="baud">Baud</string>
+    <string name="air_speed">Prędkość radiowa (Air speed)</string>
+    <string name="net_id">Identyfikator sieci (Net ID)</string>
+    <string name="tx_power">Moc nadajnika (TX Power)</string>
+    <string name="ecc">ECC</string>
+    <string name="op_resend">Ponowne wysyłanie Op</string>
+    <string name="rts_cts">RTS CTS</string>
+    <string name="mavlink">Mavlink</string>
+    <string name="lbt_rssi">LBT RSSI</string>
+    <string name="min_freq">Częstotliwość min.</string>
+    <string name="max_freq">Częstotliwość maks.</string>
+    <string name="nbr_of_channels">Liczba kanałów</string>
+    <string name="duty_cycle">Cykl pracy (Duty Cycle)</string>
+    <string name="max_win_ms">Maks. okno (ms)</string>
+    <string name="retrieve_config">Pobierz konfigurację</string>
+    <string name="m3DR_save_config">Zapisz konfigurację</string>
+    <string name="bt_info_msg">Ta funkcja umożliwia konfigurację modułu Bluetooth. Będziesz potrzebować kabla TTL oraz adaptera OTG, aby podłączyć moduł do telefonu. Zapoznaj się z pomocą online.</string>
+    <string name="bt_info_title">Konfiguracja modułu Bluetooth</string>
+    <string name="bt_info_ok">OK</string>
+    <string name="loading_bt_config_msg">Ładowanie konfiguracji modułu Bluetooth</string>
+    <string name="dr_info_msg">Ta funkcja umożliwia konfigurację modułu radiowego 3DR. Będziesz potrzebować kabla TTL oraz adaptera OTG, aby podłączyć moduł do telefonu. Zapoznaj się z pomocą online.</string>
+    <string name="dr_info_title">Konfiguracja modułu 3DR</string>
+    <string name="configure_bluetooth_module">Konfiguruj moduł Bluetooth</string>
+    <string name="module">Moduł:</string>
+    <string name="bt_baud_rate">Prędkość transmisji:</string>
+    <string name="pin">Kod PIN:</string>
+    <string name="module_name">Nazwa modułu:</string>
+    <string name="chip_has_not_been_init">Układ został zainicjalizowany:</string>
+    <string name="flash_firmware_msg">Ta funkcja pozwala wgrać oprogramowanie układowe wysokościomierza, aby zapewnić zgodność z aplikacją. Potrzebny jest kabel TTL i adapter OTG. Zapoznaj się z pomocą online.</string>
+    <string name="flash_firmware_title">Wgraj oprogramowanie układowe</string>
+    <string name="flash_firmware_ok">OK</string>
+    <string name="firmware_version_not_detected">Wykryta wersja oprogramowania: </string>
+    <string name="_3dr_settings">Ustawienia 3DR...</string>
+    <string name="bt_settings">Ustawienia BT...</string>
+    <string name="save_curves_title">Informacja</string>
+    <string name="save_curve_ok">OK</string>
+    <string name="save_curve_msg">Następujące pliki zostały zapisane w: </string>
+    <string name="curves_saved_msg">Zapisano wykresy lotu</string>
+    <string name="continuity_changed">Zmieniono stan ciągłości obwodu</string>
+    <string name="flash_advice_msg">Wersja oprogramowania wysokościomierza może być niezgodna. Zaleca się ponowne wgranie oprogramowania na płytkę</string>
+    <string name="unsuported_firmware_msg">Nieobsługiwane oprogramowanie układowe</string>
+    <string name="msg_test_connection">Umożliwia to przetestowanie niezawodności połączenia</string>
+    <string name="msg_title_info">Informacja</string>
+    <string name="test_connection_start">Start</string>
+    <string name="test_connection_stop">Stop</string>
+    <string name="test_your_connection">Testuj połączenie</string>
+    <string name="nbr_packets_sent">Liczba wysłanych pakietów:</string>
+    <string name="nbr_packets_received">Liczba odebranych pakietów:</string>
+    <string name="nbr_received_ok">Liczba poprawnie odebranych:</string>
+    <string name="nbr_packets_not_ok">Liczba błędnych pakietów:</string>
+    <string name="percentage_of_errors">Procent błędów (%):</string>
+    <string name="test_connection">Test połączenia</string>
+    <string name="retrieving_flight">Pobieranie lotu:</string>
+    <string name="secs">s</string>
+    <string name="km_h">km/h</string>
+    <string name="g_secs">G/s</string>
+    <string name="export_to_csv">Eksportuj do CSV</string>
+    <string name="failed_create_flight_file_msg">Nie udało się utworzyć plików lotu</string>
+    <string name="module_name_cannot_be_empty_msg">Nazwa modułu nie może być pusta\n</string>
+    <string name="module_pin_cannot_be_empty_msg">Kod PIN modułu nie może być pusty\n</string>
+    <string name="attempting_connect_msg">Próba połączenia z modułem Bluetooth</string>
+    <string name="attempting_connect_bt_msg">Próba połączenia z modułem Bluetooth</string>
+    <string name="share">Udostępnij</string>
+    <string name="delete_last_flight">Usuń ostatni lot</string>
+    <string name="recording_timeout_sec">Limit czasu rejestracji (s)</string>
+    <string name="status_disabled">Wyłączone</string>
+    <string name="gps_status">Stan GPS</string>
+    <string name="satellites">Satelity</string>
+    <string name="hdop">HDOP</string>
+    <string name="gps_altitude">Wysokość GPS</string>
+    <string name="gps_speed">Prędkość GPS</string>
+    <string name="location_age">Wiek pozycji</string>
+    <string name="time_sat_acquisition">Czas ustalenia pozycji satelitów</string>
+    <string name="use_telemetryport">Użyj TelemetryPort</string>
+    <!-- Lora module-->
+    <string name="lora_configure_module_title">Konfiguracja modułu LoRa</string>
+    <string name="lora_module_channel">Kanał:</string>
+    <string name="lora_module_trans_mode">Tryb transmisji:</string>
+    <string name="lora_module_address">Adres:</string>
+    <string name="lora_module_channel_rssi">RSSI kanału</string>
+    <string name="lora_module_key">Klucz:</string>
+    <string name="lora_module_parity">Parzystość</string>
+    <string name="lora_module_wor_cycle">Cykl WOR</string>
+    <string name="lora_module_lbt">LBT:</string>
+    <string name="lora_module_air_rate">Prędkość radiowa:</string>
+    <string name="lora_module_power">Moc nadawcza:</string>
+    <string name="lora_module_packet_rssi">RSSI pakietu:</string>
+    <string name="lora_module_packet_size">Rozmiar pakietu:</string>
+    <string name="lora_module_config_msg">Umożliwia to konfigurację modułów telemetrii radiowej LoRa</string>
+    <string name="lora_module_config_msg_title">Konfiguracja modułu telemetrii LoRa</string>
+    <string name="lora_module_config_button_ok">OK</string>
+    <string name="lora_module_loading_config_msg">Ładowanie konfiguracji modułu LoRa</string>
+    <string name="lora_module_channel_msg">Kanał modułu nie może być pusty</string>
+    <string name="lora_module_invalid_channel">Nieprawidłowy kanał</string>
+    <string name="lora_module_channel_value_msg">Kanał musi mieć wartość z zakresu od 0 do 83</string>
+    <string name="lora_module_address_empty_msg">Adres modułu nie może być pusty</string>
+    <string name="lora_module_address_range">Adres musi mieć wartość z zakresu od 0 do 65535</string>
+    <string name="lora_module_address_invalid">Nieprawidłowy adres</string>
+    <string name="lora_module_updating_address_msg">Aktualizowanie adresu modułu</string>
+    <string name="lora_module_updating_msg2">Aktualizowanie prędkości szeregowej, parzystości i prędkości radiowej</string>
+    <string name="lora_module_updating_msg3">Aktualizowanie rozmiaru pakietu, szumu RSSI i mocy nadawczej</string>
+    <string name="lora_module_updating_msg4">Aktualizowanie kanału</string>
+    <string name="lora_module_updating_msg5">Aktualizowanie bajtu RSSI, trybu transmisji, LBT oraz cyklu WOR</string>
+    <string name="lora_module_updating_msg6">Aktualizowanie klucza szyfrowania</string>
+    <string name="lora_module_connecting_msg">Próba połączenia z modułem LoRa</string>
+
+    <!-- GPS -->
+    <string name="gps_network_not_enabled">Czy chcesz włączyć GPS?</string>
+    <string name="open_location_settings">OK</string>
+    <string name="Cancel">Anuluj</string>
+    <string name="tel_latitude">Szerokość tel.</string>
+    <string name="tel_longitude">Długość tel.</string>
+    <string name="altimeter_name">Nazwa wysokościomierza</string>
+    <string name="unit_time_seconde">czas (s)</string>
+    <string name="unit_time_minutes">czas (min)</string>
+    <string name="share_with">Udostępnij przez</string>
+    <string name="bearconsole_has_shared">BearConsole udostępnił Ci informacje</string>
+    <string name="bearconsole_has_shared2">BearConsole udostępnił Ci informacje</string>
+    <string name="no_app_available">Brak dostępnych aplikacji</string>
+    <string name="share_map_screenshot">Udostępnij zrzut ekranu mapy</string>
+    <string name="volts">(wolt)</string>
+    <string name="mbar">(mbar)</string>
+    <string name="bear_console_has_shared3">BearConsole udostępnił Ci informacje</string>
+    <string name="share_with2">Udostępnij przez</string>
+    <string name="no_app_available2">Brak dostępnych aplikacji</string>
+    <string name="bearconsole_has_shared3">BearConsole udostępnił Ci informacje</string>
+    <string name="share_with3">Udostępnij przez</string>
+    <string name="share_map_screenshot2">Udostępnij zrzut ekranu mapy</string>
+    <string name="error_saving_map">Błąd podczas zapisywania/udostępniania zrzutu ekranu mapy</string>
+    <string name="permission_need_to_be_granted">Wymagane jest udzielenie uprawnienia</string>
+    <string name="use_openmap">Użyj OpenMap</string>
+    <string name="allow_manual_recording">Zezwól na rejestrację ręczną</string>
+    <string name="map_type">Typ mapy</string>
+    <string name="map_line_color">Kolor linii na mapie</string>
+    <string name="altigps_config">Konfiguracja AltiGPS</string>
+    <string name="firmware">Oprogramowanie:</string>
+    <string name="flash_speed_baud">Prędkość wgrywania (Baud):</string>
+    <string name="firmware_info">Informacje o oprogramowaniu</string>
+    <string name="map">Mapa</string>
+    <string name="track">Ślad</string>
+    <string name="flash_nfirmware">Wgraj\noprogramowanie</string>
+    <string name="export_and_share">Eksportuj i udostępnij</string>
+    <string name="bearconsole_has_shared4">Altimulti udostępnił Ci informacje</string>
+    <string name="share_map_screenshot3">Udostępnij zrzut ekranu mapy</string>
+    <string name="share_with4">Udostępnij przez</string>
+    <string name="share_file4">Udostępnij plik</string>
+    <string name="no_app_available4">Brak dostępnych aplikacji</string>
+    <string name="share_with5">Udostępnij przez</string>
+    <string name="bear_console_has_shared6">BearConsole udostępnił Ci informacje</string>
+    <string name="share_with6">Udostępnij przez</string>
+    <string name="do_you_want_to_connect_to_module">"Czy chcesz połączyć się z modułem "</string>
+    <string name="no">Nie</string>
+    <string name="recover_flight">Odzyskaj lot</string>
+</resources>

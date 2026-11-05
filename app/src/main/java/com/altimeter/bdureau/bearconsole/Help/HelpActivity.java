@@ -60,6 +60,10 @@ public class HelpActivity extends AppCompatActivity {
                     webView.loadUrl("file:///android_asset/help/" + FileName + "_es.html");
                 else if (Locale.getDefault().getLanguage() == "it")
                     webView.loadUrl("file:///android_asset/help/" + FileName + "_it.html");
+                else if (Locale.getDefault().getLanguage() == "nl")
+                    webView.loadUrl("file:///android_asset/help/" + FileName + "_nl.html");
+                else if (Locale.getDefault().getLanguage() == "ru")
+                    webView.loadUrl("file:///android_asset/help/" + FileName + "_ru.html");
                 else
                     webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
             } catch (Exception e) {
