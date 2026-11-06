@@ -54,15 +54,15 @@ public class HelpActivity extends AppCompatActivity {
         if(myBT.getAppConf().getApplicationLanguage()==0) {
             //use phone language
             try {
-                if (Locale.getDefault().getLanguage() == "fr")
+                if (Locale.getDefault().getLanguage().equals("fr")  )
                     webView.loadUrl("file:///android_asset/help/" + FileName + "_fr.html");
-                else if (Locale.getDefault().getLanguage() == "es")
+                else if (Locale.getDefault().getLanguage().equals("es"))
                     webView.loadUrl("file:///android_asset/help/" + FileName + "_es.html");
-                else if (Locale.getDefault().getLanguage() == "it")
+                else if (Locale.getDefault().getLanguage().equals("it"))
                     webView.loadUrl("file:///android_asset/help/" + FileName + "_it.html");
-                else if (Locale.getDefault().getLanguage() == "nl")
+                else if (Locale.getDefault().getLanguage().equals("nl"))
                     webView.loadUrl("file:///android_asset/help/" + FileName + "_nl.html");
-                else if (Locale.getDefault().getLanguage() == "ru")
+                else if (Locale.getDefault().getLanguage().equals("ru"))
                     webView.loadUrl("file:///android_asset/help/" + FileName + "_ru.html");
                 else
                     webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
