@@ -3,8 +3,10 @@ package com.altimeter.bdureau.bearconsole.config.ConfigModules;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -60,8 +62,18 @@ public class Config3DR extends AppCompatActivity {
     private volatile boolean isTaskCancelled = false;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        // Read language configuration directly from SharedPreferences to ensure
+        // context localization is configured before Activity inflation
+        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
+        int lang = prefs.getInt("AppLanguage", 0);
+        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setTitle(R.string.telemetry_screen);
         myBT = (ConsoleApplication) getApplication();
         setContentView(R.layout.activity_config3_dr);
 

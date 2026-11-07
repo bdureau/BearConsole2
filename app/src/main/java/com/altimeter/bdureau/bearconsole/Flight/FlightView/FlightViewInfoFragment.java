@@ -6,8 +6,12 @@ package com.altimeter.bdureau.bearconsole.Flight.FlightView;
  * Class: FlightViewInfoFragment
  *
  * @description:
- *  Displays comprehensive post-flight summary analytics (apogee, burn time,
- *  max velocity, acceleration in Gs, landing speed, and GPS ground distance).
+ *  Displays comprehensive post-flight summary analytics (flight duration, apogee,
+ *  time to apogee, burn time, max velocity, drogue descent rate, main deployment
+ *  altitude, landing speed, acceleration in Gs and GPS ground distance).
+ *  The statistics derived from the altitude curve are computed by the nested
+ *  FlightStatsCalculator class (pure Java, unit-testable) using least-squares fits
+ *  over several samples rather than single noisy samples of the speed curve.
  *  Includes asynchronous background CSV flight export and ZIP sharing compatible
  *  with modern scoped storage.
  *
@@ -55,6 +59,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -125,6 +130,10 @@ public class FlightViewInfoFragment extends Fragment {
         flightNbrValue = view.findViewById(R.id.flightNbrValue);
         flightDistanceValue = view.findViewById(R.id.flightDistanceValue);
 
+        if (myBT == null && getActivity() != null) {
+            myBT = (ConsoleApplication) getActivity().getApplication();
+        }
+
         if (myBT != null && myBT.getAltiConfigData() != null) {
             if (!myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                 flightDistanceValue.setVisibility(View.INVISIBLE);
@@ -154,8 +163,14 @@ public class FlightViewInfoFragment extends Fragment {
         }
     }
 
+    /**
+     * Computes the flight statistics from the altitude curve and displays them.
+     * Every value except the acceleration and the GPS distance comes from the nested
+     * {@link FlightStatsCalculator}, which uses least-squares fits over several samples
+     * instead of single noisy samples of the speed curve.
+     */
     private void populateFlightStatistics() {
-        if (myflight == null || allFlightData == null || flightName == null) {
+        if (myflight == null || flightName == null || myBT == null) {
             return;
         }
 
@@ -167,97 +182,83 @@ public class FlightViewInfoFragment extends Fragment {
         XYSeries altitudeSeries = flightData.getSeries(0);
         int nbrData = altitudeSeries.getItemCount();
 
-        XYSeries speed = allFlightData.getSeries(getString(R.string.curve_speed));
-        XYSeries accel = allFlightData.getSeries(getString(R.string.curve_accel));
-
-        double feetInMeter = (myBT.getAppConf().getUnits() == GlobalConfig.AltitudeUnit.METERS) ? 1.0 : 3.28084;
+        boolean isMeters = (myBT.getAppConf().getUnits() == GlobalConfig.AltitudeUnit.METERS);
         String unitsLabel = myBT.getAppConf().getUnitsValue();
+        String speedUnit = isMeters ? "m/s" : "ft/s";
 
         flightNbrValue.setText(String.valueOf(flightName));
         nbrOfSamplesValue.setText(String.valueOf(nbrData));
 
-        // Total flight duration
-        double flightDuration = altitudeSeries.getMaxX() / 1000.0;
-        if (flightDuration < 60.0) {
-            flightDurationValue.setText(String.format(Locale.US, "%.2f secs", flightDuration));
+        if (nbrData == 0) {
+            return;
+        }
+
+        // Altitude curve as arrays for the calculator
+        double[] timeMs = new double[nbrData];
+        double[] altitude = new double[nbrData];
+        for (int i = 0; i < nbrData; i++) {
+            timeMs[i] = altitudeSeries.getX(i).doubleValue();
+            altitude[i] = altitudeSeries.getY(i).doubleValue();
+        }
+
+        FlightStatsCalculator.FlightStats stats =
+                FlightStatsCalculator.compute(timeMs, altitude, isMeters);
+
+        Log.d(TAG, String.format(Locale.US,
+                "liftoff=%d apogee=%d touchdown=%d (recorded=%b) ground=%.1f",
+                stats.liftoffIndex, stats.apogeeIndex, stats.touchdownIndex,
+                stats.touchdownRecorded, stats.groundAltitude));
+
+        // Flight duration (liftoff to touchdown; "~" if the recording stopped before touchdown)
+        String duration = formatDuration(stats.flightDurationSec);
+        flightDurationValue.setText(stats.flightDurationEstimated ? "~" + duration : duration);
+
+        // Apogee and time to apogee (from liftoff)
+        apogeeAltitudeValue.setText(format("%.0f " + unitsLabel, stats.apogeeAltitude));
+        timeToApogeeValue.setText(format("%.2f secs", stats.timeToApogeeSec));
+
+        // Max velocity and burn time (peak of the smoothed ascent speed)
+        maxVelociyValue.setText(format("%.0f " + speedUnit, stats.maxVelocity));
+        burnTimeValue.setText(format("%.2f secs", stats.burnoutTimeSec));
+
+        // Descent rate under drogue (or under the single parachute)
+        maxDescentValue.setText(format("%.1f " + speedUnit, stats.maxDescentRate));
+
+        // Main parachute deployment altitude (break in the descent curve)
+        mainAltitudeValue.setText(format("%.0f " + unitsLabel, stats.mainDeployAltitude));
+        if (!Double.isNaN(stats.mainDeployAltitude)) {
+            Log.d(TAG, String.format(Locale.US, "Main deploy: t=%.2fs alt=%.1f main rate=%.2f",
+                    stats.mainDeployTimeSec, stats.mainDeployAltitude, stats.mainDescentRate));
+        }
+
+        // Landing speed (regression over the last 30 m / 100 ft of the descent)
+        landingSpeedValue.setText(format("%.1f " + speedUnit, stats.landingSpeed));
+
+        // Maximum acceleration in G. The curve is in altitude units per s^2: in feet it must
+        // be converted to meters (x 0.3048) before dividing by g.
+        XYSeries accel = (allFlightData != null) ? allFlightData.getSeries(getString(R.string.curve_accel)) : null;
+        if (accel != null && accel.getItemCount() > 0) {
+            double maxAccelMs2 = isMeters ? accel.getMaxY() : accel.getMaxY() * 0.3048;
+            maxAccelerationValue.setText(String.format(Locale.US, "%.1f G", maxAccelMs2 / 9.80665));
         } else {
-            flightDurationValue.setText(String.format(Locale.US, "%.2f minutes", flightDuration / 60.0));
+            maxAccelerationValue.setText("N/A");
         }
-
-        // Apogee and time to apogee
-        double apogeeAltitude = altitudeSeries.getMaxY();
-        apogeeAltitudeValue.setText(String.format(Locale.US, "%.0f %s", apogeeAltitude, unitsLabel));
-
-        int apogeePos = searchX(altitudeSeries, apogeeAltitude);
-        double apogeeTime = 0.0;
-        if (apogeePos != -1) {
-            apogeeTime = altitudeSeries.getX(apogeePos).doubleValue();
-            timeToApogeeValue.setText(String.format(Locale.US, "%.2f secs", apogeeTime / 1000.0));
-        }
-
-        // Maximum velocity
-        if (speed != null) {
-            double maxSpeed = speed.getMaxY();
-            maxVelociyValue.setText(String.format(Locale.US, "%d %s/secs", (long) maxSpeed, unitsLabel));
-
-            // Burn time derived from peak velocity timing
-            int maxSpeedPos = searchX(speed, maxSpeed);
-            if (maxSpeedPos != -1) {
-                double burnTime = speed.getX(maxSpeedPos).doubleValue();
-                burnTimeValue.setText(String.format(Locale.US, "%.2f secs", burnTime / 1000.0));
-            } else {
-                burnTimeValue.setText("N/A");
-            }
-
-            // Landing velocity evaluation
-            int timeBeforeLanding = searchXBack(altitudeSeries, 30);
-            if (timeBeforeLanding != -1) {
-                int posLanding = searchY(speed, altitudeSeries.getX(timeBeforeLanding).doubleValue());
-                if (posLanding != -1) {
-                    double landingSpeed = speed.getY(posLanding).doubleValue();
-                    landingSpeedValue.setText(String.format(Locale.US, "%d %s/secs", (long) landingSpeed, unitsLabel));
-                } else {
-                    landingSpeedValue.setText("N/A");
-                }
-            } else {
-                landingSpeedValue.setText("N/A");
-            }
-
-            // Descent speed after apogee
-            int descentStartPos = searchY(speed, apogeeTime + 100);
-            if (descentStartPos != -1) {
-                double maxDescentSpeed = 0.0;
-                for (int i = descentStartPos; i < speed.getItemCount(); i++) {
-                    double y = speed.getY(i).doubleValue();
-                    if (y > maxDescentSpeed) {
-                        maxDescentSpeed = y;
-                    }
-                }
-                maxDescentValue.setText(String.format(Locale.US, "%d %s/secs", (long) maxDescentSpeed, unitsLabel));
-            } else {
-                maxDescentValue.setText("N/A");
-            }
-        }
-
-        // Maximum acceleration
-        if (accel != null) {
-            double maxAccel = (accel.getMaxY() * feetInMeter) / 9.80665;
-            maxAccelerationValue.setText(String.format(Locale.US, "%d G", (long) maxAccel));
-        }
-
-        mainAltitudeValue.setText(String.format(" %s", unitsLabel));
 
         // GPS surface distance
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") && flightData.getSeriesCount() > 7) {
+        if (myBT.getAltiConfigData() != null
+                && "AltiGPS".equals(myBT.getAltiConfigData().getAltimeterName())
+                && flightData.getSeriesCount() > 7) {
             XYSeries latSeries = flightData.getSeries(6);
             XYSeries lonSeries = flightData.getSeries(7);
-            int count = latSeries.getItemCount();
+            int count = Math.min(latSeries.getItemCount(), lonSeries.getItemCount());
             List<GeoPoint> points = new ArrayList<>(count);
 
             for (int i = 0; i < count; i++) {
                 double lat = latSeries.getY(i).doubleValue();
                 double lon = lonSeries.getY(i).doubleValue();
-                if (lat > 0.0 && lon > 0.0) {
+                // 0,0 means "no GPS fix". Negative values are valid (south / west hemispheres).
+                boolean noFix = (lat == 0.0 && lon == 0.0);
+                if (!noFix && Math.abs(lat) <= 90.0 && Math.abs(lon) <= 180.0) {
                     points.add(new GeoPoint(lat, lon));
                 }
             }
@@ -268,6 +269,19 @@ public class FlightViewInfoFragment extends Fragment {
                         LocationUtils.distanceBetweenCoordinates(coord), unitsLabel));
             }
         }
+    }
+
+    /** Formats a value, or returns "N/A" if it could not be determined (NaN). */
+    private static String format(String pattern, double value) {
+        if (Double.isNaN(value) || Double.isInfinite(value)) return "N/A";
+        return String.format(Locale.US, pattern, value);
+    }
+
+    /** Formats a duration in seconds, or in minutes above one minute. */
+    private static String formatDuration(double seconds) {
+        if (Double.isNaN(seconds) || Double.isInfinite(seconds)) return "N/A";
+        if (seconds < 60.0) return String.format(Locale.US, "%.2f secs", seconds);
+        return String.format(Locale.US, "%.2f minutes", seconds / 60.0);
     }
 
     private File getFlightExportDirectory() {
@@ -464,4 +478,391 @@ public class FlightViewInfoFragment extends Fragment {
         super.onDestroy();
         ioExecutor.shutdown();
     }
+
+    // ---- FlightStatsCalculator (begin) ----
+    /**
+     * Computes the post-flight statistics of a rocket flight from its altitude curve.
+     *
+     * Pure Java (no Android dependency): it can be copied out and unit tested on a desktop JVM.
+     *
+     * Why everything is derived from the altitude curve:
+     *  the barometric altitude is the only clean measurement. A speed obtained by differentiating
+     *  it sample by sample is very noisy, and taking the maximum of a noisy signal always
+     *  over-estimates it. So instead of picking single extreme samples, every value below is
+     *  obtained from least-squares straight lines fitted over several samples:
+     *
+     *  - Ground reference: the altitudes are relative to the launch pad, so the ground is 0
+     *    (or the pre-liftoff level if the recording starts below 0). The last recorded sample is
+     *    NOT used, because the recording often stops a few meters above the ground.
+     *  - Liftoff: start of the climb (last point within 3 m / 10 ft of the ground before the
+     *    rocket is clearly flying). It is the origin of every duration.
+     *  - Apogee altitude: maximum after a 3-point median filter (removes isolated spikes).
+     *    Apogee instant: smoothed vertical speed crossing zero (the top of the curve is flat).
+     *  - Max velocity / burnout: vertical speed from sliding linear regressions, peak searched
+     *    between liftoff and apogee only. Burnout = time of max velocity.
+     *  - Descent: two-segment linear regression on the descent (drogue then main). Gives the
+     *    drogue descent rate, the main descent rate and the main deployment altitude at the
+     *    intersection of the two lines. With a single parachute, one line is fitted instead.
+     *  - Landing speed: linear regression over the last 30 m (100 ft) of the descent.
+     *  - Flight duration: liftoff to touchdown. If the recording stops before touchdown, the
+     *    remaining time is estimated from the landing speed (flagged as estimated).
+     *
+     * All rates are positive values, expressed in altitude units per second.
+     */
+    static final class FlightStatsCalculator {
+
+        /** Result of the computation. Values that cannot be determined are Double.NaN. */
+        public static final class FlightStats {
+            public double groundAltitude = Double.NaN;
+            public int liftoffIndex = -1;
+            public int apogeeIndex = -1;
+            public int touchdownIndex = -1;
+            /** false if the recording stopped before the rocket reached the ground. */
+            public boolean touchdownRecorded = false;
+
+            public double flightDurationSec = Double.NaN;
+            /** true if flightDurationSec includes an estimated part (recording stopped early). */
+            public boolean flightDurationEstimated = false;
+            public double apogeeAltitude = Double.NaN;
+            public double timeToApogeeSec = Double.NaN;
+            public double maxVelocity = Double.NaN;
+            public double burnoutTimeSec = Double.NaN;
+            /** Descent rate under drogue (or under the single parachute if there is no main). */
+            public double maxDescentRate = Double.NaN;
+            public double mainDescentRate = Double.NaN;
+            public double mainDeployAltitude = Double.NaN;
+            /** Main deployment time, counted from liftoff. */
+            public double mainDeployTimeSec = Double.NaN;
+            public double landingSpeed = Double.NaN;
+        }
+
+        // Thresholds expressed in meters; converted when the altitudes are in feet
+        private static final double LIFTOFF_THRESHOLD_M = 3.0;
+        private static final double GROUND_MARGIN_M = 3.0;
+        private static final double LANDING_WINDOW_M = 30.0;
+        private static final double METERS_TO_FEET = 3.28084;
+
+        /** Number of first samples used to estimate the pre-liftoff level. */
+        private static final int GROUND_SAMPLES = 5;
+        /** Half width of the sliding window used to compute the reported max velocity. */
+        private static final double SPEED_HALF_WINDOW_SEC = 0.25;
+        /** Wider window used to locate the burnout and apogee instants (less sensitive to noise). */
+        private static final double TIMING_HALF_WINDOW_SEC = 0.5;
+        /** Time skipped after apogee (rounded top of the curve, rocket turning over). */
+        private static final double POST_APOGEE_SKIP_SEC = 1.0;
+        /** Minimum number of samples on each side of the main deployment breakpoint. */
+        private static final int MIN_SEGMENT_SAMPLES = 8;
+        /** The main descent rate must be at most this fraction of the drogue descent rate. */
+        private static final double MAX_MAIN_TO_DROGUE_RATE_RATIO = 0.75;
+        /** Minimum data required for the landing speed regression. */
+        private static final int MIN_LANDING_SAMPLES = 5;
+        private static final double MIN_LANDING_DURATION_SEC = 1.0;
+
+        private final double[] t;   // seconds since the first sample
+        private final double[] y;   // altitude
+        private final int n;
+        private final double liftoffThreshold;
+        private final double groundMargin;
+        private final double landingWindow;
+
+        // Prefix sums of t, y, t^2, t*y, y^2 (index i = sum of samples [0, i))
+        private final double[] sT, sY, sTT, sTY, sYY;
+
+
+        private FlightStatsCalculator(double[] timeMs, double[] altitude, boolean isMeters) {
+            n = Math.min(timeMs.length, altitude.length);
+            t = new double[n];
+            y = new double[n];
+            for (int i = 0; i < n; i++) {
+                t[i] = (timeMs[i] - timeMs[0]) / 1000.0;
+                y[i] = altitude[i];
+            }
+            double scale = isMeters ? 1.0 : METERS_TO_FEET;
+            liftoffThreshold = LIFTOFF_THRESHOLD_M * scale;
+            groundMargin = GROUND_MARGIN_M * scale;
+            landingWindow = LANDING_WINDOW_M * scale;
+
+            sT = new double[n + 1];
+            sY = new double[n + 1];
+            sTT = new double[n + 1];
+            sTY = new double[n + 1];
+            sYY = new double[n + 1];
+            for (int i = 0; i < n; i++) {
+                sT[i + 1] = sT[i] + t[i];
+                sY[i + 1] = sY[i] + y[i];
+                sTT[i + 1] = sTT[i] + t[i] * t[i];
+                sTY[i + 1] = sTY[i] + t[i] * y[i];
+                sYY[i + 1] = sYY[i] + y[i] * y[i];
+            }
+        }
+
+        /**
+         * Computes the flight statistics.
+         *
+         * @param timeMs   sample times in milliseconds (increasing)
+         * @param altitude altitudes relative to the launch pad, in meters or feet
+         * @param isMeters true if the altitudes are in meters, false if in feet
+         * @return the statistics (never null; undetermined values are NaN)
+         */
+        public static FlightStats compute(double[] timeMs, double[] altitude, boolean isMeters) {
+            FlightStats s = new FlightStats();
+            if (timeMs == null || altitude == null || Math.min(timeMs.length, altitude.length) < 3) {
+                return s;
+            }
+            new FlightStatsCalculator(timeMs, altitude, isMeters).fill(s);
+            return s;
+        }
+
+        private void fill(FlightStats s) {
+            // Ground and liftoff
+            s.groundAltitude = Math.min(0.0, medianOfFirstSamples(GROUND_SAMPLES));
+            s.liftoffIndex = findLiftoffIndex(s.groundAltitude);
+            double liftoffT = t[s.liftoffIndex];
+
+            // Apogee altitude: maximum after a 3-point median filter (ignores isolated spikes)
+            int highestIndex = s.liftoffIndex;
+            double best = median3(s.liftoffIndex);
+            for (int i = s.liftoffIndex + 1; i < n; i++) {
+                double v = median3(i);
+                if (v > best) {
+                    best = v;
+                    highestIndex = i;
+                }
+            }
+            s.apogeeAltitude = best;
+
+            // Burnout (max velocity) and apogee instant (speed crossing zero), both located
+            // on the smoothed speed: the top of the curve is flat, so the highest sample alone
+            // can be off by more than a second.
+            s.apogeeIndex = computeAscent(s, liftoffT, highestIndex);
+            s.timeToApogeeSec = t[s.apogeeIndex] - liftoffT;
+
+            // Touchdown: first point back near the ground after apogee (median filtered so that
+            // a single noisy sample does not end the flight early)
+            s.touchdownIndex = n - 1;
+            for (int i = s.apogeeIndex + 1; i < n; i++) {
+                if (median3(i) <= s.groundAltitude + groundMargin) {
+                    s.touchdownIndex = i;
+                    s.touchdownRecorded = true;
+                    break;
+                }
+            }
+
+            int descentEnd = computeDescent(s, liftoffT);
+            computeLandingSpeed(s, descentEnd);
+            computeDuration(s, liftoffT);
+        }
+
+        /**
+         * Max velocity, burnout time and apogee instant.
+         *  - The burnout instant is the peak of the speed smoothed over +/-0.5 s, searched between
+         *    liftoff and the highest sample. The reported max velocity is the +/-0.25 s speed at
+         *    that instant (taking a maximum of the less smoothed speed would over-estimate it).
+         *  - The apogee instant is the first point after burnout where the smoothed speed is <= 0.
+         *
+         * @return index of the apogee instant
+         */
+        private int computeAscent(FlightStats s, double liftoffT, int highestIndex) {
+            if (highestIndex <= s.liftoffIndex) return highestIndex;
+
+            double maxV = Double.NEGATIVE_INFINITY;
+            int burnoutIdx = -1;
+            for (int i = s.liftoffIndex; i <= highestIndex; i++) {
+                double v = verticalSpeedAt(i, TIMING_HALF_WINDOW_SEC);
+                if (!Double.isNaN(v) && v > maxV) {
+                    maxV = v;
+                    burnoutIdx = i;
+                }
+            }
+            if (burnoutIdx < 0 || maxV <= 0) return highestIndex;
+
+            // Refine: the heavily smoothed peak lags the real one, so take the peak of the less
+            // smoothed speed, but only within +/-0.5 s of it (a bounded search keeps noise from
+            // inflating the value or moving the instant far away).
+            int refinedIdx = burnoutIdx;
+            double refinedV = verticalSpeedAt(burnoutIdx, SPEED_HALF_WINDOW_SEC);
+            for (int i = burnoutIdx; i >= s.liftoffIndex && t[burnoutIdx] - t[i] <= TIMING_HALF_WINDOW_SEC; i--) {
+                double v = verticalSpeedAt(i, SPEED_HALF_WINDOW_SEC);
+                if (v > refinedV) { refinedV = v; refinedIdx = i; }
+            }
+            for (int i = burnoutIdx + 1; i <= highestIndex && t[i] - t[burnoutIdx] <= TIMING_HALF_WINDOW_SEC; i++) {
+                double v = verticalSpeedAt(i, SPEED_HALF_WINDOW_SEC);
+                if (v > refinedV) { refinedV = v; refinedIdx = i; }
+            }
+            s.maxVelocity = Double.isNaN(refinedV) ? maxV : refinedV;
+            s.burnoutTimeSec = t[refinedIdx] - liftoffT;
+
+            // Apogee: smoothed speed crossing zero, searched up to 3 s past the highest sample
+            for (int i = burnoutIdx; i < n && t[i] <= t[highestIndex] + 3.0; i++) {
+                if (verticalSpeedAt(i, TIMING_HALF_WINDOW_SEC) <= 0) return i;
+            }
+            return highestIndex;
+        }
+
+        /**
+         * Descent rates and main deployment, by two-segment linear regression.
+         *
+         * @return index of the last descent sample used (ground tail excluded)
+         */
+        private int computeDescent(FlightStats s, double liftoffT) {
+            // Start: skip the rounded top of the curve
+            int start = s.apogeeIndex;
+            while (start < n - 1 && t[start] < t[s.apogeeIndex] + POST_APOGEE_SKIP_SEC) start++;
+
+            // End: exclude the samples lying on the ground
+            int end = s.touchdownIndex;
+            while (end > start && median3(end) <= s.groundAltitude + groundMargin) end--;
+
+            int count = end - start + 1;
+            if (count < 3) return end;
+
+            // One straight line over the whole descent (used if no main deployment is found)
+            double[] single = fitLine(start, end + 1);
+            double singleRate = (single != null && single[0] < 0) ? -single[0] : Double.NaN;
+
+            if (count >= 2 * MIN_SEGMENT_SAMPLES) {
+                double bestError = Double.MAX_VALUE;
+                double[] bestDrogue = null, bestMain = null;
+                int bestK = -1;
+                // k = first sample of the main segment; it is shared by both segments
+                for (int k = start + MIN_SEGMENT_SAMPLES; k <= end + 1 - MIN_SEGMENT_SAMPLES; k++) {
+                    double[] drogue = fitLine(start, k + 1);
+                    double[] main = fitLine(k, end + 1);
+                    if (drogue == null || main == null) continue;
+                    double error = drogue[2] + main[2];
+                    if (error < bestError) {
+                        bestError = error;
+                        bestDrogue = drogue;
+                        bestMain = main;
+                        bestK = k;
+                    }
+                }
+
+                if (bestK >= 0 && bestDrogue[0] < 0 && bestMain[0] < 0
+                        && Math.abs(bestMain[0]) <= MAX_MAIN_TO_DROGUE_RATE_RATIO * Math.abs(bestDrogue[0])) {
+                    // Deployment at the intersection of the two lines (robust to noise)
+                    double tDeploy = (bestMain[1] - bestDrogue[1]) / (bestDrogue[0] - bestMain[0]);
+                    if (!(tDeploy > t[start] && tDeploy < t[end])) tDeploy = t[bestK];
+                    double altDeploy = bestDrogue[0] * tDeploy + bestDrogue[1];
+
+                    if (altDeploy > s.groundAltitude + groundMargin && altDeploy < s.apogeeAltitude) {
+                        s.maxDescentRate = -bestDrogue[0];
+                        s.mainDescentRate = -bestMain[0];
+                        s.mainDeployAltitude = altDeploy;
+                        s.mainDeployTimeSec = tDeploy - liftoffT;
+                        return end;
+                    }
+                }
+            }
+
+            // No distinct main deployment: single descent rate
+            s.maxDescentRate = singleRate;
+            return end;
+        }
+
+        /** Landing speed: linear regression over the last part of the descent. */
+        private void computeLandingSpeed(FlightStats s, int descentEnd) {
+            int from = -1;
+            for (int i = s.apogeeIndex + 1; i <= descentEnd; i++) {
+                if (y[i] <= s.groundAltitude + landingWindow) {
+                    from = i;
+                    break;
+                }
+            }
+            if (from >= 0 && descentEnd - from + 1 >= MIN_LANDING_SAMPLES
+                    && t[descentEnd] - t[from] >= MIN_LANDING_DURATION_SEC) {
+                double[] line = fitLine(from, descentEnd + 1);
+                if (line != null && line[0] < 0) {
+                    s.landingSpeed = -line[0];
+                    return;
+                }
+            }
+            // Not enough data close to the ground: use the last descent rate found
+            s.landingSpeed = !Double.isNaN(s.mainDescentRate) ? s.mainDescentRate : s.maxDescentRate;
+        }
+
+        /** Flight duration from liftoff to touchdown (estimated if the recording stopped early). */
+        private void computeDuration(FlightStats s, double liftoffT) {
+            double duration = t[s.touchdownIndex] - liftoffT;
+            if (!s.touchdownRecorded && s.apogeeIndex < n - 1
+                    && !Double.isNaN(s.landingSpeed) && s.landingSpeed > 0) {
+                double remainingAlt = y[n - 1] - s.groundAltitude;
+                if (remainingAlt > 0) {
+                    duration += remainingAlt / s.landingSpeed;
+                    s.flightDurationEstimated = true;
+                }
+            }
+            s.flightDurationSec = Math.max(0.0, duration);
+        }
+
+        // ---------------------------------------------------------------------------------------
+        // Helpers
+        // ---------------------------------------------------------------------------------------
+
+        private double medianOfFirstSamples(int count) {
+            int c = Math.min(count, n);
+            double[] v = new double[c];
+            System.arraycopy(y, 0, v, 0, c);
+            Arrays.sort(v);
+            return (c % 2 == 1) ? v[c / 2] : (v[c / 2 - 1] + v[c / 2]) / 2.0;
+        }
+
+        /**
+         * Liftoff = start of the climb: first find a point clearly in flight (10 m / 30 ft above
+         * the ground, median filtered), then walk back until the altitude is back near the pad.
+         * A noisy sample on the pad therefore cannot trigger an early liftoff.
+         * If the recording starts in flight, liftoff is the first sample.
+         */
+        private int findLiftoffIndex(double ground) {
+            double clearlyFlying = ground + 10.0 * (liftoffThreshold / LIFTOFF_THRESHOLD_M);
+            int i = 0;
+            while (i < n && median3(i) <= clearlyFlying) i++;
+            if (i >= n) return 0;
+            while (i > 0 && median3(i - 1) > ground + liftoffThreshold) i--;
+            return (i > 0) ? i - 1 : 0;
+        }
+
+        /** Median of samples i-1, i, i+1 (raw value at both ends of the curve). */
+        private double median3(int i) {
+            if (i <= 0 || i >= n - 1) return y[i];
+            double a = y[i - 1], b = y[i], c = y[i + 1];
+            return Math.max(Math.min(a, b), Math.min(Math.max(a, b), c));
+        }
+
+        /** Vertical speed at sample i: slope of a linear regression over +/- halfWindowSec. */
+        private double verticalSpeedAt(int i, double halfWindowSec) {
+            int lo = i, hi = i;
+            while (lo > 0 && (t[i] - t[lo - 1] <= halfWindowSec || i - lo < 2)) lo--;
+            while (hi < n - 1 && (t[hi + 1] - t[i] <= halfWindowSec || hi - i < 2)) hi++;
+            double[] line = fitLine(lo, hi + 1);
+            return line == null ? Double.NaN : line[0];
+        }
+
+        /**
+         * Least-squares straight line y = a * t + b over samples [from, to).
+         *
+         * @return {a, b, sumOfSquaredErrors}, or null if the segment is degenerate
+         */
+        private double[] fitLine(int from, int to) {
+            int count = to - from;
+            if (count < 2) return null;
+
+            double st = sT[to] - sT[from];
+            double sy = sY[to] - sY[from];
+            double stt = sTT[to] - sTT[from];
+            double sty = sTY[to] - sTY[from];
+            double syy = sYY[to] - sYY[from];
+
+            double varT = stt - st * st / count;  // centered sum of t^2
+            if (varT <= 1e-9) return null;
+            double covTY = sty - st * sy / count; // centered sum of t*y
+            double varY = syy - sy * sy / count;  // centered sum of y^2
+
+            double a = covTY / varT;
+            double b = (sy - a * st) / count;
+            double sse = Math.max(0.0, varY - covTY * covTY / varT);
+            return new double[]{a, b, sse};
+        }
+    }
+    // ---- FlightStatsCalculator (end) ----
 }

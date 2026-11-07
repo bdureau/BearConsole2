@@ -9,8 +9,10 @@ package com.altimeter.bdureau.bearconsole.Flash;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 
@@ -32,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
@@ -139,6 +142,14 @@ public class FlashFirmware extends AppCompatActivity {
     private String[] itemsFirmwares;
     private Spinner dropdownBaudRate;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // Read language configuration directly from SharedPreferences to ensure
+        // context localization is configured before Activity inflation
+        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
+        int lang = prefs.getInt("AppLanguage", 0);
+        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
+    }
     // fast way to call Toast
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
@@ -149,6 +160,7 @@ public class FlashFirmware extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        //setTitle(R.string.select_bluetooth_device);
         setContentView(R.layout.activity_flash_firmware);
 
         spinnerFirmware = (Spinner) findViewById(R.id.spinnerFirmware);

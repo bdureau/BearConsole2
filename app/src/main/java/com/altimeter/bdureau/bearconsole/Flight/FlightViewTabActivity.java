@@ -13,8 +13,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -102,6 +104,14 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
     public int numberOfCurves = 0;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // Read language configuration directly from SharedPreferences to ensure
+        // context localization is configured before Activity inflation
+        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
+        int lang = prefs.getInt("AppLanguage", 0);
+        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
+    }
     //Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSION_STORAGE = {
@@ -136,6 +146,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        //setTitle(R.string.telemetry_screen);
         if (Build.VERSION.SDK_INT >= 23)
             verifyStoragePermission(FlightViewTabActivity.this);
 

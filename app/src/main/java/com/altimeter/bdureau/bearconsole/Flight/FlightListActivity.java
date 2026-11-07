@@ -16,8 +16,10 @@ package com.altimeter.bdureau.bearconsole.Flight;
  */
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,6 +59,14 @@ public class FlightListActivity extends AppCompatActivity {
 
     private final Handler mHandler = new Handler();
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // Read language configuration directly from SharedPreferences to ensure
+        // context localization is configured before Activity inflation
+        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
+        int lang = prefs.getInt("AppLanguage", 0);
+        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
+    }
     private final AdapterView.OnItemClickListener myListClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
@@ -73,7 +83,7 @@ public class FlightListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setTitle(R.string.Flight_list);
         // Retrieve global application state handle
         myBT = (ConsoleApplication) getApplication();
 

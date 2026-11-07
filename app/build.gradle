@@ -5,7 +5,7 @@ android {
 
     defaultConfig {
         applicationId 'com.altimeter.bdureau.bearconsole'
-        minSdk 23
+        minSdk 24
         targetSdk 37
         versionName '2.0.22'
         versionCode 49
@@ -41,22 +41,22 @@ dependencies {
     implementation files('libs/usbserial-6.1.0.aar') //special version of usbserial that work with Android 12
     //implementation 'com.github.felHR85:UsbSerial:6.1.0' //that does not work with Android 12
     //implementation 'com.squareup.okio:okio:3.3.0' //this is needed so that my local usbserial lib work
-    implementation 'com.squareup.okio:okio:3.17.0' //07/09/25
+    implementation 'com.squareup.okio:okio:3.18.2' //07/09/25
     implementation files('libs/physicaloid.aar')
     implementation files('libs/viewtooltip.aar')
     implementation files('libs/processing-core.jar')
 
-    implementation 'com.google.android.gms:play-services-maps:20.0.0'//07/09/25
+    implementation 'com.google.android.gms:play-services-maps:20.1.0'//07/09/25
     implementation 'com.google.android.gms:play-services-location:21.4.0'
 
-    implementation 'androidx.appcompat:appcompat:1.7.1'//07/09/25
+    implementation 'androidx.appcompat:appcompat:1.8.0'//07/09/25
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.11.0' //07/09/25
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.11.0'//07/09/25
 
-    implementation 'androidx.navigation:navigation-fragment:2.9.8'
-    implementation 'androidx.navigation:navigation-ui:2.9.8'//07/09/25
+    implementation 'androidx.navigation:navigation-fragment:2.10.2'
+    implementation 'androidx.navigation:navigation-ui:2.10.2'//07/09/25
 
     androidTestImplementation 'androidx.test.ext:junit:1.3.0'
 
@@ -67,7 +67,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     // required to avoid crash on Android 12 API 31
 
-    implementation 'androidx.work:work-runtime:2.11.2'//07/09/25
+    implementation 'androidx.work:work-runtime:2.12.0'//07/09/25
     //for openmap
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'org.osmdroid:osmdroid-android:6.1.20'//07/09/25

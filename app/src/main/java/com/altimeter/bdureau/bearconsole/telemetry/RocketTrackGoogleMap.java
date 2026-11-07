@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
@@ -77,6 +78,15 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     private int MapType;
 
     private ConsoleApplication myBT;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // Read language configuration directly from SharedPreferences to ensure
+        // context localization is configured before Activity inflation
+        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
+        int lang = prefs.getInt("AppLanguage", 0);
+        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
+    }
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -122,6 +132,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setTitle(R.string.telemetry_screen);
         receiver = new LocationBroadCastReceiver();
         myBT = (ConsoleApplication) getApplication();
         setContentView(R.layout.activity_rocket_track_google_map);

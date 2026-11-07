@@ -16,7 +16,9 @@ package com.altimeter.bdureau.bearconsole.config;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -71,6 +73,14 @@ public class AltiTabConfigActivity extends AppCompatActivity {
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // Read language configuration directly from SharedPreferences to ensure
+        // context localization is configured before Activity inflation
+        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
+        int lang = prefs.getInt("AppLanguage", 0);
+        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
+    }
     // Background executor for serial communication
     private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -78,6 +88,7 @@ public class AltiTabConfigActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.altimeter_config);
         myBT = (ConsoleApplication) getApplication();
         setContentView(R.layout.activity_altimeter_tab_config);
 

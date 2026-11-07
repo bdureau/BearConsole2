@@ -4,6 +4,7 @@ package com.altimeter.bdureau.bearconsole;
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: MainScreenActivity
+ * Author: Boris du Reau
  *
  * @description:
  *  Main dashboard activity for the altimeter console application.
@@ -27,6 +28,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
@@ -121,6 +123,15 @@ public class MainScreenActivity extends AppCompatActivity {
     // UI Handler for posting results back to the Android Main Thread
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // Read language configuration directly from SharedPreferences to ensure
+        // context localization is configured before Activity inflation
+        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
+        int lang = prefs.getInt("AppLanguage", 0);
+        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
+    }
+
     /**
      * BroadcastReceiver handling USB runtime lifecycle events and user authorization responses.
      */
@@ -204,6 +215,7 @@ public class MainScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.app_name);
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 
         // Retrieve global application state and instantiate firmware version checker
