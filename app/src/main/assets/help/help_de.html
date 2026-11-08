@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .btn-entry { margin-bottom: 14px; }
+        .btn-entry strong { color: #0277BD; }
+        .hardware-item { margin-bottom: 12px; }
+        img { vertical-align: middle; margin: 4px 6px 4px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Bear Höhenmesser-Konsole Hilfedatei</h1>
+
+<p>Dies ist eine Kurzanleitung zur Verwendung Ihrer Android Bear Höhenmesser-Konsole. Die Android-Konsole ist eine sehr praktische Möglichkeit, Ihren Höhenmesser direkt auf dem Flugfeld neu zu konfigurieren.</p>
+
+<div class="info-box">
+    <strong>Hinweis:</strong> Die Hilfe ist auf jedem Bildschirm kontextbezogen; sie zeigt spezifische Hilfe an, die für den aktuell verwendeten Bildschirm relevant ist.
+</div>
+
+<h2>Ersteinrichtung &amp; Bluetooth-Kopplung</h2>
+<ol>
+    <li><strong>Firmware-Überprüfung:</strong> Stellen Sie sicher, dass Ihr Höhenmesser kompatibel ist (d. h. die richtige Firmware geladen wurde).</li>
+    <li><strong>Modulverbindung:</strong> Vergewissern Sie sich, dass das Bluetooth-Modul ordnungsgemäß mit dem Höhenmesser verbunden ist.</li>
+    <li><strong>Systemkopplung:</strong> Öffnen Sie die Einstellungen Ihres Android-Geräts, navigieren Sie zur Bluetooth-Konfiguration und suchen Sie nach dem Bluetooth-Modul HC-05, HC-06 oder HC-07. Geben Sie nach dem Auffinden die Kopplungs-PIN ein, die standardmäßig <strong>1234</strong> lautet.</li>
+</ol>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ACHTUNG</div>
+    <div>Sie sollten jedes gekoppelte Bluetooth-Gerät auf Ihrem Telefon eindeutig umbenennen, um sicherzustellen, dass Sie den richtigen Höhenmesser konfigurieren.</div>
+</div>
+
+<ol start="4">
+    <li><strong>Einschalten:</strong> Schalten Sie den Höhenmesser ein und warten Sie, bis er zur Bestätigung der Durchgängigkeit (Continuity) piept.</li>
+    <li><strong>Verbindung:</strong> Starten Sie die BearConsole-App auf Ihrem Android-Gerät, tippen Sie auf gekoppelte Geräte und wählen Sie Ihr Modul (HC-05 oder HC-06) aus. Die Konsole versucht nun, eine Verbindung zum Höhenmesser herzustellen.</li>
+</ol>
+
+<p>Sobald die Verbindung hergestellt ist, können Sie die Konsole verwenden, um Ihren Höhenmesser zu konfigurieren oder aufgezeichnete Flugdaten herunterzuladen. Wenn die Verbindung fehlschlägt, überprüfen Sie, ob der Höhenmesser eingeschaltet ist und der richtige Bluetooth-Adapter ausgewählt wurde.</p>
+
+<h2>Verwendung der Höhenmesser-Konsole</h2>
+
+<h3>Hauptbildschirm des Höhenmessers</h3>
+<p>Der Hauptbildschirm bietet mehrere Aktionskarten:</p>
+
+<div class="btn-entry">
+    <p><strong>[Höhenmessereinstellungen]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Altimeters Settings75x92.png" alt="Höhenmessereinstellungen"/>
+        Liest die aktuellen Höhenmessereinstellungen aus und ermöglicht deren Änderung.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Flüge]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flights75x92.png" alt="Flüge"/>
+        Liest alle aufgezeichneten Flüge aus dem EEPROM/Flash-Speicher aus und stellt sie als interaktive Kurven dar.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Telemetrie]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Telemetry75x91.png" alt="Telemetrie"/>
+        Ermöglicht den Zugriff auf das Echtzeit-Telemetrie-Streaming des Flugcomputers.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Durchgang EIN/AUS]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Continuity on-off75x93.png" alt="Durchgang EIN/AUS"/>
+        Schaltet den akustischen Durchgangssummer (Beeper) ein und aus.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Einstellungen zurücksetzen]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Reset settings75x92.png" alt="Einstellungen zurücksetzen"/>
+        Setzt die Konfiguration des Höhenmessers auf die Werkseinstellungen zurück. Ermöglicht auch das Löschen aller gespeicherten Flüge oder nur der letzten Flugaufzeichnung.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Status]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Status75x90.png" alt="Status"/>
+        Öffnet den Diagnosebildschirm: zeigt den Durchgang der Auslösekanäle, die Speicherauslastung, den Sensorstatus und die aktuelle Höhe an.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Firmware flashen]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flash firmware75x92.png" alt="Firmware flashen"/>
+        Ermöglicht das direkte Flashen neuer Firmware-Versionen über ein USB-OTG-Kabel (verfügbar für ATmega328-, STM32- und ESP32-Plattformen).</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Verbinden / Trennen]</strong></p>
+    <p>
+        <img src="file:///android_asset/help/images/console connect75x93.png" alt="Verbinden"/>
+        <img src="file:///android_asset/help/images/console Disconnect75x91.png" alt="Trennen"/>
+    </p>
+    <p>Stellt die serielle Verbindung mit dem Höhenmesser her oder trennt sie.</p>
+</div>
+
+<h3>Menü des Hauptbildschirms</h3>
+<p>Über das Optionsmenü können Sie auf diese Hilfedatei zugreifen, den Infobildschirm „Über“ mit Versionsdetails öffnen, Design-Einstellungen der App anpassen sowie Konfigurationsmenüs für 3DR-Funk-, Bluetooth- und LoRa-Telemetriemodule aufrufen.</p>
+
+<h3>Unterstützte Höhenmesser</h3>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (Vollversion mit ATmega328)</p>
+    <p>Dies ist der originale AltiDuo (mein erster Höhenmesser) mit einer speziellen Firmware, die eine vollständige Konfiguration über diese App ermöglicht. Er verwendet ein am seriellen Port angeschlossenes Bluetooth-Modul.</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V1</strong></p>
+    <p>Ein Höhenmesser mit 3 pyrotechnischen Ausgängen, der Flüge in einem EEPROM speichert. Er verwendet ein am seriellen Port angeschlossenes Bluetooth-Modul.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti V1"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V2</strong></p>
+    <p>Eine verbesserte Version des AltiMulti. Verwendet ebenfalls ein am seriellen Port angeschlossenes Bluetooth-Modul.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMulti V2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p>Ermöglicht die Ansteuerung von Servos anstelle von pyrotechnischen Ausgängen. Verwendet ein am seriellen Port angeschlossenes Bluetooth-Modul. Über diese App können Servos und Höhenmesser konfiguriert werden.</p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti STM32</strong></p>
+    <p>Version 3 des AltiMulti auf Basis eines STM32-Chips. Bietet 4 pyrotechnische Ausgänge, Flugaufzeichnung und einen zusätzlichen seriellen Port für Erweiterungsgeräte.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMulti STM32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiGPS</strong></p>
+    <p>Nutzt die AltiMultiV3-Platine mit einer angepassten Firmware zur Ansteuerung eines am seriellen Port angeschlossenen GPS-Moduls.</p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32</strong></p>
+    <p>Die 4. Version des AltiMulti auf Basis eines ESP32-Chips. Bietet 3 pyrotechnische Ausgänge und Flugaufzeichnung. Kein externes Bluetooth-Modul erforderlich, da direkt auf dem Chip integriert.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMulti ESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p>Baugleich mit dem AltiMulti ESP32, jedoch mit 2 Beschleunigungssensoren auf der Platine (ADXL345 und ADXL375).</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p>Baugleich mit dem AltiMulti ESP32, jedoch mit 1 ADXL345-Beschleunigungssensor auf der Platine.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p>Baugleich mit dem AltiMulti ESP32, jedoch mit 1 ADXL375-Beschleunigungssensor auf der Platine.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p>Basiert auf dem LilyGO-Board, ergänzt durch eine Tochterplatine (Shield) mit barometrischem Drucksensor, Beschleunigungssensor und EEPROM zur Speicherung der Flugdaten.</p>
+    <p><img src="file:///android_asset/help/images/ttgo316x165small.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO T QT mini BearAltimeter</strong></p>
+    <p>Die kompakteste Höhenmesser-Platine; verfügt ebenfalls über eine Tochterplatine für den barometrischen Drucksensor.</p>
+    <p><img src="file:///android_asset/help/images/lilygo314x185.jpg" alt="TTGO T QT mini BearAltimeter"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TS-ESP32-S3 BearAltimeter</strong></p>
+    <p>Diese kleine Platine bietet sofort einsatzbereite Funktionalität. Sie verfügt über einen integrierten Drucksensor und einen Beschleunigungssensor. Die Flugdaten werden im bordeigenen Speicher abgelegt. Flashen Sie einfach die passende Firmware aus der Liste.</p>
+    <p><img src="file:///android_asset/help/images/ultimateSmall311x139.jpg" alt="TS-ESP32-S3 BearAltimeter"/></p>
+</div>
+
+</body>
+</html>

@@ -104,58 +104,79 @@
 </div>
 
 <h3>Altimeter Main Screen Menu</h3>
-<p>From the options menu, you can access this help guide, the "About" screen containing version details, application theme preferences, and configuration panels for 3DR radio, Bluetooth, and LoRa telemetry transceivers.</p>
+<p>From the options menu, you can access this help guide, the "About" screen containing version details, application theme preferences,
+    and configuration panels for 3DR radio, Bluetooth, and LoRa telemetry transceivers.</p>
 
 <h3>Supported Altimeters</h3>
 <div class="hardware-item">
     <p>&bull; <strong>AltiDuo</strong> (full-size edition with ATmega328)</p>
+    <p>This is the original AltiDuo (my first altimeter) with a specifc firmware that allow full configuration of the altimeter with this app.
+        It uses a bluetooth plugged on the serial port</p>
     <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiMulti V1</strong></p>
+    <p>This a 3 outputs altimeter that logs the flight in an eeprom. It uses a bluetooth plugged on the serial port</p>
     <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti V1"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiMulti V2</strong></p>
+    <p>This is an enhanced version of the AltiMulti. It uses a bluetooth plugged on the serial port.</p>
     <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMulti V2"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiServo</strong></p>
+    <p>This allows to drive servos rather than pyro outputs. It uses a bluetooth plugged on the serial port. You can configure the servos and the altimeter using this app</p>
     <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
 </div>
 <div class="hardware-item">
-    <p>&bull; <strong>AltiGPS</strong></p>
-</div>
-<div class="hardware-item">
     <p>&bull; <strong>AltiMulti STM32</strong></p>
+    <P>This is version 3 of the AltiMulti which is using an SMT32 chip. It has 4 pyro outputs, can record flight and an additional serial port to plug additional devices</P>
     <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMulti STM32"/></p>
 </div>
 <div class="hardware-item">
+    <p>&bull; <strong>AltiGPS</strong></p>
+    <P>This is using the AltiMultiV3 board with a different firmware to run a GPS that is plugged on the serial port/P>
+</div>
+<div class="hardware-item">
     <p>&bull; <strong>AltiMulti ESP32</strong></p>
+    <p>This is the 4th version of the AltiMulti which is using an ESP32 chip. It has 3 pyro outputs and record flight.
+        No need for an external bluetooth it has one one the chip</p>
     <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMulti ESP32"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p>This is the same as the AltiMulti ESP32 but with 2 accelerometers on the board (accel 345 and 375)</p>
     <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p>This is the same as the AltiMulti ESP32 but with 1 accel 345 on the board</p>
     <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p>This is the same as the AltiMulti ESP32 but with 1 accel 375 on the board</p>
     <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p>This is the lilygo board which has a screen. With the addition of a child board to have an air pressure sensor + accelerometer and an eeprom to record the flight.
+    You can connect to the board using bluetooth.
+    </p>
     <p><img src="file:///android_asset/help/images/ttgo316x165small.jpg" alt="TTGO BearAltimeter"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>TTGO T QT mini BearAltimeter</strong></p>
+    <p>This is the smallest altimeter board, it also has a child board for the barometric sensor.
+        Note: It cannot connect using bluetooth, you need a USB cable to connect to the altimeter, configure it or read the flights.</p>
     <p><img src="file:///android_asset/help/images/lilygo314x185.jpg" alt="TTGO T QT mini BearAltimeter"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>TS-ESP32-S3 BearAltimeter</strong></p>
+    <p>This little board has everything out of the box. It has an onboard pressure sensor + accelerometer.
+        The flight is recorded on the board memory. Just flash the firmware from the list.
+    Note: It cannot connect using bluetooth, you need a USB cable to connect to the altimeter, configure it or read the flights.</p>
     <p><img src="file:///android_asset/help/images/ultimateSmall311x139.jpg" alt="TS-ESP32-S3 BearAltimeter"/></p>
 </div>
 

@@ -269,6 +269,14 @@
     <string name="after_complete_upload">After the upload is complete you will be able to flash the real firmware</string>
     <string name="detect_firmware">Detect firmware</string>
     <string name="msg_detect_firmware">Attempting to Detect firmware!!!</string>
+    <!-- Flash -->
+    <string name="chip_has_not_been_init">Chip has been initiated:</string>
+    <string name="flash_firmware_msg">This will allows you to flash your altimeter firmware to make sure it is compatible with this application. You will need a ttl cable and an adaptator to connect your altimeter board to your phone. Please look at the on line help</string>
+    <string name="flash_firmware_title">Flash firmware</string>
+    <string name="flash_firmware_ok">OK</string>
+    <string name="firmware_version_not_detected">Firmware version detected: </string>
+    <string name="flash_advice_msg">Altimeter firmware version might be incompatible, please consider flashing your board</string>
+    <string name="unsuported_firmware_msg">Unsupported firmware</string>
 
     <!--- other -->
     <string name="flight_list_cancel">Cancel</string>
@@ -320,6 +328,7 @@
     <string name="flight_time">Time</string>
 
     <!--telemetry module config -->
+    <string name="config_3dr_modules">Config 3DR modules</string>
     <string name="m3DR_load_cfg">Loading 3DR module configuration</string>
     <string name="m3DR_retrieving_cfg">Retrieving config</string>
     <string name="m3DR_no_errors">No error saving the data\n Running AT&amp;W</string>
@@ -367,11 +376,8 @@
     <string name="bt_baud_rate">Baud rate:</string>
     <string name="pin">Pin:</string>
     <string name="module_name">Module name:</string>
-    <string name="chip_has_not_been_init">Chip has been initiated:</string>
-    <string name="flash_firmware_msg">This will allows you to flash your altimeter firmware to make sure it is compatible with this application. You will need a ttl cable and an adaptator to connect your altimeter board to your phone. Please look at the on line help</string>
-    <string name="flash_firmware_title">Flash firmware</string>
-    <string name="flash_firmware_ok">OK</string>
-    <string name="firmware_version_not_detected">Firmware version detected: </string>
+
+
     <string name="_3dr_settings">3DR settings...</string>
     <string name="bt_settings">BT settings...</string>
     <string name="save_curves_title">Info</string>
@@ -379,8 +385,7 @@
     <string name="save_curve_msg">The following files have been saved under: </string>
     <string name="curves_saved_msg">Flight curves saved</string>
     <string name="continuity_changed">Continuity changed</string>
-    <string name="flash_advice_msg">Altimeter firmware version might be incompatible, please consider flashing your board</string>
-    <string name="unsuported_firmware_msg">Unsupported firmware</string>
+
     <string name="msg_test_connection">This will allow to test the connection reliability</string>
     <string name="msg_title_info">Info</string>
     <string name="test_connection_start">Start</string>
@@ -415,6 +420,8 @@
     <string name="time_sat_acquisition">Time sat acquisition</string>
     <string name="use_telemetryport">Use TelemetryPort</string>
     <!-- Lora module-->
+    <string name="config_lorae32_module">Config LoraE32 module</string>
+    <string name="config_lorae220_module">Config LoraE220 module</string>
     <string name="lora_configure_module_title">Configure Lora module</string>
     <string name="lora_module_channel">Channel:</string>
     <string name="lora_module_trans_mode">Trans mode:</string>
@@ -493,5 +500,12 @@
     <string name="do_you_want_to_connect_to_module">"Do you want to connect to module "</string>
     <string name="no">No</string>
     <string name="recover_flight">Recover flight</string>
+    <string name="track_with_openmap">Track with OpenMap</string>
+    <string name="track_with_googlemap">Track with GoogleMap</string>
+    <string name="flight_view">Flight</string>
+    <string name="flash_altimeter_firmware">Flash altimeter firmware</string>
+    <string name="config_bluetooth_module">Config bluetooth module</string>
+
+    <string name="help_file">Help file</string>
 
 </resources>

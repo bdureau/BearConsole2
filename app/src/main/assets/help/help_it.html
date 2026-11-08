@@ -20,143 +20,157 @@
 </head>
 <body>
 
-<h1>File di guida della console altimetro Bear</h1>
+<h1>Guida della console per altimetro Bear</h1>
 
-<p>Questa è una guida rapida per l'utilizzo della console per altimetro Bear su Android. La console Android è una soluzione molto comoda per riconfigurare il proprio altimetro direttamente sul campo di lancio.</p>
+<p>Questa è una guida rapida all'uso della console per altimetro Bear per Android. La console Android offre un modo molto pratico per riconfigurare il tuo altimetro direttamente sul campo di lancio.</p>
 
 <div class="info-box">
-    <strong>Nota:</strong> La guida è contestuale: visualizzerà le informazioni d'aiuto corrispondenti alla schermata corrente.
+    <strong>Nota:</strong> L'aiuto è contestuale per ciascuna schermata; mostra informazioni specifiche relative alla schermata attualmente visualizzata.
 </div>
 
 <h2>Configurazione iniziale e associazione Bluetooth</h2>
 <ol>
-    <li><strong>Verifica del firmware:</strong> Prima di tutto, assicurati che il tuo altimetro sia compatibile (ovvero che sia stato caricato il firmware corretto).</li>
-    <li><strong>Connessione del modulo:</strong> In secondo luogo, assicurati che il modulo Bluetooth sia collegato correttamente all'altimetro.</li>
-    <li><strong>Associazione nel sistema:</strong> In terzo luogo, apri le impostazioni del tuo dispositivo Android, accedi alla configurazione Bluetooth e cerca il modulo HC-05, HC-06 o HC-07. Una volta trovato, inserisci il codice PIN di associazione, che per impostazione predefinita è <strong>1234</strong>.</li>
+    <li><strong>Verifica del firmware:</strong> Assicurati che il tuo altimetro sia compatibile (ovvero che sia stato caricato il firmware corretto).</li>
+    <li><strong>Connessione del modulo:</strong> Controlla che il modulo Bluetooth sia collegato correttamente all'altimetro.</li>
+    <li><strong>Associazione di sistema:</strong> Apri le impostazioni del tuo dispositivo Android, vai alla configurazione Bluetooth e cerca il modulo Bluetooth HC-05, HC-06 o HC-07. Una volta trovato, inserisci il codice PIN di associazione, che per impostazione predefinita è <strong>1234</strong>.</li>
 </ol>
 
 <div class="warning-box">
     <div class="warning-title">&#9888; ATTENZIONE</div>
-    <div>Si consiglia di rinominare chiaramente ciascun dispositivo Bluetooth associato sullo smartphone per essere certi di configurare l'altimetro corretto.</div>
+    <div>Si consiglia di rinominare chiaramente ciascun dispositivo Bluetooth associato sul telefono per essere certi di configurare l'altimetro corretto.</div>
 </div>
 
 <ol start="4">
-    <li><strong>Accensione:</strong> Quindi accendi l'altimetro e attendi finché non emette i bip di conferma della continuità.</li>
-    <li><strong>Connessione:</strong> Avvia l'applicazione sul tuo dispositivo Android, tocca «Mostra dispositivi associati» e seleziona il dispositivo HC-05 o HC-06. La console tenterà ora la connessione all'altimetro.</li>
+    <li><strong>Accensione:</strong> Accendi l'altimetro e attendi che emetta i segnali acustici di conferma della continuità.</li>
+    <li><strong>Connessione:</strong> Avvia l'applicazione BearConsole sul tuo dispositivo Android, tocca i dispositivi associati e seleziona il tuo modulo (HC-05 o HC-06). La console tenterà quindi di connettersi all'altimetro.</li>
 </ol>
 
-<p>Se viene visualizzato «Connesso», il collegamento è attivo ed è possibile utilizzare la Console per configurare l'altimetro o scaricare i dati dei voli registrati. Se non riesce a connettersi, verifica che l'altimetro sia acceso e di aver selezionato il modulo Bluetooth corretto.</p>
+<p>Una volta stabilita la connessione, puoi utilizzare la console per configurare l'altimetro o scaricare i dati dei voli registrati. Se la connessione non riesce, verifica che l'altimetro sia acceso e che sia stato selezionato l'adattatore Bluetooth corretto.</p>
 
-<h2>Utilizzo della console altimetro</h2>
+<h2>Utilizzo della console dell'altimetro</h2>
 
 <h3>Schermata principale dell'altimetro</h3>
-<p>Sulla schermata principale sono presenti diversi pulsanti operativi:</p>
+<p>La schermata principale offre diverse schede di azione:</p>
 
 <div class="btn-entry">
     <p><strong>[Impostazioni Altimetro]</strong></p>
     <p><img src="file:///android_asset/help/images/console Altimeters Settings75x92.png" alt="Impostazioni Altimetro"/>
-        Legge le impostazioni correnti dell'altimetro e ti consente di modificarle.</p>
+        Legge le impostazioni correnti dell'altimetro e consente di modificarle.</p>
 </div>
 
 <div class="btn-entry">
     <p><strong>[Voli]</strong></p>
     <p><img src="file:///android_asset/help/images/console Flights75x92.png" alt="Voli"/>
-        Scarica tutti i voli salvati nella memoria e ne traccia i grafici vettoriali.</p>
+        Legge tutti i voli registrati nella memoria EEPROM/Flash e ne traccia i grafici in modo interattivo.</p>
 </div>
 
 <div class="btn-entry">
     <p><strong>[Telemetria]</strong></p>
     <p><img src="file:///android_asset/help/images/console Telemetry75x91.png" alt="Telemetria"/>
-        Accede al monitoraggio dei dati di telemetria in tempo reale dell'altimetro.</p>
+        Accede alla trasmissione dei dati di telemetria in tempo reale dal computer di volo.</p>
 </div>
 
 <div class="btn-entry">
     <p><strong>[Continuità ON/OFF]</strong></p>
     <p><img src="file:///android_asset/help/images/console Continuity on-off75x93.png" alt="Continuità ON/OFF"/>
-        Attiva o disattiva il segnale acustico del cicalino di continuità.</p>
+        Attiva e disattiva il cicalino acustico di continuità.</p>
 </div>
 
 <div class="btn-entry">
-    <p><strong>[Resetta Impostazioni]</strong></p>
-    <p><img src="file:///android_asset/help/images/console Reset settings75x92.png" alt="Resetta Impostazioni"/>
-        Permette di ripristinare le impostazioni di fabbrica dell'altimetro. Consente inoltre di cancellare tutti i voli registrati oppure solo l'ultimo.</p>
+    <p><strong>[Ripristina Impostazioni]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Reset settings75x92.png" alt="Ripristina Impostazioni"/>
+        Ripristina la configurazione dell'altimetro ai valori predefiniti di fabbrica. Consente inoltre di cancellare tutti i voli memorizzati o soltanto l'ultimo record di volo.</p>
 </div>
 
 <div class="btn-entry">
     <p><strong>[Stato]</strong></p>
     <p><img src="file:///android_asset/help/images/console Status75x90.png" alt="Stato"/>
-        Apre la schermata di diagnostica: visualizza lo stato dei canali di recupero, l'uso della memoria, lo stato dei sensori e l'altitudine corrente.</p>
+        Abre la schermata di diagnostica: visualizza la continuità dei canali di espulsione, l'uso della memoria, lo stato dei sensori e l'altitudine corrente.</p>
 </div>
 
 <div class="btn-entry">
-    <p><strong>[Flash Firmware]</strong></p>
-    <p><img src="file:///android_asset/help/images/console Flash firmware75x92.png" alt="Flash Firmware"/>
-        Consente di aggiornare il firmware dell'altimetro tramite cavo USB OTG (funzione disponibile per schede basate su ATmega328, STM32 ed ESP32).</p>
+    <p><strong>[Aggiorna Firmware]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flash firmware75x92.png" alt="Aggiorna Firmware"/>
+        Consente di eseguire il flashing di nuove versioni del firmware direttamente tramite cavo USB OTG (disponibile per schede ATmega328, STM32 ed ESP32).</p>
 </div>
 
 <div class="btn-entry">
-    <p><strong>[Connessione / Disconnessione]</strong></p>
+    <p><strong>[Connetti / Disconnetti]</strong></p>
     <p>
         <img src="file:///android_asset/help/images/console connect75x93.png" alt="Connetti"/>
         <img src="file:///android_asset/help/images/console Disconnect75x91.png" alt="Disconnetti"/>
     </p>
-    <p>Stabilisce o interrompe la comunicazione seriale con l'altimetro.</p>
+    <p>Stabilisce o interrompe la connessione seriale con l'altimetro.</p>
 </div>
 
 <h3>Menu della schermata principale</h3>
-<p>Dal menu opzioni è possibile consultare questa guida rapida, la schermata «Informazioni» relativa alla versione dell'app, personalizzare l'aspetto grafico dell'interfaccia e configurare i moduli di telemetria 3DR radio, Bluetooth e LoRa eByte.</p>
+<p>Dal menu delle opzioni è possibile accedere a questa guida di supporto, visualizzare la schermata "Informazioni" con i dettagli della versione, personalizzare il tema visivo dell'applicazione e aprire i pannelli di configurazione per i ricetrasmettitori di telemetria radio 3DR, Bluetooth e LoRa.</p>
 
 <h3>Altimetri supportati</h3>
 <div class="hardware-item">
-    <p>&bull; <strong>AltiDuo</strong> (versione grande basata su ATmega328)</p>
+    <p>&bull; <strong>AltiDuo</strong> (versione full-size con ATmega328)</p>
+    <p>Questo è l'AltiDuo originale (il mio primo altimetro) con un firmware dedicato che permette la configurazione completa dell'altimetro tramite questa app. Utilizza un modulo Bluetooth collegato alla porta seriale.</p>
     <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiMulti V1</strong></p>
+    <p>Un altimetro a 3 uscite pirotecniche che registra il volo su una EEPROM. Utilizza un modulo Bluetooth collegato alla porta seriale.</p>
     <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti V1"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiMulti V2</strong></p>
+    <p>Versione ottimizzata dell'AltiMulti. Utilizza un modulo Bluetooth collegato alla porta seriale.</p>
     <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMulti V2"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiServo</strong></p>
+    <p>Consente di pilotare servomotori al posto delle uscite pirotecniche. Utilizza un modulo Bluetooth collegato alla porta seriale. Sia i servi sia l'altimetro possono essere configurati direttamente tramite questa applicazione.</p>
     <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
 </div>
 <div class="hardware-item">
-    <p>&bull; <strong>AltiGPS</strong></p>
-</div>
-<div class="hardware-item">
     <p>&bull; <strong>AltiMulti STM32</strong></p>
+    <p>Versione 3 dell'AltiMulti basata su microcontrollore STM32. Dispone di 4 uscite pirotecniche, registrazione dei voli e una porta seriale supplementare per collegare dispositivi ausiliari.</p>
     <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMulti STM32"/></p>
 </div>
 <div class="hardware-item">
+    <p>&bull; <strong>AltiGPS</strong></p>
+    <p>Utilizza la scheda AltiMultiV3 con un firmware specifico per gestire un modulo GPS collegato alla porta seriale.</p>
+</div>
+<div class="hardware-item">
     <p>&bull; <strong>AltiMulti ESP32</strong></p>
+    <p>La quarta versione dell'AltiMulti basata su chip ESP32. È provvista di 3 uscite pirotecniche e registrazione dei voli. Non necessita di un modulo Bluetooth esterno, poiché è integrato direttamente nel chip.</p>
     <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMulti ESP32"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p>Identico all'AltiMulti ESP32, ma include 2 accelerometri integrati sulla scheda (ADXL345 e ADXL375).</p>
     <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p>Identico all'AltiMulti ESP32, ma dotato di 1 accelerometro ADXL345 integrato sulla scheda.</p>
     <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p>Identico all'AltiMulti ESP32, ma dotato di 1 accelerometro ADXL375 integrato sulla scheda.</p>
     <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p>Realizzato a partire dalla scheda LilyGO con l'aggiunta di una scheda daughterboard (shield) dotata di sensore barometrico di pressione, accelerometro e una EEPROM per memorizzare i dati di volo.</p>
     <p><img src="file:///android_asset/help/images/ttgo316x165small.jpg" alt="TTGO BearAltimeter"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>TTGO T QT mini BearAltimeter</strong></p>
+    <p>La scheda altimetro più compatta; dispone anch'essa di una daughterboard dedicata al sensore barometrico.</p>
     <p><img src="file:///android_asset/help/images/lilygo314x185.jpg" alt="TTGO T QT mini BearAltimeter"/></p>
 </div>
 <div class="hardware-item">
     <p>&bull; <strong>TS-ESP32-S3 BearAltimeter</strong></p>
+    <p>Questa piccola scheda integra tutte le funzionalità di serie. Dispone di sensore barometrico di pressione e accelerometro integrati. I dati di volo vengono salvati nella memoria interna della scheda. È sufficiente caricare il firmware corrispondente dall'elenco.</p>
     <p><img src="file:///android_asset/help/images/ultimateSmall311x139.jpg" alt="TS-ESP32-S3 BearAltimeter"/></p>
 </div>
+
 </body>
 </html>

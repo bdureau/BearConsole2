@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .btn-entry { margin-bottom: 14px; }
+        .btn-entry strong { color: #0277BD; }
+        .hardware-item { margin-bottom: 12px; }
+        img { vertical-align: middle; margin: 4px 6px 4px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Plik pomocy konsoli wysokościomierza Bear</h1>
+
+<p>Oto krótki przewodnik pomocy dotyczący korzystania z konsoli wysokościomierza Bear dla systemu Android. Konsola Android to bardzo wygodne narzędzie do rekonfiguracji wysokościomierza bezpośrednio na stanowisku startowym.</p>
+
+<div class="info-box">
+    <strong>Uwaga:</strong> Pomoc jest kontekstowa dla każdego ekranu; wyświetla szczegółowe informacje powiązane z aktualnie używanym widokiem.
+</div>
+
+<h2>Wstępna konfiguracja i parowanie Bluetooth</h2>
+<ol>
+    <li><strong>Weryfikacja oprogramowania sprzętowego:</strong> Upewnij się, że wysokościomierz jest kompatybilny (tzn. wgrano prawidłową wersję firmware'u).</li>
+    <li><strong>Podłączenie modułu:</strong> Sprawdź, czy moduł Bluetooth jest poprawnie podłączony do wysokościomierza.</li>
+    <li><strong>Parowanie w systemie:</strong> Otwórz ustawienia urządzenia z systemem Android, przejdź do konfiguracji Bluetooth i wyszukaj moduł Bluetooth HC-05, HC-06 lub HC-07. Po jego znalezieniu wprowadź kod PIN parowania, który domyślnie wynosi <strong>1234</strong>.</li>
+</ol>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; UWAGA</div>
+    <div>Zaleca się jednoznaczne nazwanie każdego sparowanego urządzenia Bluetooth w telefonie, aby mieć pewność, że konfigurujesz właściwy wysokościomierz.</div>
+</div>
+
+<ol start="4">
+    <li><strong>Włączenie zasilania:</strong> Włącz wysokościomierz i poczekaj, aż wyda sygnały dźwiękowe potwierdzające ciągłość obwodów (continuity).</li>
+    <li><strong>Połączenie:</strong> Uruchom aplikację BearConsole na urządzeniu z systemem Android, dotknij sparowanych urządzeń i wybierz swój moduł (HC-05 lub HC-06). Konsola spróbuje nawiązać połączenie z wysokościomierzem.</li>
+</ol>
+
+<p>Po nawiązaniu połączenia możesz użyć konsoli do skonfigurowania wysokościomierza lub pobrania zapisanych danych lotu. Jeśli połączenie się nie powiedzie, upewnij się, że wysokościomierz jest włączony i wybrano właściwy moduł Bluetooth.</p>
+
+<h2>Obsługa konsoli wysokościomierza</h2>
+
+<h3>Główny ekran wysokościomierza</h3>
+<p>Główny ekran zawiera zestaw kart akcji:</p>
+
+<div class="btn-entry">
+    <p><strong>[Ustawienia wysokościomierza]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Altimeters Settings75x92.png" alt="Ustawienia wysokościomierza"/>
+        Odczytuje bieżące ustawienia wysokościomierza i umożliwia ich zmianę.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Loty]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flights75x92.png" alt="Loty"/>
+        Odczytuje wszystkie zarejestrowane loty z pamięci EEPROM/Flash i przedstawia je w postaci interaktywnych wykresów.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Telemetria]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Telemetry75x91.png" alt="Telemetria"/>
+        Otwiera transmisję danych telemetrycznych w czasie rzeczywistym z komputera pokładowego.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Ciągłość WŁ./WYŁ.]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Continuity on-off75x93.png" alt="Ciągłość WŁ./WYŁ."/>
+        Włącza i wyłącza akustyczny sygnalizator ciągłości obwodów.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Resetuj ustawienia]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Reset settings75x92.png" alt="Resetuj ustawienia"/>
+        Przywraca fabryczną konfigurację wysokościomierza. Umożliwia również usunięcie wszystkich zapisanych lotów lub tylko ostatniego wpisu.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Stan]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Status75x90.png" alt="Stan"/>
+        Otwiera ekran diagnostyczny: pokazuje ciągłość kanałów wyzwalania, zużycie pamięci, stan czujników i aktualną wysokość.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Wgraj oprogramowanie]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flash firmware75x92.png" alt="Wgraj oprogramowanie"/>
+        Pozwala wgrywać nowe wersje oprogramowania układowego bezpośrednio przez przewód USB OTG (dostępne dla platform ATmega328, STM32 i ESP32).</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Połącz / Rozłącz]</strong></p>
+    <p>
+        <img src="file:///android_asset/help/images/console connect75x93.png" alt="Połącz"/>
+        <img src="file:///android_asset/help/images/console Disconnect75x91.png" alt="Rozłącz"/>
+    </p>
+    <p>Ustanawia lub zamyka połączenie szeregowe z wysokościomierzem.</p>
+</div>
+
+<h3>Menu głównego ekranu</h3>
+<p>Z menu opcji można otworzyć niniejszy przewodnik pomocy, ekran „O programie” ze szczegółami wersji, preferencje motywu graficznego aplikacji oraz panele konfiguracyjne dla modułów radiowych 3DR, Bluetooth i LoRa.</p>
+
+<h3>Obsługiwane wysokościomierze</h3>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (pełnowymiarowa wersja z ATmega328)</p>
+    <p>Pierwotny model AltiDuo (mój pierwszy wysokościomierz) z dedykowanym firmware'em umożliwiającym pełną konfigurację z poziomu tej aplikacji. Korzysta z modułu Bluetooth podłączonego do portu szeregowego.</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V1</strong></p>
+    <p>Wysokościomierz z 3 wyjściami pirotechnicznymi, który zapisuje przebieg lotu w pamięci EEPROM. Działa w oparciu o moduł Bluetooth podłączony do portu szeregowego.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti V1"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V2</strong></p>
+    <p>Udoskonalona wersja AltiMulti. Również korzysta z modułu Bluetooth na porcie szeregowym.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMulti V2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p>Umożliwia sterowanie serwomechanizmami zamiast ładunkami pirotechnicznymi. Korzysta z łączności Bluetooth na porcie szeregowym. Za pomocą tej aplikacji można konfigurować zarówno serwomechanizmy, jak i parametry wysokościomierza.</p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti STM32</strong></p>
+    <p>Trzecia wersja AltiMulti bazująca na układzie STM32. Oferuje 4 wyjścia pirotechniczne, rejestrację lotów oraz dodatkowy port szeregowy do podłączania urządzeń zewnętrznych.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMulti STM32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiGPS</strong></p>
+    <p>Wykorzystuje płytkę AltiMultiV3 ze zmienionym oprogramowaniem układowym do obsługi modułu GPS podłączonego do portu szeregowego.</p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32</strong></p>
+    <p>Czwarta wersja AltiMulti oparta na układzie ESP32. Wyposażona w 3 wyjścia pirotechniczne i funkcję zapisu lotu. Nie wymaga zewnętrznego modułu Bluetooth, ponieważ znajduje się on bezpośrednio w strukturze układu.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMulti ESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p>Wariant tożsamy z AltiMulti ESP32, wyposażony w 2 akcelerometry na płytce (ADXL345 oraz ADXL375).</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p>Wariant tożsamy z AltiMulti ESP32 z jednym akcelerometrem ADXL345 na płytce.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p>Wariant tożsamy z AltiMulti ESP32 z jednym akcelerometrem ADXL375 na płytce.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p>Konstrukcja oparta na płytce LilyGO z dodatkową płytką rozszerzającą (shield), wyposażoną w barometryczny czujnik ciśnienia, akcelerometr i pamięć EEPROM do zapisu danych lotu.</p>
+    <p><img src="file:///android_asset/help/images/ttgo316x165small.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO T QT mini BearAltimeter</strong></p>
+    <p>Najbardziej kompaktowa płytka wysokościomierza; również posiada płytkę rozszerzającą dla czujnika barometrycznego.</p>
+    <p><img src="file:///android_asset/help/images/lilygo314x185.jpg" alt="TTGO T QT mini BearAltimeter"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TS-ESP32-S3 BearAltimeter</strong></p>
+    <p>Niewielka płytka wyposażona fabrycznie we wszystkie niezbędne podzespoły. Posiada zintegrowany czujnik ciśnienia i akcelerometr. Dane lotu są zapisywane w pamięci płytki. Wystarczy wgrać odpowiednie oprogramowanie sprzętowe z listy.</p>
+    <p><img src="file:///android_asset/help/images/ultimateSmall311x139.jpg" alt="TS-ESP32-S3 BearAltimeter"/></p>
+</div>
+
+</body>
+</html>

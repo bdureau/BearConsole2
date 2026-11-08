@@ -82,28 +82,34 @@
         <activity
             android:name=".config.ConfigModules.Config3DR"
             android:exported="false"
+            android:label="@string/config_3dr_modules"
             android:screenOrientation="portrait" />
         <activity
             android:name=".config.ConfigModules.ConfigBT"
             android:exported="false"
+            android:label="@string/config_bluetooth_module"
             android:screenOrientation="portrait" />
         <activity
             android:name=".config.ConfigModules.ConfigLoraE220"
             android:exported="false"
+            android:label="@string/config_lorae220_module"
             android:screenOrientation="portrait" />
         <activity
             android:name=".config.ConfigModules.ConfigLoraE32"
             android:exported="false"
+            android:label="@string/config_lorae32_module"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Flash.FlashFirmware"
             android:exported="false"
+            android:label="@string/flash_altimeter_firmware"
             android:screenOrientation="portrait" />
 
         <!-- Application UI and flight analysis activities -->
         <activity
             android:name=".Flight.FlightViewTabActivity"
             android:exported="false"
+            android:label="@string/flight_view"
             android:screenOrientation="portrait" />
         <activity
             android:name=".connection.TestConnection"
@@ -142,6 +148,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Help.HelpActivity"
+            android:label="@string/help_file"
             android:exported="false" />
         <activity
             android:name=".ResetSettingsActivity"
@@ -161,12 +168,12 @@
         <activity
             android:name=".telemetry.RocketTrackGoogleMap"
             android:exported="false"
-            android:label="Track"
+            android:label="@string/track_with_googlemap"
             android:screenOrientation="portrait" />
         <activity
             android:name=".telemetry.RocketTrackOpenMap"
             android:exported="false"
-            android:label="Track"
+            android:label="@string/track_with_openmap"
             android:screenOrientation="portrait" />
 
         <!-- FileProvider for sharing CSV logs, ZIP archives, and screenshot bitmaps securely -->

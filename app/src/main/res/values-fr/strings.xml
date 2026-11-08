@@ -492,4 +492,13 @@
     <string name="do_you_want_to_connect_to_module">"Voulez-vous vous connecter au module "</string>
     <string name="no">Non</string>
     <string name="recover_flight">Récupérer le vol</string>
+    <string name="track_with_openmap">Track with OpenMap</string>
+    <string name="track_with_googlemap">Track with GoogleMap</string>
+    <string name="flight_view">Flight</string>
+    <string name="flash_altimeter_firmware">Flash altimeter firmware</string>
+    <string name="config_lorae32_module">Config LoraE32 module</string>
+    <string name="config_lorae220_module">Config LoraE220 module</string>
+    <string name="config_bluetooth_module">Config bluetooth module</string>
+    <string name="config_3dr_modules">Config 3DR modules</string>
+    <string name="help_file">Help file</string>
 </resources>
