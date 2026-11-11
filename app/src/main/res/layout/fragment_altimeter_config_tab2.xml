@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Altimeter configuration tab 2 (AltiConfig2Fragment): serial speed, apogee measures, sensor
+    resolution, EEPROM size, beep on / off, end of recording altitude, telemetry type,
+    supersonic delay, lift off altitude, battery type and recording timeout.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     >
     <TextView
         android:id="@+id/textViewTtitleTab2"
@@ -139,7 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/txtViewEndRecordAltitude"
-        android:text="Telemetry type"
+        android:text="@string/telemetry_type"
         />
 
     <Spinner

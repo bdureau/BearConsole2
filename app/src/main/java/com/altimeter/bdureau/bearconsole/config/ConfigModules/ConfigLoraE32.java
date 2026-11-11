@@ -1,7 +1,20 @@
 package com.altimeter.bdureau.bearconsole.config.ConfigModules;
 
-import androidx.appcompat.app.AppCompatActivity;
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: ConfigLoraE32
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Configuration of an Ebyte LoRa E32 telemetry module connected with a USB-TTL cable: reads
+ *  the six configuration bytes (C1 command), decodes them bit by bit (address, UART speed and
+ *  parity, air rate, channel, fixed mode, IO mode, WOR timing, FEC, power), and writes the
+ *  modified configuration (C0 command). All the serial I/O runs in the background.
+ * ============================================================================
+ */
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,13 +44,7 @@ import com.physicaloid.lib.Physicaloid;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Configuration des modules de télémesure LoRa E32 Ebyte via câble TTL.
- * Optimisé contre les blocages d'interface et les incohérences de masquage binaire.
- *
- * @author boris.dureau@neuf.fr
- */
-public class ConfigLoraE32 extends AppCompatActivity {
+public class ConfigLoraE32 extends BaseActivity {
     private static final String TAG = "ConfigLoraE32";
 
     private Physicaloid mPhysicaloid;
@@ -80,19 +87,10 @@ public class ConfigLoraE32 extends AppCompatActivity {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private volatile boolean isTaskCancelled = false;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTitle(R.string.telemetry_screen);
         setContentView(R.layout.activity_config_lorae32);
 
         initViews();
@@ -240,11 +238,11 @@ public class ConfigLoraE32 extends AppCompatActivity {
                 if (isFinishing() || isDestroyed()) return;
 
                 if (valid && !isTaskCancelled) {
-                    // Adresse (16 bits non signés)
+                    // Address (unsigned 16 bits)
                     int moduleAddress = ((value[1] & 0xFF) << 8) | (value[2] & 0xFF);
                     textLoraAddressValue.setText(String.valueOf(moduleAddress));
 
-                    // Octet 3: Parité [7:6], Baud [5:3], Air Rate [2:0]
+                    // Byte 3: parity [7:6], UART baud rate [5:3], air data rate [2:0]
                     int parity = (value[3] & 0xFF) >> 6;
                     spinnerLoraParity.setSelection(findIndexForValue(valuesLoraParity, parity));
 
@@ -254,11 +252,11 @@ public class ConfigLoraE32 extends AppCompatActivity {
                     int airRate = value[3] & 0x07;
                     spinnerLoraAirRate.setSelection(findIndexForValue(valuesLoraAirRate, airRate));
 
-                    // Octet 4: Canal de communication [4:0]
+                    // Byte 4: communication channel [4:0]
                     int comChannel = value[4] & 0x1F;
                     textLoraChannelValue.setText(String.valueOf(comChannel));
 
-                    // Octet 5: Mode Fixe [7], I/O [6], Wakeup [5:3], FEC [2], Transmission Power [1:0]
+                    // Byte 5: fixed mode [7], I/O drive mode [6], wake-up time [5:3], FEC [2], transmission power [1:0]
                     int fixedTrans = (value[5] & 0xFF) >> 7;
                     spinnerLoraFixedMode.setSelection(findIndexForValue(valuesLoraFixedMode, fixedTrans));
 
@@ -277,7 +275,7 @@ public class ConfigLoraE32 extends AppCompatActivity {
                     EnableUI();
                     btSaveConfig.setEnabled(true);
                 } else {
-                    Toast.makeText(ConfigLoraE32.this, "Erreur de lecture du module", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ConfigLoraE32.this, getString(R.string.module_read_error), Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -287,13 +285,13 @@ public class ConfigLoraE32 extends AppCompatActivity {
         String sAddress = textLoraAddressValue.getText().toString().trim();
         String sChannel = textLoraChannelValue.getText().toString().trim();
 
-        // Validation de l'adresse (0 - 65535)
+        // Address validation (0 - 65535)
         if (!sAddress.matches("^\\d+$") || Integer.parseInt(sAddress) > 65535) {
             Toast.makeText(this, R.string.lora_module_address_range, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Validation du canal (0 - 83)
+        // Channel validation (0 - 83)
         if (!sChannel.matches("^\\d+$") || Integer.parseInt(sChannel) > 83) {
             Toast.makeText(this, R.string.lora_module_channel_value_msg, Toast.LENGTH_SHORT).show();
             return;
@@ -331,7 +329,7 @@ public class ConfigLoraE32 extends AppCompatActivity {
                 if (success) {
                     DisableUI();
                     btSaveConfig.setEnabled(false);
-                    Toast.makeText(ConfigLoraE32.this, "Configuration enregistrée", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ConfigLoraE32.this, getString(R.string.module_config_saved), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(ConfigLoraE32.this, "Échec de sauvegarde", Toast.LENGTH_SHORT).show();
                 }

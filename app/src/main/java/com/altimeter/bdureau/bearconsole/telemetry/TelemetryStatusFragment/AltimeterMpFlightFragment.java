@@ -1,8 +1,19 @@
 package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
+
 /**
- * @description: This will display altimeter realtime flight graph
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AltimeterMpFlightFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Live telemetry tab drawn with MPAndroidChart: altitude curve during the flight and flight
+ *  events (lift off, apogee, main deployment, landing) with their time and altitude.
+ * ============================================================================
+ */
+
+import androidx.annotation.NonNull;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,6 +47,21 @@ public class AltimeterMpFlightFragment extends Fragment {
     LineData data;
     ArrayList<ILineDataSet> dataSets;
     ArrayList<Entry> yValues;
+
+    /** Required by the framework to re-create the fragment (configuration change, process restore). */
+    public AltimeterMpFlightFragment() {
+        super();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (lBT == null) {
+            lBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
 
     public AltimeterMpFlightFragment(ConsoleApplication bt) {
         lBT = bt;
@@ -73,10 +99,6 @@ public class AltimeterMpFlightFragment extends Fragment {
             return false;
     }
 
-    /*public void setLiftOffEnabled(boolean flag) {
-        if(ViewCreated)
-            cbLiftOff.setEnabled(flag);
-    }*/
 
     public void setLiftOffChecked(boolean flag) {
         if(ViewCreated) {
@@ -96,10 +118,6 @@ public class AltimeterMpFlightFragment extends Fragment {
             this.txtLiftOffTime.setText(time);
     }
 
-    /*public void setApogeeEnable(boolean flag) {
-        if(ViewCreated)
-            this.cbApogee.setEnabled(flag);
-    }*/
 
     public void setApogeeChecked(boolean flag) {
         if(ViewCreated) {
@@ -124,10 +142,6 @@ public class AltimeterMpFlightFragment extends Fragment {
             this.txtMainChuteTime.setText(value);
     }
 
-    /*public void setMainChuteEnabled(boolean flag ) {
-        if(ViewCreated)
-            this.cbMainChute.setEnabled(flag);
-    }*/
 
     public void setMainChuteChecked(boolean flag ) {
         if(ViewCreated) {
@@ -141,10 +155,6 @@ public class AltimeterMpFlightFragment extends Fragment {
             this.txtMainAltitude.setText(value);
     }
 
-    /*public void setLandedEnabled(boolean flag ) {
-        if(ViewCreated)
-            this.cbLanded.setEnabled(flag);
-    }*/
     public void setLandedChecked(boolean flag ) {
         if(ViewCreated) {
             this.cbLanded.setEnabled(true);
@@ -212,13 +222,10 @@ public class AltimeterMpFlightFragment extends Fragment {
         // Read the application config
         lBT.getAppConf().ReadConfig();
 
-        //int graphBackColor;//= Color.WHITE;
         int graphBackColor = lBT.getAppConf().ConvertColor(lBT.getAppConf().getGraphBackColor());
 
-        //int fontSize;
         int fontSize = lBT.getAppConf().ConvertFont(lBT.getAppConf().getFontSize());
 
-        //int axisColor;//=Color.BLACK;
         int axisColor = lBT.getAppConf().ConvertColor(lBT.getAppConf().getGraphColor());
 
         int labelColor = Color.BLACK;
@@ -228,7 +235,6 @@ public class AltimeterMpFlightFragment extends Fragment {
 
         yValues = new ArrayList<>();
         yValues.add(new Entry(0, 0));
-        //yValues.add(new Entry(1,0));
         //altitude
         LineDataSet set1 = new LineDataSet(yValues, getResources().getString(R.string.altitude));
         set1.setValueTextColor(labelColor);

@@ -4,6 +4,7 @@ package com.altimeter.bdureau.bearconsole.Flight.FlightView;
  * ============================================================================
  * Project: BearConsole - Model Rocketry Flight Computer Management
  * Class: FlightViewInfoFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
  * @description:
  *  Displays comprehensive post-flight summary analytics (flight duration, apogee,
@@ -14,8 +15,6 @@ package com.altimeter.bdureau.bearconsole.Flight.FlightView;
  *  over several samples rather than single noisy samples of the speed curve.
  *  Includes asynchronous background CSV flight export and ZIP sharing compatible
  *  with modern scoped storage.
- *
- * @author: boris.dureau@neuf.fr
  * ============================================================================
  */
 
@@ -43,6 +42,7 @@ import androidx.fragment.app.Fragment;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.LocationUtils;
+import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 
@@ -92,6 +92,30 @@ public class FlightViewInfoFragment extends Fragment {
         super();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (myBT == null) {
+            myBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
+
+    /**
+     * After a re-creation by the framework the flight data were not given by a constructor:
+     * they are taken again from the host FlightViewTabActivity. Called from onCreateView(),
+     * when the activity has finished its own onCreate().
+     */
+    private void restoreFromHost() {
+        if (!(getActivity() instanceof FlightViewTabActivity)) return;
+        FlightViewTabActivity host = (FlightViewTabActivity) getActivity();
+        if (myflight == null) myflight = host.getFlightRepository();
+        if (allFlightData == null) allFlightData = host.getAllFlightData();
+        if (units == null) units = host.getUnits();
+        if (flightName == null) flightName = host.getFlightName();
+    }
+
     public FlightViewInfoFragment(FlightData data,
                                   XYSeriesCollection data2,
                                   ConsoleApplication bt,
@@ -113,6 +137,7 @@ public class FlightViewInfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        restoreFromHost();
         View view = inflater.inflate(R.layout.fragment_flight_info, container, false);
 
         buttonExportToCsv = view.findViewById(R.id.butExportToCsv);
@@ -185,6 +210,7 @@ public class FlightViewInfoFragment extends Fragment {
         boolean isMeters = (myBT.getAppConf().getUnits() == GlobalConfig.AltitudeUnit.METERS);
         String unitsLabel = myBT.getAppConf().getUnitsValue();
         String speedUnit = isMeters ? "m/s" : "ft/s";
+        String secsUnit = getString(R.string.unit_secs);
 
         flightNbrValue.setText(String.valueOf(flightName));
         nbrOfSamplesValue.setText(String.valueOf(nbrData));
@@ -215,11 +241,11 @@ public class FlightViewInfoFragment extends Fragment {
 
         // Apogee and time to apogee (from liftoff)
         apogeeAltitudeValue.setText(format("%.0f " + unitsLabel, stats.apogeeAltitude));
-        timeToApogeeValue.setText(format("%.2f secs", stats.timeToApogeeSec));
+        timeToApogeeValue.setText(format("%.2f " + secsUnit, stats.timeToApogeeSec));
 
         // Max velocity and burn time (peak of the smoothed ascent speed)
         maxVelociyValue.setText(format("%.0f " + speedUnit, stats.maxVelocity));
-        burnTimeValue.setText(format("%.2f secs", stats.burnoutTimeSec));
+        burnTimeValue.setText(format("%.2f " + secsUnit, stats.burnoutTimeSec));
 
         // Descent rate under drogue (or under the single parachute)
         maxDescentValue.setText(format("%.1f " + speedUnit, stats.maxDescentRate));
@@ -241,7 +267,7 @@ public class FlightViewInfoFragment extends Fragment {
             double maxAccelMs2 = isMeters ? accel.getMaxY() : accel.getMaxY() * 0.3048;
             maxAccelerationValue.setText(String.format(Locale.US, "%.1f G", maxAccelMs2 / 9.80665));
         } else {
-            maxAccelerationValue.setText("N/A");
+            maxAccelerationValue.setText(R.string.not_available);
         }
 
         // GPS surface distance
@@ -271,17 +297,17 @@ public class FlightViewInfoFragment extends Fragment {
         }
     }
 
-    /** Formats a value, or returns "N/A" if it could not be determined (NaN). */
-    private static String format(String pattern, double value) {
-        if (Double.isNaN(value) || Double.isInfinite(value)) return "N/A";
+    /** Formats a value, or returns the localized "N/A" text if it could not be determined (NaN). */
+    private String format(String pattern, double value) {
+        if (Double.isNaN(value) || Double.isInfinite(value)) return getString(R.string.not_available);
         return String.format(Locale.US, pattern, value);
     }
 
     /** Formats a duration in seconds, or in minutes above one minute. */
-    private static String formatDuration(double seconds) {
-        if (Double.isNaN(seconds) || Double.isInfinite(seconds)) return "N/A";
-        if (seconds < 60.0) return String.format(Locale.US, "%.2f secs", seconds);
-        return String.format(Locale.US, "%.2f minutes", seconds / 60.0);
+    private String formatDuration(double seconds) {
+        if (Double.isNaN(seconds) || Double.isInfinite(seconds)) return getString(R.string.not_available);
+        if (seconds < 60.0) return String.format(Locale.US, "%.2f %s", seconds, getString(R.string.unit_secs));
+        return String.format(Locale.US, "%.2f %s", seconds / 60.0, getString(R.string.unit_minutes));
     }
 
     private File getFlightExportDirectory() {
@@ -321,7 +347,7 @@ public class FlightViewInfoFragment extends Fragment {
                             .show();
                     msg(getString(R.string.curves_saved_msg));
                 } else {
-                    msg("Failed saving some flight curves");
+                    msg(getString(R.string.flight_export_failed));
                 }
             });
         });
@@ -364,7 +390,7 @@ public class FlightViewInfoFragment extends Fragment {
             } catch (IOException e) {
                 Log.e(TAG, "Error generating flight ZIP archive", e);
                 mainHandler.post(() -> {
-                    if (isAdded()) msg("Failed creating ZIP archive");
+                    if (isAdded()) msg(getString(R.string.flight_zip_failed));
                 });
             }
         });

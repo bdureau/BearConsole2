@@ -1,9 +1,17 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
+
 /**
- * @description: This will allow rocket tracking using the latest rocket altimeter position
- * This class uses Google Map
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: RocketTrackGoogleMap
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Rocket recovery screen using Google Maps: shows the last GPS position sent by the AltiGPS and
+ *  the position of the phone, with the distance between them, and can announce the distance
+ *  by voice. The telemetry stream is read in the background through TelemetryReader.
+ * ============================================================================
+ */
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -20,6 +28,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -32,9 +41,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.connection.TelemetryReader;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.LocationUtils;
 import com.altimeter.bdureau.bearconsole.R;
@@ -54,14 +64,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapReadyCallback {
+public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCallback {
     private SupportMapFragment mapFragment;
     private static final String TAG = "RocketTrackGoogleMapWin";
     private GoogleMap mMap;
     private Marker marker, markerDest;
     private Polyline polyline1 = null;
-    Thread altiStatus;
-    private boolean status = true;
+    // Background reading loop and command queue (never blocks the UI thread)
+    private TelemetryReader reader;
     private float rocketLatitude = 48.8698f, rocketLongitude = 2.2190f;
     private TextView textViewdistance;
     Intent locIntent = null;
@@ -79,15 +89,9 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
 
     private ConsoleApplication myBT;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
-    Handler handler = new Handler() {
+    // Receives the telemetry fields decoded by ConsoleApplication (msg.what = field index).
+    // Bound to the main looper; unregistered and purged in onDestroy() to avoid leaking the activity.
+    private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             Log.d(TAG, "Current msg:" +msg.what);
@@ -132,9 +136,9 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTitle(R.string.telemetry_screen);
         receiver = new LocationBroadCastReceiver();
         myBT = (ConsoleApplication) getApplication();
+        reader = new TelemetryReader(myBT);
         setContentView(R.layout.activity_rocket_track_google_map);
         myBT.setHandler(handler);
         textViewdistance = (TextView) findViewById(R.id.textViewdistance);
@@ -304,29 +308,15 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                 }
             }
         });
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    if (!status) break;
-                    if (!myBT.getConnected()) break;
-                    myBT.ReadResult(10000);
-                }
-            }
-        };
-
-        altiStatus = new Thread(r);
-        altiStatus.start();
+        // Enable the stream (again, in case of re-creation) and start reading it
+        reader.start("y1;");
     }
-
 
 
     private void startService() {
 
         IntentFilter filter = new IntentFilter("ACT_LOC");
-        //registerReceiver(receiver, filter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
             registerReceiver(receiver, filter, RECEIVER_EXPORTED);
             Log.d(TAG, "registerReceiver 1");
         } else {
@@ -353,21 +343,13 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (status & myBT.getConnected()) {
+        // Stop receiving telemetry messages and drop the pending ones
+        myBT.clearHandler(handler);
+        handler.removeCallbacksAndMessages(null);
 
-            status = false;
-            myBT.write("h;\n".toString());
-
-            myBT.setExit(true);
-            myBT.clearInput();
-            myBT.flush();
-        }
-        if (myBT.getConnected()) {
-            //turn off telemetry
-            myBT.flush();
-            myBT.clearInput();
-            myBT.write("y0;\n".toString());
-        }
+        // Stop the reading loop, then switch the telemetry stream off (in background)
+        reader.stop(false, "h;\n", "y0;\n");
+        reader.release();
     }
 
     @Override
@@ -387,13 +369,9 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
     public void onResume() {
         super.onResume();
 
-        if (myBT.getConnected() && !status) {
-            myBT.flush();
-            myBT.clearInput();
-
-            myBT.write("y1;".toString());
-            status = true;
-            altiStatus.start();
+        // Coming back to the screen: restart the stream if it was stopped
+        if (myBT.getConnected() && !reader.isRunning()) {
+            reader.start("y1;");
         }
     }
 
@@ -435,7 +413,7 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                 if ((distanceTime - lastSpeakTime) > 15000 ) {
                     Log.d("coordinate", "speak distance");
                     if (soundOn) {
-                        mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
+                        mTTS.speak(getString(R.string.distance_label) + " " + String.valueOf((int) distance) + " "
                                 + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                     }
                     lastSpeakTime = distanceTime;
@@ -446,7 +424,6 @@ public class RocketTrackGoogleMap extends AppCompatActivity implements OnMapRead
                     if (marker != null) {
                         marker.setPosition(latLng);
                     } else {
-                        //MarkerOptions markerOptions = new MarkerOptions();
                         BitmapDescriptor manIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_person_map);
                         marker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(manIcon));
                     }

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    AltiGPS map tab with OpenStreetMap (GPSOpenMapStatusFragment): map of the rocket and phone
+    positions, with Back (first tab) and share buttons.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"

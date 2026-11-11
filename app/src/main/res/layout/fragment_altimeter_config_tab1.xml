@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Altimeter configuration tab 1 (AltiConfig1Fragment): main deployment altitude, then for each
+    output (1 to 4) its function spinner and its delay field. Outputs 3 and 4 are hidden by code
+    on the boards that do not have them.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     >
     <TextView
         android:id="@+id/textViewTtitleTab1"

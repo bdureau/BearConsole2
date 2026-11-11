@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Altimeter information tab (AltimeterInfoFragment): altimeter name, continuity of outputs 1
+    to 4, current altitude, battery voltage, link, temperature, EEPROM usage and number of
+    flights. Values are filled by code from the telemetry frames.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -113,7 +119,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtViewAltitude"
-        android:text="0"
+        tools:text="0"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewOutput4"/>
     <TextView
@@ -128,7 +134,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtViewTemperature"
-        android:text="0"
+        tools:text="0"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewCurrentAltitude"/>
     <TextView
@@ -143,13 +149,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtViewVoltage"
-        android:text="0"
+        tools:text="0"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewTemperature"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="EEprom"
+        android:text="@string/eeprom_label"
         android:id="@+id/txtViewEEprom"
         android:layout_below="@+id/txtViewBatteryVoltage"
         android:layout_alignParentLeft="true"
@@ -158,7 +164,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtViewEEpromUsage"
-        android:text="0 %"
+        tools:text="0 %"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewBatteryVoltage"/>
     <TextView
@@ -173,7 +179,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtViewNbrOfFlight"
-        android:text="0"
+        tools:text="0"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/txtViewEEpromUsage"/>
     <TextView

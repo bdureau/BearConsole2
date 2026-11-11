@@ -1,5 +1,18 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: Struct
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Minimal Java equivalent of the Python "struct" module (pack / unpack of 8, 16 and 32 bit,
+ *  signed or unsigned values, little or big endian) used to build and decode the binary frames
+ *  of the ESP32 bootloader protocol.
+ * ============================================================================
+ */
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.lang.*;
@@ -122,7 +135,6 @@ public class Struct {
         }
         return bx;
     }
-
 
 
     public byte[] pack_single_data(char fmt, long val){
@@ -310,16 +322,15 @@ public class Struct {
                 if (val.length!=4)
                     throw new Exception("Byte length mismatch");
                 var = unpackRaw_u32b(val);
+                // Nothing to do
                 break;
 
             default:
-                // do nothing;
                 break;
         }
 
         return var;
     }
-
 
 
     private int lenEst(String fmt){

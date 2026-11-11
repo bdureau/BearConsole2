@@ -4,17 +4,17 @@ package com.altimeter.bdureau.bearconsole.Flight;
  * ============================================================================
  * Project: BearConsole - Model Rocketry Flight Computer Management
  * Class: FlightListActivity
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
  * @description:
  *  Retrieves recorded flight data curves from the altimeter via Bluetooth or USB.
  *  Stores datasets into a local FlightData repository and computes derived flight
  *  telemetry metrics (velocity and vertical acceleration) directly from the
  *  altitude time-series using zero-phase centered finite differences.
- *
- * @author: boris.dureau@neuf.fr
  * ============================================================================
  */
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +33,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
@@ -46,7 +46,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class FlightListActivity extends AppCompatActivity {
+public class FlightListActivity extends BaseActivity {
     public static final String SELECTED_FLIGHT = "MyFlight";
     private static final String TAG = "FlightListActivity";
 
@@ -57,16 +57,9 @@ public class FlightListActivity extends AppCompatActivity {
     private AlertDialog alert;
     private Button buttonDismiss;
 
-    private final Handler mHandler = new Handler();
+    // Posts progress messages to the UI thread; purged in onDestroy() to avoid leaks
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
     private final AdapterView.OnItemClickListener myListClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
@@ -149,10 +142,8 @@ public class FlightListActivity extends AppCompatActivity {
                 myBT.write("n;");
                 myBT.flush();
 
-                try {
-                    // Wait until response bytes are available in buffer
-                    while (myBT.getInputStream().available() <= 0) ;
-                } catch (IOException ignored) {}
+                // Bounded wait for the first bytes of the answer (never blocks forever)
+                myBT.waitForData(10000);
 
                 myBT.setDataReady(false);
                 myBT.initFlightData();
@@ -175,9 +166,8 @@ public class FlightListActivity extends AppCompatActivity {
                         myBT.write("r" + j + ";");
                         myBT.flush();
 
-                        try {
-                            while (myBT.getInputStream().available() <= 0) ;
-                        } catch (IOException ignored) {}
+                        // Bounded wait for the first bytes of the answer (never blocks forever)
+                myBT.waitForData(10000);
 
                         myMessage = "";
                         myBT.setDataReady(false);
@@ -338,5 +328,12 @@ public class FlightListActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Drop the pending progress updates: the activity must not be referenced any more
+        mHandler.removeCallbacksAndMessages(null);
+        super.onDestroy();
     }
 }

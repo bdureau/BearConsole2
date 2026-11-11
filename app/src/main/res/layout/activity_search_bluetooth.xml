@@ -1,3 +1,7 @@
+<!--
+    Bluetooth module selection screen (SearchBluetooth): list of the devices paired with the
+    phone, a button to refresh it and a Dismiss button.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +12,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:fitsSystemWindows="true"
     tools:context=".connection.SearchBluetooth">
 
     <TextView

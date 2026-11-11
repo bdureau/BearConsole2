@@ -1,15 +1,22 @@
 package com.altimeter.bdureau.bearconsole;
+
 /**
- * @description: Allow the user to reset the altimeter setting to factory default
- * as well as clearing the flight list
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: ResetSettingsActivity
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Maintenance screen of the altimeter: erase all the recorded flights ("e;"), reset the
+ *  altimeter configuration to the factory defaults ("d;") or delete the last flight ("x;").
+ *  Each action asks for a confirmation.
+ * ============================================================================
+ */
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,18 +24,10 @@ import android.view.View;
 import android.widget.Button;
 
 
-public class ResetSettingsActivity extends AppCompatActivity {
+public class ResetSettingsActivity extends BaseActivity {
 
     Button btnClearAltiConfig, btnClearFlights, btnClearLastFlight, btnDismiss;
     ConsoleApplication myBT;
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

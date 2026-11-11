@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Altimeter status screen (AltimeterStatusTabActivity): ViewPager hosting the status tabs
+    (info, accelerometers, output test, GPS, map), page indicator dots, and the Recording
+    (AltiGPS manual recording) and Dismiss buttons.
+-->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".telemetry.AltimeterStatusTabActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -13,7 +17,6 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
@@ -39,7 +42,9 @@
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
             android:orientation="horizontal"
-            android:padding="20dp"></LinearLayout>
+            android:padding="20dp">
+
+        </LinearLayout>
     </RelativeLayout>
 
     <Button

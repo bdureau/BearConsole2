@@ -1,15 +1,22 @@
 package com.altimeter.bdureau.bearconsole.config;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AppConfigData
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Lists of the choices offered in the application settings (languages, units, colors, font
+ *  sizes, serial speeds, connection types, graph libraries, map types...) and conversions
+ *  between the stored index and the displayed value.
+ * ============================================================================
+ */
+
 import android.content.Context;
 
 import com.altimeter.bdureau.bearconsole.R;
 
-/**
- *   @description: This class define all the values for the application conf drop down
- *
- *   @author: boris.dureau@neuf.fr
- *
- **/
 public class AppConfigData {
 
     private Context context;
@@ -52,7 +59,6 @@ public class AppConfigData {
     public AppConfigData(Context current)
     {
         context = current;
-        //context.getApplicationContext().getSharedPreferences()
                 //getSharedPreferences
         itemsLanguages = new String[]{
                 context.getResources().getString(R.string.phone_language),//"Phone language"

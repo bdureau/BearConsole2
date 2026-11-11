@@ -4,14 +4,13 @@ package com.altimeter.bdureau.bearconsole.Flight;
  * ============================================================================
  * Project: BearConsole - Model Rocketry Flight Computer Management
  * Class: FlightData
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
  * @description:
  *  Data repository holding rocket flight profiles organized by flight name.
  *  Maintains JFreeChart/AFreeChart XYSeriesCollection structures for altitude,
  *  velocity, acceleration, voltages, GPS telemetry, and IMU sensor data.
  *  Optimized for O(1) hash lookups, memory leak prevention, and fast packet insertion.
- *
- * @author: boris.dureau@neuf.fr
  * ============================================================================
  */
 

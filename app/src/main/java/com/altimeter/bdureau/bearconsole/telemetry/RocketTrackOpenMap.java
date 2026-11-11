@@ -1,10 +1,19 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
+
 /**
- * @description: This will allow rocket tracking using the latest rocket altimeter position
- * This is using the OpenMap
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: RocketTrackOpenMap
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
- * @author: boris.dureau@neuf.fr
- **/
+ * @description:
+ *  Rocket recovery screen using OpenStreetMap (osmdroid): shows the last GPS position sent by
+ *  the AltiGPS and the position of the phone, with the distance between them, and can announce
+ *  the distance by voice. The telemetry stream is read in the background through
+ *  TelemetryReader.
+ * ============================================================================
+ */
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,6 +32,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -36,12 +46,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.connection.TelemetryReader;
 import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.LocationUtils;
@@ -64,14 +75,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class RocketTrackOpenMap extends AppCompatActivity {
+public class RocketTrackOpenMap extends BaseActivity {
     private static final String TAG = "RocketTrackOpenMap";
     private MapView mMap= null;
     private Marker marker,markerDest;
     private Polyline polyline= null;
     private IMapController mapController  = null;
-    private Thread altiStatus;
-    boolean status = true;
+    // Background reading loop and command queue (never blocks the UI thread)
+    private TelemetryReader reader;
     private float rocketLatitude=48.8698f, rocketLongitude=2.2190f;
     private TextView textViewdistance;
     Intent locIntent = null;
@@ -88,21 +99,15 @@ public class RocketTrackOpenMap extends AppCompatActivity {
     //Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
     private static final String[] PERMISSION_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
 
     private ConsoleApplication myBT;
-    Handler handler = new Handler() {
+    // Receives the telemetry fields decoded by ConsoleApplication (msg.what = field index).
+    // Bound to the main looper; unregistered and purged in onDestroy() to avoid leaking the activity.
+    private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -147,6 +152,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         receiver = new LocationBroadCastReceiver();
         myBT = (ConsoleApplication) getApplication();
+        reader = new TelemetryReader(myBT);
         setContentView(R.layout.activity_rocket_track_open_map);
         myBT.setHandler(handler);
 
@@ -162,9 +168,6 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         File tileCache = new File(osmConf.getOsmdroidBasePath().getAbsolutePath(), "tile");
         osmConf.setOsmdroidTileCache(tileCache);
 
-        /*if(Build.VERSION.SDK_INT>=23) {
-            verifyStoragePermission(RocketTrackOpenMap.this);
-        }*/
 
         if(Build.VERSION.SDK_INT>=23) {
             if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
@@ -211,7 +214,6 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         marker = new Marker(mMap);
         marker.setIcon(getResources().getDrawable(R.drawable.ic_person_map));
         mMap.getOverlays().add(marker);
-
 
 
         markerDest = new Marker(mMap);
@@ -332,35 +334,20 @@ public class RocketTrackOpenMap extends AppCompatActivity {
             }
         });
 
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    if (!status) break;
-                    if (! myBT.getConnected()) break;
-                    myBT.ReadResult(10000);
-                }
-            }
-        };
-
-        altiStatus = new Thread(r);
-        altiStatus.start();
+        // Enable the stream (again, in case of re-creation) and start reading it
+        reader.start("y1;");
     }
 
 
     private void startService() {
 
         IntentFilter filter = new IntentFilter("ACT_LOC");
-        //registerReceiver(receiver, filter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
             registerReceiver(receiver, filter, RECEIVER_EXPORTED);
         } else {
             registerReceiver(receiver, filter);
         }
 
-        //Intent intent = new Intent( RocketTrackOpenMap.this, LocationService.class);
-        //startService(intent);
         locIntent = new Intent( RocketTrackOpenMap.this, LocationService.class);
         startService(locIntent);
     }
@@ -381,20 +368,13 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (status & myBT.getConnected()) {
-            status = false;
-            myBT.write("h;\n".toString());
+        // Stop receiving telemetry messages and drop the pending ones
+        myBT.clearHandler(handler);
+        handler.removeCallbacksAndMessages(null);
 
-            myBT.setExit(true);
-            myBT.clearInput();
-            myBT.flush();
-        }
-        if (myBT.getConnected()) {
-            //turn off telemetry
-            myBT.flush();
-            myBT.clearInput();
-            myBT.write("y0;\n".toString());
-        }
+        // Stop the reading loop, then switch the telemetry stream off (in background)
+        reader.stop(false, "h;\n", "y0;\n");
+        reader.release();
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -402,10 +382,8 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         switch (requestCode) {
             case 1:
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //startService();
-                    Toast.makeText(this, "permission granted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.permission_granted), Toast.LENGTH_LONG).show();
                 } else {
-                    //Toast.makeText(this, "permission need to be granted" + permissions[0], Toast.LENGTH_LONG).show();
                     Toast.makeText(this, permissions[0], Toast.LENGTH_LONG).show();
                 }
         }
@@ -419,13 +397,9 @@ public class RocketTrackOpenMap extends AppCompatActivity {
         if (mMap != null) {
             mMap.onResume();
         }
-        if(myBT.getConnected() && !status) {
-            myBT.flush();
-            myBT.clearInput();
-
-            myBT.write("y1;".toString());
-            status = true;
-            altiStatus.start();
+        // Coming back to the screen: restart the stream if it was stopped
+        if (myBT.getConnected() && !reader.isRunning()) {
+            reader.start("y1;");
         }
         if (receiver ==null) {
             try {
@@ -488,7 +462,7 @@ public class RocketTrackOpenMap extends AppCompatActivity {
                 // Tell distance every 15 secondes
                 if ((distanceTime - lastSpeakTime) > 15000 ) {
                     if (soundOn) {
-                        mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
+                        mTTS.speak(getString(R.string.distance_label) + " " + String.valueOf((int) distance) + " "
                                 + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                     }
                     lastSpeakTime = distanceTime;
@@ -512,13 +486,9 @@ public class RocketTrackOpenMap extends AppCompatActivity {
                         pathPoints.add(dest);
                         polyline.setPoints(pathPoints);
                         if(mMap.getZoomLevelDouble() > 10.0) {
-                            //mapController.setCenter(latLng);
-                            //mapController.animateTo(latLng, 10.0, 10L);
                             mapController.animateTo(latLng);
                             //mMap.set
                         } else {
-                            //mapController.setCenter(latLng);
-                            //mapController.setZoom(15.0);
                             mapController.animateTo(latLng, 15.0, 10L);
                         }
                     }

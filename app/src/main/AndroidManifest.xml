@@ -114,7 +114,7 @@
         <activity
             android:name=".connection.TestConnection"
             android:exported="false"
-            android:label="Test connection"
+            android:label="@string/test_connection"
             android:screenOrientation="portrait" />
         <activity
             android:name=".connection.SearchBluetooth"

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+    Row used by every drop-down list (spinner) of the configuration screens, with the
+    application text size and colors.
+-->
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"

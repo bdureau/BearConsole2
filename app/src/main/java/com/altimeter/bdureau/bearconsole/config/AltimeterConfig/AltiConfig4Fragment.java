@@ -1,5 +1,18 @@
 package com.altimeter.bdureau.bearconsole.config.AltimeterConfig;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AltiConfig4Fragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Fourth tab of the altimeter configuration, shown for the AltiServo only: ON and OFF
+ *  positions (degrees) of the four servo outputs. The typed values are validated by
+ *  validateInputs() before upload.
+ * ============================================================================
+ */
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.config.ConfigInputValidator;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.altimeter.bdureau.bearconsole.config.AltiTabConfigActivity;
 
@@ -34,6 +48,21 @@ public class AltiConfig4Fragment extends Fragment {
 
     public boolean isViewCreated() {
         return viewCreated;
+    }
+
+    /**
+     * Checks every servo position typed in this tab before upload; invalid fields are flagged.
+     *
+     * @return true if all the values can be sent to the altimeter
+     */
+    public boolean validateInputs() {
+        boolean ok = true;
+        EditText[] positions = {servo1OnPos, servo2OnPos, servo3OnPos, servo4OnPos,
+                servo1OffPos, servo2OffPos, servo3OffPos, servo4OffPos};
+        for (EditText position : positions) {
+            ok &= ConfigInputValidator.checkInt(position, ConfigInputValidator.SERVO_POSITION_MIN, ConfigInputValidator.SERVO_POSITION_MAX);
+        }
+        return ok;
     }
 
     public int getServo1OnPos() { return parseInteger(servo1OnPos, 0); }

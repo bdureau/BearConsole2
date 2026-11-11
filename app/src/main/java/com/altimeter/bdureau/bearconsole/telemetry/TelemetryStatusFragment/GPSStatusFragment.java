@@ -1,10 +1,19 @@
 package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
-/**
- * @description: This will display altimeter GPS and phone informations such as current altitude,
- * latititude, logitude number of satellite etc...
- * @author: boris.dureau@neuf.fr
- **/
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: GPSStatusFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  AltiGPS status tab: rocket latitude / longitude, number of satellites, HDOP, age of the fix,
+ *  GPS altitude and speed, time to first fix, and the position of the phone.
+ * ============================================================================
+ */
+
+import androidx.annotation.NonNull;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +34,21 @@ public class GPSStatusFragment extends Fragment {
     private TextView txtViewSatellitesVal, txtViewHdopVal, txtViewGPSAltitudeVal, txtViewGPSSpeedVal;
     private TextView txtViewLocationAgeValue, txtViewTimeSatValue;
     private ConsoleApplication lBT;
+
+    /** Required by the framework to re-create the fragment (configuration change, process restore). */
+    public GPSStatusFragment() {
+        super();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (lBT == null) {
+            lBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
 
     public GPSStatusFragment(ConsoleApplication bt) {
         lBT = bt;

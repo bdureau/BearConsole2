@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Output test tab (AltimeterOutputFragment): safety warning and one switch per pyro / servo
+    output. Switching an output ON asks for a confirmation in the code; outputs 3 and 4 are
+    hidden on the boards that do not have them.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

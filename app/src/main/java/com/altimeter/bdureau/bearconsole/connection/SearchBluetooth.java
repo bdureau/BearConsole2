@@ -1,11 +1,19 @@
 package com.altimeter.bdureau.bearconsole.connection;
-/**
- *   @description: This is to select the bluetooth module.
- *
- *   @author: boris.dureau@neuf.fr
- *
- **/
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: SearchBluetooth
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Selection of the Bluetooth module of the altimeter among the devices paired with the phone.
+ *  It requests the Bluetooth permissions (Android 12+), asks to enable Bluetooth if needed and
+ *  stores the address and name of the chosen module in ConsoleApplication.
+ * ============================================================================
+ */
+
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -16,7 +24,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.view.View;
@@ -38,7 +45,7 @@ import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class SearchBluetooth extends AppCompatActivity {
+public class SearchBluetooth extends BaseActivity {
     //widgets
     Button btnPaired, btnDismiss;
     ListView devicelist;
@@ -48,14 +55,6 @@ public class SearchBluetooth extends AppCompatActivity {
     public static String EXTRA_ADDRESS = "device_address";
     ConsoleApplication myBT;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -85,13 +84,7 @@ public class SearchBluetooth extends AppCompatActivity {
             //Ask to the user turn the bluetooth on
             Intent turnBTon = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+                // Android 12+: BLUETOOTH_CONNECT is a runtime permission, ask for it first
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
                 {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
@@ -132,14 +125,7 @@ public class SearchBluetooth extends AppCompatActivity {
             }
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            //return;
+            // Android 12+: BLUETOOTH_CONNECT is a runtime permission, ask for it first
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
             {
                 ActivityCompat.requestPermissions(SearchBluetooth.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
@@ -199,11 +185,6 @@ public class SearchBluetooth extends AppCompatActivity {
         int id = item.getItemId();
 
         //open application settings screen
-        /*if (id == R.id.action_settings) {
-            Intent i= new Intent(SearchBluetooth.this, AppConfigActivity.class);
-            startActivity(i);
-            return true;
-        }*/
         //share screen
         if (id == R.id.action_share) {
             ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this);

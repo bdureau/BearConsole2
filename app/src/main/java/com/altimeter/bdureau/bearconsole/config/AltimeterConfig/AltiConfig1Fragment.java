@@ -1,5 +1,19 @@
 package com.altimeter.bdureau.bearconsole.config.AltimeterConfig;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AltiConfig1Fragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  First tab of the altimeter configuration: function of each deployment output (main, drogue,
+ *  timer, altitude, lift off...), delay of each output and main deployment altitude. Outputs 3
+ *  and 4 are only shown for the boards that have them. The typed values are validated by
+ *  validateInputs() before upload.
+ * ============================================================================
+ */
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.config.ConfigInputValidator;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.altimeter.bdureau.bearconsole.config.AltiTabConfigActivity;
 import com.github.florent37.viewtooltip.ViewTooltip;
@@ -37,6 +52,22 @@ public class AltiConfig1Fragment extends Fragment {
 
     public AltiConfig1Fragment(AltiConfigData cfg) {
         this.lAltiCfg = cfg;
+    }
+
+    /**
+     * Checks every value typed in this tab before upload; invalid fields are flagged.
+     * Hidden fields (outputs not available on the connected board) are not checked.
+     *
+     * @return true if all the values can be sent to the altimeter
+     */
+    public boolean validateInputs() {
+        boolean ok = true;
+        ok &= ConfigInputValidator.checkInt(outDelay1, ConfigInputValidator.OUTPUT_DELAY_MIN, ConfigInputValidator.OUTPUT_DELAY_MAX);
+        ok &= ConfigInputValidator.checkInt(outDelay2, ConfigInputValidator.OUTPUT_DELAY_MIN, ConfigInputValidator.OUTPUT_DELAY_MAX);
+        ok &= ConfigInputValidator.checkInt(outDelay3, ConfigInputValidator.OUTPUT_DELAY_MIN, ConfigInputValidator.OUTPUT_DELAY_MAX);
+        ok &= ConfigInputValidator.checkInt(outDelay4, ConfigInputValidator.OUTPUT_DELAY_MIN, ConfigInputValidator.OUTPUT_DELAY_MAX);
+        ok &= ConfigInputValidator.checkInt(mainAltitude, ConfigInputValidator.MAIN_ALTITUDE_MIN, ConfigInputValidator.MAIN_ALTITUDE_MAX);
+        return ok;
     }
 
     public boolean isViewCreated() {

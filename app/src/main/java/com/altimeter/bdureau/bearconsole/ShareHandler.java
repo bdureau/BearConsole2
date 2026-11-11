@@ -4,7 +4,7 @@ package com.altimeter.bdureau.bearconsole;
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: ShareHandler
- * Author: Boris du Reau
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
  * @description:
  *  Utility class for capturing high-resolution screenshots of active UI views
@@ -17,8 +17,6 @@ package com.altimeter.bdureau.bearconsole;
  *    - Offloads image compression and file I/O to a background thread to prevent UI freezing.
  *    - Cleans up and delegates URI read permissions automatically to the Intent chooser.
  *    - Explicitly recycles in-memory Bitmaps to avoid native memory leaks.
- *
- * @author: boris.dureau@neuf.fr
  * ============================================================================
  */
 
@@ -110,7 +108,7 @@ public class ShareHandler {
      */
     public static void shareScreenShot(File imageFile, Context ctx) {
         if (imageFile == null || !imageFile.exists()) {
-            Toast.makeText(ctx, "Screenshot file not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx, ctx.getString(R.string.screenshot_not_found), Toast.LENGTH_SHORT).show();
             return;
         }
 

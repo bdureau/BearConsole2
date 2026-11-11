@@ -4,7 +4,7 @@ package com.altimeter.bdureau.bearconsole;
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: MainScreenActivity
- * Author: Boris du Reau
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
  * @description:
  *  Main dashboard activity for the altimeter console application.
@@ -16,8 +16,8 @@ package com.altimeter.bdureau.bearconsole;
  *      complying with modern Android 14+ (API 34+) broadcast security requirements.
  *    - Route users to specialized operational screens: flight logs retrieval, real-time
  *      telemetry graphing, GPS map tracking, flash firmware, module settings, and diagnostic tests.
- *
- * @author: boris.dureau@neuf.fr
+ *  Every blocking serial operation (USB / Bluetooth connection, configuration read, commands)
+ *  runs on the shared I/O executor of the application; results are posted back to the UI thread.
  * ============================================================================
  */
 
@@ -48,7 +48,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
@@ -82,9 +81,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class MainScreenActivity extends AppCompatActivity {
+public class MainScreenActivity extends BaseActivity {
     private static final String TAG = "MainScreenActivity";
 
     // Bluetooth MAC address or device identifier
@@ -117,20 +115,11 @@ public class MainScreenActivity extends AppCompatActivity {
     // Google App Indexing client
     private GoogleApiClient client;
 
-    // Background executor for serial communication / non-blocking I/O
-    private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
+    // Shared, ordered background executor of the application for serial communication
+    private ExecutorService ioExecutor;
 
     // UI Handler for posting results back to the Android Main Thread
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
 
     /**
      * BroadcastReceiver handling USB runtime lifecycle events and user authorization responses.
@@ -174,35 +163,45 @@ public class MainScreenActivity extends AppCompatActivity {
                         Log.w(TAG, "Unable to parse baud rate, fallback to default: 38400", e);
                     }
 
-                    // Open the USB serial connection
-                    if (device != null && myBT.connect(usbManager, device, baudRate)) {
-                        Log.d(TAG, "Connected to USB device with baud rate: " + baudRate);
-                        myBT.setConnected(true);
-                        myBT.setConnectionType("usb");
-                        text_connect.setText(getResources().getString(R.string.disconnect));
-                        btnFlashFirmware.setEnabled(false);
+                    // Open the USB serial connection in background: the connection check waits
+                    // for the altimeter answer (several seconds), which must never block the UI
+                    final UsbDevice target = device;
+                    final int speed = baudRate;
+                    ioExecutor.execute(() -> {
+                        final boolean connected = target != null && myBT.connect(usbManager, target, speed);
+                        mainHandler.post(() -> {
+                            if (isFinishing() || isDestroyed()) return;
+                            if (connected) {
+                                Log.d(TAG, "Connected to USB device with baud rate: " + speed);
+                                myBT.setConnected(true);
+                                myBT.setConnectionType("usb");
+                                text_connect.setText(getResources().getString(R.string.disconnect));
+                                btnFlashFirmware.setEnabled(false);
 
-                        // Fetch altimeter configuration asynchronously without blocking UI
-                        loadConfigurationAsync();
-                    } else {
-                        msg("Cannot connect");
-                    }
+                                // Fetch altimeter configuration asynchronously without blocking UI
+                                loadConfigurationAsync();
+                            } else {
+                                msg(getString(R.string.main_usb_cannot_connect));
+                            }
+                        });
+                    });
                 } else {
                     Log.w(TAG, "USB permission was denied by the user");
-                    msg("PERM NOT GRANTED");
+                    msg(getString(R.string.main_usb_permission_denied));
                 }
 
             }
             // Case 2: A physical USB OTG cable / device was plugged in
             else if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
                 Log.d(TAG, "USB device attached event received");
-                msg("I can connect via usb");
+                msg(getString(R.string.main_usb_device_attached));
 
             }
             // Case 3: The USB cable / device was physically unplugged
             else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
                 Log.d(TAG, "USB device detached event received");
                 if ("usb".equalsIgnoreCase(myBT.getConnectionType()) && myBT.getConnected()) {
+                    // Closing the port also wakes up any thread blocked on the stream
                     myBT.Disconnect();
                     DisableUI();
                     setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
@@ -220,6 +219,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
         // Retrieve global application state and instantiate firmware version checker
         myBT = (ConsoleApplication) getApplication();
+        ioExecutor = myBT.getIoExecutor();
         firmCompat = new FirmwareCompatibility();
         setContentView(R.layout.activity_main_screen);
 
@@ -682,18 +682,11 @@ public class MainScreenActivity extends AppCompatActivity {
     }
 
     /**
-     * Non-blocking cooperative polling that waits for stream data availability.
-     * Prevents pegging CPU cores at 100% unlike standard busy-wait loops.
+     * Bounded wait for the first bytes of an answer (delegates to ConsoleApplication).
+     * Runs on the I/O executor only.
      */
     private void waitForDataAvailable(long timeoutMs) {
-        long startTime = System.currentTimeMillis();
-        try {
-            while (myBT.getInputStream() != null &&
-                    myBT.getInputStream().available() <= 0 &&
-                    (System.currentTimeMillis() - startTime) < timeoutMs) {
-                Thread.sleep(20);
-            }
-        } catch (IOException | InterruptedException ignored) {}
+        myBT.waitForData(timeoutMs);
     }
 
     @Override
@@ -738,15 +731,15 @@ public class MainScreenActivity extends AppCompatActivity {
      */
     private void showSamplesDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter number of samples");
+        builder.setTitle(R.string.main_samples_title);
 
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        input.setHint("e.g. 1000");
+        input.setHint(R.string.main_samples_hint);
 
         builder.setView(input);
-        builder.setPositiveButton("OK", null);
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.setPositiveButton(R.string.fv_ok, null);
+        builder.setNegativeButton(R.string.Cancel, (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.setOnShowListener(d -> {
@@ -756,7 +749,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
                 // Validation checks
                 if (value.isEmpty()) {
-                    input.setError("Value is required");
+                    input.setError(getString(R.string.main_samples_required));
                     return;
                 }
 
@@ -764,17 +757,17 @@ public class MainScreenActivity extends AppCompatActivity {
                 try {
                     samples = Integer.parseInt(value);
                 } catch (NumberFormatException e) {
-                    input.setError("Must be a numeric value");
+                    input.setError(getString(R.string.main_samples_numeric));
                     return;
                 }
 
                 if (samples <= 0) {
-                    input.setError("Value must be greater than 0");
+                    input.setError(getString(R.string.main_samples_too_small));
                     return;
                 }
 
                 if (samples >= 10000) {
-                    input.setError("Value must be less than 10000");
+                    input.setError(getString(R.string.main_samples_too_large));
                     return;
                 }
 
@@ -880,8 +873,7 @@ public class MainScreenActivity extends AppCompatActivity {
             unregisterReceiver(broadcastReceiver);
         } catch (IllegalArgumentException ignored) {}
 
-        // Shut down background executor service
-        ioExecutor.shutdown();
+        // The I/O executor belongs to the application: it keeps running for the other screens
     }
 
     /**

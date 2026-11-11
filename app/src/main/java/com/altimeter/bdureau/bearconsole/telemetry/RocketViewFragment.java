@@ -1,5 +1,17 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: RocketViewFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Status screen tab of the accelerometer boards: 3D view of the rocket orientation computed
+ *  from the accelerometer values, rendered with the Processing library (see utils/Rocket).
+ * ============================================================================
+ */
+
 import static java.lang.Math.acos;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -19,10 +31,6 @@ import com.altimeter.bdureau.bearconsole.utils.Rocket;
 
 import processing.android.PFragment;
 import processing.core.PApplet;
-/*
-    This is the third tab
-    it displays the rocket orientation
-     */
 public class RocketViewFragment extends Fragment {
     private static final String TAG = "Tab3StatusFragment";
     private PApplet myRocket;
@@ -89,17 +97,13 @@ public class RocketViewFragment extends Fragment {
         double qy = cos(roll/2) * sin(pitch/2) * cos(yaw/2) + sin(roll/2) * cos(pitch/2) * sin(yaw/2);
         double qz = cos(roll/2) * cos(pitch/2) * sin(yaw/2) - sin(roll/2) * sin(pitch/2) * cos(yaw/2);
         double qw = cos(roll/2) * cos(pitch/2) * cos(yaw/2) + sin(roll/2) * sin(pitch/2) * sin(yaw/2);
-        /*setInputString(String.format("%.2f",qx)+","+String.format("%.2f",qy)+","+String.format("%.2f",qz)+
-                ","+String.format("%.2f",qw)+ ",\\r\\n");*/
         String value2 = String.format("%.2f",qx)+","+String.format("%.2f",qy)+","+String.format("%.2f",qz)+
                 ","+String.format("%.2f",qw)+ ",\\r\\n";
         if(view != null)
-            //((Rocket) myRocket).setInputString2(value2);
             ((Rocket) myRocket).setInputString((float) x, (float) y, (float) z, 0);
     }
     //send the quaternion to the processing widget
     public void setInputString(String value) {
-        //if (ViewCreated)
         if(view != null)
             ((Rocket) myRocket).setInputString(value);
     }

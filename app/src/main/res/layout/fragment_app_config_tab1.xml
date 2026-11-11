@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Application settings tab 1 (AppConfig1Fragment): language, graph color, units, graph
+    background color, font size, serial speed, connection type, graph library and the multiple
+    drogue / main and full USB support options.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"

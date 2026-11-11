@@ -1,7 +1,20 @@
 package com.altimeter.bdureau.bearconsole.config.ConfigModules;
 
-import androidx.appcompat.app.AppCompatActivity;
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: ConfigBT
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Configuration of a serial Bluetooth module (HC-05 / HC-06) connected with a USB-TTL cable,
+ *  using AT commands (AT+NAME, AT+PIN, AT+BAUD, AT+VERSION): module name, PIN code and
+ *  serial speed. All the serial I/O runs in the
+ *  background.
+ * ============================================================================
+ */
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,12 +44,7 @@ import com.physicaloid.lib.usb.driver.uart.UartConfig;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * @description: Bluetooth module configuration utility using direct serial commands.
- *  Hardened against Activity leaks and non-blocking background I/O.
- * @author: boris.dureau@neuf.fr
- **/
-public class ConfigBT extends AppCompatActivity {
+public class ConfigBT extends BaseActivity {
     private static final String TAG = "ConfigBT";
 
     private Physicaloid mPhysicaloid;
@@ -57,19 +65,10 @@ public class ConfigBT extends AppCompatActivity {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private volatile boolean isTaskCancelled = false;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTitle(R.string.telemetry_screen);
         myBT = (ConsoleApplication) getApplication();
         setContentView(R.layout.activity_config_bt);
 
@@ -267,7 +266,7 @@ public class ConfigBT extends AppCompatActivity {
                     EnableUI();
                     btSaveConfig.setEnabled(true);
                 } else {
-                    msg("Failed to retrieve Bluetooth settings");
+                    msg(getString(R.string.module_config_read_failed));
                 }
             });
         });
@@ -319,9 +318,9 @@ public class ConfigBT extends AppCompatActivity {
                 if (success) {
                     DisableUI();
                     btSaveConfig.setEnabled(false);
-                    msg("Settings saved successfully");
+                    msg(getString(R.string.module_config_saved));
                 } else {
-                    msg("Error saving Bluetooth configuration");
+                    msg(getString(R.string.module_config_save_failed));
                 }
             });
         });

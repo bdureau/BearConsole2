@@ -1,5 +1,18 @@
 package com.altimeter.bdureau.bearconsole.config;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: GlobalConfig
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Application settings stored in the shared preferences "BearConsoleCfg": language, units,
+ *  graph appearance, connection type and speed, voice announcements, map options, last known
+ *  rocket position... Read at start-up by ConsoleApplication and saved by the settings screen.
+ * ============================================================================
+ */
+
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
@@ -18,9 +31,7 @@ public class GlobalConfig {
     private int units = 0;
 
     //flight retrieval timeout
-    //private long flightRetrievalTimeout;
     //data retrieval timeout
-    //private long configRetrievalTimeout;
 
     //graph background color
     private int graphBackColor = 1;

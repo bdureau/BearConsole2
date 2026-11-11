@@ -1,15 +1,24 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
+
 /**
- * @description: This will display real time telemetry providing
- * that you have a telemetry long range module.
- * This is a tabbed activity that will display several fragments for each tab of the telemetry
- * - AltimeterMpFlightFragment => This activity display the telemetry graph using the MPAndroidChart library
- * and will do talking telemetry.
- * - AltimeterInfoFragment => display altimeter status
- * - GPSStatusFragment => will display information about the GPS when using the altiGPS
- * - GPSMapStatusFragment => will display the Map when using the altiGPS
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: TelemetryTabActivity
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Real-time flight telemetry screen, used with a long range radio module (3DR, LoRa).
+ *  The altimeter streams "telemetry" frames that ConsoleApplication decodes and forwards to
+ *  the handler of this activity, one message per field. Tabs:
+ *    - AltimeterMpFlightFragment (MPAndroidChart) or AltimeterFcFlightFragment (AFreeChart on
+ *      Android 7): live altitude curve and flight events (lift off, apogee, main, landing),
+ *      announced by voice when enabled in the settings;
+ *    - AltimeterInfoFragment: altimeter status (outputs continuity, battery, EEPROM...);
+ *    - GPSStatusFragment and a map fragment (Google Maps or OpenStreetMap) for the AltiGPS.
+ *  The reading loop and every command sent to the altimeter run in the background through
+ *  {@link TelemetryReader}; the UI thread never waits for the serial link.
+ * ============================================================================
+ */
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,13 +32,12 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -48,15 +56,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import android.content.Intent;
 
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.connection.TelemetryReader;
+import com.altimeter.bdureau.bearconsole.utils.TabPagerAdapter;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
@@ -72,7 +81,7 @@ import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSOp
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSStatusFragment;
 import com.github.mikephil.charting.data.Entry;
 
-public class TelemetryTabActivity extends AppCompatActivity {
+public class TelemetryTabActivity extends BaseActivity {
 
     public String TAG = "TelemetryMp.class";
     private ViewPager mViewPager;
@@ -80,7 +89,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
     public LocationBroadCastReceiver receiver = null;
-    private SectionsStatusPageAdapter adapter;
+    private TabPagerAdapter adapter;
     private AltimeterMpFlightFragment statusPage0 = null;
     private AltimeterFcFlightFragment statusPage0bis = null;
     private AltimeterInfoFragment statusPage1 = null;
@@ -95,7 +104,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
     private ArrayList<Entry> yValues;
 
     private ConsoleApplication myBT;
-    Thread rocketTelemetry;
+    // Background reading loop and command queue (never blocks the UI thread)
+    private TelemetryReader reader;
 
     //telemetry var
     private long LiftOffTime = 0;
@@ -105,7 +115,6 @@ public class TelemetryTabActivity extends AppCompatActivity {
 
     private int altitudeTime = 0;
 
-    private boolean telemetry = true;
     private boolean liftOffSaid = false;
     private boolean apogeeSaid = false;
     private boolean landedSaid = false;
@@ -122,22 +131,16 @@ public class TelemetryTabActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
-    Handler handler = new Handler() {
+    // Receives the telemetry fields decoded by ConsoleApplication (msg.what = field index).
+    // Bound to the main looper; unregistered and purged in onDestroy() to avoid leaking the activity.
+    private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
                     // Value 1 contain the current altitude
                     if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
-                        int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
+                        int altitude = (int) (ConsoleApplication.parseIntSafe((String) msg.obj, 0) * FEET_IN_METER);
                         //use afree chart
                         if ((myBT.getAppConf().getGraphicsLibType() == GlobalConfig.GraphLib.AfreeChart) &
                                 (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
@@ -185,10 +188,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
                         if (statusPage0bis.isViewCreated())
                             if (!statusPage0bis.isLiftOffChecked())
                                 if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                    if (Integer.parseInt((String) msg.obj) > 0 || LiftOffTime > 0) {
-                                        //statusPage0bis.setLiftOffEnabled(true);
+                                    if (ConsoleApplication.parseIntSafe((String) msg.obj, 0) > 0 || LiftOffTime > 0) {
                                         statusPage0bis.setLiftOffChecked(true);
-                                        //statusPage0bis.setLiftOffEnabled(false);
                                         if (LiftOffTime == 0)
                                             LiftOffTime = System.currentTimeMillis();
                                         statusPage0bis.setLiftOffTime("0 ms");
@@ -203,10 +204,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
                         if (statusPage0.isViewCreated())
                             if (!statusPage0.isLiftOffChecked())
                                 if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                    if (Integer.parseInt((String) msg.obj) > 0 || LiftOffTime > 0) {
-                                        //statusPage0.setLiftOffEnabled(true);
+                                    if (ConsoleApplication.parseIntSafe((String) msg.obj, 0) > 0 || LiftOffTime > 0) {
                                         statusPage0.setLiftOffChecked(true);
-                                        //statusPage0.setLiftOffEnabled(false);
                                         if (LiftOffTime == 0)
                                             LiftOffTime = System.currentTimeMillis();
                                         statusPage0.setLiftOffTime("0 ms");
@@ -226,20 +225,16 @@ public class TelemetryTabActivity extends AppCompatActivity {
                         if (statusPage0bis.isViewCreated())
                             if (!statusPage0bis.isApogeeChecked())
                                 if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                    if (Integer.parseInt((String) msg.obj) > 0) {
-                                        //statusPage0bis.setApogeeEnable(true);
+                                    if (ConsoleApplication.parseIntSafe((String) msg.obj, 0) > 0) {
                                         statusPage0bis.setApogeeChecked(true);
-                                        //statusPage0bis.setApogeeEnable(false);
                                         statusPage0bis.setMaxAltitudeTime((int) (System.currentTimeMillis() - LiftOffTime) + " ms");
                                     }
                     } else {
                         if (statusPage0.isViewCreated())
                             if (!statusPage0.isApogeeChecked())
                                 if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                    if (Integer.parseInt((String) msg.obj) > 0) {
-                                        //statusPage0.setApogeeEnable(true);
+                                    if (ConsoleApplication.parseIntSafe((String) msg.obj, 0) > 0) {
                                         statusPage0.setApogeeChecked(true);
-                                        //statusPage0.setApogeeEnable(false);
                                         statusPage0.setMaxAltitudeTime((int) (System.currentTimeMillis() - LiftOffTime) + " ms");
                                     }
                     }
@@ -251,7 +246,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                             (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
                         if (statusPage0bis.isViewCreated())
                             if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
-                                int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
+                                int altitude = (int) (ConsoleApplication.parseIntSafe((String) msg.obj, 0) * FEET_IN_METER);
 
                                 if (statusPage0bis.isApogeeChecked()) {
                                     statusPage0bis.setMaxAltitude(altitude + "");
@@ -268,7 +263,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     } else {
                         if (statusPage0.isViewCreated())
                             if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
-                                int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
+                                int altitude = (int) (ConsoleApplication.parseIntSafe((String) msg.obj, 0) * FEET_IN_METER);
 
                                 if (statusPage0.isApogeeChecked()) {
                                     statusPage0.setMaxAltitude(altitude + "");
@@ -291,21 +286,17 @@ public class TelemetryTabActivity extends AppCompatActivity {
                         if (statusPage0bis.isViewCreated())
                             if (!statusPage0bis.isMainChuteChecked())
                                 if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                    if (Integer.parseInt((String) msg.obj) > 0) {
+                                    if (ConsoleApplication.parseIntSafe((String) msg.obj, 0) > 0) {
                                         statusPage0bis.setMainChuteTime((System.currentTimeMillis() - LiftOffTime) + " ms");
-                                        //statusPage0bis.setMainChuteEnabled(true);
                                         statusPage0bis.setMainChuteChecked(true);
-                                        //statusPage0bis.setMainChuteEnabled(false);
                                     }
                     }else {
                         if (statusPage0.isViewCreated())
                             if (!statusPage0.isMainChuteChecked())
                                 if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                    if (Integer.parseInt((String) msg.obj) > 0) {
+                                    if (ConsoleApplication.parseIntSafe((String) msg.obj, 0) > 0) {
                                         statusPage0.setMainChuteTime((System.currentTimeMillis() - LiftOffTime) + " ms");
-                                        //statusPage0.setMainChuteEnabled(true);
                                         statusPage0.setMainChuteChecked(true);
-                                        //statusPage0.setMainChuteEnabled(false);
                                     }
                     }
                     break;
@@ -316,7 +307,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                         if (statusPage0bis.isViewCreated())
                             if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
                                 if (statusPage0bis.isMainChuteChecked()) {
-                                    int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
+                                    int altitude = (int) (ConsoleApplication.parseIntSafe((String) msg.obj, 0) * FEET_IN_METER);
                                     statusPage0bis.setMainAltitude(String.valueOf(altitude));
                                     if (!mainSaid) {
                                         if (myBT.getAppConf().getMain_event()) {
@@ -331,7 +322,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                         if (statusPage0.isViewCreated())
                             if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
                                 if (statusPage0.isMainChuteChecked()) {
-                                    int altitude = (int) (Integer.parseInt((String) msg.obj) * FEET_IN_METER);
+                                    int altitude = (int) (ConsoleApplication.parseIntSafe((String) msg.obj, 0) * FEET_IN_METER);
                                     statusPage0.setMainAltitude(String.valueOf(altitude));
                                     if (!mainSaid) {
                                         if (myBT.getAppConf().getMain_event()) {
@@ -351,10 +342,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
                         if (statusPage0bis.isViewCreated())
                             if (!statusPage0bis.isLandedChecked())
                                 if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                    if (Integer.parseInt((String) msg.obj) > 0) {
-                                        //statusPage0bis.setLandedEnabled(true);
+                                    if (ConsoleApplication.parseIntSafe((String) msg.obj, 0) > 0) {
                                         statusPage0bis.setLandedChecked(true);
-                                        //statusPage0bis.setLandedEnabled(false);
                                         statusPage0bis.setLandedAltitude(statusPage0bis.getLandedAltitude());
                                         statusPage0bis.setLandedTime((System.currentTimeMillis() - LiftOffTime) + " ms");
                                         if (!landedSaid) {
@@ -368,10 +357,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
                         if (statusPage0.isViewCreated())
                             if (!statusPage0.isLandedChecked())
                                 if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?"))
-                                    if (Integer.parseInt((String) msg.obj) > 0) {
-                                        //statusPage0.setLandedEnabled(true);
+                                    if (ConsoleApplication.parseIntSafe((String) msg.obj, 0) > 0) {
                                         statusPage0.setLandedChecked(true);
-                                        //statusPage0.setLandedEnabled(false);
                                         statusPage0.setLandedAltitude(statusPage0.getLandedAltitude());
                                         statusPage0.setLandedTime((System.currentTimeMillis() - LiftOffTime) + " ms");
                                         if (!landedSaid) {
@@ -386,8 +373,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
                 case 8:
                     // Value 8 contain the sample time
                     if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
-                        if (Integer.parseInt((String) msg.obj) > 0) {
-                            altitudeTime = Integer.parseInt((String) msg.obj);
+                        if (ConsoleApplication.parseIntSafe((String) msg.obj, 0) > 0) {
+                            altitudeTime = ConsoleApplication.parseIntSafe((String) msg.obj, 0);
                         }
                     }
                     break;
@@ -411,9 +398,9 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     //Value 13 contains the battery voltage
                     String voltage = (String) msg.obj;
                     if (voltage.matches("\\d+(?:\\.\\d+)?")) {
-                        statusPage1.setVoltage(voltage + " Volts");
+                        statusPage1.setVoltage(voltage + " " + getString(R.string.unit_volts));
                     } else {
-                        statusPage1.setVoltage("NA");
+                        statusPage1.setVoltage(getString(R.string.not_available));
                     }
                     break;
                 case 14:
@@ -459,7 +446,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String nbrOfSatellite = (String) msg.obj;
                         if (nbrOfSatellite.matches("\\d+(?:\\.\\d+)?")) {
-                            int nbrOfSatelliteVal = Integer.parseInt(nbrOfSatellite);
+                            int nbrOfSatelliteVal = ConsoleApplication.parseIntSafe(nbrOfSatellite, 0);
                             statusPage2.setSatellitesVal("" + nbrOfSatelliteVal);
                         }
                     }
@@ -469,7 +456,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String hdop = (String) msg.obj;
                         if (hdop.matches("\\d+(?:\\.\\d+)?")) {
-                            int hdopVal = Integer.parseInt(hdop);
+                            int hdopVal = ConsoleApplication.parseIntSafe(hdop, 0);
                             statusPage2.setHdopVal("" + hdopVal);
                         }
                     }
@@ -479,7 +466,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String locationAge = (String) msg.obj;
                         if (locationAge.matches("\\d+(?:\\.\\d+)?")) {
-                            int locationAgeVal = Integer.parseInt(locationAge);
+                            int locationAgeVal = ConsoleApplication.parseIntSafe(locationAge, 0);
                             statusPage2.setLocationAgeValue("" + locationAgeVal);
                         }
                     }
@@ -489,7 +476,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String GPSAltitude = (String) msg.obj;
                         if (GPSAltitude.matches("\\d+(?:\\.\\d+)?")) {
-                            int GPSAltitudeVal = Integer.parseInt(GPSAltitude);
+                            int GPSAltitudeVal = ConsoleApplication.parseIntSafe(GPSAltitude, 0);
                             statusPage2.setGPSAltitudeVal("" + GPSAltitudeVal);
                         }
                     }
@@ -499,7 +486,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String GPSSpeed = (String) msg.obj;
                         if (GPSSpeed.matches("\\d+(?:\\.\\d+)?")) {
-                            int GPSSpeedVal = Integer.parseInt(GPSSpeed);
+                            int GPSSpeedVal = ConsoleApplication.parseIntSafe(GPSSpeed, 0);
                             statusPage2.setGPSSpeedVal("" + GPSSpeedVal);
                         }
                     }
@@ -509,8 +496,8 @@ public class TelemetryTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String TimeSat = (String) msg.obj;
                         if (TimeSat.matches("\\d+(?:\\.\\d+)?")) {
-                            int TimeSatVal = Integer.parseInt(TimeSat);
-                            statusPage2.setTimeSatValue(String.format("%.2f", (double) (TimeSatVal / 1000)) + " secs");
+                            int TimeSatVal = ConsoleApplication.parseIntSafe(TimeSat, 0);
+                            statusPage2.setTimeSatValue(String.format("%.2f", (double) (TimeSatVal / 1000)) + " " + getString(R.string.unit_secs));
                         }
                     }
                     break;
@@ -521,7 +508,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375x = (String) msg.obj;
                         if (accel375x.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel375xVal = Integer.parseInt(accel375x);
+                            int accel375xVal = ConsoleApplication.parseIntSafe(accel375x, 0);
                         }
                     }
                     break;
@@ -532,7 +519,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375y = (String) msg.obj;
                         if (accel375y.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel375yVal = Integer.parseInt(accel375y);
+                            int accel375yVal = ConsoleApplication.parseIntSafe(accel375y, 0);
                         }
                     }
                     break;
@@ -543,7 +530,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375z = (String) msg.obj;
                         if (accel375z.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel375zVal = Integer.parseInt(accel375z);
+                            int accel375zVal = ConsoleApplication.parseIntSafe(accel375z, 0);
                         }
                     }
                     break;
@@ -554,7 +541,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345x = (String) msg.obj;
                         if (accel345x.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel345xVal = Integer.parseInt(accel345x);
+                            int accel345xVal = ConsoleApplication.parseIntSafe(accel345x, 0);
                         }
                     }
                     break;
@@ -565,7 +552,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345y = (String) msg.obj;
                         if (accel345y.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel345yVal = Integer.parseInt(accel345y);
+                            int accel345yVal = ConsoleApplication.parseIntSafe(accel345y, 0);
                         }
                     }
                     break;
@@ -576,7 +563,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345z = (String) msg.obj;
                         if (accel345z.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel345zVal = Integer.parseInt(accel345z);
+                            int accel345zVal = ConsoleApplication.parseIntSafe(accel345z, 0);
                         }
                     }
                     break;
@@ -633,9 +620,6 @@ public class TelemetryTabActivity extends AppCompatActivity {
             startService();
         }
 
-        /*if(Build.VERSION.SDK_INT>=23) {
-            verifyStoragePermission(TelemetryTabActivity.this);
-        }*/
         LocationManager lm = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
@@ -665,6 +649,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
         }
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();
+        reader = new TelemetryReader(myBT);
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
@@ -705,8 +690,6 @@ public class TelemetryTabActivity extends AppCompatActivity {
                         result = mTTS.setLanguage(Locale.ENGLISH);
 
                     Log.d("Voice", myBT.getAppConf().getTelemetryVoice() + "");
-                    //String[] itemsVoices;
-                    //String items = "";
                     int i = 0;
                     try {
                         for (Voice tmpVoice : mTTS.getVoices()) {
@@ -761,121 +744,80 @@ public class TelemetryTabActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        finish();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
 
-        if(locIntent != null)
+        // Stop receiving telemetry messages and drop the pending ones
+        myBT.clearHandler(handler);
+        handler.removeCallbacksAndMessages(null);
+
+        if (locIntent != null)
             stopService(locIntent);
 
         if (receiver != null) {
-            unregisterReceiver(receiver);
+            try {
+                unregisterReceiver(receiver);
+            } catch (IllegalArgumentException e) {
+                Log.d(TAG, "Location receiver was not registered");
+            }
             receiver = null;
         }
         try {
             mTTS.shutdown();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.w(TAG, "Text to speech shutdown failed", e);
         }
 
-        if (telemetry) {
-            telemetry = false;
-            myBT.write("h;".toString());
-
-            myBT.setExit(true);
-            myBT.clearInput();
-            myBT.flush();
-        }
-        //turn off telemetry
-        myBT.flush();
-        myBT.clearInput();
-        myBT.write("y0;".toString());
+        // Stop the loop (if still running) and switch the telemetry stream off, in background
+        reader.stop(false, "h;", "y0;");
+        reader.release();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
-        if (myBT.getConnected() && !telemetry) {
-            myBT.flush();
-            myBT.clearInput();
-
-            myBT.write("y1;".toString());
-            telemetry = true;
-            //rocketTelemetry.start();
-            Runnable r = new Runnable() {
-
-                @Override
-                public void run() {
-                    while (true) {
-                        if (!telemetry) break;
-                        myBT.ReadResult(2000);
-                    }
-                }
-            };
-            rocketTelemetry = new Thread(r);
-            rocketTelemetry.start();
+        // Coming back from another screen: re-enable the stream and restart the reading loop
+        if (myBT.getConnected() && !reader.isRunning()) {
+            reader.start("y1;");
         }
     }
 
     @Override
     protected void onStop() {
-        //msg("On stop");
         super.onStop();
-        if (telemetry) {
-            telemetry = false;
-            myBT.write("h;".toString());
-
-            myBT.setExit(true);
-            myBT.clearInput();
-            myBT.flush();
+        // The screen is no longer visible: pause the stream ("h;") without blocking the UI
+        if (reader.isRunning()) {
+            reader.stop(true, "h;");
         }
-
-
-        myBT.flush();
-        myBT.clearInput();
-        myBT.write("h;".toString());
-        try {
-            while (myBT.getInputStream().available() <= 0) ;
-        } catch (IOException e) {
-
-        }
-        String myMessage = "";
-        //long timeOut = 10000;
-        //long startTime = System.currentTimeMillis();
-
-        myMessage = myBT.ReadResult(100000);
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        adapter = new SectionsStatusPageAdapter(getSupportFragmentManager());
+        adapter = new TabPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT, this::onTabRestored);
         if ((myBT.getAppConf().getGraphicsLibType() == 0) &
                 (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
             statusPage0bis = new AltimeterFcFlightFragment(myBT);
-            adapter.addFragment(statusPage0bis, "TAB0");
+            adapter.addFragment(statusPage0bis);
         } else {
             statusPage0 = new AltimeterMpFlightFragment(myBT);
-            adapter.addFragment(statusPage0, "TAB0");
+            adapter.addFragment(statusPage0);
         }
 
         statusPage1 = new AltimeterInfoFragment(myBT);
         statusPage2 = new GPSStatusFragment(myBT);
 
 
-        adapter.addFragment(statusPage1, "TAB1");
+        adapter.addFragment(statusPage1);
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-            adapter.addFragment(statusPage2, "TAB2");
+            adapter.addFragment(statusPage2);
             if (!myBT.getAppConf().getUseOpenMap()) {
                 statusPage3 = new GPSGoogleMapStatusFragment(myBT, viewPager);
-                adapter.addFragment(statusPage3, "TAB3");
+                adapter.addFragment(statusPage3);
             } else {
                 statusPage4 = new GPSOpenMapStatusFragment(myBT, viewPager);
-                adapter.addFragment(statusPage4, "TAB3");
+                adapter.addFragment(statusPage4);
             }
         }
 
@@ -918,35 +860,17 @@ public class TelemetryTabActivity extends AppCompatActivity {
         }
     };
 
-    public class SectionsStatusPageAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList();
-        private final List<String> mFragmentTitleList = new ArrayList();
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        public SectionsStatusPageAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return super.getPageTitle(position);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
+    /**
+     * Called by the adapter when the ViewPager displays a fragment re-created by the system
+     * (activity re-creation): the references used by the handler are re-bound to it.
+     */
+    private void onTabRestored(int position, Fragment fragment) {
+        if (fragment instanceof AltimeterMpFlightFragment) statusPage0 = (AltimeterMpFlightFragment) fragment;
+        else if (fragment instanceof AltimeterFcFlightFragment) statusPage0bis = (AltimeterFcFlightFragment) fragment;
+        else if (fragment instanceof AltimeterInfoFragment) statusPage1 = (AltimeterInfoFragment) fragment;
+        else if (fragment instanceof GPSStatusFragment) statusPage2 = (GPSStatusFragment) fragment;
+        else if (fragment instanceof GPSGoogleMapStatusFragment) statusPage3 = (GPSGoogleMapStatusFragment) fragment;
+        else if (fragment instanceof GPSOpenMapStatusFragment) statusPage4 = (GPSOpenMapStatusFragment) fragment;
     }
 
     public class LocationBroadCastReceiver extends BroadcastReceiver {
@@ -979,9 +903,7 @@ public class TelemetryTabActivity extends AppCompatActivity {
     private void startService() {
 
         IntentFilter filter = new IntentFilter("ACT_LOC");
-        //registerReceiver(receiver, filter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
             registerReceiver(receiver, filter, RECEIVER_EXPORTED);
         } else {
             registerReceiver(receiver, filter);
@@ -991,28 +913,18 @@ public class TelemetryTabActivity extends AppCompatActivity {
         startService(locIntent);
     }
 
+    /**
+     * Resets the live flight data, enables the stream and starts the reading loop. "y1;" was
+     * already sent by the main screen on first opening, but it must be sent again when the
+     * activity is re-created (the previous instance switched the stream off in onDestroy()).
+     */
     public void startTelemetry() {
-        telemetry = true;
-
         lastPlotTime = 0;
         myBT.initFlightData();
 
-        myflight = myBT.getFlightData(); //this is used by the afreeChart
+        myflight = myBT.getFlightData(); // used by the AFreeChart fragment
         LiftOffTime = 0;
-        Runnable r = new Runnable() {
-
-            @Override
-            public void run() {
-                while (true) {
-                    if (!telemetry) break;
-                    myBT.ReadResult(10000);
-                }
-            }
-        };
-
-        rocketTelemetry = new Thread(r);
-        rocketTelemetry.start();
-
+        reader.start("y1;");
     }
 
     public static void verifyStoragePermission(Activity activity) {

@@ -1,14 +1,24 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
+
 /**
- * @description: This will display real time altimeter status using the bluetooth module/or telemetry
- * This is a tabbed activity that will display several fragments for each tab of the telemetry
- * - AltimeterInfoFragment => display altimeter status
- * - AltimeterOutputFragment => will allow you to test your altimeter outputs
- * - GPSStatusFragment => will display information about the GPS when using the altiGPS
- * - GPSMapStatusFragment => will display the Map when using the altiGPS
- * This has the ability to take screen shot of each tab and share them using Whats app, email etc ...
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AltimeterStatusTabActivity
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Real-time ground status of the altimeter, through the Bluetooth module or the telemetry
+ *  radio. The altimeter streams "telemetry" frames decoded by ConsoleApplication and forwarded
+ *  to the handler of this activity. Tabs (depending on the board):
+ *    - AltimeterInfoFragment: outputs continuity, altitude, battery, temperature, EEPROM;
+ *    - AltimeterAccelFragment / RocketViewFragment: accelerometer values and 3D attitude;
+ *    - AltimeterOutputFragment: pyro / servo output test, each firing confirmed by the user;
+ *    - GPSStatusFragment and a map fragment (Google Maps or OpenStreetMap) for the AltiGPS.
+ *  On the AltiGPS a manual recording can be started / stopped; leaving the screen while
+ *  recording asks for a confirmation (Back button and Dismiss button).
+ *  All serial I/O runs in the background through {@link TelemetryReader}.
+ * ============================================================================
+ */
 
 import android.Manifest;
 import android.app.Activity;
@@ -24,10 +34,11 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.OnBackPressedCallback;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -45,7 +56,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.connection.TelemetryReader;
+import com.altimeter.bdureau.bearconsole.utils.TabPagerAdapter;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.LocationService;
@@ -59,18 +73,18 @@ import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSOp
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSStatusFragment;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AltimeterStatusTabActivity extends AppCompatActivity {
+public class AltimeterStatusTabActivity extends BaseActivity
+        implements AltimeterOutputFragment.OutputCommandSender {
     public String TAG = "AltimeterStatusTabActivity";
-    private static ViewPager mViewPager; //static so that the map does not disapear
+    private ViewPager mViewPager;
 
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
     public LocationBroadCastReceiver receiver = null;
-    SectionsStatusPageAdapter adapter;
+    private TabPagerAdapter adapter;
     private AltimeterInfoFragment statusPage1 = null;
     private AltimeterAccelFragment statusPage1ter = null;
     private AltimeterOutputFragment statusPage1bis = null;
@@ -84,8 +98,8 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
 
     private Button btnDismiss, btnRecording;
     private ConsoleApplication myBT;
-    Thread altiStatus;
-    private boolean status = true;
+    // Background reading loop and command queue (never blocks the UI thread)
+    private TelemetryReader reader;
     private boolean recording = false;
     Intent locIntent = null;
     private double accel375[] = {0.0, 0.0, 0.0};
@@ -96,15 +110,9 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
-    Handler handler = new Handler() {
+    // Receives the telemetry fields decoded by ConsoleApplication (msg.what = field index).
+    // Bound to the main looper; unregistered and purged in onDestroy() to avoid leaking the activity.
+    private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -140,9 +148,9 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                     //Value 13 contains the battery voltage
                     String voltage = (String) msg.obj;
                     if (voltage.matches("\\d+(?:\\.\\d+)?")) {
-                        statusPage1.setVoltage(voltage + " Volts");
+                        statusPage1.setVoltage(voltage + " " + getString(R.string.unit_volts));
                     } else {
-                        statusPage1.setVoltage("NA");
+                        statusPage1.setVoltage(getString(R.string.not_available));
                     }
                     break;
                 case 14:
@@ -186,7 +194,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String nbrOfSatellite = (String) msg.obj;
                         if (nbrOfSatellite.matches("\\d+(?:\\.\\d+)?")) {
-                            int nbrOfSatelliteVal = Integer.parseInt(nbrOfSatellite);
+                            int nbrOfSatelliteVal = ConsoleApplication.parseIntSafe(nbrOfSatellite, 0);
                             statusPage2.setSatellitesVal("" + nbrOfSatelliteVal);
                         }
                     }
@@ -196,7 +204,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String hdop = (String) msg.obj;
                         if (hdop.matches("\\d+(?:\\.\\d+)?")) {
-                            int hdopVal = Integer.parseInt(hdop);
+                            int hdopVal = ConsoleApplication.parseIntSafe(hdop, 0);
                             statusPage2.setHdopVal("" + hdopVal);
                         }
                     }
@@ -206,7 +214,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String locationAge = (String) msg.obj;
                         if (locationAge.matches("\\d+(?:\\.\\d+)?")) {
-                            int locationAgeVal = Integer.parseInt(locationAge);
+                            int locationAgeVal = ConsoleApplication.parseIntSafe(locationAge, 0);
                             statusPage2.setLocationAgeValue("" + locationAgeVal);
                         }
                     }
@@ -216,7 +224,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String GPSAltitude = (String) msg.obj;
                         if (GPSAltitude.matches("\\d+(?:\\.\\d+)?")) {
-                            int GPSAltitudeVal = Integer.parseInt(GPSAltitude);
+                            int GPSAltitudeVal = ConsoleApplication.parseIntSafe(GPSAltitude, 0);
                             statusPage2.setGPSAltitudeVal("" + GPSAltitudeVal);
                         }
                     }
@@ -226,7 +234,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String GPSSpeed = (String) msg.obj;
                         if (GPSSpeed.matches("\\d+(?:\\.\\d+)?")) {
-                            int GPSSpeedVal = Integer.parseInt(GPSSpeed);
+                            int GPSSpeedVal = ConsoleApplication.parseIntSafe(GPSSpeed, 0);
                             statusPage2.setGPSSpeedVal("" + GPSSpeedVal);
                         }
                     }
@@ -236,8 +244,8 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String TimeSat = (String) msg.obj;
                         if (TimeSat.matches("\\d+(?:\\.\\d+)?")) {
-                            int TimeSatVal = Integer.parseInt(TimeSat);
-                            statusPage2.setTimeSatValue(String.format("%.2f", ((double) TimeSatVal / (double) 1000)) + " secs");
+                            int TimeSatVal = ConsoleApplication.parseIntSafe(TimeSat, 0);
+                            statusPage2.setTimeSatValue(String.format("%.2f", ((double) TimeSatVal / (double) 1000)) + " " + getString(R.string.unit_secs));
                         }
                     }
                     break;
@@ -248,7 +256,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375x = (String) msg.obj;
                         if (accel375x.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel375xVal = Integer.parseInt(accel375x);
+                            int accel375xVal = ConsoleApplication.parseIntSafe(accel375x, 0);
                             statusPage1ter.setAccel375x(String.format("%.2f", ((double) accel375xVal / (double) 1000)));
                             accel375[0] = ((double) accel375xVal / (double) 1000);
                         }
@@ -257,7 +265,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
                         String accel345x = (String) msg.obj;
                         if (accel345x.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel345xVal = Integer.parseInt(accel345x);
+                            int accel345xVal = ConsoleApplication.parseIntSafe(accel345x, 0);
                             statusPage1ter.setAccel345x(String.format("%.2f", ((double) accel345xVal / (double) 1000)));
                             accel345[0] = ((double) accel345xVal / (double) 1000);
                         }
@@ -270,7 +278,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375y = (String) msg.obj;
                         if (accel375y.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel375yVal = Integer.parseInt(accel375y);
+                            int accel375yVal = ConsoleApplication.parseIntSafe(accel375y, 0);
                             statusPage1ter.setAccel375y(String.format("%.2f", ((double) accel375yVal / (double) 1000)));
                             accel375[1] = ((double) accel375yVal / (double) 1000);
                         }
@@ -279,7 +287,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
                         String accel345y = (String) msg.obj;
                         if (accel345y.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel345yVal = Integer.parseInt(accel345y);
+                            int accel345yVal = ConsoleApplication.parseIntSafe(accel345y, 0);
                             statusPage1ter.setAccel345y(String.format("%.2f", ((double) accel345yVal / (double) 1000)));
                             accel345[1] = ((double) accel345yVal / (double) 1000);
                         }
@@ -292,7 +300,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375z = (String) msg.obj;
                         if (accel375z.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel375zVal = Integer.parseInt(accel375z);
+                            int accel375zVal = ConsoleApplication.parseIntSafe(accel375z, 0);
                             statusPage1ter.setAccel375z(String.format("%.2f", ((double) accel375zVal / (double) 1000)));
                             accel375[2] = ((double) accel375zVal / (double) 1000);
                             statusPage5.setInputString(accel375);
@@ -302,7 +310,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
                         String accel345z = (String) msg.obj;
                         if (accel345z.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel345zVal = Integer.parseInt(accel345z);
+                            int accel345zVal = ConsoleApplication.parseIntSafe(accel345z, 0);
                             statusPage1ter.setAccel345z(String.format("%.2f", ((double) accel345zVal / (double) 1000)));
                             accel345[2] = ((double) accel345zVal / (double) 1000);
                         }
@@ -315,7 +323,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345x = (String) msg.obj;
                         if (accel345x.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel345xVal = Integer.parseInt(accel345x);
+                            int accel345xVal = ConsoleApplication.parseIntSafe(accel345x, 0);
                             statusPage1ter.setAccel345x(String.format("%.2f", ((double) accel345xVal / (double) 1000)));
                             accel345[0] = ((double) accel345xVal / (double) 1000);
                         }
@@ -328,7 +336,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345y = (String) msg.obj;
                         if (accel345y.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel345yVal = Integer.parseInt(accel345y);
+                            int accel345yVal = ConsoleApplication.parseIntSafe(accel345y, 0);
                             statusPage1ter.setAccel345y(String.format("%.2f", ((double) accel345yVal / (double) 1000)));
                             accel345[1] = ((double) accel345yVal / (double) 1000);
                         }
@@ -341,7 +349,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345z = (String) msg.obj;
                         if (accel345z.matches("\\d+(?:\\.\\d+)?")) {
-                            int accel345zVal = Integer.parseInt(accel345z);
+                            int accel345zVal = ConsoleApplication.parseIntSafe(accel345z, 0);
                             statusPage1ter.setAccel345z(String.format("%.2f", ((double) accel345zVal / (double) 1000)));
                             accel345[2] = ((double) accel345zVal / (double) 1000);
                         }
@@ -356,7 +364,6 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState()");
         outState.putBoolean("RECORDING_KEY", recording);
-        outState.putBoolean("STATUS_KEY", status);
     }
 
     @Override
@@ -364,7 +371,6 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         Log.d(TAG, "onRestoreInstanceState()");
         recording = savedInstanceState.getBoolean("RECORDING_KEY");
-        status = savedInstanceState.getBoolean("STATUS_KEY");
     }
 
     @Override
@@ -374,6 +380,15 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         setTitle(R.string.status_screen);
 
         myBT = (ConsoleApplication) getApplication();
+        reader = new TelemetryReader(myBT);
+
+        // Back button: same behavior as the Dismiss button (confirmation while recording)
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                requestExit();
+            }
+        });
 
         org.osmdroid.config.IConfigurationProvider osmConf = org.osmdroid.config.Configuration.getInstance();
         File basePath = new File(getCacheDir().getAbsolutePath(), "osmdroid");
@@ -392,9 +407,6 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
             startService();
         }
 
-        /*if(Build.VERSION.SDK_INT>=23) {
-            verifyStoragePermission(AltimeterStatusTabActivity.this);
-        }*/
         LocationManager lm = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
@@ -439,146 +451,72 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         else
             btnRecording.setVisibility(View.INVISIBLE);
 
-        btnDismiss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "btnDismiss()");
-                if (recording) {
-                    new AlertDialog.Builder(v.getContext())
-                            .setTitle("Confirm Exit Recording")
-                            .setMessage("Recording in progress... Are you sure you want to exit?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Log.d(TAG, "about to Stop recording !!!!");
-                                    /*if (status) {
-                                        status = false;
-                                        myBT.write("h;\n".toString());
-                                        myBT.setExit(true);
-                                        myBT.clearInput();
-                                        myBT.flush();
-                                    }*/
-                                    //turn off telemetry
-                                    /*myBT.flush();
-                                    myBT.clearInput();
-                                    myBT.write("y0;\n".toString());*/
+        btnDismiss.setOnClickListener(v -> requestExit());
 
-                                    //exit recording if running
-                                    if (recording) {
-                                        recording = false;
-                                        myBT.flush();
-                                        myBT.clearInput();
-                                        myBT.write("w0;\n".toString());
-                                        myBT.clearInput();
-                                        myBT.flush();
-                                        Log.d(TAG, "Stopped recording !!!!");
-                                        msg("Stopped recording");
-                                    }
-                                    finish();      //exit the  activity
-                                }
-                            })
-                            .setNegativeButton("No", null)
-                            .show();
-                } else {
-                    if (status) {
-                        status = false;
-                        myBT.write("h;\n".toString());
-                        myBT.setExit(true);
-                        myBT.clearInput();
-                        myBT.flush();
-                    }
-                    //turn off telemetry
-                    myBT.flush();
-                    myBT.clearInput();
-                    myBT.write("y0;\n".toString());
-                    finish();      //exit the  activity
-                }
+        btnRecording.setOnClickListener(v -> {
+            if (recording) {
+                recording = false;
+                reader.send("w0;\n");
+                msg(getString(R.string.status_recording_stopped));
+            } else {
+                recording = true;
+                reader.send("w1;\n");
+                msg(getString(R.string.status_recording_started));
             }
         });
 
-        btnRecording.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (recording) {
-                    recording = false;
-                    myBT.write("w0;\n".toString());
-                    myBT.clearInput();
-                    myBT.flush();
-                    msg("Stopped recording");
-                } else {
-                    recording = true;
-                    myBT.write("w1;\n".toString());
-                    myBT.clearInput();
-                    myBT.flush();
-                    msg("Started recording");
-                }
-            }
-        });
-
-
-        Runnable r = new Runnable() {
-
-            @Override
-            public void run() {
-                while (true) {
-                    if (!status) break;
-                    myBT.ReadResult(10000);
-                }
-            }
-        };
-
-        altiStatus = new Thread(r);
-        altiStatus.start();
+        // Enable the stream and start reading it. "y1;" was already sent by the main screen
+        // on first opening, but it must be sent again when the activity is re-created
+        // (the previous instance switched the stream off in its onDestroy()).
+        reader.start("y1;");
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Log.d(TAG, "onBackPressed()");
-        //super.onBackPressed();
+    /**
+     * Leaves the screen. While a manual GPS recording is running the user must confirm,
+     * because leaving stops the recording. The stream itself is switched off in onDestroy().
+     */
+    private void requestExit() {
         if (recording) {
             new AlertDialog.Builder(this)
-                    .setTitle("Confirm Exit Recording")
-                    .setMessage("Recording in progress... Are you sure you want to exit?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //exit recording if running
-                            if (recording) {
-                                recording = false;
-                                myBT.flush();
-                                myBT.clearInput();
-                                myBT.write("w0;\n".toString());
-                                myBT.clearInput();
-                                myBT.flush();
-                                msg("Stopped recording");
-                            }
-                            finish();
+                    .setTitle(R.string.status_confirm_exit_recording_title)
+                    .setMessage(R.string.status_confirm_exit_recording_msg)
+                    .setPositiveButton(R.string.Yes, (dialog, which) -> {
+                        if (recording) {
+                            recording = false;
+                            reader.send("w0;\n");
+                            msg(getString(R.string.status_recording_stopped));
                         }
+                        finish();
                     })
-                    .setNegativeButton("No", null)
+                    .setNegativeButton(R.string.No, null)
                     .show();
         } else {
-            //turn off telemetry
-            myBT.flush();
-            myBT.clearInput();
-            myBT.write("y0;\n".toString());
             finish();
         }
     }
 
+    /**
+     * Output test commands ("k1T;", "k1F;"...) issued by AltimeterOutputFragment. They go through
+     * the same ordered background queue as every other command of this screen.
+     */
+    @Override
+    public void sendOutputCommand(String command) {
+        reader.send(command);
+    }
+
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy()");
-        //switch off output
-        if (!myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") &&
-                !myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter") &&
-                !myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")
-        ) {
+        // Safety: switch off any output left on by the output test tab. Done before
+        // super.onDestroy(), while the fragment and the command queue are still alive.
+        if (statusPage1bis != null) {
             statusPage1bis.resetSwitches();
         }
+        super.onDestroy();
+        Log.d(TAG, "onDestroy()");
+
+        // Stop receiving telemetry messages and drop the pending ones
+        myBT.clearHandler(handler);
+        handler.removeCallbacksAndMessages(null);
 
         if (locIntent != null)
             stopService(locIntent);
@@ -587,135 +525,34 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
             try {
                 unregisterReceiver(receiver);
             } catch (IllegalArgumentException e) {
-                Log.d(TAG, "error");
+                Log.d(TAG, "Location receiver was not registered");
             }
             receiver = null;
         }
 
-        //turn off telemetry
-        myBT.flush();
-        myBT.clearInput();
-        myBT.write("y0;\n".toString());
-
-        //exit recording if running
+        // Stop the reading loop, then (in background) stop the recording if needed, switch the
+        // telemetry stream off and send the handshake
         if (recording) {
             recording = false;
-            myBT.flush();
-            myBT.clearInput();
-            myBT.write("w0;\n".toString());
-            myBT.clearInput();
-            myBT.flush();
-            msg("Stopped recording");
+            reader.stop(true, "w0;\n", "y0;\n", "h;\n");
+        } else {
+            reader.stop(true, "y0;\n", "h;\n");
         }
-
-        //////////////////////////////
-        if (status) {
-            status = false;
-            myBT.write("h;\n".toString());
-
-            myBT.setExit(true);
-            myBT.clearInput();
-            myBT.flush();
-            //finish();
-        }
-
-
-        myBT.flush();
-        myBT.clearInput();
-        myBT.write("h;\n".toString());
-        try {
-            while (myBT.getInputStream().available() <= 0) ;
-        } catch (IOException e) {
-
-        }
-        String myMessage = "";
-        long timeOut = 10000;
-        //long startTime = System.currentTimeMillis();
-
-        myMessage = myBT.ReadResult(timeOut);
-
-        /////////////////////////////
-
+        reader.release();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
-        if (myBT.getConnected() && !status) {
-            myBT.flush();
-            myBT.clearInput();
-
-            myBT.write("y1;".toString());
-            status = true;
-
-            Runnable r = new Runnable() {
-
-                @Override
-                public void run() {
-                    while (true) {
-                        if (!status) break;
-                        myBT.ReadResult(10000);
-                    }
-                }
-            };
-            altiStatus = new Thread(r);
-            altiStatus.start();
+        if (myBT.getConnected() && !reader.isRunning()) {
+            reader.start("y1;");
         }
-    }
-
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "onRestart()");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause()");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop()");
-
-        /*if (recording) {
-            recording = false;
-            myBT.write("w0;\n".toString());
-            myBT.clearInput();
-            myBT.flush();
-        }*/
-
-        /*if (status) {
-            status = false;
-            myBT.write("h;\n".toString());
-
-            myBT.setExit(true);
-            myBT.clearInput();
-            myBT.flush();
-            //finish();
-        }
-
-
-        myBT.flush();
-        myBT.clearInput();
-        myBT.write("h;\n".toString());
-        try {
-            while (myBT.getInputStream().available() <= 0) ;
-        } catch (IOException e) {
-
-        }
-        String myMessage = "";
-        long timeOut = 10000;
-        long startTime = System.currentTimeMillis();
-
-        myMessage = myBT.ReadResult(10000);*/
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        adapter = new SectionsStatusPageAdapter(getSupportFragmentManager());
+        adapter = new TabPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT, this::onTabRestored);
         statusPage1 = new AltimeterInfoFragment(myBT);
         if (!myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") &&
                 !myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter") &&
@@ -725,36 +562,36 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         }
 
 
-        adapter.addFragment(statusPage1, "TAB1");
+        adapter.addFragment(statusPage1);
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
             statusPage1ter = new AltimeterAccelFragment(myBT);
-            adapter.addFragment(statusPage1ter, "TAB1TER");
+            adapter.addFragment(statusPage1ter);
             statusPage5 = new RocketViewFragment();
-            adapter.addFragment(statusPage5, "TAB5");
+            adapter.addFragment(statusPage5);
         }
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
             statusPage1ter = new AltimeterAccelFragment(myBT);
-            adapter.addFragment(statusPage1ter, "TAB1TER");
+            adapter.addFragment(statusPage1ter);
         }
         if (!myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") &&
                 !myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter") &&
                 !myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")
         ) {
-            adapter.addFragment(statusPage1bis, "TAB1BIS");
+            adapter.addFragment(statusPage1bis);
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
             statusPage2 = new GPSStatusFragment(myBT);
-            adapter.addFragment(statusPage2, "TAB2");
+            adapter.addFragment(statusPage2);
 
             if (!myBT.getAppConf().getUseOpenMap()) {
                 statusPage3 = new GPSGoogleMapStatusFragment(myBT, viewPager);
-                adapter.addFragment(statusPage3, "TAB3");
+                adapter.addFragment(statusPage3);
             } else {
                 statusPage4 = new GPSOpenMapStatusFragment(myBT, viewPager);
-                adapter.addFragment(statusPage4, "TAB4");
+                adapter.addFragment(statusPage4);
             }
         }
 
@@ -797,37 +634,19 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
         }
     };
 
-    public class SectionsStatusPageAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList();
-        private final List<String> mFragmentTitleList = new ArrayList();
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        public SectionsStatusPageAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return super.getPageTitle(position);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
+    /**
+     * Called by the adapter when the ViewPager displays a fragment re-created by the system
+     * (activity re-creation): the references used by the handler are re-bound to it.
+     */
+    private void onTabRestored(int position, Fragment fragment) {
+        if (fragment instanceof AltimeterInfoFragment) statusPage1 = (AltimeterInfoFragment) fragment;
+        else if (fragment instanceof AltimeterAccelFragment) statusPage1ter = (AltimeterAccelFragment) fragment;
+        else if (fragment instanceof AltimeterOutputFragment) statusPage1bis = (AltimeterOutputFragment) fragment;
+        else if (fragment instanceof RocketViewFragment) statusPage5 = (RocketViewFragment) fragment;
+        else if (fragment instanceof GPSStatusFragment) statusPage2 = (GPSStatusFragment) fragment;
+        else if (fragment instanceof GPSGoogleMapStatusFragment) statusPage3 = (GPSGoogleMapStatusFragment) fragment;
+        else if (fragment instanceof GPSOpenMapStatusFragment) statusPage4 = (GPSOpenMapStatusFragment) fragment;
     }
-
 
     public class LocationBroadCastReceiver extends BroadcastReceiver {
         @Override
@@ -869,9 +688,7 @@ public class AltimeterStatusTabActivity extends AppCompatActivity {
     private void startService() {
 
         IntentFilter filter = new IntentFilter("ACT_LOC");
-        //registerReceiver(receiver, filter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
             registerReceiver(receiver, filter, RECEIVER_EXPORTED);
         } else {
             registerReceiver(receiver, filter);

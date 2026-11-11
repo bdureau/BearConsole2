@@ -1,14 +1,24 @@
 package com.altimeter.bdureau.bearconsole.Flight;
 
 /**
- * @description: This will display the altimeter flights
- * This is a tabbed activity that will display several fragments for each tab of the flights
- * - FlightViewMpFragment => display altimeter flight curves
- * - FlightViewInfoFragment => display flight informations
- * - FlightViewMapFragment => will display the Map that has been recorded when using the altiGPS
- * This has the ability to take screen shot of each tab and share them using Whats app, email etc ...
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: FlightViewTabActivity
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Post-flight analysis of one recorded flight, selected in FlightListActivity. Tabs:
+ *    - FlightViewMpFragment (MPAndroidChart) or FlightViewFcFragment (AFreeChart on
+ *      Android 7): flight curves, with a dialog to choose the curves displayed;
+ *    - FlightViewInfoFragment: flight statistics (apogee, max speed, descent rates...) and
+ *      CSV / ZIP export;
+ *    - FlightViewInfoAccelFragment: accelerometer maxima (accelerometer boards);
+ *    - FlightViewGoogleMapFragment or FlightViewOpenMapFragment: GPS trajectory (AltiGPS).
+ *  Each tab can be shared as a screenshot. The flight data live in memory in the application
+ *  object; the fragments read them back through the getters of this activity when they are
+ *  re-created by the system.
+ * ============================================================================
+ */
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,7 +32,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.utils.TabPagerAdapter;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewFcFragment;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewGoogleMapFragment;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewInfoFragment;
@@ -39,10 +51,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Environment;
 import android.text.Html;
@@ -58,7 +68,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.afree.data.xy.XYSeriesCollection;
-//import org.afree.graphics.geom.Font;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,12 +78,11 @@ import java.util.Date;
 import java.util.List;
 
 
-
-public class FlightViewTabActivity extends AppCompatActivity {
+public class FlightViewTabActivity extends BaseActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 10;
     private FlightData myflight = null;
     private ViewPager mViewPager;
-    SectionsPageAdapter adapter;
+    private TabPagerAdapter adapter;
 
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
@@ -104,14 +112,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
 
     public int numberOfCurves = 0;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
     //Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSION_STORAGE = {
@@ -146,7 +146,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        //setTitle(R.string.telemetry_screen);
         if (Build.VERSION.SDK_INT >= 23)
             verifyStoragePermission(FlightViewTabActivity.this);
 
@@ -194,8 +193,15 @@ public class FlightViewTabActivity extends AppCompatActivity {
         FlightName = newint.getStringExtra(FlightListActivity.SELECTED_FLIGHT);
         myflight = myBT.getFlightData();
         // get all the data that we have recorded for the current flight
-        //allFlightData = null; //remove???
-        allFlightData = myflight.GetFlightData(FlightName);
+        allFlightData = (myflight != null && FlightName != null) ? myflight.GetFlightData(FlightName) : null;
+
+        // The flights are only kept in memory: if the system killed the application while this
+        // screen was in background, they are gone and must be downloaded again
+        if (allFlightData == null) {
+            Toast.makeText(this, R.string.flight_data_lost, Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         Log.d("numberOfCurves", "numberOfCurves:" + allFlightData.getSeries().size());
         curvesNames = new String[numberOfCurves];
@@ -228,9 +234,6 @@ public class FlightViewTabActivity extends AppCompatActivity {
         if(numberOfCurves > 5)
             units[5] = getString(R.string.volts);
 
-        /*if (myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")) {
-            units[5] = "(%)";
-        }*/
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
             units[6] = "";
@@ -372,19 +375,11 @@ public class FlightViewTabActivity extends AppCompatActivity {
                     REQUEST_EXTERNAL_STORAGE);
         }
 
-        /*int permissionRead = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
-
-        if (permissionRead != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    activity,
-                    //PERMISSION_STORAGE,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-        }*/
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        adapter = new TabPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT, this::onTabRestored);
 
         //if we are using afreeChart
         if ((myBT.getAppConf().getGraphicsLibType() == 0) &
@@ -394,14 +389,14 @@ public class FlightViewTabActivity extends AppCompatActivity {
                     curvesNames,
                     checkedItems,
                     units);
-            adapter.addFragment(flightPage1bis, "TAB1");
+            adapter.addFragment(flightPage1bis);
         } else {
             flightPage1 = new FlightViewMpFragment(allFlightData,
                     myBT,
                     curvesNames,
                     checkedItems,
                     units);
-            adapter.addFragment(flightPage1, "TAB1");
+            adapter.addFragment(flightPage1);
         }
 
         flightPage2 = new FlightViewInfoFragment(myflight,
@@ -410,7 +405,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                 units,
                 FlightName);
 
-        adapter.addFragment(flightPage2, "TAB2");
+        adapter.addFragment(flightPage2);
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
@@ -421,7 +416,7 @@ public class FlightViewTabActivity extends AppCompatActivity {
                     units,
                     FlightName);
 
-            adapter.addFragment(flightPage2bis, "TAB2");
+            adapter.addFragment(flightPage2bis);
         }
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
@@ -430,13 +425,13 @@ public class FlightViewTabActivity extends AppCompatActivity {
                         mViewPager,
                         myflight,
                         FlightName);
-                adapter.addFragment(flightPage3, "TAB3");
+                adapter.addFragment(flightPage3);
             } else {
                 flightPage4 = new FlightViewOpenMapFragment(myBT,
                         mViewPager,
                         myflight,
                         FlightName);
-                adapter.addFragment(flightPage4, "TAB4");
+                adapter.addFragment(flightPage4);
             }
         }
 
@@ -484,37 +479,50 @@ public class FlightViewTabActivity extends AppCompatActivity {
         }
     };
 
-    public class SectionsPageAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList();
-        private final List<String> mFragmentTitleList = new ArrayList();
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        public SectionsPageAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return super.getPageTitle(position);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
+    /**
+     * Called by the adapter when the ViewPager displays a fragment re-created by the system
+     * (activity re-creation): the references used by this activity are re-bound to it.
+     */
+    private void onTabRestored(int position, Fragment fragment) {
+        if (fragment instanceof FlightViewMpFragment) flightPage1 = (FlightViewMpFragment) fragment;
+        else if (fragment instanceof FlightViewFcFragment) flightPage1bis = (FlightViewFcFragment) fragment;
+        else if (fragment instanceof FlightViewInfoFragment) flightPage2 = (FlightViewInfoFragment) fragment;
+        else if (fragment instanceof FlightViewInfoAccelFragment) flightPage2bis = (FlightViewInfoAccelFragment) fragment;
+        else if (fragment instanceof FlightViewGoogleMapFragment) flightPage3 = (FlightViewGoogleMapFragment) fragment;
+        else if (fragment instanceof FlightViewOpenMapFragment) flightPage4 = (FlightViewOpenMapFragment) fragment;
     }
 
+    // ---- Data shared with the tab fragments (used when they are re-created) ----
+
+    /** All the curves of the displayed flight. */
+    public XYSeriesCollection getAllFlightData() {
+        return allFlightData;
+    }
+
+    /** Repository holding every downloaded flight. */
+    public FlightData getFlightRepository() {
+        return myflight;
+    }
+
+    /** Name of the displayed flight. */
+    public String getFlightName() {
+        return FlightName;
+    }
+
+    /** Names of the curves that can be displayed. */
+    public String[] getCurvesNames() {
+        return curvesNames;
+    }
+
+    /** Curves currently selected for display. */
+    public boolean[] getCheckedItems() {
+        return checkedItems;
+    }
+
+    /** Unit label of each curve. */
+    public String[] getUnits() {
+        return units;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

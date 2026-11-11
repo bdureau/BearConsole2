@@ -1,9 +1,19 @@
 package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
-/**
- * @description: This will display altimeter information such as current altitude, battery voltage etc...
- * @author: boris.dureau@neuf.fr
- **/
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AltimeterInfoFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Altimeter status tab: name of the altimeter, continuity of each output, current altitude,
+ *  battery voltage, temperature, EEPROM usage and number of recorded flights.
+ * ============================================================================
+ */
+
+import androidx.annotation.NonNull;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +35,21 @@ public class AltimeterInfoFragment extends Fragment {
     private TextView txtViewOutput1, txtViewOutput2, txtViewOutput3, txtViewOutput4,
             txtViewBatteryVoltage, txtViewEEprom, txtViewFlight;
     ConsoleApplication lBT;
+
+    /** Required by the framework to re-create the fragment (configuration change, process restore). */
+    public AltimeterInfoFragment() {
+        super();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (lBT == null) {
+            lBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
 
     public AltimeterInfoFragment(ConsoleApplication bt) {
         lBT = bt;

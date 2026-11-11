@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Main dashboard (MainScreenActivity): grid of cards giving access to the altimeter settings,
+    flights, telemetry, continuity test, reset, status, rocket tracking, firmware flashing,
+    about, and the Connect / Disconnect card. Each card has an icon (dimmed when the function is
+    not available) and a label.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/mini_raptor_ap_silicon"
-    android:fitsSystemWindows="true"
     tools:context=".MainScreenActivity">
 
     <GridLayout

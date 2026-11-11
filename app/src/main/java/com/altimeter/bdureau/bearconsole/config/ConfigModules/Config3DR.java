@@ -1,7 +1,21 @@
 package com.altimeter.bdureau.bearconsole.config.ConfigModules;
 
-import androidx.appcompat.app.AppCompatActivity;
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: Config3DR
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Configuration of a 3DR / SiK telemetry radio connected with a USB-TTL cable: enters the AT
+ *  command mode ("+++"), reads the radio information and parameters (ATI..., ATSn?: serial
+ *  speed, air speed, net ID, power, ECC, frequencies...), writes the modified registers (ATSn=)
+ *  and saves them (AT&W) before leaving the command mode (ATO).
+ *  All the serial I/O runs in the background.
+ * ============================================================================
+ */
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,11 +46,7 @@ import com.physicaloid.lib.Physicaloid;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * @description: Configuration of 3DR telemetry modules via TTL cable without memory leaks or UI lockups.
- * @author: boris.dureau@neuf.fr
- **/
-public class Config3DR extends AppCompatActivity {
+public class Config3DR extends BaseActivity {
     private static final String TAG = "Config3DR";
 
     private Physicaloid mPhysicaloid;
@@ -61,19 +71,10 @@ public class Config3DR extends AppCompatActivity {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private volatile boolean isTaskCancelled = false;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTitle(R.string.telemetry_screen);
         myBT = (ConsoleApplication) getApplication();
         setContentView(R.layout.activity_config3_dr);
 
@@ -172,7 +173,7 @@ public class Config3DR extends AppCompatActivity {
                 .setMessage(getString(R.string.dr_info_msg))
                 .setTitle(R.string.dr_info_title)
                 .setCancelable(false)
-                .setPositiveButton("OK", (dialog, id) -> dialog.dismiss())
+                .setPositiveButton(R.string.fv_ok, (dialog, id) -> dialog.dismiss())
                 .show();
     }
 
@@ -501,7 +502,7 @@ public class Config3DR extends AppCompatActivity {
                     EnableUI();
                     btSaveConfig.setEnabled(true);
                 } else {
-                    msg("Failed to retrieve complete 3DR configuration");
+                    msg(getString(R.string.module_config_read_failed));
                 }
             });
         });
@@ -555,9 +556,9 @@ public class Config3DR extends AppCompatActivity {
                 if (success) {
                     DisableUI();
                     btSaveConfig.setEnabled(false);
-                    msg("Configuration saved successfully");
+                    msg(getString(R.string.module_config_saved));
                 } else {
-                    msg("Error saving 3DR configuration");
+                    msg(getString(R.string.module_config_save_failed));
                 }
             });
         });

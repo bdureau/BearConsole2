@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    About screen (AboutActivity): application logo, name, version, copyright and
+    acknowledgements, with a Dismiss button.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +12,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:fitsSystemWindows="true"
     tools:context=".Help.AboutActivity">
 
     <ImageView
@@ -46,7 +49,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Copyright (c) Boris du Reau 2016-2026"
+        android:text="@string/about_copyright"
         android:id="@+id/txtViewCopyright"
         android:layout_below="@+id/txtViewTitle"
         android:layout_centerHorizontal="true"

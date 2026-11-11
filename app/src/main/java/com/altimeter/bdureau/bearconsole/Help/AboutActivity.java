@@ -1,7 +1,17 @@
 package com.altimeter.bdureau.bearconsole.Help;
 
-import androidx.appcompat.app.AppCompatActivity;
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AboutActivity
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  "About" screen: application name, version, author and copyright.
+ * ============================================================================
+ */
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,23 +24,11 @@ import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
 
-/**
-*   @description: just an about screen
-*   @author: boris.dureau@neuf.fr
-**/
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends BaseActivity {
 
     Button btnDismiss;
     TextView txtViewVersion;
     ConsoleApplication myBT;
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +38,6 @@ public class AboutActivity extends AppCompatActivity {
 
         myBT = (ConsoleApplication) getApplication();
 
-        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         setContentView(R.layout.activity_about);
 
         btnDismiss = (Button)findViewById(R.id.butDismiss);

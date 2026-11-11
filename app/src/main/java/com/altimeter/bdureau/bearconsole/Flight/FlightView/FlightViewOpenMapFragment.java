@@ -4,13 +4,12 @@ package com.altimeter.bdureau.bearconsole.Flight.FlightView;
  * ============================================================================
  * Project: BearConsole - Model Rocketry Flight Computer Management
  * Class: FlightViewOpenMapFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
  * @description:
  *  Displays recorded GPS flight trajectories on OpenStreetMap tiles using osmdroid.
  *  Includes asynchronous map screenshot generation, safe lifecycle management,
  *  and sharing via FileProvider compliant with modern Android standards.
- *
- * @author: boris.dureau@neuf.fr
  * ============================================================================
  */
 
@@ -40,6 +39,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
+import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
 import org.afree.data.xy.XYSeries;
@@ -81,6 +81,39 @@ public class FlightViewOpenMapFragment extends Fragment {
         super();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (myBT == null) {
+            myBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
+
+    /**
+     * After a re-creation by the framework the flight data were not given by a constructor:
+     * they are taken again from the host FlightViewTabActivity. Called from onCreateView(),
+     * when the activity has finished its own onCreate().
+     */
+    private void restoreFromHost() {
+        if (!(getActivity() instanceof FlightViewTabActivity)) return;
+        FlightViewTabActivity host = (FlightViewTabActivity) getActivity();
+        if (myflight == null) myflight = host.getFlightRepository();
+        if (flightName == null) flightName = host.getFlightName();
+    }
+
+    /**
+     * ViewPager of the host activity, used to go back to the first tab. After a re-creation
+     * it was not given by the constructor and is looked up in the activity layout.
+     */
+    private ViewPager getPager() {
+        if (lPager == null && getActivity() != null) {
+            lPager = getActivity().findViewById(R.id.container);
+        }
+        return lPager;
+    }
+
     public FlightViewOpenMapFragment(ConsoleApplication bt,
                                      ViewPager pager,
                                      FlightData pFlight,
@@ -96,6 +129,7 @@ public class FlightViewOpenMapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        restoreFromHost();
         Context context = requireContext();
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
 
@@ -114,8 +148,8 @@ public class FlightViewOpenMapFragment extends Fragment {
 
         if (butBack != null) {
             butBack.setOnClickListener(v -> {
-                if (lPager != null) {
-                    lPager.setCurrentItem(0);
+                if (getPager() != null) {
+                    getPager().setCurrentItem(0);
                 }
             });
         }

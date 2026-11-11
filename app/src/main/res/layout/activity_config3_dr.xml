@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    3DR / SiK telemetry radio configuration screen (Config3DR): firmware version and RSSI read
+    from the radio, then one label + spinner per radio parameter (serial speed, air speed, net
+    ID, power, ECC, frequencies...), a log area and the Retrieve / Save / Dismiss buttons.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".config.ConfigModules.Config3DR">
 
     <TextView

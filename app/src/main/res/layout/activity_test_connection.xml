@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Link test screen (TestConnection): counters of packets sent, received, valid, invalid and
+    error percentage, a log of the received test frames, and the Start / Stop and Dismiss
+    buttons.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
     tools:context=".connection.TestConnection">
 
     <TextView

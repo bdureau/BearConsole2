@@ -4,6 +4,7 @@ package com.altimeter.bdureau.bearconsole.Flight.FlightView;
  * ============================================================================
  * Project: BearConsole - Model Rocketry Flight Computer Management
  * Class: FlightViewMpFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
  * @description:
  *  Fragment displaying rocket telemetry curves (altitude, acceleration,
@@ -13,11 +14,10 @@ package com.altimeter.bdureau.bearconsole.Flight.FlightView;
  *    - Disabling expensive per-point circle and value rendering during display.
  *    - Handling adaptive time units (ms, seconds, minutes) with time scaling factors.
  *    - Providing a zero-argument default constructor for safe Fragment recreation.
- *
- * @author: boris.dureau@neuf.fr
  * ============================================================================
  */
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,6 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -78,6 +79,30 @@ public class FlightViewMpFragment extends Fragment {
     /**
      * Parameterized constructor initializing datasets and user preferences.
      */
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (myBT == null) {
+            myBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
+
+    /**
+     * After a re-creation by the framework the flight data were not given by a constructor:
+     * they are taken again from the host FlightViewTabActivity. Called from onCreateView(),
+     * when the activity has finished its own onCreate().
+     */
+    private void restoreFromHost() {
+        if (!(getActivity() instanceof FlightViewTabActivity)) return;
+        FlightViewTabActivity host = (FlightViewTabActivity) getActivity();
+        if (allFlightData == null) allFlightData = host.getAllFlightData();
+        if (curvesNames == null) curvesNames = host.getCurvesNames();
+        if (checkedItems == null) checkedItems = host.getCheckedItems();
+        if (units == null) units = host.getUnits();
+    }
+
     public FlightViewMpFragment(XYSeriesCollection pAllFlightData,
                                 ConsoleApplication pBT,
                                 String[] pCurvesNames,
@@ -102,6 +127,7 @@ public class FlightViewMpFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        restoreFromHost();
         View view = inflater.inflate(R.layout.fragment_flight_view_mp, container, false);
         mChart = view.findViewById(R.id.linechart);
 

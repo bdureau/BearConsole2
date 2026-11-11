@@ -1,14 +1,24 @@
 package com.altimeter.bdureau.bearconsole.config;
+
 /**
- * @description: In this activity you should be able to choose the application languages and looks and feel.
- * Still a lot to do but it is a good start
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AppTabConfigActivity
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Application settings editor (stored on the phone, not in the altimeter). Tabs:
+ *    - AppConfig1Fragment: language, units, graph colors and font, connection type and speed,
+ *      graph library, multiple drogue / main outputs, full USB support;
+ *    - AppConfig2Fragment: voice announcements during telemetry and the voice used;
+ *    - AppConfig3Fragment: map provider, map type and color, manual GPS recording.
+ *  "Save" writes the values to the shared preferences; "Default" restores the defaults.
+ *  The text to speech engine is started only to list the voices available on the phone.
+ * ============================================================================
+ */
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -28,7 +38,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.utils.TabPagerAdapter;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
@@ -41,10 +53,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class AppTabConfigActivity extends AppCompatActivity {
+public class AppTabConfigActivity extends BaseActivity {
     Button btnDismiss, btnSave, bdtDefault;
     private ViewPager mViewPager;
-    private SectionsPageAdapter adapter;
+    private TabPagerAdapter adapter;
     private TextToSpeech mTTS;
 
     private AppConfig1Fragment appConfigPage1 = null;
@@ -57,14 +69,6 @@ public class AppTabConfigActivity extends AppCompatActivity {
 
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
@@ -77,8 +81,6 @@ public class AppTabConfigActivity extends AppCompatActivity {
         myBT = (ConsoleApplication) getApplication();
 
         myBT.getAppConf().ReadConfig();
-        //Check the local and force it if needed
-        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         // get the data for all the drop down
         appConfigData = new AppConfigData(this);
         setContentView(R.layout.activity_app_tab_config);
@@ -170,7 +172,7 @@ public class AppTabConfigActivity extends AppCompatActivity {
             myBT.getAppConf().setAllowMultipleDrogueMain(appConfigPage1.getAllowMainDrogue());
             myBT.getAppConf().setFullUSBSupport(appConfigPage1.getFullUSBSupport());
             if(appConfigPage1.getGraphColor() == appConfigPage1.getGraphBackColor()){
-                msg("Graph color and graph back color cannot be the same");
+                msg(getString(R.string.app_config_same_colors));
                 return;
             }
         }
@@ -237,15 +239,16 @@ public class AppTabConfigActivity extends AppCompatActivity {
 
 
     private void setupViewPager(ViewPager viewPager) {
-        adapter = new AppTabConfigActivity.SectionsPageAdapter(getSupportFragmentManager());
+        adapter = new TabPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT, this::onTabRestored);
 
         appConfigPage1 = new AppConfig1Fragment(myBT, appConfigData);
         appConfigPage2 = new AppConfig2Fragment(myBT);
         appConfigPage3 = new AppConfig3Fragment(myBT, appConfigData);
 
-        adapter.addFragment(appConfigPage1, "TAB1");
-        adapter.addFragment(appConfigPage2, "TAB2");
-        adapter.addFragment(appConfigPage3, "TAB3");
+        adapter.addFragment(appConfigPage1);
+        adapter.addFragment(appConfigPage2);
+        adapter.addFragment(appConfigPage3);
 
         linearDots = findViewById(R.id.idAppConfigLinearDots);
         agregaIndicateDots(0, adapter.getCount());
@@ -287,35 +290,14 @@ public class AppTabConfigActivity extends AppCompatActivity {
         }
     };
 
-    public class SectionsPageAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList();
-        private final List<String> mFragmentTitleList = new ArrayList();
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        public SectionsPageAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return super.getPageTitle(position);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
+    /**
+     * Called by the adapter when the ViewPager displays a fragment re-created by the system
+     * (activity re-creation): the references used to read the settings are re-bound to it.
+     */
+    private void onTabRestored(int position, Fragment fragment) {
+        if (fragment instanceof AppConfig1Fragment) appConfigPage1 = (AppConfig1Fragment) fragment;
+        else if (fragment instanceof AppConfig2Fragment) appConfigPage2 = (AppConfig2Fragment) fragment;
+        else if (fragment instanceof AppConfig3Fragment) appConfigPage3 = (AppConfig3Fragment) fragment;
     }
 
     @Override

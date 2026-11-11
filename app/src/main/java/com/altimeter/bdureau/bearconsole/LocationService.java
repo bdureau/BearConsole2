@@ -1,8 +1,18 @@
 package com.altimeter.bdureau.bearconsole;
+
 /**
- * @description: This provides location from the phone
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: LocationService
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Background service providing the position of the phone (fused location provider, every
+ *  5 seconds) to the tracking screens, so that the distance and bearing to the rocket can be
+ *  displayed. Each new position is broadcast with the action "ACT_LOC".
+ * ============================================================================
+ */
+
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -58,17 +68,11 @@ public class LocationService extends Service {
     private void requestLocation() {
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(5000);
-        //locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+            // The tracking screens request the location permission before starting this
+            // service: without it no position can be provided
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());

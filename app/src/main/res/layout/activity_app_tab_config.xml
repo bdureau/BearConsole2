@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Application settings screen (AppTabConfigActivity): ViewPager hosting the settings tabs
+    (AppConfig1..3Fragment), page indicator dots, and the Save, Default and Dismiss buttons.
+-->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context="com.altimeter.bdureau.bearconsole.config.AppTabConfigActivity">
 
     <com.google.android.material.appbar.AppBarLayout

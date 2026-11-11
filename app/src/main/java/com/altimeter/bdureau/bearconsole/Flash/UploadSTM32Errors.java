@@ -1,5 +1,17 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: UploadSTM32Errors
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Error codes reported during an STM32 firmware upload, each with a numeric code and a
+ *  readable description shown to the user.
+ * ============================================================================
+ */
+
 public enum UploadSTM32Errors {
     // reference
     // http://stackoverflow.com/questions/446663/best-way-to-define-error-codes-strings-in-java

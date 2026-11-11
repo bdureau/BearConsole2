@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Altimeter configuration tab 4 (AltiConfig4Fragment, AltiServo only): OFF and ON positions,
+    in degrees, of the four servo outputs.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"

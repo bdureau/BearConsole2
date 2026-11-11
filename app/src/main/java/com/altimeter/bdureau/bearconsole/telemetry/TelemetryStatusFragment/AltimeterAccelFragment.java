@@ -1,9 +1,19 @@
 package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
-/**
- * @description: This will display altimeter information such as current altitude, battery voltage etc...
- * @author: boris.dureau@neuf.fr
- **/
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AltimeterAccelFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Status screen tab of the accelerometer boards: live values of the ADXL375 (high g) and
+ *  ADXL345 (low g) accelerometers on the three axes.
+ * ============================================================================
+ */
+
+import androidx.annotation.NonNull;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +32,21 @@ public class AltimeterAccelFragment extends Fragment {
     private TextView txtViewAccel375x, txtViewAccel375y, txtViewAccel375z,
             txtViewAccel345x, txtViewAccel345y, txtViewAccel345z;
     ConsoleApplication lBT;
+
+    /** Required by the framework to re-create the fragment (configuration change, process restore). */
+    public AltimeterAccelFragment() {
+        super();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (lBT == null) {
+            lBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
 
     public AltimeterAccelFragment(ConsoleApplication bt) {
         lBT = bt;

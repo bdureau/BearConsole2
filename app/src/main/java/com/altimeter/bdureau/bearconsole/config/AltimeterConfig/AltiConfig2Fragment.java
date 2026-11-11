@@ -1,5 +1,19 @@
 package com.altimeter.bdureau.bearconsole.config.AltimeterConfig;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AltiConfig2Fragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Second tab of the altimeter configuration: number of measures confirming the apogee,
+ *  sensor resolution, EEPROM size, beep on / off, end of recording altitude, telemetry type,
+ *  supersonic delay, lift off altitude, battery type, recording timeout and serial speed.
+ *  The typed values are validated by validateInputs() before upload.
+ * ============================================================================
+ */
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.config.ConfigInputValidator;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.altimeter.bdureau.bearconsole.config.AltiTabConfigActivity;
 import com.github.florent37.viewtooltip.ViewTooltip;
@@ -42,6 +57,20 @@ public class AltiConfig2Fragment extends Fragment {
 
     public AltiConfig2Fragment(AltiConfigData cfg) {
         this.lAltiCfg = cfg;
+    }
+
+    /**
+     * Checks every value typed in this tab before upload; invalid fields are flagged.
+     *
+     * @return true if all the values can be sent to the altimeter
+     */
+    public boolean validateInputs() {
+        boolean ok = true;
+        ok &= ConfigInputValidator.checkInt(apogeeMeasures, ConfigInputValidator.APOGEE_MEASURES_MIN, ConfigInputValidator.APOGEE_MEASURES_MAX);
+        ok &= ConfigInputValidator.checkInt(endRecordAltitude, ConfigInputValidator.END_RECORD_ALTITUDE_MIN, ConfigInputValidator.END_RECORD_ALTITUDE_MAX);
+        ok &= ConfigInputValidator.checkInt(liftOffAltitude, ConfigInputValidator.LIFTOFF_ALTITUDE_MIN, ConfigInputValidator.LIFTOFF_ALTITUDE_MAX);
+        ok &= ConfigInputValidator.checkInt(recordingTimeout, ConfigInputValidator.RECORDING_TIMEOUT_MIN, ConfigInputValidator.RECORDING_TIMEOUT_MAX);
+        return ok;
     }
 
     public boolean isViewCreated() {

@@ -1,13 +1,25 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: FirmwareInfo
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Detection of the firmware currently installed on a USB connected altimeter, before
+ *  flashing. It opens the serial port with the Physicaloid library, sends the identification
+ *  command and returns the altimeter name found in the answer (AltiMulti, AltiServo, AltiGPS...)
+ *  so that the matching firmware can be pre-selected.
+ * ============================================================================
+ */
+
 import com.physicaloid.lib.Physicaloid;
 
 public class FirmwareInfo {
-    //UploadSTM32CallBack mUpCallback;
     Physicaloid lPhysicaloid;
 
     public FirmwareInfo(/*UploadSTM32CallBack UpCallback,*/ Physicaloid mPhysi) {
-        // mUpCallback = UpCallback;
         lPhysicaloid = mPhysi;
     }
 
@@ -75,7 +87,6 @@ public class FirmwareInfo {
         byte buf[] = new byte[200];
         int retval = 0;
 
-        //String buffer = "";
         retval = recv(buf, 200);
 
         if (retval > 0) {
@@ -83,7 +94,6 @@ public class FirmwareInfo {
 
             str = new String(buf);
 
-            //tvAppend(tvRead, "My String: " + str+"\n");
             String config[] = str.split(",");
             if (config.length > 9)
                 version = config[8];

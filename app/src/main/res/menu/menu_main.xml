@@ -1,3 +1,8 @@
+<!--
+    Action bar menu of the main dashboard: application settings, flight recovery, configuration
+    of the radio / Bluetooth modules (only when disconnected), Help, Bluetooth module selection,
+    link test (only when connected) and About.
+-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -25,12 +30,12 @@
     <item
         android:id="@+id/action_modlora_settings"
         android:orderInCategory="100"
-        android:title="Lora settings E220..."
+        android:title="@string/menu_lora_e220"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_modlorae32_settings"
         android:orderInCategory="100"
-        android:title="Lora settings E32..."
+        android:title="@string/menu_lora_e32"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_help"
@@ -45,7 +50,7 @@
     <item
         android:id="@+id/action_test_connection"
         android:orderInCategory="100"
-        android:title="Test connection"
+        android:title="@string/test_connection"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_about"

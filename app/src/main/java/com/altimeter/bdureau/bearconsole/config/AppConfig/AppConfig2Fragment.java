@@ -1,5 +1,20 @@
 package com.altimeter.bdureau.bearconsole.config.AppConfig;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AppConfig2Fragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Second tab of the application settings: flight events announced by voice during the
+ *  telemetry (lift off, burnout, apogee, drogue, main, landing, altitude...) and choice of the
+ *  text to speech voice among those installed on the phone.
+ * ============================================================================
+ */
+
+import androidx.annotation.NonNull;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -33,6 +48,21 @@ public class AppConfig2Fragment extends Fragment {
     private Spinner spTelemetryVoice;
     private int nbrVoices = 0;
     boolean ViewCreated = false;
+
+    /** Required by the framework to re-create the fragment (configuration change, process restore). */
+    public AppConfig2Fragment() {
+        super();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (BT == null) {
+            BT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
 
     public AppConfig2Fragment(ConsoleApplication lBT) {
         BT = lBT;
@@ -121,7 +151,6 @@ public class AppConfig2Fragment extends Fragment {
     }
 
 
-
     public void setTelemetryVoice(int value) {
         if (value < nbrVoices)
             this.spTelemetryVoice.setSelection(value);
@@ -179,13 +208,11 @@ public class AppConfig2Fragment extends Fragment {
                             int result = 0;
 
                             if (Locale.getDefault().getLanguage().equals("en"))
-                                //result = mTTS.setLanguage(Locale.ENGLISH);
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
                             else if (Locale.getDefault().getLanguage().equals("fr"))
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
                             else if (Locale.getDefault().getLanguage().equals("es"))
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                                //result = mTTS.setLanguage(Locale.FRENCH);
                             else if (Locale.getDefault().getLanguage().equals("tr"))
                                 result = mTTS.setLanguage(getResources().getConfiguration().locale);
                             else if (Locale.getDefault().getLanguage().equals("nl"))
@@ -235,7 +262,6 @@ public class AppConfig2Fragment extends Fragment {
                             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                                 Log.e("TTS", "Language not supported");
                             } else {
-                                //msg(Locale.getDefault().getLanguage());
                             }
                         } else {
                             Log.e("TTS", "Init failed");
@@ -251,7 +277,6 @@ public class AppConfig2Fragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //mTTS.shutdown();
     }
     private void msg(String s) {
         Toast.makeText(getContext(), s, Toast.LENGTH_LONG).show();

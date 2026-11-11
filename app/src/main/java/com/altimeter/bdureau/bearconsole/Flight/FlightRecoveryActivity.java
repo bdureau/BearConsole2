@@ -1,22 +1,29 @@
 package com.altimeter.bdureau.bearconsole.Flight;
-/**
- * @description: This retrieve the flight list from the altimeter and store it in a
- * FlightData instance
- * @author: boris.dureau@neuf.fr
- **/
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: FlightRecoveryActivity
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Flight recovery screen (main menu "Recover flight"). It asks the altimeter for a raw dump of
+ *  the number of samples typed by the user ("R<samples>;"), so that a flight whose recording
+ *  was not closed properly (power loss, crash) can still be read. The samples are stored in the shared FlightData repository
+ *  and the recovered flight can then be displayed like any other flight.
+ * ============================================================================
+ */
+
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.app.AlertDialog;
-//import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-//import android.os.Build;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-//import androidx.appcompat.app.AppCompatDelegate;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,7 +47,7 @@ import java.util.List;
 import static java.lang.Math.abs;
 
 
-public class FlightRecoveryActivity extends AppCompatActivity {
+public class FlightRecoveryActivity extends BaseActivity {
     public static String SELECTED_FLIGHT = "MyFlight";
 
     ListView flightList = null;
@@ -73,14 +80,11 @@ public class FlightRecoveryActivity extends AppCompatActivity {
         //get the bluetooth Application pointer
         myBT = (ConsoleApplication) getApplication();
         //Check the local and force it if needed
-        //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
         setContentView(R.layout.activity_flight_list);
 
         Intent newint = getIntent();
-        //String sample = newint.getStringExtra("samples");
 
-        //nbrOfSamples = Long.parseLong(sample);
         //int nbrOfSamples
         nbrOfSamples = newint.getIntExtra("samples", 0);
 
@@ -148,12 +152,8 @@ public class FlightRecoveryActivity extends AppCompatActivity {
                 myBT.write("n;".toString());
                 myBT.flush();
 
-                try {
-                    //wait for data to arrive
-                    while (myBT.getInputStream().available() <= 0) ;
-                } catch (IOException e) {
-                    // msg("Failed to retrieve flights");
-                }
+                // Bounded wait for the first bytes of the answer (never blocks forever)
+                myBT.waitForData(10000);
 
                 myBT.setDataReady(false);
                 myBT.initFlightData();
@@ -164,23 +164,16 @@ public class FlightRecoveryActivity extends AppCompatActivity {
                     NbrOfFlight = myBT.getNbrOfFlight();
                 }
 
-                //if (NbrOfFlight > 0) {
-                    //for (int j = 0; j < NbrOfFlight; j++) {
                         dialogAppend(getString(R.string.retrieving_flight) + NbrOfFlight);
                         Log.d("FlightList", "FlightNbr:" + nbrOfSamples);
                         myBT.flush();
                         myBT.clearInput();
 
-                        //myBT.write("r" + j + ";".toString());
                         myBT.write("R" + nbrOfSamples + ";".toString());
                         myBT.flush();
 
-                        try {
-                            //wait for data to arrive
-                            while (myBT.getInputStream().available() <= 0) ;
-                        } catch (IOException e) {
-                            // msg("Failed to retrieve flights");
-                        }
+                        // Bounded wait for the first bytes of the answer (never blocks forever)
+                myBT.waitForData(10000);
                         myMessage = "";
                         myBT.setDataReady(false);
 
@@ -192,10 +185,7 @@ public class FlightRecoveryActivity extends AppCompatActivity {
                         if (canceled) {
                             Log.d("FlightList", "Canceled retrieval");
                             //this will exit the for loop and stop asking fo new flight
-                            //j = NbrOfFlight;
                         }
-                    //}
-                //}
 
 
                 flightNames = new ArrayList<String>();
@@ -275,7 +265,8 @@ public class FlightRecoveryActivity extends AppCompatActivity {
         }
     }
 
-    Handler mHandler = new Handler();
+    // Posts progress messages to the UI thread; purged in onDestroy() to avoid leaks
+    Handler mHandler = new Handler(Looper.getMainLooper());
 
     private void dialogAppend(CharSequence text) {
         final CharSequence ftext = text;
@@ -285,5 +276,12 @@ public class FlightRecoveryActivity extends AppCompatActivity {
                 alert.setMessage(ftext);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Drop the pending progress updates: the activity must not be referenced any more
+        mHandler.removeCallbacksAndMessages(null);
+        super.onDestroy();
     }
 }

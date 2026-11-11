@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Live telemetry tab drawn with MPAndroidChart (AltimeterMpFlightFragment): grid of the flight
+    events (lift off, apogee, main, landing) with a check box, the altitude and the time of
+    each, the current altitude, and the live altitude chart.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -287,7 +292,7 @@
             android:id="@+id/telemetryChartView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="50dp" />
+            android:layout_marginBottom="80dp" />
     </FrameLayout>
 
 

@@ -1,8 +1,19 @@
 package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
+
 /**
- * @description: This will display altimeter MAP when using the altiGPS
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: GPSGoogleMapStatusFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  AltiGPS map tab (Google Maps) of the telemetry and status screens: positions of the rocket
+ *  and of the phone, and the line between them.
+ * ============================================================================
+ */
+
+import androidx.annotation.NonNull;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -49,6 +60,32 @@ public class GPSGoogleMapStatusFragment extends Fragment {
     private double rocketLongitude = 2.2190;
     private LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
 
+    /** Required by the framework to re-create the fragment (configuration change, process restore). */
+    public GPSGoogleMapStatusFragment() {
+        super();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (myBT == null) {
+            myBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
+
+    /**
+     * ViewPager of the host activity, used to go back to the first tab. After a re-creation
+     * it was not given by the constructor and is looked up in the activity layout.
+     */
+    private ViewPager getPager() {
+        if (lPager == null && getActivity() != null) {
+            lPager = getActivity().findViewById(R.id.container);
+        }
+        return lPager;
+    }
+
     public GPSGoogleMapStatusFragment(ConsoleApplication bt, ViewPager pager) {
         myBT = bt;
         lPager = pager;
@@ -83,7 +120,7 @@ public class GPSGoogleMapStatusFragment extends Fragment {
         butBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lPager.setCurrentItem(0);
+                if (getPager() != null) getPager().setCurrentItem(0);
 
             }
         });
@@ -171,7 +208,6 @@ public class GPSGoogleMapStatusFragment extends Fragment {
             share.putExtra(Intent.EXTRA_STREAM, fileUri);
             startActivity(Intent.createChooser(share, getString(R.string.share_map_screenshot3)));
         } catch (Exception e) {
-            //Toast.makeText(this, "Error saving/sharing Map screenshot", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

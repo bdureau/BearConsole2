@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Firmware flashing screen (FlashFirmware): choice of the altimeter model with its picture,
+    serial speed, Flash / Recover / Detect / Info buttons, and a scrolling log of the flashing
+    steps.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView

@@ -1,12 +1,24 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
 /**
- * @description: This is used to flash the altimeter firmware from the Android device using an OTG cable
- * so that the store Android application is compatible with altimeter. This works with the
- * ATMega328 based altimeters as well as the STM32 based altimeters
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: FlashFirmware
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Firmware flashing screen. The user selects the firmware matching his altimeter (it can be
+ *  detected automatically) and the application flashes it through a USB OTG cable:
+ *    - ATmega328 boards (AltiMulti, AltiMultiV2, AltiServo, AltiDuo, AltiGPS): Intel HEX file
+ *      uploaded with the Arduino bootloader protocol (Physicaloid library);
+ *    - STM32 board: binary uploaded with the STM32 system bootloader (CommandInterfaceSTM32);
+ *    - ESP32 boards: four binary images uploaded with the ESP32 bootloader (CommandInterfaceESP32).
+ *  A "recovery" firmware can also be flashed to reset a corrupted altimeter configuration.
+ *  The firmware images are stored in the application assets.
+ * ============================================================================
+ */
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,8 +27,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Looper;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
@@ -55,7 +67,7 @@ import java.util.ArrayList;
 import static com.physicaloid.misc.Misc.toHexStr;
 
 
-public class FlashFirmware extends AppCompatActivity {
+public class FlashFirmware extends BaseActivity {
     Physicaloid mPhysicaloid;
 
     boolean recorverFirmware = false;
@@ -142,14 +154,6 @@ public class FlashFirmware extends AppCompatActivity {
     private String[] itemsFirmwares;
     private Spinner dropdownBaudRate;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
     // fast way to call Toast
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
@@ -160,7 +164,6 @@ public class FlashFirmware extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        //setTitle(R.string.select_bluetooth_device);
         setContentView(R.layout.activity_flash_firmware);
 
         spinnerFirmware = (Spinner) findViewById(R.id.spinnerFirmware);
@@ -308,6 +311,7 @@ public class FlashFirmware extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        mHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
         close();
     }
@@ -363,9 +367,7 @@ public class FlashFirmware extends AppCompatActivity {
                 mPhysicaloid.setBaudrate(Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]));
                 mPhysicaloid.upload(mSelectedBoard, getResources().getAssets().open(recoverFileName), mUploadCallback);
             } catch (RuntimeException e) {
-                //Log.e(TAG, e.toString());
             } catch (IOException e) {
-                //Log.e(TAG, e.toString());
             }
         } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32")) {
@@ -390,7 +392,7 @@ public class FlashFirmware extends AppCompatActivity {
     }
 
     public void onClickFirmwareInfo(View v) {
-        tvRead.setText("The following firmwares are available:");
+        tvRead.setText(getString(R.string.flash_available_firmwares));
         tvRead.append("\n");
         tvRead.append(ASSET_FILE_NAME_ALTIMULTIV2);
         tvRead.append("\n");
@@ -432,7 +434,7 @@ public class FlashFirmware extends AppCompatActivity {
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiV2") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiServo") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiDuo")) {
-            tvRead.setText("Loading firmware:" + firmwareFileName);
+            tvRead.setText(getString(R.string.flash_loading_firmware, firmwareFileName));
             try {
                 builder = new AlertDialog.Builder(FlashFirmware.this);
                 //Flashing firmware...
@@ -451,13 +453,11 @@ public class FlashFirmware extends AppCompatActivity {
                 mPhysicaloid.setBaudrate(Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]));
                 mPhysicaloid.upload(mSelectedBoard, getResources().getAssets().open(firmwareFileName), mUploadCallback);
             } catch (RuntimeException e) {
-                //Log.e(TAG, e.toString());
             } catch (IOException e) {
-                //Log.e(TAG, e.toString());
             }
         } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32")) {
-            tvRead.setText("Loading firmware:" + firmwareFileName);
+            tvRead.setText(getString(R.string.flash_loading_firmware, firmwareFileName));
             recorverFirmware = false;
             new UploadSTM32Asyc().execute();
         } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32") ||
@@ -469,7 +469,7 @@ public class FlashFirmware extends AppCompatActivity {
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeterNoSleep") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter")) {
-            tvRead.setText("Loading ESP32 firmware\n");
+            tvRead.setText(getString(R.string.flash_loading_esp32) + "\n");
             recorverFirmware = false;
             new UploadESP32Asyc().execute();
         }
@@ -579,14 +579,13 @@ public class FlashFirmware extends AppCompatActivity {
         try {
             is = getAssets().open(fileName);
         } catch (IOException e) {
-            //e.printStackTrace();
-            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
+            tvAppend(tvRead, getString(R.string.flash_file_not_found, ASSET_FILE_NAME_ALTIMULTISTM32) + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32 + "\n");
         }
 
-        dialogAppend("Starting ...");
+        dialogAppend(getString(R.string.flash_starting));
         CommandInterfaceSTM32 cmd;
 
         cmd = new CommandInterfaceSTM32(UpCallback, mPhysicaloid);
@@ -596,13 +595,12 @@ public class FlashFirmware extends AppCompatActivity {
         if (ret == 1)
             dialogAppend(getString(R.string.chip_has_not_been_init) + ret);
         else {
-            dialogAppend("Chip has not been initiated:" + ret);
+            dialogAppend(getString(R.string.flash_chip_not_initiated, String.valueOf(ret)));
             failed = true;
         }
         int bootversion = 0;
         if (!failed) {
             bootversion = cmd.cmdGet();
-            //dialogAppend("bootversion:"+ bootversion);
             tvAppend(tvRead, " bootversion:" + bootversion + "\n");
             if (bootversion < 20 || bootversion >= 100) {
                 tvAppend(tvRead, " bootversion not good:" + bootversion + "\n");
@@ -709,7 +707,6 @@ public class FlashFirmware extends AppCompatActivity {
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4;
                 }
-                //uploadESP32(firmwareFileName, mUploadSTM32Callback);
                 else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE2;
@@ -765,7 +762,7 @@ public class FlashFirmware extends AppCompatActivity {
             file1 = getAssets().open(fileName[0]);
 
         } catch (IOException e) {
-            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIESP32_FILE1 + "\n");
+            tvAppend(tvRead, getString(R.string.flash_file_not_found, ASSET_FILE_NAME_ALTIESP32_FILE1) + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIESP32_FILE1 + "\n");
@@ -775,8 +772,7 @@ public class FlashFirmware extends AppCompatActivity {
             file2 = getAssets().open(fileName[1]);
 
         } catch (IOException e) {
-            //e.printStackTrace();
-            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIESP32_FILE2 + "\n");
+            tvAppend(tvRead, getString(R.string.flash_file_not_found, ASSET_FILE_NAME_ALTIESP32_FILE2) + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIESP32_FILE2 + "\n");
@@ -785,8 +781,7 @@ public class FlashFirmware extends AppCompatActivity {
             file3 = getAssets().open(fileName[2]);
 
         } catch (IOException e) {
-            //e.printStackTrace();
-            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIESP32_FILE3 + "\n");
+            tvAppend(tvRead, getString(R.string.flash_file_not_found, ASSET_FILE_NAME_ALTIESP32_FILE3) + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIESP32_FILE3 + "\n");
@@ -796,21 +791,20 @@ public class FlashFirmware extends AppCompatActivity {
             file4 = getAssets().open(fileName[3]);
 
         } catch (IOException e) {
-            //e.printStackTrace();
-            tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIESP32_FILE4 + "\n");
+            tvAppend(tvRead, getString(R.string.flash_file_not_found, ASSET_FILE_NAME_ALTIESP32_FILE4) + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIESP32_FILE4 + "\n");
         }
 
-        dialogAppend("Starting ...");
+        dialogAppend(getString(R.string.flash_starting));
 
 
         boolean ret = cmd.initChip();
         if (ret)
             dialogAppend(getString(R.string.chip_has_not_been_init) + ret);
         else {
-            dialogAppend("Chip has not been initiated:" + ret);
+            dialogAppend(getString(R.string.flash_chip_not_initiated, String.valueOf(ret)));
             failed = true;
         }
         int bootversion = 0;
@@ -820,7 +814,6 @@ public class FlashFirmware extends AppCompatActivity {
             // an ESP32 because this is what the program is for
             int chip = cmd.detectChip();
             if (chip == cmd.ESP32)
-                //dialogAppend("Chip is ESP32");
                 tvAppend(tvRead, "Chip is ESP32\n");
             else if (chip == cmd.ESP32S2)
                 tvAppend(tvRead, "Chip is ESP32S2\n");
@@ -950,8 +943,8 @@ public class FlashFirmware extends AppCompatActivity {
             // we have finish flashing lets reset the board so that the program can start
             cmd.reset();
 
-            dialogAppend("done ");
-            tvAppend(tvRead, "done");
+            dialogAppend(getString(R.string.flash_done));
+            tvAppend(tvRead, getString(R.string.flash_done));
         }
     }
 
@@ -1045,7 +1038,8 @@ public class FlashFirmware extends AppCompatActivity {
             tvAppend(tvRead, getResources().getString(R.string.msg18) + err.toString() + "\n");
         }
     };
-    Handler mHandler = new Handler();
+    // Posts progress messages to the UI thread; purged in onDestroy() to avoid leaks
+    Handler mHandler = new Handler(Looper.getMainLooper());
 
     private void tvAppend(TextView tv, CharSequence text) {
         final TextView ftv = tv;
@@ -1058,16 +1052,6 @@ public class FlashFirmware extends AppCompatActivity {
         });
     }
 
-    /*private void setRadioButton(RadioButton rb, boolean state) {
-        final RadioButton frb = rb;
-        final boolean fstate = state;
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                frb.setChecked(fstate);
-            }
-        });
-    }*/
 
     private void dialogAppend(CharSequence text) {
         final CharSequence ftext = text;

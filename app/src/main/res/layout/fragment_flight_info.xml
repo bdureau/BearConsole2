@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Flight statistics tab (FlightViewInfoFragment): label / value rows for the flight number,
+    number of samples, apogee, flight duration, burn time, max velocity, max acceleration, time
+    to apogee, main altitude, descent rate, landing speed and GPS flight distance, and the
+    Export CSV / Export and share buttons. The values are filled by code.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -71,7 +78,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/nbrOfSamples"
         android:layout_marginTop="18dp"
-        android:text="m"
+        tools:text="m"
         />
 
     <TextView
@@ -190,7 +197,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/timeToApogee"
-        android:text="m"
+        tools:text="m"
         />
 
     <TextView
@@ -210,7 +217,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/mainAltitude"
-        android:text="m/secs"
+        tools:text="m/secs"
         />
 
     <TextView
@@ -229,7 +236,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/maxDescent"
-        android:text="m/secs"
+        tools:text="m/secs"
         />
 
     <TextView
@@ -239,7 +246,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/landingSpeed"
-        android:text="Fight distance"
+        android:text="@string/flight_distance"
         />
     <TextView
         android:id="@+id/flightDistanceValue"
@@ -248,7 +255,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/landingSpeed"
-        android:text="m"
+        tools:text="m"
         />
     <Button
         android:id="@+id/butExportToCsv"

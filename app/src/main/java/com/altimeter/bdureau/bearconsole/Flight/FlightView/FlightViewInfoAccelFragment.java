@@ -4,17 +4,17 @@ package com.altimeter.bdureau.bearconsole.Flight.FlightView;
  * ============================================================================
  * Project: BearConsole - Model Rocketry Flight Computer Management
  * Class: FlightViewInfoAccelFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
  * @description:
  *  Displays maximum G-force acceleration metrics along X, Y, and Z axes
  *  for both high-G (ADXL375) and low-G (ADXL345) accelerometer sensors.
  *  Hardened against null series references, View memory leaks, and Android
  *  fragment recreation crashes.
- *
- * @author: boris.dureau@neuf.fr
  * ============================================================================
  */
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
+import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
 import org.afree.data.xy.XYSeries;
@@ -55,6 +56,27 @@ public class FlightViewInfoAccelFragment extends Fragment {
     /**
      * Parameterized constructor used by tab adapters.
      */
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (myBT == null) {
+            myBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
+
+    /**
+     * After a re-creation by the framework the flight data were not given by a constructor:
+     * they are taken again from the host FlightViewTabActivity. Called from onCreateView(),
+     * when the activity has finished its own onCreate().
+     */
+    private void restoreFromHost() {
+        if (!(getActivity() instanceof FlightViewTabActivity)) return;
+        FlightViewTabActivity host = (FlightViewTabActivity) getActivity();
+        if (allFlightData == null) allFlightData = host.getAllFlightData();
+    }
+
     public FlightViewInfoAccelFragment(FlightData data,
                                        XYSeriesCollection data2,
                                        ConsoleApplication bt,
@@ -93,6 +115,7 @@ public class FlightViewInfoAccelFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        restoreFromHost();
         View view = inflater.inflate(R.layout.fragment_telemetry_mp_tab2, container, false);
 
         txtViewAccel375x = view.findViewById(R.id.txtViewAccel375xValue);
@@ -138,20 +161,20 @@ public class FlightViewInfoAccelFragment extends Fragment {
                 double maxG = series.getMaxY() / STANDARD_GRAVITY;
                 targetView.setText(String.format(Locale.US, "%.2f G", maxG));
             } else {
-                targetView.setText("N/A");
+                targetView.setText(R.string.not_available);
             }
         } catch (Exception ignored) {
-            targetView.setText("N/A");
+            targetView.setText(R.string.not_available);
         }
     }
 
     private void setFallbackText() {
-        if (txtViewAccel375x != null) txtViewAccel375x.setText("N/A");
-        if (txtViewAccel375y != null) txtViewAccel375y.setText("N/A");
-        if (txtViewAccel375z != null) txtViewAccel375z.setText("N/A");
-        if (txtViewAccel345x != null) txtViewAccel345x.setText("N/A");
-        if (txtViewAccel345y != null) txtViewAccel345y.setText("N/A");
-        if (txtViewAccel345z != null) txtViewAccel345z.setText("N/A");
+        if (txtViewAccel375x != null) txtViewAccel375x.setText(R.string.not_available);
+        if (txtViewAccel375y != null) txtViewAccel375y.setText(R.string.not_available);
+        if (txtViewAccel375z != null) txtViewAccel375z.setText(R.string.not_available);
+        if (txtViewAccel345x != null) txtViewAccel345x.setText(R.string.not_available);
+        if (txtViewAccel345y != null) txtViewAccel345y.setText(R.string.not_available);
+        if (txtViewAccel345z != null) txtViewAccel345z.setText(R.string.not_available);
     }
 
     @Override

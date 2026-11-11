@@ -1,18 +1,19 @@
 package com.altimeter.bdureau.bearconsole.Flash;
+
 /**
- *   @description: This is used to flash the STM32 altimeter firmware from the Android device using an OTG cable
- *   so that the store Android application is compatible with the altimeter.
- *   Note that this is an Android port of the stm32loader.py (stm32flash) done by myself
- *   as I could not find anything on the internet!!!
- *   It uses the Physicaloid library but should be easy to use with any other USB library
- *   It could also be written in pure Java so that it could be integrated with the Arduino env
- *   This has been only tested with STM32F103 chips. Feel free to re-use it for your own project
- *   Please make sure that you do report any bugs so that I can fix them
- *   So far it is reliable enough for me
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: CommandInterfaceSTM32
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
- *   @author: boris.dureau@neuf.fr
- *
- **/
+ * @description:
+ *  Android port of the STM32 system bootloader protocol (stm32loader.py / stm32flash) used to
+ *  flash the AltiMultiSTM32 altimeter through a USB OTG serial cable. It implements the
+ *  bootloader handshake, the get / get-ID commands, the flash erase (standard and extended)
+ *  and the memory write by 256 byte blocks with checksum.
+ * ============================================================================
+ */
+
 import com.google.android.gms.common.util.IOUtils;
 import com.physicaloid.lib.Physicaloid;
 
@@ -95,12 +96,10 @@ public class CommandInterfaceSTM32 {
         if (got[0] == 0x79)
             return 1;
         else if (got[0] == 0x1F) {
-            //tvAppend(tvRead,info+ " This is 0x1F");
             mUpCallback.onInfo(info+ " This is 0x1F");
             return -1;
         }
         else {
-            //tvAppend(tvRead,info + " Not 0x79");
             mUpCallback.onInfo(info+ "This is Not 0x79");
             return -1;
         }
@@ -142,7 +141,6 @@ public class CommandInterfaceSTM32 {
             }
 
         }
-        //tvAppend(tvRead, " got:" + toHexStr(got, i));
         mUpCallback.onInfo(" got:" + toHexStr(got, i));
         return -1;
     }
@@ -202,9 +200,7 @@ public class CommandInterfaceSTM32 {
         if (cmdGeneric(cmd)==1) {
             recv(buf, 1);
             int len = (int)buf[0];
-            //tvAppend(tvRead, "id all:" + toHexStr(buf, len) + "\n");
             recv(buf, len+1);
-            //tvAppend(tvRead, "id all:" + toHexStr(buf, len));
             id = (int)buf[0];
             _wait_for_ack("0x02 end",500);
         }
@@ -278,7 +274,6 @@ public class CommandInterfaceSTM32 {
                     toHexStr(new byte[]{(byte) lng }, 1),200);
             return 1;
         }else{
-            //tvAppend(tvRead, "*** Write memory command failed"  + "\n");
             mUpCallback.onInfo("*** Write memory command failed"  + "\n");
             return -1;
         }
@@ -354,12 +349,9 @@ public class CommandInterfaceSTM32 {
             lng = data.length;
 
         } catch (IOException e) {
-            //e.printStackTrace();
-            //tvAppend(tvRead, "file not found: " + ASSET_FILE_NAME_ALTIMULTISTM32+ "\n");
             mUpCallback.onInfo("file not found: " +e.getMessage() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
-            //tvAppend(tvRead, "gethexfile : " + ASSET_FILE_NAME_ALTIMULTISTM32+ "\n");
             mUpCallback.onInfo("file not found: " +e.getMessage() + "\n");
         }
 
@@ -376,13 +368,10 @@ public class CommandInterfaceSTM32 {
             int ret = cmdWriteMemory(addr, buf);
             if(ret !=1)
                 mUpCallback.onInfo("error writing to mem:" + lng + "\n");
-                //tvAppend(tvRead, "error writing to mem:" + lng + "\n");
-            //mUpCallback.onPreUpload("error writing to mem:" + lng + "\n");
 
             offs = offs + 256;
             addr = addr + 256;
             lng = lng - 256;
-            //dialogAppend(((offs*100)/tot)+"%" );
             mUpCallback.onUploading((offs*100)/tot);
         }
         byte buf2[] = new byte[256];

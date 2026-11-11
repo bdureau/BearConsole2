@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Live telemetry tab drawn with AFreeChart (AltimeterFcFlightFragment, Android 7): grid of the
+    flight events (lift off, apogee, main, landing) with a check box, the altitude and the time
+    of each, the current altitude, and the live altitude chart.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Bluetooth module configuration screen (ConfigBT): module type, serial speed, firmware
+    version, PIN code and name of the HC-05 / HC-06 module, a log area and the Retrieve / Save /
+    Dismiss buttons.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".config.ConfigModules.ConfigBT">
-    android:fitsSystemWindows="true"
     <TextView
         android:id="@+id/textBTConfigTitle"
         android:layout_width="wrap_content"

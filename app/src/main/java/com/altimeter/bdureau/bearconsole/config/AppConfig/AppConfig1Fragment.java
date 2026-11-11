@@ -1,5 +1,20 @@
 package com.altimeter.bdureau.bearconsole.config.AppConfig;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AppConfig1Fragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  First tab of the application settings: language, altitude units, graph colors and font
+ *  size, connection type (Bluetooth / USB) and speed, graph library, multiple drogue / main
+ *  outputs and full USB support. The lists of choices come from AppConfigData.
+ * ============================================================================
+ */
+
+import androidx.annotation.NonNull;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +37,24 @@ public class AppConfig1Fragment extends Fragment {
     private ConsoleApplication BT;
     private boolean ViewCreated = false;
     private AppConfigData appConfigData;
+
+    /** Required by the framework to re-create the fragment (configuration change, process restore). */
+    public AppConfig1Fragment() {
+        super();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (BT == null) {
+            BT = (ConsoleApplication) context.getApplicationContext();
+        }
+        if (appConfigData == null) {
+            appConfigData = new AppConfigData(context);
+        }
+    }
 
     public AppConfig1Fragment(ConsoleApplication lBT,
                               AppConfigData cfgData) {
@@ -105,7 +138,6 @@ public class AppConfig1Fragment extends Fragment {
     public boolean getFullUSBSupport() {
         return cbFullUSBSupport.isChecked();
     }
-
 
 
     public void setFullUSBSupport(boolean value) {

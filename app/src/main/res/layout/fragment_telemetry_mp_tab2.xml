@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Accelerometer tab (AltimeterAccelFragment live values, FlightViewInfoAccelFragment flight
+    maxima): label / value rows for the three axes of the ADXL375 (high g) and ADXL345 (low g)
+    accelerometers.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,13 +20,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-black"
-        android:text="Accelerometer Status"
+        android:text="@string/accelerometer_status"
         android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accel375x"
+        android:text="@string/accel_375x"
         android:id="@+id/txtViewAccel375x"
         android:layout_below="@+id/txtViewTitle"
         android:layout_alignParentLeft="true"
@@ -37,7 +42,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accel375y"
+        android:text="@string/accel_375y"
         android:id="@+id/txtViewAccel375y"
         android:layout_below="@+id/txtViewAccel375x"
         android:layout_alignParentLeft="true"
@@ -54,7 +59,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accel375z"
+        android:text="@string/accel_375z"
         android:id="@+id/txtViewAccel375z"
         android:layout_below="@+id/txtViewAccel375y"
         android:layout_alignParentLeft="true"
@@ -71,7 +76,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accel345x"
+        android:text="@string/accel_345x"
         android:id="@+id/txtViewAccel345x"
         android:layout_below="@+id/txtViewAccel375z"
         android:layout_alignParentLeft="true"
@@ -87,7 +92,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accel345y"
+        android:text="@string/accel_345y"
         android:id="@+id/txtViewAccel345y"
         android:layout_below="@+id/txtViewAccel345x"
         android:layout_alignParentLeft="true"
@@ -104,7 +109,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accel345z"
+        android:text="@string/accel_345z"
         android:id="@+id/txtViewAccel345z"
         android:layout_below="@+id/txtViewAccel345yValue"
         android:layout_alignParentLeft="true"

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Action bar menu of the flight analysis screen: share a screenshot of the current tab, Help
+    and About.
+-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item

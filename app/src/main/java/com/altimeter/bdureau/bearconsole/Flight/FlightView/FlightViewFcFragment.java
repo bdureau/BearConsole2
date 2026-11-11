@@ -1,8 +1,20 @@
 package com.altimeter.bdureau.bearconsole.Flight.FlightView;
+
 /**
- * @description: This will display altimeter flight curves using the freechart library
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: FlightViewFcFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  First tab of the flight view when the AFreeChart library is used (Android 7): draws the
+ *  curves selected by the user (altitude, temperature, pressure, speed, acceleration, battery,
+ *  GPS...) of the displayed flight, each with its own axis and unit.
+ * ============================================================================
+ */
+
+import androidx.annotation.NonNull;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -15,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.R;
 import org.afree.chart.AFreeChart;
 import org.afree.chart.ChartFactory;
@@ -25,7 +38,6 @@ import org.afree.chart.plot.XYPlot;
 import org.afree.data.xy.XYSeriesCollection;
 import org.afree.graphics.SolidColor;
 import org.afree.graphics.geom.Font;
-
 
 
 public class FlightViewFcFragment extends Fragment {
@@ -44,6 +56,35 @@ public class FlightViewFcFragment extends Fragment {
             Color.BLUE, Color.BLACK,
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW, Color.RED, Color.BLUE, Color.BLACK,
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW};
+
+    /** Required by the framework to re-create the fragment (configuration change, process restore). */
+    public FlightViewFcFragment() {
+        super();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (myBT == null) {
+            myBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
+
+    /**
+     * After a re-creation by the framework the flight data were not given by a constructor:
+     * they are taken again from the host FlightViewTabActivity. Called from onCreateView(),
+     * when the activity has finished its own onCreate().
+     */
+    private void restoreFromHost() {
+        if (!(getActivity() instanceof FlightViewTabActivity)) return;
+        FlightViewTabActivity host = (FlightViewTabActivity) getActivity();
+        if (allFlightData == null) allFlightData = host.getAllFlightData();
+        if (curvesNames == null) curvesNames = host.getCurvesNames();
+        if (checkedItems == null) checkedItems = host.getCheckedItems();
+        if (units == null) units = host.getUnits();
+    }
 
     public FlightViewFcFragment(XYSeriesCollection pAllFlightData,
                                 ConsoleApplication pBT,
@@ -65,6 +106,7 @@ public class FlightViewFcFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        restoreFromHost();
         super.onCreate(savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_flight_view_fc, container, false);

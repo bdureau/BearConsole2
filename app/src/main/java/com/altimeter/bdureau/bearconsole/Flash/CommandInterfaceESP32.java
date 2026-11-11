@@ -1,21 +1,20 @@
 package com.altimeter.bdureau.bearconsole.Flash;
+
 /**
- *   @description: This is used to flash the ESP32 altimeter firmware from the Android device using an OTG cable
- *   so that the store Android application is compatible with the altimeter.
- *   Note that this is an Android port of the ESPLoader.py done by myself
- *   as I could not find anything on the internet!!!
- *   It uses the Physicaloid library but should be easy to use with any other USB library
- *   It could also be written in pure Java so that it could be integrated with the Arduino env
- *   This has been only tested with ESP32 chips. Feel free to re-use it for your own project
- *   Please make sure that you do report any bugs so that I can fix them
- *   So far it is reliable enough for me
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: CommandInterfaceESP32
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
- *   @author: boris.dureau@neuf.fr
- *
- *  Note: the flashing is very slow due to the delay en the send command. This needs to be improved
- *  Also the reset() and enterBootLoader() do not currently work, you will need to enter the bootloader mode using the reset
- *  and boot buttons on the board
- **/
+ * @description:
+ *  Android port of the ESP32 serial bootloader protocol (Espressif esptool / ESPLoader.py),
+ *  used to flash the ESP32 based altimeters (AltiMultiESP32, TTGO, Ultimate) through a USB OTG
+ *  cable. It implements SLIP framing, the sync / register / memory / flash commands, the
+ *  baud rate change and the chip detection (ESP32, S2, S3, C3, C6, H2, ESP8266), and writes the
+ *  bootloader, partition table, boot_app0 and application images at their flash offsets.
+ * ============================================================================
+ */
+
 import android.util.Log;
 
 import com.physicaloid.lib.Physicaloid;
@@ -23,7 +22,6 @@ import com.physicaloid.lib.Physicaloid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.Deflater;
-
 
 
 public class CommandInterfaceESP32 {
@@ -237,7 +235,6 @@ public class CommandInterfaceESP32 {
             data[8 + i] = buffer[i];
         }
 
-        // System.out.println("opcode:"+opcode);
         int ret = 0;
         retVal.retCode = 0;
         byte buf[] = slipEncode(data);
@@ -258,15 +255,12 @@ public class CommandInterfaceESP32 {
             }
 
             if (retVal.retValue[0] != (byte) 0xC0) {
-                //mUpCallback.onInfo("invalid packet\n");
-                // System.out.println("Packet: " + printHex(retVal.retValue));
                 retVal.retCode = -1;
                 continue;
             }
 
             if (retVal.retValue[0] == (byte) 0xC0) {
                 mUpCallback.onInfo("This is correct!!!\n");
-                // System.out.println("Packet: " + printHex(retVal.retValue));
                 retVal.retCode = 1;
                 break;
             }
@@ -288,9 +282,6 @@ public class CommandInterfaceESP32 {
                 System.arraycopy(tmpbuf, 0, buf, totalRetval, retval);
                 totalRetval += retval;
                 startTime = System.currentTimeMillis();
-                //if (DEBUG_SHOW_RECV) {
-                //    Log.d(TAG, "recv(" + retval + ") : " + toHexStr(buf, totalRetval));
-                //}
             }
             
             if (totalRetval >= 8) { 
@@ -299,40 +290,11 @@ public class CommandInterfaceESP32 {
 
             endTime = System.currentTimeMillis();
             if ((endTime - startTime) > timeout) {
-                //Log.e(TAG, "recv timeout.");
                 break;
             }
         }
         return retval;
     }
-    /*private int _wait_for_ack( long timeout, byte readVal[]) {
-        long stop = System.currentTimeMillis() + timeout;
-        byte got[] =new byte[1];
-        while (mPhysicaloid.read(got) <1) {
-            if (System.currentTimeMillis() > stop)
-                break;
-        }
-        if (got[0] == (byte) 0xC0) {
-            mUpCallback.onInfo("We have a start byte\n");
-            byte readByte[] = new byte[1];
-            readByte[0] = got[0];
-            while(mPhysicaloid.read(got,1)>0) {
-                mUpCallback.onInfo("We have another one\n");
-                readByte =_appendArray(readByte,got);
-                if (System.currentTimeMillis() > stop)
-                    break;
-            }
-            mUpCallback.onInfo(readByte.toString());
-            readVal = readByte;
-            return readVal.length;
-        }
-        else {
-            //tvAppend(tvRead,info + " Not 0x79");
-            //mUpCallback.onInfo(info+ "This is Not 0x79");
-            mUpCallback.onInfo("not receiving!!!\n");
-            return 0;
-        }
-    }*/
     /*
      * This will do a SLIP encode
      */
@@ -422,13 +384,11 @@ public class CommandInterfaceESP32 {
         int _flashsize = 4 * 1024 * 1024;
 
         if (!IS_STUB) {
-            //System.out.println("No stub...");
             byte pkt[] = _appendArray(_int_to_bytearray(0),_int_to_bytearray(0));
             sendCommand((byte) ESP_SPI_ATTACH, pkt, 0, 100);
         }
 
         // We are hardcoding 4MB flash for an ESP32
-        //System.out.println("Configuring flash size...");
         mUpCallback.onInfo("Configuring flash size..."  + "\n");
 
         byte pkt2[] = _appendArray(_int_to_bytearray(0),_int_to_bytearray(_flashsize));
@@ -479,11 +439,6 @@ public class CommandInterfaceESP32 {
 
                 // we have an incomplete block (ie: less than 1024) so let pad the missing block
                 // with 0xFF
-                /*byte tempArray[] = new byte[FLASH_WRITE_SIZE - block.length];
-                for (int i = 0; i < tempArray.length; i++) {
-                    tempArray[i] = (byte) 0xFF;
-                }
-                block = _appendArray(block, tempArray);*/
             }
 
             cmdRet retVal = flash_defl_block(block, seq, 100);
@@ -535,11 +490,6 @@ public class CommandInterfaceESP32 {
 
                 // we have an incomplete block (ie: less than 1024) so let pad the missing block
                 // with 0xFF
-                /*byte tempArray[] = new byte[FLASH_WRITE_SIZE - block.length];
-                for (int i = 0; i < tempArray.length; i++) {
-                    tempArray[i] = (byte) 0xFF;
-                }
-                block = _appendArray(block, tempArray);*/
             }
 
             cmdRet retVal = flash_block(block, seq, 100);
@@ -730,7 +680,6 @@ public class CommandInterfaceESP32 {
     public int readRegister(int reg) {
 
         long retVals[] = { 0 };
-        //int retVals = 0;
         cmdRet ret;
 
         Struct struct = new Struct();
@@ -757,7 +706,6 @@ public class CommandInterfaceESP32 {
     }
 
 
-
     /**
      * @name timeoutPerMb Scales timeouts which are size-specific
      */
@@ -779,7 +727,6 @@ public class CommandInterfaceESP32 {
     private int _bytearray_to_int(byte i, byte j, byte k, byte l) {
         return ((int)i | (int)(j << 8) | (int)(k << 16) | (int)(l << 24));
     }
-
 
 
     /**

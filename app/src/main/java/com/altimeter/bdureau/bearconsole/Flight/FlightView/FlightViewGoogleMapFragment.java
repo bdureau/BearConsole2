@@ -1,8 +1,20 @@
 package com.altimeter.bdureau.bearconsole.Flight.FlightView;
+
 /**
- * @description: This will display altimeter MAP that has been recorded when using the altiGPS
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: FlightViewGoogleMapFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Flight view tab for the AltiGPS: draws on Google Maps the GPS trajectory recorded during
+ *  the flight, from the launch pad to the landing point, with the map type and line color
+ *  chosen in the settings. The map can be shared as a screenshot.
+ * ============================================================================
+ */
+
+import androidx.annotation.NonNull;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -21,6 +33,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.LocationUtils;
+import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,6 +59,44 @@ public class FlightViewGoogleMapFragment extends Fragment {
     private FlightData myflight;
     private String FlightName;
 
+    /** Required by the framework to re-create the fragment (configuration change, process restore). */
+    public FlightViewGoogleMapFragment() {
+        super();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (myBT == null) {
+            myBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
+
+    /**
+     * After a re-creation by the framework the flight data were not given by a constructor:
+     * they are taken again from the host FlightViewTabActivity. Called from onCreateView(),
+     * when the activity has finished its own onCreate().
+     */
+    private void restoreFromHost() {
+        if (!(getActivity() instanceof FlightViewTabActivity)) return;
+        FlightViewTabActivity host = (FlightViewTabActivity) getActivity();
+        if (myflight == null) myflight = host.getFlightRepository();
+        if (FlightName == null) FlightName = host.getFlightName();
+    }
+
+    /**
+     * ViewPager of the host activity, used to go back to the first tab. After a re-creation
+     * it was not given by the constructor and is looked up in the activity layout.
+     */
+    private ViewPager getPager() {
+        if (lPager == null && getActivity() != null) {
+            lPager = getActivity().findViewById(R.id.container);
+        }
+        return lPager;
+    }
+
     public FlightViewGoogleMapFragment(ConsoleApplication bt,
                                        ViewPager pager,
                                        FlightData pFlight,
@@ -63,6 +114,7 @@ public class FlightViewGoogleMapFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        restoreFromHost();
         View view = inflater.inflate(R.layout.fragment_flight_view_google_map, container, false);
 
         butBack = (Button) view.findViewById(R.id.butBack);
@@ -118,7 +170,7 @@ public class FlightViewGoogleMapFragment extends Fragment {
         butBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lPager.setCurrentItem(0);
+                if (getPager() != null) getPager().setCurrentItem(0);
 
             }
         });
@@ -168,7 +220,6 @@ public class FlightViewGoogleMapFragment extends Fragment {
             share.putExtra(Intent.EXTRA_STREAM, fileUri);
             startActivity(Intent.createChooser(share, getString(R.string.share_map_screenshot)));
         } catch (Exception e) {
-            //Toast.makeText(this, "Error saving/sharing Map screenshot", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

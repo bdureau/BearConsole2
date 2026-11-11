@@ -1,5 +1,18 @@
 package com.altimeter.bdureau.bearconsole.utils;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: Rocket
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Processing sketch drawing a 3D rocket oriented according to the accelerometer angles
+ *  (status screen of the accelerometer boards). It needs the processing-core.jar library and
+ *  the CourierNew36.vlw font stored in the assets.
+ * ============================================================================
+ */
+
 import android.annotation.SuppressLint;
 import android.util.Log;
 
@@ -8,16 +21,8 @@ import java.io.IOException;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
-/**
- * @description:  This display the rocket orientation
- * This is using a processing class so you need to add the processing-core.jar
- * library to your project. You will also need the font added to your assets directory
- *
- * @author: boris.dureau@neuf.fr
- **/
 public class Rocket extends PApplet {
     public void settings() {
-        //size(800, 600);
         // This might not work on all screens. So far it is ok on all my phones and tablets
         size(1200, 1200, P3D);
     }
@@ -101,7 +106,6 @@ public class Rocket extends PApplet {
     }
 
     public void setup() {
-        //size(1200, 1200, P3D);
         fill(255);
         stroke(color(44, 48, 32));
 
@@ -142,15 +146,9 @@ public class Rocket extends PApplet {
     void drawRotatingRocket() {
         pushMatrix();
         translate(VIEW_SIZE_X / 2, VIEW_SIZE_Y / 2 + 50, 0);
-        /*rotateZ(-Euler[2]);
-        rotateX(-Euler[1]);
-        rotateY(-Euler[0]);*/
         rotateZ(-Euler[2]);
         rotateX(-Euler[1]-correct);
         rotateY(-Euler[0]);
-        /*rotateX(-Euler[2]);
-        rotateY(-Euler[0]);
-        rotateZ(-Euler[1]);*/
         drawRocket();
         popMatrix();
     }
@@ -186,7 +184,6 @@ public class Rocket extends PApplet {
                             "\nRealYaw (psi)  : " + degrees(RealEuler[0]) +
                             "\nRealPitch (theta): " + degrees(RealEuler[1]) +
                             "\nRealRoll (phi)  : " + degrees(RealEuler[2]), 250, 30);
-            //text("Euler Angles:\nYaw (psi)  : " + degrees(Euler[2]) + "\nPitch (theta): " + degrees(Euler[0]) + "\nRoll (phi)  : " + degrees(Euler[1]), 200, 20);
         }
         else {
             text("Time:"+ currentTime, 20, 20);
@@ -223,7 +220,6 @@ Get Euler angles from quaternion
     }
 
     void quaternionToGravity(float[] q, float[] gravity) {
-        //gravity[0] = 2 * (q[1] * q[3] - q[0] * q[0]);
         gravity[0] = 2 * (q[1] * q[3] - q[0] * q[2]);
         gravity[1] = 2 * (q[0] * q[1] + q[2] * q[3]);
         gravity[2] = q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3];
@@ -276,8 +272,6 @@ Get Euler angles from quaternion
     }
 
     void drawRocket() {
-        //background(0, 128, 255);
-        //rotateZ(PI / 2);
         rotateY(PI / 2);
 
         pushMatrix();
@@ -292,10 +286,8 @@ Get Euler angles from quaternion
 
         beginShape();
         //start rocket fin set
-        //fill(255,255,255);
         translate(0, 0, 100);
         rotateY(PI);
-        //rotateZ(PI/3);
         vertex(-100, 0, -150);
         vertex(100, 0, -150);
         vertex(0, 0, 100);
@@ -318,7 +310,6 @@ Get Euler angles from quaternion
 
         // top
         beginShape();
-        //texture(topside);
         for (int i = 0; i < sides; i++) {
             float x = cos(radians(i * angle)) * r1;
             float y = sin(radians(i * angle)) * r1;
@@ -327,7 +318,6 @@ Get Euler angles from quaternion
         endShape(CLOSE);
         // bottom
         beginShape();
-        //texture(topside);
         for (int i = 0; i < sides; i++) {
             float x = cos(radians(i * angle)) * r2;
             float y = sin(radians(i * angle)) * r2;
@@ -335,7 +325,6 @@ Get Euler angles from quaternion
         }
         endShape(CLOSE);
         // draw body
-        //beginShape(TRIANGLE_STRIP);
         beginShape(QUAD_STRIP);
         texture(image);
         for (int i = 0; i < sides + 1; i++) {
@@ -344,8 +333,6 @@ Get Euler angles from quaternion
             float x2 = cos(radians(i * angle)) * r2;
             float y2 = sin(radians(i * angle)) * r2;
             float u = image.width / sides * i;
-        /*vertex( x1, y1, -halfHeight);
-        vertex( x2, y2, halfHeight);*/
             vertex(x1, y1, -halfHeight, u, 0);
             vertex(x2, y2, halfHeight, u, image.height);
         }

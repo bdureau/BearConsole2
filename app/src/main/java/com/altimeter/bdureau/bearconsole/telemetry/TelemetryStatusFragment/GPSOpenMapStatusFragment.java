@@ -1,9 +1,19 @@
 package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
+
 /**
- * @description: This will display altimeter MAP when using the altiGPS
- * This is using OpenMap
- * @author: boris.dureau@neuf.fr
- **/
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: GPSOpenMapStatusFragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  AltiGPS map tab (OpenStreetMap / osmdroid) of the telemetry and status screens: positions of
+ *  the rocket and of the phone, and the line between them.
+ * ============================================================================
+ */
+
+import androidx.annotation.NonNull;
+import android.content.Context;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -52,14 +62,37 @@ public class GPSOpenMapStatusFragment extends Fragment {
     private Marker marker,markerDest;
     private Polyline polyline= null;
     private IMapController mapController  = null;
-    //double rocketLatitude=48.8698, rocketLongitude=2.2190;
-    //private GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
+
+    /** Required by the framework to re-create the fragment (configuration change, process restore). */
+    public GPSOpenMapStatusFragment() {
+        super();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // After a re-creation by the framework the dependencies were not given by a
+        // constructor: the application object is always available from the context
+        if (myBT == null) {
+            myBT = (ConsoleApplication) context.getApplicationContext();
+        }
+    }
+
+    /**
+     * ViewPager of the host activity, used to go back to the first tab. After a re-creation
+     * it was not given by the constructor and is looked up in the activity layout.
+     */
+    private ViewPager getPager() {
+        if (lPager == null && getActivity() != null) {
+            lPager = getActivity().findViewById(R.id.container);
+        }
+        return lPager;
+    }
 
     public GPSOpenMapStatusFragment(ConsoleApplication bt, ViewPager pager) {
         myBT = bt;
         lPager = pager;
     }
-
 
 
     @Nullable
@@ -76,7 +109,6 @@ public class GPSOpenMapStatusFragment extends Fragment {
         mMap.setTileSource(TileSourceFactory.MAPNIK);
         mMap.setBuiltInZoomControls(true);
         mMap.setMultiTouchControls(true);
-
 
 
         marker = new Marker(mMap);
@@ -98,7 +130,7 @@ public class GPSOpenMapStatusFragment extends Fragment {
         butBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lPager.setCurrentItem(0);
+                if (getPager() != null) getPager().setCurrentItem(0);
 
             }
         });
@@ -212,7 +244,6 @@ public class GPSOpenMapStatusFragment extends Fragment {
         try {
             this.startActivity(Intent.createChooser(intent, getString(R.string.share_with6)));
         } catch (ActivityNotFoundException e) {
-            //Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
         }
     }
 

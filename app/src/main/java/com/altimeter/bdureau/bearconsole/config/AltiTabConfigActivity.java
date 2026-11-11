@@ -4,13 +4,20 @@ package com.altimeter.bdureau.bearconsole.config;
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: AltiTabConfigActivity
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
  * @description:
- *  Retrieves altimeter hardware EEPROM configuration asynchronously and displays
- *  it across modular category tabs. Sends modified parameters back to the
- *  altimeter in the background without locking the Android UI thread.
- *
- * @author: boris.dureau@neuf.fr
+ *  Altimeter configuration editor. The EEPROM configuration is read from the altimeter in
+ *  the background ("m0;" stop the main loop, "b;" dump the configuration, "m1;" resume) and
+ *  displayed across tabs:
+ *    - AltiConfig1Fragment: deployment outputs, delays and main altitude;
+ *    - AltiConfig2Fragment: apogee detection, resolution, EEPROM, recording settings, speed;
+ *    - AltiConfig3Fragment: units, beeper, identifier, telemetry port, Bluetooth name;
+ *    - AltiConfig4Fragment: servo positions (AltiServo only).
+ *  Before upload, every typed value is validated (see ConfigInputValidator): an invalid
+ *  value is flagged on its field and nothing is sent. The parameters are then written one by
+ *  one ("p,<index>,<value>,<checksum>;") and saved with "q;", on the shared I/O executor of
+ *  the application, never on the UI thread.
  * ============================================================================
  */
 
@@ -33,13 +40,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.altimeter.bdureau.bearconsole.BaseActivity;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.utils.TabPagerAdapter;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
@@ -55,11 +62,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class AltiTabConfigActivity extends AppCompatActivity {
+public class AltiTabConfigActivity extends BaseActivity {
     private static final String TAG = "AltiTabConfigActivity";
 
     private ViewPager mViewPager;
-    private SectionsPageAdapter adapter;
+    private TabPagerAdapter adapter;
 
     private AltiConfig1Fragment configPage1 = null;
     private AltiConfig2Fragment configPage2 = null;
@@ -73,16 +80,8 @@ public class AltiTabConfigActivity extends AppCompatActivity {
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        // Read language configuration directly from SharedPreferences to ensure
-        // context localization is configured before Activity inflation
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
-    }
-    // Background executor for serial communication
-    private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
+    // Shared, ordered background executor of the application for the serial communication
+    private ExecutorService ioExecutor;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     @Override
@@ -90,6 +89,7 @@ public class AltiTabConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle(R.string.altimeter_config);
         myBT = (ConsoleApplication) getApplication();
+        ioExecutor = myBT.getIoExecutor();
         setContentView(R.layout.activity_altimeter_tab_config);
 
         mViewPager = findViewById(R.id.container);
@@ -144,7 +144,7 @@ public class AltiTabConfigActivity extends AppCompatActivity {
                 if (isSuccess && altiCfg != null) {
                     setupViewPager(mViewPager);
                 } else {
-                    msg("Failed to retrieve altimeter configuration");
+                    msg(getString(R.string.config_read_failed));
                     finish();
                 }
             });
@@ -196,7 +196,8 @@ public class AltiTabConfigActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        adapter = new TabPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, this::onTabRestored);
 
         configPage1 = new AltiConfig1Fragment();
         configPage2 = new AltiConfig2Fragment();
@@ -205,14 +206,14 @@ public class AltiTabConfigActivity extends AppCompatActivity {
         String altiName = myBT.getAltiConfigData().getAltimeterName();
 
         if (!"TTGOBearAltimeter".equals(altiName)) {
-            adapter.addFragment(configPage1, "TAB1");
-            adapter.addFragment(configPage2, "TAB2");
+            adapter.addFragment(configPage1);
+            adapter.addFragment(configPage2);
         }
-        adapter.addFragment(configPage3, "TAB3");
+        adapter.addFragment(configPage3);
 
         if ("AltiServo".equals(altiName)) {
             configPage4 = new AltiConfig4Fragment();
-            adapter.addFragment(configPage4, "TAB4");
+            adapter.addFragment(configPage4);
         }
 
         linearDots = findViewById(R.id.idAltiConfigLinearDots);
@@ -253,6 +254,23 @@ public class AltiTabConfigActivity extends AppCompatActivity {
 
     private void validateAndSendConfig() {
         if (altiCfg == null) return;
+
+        // Refuse the upload while a typed value is invalid: a wrong value is never replaced
+        // silently by a default. The first tab containing an error is displayed.
+        int invalidTab = -1;
+        if (configPage4 != null && configPage4.isViewCreated() && !configPage4.validateInputs())
+            invalidTab = adapter.indexOf(configPage4);
+        if (configPage3 != null && configPage3.isViewCreated() && !configPage3.validateInputs())
+            invalidTab = adapter.indexOf(configPage3);
+        if (configPage2 != null && configPage2.isViewCreated() && !configPage2.validateInputs())
+            invalidTab = adapter.indexOf(configPage2);
+        if (configPage1 != null && configPage1.isViewCreated() && !configPage1.validateInputs())
+            invalidTab = adapter.indexOf(configPage1);
+        if (invalidTab >= 0) {
+            mViewPager.setCurrentItem(invalidTab);
+            msg(getString(R.string.config_invalid_values));
+            return;
+        }
 
         // Pull values from active fragments
         if (configPage1 != null && configPage1.isViewCreated()) {
@@ -353,7 +371,7 @@ public class AltiTabConfigActivity extends AppCompatActivity {
     }
 
     private void executeSendConfigAsync() {
-        showProgress("Uploading configuration...");
+        showProgress(getString(R.string.config_uploading));
 
         ioExecutor.execute(() -> {
             boolean success = performSendConfig();
@@ -362,10 +380,10 @@ public class AltiTabConfigActivity extends AppCompatActivity {
                 if (isFinishing() || isDestroyed()) return;
 
                 if (success) {
-                    msg("Configuration updated successfully");
+                    msg(getString(R.string.config_upload_success));
                     finish();
                 } else {
-                    msg("Failed to write altimeter configuration");
+                    msg(getString(R.string.config_upload_failed));
                 }
             });
         });
@@ -499,37 +517,18 @@ public class AltiTabConfigActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         hideProgress();
-        ioExecutor.shutdown();
+        // The I/O executor belongs to the application: it is not shut down here
     }
 
-    public static class SectionsPageAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public SectionsPageAdapter(FragmentManager fm) {
-            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
+    /**
+     * Called by the adapter when the ViewPager displays a fragment re-created by the system
+     * (activity re-creation): the references used to read the values are re-bound to it.
+     */
+    private void onTabRestored(int position, Fragment fragment) {
+        if (fragment instanceof AltiConfig1Fragment) configPage1 = (AltiConfig1Fragment) fragment;
+        else if (fragment instanceof AltiConfig2Fragment) configPage2 = (AltiConfig2Fragment) fragment;
+        else if (fragment instanceof AltiConfig3Fragment) configPage3 = (AltiConfig3Fragment) fragment;
+        else if (fragment instanceof AltiConfig4Fragment) configPage4 = (AltiConfig4Fragment) fragment;
     }
 
     @Override

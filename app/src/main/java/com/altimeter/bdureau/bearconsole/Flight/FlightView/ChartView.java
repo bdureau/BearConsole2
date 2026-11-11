@@ -1,5 +1,19 @@
 package com.altimeter.bdureau.bearconsole.Flight.FlightView;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: ChartView
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Android View rendering an AFreeChart chart (flight curves on Android 7 when the AFreeChart
+ *  library is selected). It handles the drawing of the chart, the touch interactions (zoom,
+ *  pan, tooltips) and redraws itself when the chart data change. Adapted from the AFreeChart
+ *  demo code: the original copyright notice of AFreeChart / JFreeChart is kept below.
+ * ============================================================================
+ */
+
 /* ===========================================================
  * AFreeChart : a free chart library for Android(tm) platform.
  *              (based on JFreeChart and JCommon)
@@ -49,6 +63,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -85,13 +100,13 @@ public class ChartView extends View
 
     public ChartView(Context context) {
         super(context);
-        mHandler = new Handler();
+        mHandler = new Handler(Looper.getMainLooper());
         this.initialize();
     }
 
     public ChartView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mHandler = new Handler();
+        mHandler = new Handler(Looper.getMainLooper());
         this.initialize();
     }
 

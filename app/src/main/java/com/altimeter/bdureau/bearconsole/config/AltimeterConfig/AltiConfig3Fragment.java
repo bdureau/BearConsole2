@@ -1,5 +1,19 @@
 package com.altimeter.bdureau.bearconsole.config.AltimeterConfig;
 
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AltiConfig3Fragment
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Third tab of the altimeter configuration: altimeter name and firmware version, units,
+ *  beeping mode and frequency, altimeter identifier, telemetry port, Bluetooth name (recent
+ *  ESP32 / TTGO firmwares) and servo options (AltiServo). The typed values are validated by
+ *  validateInputs() before upload.
+ * ============================================================================
+ */
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.config.ConfigInputValidator;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.altimeter.bdureau.bearconsole.config.AltiTabConfigActivity;
 import com.github.florent37.viewtooltip.ViewTooltip;
@@ -39,6 +54,20 @@ public class AltiConfig3Fragment extends Fragment {
 
     public boolean isViewCreated() {
         return viewCreated;
+    }
+
+    /**
+     * Checks every value typed in this tab before upload; invalid fields are flagged.
+     * The Bluetooth name is only checked when the board supports it (field displayed).
+     *
+     * @return true if all the values can be sent to the altimeter
+     */
+    public boolean validateInputs() {
+        boolean ok = true;
+        ok &= ConfigInputValidator.checkInt(freq, ConfigInputValidator.BEEP_FREQUENCY_MIN, ConfigInputValidator.BEEP_FREQUENCY_MAX);
+        ok &= ConfigInputValidator.checkInt(altiID, ConfigInputValidator.ALTI_ID_MIN, ConfigInputValidator.ALTI_ID_MAX);
+        ok &= ConfigInputValidator.checkBluetoothName(bluetoothName);
+        return ok;
     }
 
     public int getFreq() {

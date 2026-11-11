@@ -1,7 +1,18 @@
 package com.altimeter.bdureau.bearconsole;
 
-import org.osmdroid.util.GeoPoint;
+/**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: LocationUtils
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
+ *
+ * @description:
+ *  Geodesic helpers: distance between two GPS coordinates (haversine formula, optional height
+ *  difference) and length of a GPS path, used for the flight distance and the rocket tracking.
+ * ============================================================================
+ */
 
+import org.osmdroid.util.GeoPoint;
 
 
 public class LocationUtils {

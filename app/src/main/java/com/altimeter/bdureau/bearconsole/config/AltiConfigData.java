@@ -1,12 +1,19 @@
 package com.altimeter.bdureau.bearconsole.config;
 
 /**
+ * ============================================================================
+ * Project: BearConsole - Model Rocketry Altimeter Management System
+ * Class: AltiConfigData
+ * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
- *   @description: Altimeter configuration class that manages all the data
- *
- *   @author: boris.dureau@neuf.fr
- *
- **/
+ * @description:
+ *  Data model of the altimeter configuration stored in its EEPROM: deployment outputs and
+ *  delays, main altitude, apogee detection, units, beeper, recording settings, serial speed,
+ *  battery type, identifier, telemetry port, Bluetooth name and servo positions. It is filled
+ *  from the "alticonfig" frame and written back field by field by AltiTabConfigActivity.
+ * ============================================================================
+ */
+
 public class AltiConfigData {
     private static final String TAG = "AltiConfigData";
     //Altimeter config variable
