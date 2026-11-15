@@ -21,10 +21,8 @@ package com.altimeter.bdureau.bearconsole.Flash;
 import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -46,7 +44,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
@@ -84,7 +81,7 @@ public class FlashFirmware extends BaseActivity {
 
     private static final String ASSET_FILE_NAME_ALTIMULTIV2 = "firmwares/Altimulti/AltiMultiV2-2.3.hex";
     private static final String ASSET_FILE_NAME_ALTIMULTI = "firmwares/Altimulti/AltiMulti-2.0.hex";
-    private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/2023-02-27-AltiServoV1_6.ino.hex";
+    private static final String ASSET_FILE_NAME_ALTISERVO = "firmwares/AltiServo/AltiServoV1_7.ino.hex";
     private static final String ASSET_FILE_NAME_ALTIDUO = "firmwares/2023-02-27-AltiDuoV1_9_console.ino.hex";
     private static final String ASSET_FILE_NAME_ALTIMULTISTM32 = "firmwares/STM32/RocketFlightLoggerV2.2.ino.bin";
     private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/AltiGPS/RocketGPSLoggerV1.8.ino.bin";

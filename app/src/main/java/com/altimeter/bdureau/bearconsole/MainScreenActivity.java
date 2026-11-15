@@ -930,19 +930,19 @@ public class MainScreenActivity extends BaseActivity {
 
         FirmwareCompatibility() {
             hm = new HashMap<>();
-            Add("AltiMulti", "1.28,2.0,2.2,2.3");
-            Add("AltiMultiV2", "1.28,2.0,2.2,2.3");
-            Add("AltiMultiSTM32", "1.28,2.0,2.2,2.3");
-            Add("AltiServo", "1.6");
+            Add("AltiMulti", "1.28,2.0,2.2,2.3,2.4");
+            Add("AltiMultiV2", "1.28,2.0,2.2,2.3,2.4");
+            Add("AltiMultiSTM32", "1.28,2.0,2.2,2.3,2.4");
+            Add("AltiServo", "1.6,1.7");
             Add("AltiGPS", "1.7,1.8");
             Add("AltiDuo", "1.9");
-            Add("AltiMultiESP32", "1.28,2.0,2.1,2.2,2.3");
-            Add("AltiMultiESP32_accel", "2.0,2.1,2.2,2.3");
-            Add("AltiMultiESP32_accel_375", "2.0,2.1,2.2,2.3");
-            Add("AltiMultiESP32_accel_345", "2.0,2.1,2.2,2.3");
-            Add("TTGOBearAltimeter", "0.4,0.5");
+            Add("AltiMultiESP32", "1.28,2.0,2.1,2.2,2.3,2.4");
+            Add("AltiMultiESP32_accel", "2.0,2.1,2.2,2.3,2.4");
+            Add("AltiMultiESP32_accel_375", "2.0,2.1,2.2,2.3,2.4");
+            Add("AltiMultiESP32_accel_345", "2.0,2.1,2.2,2.3,2.4");
+            Add("TTGOBearAltimeter", "0.4,0.5,0.6");
             Add("TTGOMiniBearAltimeter", "0.2,0.3");
-            Add("UltimateAltimeter", "0.4,0.5");
+            Add("UltimateAltimeter", "0.4,0.5,0.6,0.7");
         }
 
         public void Add(String altiName, String verList) {
