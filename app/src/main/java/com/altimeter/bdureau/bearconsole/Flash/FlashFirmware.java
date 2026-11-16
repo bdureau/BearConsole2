@@ -91,6 +91,11 @@ public class FlashFirmware extends BaseActivity {
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/RocketFlightLoggerV2.2.ino.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE4 = "firmwares/ESP32/RocketFlightLoggerV2.2.ino.partitions.bin";
 
+    private static final String ASSET_FILE_NAME_ALTIESP32V2_FILE1 = "firmwares/ESP32/boot_app0.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32V2_FILE2 = "firmwares/ESP32/RocketFlightLoggerV2.4_ESP32V2.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32V2_FILE3 = "firmwares/ESP32/RocketFlightLoggerV2.4_ESP32V2.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32V2_FILE4 = "firmwares/ESP32/RocketFlightLoggerV2.4_ESP32V2.ino.partitions.bin";
+
     //ESP32 accelero
     private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE1 = "firmwares/ESP32_accelero/boot_app0.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE2 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.2.ino.bootloader.bin";
@@ -172,6 +177,7 @@ public class FlashFirmware extends BaseActivity {
                 "AltiMultiSTM32",
                 "AltiGPS",
                 "AltiESP32",
+                "AltiESP32V2",
                 "AltiESP32_accelero",
                 "AltiESP32_ADXL345",
                 "AltiESP32_ADXL375",
@@ -256,6 +262,9 @@ public class FlashFirmware extends BaseActivity {
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultistm32_small, getApplicationContext().getTheme()));
 
                 if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32"))
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiesp32_small, getApplicationContext().getTheme()));
+
+                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32V2"))
                     imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.altimultiesp32_small, getApplicationContext().getTheme()));
 
                 if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero"))
@@ -371,6 +380,7 @@ public class FlashFirmware extends BaseActivity {
             recorverFirmware = true;
             new UploadSTM32Asyc().execute();
         } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32") ||
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32V2") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375") ||
@@ -404,6 +414,8 @@ public class FlashFirmware extends BaseActivity {
         tvRead.append(ASSET_FILE_NAME_ALTIGPS);
         tvRead.append("\n");
         tvRead.append(ASSET_FILE_NAME_ALTIESP32_FILE2);
+        tvRead.append("\n");
+        tvRead.append(ASSET_FILE_NAME_ALTIESP32V2_FILE2);
         tvRead.append("\n");
     }
 
@@ -458,6 +470,7 @@ public class FlashFirmware extends BaseActivity {
             recorverFirmware = false;
             new UploadSTM32Asyc().execute();
         } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32") ||
+                itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32V2") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345") ||
                 itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375") ||
@@ -683,6 +696,11 @@ public class FlashFirmware extends BaseActivity {
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_FILE4;
+                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32V2")) {
+                    firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32V2_FILE1;
+                    firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32V2_FILE2;
+                    firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32V2_FILE3;
+                    firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32V2_FILE4;
                 } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_accelero_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_accelero_FILE2;
