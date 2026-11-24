@@ -533,6 +533,8 @@
     <string name="config_uploading">Konfiguration wird übertragen…</string>
     <string name="config_upload_success">Konfiguration erfolgreich aktualisiert</string>
     <string name="config_upload_failed">Die Höhenmesser-Konfiguration konnte nicht geschrieben werden</string>
+    <string name="config_upload_refused_title">Konfiguration nicht gespeichert</string>
+    <string name="config_upload_refused">Der Höhenmesser hat nicht alle Einstellungen bestätigt: Die neue Konfiguration wurde NICHT gespeichert. Starten Sie den Höhenmesser vor jedem Flug neu und übertragen Sie die Konfiguration erneut.</string>
     <string name="config_read_failed">Die Höhenmesser-Konfiguration konnte nicht gelesen werden</string>
     <string name="main_usb_cannot_connect">Verbindung zum USB-Gerät nicht möglich</string>
     <string name="main_usb_permission_denied">USB-Berechtigung nicht erteilt</string>

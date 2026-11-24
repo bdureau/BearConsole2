@@ -31,7 +31,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -71,9 +70,6 @@ import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackGoogleMap;
 import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackOpenMap;
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryTabActivity;
 import com.felhr.usbserial.UsbSerialDevice;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -112,8 +108,6 @@ public class MainScreenActivity extends BaseActivity {
     private AltiConfigData AltiCfg = null;
     private FirmwareCompatibility firmCompat = null;
 
-    // Google App Indexing client
-    private GoogleApiClient client;
 
     // Shared, ordered background executor of the application for serial communication
     private ExecutorService ioExecutor;
@@ -433,9 +427,6 @@ public class MainScreenActivity extends BaseActivity {
             }
             msg(getString(R.string.continuity_changed));
         });
-
-        // Initialize Google App Indexing client
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     /**
@@ -837,32 +828,6 @@ public class MainScreenActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW,
-                "MainScreen Page",
-                Uri.parse("http://host/path"),
-                Uri.parse("android-app://com.altimeter.bdureau.bearconsole/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW,
-                "MainScreen Page",
-                Uri.parse("http://host/path"),
-                Uri.parse("android-app://com.altimeter.bdureau.bearconsole/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
     }
 
     @Override

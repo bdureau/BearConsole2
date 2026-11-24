@@ -533,6 +533,8 @@
     <string name="config_uploading">Wysyłanie konfiguracji…</string>
     <string name="config_upload_success">Konfiguracja została zaktualizowana</string>
     <string name="config_upload_failed">Nie udało się zapisać konfiguracji wysokościomierza</string>
+    <string name="config_upload_refused_title">Konfiguracja nie została zapisana</string>
+    <string name="config_upload_refused">Wysokościomierz nie potwierdził wszystkich ustawień: nowa konfiguracja NIE została zapisana. Przed lotem uruchom ponownie wysokościomierz, a następnie wyślij konfigurację jeszcze raz.</string>
     <string name="config_read_failed">Nie udało się odczytać konfiguracji wysokościomierza</string>
     <string name="main_usb_cannot_connect">Nie można połączyć się z urządzeniem USB</string>
     <string name="main_usb_permission_denied">Nie przyznano uprawnień USB</string>

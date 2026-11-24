@@ -89,6 +89,8 @@ public class RocketTrackOpenMap extends BaseActivity {
 
     private Button btnDismiss, butShareMap, butAudio;
     private LocationBroadCastReceiver receiver=null;
+    // True while the phone position receiver is registered
+    private boolean receiverRegistered = false;
 
     private GeoPoint dest = new GeoPoint(rocketLatitude, rocketLongitude);
 
@@ -125,7 +127,7 @@ public class RocketTrackOpenMap extends BaseActivity {
     };
 
     private void setLatitudeValue(String value) {
-        if (value.matches("\\d+(?:\\.\\d+)?")) {
+        if (ConsoleApplication.isSignedNumber(value)) {
             float val = Float.parseFloat(value);
             Log.d("track", "latitude:"+ value);
             if(val !=0.0f) {
@@ -137,13 +139,14 @@ public class RocketTrackOpenMap extends BaseActivity {
     }
 
     private void setLongitudeValue(String value) {
-        if (value.matches("\\d+(?:\\.\\d+)?")) {
+        if (ConsoleApplication.isSignedNumber(value)) {
             float val = Float.parseFloat(value);
             Log.d("track", "longitude:"+ value);
             if(val !=0.0f) {
                 rocketLongitude = Float.parseFloat(value) / 100000;
                 myBT.getAppConf().setRocketLongitude( rocketLongitude);
-                myBT.getAppConf().SaveConfig();
+                // Not saved for every frame: at most every 10 s, and when the screen is paused
+                myBT.getAppConf().SaveConfigThrottled();
             }
         }
     }
@@ -339,17 +342,41 @@ public class RocketTrackOpenMap extends BaseActivity {
     }
 
 
+    /** Starts the phone position service (once) and registers its receiver. */
     private void startService() {
+        registerLocationReceiver();
+        if (locIntent == null) {
+            locIntent = new Intent(RocketTrackOpenMap.this, LocationService.class);
+            startService(locIntent);
+        }
+    }
 
+    /**
+     * Registers the receiver of the phone position broadcast by {@link LocationService}.
+     * It stays registered while the screen is paused (screen locked while walking to the
+     * rocket) so that the distance and its voice announcement keep being updated; it is
+     * unregistered in onDestroy().
+     */
+    private void registerLocationReceiver() {
+        if (receiverRegistered) return;
         IntentFilter filter = new IntentFilter("ACT_LOC");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             registerReceiver(receiver, filter, RECEIVER_EXPORTED);
         } else {
             registerReceiver(receiver, filter);
         }
+        receiverRegistered = true;
+    }
 
-        locIntent = new Intent( RocketTrackOpenMap.this, LocationService.class);
-        startService(locIntent);
+    /** Unregisters the phone position receiver if it is registered. */
+    private void unregisterLocationReceiver() {
+        if (!receiverRegistered) return;
+        try {
+            unregisterReceiver(receiver);
+        } catch (IllegalArgumentException e) {
+            Log.w(TAG, "Location receiver was not registered", e);
+        }
+        receiverRegistered = false;
     }
 
     @Override
@@ -358,11 +385,7 @@ public class RocketTrackOpenMap extends BaseActivity {
         Log.d(TAG,"onDestroy()" );
         if (locIntent !=null)
             stopService(locIntent);
-        if (receiver !=null) {
-            Log.d(TAG,"unregisterReceiver(receiver)" );
-            unregisterReceiver(receiver);
-            receiver = null;
-        }
+        unregisterLocationReceiver();
         try {
             mTTS.shutdown();
         } catch (Exception e) {
@@ -381,8 +404,10 @@ public class RocketTrackOpenMap extends BaseActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 1:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, getString(R.string.permission_granted), Toast.LENGTH_LONG).show();
+                    // The permission has just been granted: start tracking the phone position
+                    startService();
                 } else {
                     Toast.makeText(this, permissions[0], Toast.LENGTH_LONG).show();
                 }
@@ -401,33 +426,20 @@ public class RocketTrackOpenMap extends BaseActivity {
         if (myBT.getConnected() && !reader.isRunning()) {
             reader.start("y1;");
         }
-        if (receiver ==null) {
-            try {
-                Log.d(TAG,"onPause() - registerReceiver(receiver)" );
-                startService();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        // The phone position receiver stays registered while paused (see registerLocationReceiver())
     }
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG,"onPause()" );
+        // Keep the last known rocket position if the application is closed
+        myBT.getAppConf().SaveConfig();
         Configuration.getInstance().save(getApplicationContext(),
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         if (mMap != null) {
             mMap.onPause();
         }
-        if (receiver !=null) {
-            try {
-                Log.d(TAG,"onPause() - unregisterReceiver(receiver)" );
-                unregisterReceiver(receiver);
-                receiver = null;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+
     }
 
     public static void verifyStoragePermission(Activity activity) {
@@ -457,7 +469,10 @@ public class RocketTrackOpenMap extends BaseActivity {
             if(intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
-                double distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude, longitude, rocketLongitude);
+                // Distance computed in meters, displayed in the unit of the application settings
+                double distance = LocationUtils.metersToAppUnit(
+                        LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude, longitude, rocketLongitude),
+                        myBT.getAppConf().getUnits());
                 textViewdistance.setText(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
                 // Tell distance every 15 secondes
                 if ((distanceTime - lastSpeakTime) > 15000 ) {

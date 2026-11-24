@@ -539,6 +539,8 @@
     <string name="config_uploading">Uploading configuration…</string>
     <string name="config_upload_success">Configuration updated successfully</string>
     <string name="config_upload_failed">Failed to write the altimeter configuration</string>
+    <string name="config_upload_refused_title">Configuration not saved</string>
+    <string name="config_upload_refused">The altimeter did not confirm every setting: the new configuration was NOT saved. Restart the altimeter before any flight, then upload the configuration again.</string>
     <string name="config_read_failed">Failed to retrieve the altimeter configuration</string>
     <string name="main_usb_cannot_connect">Cannot connect to the USB device</string>
     <string name="main_usb_permission_denied">USB permission not granted</string>
