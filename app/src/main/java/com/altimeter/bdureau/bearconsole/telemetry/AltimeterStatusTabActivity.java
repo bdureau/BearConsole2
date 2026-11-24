@@ -171,7 +171,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                     //Value 18 contains the latitude
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String latitude = (String) msg.obj;
-                        if (latitude.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(latitude)) {
                             float latitudeVal = Float.parseFloat(latitude) / 100000;
                             rocketLatitude = latitudeVal;
                             statusPage2.setLatitudeValue("" + latitudeVal);
@@ -182,7 +182,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                     //Value 19 contains the longitude
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String longitude = (String) msg.obj;
-                        if (longitude.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(longitude)) {
                             Float longitudeVal = Float.parseFloat(longitude) / 100000;
                             rocketLongitude = longitudeVal;
                             statusPage2.setLongitudeValue("" + longitudeVal);
@@ -223,7 +223,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                     //Value 23 contains the GPS altitude
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String GPSAltitude = (String) msg.obj;
-                        if (GPSAltitude.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(GPSAltitude)) {
                             int GPSAltitudeVal = ConsoleApplication.parseIntSafe(GPSAltitude, 0);
                             statusPage2.setGPSAltitudeVal("" + GPSAltitudeVal);
                         }
@@ -255,7 +255,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375x = (String) msg.obj;
-                        if (accel375x.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel375x)) {
                             int accel375xVal = ConsoleApplication.parseIntSafe(accel375x, 0);
                             statusPage1ter.setAccel375x(String.format("%.2f", ((double) accel375xVal / (double) 1000)));
                             accel375[0] = ((double) accel375xVal / (double) 1000);
@@ -264,7 +264,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                     //for the TTGOBearAltimeter it is an ADXL345
                     if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
                         String accel345x = (String) msg.obj;
-                        if (accel345x.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel345x)) {
                             int accel345xVal = ConsoleApplication.parseIntSafe(accel345x, 0);
                             statusPage1ter.setAccel345x(String.format("%.2f", ((double) accel345xVal / (double) 1000)));
                             accel345[0] = ((double) accel345xVal / (double) 1000);
@@ -277,7 +277,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375y = (String) msg.obj;
-                        if (accel375y.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel375y)) {
                             int accel375yVal = ConsoleApplication.parseIntSafe(accel375y, 0);
                             statusPage1ter.setAccel375y(String.format("%.2f", ((double) accel375yVal / (double) 1000)));
                             accel375[1] = ((double) accel375yVal / (double) 1000);
@@ -286,7 +286,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                     //for the TTGOBearAltimeter it is an ADXL345
                     if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
                         String accel345y = (String) msg.obj;
-                        if (accel345y.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel345y)) {
                             int accel345yVal = ConsoleApplication.parseIntSafe(accel345y, 0);
                             statusPage1ter.setAccel345y(String.format("%.2f", ((double) accel345yVal / (double) 1000)));
                             accel345[1] = ((double) accel345yVal / (double) 1000);
@@ -299,7 +299,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375z = (String) msg.obj;
-                        if (accel375z.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel375z)) {
                             int accel375zVal = ConsoleApplication.parseIntSafe(accel375z, 0);
                             statusPage1ter.setAccel375z(String.format("%.2f", ((double) accel375zVal / (double) 1000)));
                             accel375[2] = ((double) accel375zVal / (double) 1000);
@@ -309,7 +309,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                     //for the TTGOBearAltimeter it is an ADXL345
                     if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
                         String accel345z = (String) msg.obj;
-                        if (accel345z.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel345z)) {
                             int accel345zVal = ConsoleApplication.parseIntSafe(accel345z, 0);
                             statusPage1ter.setAccel345z(String.format("%.2f", ((double) accel345zVal / (double) 1000)));
                             accel345[2] = ((double) accel345zVal / (double) 1000);
@@ -322,7 +322,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345x = (String) msg.obj;
-                        if (accel345x.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel345x)) {
                             int accel345xVal = ConsoleApplication.parseIntSafe(accel345x, 0);
                             statusPage1ter.setAccel345x(String.format("%.2f", ((double) accel345xVal / (double) 1000)));
                             accel345[0] = ((double) accel345xVal / (double) 1000);
@@ -335,7 +335,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345y = (String) msg.obj;
-                        if (accel345y.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel345y)) {
                             int accel345yVal = ConsoleApplication.parseIntSafe(accel345y, 0);
                             statusPage1ter.setAccel345y(String.format("%.2f", ((double) accel345yVal / (double) 1000)));
                             accel345[1] = ((double) accel345yVal / (double) 1000);
@@ -348,7 +348,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345z = (String) msg.obj;
-                        if (accel345z.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel345z)) {
                             int accel345zVal = ConsoleApplication.parseIntSafe(accel345z, 0);
                             statusPage1ter.setAccel345z(String.format("%.2f", ((double) accel345zVal / (double) 1000)));
                             accel345[2] = ((double) accel345zVal / (double) 1000);

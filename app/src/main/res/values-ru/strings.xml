@@ -533,6 +533,8 @@
     <string name="config_uploading">Отправка конфигурации…</string>
     <string name="config_upload_success">Конфигурация обновлена</string>
     <string name="config_upload_failed">Не удалось записать конфигурацию высотомера</string>
+    <string name="config_upload_refused_title">Конфигурация не сохранена</string>
+    <string name="config_upload_refused">Высотомер подтвердил не все параметры: новая конфигурация НЕ сохранена. Перезапустите высотомер перед полётом и отправьте конфигурацию ещё раз.</string>
     <string name="config_read_failed">Не удалось прочитать конфигурацию высотомера</string>
     <string name="main_usb_cannot_connect">Не удаётся подключиться к USB-устройству</string>
     <string name="main_usb_permission_denied">Разрешение USB не предоставлено</string>

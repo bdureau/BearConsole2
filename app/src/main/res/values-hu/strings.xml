@@ -533,6 +533,8 @@
     <string name="config_uploading">Beállítások feltöltése…</string>
     <string name="config_upload_success">A beállítások frissítve</string>
     <string name="config_upload_failed">Nem sikerült a magasságmérő beállításait kiírni</string>
+    <string name="config_upload_refused_title">A beállítások nincsenek mentve</string>
+    <string name="config_upload_refused">A magasságmérő nem igazolta vissza az összes beállítást: az új beállítások NEM lettek elmentve. Repülés előtt indítsa újra a magasságmérőt, majd küldje el újra a beállításokat.</string>
     <string name="config_read_failed">Nem sikerült a magasságmérő beállításait beolvasni</string>
     <string name="main_usb_cannot_connect">Nem lehet csatlakozni az USB-eszközhöz</string>
     <string name="main_usb_permission_denied">Az USB-engedély nincs megadva</string>

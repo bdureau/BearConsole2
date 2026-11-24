@@ -139,7 +139,7 @@ public class TelemetryTabActivity extends BaseActivity {
             switch (msg.what) {
                 case 1:
                     // Value 1 contain the current altitude
-                    if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
+                    if (ConsoleApplication.isSignedNumber(((String) msg.obj))) {
                         int altitude = (int) (ConsoleApplication.parseIntSafe((String) msg.obj, 0) * FEET_IN_METER);
                         //use afree chart
                         if ((myBT.getAppConf().getGraphicsLibType() == GlobalConfig.GraphLib.AfreeChart) &
@@ -245,7 +245,7 @@ public class TelemetryTabActivity extends BaseActivity {
                     if ((myBT.getAppConf().getGraphicsLibType() == GlobalConfig.GraphLib.AfreeChart) &
                             (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
                         if (statusPage0bis.isViewCreated())
-                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
+                            if (ConsoleApplication.isSignedNumber(((String) msg.obj))) {
                                 int altitude = (int) (ConsoleApplication.parseIntSafe((String) msg.obj, 0) * FEET_IN_METER);
 
                                 if (statusPage0bis.isApogeeChecked()) {
@@ -262,7 +262,7 @@ public class TelemetryTabActivity extends BaseActivity {
                             }
                     } else {
                         if (statusPage0.isViewCreated())
-                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
+                            if (ConsoleApplication.isSignedNumber(((String) msg.obj))) {
                                 int altitude = (int) (ConsoleApplication.parseIntSafe((String) msg.obj, 0) * FEET_IN_METER);
 
                                 if (statusPage0.isApogeeChecked()) {
@@ -305,7 +305,7 @@ public class TelemetryTabActivity extends BaseActivity {
                     if ((myBT.getAppConf().getGraphicsLibType() == GlobalConfig.GraphLib.AfreeChart) &
                             (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)) {
                         if (statusPage0bis.isViewCreated())
-                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
+                            if (ConsoleApplication.isSignedNumber(((String) msg.obj))) {
                                 if (statusPage0bis.isMainChuteChecked()) {
                                     int altitude = (int) (ConsoleApplication.parseIntSafe((String) msg.obj, 0) * FEET_IN_METER);
                                     statusPage0bis.setMainAltitude(String.valueOf(altitude));
@@ -320,7 +320,7 @@ public class TelemetryTabActivity extends BaseActivity {
                             }
                     } else {
                         if (statusPage0.isViewCreated())
-                            if (((String) msg.obj).matches("\\d+(?:\\.\\d+)?")) {
+                            if (ConsoleApplication.isSignedNumber(((String) msg.obj))) {
                                 if (statusPage0.isMainChuteChecked()) {
                                     int altitude = (int) (ConsoleApplication.parseIntSafe((String) msg.obj, 0) * FEET_IN_METER);
                                     statusPage0.setMainAltitude(String.valueOf(altitude));
@@ -421,7 +421,7 @@ public class TelemetryTabActivity extends BaseActivity {
                     //Value 18 contains the latitude
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String latitude = (String) msg.obj;
-                        if (latitude.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(latitude)) {
                             float latitudeVal = Float.parseFloat(latitude) / 100000;
                             statusPage2.setLatitudeValue("" + latitudeVal);
                             setLatitudeValue(latitude);
@@ -433,7 +433,7 @@ public class TelemetryTabActivity extends BaseActivity {
                     //Value 19 contains the longitude
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String longitude = (String) msg.obj;
-                        if (longitude.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(longitude)) {
                             float longitudeVal = Float.parseFloat(longitude) / 100000;
                             statusPage2.setLongitudeValue("" + longitudeVal);
                             setLongitudeValue(longitude);
@@ -475,7 +475,7 @@ public class TelemetryTabActivity extends BaseActivity {
                     //Value 23 contains the GPS altitude
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String GPSAltitude = (String) msg.obj;
-                        if (GPSAltitude.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(GPSAltitude)) {
                             int GPSAltitudeVal = ConsoleApplication.parseIntSafe(GPSAltitude, 0);
                             statusPage2.setGPSAltitudeVal("" + GPSAltitudeVal);
                         }
@@ -507,7 +507,7 @@ public class TelemetryTabActivity extends BaseActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375x = (String) msg.obj;
-                        if (accel375x.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel375x)) {
                             int accel375xVal = ConsoleApplication.parseIntSafe(accel375x, 0);
                         }
                     }
@@ -518,7 +518,7 @@ public class TelemetryTabActivity extends BaseActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375y = (String) msg.obj;
-                        if (accel375y.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel375y)) {
                             int accel375yVal = ConsoleApplication.parseIntSafe(accel375y, 0);
                         }
                     }
@@ -529,7 +529,7 @@ public class TelemetryTabActivity extends BaseActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel375z = (String) msg.obj;
-                        if (accel375z.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel375z)) {
                             int accel375zVal = ConsoleApplication.parseIntSafe(accel375z, 0);
                         }
                     }
@@ -540,7 +540,7 @@ public class TelemetryTabActivity extends BaseActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345x = (String) msg.obj;
-                        if (accel345x.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel345x)) {
                             int accel345xVal = ConsoleApplication.parseIntSafe(accel345x, 0);
                         }
                     }
@@ -551,7 +551,7 @@ public class TelemetryTabActivity extends BaseActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345y = (String) msg.obj;
-                        if (accel345y.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel345y)) {
                             int accel345yVal = ConsoleApplication.parseIntSafe(accel345y, 0);
                         }
                     }
@@ -562,7 +562,7 @@ public class TelemetryTabActivity extends BaseActivity {
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
                             myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
                         String accel345z = (String) msg.obj;
-                        if (accel345z.matches("\\d+(?:\\.\\d+)?")) {
+                        if (ConsoleApplication.isSignedNumber(accel345z)) {
                             int accel345zVal = ConsoleApplication.parseIntSafe(accel345z, 0);
                         }
                     }
@@ -572,7 +572,7 @@ public class TelemetryTabActivity extends BaseActivity {
     };
 
     private void setLatitudeValue(String value) {
-        if (value.matches("\\d+(?:\\.\\d+)?")) {
+        if (ConsoleApplication.isSignedNumber(value)) {
             Float val = Float.parseFloat(value);
             Log.d("track", "latitude:" + value);
             if (val != 0) {
@@ -583,13 +583,14 @@ public class TelemetryTabActivity extends BaseActivity {
     }
 
     private void setLongitudeValue(String value) {
-        if (value.matches("\\d+(?:\\.\\d+)?")) {
+        if (ConsoleApplication.isSignedNumber(value)) {
             Double val = Double.parseDouble(value);
             Log.d("track", "longitude:" + value);
             if (val != 0) {
                 rocketLongitude = Float.parseFloat(value) / 100000;
                 myBT.getAppConf().setRocketLongitude(rocketLongitude);
-                myBT.getAppConf().SaveConfig();
+                // Not saved for every frame: at most every 10 s, and when the screen is stopped
+                myBT.getAppConf().SaveConfigThrottled();
             }
         }
     }
@@ -786,6 +787,8 @@ public class TelemetryTabActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        // Keep the last known rocket position if the application is closed
+        myBT.getAppConf().SaveConfig();
         // The screen is no longer visible: pause the stream ("h;") without blocking the UI
         if (reader.isRunning()) {
             reader.stop(true, "h;");

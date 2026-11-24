@@ -33,6 +33,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Build;
@@ -49,7 +50,10 @@ import com.altimeter.bdureau.bearconsole.connection.UsbConnection;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.BooleanSupplier;
@@ -62,6 +66,23 @@ public class ConsoleApplication extends Application {
     private static final Pattern UNSIGNED_NUMBER = Pattern.compile("\\d+(?:\\.\\d+)?");
     /** Signed integer or decimal number (altitude, temperature, GPS coordinates). */
     private static final Pattern SIGNED_NUMBER = Pattern.compile("-?\\d+(?:\\.\\d+)?");
+
+    /**
+     * Telemetry messages ("what" index) whose value can be negative: current altitude (1),
+     * apogee altitude (4), main altitude (6), temperature (14), GPS latitude (18) and
+     * longitude (19), GPS altitude (23) and accelerometer axes (26..31).
+     * Every other telemetry value is a positive number.
+     */
+    private static final Set<Integer> SIGNED_TELEMETRY_FIELDS = new HashSet<>(
+            Arrays.asList(1, 4, 6, 14, 18, 19, 23, 26, 27, 28, 29, 30, 31));
+
+    /**
+     * Returns true if the text is a signed integer or decimal number ("-0.5", "12", "-4512").
+     * Used by the telemetry screens for the values that can be negative.
+     */
+    public static boolean isSignedNumber(String value) {
+        return value != null && SIGNED_NUMBER.matcher(value).matches();
+    }
 
     /** Pause used while polling an empty stream, so that a reading thread does not spin a CPU core. */
     private static final long POLL_INTERVAL_MS = 2;
@@ -114,7 +135,10 @@ public class ConsoleApplication extends Application {
         if (appLanguage == 1) {
             locale = Locale.ENGLISH;
         } else {
-            locale = Locale.getDefault();
+            // Language of the phone, read from the system configuration. Locale.getDefault()
+            // cannot be used here: once English has been forced it returns English, and the
+            // phone language could not be restored without restarting the application.
+            locale = Resources.getSystem().getConfiguration().getLocales().get(0);
         }
         Locale.setDefault(locale);
 
@@ -595,10 +619,14 @@ public class ConsoleApplication extends Application {
     /**
      * Forwards a telemetry field to the registered screen.
      * Non numeric values are replaced by "0", as the screens expect numbers.
+     * Negative values are kept for the fields listed in {@link #SIGNED_TELEMETRY_FIELDS}
+     * (altitudes, temperature, GPS coordinates, accelerations): a western longitude or a
+     * southern latitude must not be turned into 0.
      */
     private static void sendTelemetryField(Handler handler, String[] s, int index, int what) {
         if (!has(s, index)) return;
-        String value = UNSIGNED_NUMBER.matcher(s[index]).matches() ? s[index] : "0";
+        Pattern accepted = SIGNED_TELEMETRY_FIELDS.contains(what) ? SIGNED_NUMBER : UNSIGNED_NUMBER;
+        String value = accepted.matcher(s[index]).matches() ? s[index] : "0";
         handler.obtainMessage(what, value).sendToTarget();
     }
 
@@ -740,11 +768,12 @@ public class ConsoleApplication extends Application {
                 MyFlight.AddToFlight(time, (float) uField(s, 6, 0) / 100, flightName, 5);
         }
 
+        // Accelerometer channels are signed (a deceleration is negative): read them with sField
         // TTGO boards: one 3-axis accelerometer (thousandths)
         if (isAltimeter("TTGOBearAltimeter", "TTGOMiniBearAltimeter")) {
             for (int i = 7; i <= 9; i++) {
                 if (has(s, i))
-                    MyFlight.AddToFlight(time, (float) uField(s, i, 0) / 1000f, flightName, i - 1);
+                    MyFlight.AddToFlight(time, (float) sField(s, i, 0) / 1000f, flightName, i - 1);
             }
         }
 
@@ -752,7 +781,7 @@ public class ConsoleApplication extends Application {
         if (isAltimeter("UltimateAltimeter")) {
             for (int i = 6; i <= 8; i++) {
                 if (has(s, i))
-                    MyFlight.AddToFlight(time, (float) uField(s, i, 0) / 1000f, flightName, i - 1);
+                    MyFlight.AddToFlight(time, (float) sField(s, i, 0) / 1000f, flightName, i - 1);
             }
         }
 
@@ -760,7 +789,7 @@ public class ConsoleApplication extends Application {
         if (isAltimeter("AltiMultiESP32_accel", "AltiMultiESP32_accel_375", "AltiMultiESP32_accel_345")) {
             for (int i = 7; i <= 12; i++) {
                 if (has(s, i))
-                    MyFlight.AddToFlight(time, (float) uField(s, i, 0) / 1000f, flightName, i - 1);
+                    MyFlight.AddToFlight(time, (float) sField(s, i, 0) / 1000f, flightName, i - 1);
             }
         }
 

@@ -533,6 +533,8 @@
     <string name="config_uploading">Yapılandırma gönderiliyor…</string>
     <string name="config_upload_success">Yapılandırma güncellendi</string>
     <string name="config_upload_failed">Altimetre yapılandırması yazılamadı</string>
+    <string name="config_upload_refused_title">Yapılandırma kaydedilmedi</string>
+    <string name="config_upload_refused">Altimetre tüm ayarları onaylamadı: yeni yapılandırma KAYDEDİLMEDİ. Uçuştan önce altimetreyi yeniden başlatın ve yapılandırmayı tekrar gönderin.</string>
     <string name="config_read_failed">Altimetre yapılandırması okunamadı</string>
     <string name="main_usb_cannot_connect">USB cihazına bağlanılamıyor</string>
     <string name="main_usb_permission_denied">USB izni verilmedi</string>

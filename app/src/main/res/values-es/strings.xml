@@ -533,6 +533,8 @@
     <string name="config_uploading">Enviando la configuración…</string>
     <string name="config_upload_success">Configuración actualizada correctamente</string>
     <string name="config_upload_failed">No se pudo escribir la configuración del altímetro</string>
+    <string name="config_upload_refused_title">Configuración no guardada</string>
+    <string name="config_upload_refused">El altímetro no confirmó todos los ajustes: la nueva configuración NO se ha guardado. Reinicie el altímetro antes de cualquier vuelo y vuelva a enviar la configuración.</string>
     <string name="config_read_failed">No se pudo leer la configuración del altímetro</string>
     <string name="main_usb_cannot_connect">No se puede conectar con el dispositivo USB</string>
     <string name="main_usb_permission_denied">Permiso USB denegado</string>
