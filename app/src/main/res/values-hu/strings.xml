@@ -533,6 +533,8 @@
     <string name="config_uploading">Beállítások feltöltése…</string>
     <string name="config_upload_success">A beállítások frissítve</string>
     <string name="config_upload_failed">Nem sikerült a magasságmérő beállításait kiírni</string>
+    <string name="config_upload_refused_title">A beállítások nincsenek mentve</string>
+    <string name="config_upload_refused">A magasságmérő nem igazolta vissza az összes beállítást: az új beállítások NEM lettek elmentve. Repülés előtt indítsa újra a magasságmérőt, majd küldje el újra a beállításokat.</string>
     <string name="config_read_failed">Nem sikerült a magasságmérő beállításait beolvasni</string>
     <string name="main_usb_cannot_connect">Nem lehet csatlakozni az USB-eszközhöz</string>
     <string name="main_usb_permission_denied">Az USB-engedély nincs megadva</string>
@@ -564,4 +566,13 @@
     <string name="flash_chip_not_initiated">A chipet nem sikerült inicializálni: %1$s</string>
     <string name="flash_file_not_found">A fájl nem található: %1$s</string>
     <string name="flash_done">Kész</string>
+    <string name="flash_cancel_requested">Megszakítás: a flashelés az aktuális blokk után leáll…</string>
+    <string name="flash_cancelled_untouched">A flashelés írás előtt megszakítva: a magasságmérő firmware-e nem változott.</string>
+    <string name="flash_cancelled">A flashelés megszakítva: a magasságmérőnek nincs érvényes firmware-e. Használat előtt flashelje újra.</string>
+    <string name="flash_failed_untouched">A flashelés írás előtt sikertelen: a magasságmérő firmware-e nem változott.</string>
+    <string name="flash_failed">A flashelés sikertelen: a magasságmérő nem igazolt vissza bizonyos adatokat. Használat előtt flashelje újra.</string>
+    <string name="flash_result_title">Flashelés</string>
+    <string name="location_channel_name">Rakétakövetés</string>
+    <string name="location_notification_title">A rakéta követése folyamatban</string>
+    <string name="location_notification_text">A telefon helyzetét a rakétától való távolság kijelzésére használjuk.</string>
 </resources>

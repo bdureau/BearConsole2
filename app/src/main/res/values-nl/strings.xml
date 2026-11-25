@@ -533,6 +533,8 @@
     <string name="config_uploading">Configuratie wordt verzonden…</string>
     <string name="config_upload_success">Configuratie bijgewerkt</string>
     <string name="config_upload_failed">Schrijven van de hoogtemeterconfiguratie mislukt</string>
+    <string name="config_upload_refused_title">Configuratie niet opgeslagen</string>
+    <string name="config_upload_refused">De hoogtemeter heeft niet alle instellingen bevestigd: de nieuwe configuratie is NIET opgeslagen. Herstart de hoogtemeter vóór elke vlucht en verstuur de configuratie opnieuw.</string>
     <string name="config_read_failed">Lezen van de hoogtemeterconfiguratie mislukt</string>
     <string name="main_usb_cannot_connect">Kan geen verbinding maken met het USB-apparaat</string>
     <string name="main_usb_permission_denied">USB-toestemming geweigerd</string>
@@ -564,4 +566,13 @@
     <string name="flash_chip_not_initiated">De chip kon niet worden geïnitialiseerd: %1$s</string>
     <string name="flash_file_not_found">Bestand niet gevonden: %1$s</string>
     <string name="flash_done">Klaar</string>
+    <string name="flash_cancel_requested">Annuleren: het flashen stopt na het huidige blok…</string>
+    <string name="flash_cancelled_untouched">Flashen geannuleerd vóór het schrijven: de firmware van de hoogtemeter is niet gewijzigd.</string>
+    <string name="flash_cancelled">Flashen geannuleerd: de hoogtemeter heeft geen geldige firmware meer. Flash hem opnieuw vóór gebruik.</string>
+    <string name="flash_failed_untouched">Flashen mislukt vóór het schrijven: de firmware van de hoogtemeter is niet gewijzigd.</string>
+    <string name="flash_failed">Flashen mislukt: sommige gegevens zijn niet bevestigd door de hoogtemeter. Flash hem opnieuw vóór gebruik.</string>
+    <string name="flash_result_title">Flashen</string>
+    <string name="location_channel_name">Raket volgen</string>
+    <string name="location_notification_title">De raket wordt gevolgd</string>
+    <string name="location_notification_text">De positie van de telefoon wordt gebruikt om de afstand tot de raket te tonen.</string>
 </resources>

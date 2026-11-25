@@ -533,6 +533,8 @@
     <string name="config_uploading">Invio della configurazione…</string>
     <string name="config_upload_success">Configurazione aggiornata correttamente</string>
     <string name="config_upload_failed">Impossibile scrivere la configurazione dell\'altimetro</string>
+    <string name="config_upload_refused_title">Configurazione non salvata</string>
+    <string name="config_upload_refused">L\'altimetro non ha confermato tutte le impostazioni: la nuova configurazione NON è stata salvata. Riavviare l\'altimetro prima di qualsiasi volo, poi inviare di nuovo la configurazione.</string>
     <string name="config_read_failed">Impossibile leggere la configurazione dell\'altimetro</string>
     <string name="main_usb_cannot_connect">Impossibile connettersi al dispositivo USB</string>
     <string name="main_usb_permission_denied">Autorizzazione USB negata</string>
@@ -564,4 +566,13 @@
     <string name="flash_chip_not_initiated">Impossibile inizializzare il chip: %1$s</string>
     <string name="flash_file_not_found">File non trovato: %1$s</string>
     <string name="flash_done">Completato</string>
+    <string name="flash_cancel_requested">Annullamento: la programmazione si ferma dopo il blocco in corso…</string>
+    <string name="flash_cancelled_untouched">Programmazione annullata prima della scrittura: il firmware dell\'altimetro non è stato modificato.</string>
+    <string name="flash_cancelled">Programmazione annullata: l\'altimetro non ha più un firmware valido. Riprogrammarlo prima di qualsiasi uso.</string>
+    <string name="flash_failed_untouched">Programmazione fallita prima della scrittura: il firmware dell\'altimetro non è stato modificato.</string>
+    <string name="flash_failed">Programmazione fallita: alcuni dati non sono stati confermati dall\'altimetro. Riprogrammarlo prima di qualsiasi uso.</string>
+    <string name="flash_result_title">Programmazione</string>
+    <string name="location_channel_name">Tracciamento del razzo</string>
+    <string name="location_notification_title">Tracciamento del razzo in corso</string>
+    <string name="location_notification_text">La posizione del telefono viene usata per mostrare la distanza dal razzo.</string>
 </resources>

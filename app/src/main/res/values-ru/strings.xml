@@ -533,6 +533,8 @@
     <string name="config_uploading">Отправка конфигурации…</string>
     <string name="config_upload_success">Конфигурация обновлена</string>
     <string name="config_upload_failed">Не удалось записать конфигурацию высотомера</string>
+    <string name="config_upload_refused_title">Конфигурация не сохранена</string>
+    <string name="config_upload_refused">Высотомер подтвердил не все параметры: новая конфигурация НЕ сохранена. Перезапустите высотомер перед полётом и отправьте конфигурацию ещё раз.</string>
     <string name="config_read_failed">Не удалось прочитать конфигурацию высотомера</string>
     <string name="main_usb_cannot_connect">Не удаётся подключиться к USB-устройству</string>
     <string name="main_usb_permission_denied">Разрешение USB не предоставлено</string>
@@ -564,4 +566,13 @@
     <string name="flash_chip_not_initiated">Не удалось инициализировать микросхему: %1$s</string>
     <string name="flash_file_not_found">Файл не найден: %1$s</string>
     <string name="flash_done">Готово</string>
+    <string name="flash_cancel_requested">Отмена: прошивка остановится после текущего блока…</string>
+    <string name="flash_cancelled_untouched">Прошивка отменена до записи: прошивка высотомера не изменена.</string>
+    <string name="flash_cancelled">Прошивка отменена: у высотомера больше нет рабочей прошивки. Прошейте его снова перед использованием.</string>
+    <string name="flash_failed_untouched">Ошибка прошивки до записи: прошивка высотомера не изменена.</string>
+    <string name="flash_failed">Ошибка прошивки: высотомер не подтвердил часть данных. Прошейте его снова перед использованием.</string>
+    <string name="flash_result_title">Прошивка</string>
+    <string name="location_channel_name">Отслеживание ракеты</string>
+    <string name="location_notification_title">Идёт отслеживание ракеты</string>
+    <string name="location_notification_text">Положение телефона используется для отображения расстояния до ракеты.</string>
 </resources>

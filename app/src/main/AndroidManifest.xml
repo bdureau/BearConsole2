@@ -7,6 +7,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Foreground location service: the phone position keeps being updated while the
+         phone is locked during the walk to the rocket -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+
     <!-- Legacy Bluetooth permissions for Android 11 (API level 30) and lower -->
     <uses-permission
         android:name="android.permission.BLUETOOTH"
@@ -190,7 +195,8 @@
         <!-- Background telemetry location tracking service -->
         <service
             android:name=".LocationService"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="location" />
 
     </application>
 

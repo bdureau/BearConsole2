@@ -533,6 +533,8 @@
     <string name="config_uploading">Enviando la configuración…</string>
     <string name="config_upload_success">Configuración actualizada correctamente</string>
     <string name="config_upload_failed">No se pudo escribir la configuración del altímetro</string>
+    <string name="config_upload_refused_title">Configuración no guardada</string>
+    <string name="config_upload_refused">El altímetro no confirmó todos los ajustes: la nueva configuración NO se ha guardado. Reinicie el altímetro antes de cualquier vuelo y vuelva a enviar la configuración.</string>
     <string name="config_read_failed">No se pudo leer la configuración del altímetro</string>
     <string name="main_usb_cannot_connect">No se puede conectar con el dispositivo USB</string>
     <string name="main_usb_permission_denied">Permiso USB denegado</string>
@@ -564,4 +566,13 @@
     <string name="flash_chip_not_initiated">No se pudo inicializar el chip: %1$s</string>
     <string name="flash_file_not_found">Archivo no encontrado: %1$s</string>
     <string name="flash_done">Terminado</string>
+    <string name="flash_cancel_requested">Cancelando: la grabación se detiene después del bloque actual…</string>
+    <string name="flash_cancelled_untouched">Grabación cancelada antes de escribir: el firmware del altímetro no se ha modificado.</string>
+    <string name="flash_cancelled">Grabación cancelada: el altímetro ya no tiene un firmware válido. Vuelva a grabarlo antes de usarlo.</string>
+    <string name="flash_failed_untouched">La grabación falló antes de escribir: el firmware del altímetro no se ha modificado.</string>
+    <string name="flash_failed">La grabación falló: el altímetro no confirmó algunos datos. Vuelva a grabarlo antes de usarlo.</string>
+    <string name="flash_result_title">Grabación</string>
+    <string name="location_channel_name">Seguimiento del cohete</string>
+    <string name="location_notification_title">Siguiendo el cohete</string>
+    <string name="location_notification_text">La posición del teléfono se usa para mostrar la distancia al cohete.</string>
 </resources>

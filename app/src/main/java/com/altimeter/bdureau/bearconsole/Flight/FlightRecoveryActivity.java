@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.Flight;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: FlightRecoveryActivity
@@ -36,7 +36,6 @@ import android.widget.Toast;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
-import org.afree.data.xy.XYSeries;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +43,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static java.lang.Math.abs;
 
 
 public class FlightRecoveryActivity extends BaseActivity {
@@ -199,40 +197,19 @@ public class FlightRecoveryActivity extends BaseActivity {
                     Log.d("FlightList", "canceled2");
                     //order the names in the collection
                     Collections.sort(flightNames);
-                    try {
-                        //remove the last flight which might have incomplete data
+                    // Remove the last flight which might have incomplete data. The list is empty
+                    // if the retrieval was cancelled before any flight was received.
+                    if (!flightNames.isEmpty()) {
                         flightNames.remove(flightNames.size() - 1);
-                    } finally {
-
                     }
                 }
 
 
-                //calculate the speed
+                // Speed and acceleration: same computation as the flight list screen (signed
+                // centred differences, no division by zero, no truncation of the values)
                 for (String flight : flightNames) {
-                    Log.d("FlightList", "calculate the speed");
-                    XYSeries serie = myflight.GetFlightData(flight).getSeries(getResources().getString(R.string.curve_altitude));
-                    int nbrData = serie.getItemCount();
-                    for (int i = 5; i < nbrData; i++) {
-                        double X, Y;
-                        X = serie.getX(i).doubleValue();
-                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 5).doubleValue())
-                                / (((serie.getX(i).doubleValue() - serie.getX(i - 5).doubleValue()) / 1000.0));
-                        myflight.AddToFlight((long) X, (long) (Y), flight, 3);
-                    }
-                }
-                //calculate the acceleration
-                for (String flight : flightNames) {
-                    Log.d("FlightList", "calculate the acceleration");
-                    XYSeries serie = myflight.GetFlightData(flight).getSeries(3);
-                    int nbrData = serie.getItemCount();
-                    for (int i = 10; i < nbrData; i++) {
-                        double X, Y;
-                        X = serie.getX(i).doubleValue();
-                        Y = abs(serie.getY(i).doubleValue() - serie.getY(i - 10).doubleValue())
-                                / ((serie.getX(i).doubleValue() - serie.getX(i - 10).doubleValue()) / 1000.0);
-                        myflight.AddToFlight((long) X, (long) (Y), flight, 4);
-                    }
+                    Log.d("FlightList", "calculate the speed and acceleration");
+                    myflight.computeVelocityAndAcceleration(flight);
                 }
             }
             return null;

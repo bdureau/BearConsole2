@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.Flight.FlightView;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Flight Computer Management
  * Class: FlightViewInfoFragment
@@ -291,8 +291,10 @@ public class FlightViewInfoFragment extends Fragment {
 
             if (!points.isEmpty()) {
                 GeoPoint[] coord = points.toArray(new GeoPoint[0]);
-                flightDistanceValue.setText(String.format(Locale.US, "%.2f %s",
-                        LocationUtils.distanceBetweenCoordinates(coord), unitsLabel));
+                // The path length is computed in meters: convert it to the displayed unit
+                double distance = LocationUtils.metersToAppUnit(
+                        LocationUtils.distanceBetweenCoordinates(coord), myBT.getAppConf().getUnits());
+                flightDistanceValue.setText(String.format(Locale.US, "%.2f %s", distance, unitsLabel));
             }
         }
     }

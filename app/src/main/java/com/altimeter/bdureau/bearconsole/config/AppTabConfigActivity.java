@@ -119,11 +119,14 @@ public class AppTabConfigActivity extends BaseActivity {
                 if (status == TextToSpeech.SUCCESS) {
                     int result = 0;
 
-                    if (Locale.getDefault().getLanguage() == "en")
+                    // equals(): "==" compares the String references, not their content,
+                    // so the French and Dutch voices were never selected
+                    String language = Locale.getDefault().getLanguage();
+                    if ("en".equals(language))
                         result = mTTS.setLanguage(Locale.ENGLISH);
-                    else if (Locale.getDefault().getLanguage() == "fr")
+                    else if ("fr".equals(language))
                         result = mTTS.setLanguage(Locale.FRENCH);
-                    else if (Locale.getDefault().getLanguage() == "nl")
+                    else if ("nl".equals(language))
                         result = mTTS.setLanguage(new Locale("nl_NL"));
                     else
                         result = mTTS.setLanguage(Locale.ENGLISH);

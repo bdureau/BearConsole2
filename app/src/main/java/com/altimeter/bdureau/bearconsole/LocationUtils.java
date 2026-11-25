@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: LocationUtils
@@ -12,10 +12,28 @@ package com.altimeter.bdureau.bearconsole;
  * ============================================================================
  */
 
+import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
+
 import org.osmdroid.util.GeoPoint;
 
 
 public class LocationUtils {
+    /** Number of feet in one meter. */
+    public static final double FEET_PER_METER = 3.28084;
+
+    /**
+     * Converts a distance computed in meters (all the methods of this class return meters)
+     * into the unit selected in the application settings, so that the value matches the
+     * unit label displayed next to it.
+     *
+     * @param meters distance in meters
+     * @param units  application unit ({@link GlobalConfig.AltitudeUnit#METERS} or FEET)
+     * @return the distance in meters or in feet
+     */
+    public static double metersToAppUnit(double meters, int units) {
+        return units == GlobalConfig.AltitudeUnit.METERS ? meters : meters * FEET_PER_METER;
+    }
+
     /**
      * Calculate distance between two points in latitude and longitude taking
      * into account height difference. If you are not interested in height

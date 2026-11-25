@@ -286,13 +286,15 @@ public class ConfigLoraE32 extends BaseActivity {
         String sChannel = textLoraChannelValue.getText().toString().trim();
 
         // Address validation (0 - 65535)
-        if (!sAddress.matches("^\\d+$") || Integer.parseInt(sAddress) > 65535) {
+        // At most 5 digits: a longer number would overflow Integer.parseInt() and crash
+        if (!sAddress.matches("^\\d{1,5}$") || Integer.parseInt(sAddress) > 65535) {
             Toast.makeText(this, R.string.lora_module_address_range, Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Channel validation (0 - 83)
-        if (!sChannel.matches("^\\d+$") || Integer.parseInt(sChannel) > 83) {
+        // At most 2 digits: a longer number would overflow Integer.parseInt() and crash
+        if (!sChannel.matches("^\\d{1,2}$") || Integer.parseInt(sChannel) > 83) {
             Toast.makeText(this, R.string.lora_module_channel_value_msg, Toast.LENGTH_SHORT).show();
             return;
         }

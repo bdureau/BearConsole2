@@ -18,6 +18,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.SystemClock;
 
 public class GlobalConfig {
     Context context;
@@ -69,6 +70,11 @@ public class GlobalConfig {
 
     private boolean allowManualRecording = true;
     private boolean useOpenMap = true;
+
+    /** Minimum time between two saves of the rocket position received in telemetry. */
+    private static final long ROCKET_POSITION_SAVE_INTERVAL_MS = 10000;
+    // Time of the last throttled save (SystemClock.elapsedRealtime())
+    private long lastThrottledSave = 0;
 
     public GlobalConfig(Context current) {
         context = current;
@@ -246,8 +252,24 @@ public class GlobalConfig {
         edit.putFloat("rocketLongitude", getRocketLongitude());
         edit.putBoolean("allowManualRecording", getManualRecording());
         edit.putBoolean("useOpenMap", getUseOpenMap());
-        edit.commit();
+        // apply(): the values are visible immediately to every reader of the preferences and
+        // written to disk in the background, so the UI thread is never blocked by the disk
+        edit.apply();
 
+    }
+
+    /**
+     * Saves the settings at most once every {@link #ROCKET_POSITION_SAVE_INTERVAL_MS}.
+     * Used for the rocket position received in every telemetry frame: the last known
+     * position survives an application restart without rewriting the preferences file
+     * for each frame. The tracking screens also call SaveConfig() when they are paused.
+     */
+    public void SaveConfigThrottled() {
+        long now = SystemClock.elapsedRealtime();
+        if (lastThrottledSave == 0 || now - lastThrottledSave >= ROCKET_POSITION_SAVE_INTERVAL_MS) {
+            lastThrottledSave = now;
+            SaveConfig();
+        }
     }
 
     public int getFontSize() {

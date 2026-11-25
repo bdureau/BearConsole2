@@ -109,6 +109,23 @@ public class CommandInterfaceESP32 {
     UploadSTM32CallBack mUpCallback;
     Physicaloid mPhysicaloid;
 
+    // Set from the UI thread by cancel(), read by the flashing thread between two blocks
+    private volatile boolean cancelRequested = false;
+
+    /**
+     * Requests the flashing to stop. The current block is finished, then flashData() and
+     * flashCompressedData() return false without sending anything else.
+     * The frames sent to the bootloader are not changed.
+     */
+    public void cancel() {
+        cancelRequested = true;
+    }
+
+    /** @return true once cancel() has been called */
+    public boolean isCancelRequested() {
+        return cancelRequested;
+    }
+
     CommandInterfaceESP32(UploadSTM32CallBack UpCallback, Physicaloid mPhysi) {
         mUpCallback = UpCallback;
         mPhysicaloid = mPhysi;
@@ -403,12 +420,16 @@ public class CommandInterfaceESP32 {
 
 
     /**
-     * @name flashData Program a full, uncompressed binary file into SPI Flash at a
-     *       given offset. If an ESP32 and md5 string is passed in, will also verify
-     *       memory. ESP8266 does not have checksum memory verification in ROM
+     * @name flashCompressedData Program a full binary file, compressed, into SPI Flash at a
+     *       given offset.
+     * @return true if every block was acknowledged by the bootloader; false if a block was
+     *       still not acknowledged after its retry, or if the flashing was cancelled
      */
-    public void flashCompressedData(byte binaryData[], int offset, int part) {
+    public boolean flashCompressedData(byte binaryData[], int offset, int part) {
+        if (cancelRequested) return false;
         int filesize = binaryData.length;
+        // Number of blocks not acknowledged, even after the retry
+        int failedBlocks = 0;
 
         mUpCallback.onInfo("\nWriting data with filesize: " + filesize);
 
@@ -423,6 +444,12 @@ public class CommandInterfaceESP32 {
         long t1 = System.currentTimeMillis();
 
         while (image.length - position > 0) {
+            // Cancel requested by the user: stop between two blocks (the ROM bootloader of
+            // the ESP32 is never erased, so the board can always be flashed again)
+            if (cancelRequested) {
+                mUpCallback.onInfo("Flashing cancelled\n");
+                return false;
+            }
 
             double percentage = Math.floor((double)(100 * (seq + 1)) / (double)blocks);
 
@@ -446,6 +473,10 @@ public class CommandInterfaceESP32 {
                 //This should fix issue when writing is incorrect by trying again
                 mUpCallback.onInfo("Retry because Ret code:" + retVal.retCode +"\n");
                 retVal = flash_defl_block(block, seq, /*block_timeout*/ 100);
+                if (retVal.retCode == -1) {
+                    failedBlocks++;
+                    mUpCallback.onInfo("Block " + seq + " not acknowledged\n");
+                }
             }
             seq += 1;
             written += block.length;
@@ -454,12 +485,18 @@ public class CommandInterfaceESP32 {
 
         long t2 = System.currentTimeMillis();
         mUpCallback.onInfo("Took " + (t2 - t1) + "ms to write " + filesize + " bytes" + "\n");
+        return failedBlocks == 0;
     }
-    /*
-    Flash uncompressed data
+    /**
+     * Flash uncompressed data.
+     * @return true if every block was acknowledged by the bootloader; false if a block was
+     *       still not acknowledged after its retry, or if the flashing was cancelled
      */
-    public void flashData(byte binaryData[], int offset, int part) {
+    public boolean flashData(byte binaryData[], int offset, int part) {
+        if (cancelRequested) return false;
         int filesize = binaryData.length;
+        // Number of blocks not acknowledged, even after the retry
+        int failedBlocks = 0;
 
         mUpCallback.onInfo("\nWriting data with filesize: " + filesize);
 
@@ -474,6 +511,12 @@ public class CommandInterfaceESP32 {
         long t1 = System.currentTimeMillis();
 
         while (image.length - position > 0) {
+            // Cancel requested by the user: stop between two blocks (the ROM bootloader of
+            // the ESP32 is never erased, so the board can always be flashed again)
+            if (cancelRequested) {
+                mUpCallback.onInfo("Flashing cancelled\n");
+                return false;
+            }
 
             double percentage = Math.floor((double)(100 * (seq + 1)) / (double)blocks);
 
@@ -497,6 +540,10 @@ public class CommandInterfaceESP32 {
                 //This should fix issue when writing is incorrect by trying again
                 mUpCallback.onInfo("Retry because Ret code:" + retVal.retCode +"\n");
                 retVal = flash_block(block, seq, /*block_timeout*/ 100);
+                if (retVal.retCode == -1) {
+                    failedBlocks++;
+                    mUpCallback.onInfo("Block " + seq + " not acknowledged\n");
+                }
             }
             seq += 1;
             written += block.length;
@@ -505,6 +552,7 @@ public class CommandInterfaceESP32 {
 
         long t2 = System.currentTimeMillis();
         mUpCallback.onInfo("Took " + (t2 - t1) + "ms to write " + filesize + " bytes" + "\n");
+        return failedBlocks == 0;
     }
 
     private int flash_defl_begin(int size, int compsize, int offset) {
@@ -586,8 +634,31 @@ public class CommandInterfaceESP32 {
      * This is usefull for sending specific commands
      */
     public int detectChip() {
-        int chipMagicValue =readRegister(CHIP_DETECT_MAGIC_REG_ADDR);
-        Log.d(TAG, "chipMagicValue:" + chipMagicValue);
+        // The ROM bootloader answers each SYNC command several times and only the first answer
+        // was read: drop the remaining SYNC answers, otherwise the register read below gets a
+        // SYNC answer (value 0) and the chip is reported as unknown. Reading only.
+        drain();
+        int ret = 0;
+        // The same READ_REG command is sent again (up to 3 times) only if no valid answer came
+        for (int attempt = 0; attempt < 3 && ret == 0; attempt++) {
+            int chipMagicValue = readRegister(CHIP_DETECT_MAGIC_REG_ADDR);
+            Log.d(TAG, "chipMagicValue:" + chipMagicValue);
+            ret = chipFromMagicValue(chipMagicValue);
+            if (ret == 0) {
+                mUpCallback.onInfo("Chip magic value 0x" + Integer.toHexString(chipMagicValue)
+                        + " not recognised (attempt " + (attempt + 1) + ")\n");
+            }
+        }
+        chip = ret;
+        return ret;
+    }
+
+    /**
+     * Maps the value of the CHIP_DETECT_MAGIC register to the chip type.
+     *
+     * @return the chip type, or 0 if the value is not a known one
+     */
+    private int chipFromMagicValue(int chipMagicValue) {
         int ret = 0;
         if (chipMagicValue == 0xfff0c101)
             ret = ESP8266;
@@ -605,7 +676,6 @@ public class CommandInterfaceESP32 {
             ret = ESP32C6;
         if (chipMagicValue == 0xca26cc22)
             ret = ESP32H2;
-        chip = ret;
         return ret;
     }
     ////////////////////////////////////////////////
@@ -688,7 +758,18 @@ public class CommandInterfaceESP32 {
 
             byte packet[] = _int_to_bytearray(reg);
 
-            ret = sendCommand((byte) ESP_READ_REG, packet, 0, 0);
+            // Same command as before; only the time allowed for its answer changed: with 0 ms
+            // the answer was often not received yet (the timeout is not part of the frame)
+            ret = sendCommand((byte) ESP_READ_REG, packet, 0, 100);
+
+            // Accept only a READ_REG answer: 0xC0, direction 0x01 (response), opcode 0x0A.
+            // Any other frame (e.g. a late SYNC answer) gives 0, i.e. "not recognised".
+            if (ret.retCode != 1
+                    || ret.retValue[1] != (byte) 0x01
+                    || ret.retValue[2] != (byte) ESP_READ_REG) {
+                Log.d(TAG, "readRegister: not a READ_REG answer");
+                return 0;
+            }
             Struct myRet = new Struct();
 
             byte subArray[] = new byte[4];

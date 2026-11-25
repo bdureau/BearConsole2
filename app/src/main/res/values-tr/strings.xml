@@ -533,6 +533,8 @@
     <string name="config_uploading">Yapılandırma gönderiliyor…</string>
     <string name="config_upload_success">Yapılandırma güncellendi</string>
     <string name="config_upload_failed">Altimetre yapılandırması yazılamadı</string>
+    <string name="config_upload_refused_title">Yapılandırma kaydedilmedi</string>
+    <string name="config_upload_refused">Altimetre tüm ayarları onaylamadı: yeni yapılandırma KAYDEDİLMEDİ. Uçuştan önce altimetreyi yeniden başlatın ve yapılandırmayı tekrar gönderin.</string>
     <string name="config_read_failed">Altimetre yapılandırması okunamadı</string>
     <string name="main_usb_cannot_connect">USB cihazına bağlanılamıyor</string>
     <string name="main_usb_permission_denied">USB izni verilmedi</string>
@@ -564,4 +566,13 @@
     <string name="flash_chip_not_initiated">Çip başlatılamadı: %1$s</string>
     <string name="flash_file_not_found">Dosya bulunamadı: %1$s</string>
     <string name="flash_done">Tamamlandı</string>
+    <string name="flash_cancel_requested">İptal ediliyor: yükleme mevcut bloktan sonra duracak…</string>
+    <string name="flash_cancelled_untouched">Yükleme yazmadan önce iptal edildi: altimetrenin yazılımı değiştirilmedi.</string>
+    <string name="flash_cancelled">Yükleme iptal edildi: altimetrede artık geçerli bir yazılım yok. Kullanmadan önce yeniden yükleyin.</string>
+    <string name="flash_failed_untouched">Yükleme yazmadan önce başarısız oldu: altimetrenin yazılımı değiştirilmedi.</string>
+    <string name="flash_failed">Yükleme başarısız: bazı veriler altimetre tarafından onaylanmadı. Kullanmadan önce yeniden yükleyin.</string>
+    <string name="flash_result_title">Yükleme</string>
+    <string name="location_channel_name">Roket takibi</string>
+    <string name="location_notification_title">Roket takip ediliyor</string>
+    <string name="location_notification_text">Telefonun konumu rokete olan mesafeyi göstermek için kullanılır.</string>
 </resources>

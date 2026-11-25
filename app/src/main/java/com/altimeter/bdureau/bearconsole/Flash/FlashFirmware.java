@@ -22,6 +22,7 @@ import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -485,7 +486,115 @@ public class FlashFirmware extends BaseActivity {
         }
     }
 
-    private class DetectAsyc extends AsyncTask<Void, Void, Void>  // UI thread
+    /**
+     * Result of a STM32 / ESP32 flashing, shown to the user when the task ends.
+     * "UNTOUCHED" means that nothing was written: the altimeter keeps its firmware.
+     */
+    private enum FlashResult {
+        SUCCESS,
+        FAILED_UNTOUCHED,
+        FAILED,
+        CANCELLED_UNTOUCHED,
+        CANCELLED
+    }
+
+    // Command interface of the flashing in progress (null when none), used by the Cancel button
+    private volatile CommandInterfaceSTM32 currentStm32Cmd = null;
+    private volatile CommandInterfaceESP32 currentEsp32Cmd = null;
+    // Cancel pressed: also covers the moment before the command interface is created
+    private volatile boolean flashCancelRequested = false;
+
+    /**
+     * Called by the Cancel button of the flashing dialog (UI thread): the flashing thread stops
+     * after the current block. Nothing else is sent to the bootloader, so the frames are
+     * unchanged. The ROM bootloaders of the STM32 and of the ESP32 are never erased: a
+     * cancelled board can always be flashed again.
+     */
+    private void requestFlashCancel() {
+        flashCancelRequested = true;
+        CommandInterfaceSTM32 stm32 = currentStm32Cmd;
+        if (stm32 != null) stm32.cancel();
+        CommandInterfaceESP32 esp32 = currentEsp32Cmd;
+        if (esp32 != null) esp32.cancel();
+        tvAppend(tvRead, "\n" + getString(R.string.flash_cancel_requested) + "\n");
+    }
+
+    /** Creates the "Flashing..." dialog whose Cancel button really stops the flashing. */
+    private void showFlashingDialog() {
+        flashCancelRequested = false;
+        builder = new AlertDialog.Builder(FlashFirmware.this);
+        //Flashing firmware...
+        builder.setMessage(getResources().getString(R.string.msg10))
+                .setTitle(getResources().getString(R.string.msg11))
+                .setCancelable(false)
+                .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                        requestFlashCancel();
+                    }
+                });
+        alert = builder.create();
+        alert.show();
+    }
+
+    /** Shows the result of a STM32 / ESP32 flashing (UI thread). */
+    private void showFlashResult(FlashResult result) {
+        alert.dismiss();
+        if (isFinishing() || isDestroyed()) return;
+        int message;
+        switch (result) {
+            case SUCCESS:
+                // "Done" has already been written in the log by the flashing thread
+                return;
+            case FAILED_UNTOUCHED:
+                message = R.string.flash_failed_untouched;
+                break;
+            case CANCELLED_UNTOUCHED:
+                message = R.string.flash_cancelled_untouched;
+                break;
+            case CANCELLED:
+                message = R.string.flash_cancelled;
+                break;
+            case FAILED:
+            default:
+                message = R.string.flash_failed;
+                break;
+        }
+        tvRead.append("\n" + getString(message) + "\n");
+        // A dialog, so that a board left without a valid firmware cannot go unnoticed
+        new AlertDialog.Builder(FlashFirmware.this)
+                .setTitle(getString(R.string.flash_result_title))
+                .setMessage(getString(message))
+                .setPositiveButton(getString(R.string.close), (dialog, id) -> dialog.dismiss())
+                .show();
+    }
+
+    /**
+     * Maps the name returned by the altimeter to the position of its firmware in the
+     * firmware spinner.
+     *
+     * @return the position, or -1 if the name is not one of the detected firmwares
+     */
+    private static int firmwareIndexFromVersion(String version) {
+        switch (version) {
+            case "AltiMulti":
+                return 0;
+            case "AltiMultiV2":
+                return 1;
+            case "AltiServo":
+                return 2;
+            case "AltiDuo":
+                return 3;
+            case "AltiMultiSTM32":
+                return 4;
+            case "AltiGPS":
+                return 5;
+            default:
+                return -1;
+        }
+    }
+
+    private class DetectAsyc extends AsyncTask<Void, Void, Integer>  // UI thread
     {
         @Override
         protected void onPreExecute() {
@@ -503,9 +612,12 @@ public class FlashFirmware extends BaseActivity {
             alert.show();
         }
 
-        @SuppressLint("WrongThread")
+        /**
+         * Worker thread: reads the firmware name only. The spinner is a View and must not be
+         * touched here: its selection is changed in onPostExecute(), on the UI thread.
+         */
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Integer doInBackground(Void... voids) {
 
             String version = "";
 
@@ -513,76 +625,75 @@ public class FlashFirmware extends BaseActivity {
             firm.open(38400);
             version = firm.getFirmwarVersion();
 
+            // tvAppend() posts the text to the UI thread
             tvAppend(tvRead, getString(R.string.firmware_version_not_detected) + version + "\n");
 
-            if (version.equals("AltiMulti")) {
-                spinnerFirmware.setSelection(0);
-            }
-            if (version.equals("AltiMultiV2")) {
-                spinnerFirmware.setSelection(1);
-            }
-            if (version.equals("AltiServo")) {
-                spinnerFirmware.setSelection(2);
-            }
-            if (version.equals("AltiDuo")) {
-                spinnerFirmware.setSelection(3);
-            }
-            if (version.equals("AltiMultiSTM32")) {
-                spinnerFirmware.setSelection(4);
-            }
-            if (version.equals("AltiGPS")) {
-                spinnerFirmware.setSelection(5);
-            }
-            return null;
+            return firmwareIndexFromVersion(version);
         }
 
         @Override
-        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
+        protected void onPostExecute(Integer firmwareIndex) //after the doInBackground, it checks if everything went fine
         {
             alert.dismiss();
+            // UI thread: select the detected firmware (this also updates the altimeter picture)
+            if (firmwareIndex != null && firmwareIndex >= 0) {
+                spinnerFirmware.setSelection(firmwareIndex);
+            }
         }
     }
 
 
-    private class UploadSTM32Asyc extends AsyncTask<Void, Void, Void>  // UI thread
+    /**
+     * Last safety net of a flashing task: an unexpected exception in the worker thread used to
+     * close the application. It is now logged and reported as a failed flashing.
+     */
+    private FlashResult reportUnexpectedFlashError(RuntimeException e) {
+        Log.e("FlashFirmware", "Unexpected error while flashing", e);
+        tvAppend(tvRead, "\nUnexpected error: " + e + "\n");
+        currentStm32Cmd = null;
+        currentEsp32Cmd = null;
+        return FlashResult.FAILED;
+    }
+
+    private class UploadSTM32Asyc extends AsyncTask<Void, Void, FlashResult>  // UI thread
     {
         @Override
         protected void onPreExecute() {
-            builder = new AlertDialog.Builder(FlashFirmware.this);
-            //Flashing firmware...
-            builder.setMessage(getResources().getString(R.string.msg10))
-                    .setTitle(getResources().getString(R.string.msg11))
-                    .setCancelable(false)
-                    .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-                            dialog.cancel();
-                        }
-                    });
-            alert = builder.create();
-            alert.show();
+            showFlashingDialog();
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            if (!recorverFirmware) {
-                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32"))
-                    uploadSTM32(ASSET_FILE_NAME_ALTIMULTISTM32, mUploadSTM32Callback);
-                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS"))
-                    uploadSTM32(ASSET_FILE_NAME_ALTIGPS, mUploadSTM32Callback);
-            } else {
-                uploadSTM32(ASSET_FILE_RESET_ALTISTM32, mUploadSTM32Callback);
+        protected FlashResult doInBackground(Void... voids) {
+            // Nothing is flashed if the selected firmware is not a STM32 one
+            FlashResult result = FlashResult.FAILED_UNTOUCHED;
+            try {
+                if (!recorverFirmware) {
+                    if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32"))
+                        result = uploadSTM32(ASSET_FILE_NAME_ALTIMULTISTM32, mUploadSTM32Callback);
+                    if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS"))
+                        result = uploadSTM32(ASSET_FILE_NAME_ALTIGPS, mUploadSTM32Callback);
+                } else {
+                    result = uploadSTM32(ASSET_FILE_RESET_ALTISTM32, mUploadSTM32Callback);
+                }
+            } catch (RuntimeException e) {
+                result = reportUnexpectedFlashError(e);
             }
-            return null;
+            return result;
         }
 
         @Override
-        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
+        protected void onPostExecute(FlashResult result) //after the doInBackground, it checks if everything went fine
         {
-            alert.dismiss();
+            showFlashResult(result);
         }
     }
 
-    public void uploadSTM32(String fileName, UploadSTM32CallBack UpCallback) {
+    /**
+     * Flashes a STM32 board (worker thread). The bootloader commands and their order are
+     * unchanged; the Cancel button is checked before the erase and between the written
+     * blocks, and the result of the writing is now reported.
+     */
+    public FlashResult uploadSTM32(String fileName, UploadSTM32CallBack UpCallback) {
         boolean failed = false;
         InputStream is = null;
 
@@ -599,6 +710,9 @@ public class FlashFirmware extends BaseActivity {
         CommandInterfaceSTM32 cmd;
 
         cmd = new CommandInterfaceSTM32(UpCallback, mPhysicaloid);
+        currentStm32Cmd = cmd;
+        // Cancel may have been pressed before the command interface existed
+        if (flashCancelRequested) cmd.cancel();
 
         cmd.open(Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]));
         int ret = cmd.initChip();
@@ -624,29 +738,45 @@ public class FlashFirmware extends BaseActivity {
             tvAppend(tvRead, " chip id:" + toHexStr(chip_id, 2) + "\n");
         }
 
-        if (!failed) {
-            if (bootversion < 0x30) {
-                tvAppend(tvRead, "Erase 1\n");
-                cmd.cmdEraseMemory();
-            } else {
-                tvAppend(tvRead, "Erase 2\n");
-                cmd.cmdExtendedEraseMemory();
-            }
+        // Last point where the firmware of the board is still intact
+        if (!failed && cmd.isCancelRequested()) {
+            cmd.releaseChip();
+            currentStm32Cmd = null;
+            return FlashResult.CANCELLED_UNTOUCHED;
         }
-        if (!failed) {
-            cmd.drain();
-            tvAppend(tvRead, "writeMemory" + "\n");
-            ret = cmd.writeMemory(0x8000000, is);
+        if (failed) {
+            // Nothing has been erased or written
+            cmd.releaseChip();
+            currentStm32Cmd = null;
+            return FlashResult.FAILED_UNTOUCHED;
+        }
 
-            tvAppend(tvRead, "writeMemory finish" + "\n\n\n\n");
-            if (ret == 1) {
-                tvAppend(tvRead, "writeMemory success" + "\n\n\n\n");
-            }
+        if (bootversion < 0x30) {
+            tvAppend(tvRead, "Erase 1\n");
+            cmd.cmdEraseMemory();
+        } else {
+            tvAppend(tvRead, "Erase 2\n");
+            cmd.cmdExtendedEraseMemory();
         }
-        if (!failed) {
+
+        cmd.drain();
+        tvAppend(tvRead, "writeMemory" + "\n");
+        ret = cmd.writeMemory(0x8000000, is);
+
+        tvAppend(tvRead, "writeMemory finish" + "\n\n\n\n");
+        if (ret == CommandInterfaceSTM32.WRITE_OK) {
+            tvAppend(tvRead, "writeMemory success" + "\n\n\n\n");
+        }
+
+        // Do not start a firmware that was only partly written because of a cancel
+        if (ret != CommandInterfaceSTM32.WRITE_CANCELLED) {
             cmd.cmdGo(0x8000000);
         }
         cmd.releaseChip();
+        currentStm32Cmd = null;
+
+        if (ret == CommandInterfaceSTM32.WRITE_CANCELLED) return FlashResult.CANCELLED;
+        return ret == CommandInterfaceSTM32.WRITE_OK ? FlashResult.SUCCESS : FlashResult.FAILED;
     }
 
     private byte[] readFile(InputStream inputStream) {
@@ -668,27 +798,26 @@ public class FlashFirmware extends BaseActivity {
         return byteArrayOutputStream.toByteArray();
     }
 
-    private class UploadESP32Asyc extends AsyncTask<Void, Void, Void>  // UI thread
+    private class UploadESP32Asyc extends AsyncTask<Void, Void, FlashResult>  // UI thread
     {
 
         @Override
         protected void onPreExecute() {
-            builder = new AlertDialog.Builder(FlashFirmware.this);
-            //Flashing firmware...
-            builder.setMessage(getResources().getString(R.string.msg10))
-                    .setTitle(getResources().getString(R.string.msg11))
-                    .setCancelable(false)
-                    .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-                            dialog.cancel();
-                        }
-                    });
-            alert = builder.create();
-            alert.show();
+            showFlashingDialog();
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected FlashResult doInBackground(Void... voids) {
+            try {
+                return uploadESP32Selected();
+            } catch (RuntimeException e) {
+                return reportUnexpectedFlashError(e);
+            }
+        }
+
+        /** Chooses the ESP32 files of the selected firmware (or of the recovery) and flashes them. */
+        private FlashResult uploadESP32Selected() {
+            FlashResult result;
             String firmwareFileName[] = new String[4];
             if (!recorverFirmware) {
                 if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32")) {
@@ -743,26 +872,32 @@ public class FlashFirmware extends BaseActivity {
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE4;
                 }
-                uploadESP32(firmwareFileName, mUploadSTM32Callback);
+                result = uploadESP32(firmwareFileName, mUploadSTM32Callback);
             } else {
                 firmwareFileName[0] = ASSET_FILE_RESET_ALTIESP32_FILE1;
                 firmwareFileName[1] = ASSET_FILE_RESET_ALTIESP32_FILE2;
                 firmwareFileName[2] = ASSET_FILE_RESET_ALTIESP32_FILE3;
                 firmwareFileName[3] = ASSET_FILE_RESET_ALTIESP32_FILE4;
 
-                uploadESP32(firmwareFileName, mUploadSTM32Callback);
+                result = uploadESP32(firmwareFileName, mUploadSTM32Callback);
             }
-            return null;
+            return result;
         }
 
         @Override
-        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
+        protected void onPostExecute(FlashResult result) //after the doInBackground, it checks if everything went fine
         {
-            alert.dismiss();
+            showFlashResult(result);
         }
     }
 
-    public void uploadESP32(String fileName[], UploadSTM32CallBack UpCallback) {
+    /**
+     * Flashes an ESP32 board (worker thread). The bootloader commands and their order are
+     * unchanged; the Cancel button is checked before the first write and between the written
+     * blocks, and the result of every file is now reported (a block not acknowledged even
+     * after its retry makes the flashing fail).
+     */
+    public FlashResult uploadESP32(String fileName[], UploadSTM32CallBack UpCallback) {
         boolean failed = false;
         InputStream file1 = null;
         InputStream file2 = null;
@@ -772,6 +907,9 @@ public class FlashFirmware extends BaseActivity {
 
 
         cmd = new CommandInterfaceESP32(UpCallback, mPhysicaloid);
+        currentEsp32Cmd = cmd;
+        // Cancel may have been pressed before the command interface existed
+        if (flashCancelRequested) cmd.cancel();
 
         try {
             file1 = getAssets().open(fileName[0]);
@@ -822,6 +960,11 @@ public class FlashFirmware extends BaseActivity {
             dialogAppend(getString(R.string.flash_chip_not_initiated, String.valueOf(ret)));
             failed = true;
         }
+        if (failed) {
+            // The chip did not answer: nothing has been written
+            currentEsp32Cmd = null;
+            return FlashResult.FAILED_UNTOUCHED;
+        }
         int bootversion = 0;
         if (!failed) {
             // let's detect the chip, not really required but I just want to make sure that
@@ -846,6 +989,16 @@ public class FlashFirmware extends BaseActivity {
                 tvAppend(tvRead, chip + "is an unknown Chip\n");
 
             tvAppend(tvRead, itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()]);
+
+            // Last point where the firmware of the board is still intact
+            if (cmd.isCancelRequested()) {
+                // Restart the board on its current firmware
+                cmd.reset();
+                currentEsp32Cmd = null;
+                return FlashResult.CANCELLED_UNTOUCHED;
+            }
+            // False as soon as one file is not completely acknowledged (or cancelled)
+            boolean flashOk = true;
             // now that we have initialized the chip we can change the baud rate to 921600
             // first we tell the chip the new baud rate
             dialogAppend("Changing baudrate to 921600");
@@ -857,110 +1010,121 @@ public class FlashFirmware extends BaseActivity {
                 dialogAppend("Flashing file 1 0xe000");
                 tvAppend(tvRead, fileName[0] + "\n");
                 tvAppend(tvRead, "Chip is ESP32\n");
-                cmd.flashData(readFile(file1), 0xe000, 0);
+                flashOk &= cmd.flashData(readFile(file1), 0xe000, 0);
                 dialogAppend("Flashing file 2 0x1000");
                 tvAppend(tvRead, fileName[1] + "\n");
-                cmd.flashData(readFile(file2), 0x1000, 0);
+                flashOk &= cmd.flashData(readFile(file2), 0x1000, 0);
 
                 dialogAppend("Flashing file 3 0x10000");
                 tvAppend(tvRead, fileName[2] + "\n");
-                cmd.flashData(readFile(file3), 0x10000, 0);
+                flashOk &= cmd.flashData(readFile(file3), 0x10000, 0);
                 dialogAppend("Flashing file 4 0x8000");
                 tvAppend(tvRead, fileName[3] + "\n");
-                cmd.flashData(readFile(file4), 0x8000, 0);
+                flashOk &= cmd.flashData(readFile(file4), 0x8000, 0);
             } else if (chip == cmd.ESP32C3) {
                 // Those are the files you want to flash
                 dialogAppend("Flashing file 1 0xe000");
                 tvAppend(tvRead, fileName[0] + "\n");
                 tvAppend(tvRead, "Chip is ESP32C3\n");
-                cmd.flashCompressedData(readFile(file1), 0xe000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file1), 0xe000, 0);
                 dialogAppend("Flashing file 2 0x0");
                 tvAppend(tvRead, fileName[1] + "\n");
-                cmd.flashCompressedData(readFile(file2), 0x0, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file2), 0x0, 0);
 
                 dialogAppend("Flashing file 3 0x10000");
                 tvAppend(tvRead, fileName[2] + "\n");
-                cmd.flashCompressedData(readFile(file3), 0x10000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file3), 0x10000, 0);
                 dialogAppend("Flashing file 4 0x8000");
                 tvAppend(tvRead, fileName[3] + "\n");
-                cmd.flashCompressedData(readFile(file4), 0x8000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file4), 0x8000, 0);
             } else if (chip == cmd.ESP32C6) {
                 // Those are the files you want to flash
                 dialogAppend("Flashing file 1 0xe000");
                 tvAppend(tvRead, fileName[0] + "\n");
                 tvAppend(tvRead, "Chip is ESP32C6\n");
-                cmd.flashCompressedData(readFile(file1), 0xe000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file1), 0xe000, 0);
                 dialogAppend("Flashing file 2 0x0");
                 tvAppend(tvRead, fileName[1] + "\n");
-                cmd.flashCompressedData(readFile(file2), 0x0, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file2), 0x0, 0);
 
                 dialogAppend("Flashing file 3 0x10000");
                 tvAppend(tvRead, fileName[2] + "\n");
-                cmd.flashCompressedData(readFile(file3), 0x10000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file3), 0x10000, 0);
                 dialogAppend("Flashing file 4 0x8000");
                 tvAppend(tvRead, fileName[3] + "\n");
-                cmd.flashCompressedData(readFile(file4), 0x8000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file4), 0x8000, 0);
             } else if (chip == cmd.ESP32S2) {
                 // Those are the files you want to flash
                 dialogAppend("Flashing file 1 0xe000");
                 tvAppend(tvRead, fileName[0] + "\n");
                 tvAppend(tvRead, "Chip is ESP32S2\n");
-                cmd.flashCompressedData(readFile(file1), 0xe000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file1), 0xe000, 0);
                 dialogAppend("Flashing file 2 0x0");
                 tvAppend(tvRead, fileName[1] + "\n");
-                cmd.flashCompressedData(readFile(file2), 0x1000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file2), 0x1000, 0);
 
                 dialogAppend("Flashing file 3 0x10000");
                 tvAppend(tvRead, fileName[2] + "\n");
-                cmd.flashCompressedData(readFile(file3), 0x10000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file3), 0x10000, 0);
                 dialogAppend("Flashing file 4 0x8000");
                 tvAppend(tvRead, fileName[3] + "\n");
-                cmd.flashCompressedData(readFile(file4), 0x8000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file4), 0x8000, 0);
             } else if (chip == cmd.ESP32S3) {
                 // Those are the files you want to flash
                 dialogAppend("Flashing file 1 0xe000");
                 tvAppend(tvRead, fileName[0] + "\n");
                 tvAppend(tvRead, "Chip is ESP32S3\n");
-                cmd.flashCompressedData(readFile(file1), 0xe000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file1), 0xe000, 0);
                 dialogAppend("Flashing file 2 0x0");
                 tvAppend(tvRead, fileName[1] + "\n");
-                cmd.flashCompressedData(readFile(file2), 0x0, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file2), 0x0, 0);
 
                 dialogAppend("Flashing file 3 0x10000");
                 tvAppend(tvRead, fileName[2] + "\n");
-                cmd.flashCompressedData(readFile(file3), 0x10000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file3), 0x10000, 0);
                 dialogAppend("Flashing file 4 0x8000");
                 tvAppend(tvRead, fileName[3] + "\n");
-                cmd.flashCompressedData(readFile(file4), 0x8000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file4), 0x8000, 0);
             } else if (chip == cmd.ESP8266) {
                 dialogAppend("Flashing file 1 0x0000");
                 tvAppend(tvRead, fileName[0] + "\n");
                 tvAppend(tvRead, "Chip is ESP8266\n");
-                cmd.flashData(readFile(file1), 0x0000, 0);
+                flashOk &= cmd.flashData(readFile(file1), 0x0000, 0);
             } else if (chip == cmd.ESP32H2) {
                 // Those are the files you want to flash
                 dialogAppend("Flashing file 1 0xe000");
                 tvAppend(tvRead, fileName[0] + "\n");
                 tvAppend(tvRead, "Chip is ESP32H2\n");
-                cmd.flashCompressedData(readFile(file1), 0xe000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file1), 0xe000, 0);
                 dialogAppend("Flashing file 2 0x0");
                 tvAppend(tvRead, fileName[1] + "\n");
-                cmd.flashCompressedData(readFile(file2), 0x1000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file2), 0x1000, 0);
 
                 dialogAppend("Flashing file 3 0x10000");
                 tvAppend(tvRead, fileName[2] + "\n");
-                cmd.flashCompressedData(readFile(file3), 0x10000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file3), 0x10000, 0);
                 dialogAppend("Flashing file 4 0x8000");
                 tvAppend(tvRead, fileName[3] + "\n");
-                cmd.flashCompressedData(readFile(file4), 0x8000, 0);
+                flashOk &= cmd.flashCompressedData(readFile(file4), 0x8000, 0);
+            } else {
+                // Unknown chip: nothing has been written, never report "Done"
+                tvAppend(tvRead, "No firmware for this chip\n");
+                cmd.reset();
+                currentEsp32Cmd = null;
+                return FlashResult.FAILED_UNTOUCHED;
             }
 
             // we have finish flashing lets reset the board so that the program can start
             cmd.reset();
+            currentEsp32Cmd = null;
+
+            if (cmd.isCancelRequested()) return FlashResult.CANCELLED;
+            if (!flashOk) return FlashResult.FAILED;
 
             dialogAppend(getString(R.string.flash_done));
             tvAppend(tvRead, getString(R.string.flash_done));
         }
+        return FlashResult.SUCCESS;
     }
 
 

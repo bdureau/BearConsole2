@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.config;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: AltiTabConfigActivity
@@ -23,9 +23,9 @@ package com.altimeter.bdureau.bearconsole.config;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
+//import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+//import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -38,8 +38,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+//import androidx.annotation.NonNull;
+//import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -60,7 +60,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+//import java.util.concurrent.Executors;
 
 public class AltiTabConfigActivity extends BaseActivity {
     private static final String TAG = "AltiTabConfigActivity";
@@ -374,119 +374,173 @@ public class AltiTabConfigActivity extends BaseActivity {
         showProgress(getString(R.string.config_uploading));
 
         ioExecutor.execute(() -> {
-            boolean success = performSendConfig();
+            UploadResult result = performSendConfig();
             mainHandler.post(() -> {
                 hideProgress();
                 if (isFinishing() || isDestroyed()) return;
 
-                if (success) {
-                    msg(getString(R.string.config_upload_success));
-                    finish();
-                } else {
-                    msg(getString(R.string.config_upload_failed));
+                switch (result) {
+                    case SUCCESS:
+                        msg(getString(R.string.config_upload_success));
+                        finish();
+                        break;
+                    case REFUSED:
+                        // Safety message: a dialog, so that it cannot be missed like a toast
+                        new AlertDialog.Builder(this)
+                                .setTitle(getString(R.string.config_upload_refused_title))
+                                .setMessage(getString(R.string.config_upload_refused))
+                                .setCancelable(false)
+                                .setPositiveButton(getString(R.string.close), (dialog, id) -> dialog.dismiss())
+                                .show();
+                        break;
+                    default:
+                        msg(getString(R.string.config_upload_failed));
+                        break;
                 }
             });
         });
     }
 
-    private boolean performSendConfig() {
-        if (!myBT.getConnected()) return false;
+    /** Outcome of a configuration upload. */
+    private enum UploadResult {
+        /** Every command was acknowledged and the configuration was written to the EEPROM. */
+        SUCCESS,
+        /** Nothing was changed: not connected, or the altimeter did not acknowledge "m0;". */
+        FAILED,
+        /**
+         * A setting (or the EEPROM write) was refused or not acknowledged: the EEPROM was not
+         * written, but the settings already accepted may be active until the altimeter restarts.
+         */
+        REFUSED
+    }
+
+    /**
+     * Uploads the configuration and checks the acknowledgement of every command.
+     * The commands, their order and their format are unchanged (serial protocol untouched):
+     * "m0;", then one "p,index,value,checksum;" per setting, the optional "z," (Bluetooth name),
+     * then "q;" (write EEPROM) and finally "m1;". The difference is that each answer is now
+     * checked: the upload stops at the first command that is not answered by "$OK;" (a "$KO;",
+     * "$UNKNOWN;" or no answer within the timeout), and "q;" is then never sent, so that a
+     * partial configuration is never written to the EEPROM. "m1;" is always sent at the end
+     * to restart the main loop of the altimeter.
+     */
+    private UploadResult performSendConfig() {
+        if (!myBT.getConnected()) return UploadResult.FAILED;
 
         try {
-            myBT.setDataReady(false);
-            myBT.flush();
-            myBT.clearInput();
-            myBT.write("m0;");
-
-            waitForStreamData(3000);
-            myBT.ReadResult(3000);
-
-            sendParamCommand("p,1," + altiCfg.getUnits());
-            sendParamCommand("p,2," + altiCfg.getBeepingMode());
-            sendParamCommand("p,3," + altiCfg.getOutput1());
-            sendParamCommand("p,4," + altiCfg.getOutput2());
-            sendParamCommand("p,5," + altiCfg.getOutput3());
-            sendParamCommand("p,6," + altiCfg.getMainAltitude());
-            sendParamCommand("p,7," + altiCfg.getSupersonicYesNo());
-            sendParamCommand("p,8," + altiCfg.getOutput1Delay());
-            sendParamCommand("p,9," + altiCfg.getOutput2Delay());
-            sendParamCommand("p,10," + altiCfg.getOutput3Delay());
-            sendParamCommand("p,11," + altiCfg.getBeepingFrequency());
-            sendParamCommand("p,12," + altiCfg.getNbrOfMeasuresForApogee());
-            sendParamCommand("p,13," + altiCfg.getEndRecordAltitude());
-            sendParamCommand("p,14," + altiCfg.getTelemetryType());
-            sendParamCommand("p,15," + altiCfg.getSupersonicDelay());
-            sendParamCommand("p,16," + altiCfg.getConnectionSpeed());
-            sendParamCommand("p,17," + altiCfg.getAltimeterResolution());
-            sendParamCommand("p,18," + altiCfg.getEepromSize());
-            sendParamCommand("p,19," + altiCfg.getBeepOnOff());
-            sendParamCommand("p,20," + altiCfg.getOutput4());
-            sendParamCommand("p,21," + altiCfg.getOutput4Delay());
-            sendParamCommand("p,22," + altiCfg.getLiftOffAltitude());
-            sendParamCommand("p,23," + altiCfg.getBatteryType());
-            sendParamCommand("p,24," + altiCfg.getRecordingTimeout());
-            sendParamCommand("p,25," + altiCfg.getAltiID());
-            sendParamCommand("p,26," + altiCfg.getUseTelemetryPort());
-
-            String altiName = altiCfg.getAltimeterName();
-            if ((("AltiMultiESP32".equals(altiName) || "AltiMultiESP32_accel".equals(altiName)
-                    || "AltiMultiESP32_accel_375".equals(altiName) || "AltiMultiESP32_accel_345".equals(altiName))
-                    && altiCfg.getAltiMajorVersion() >= 2 && altiCfg.getAltiMinorVersion() > 0)
-                    || ("TTGOBearAltimeter".equals(altiName) && altiCfg.getAltiMajorVersion() >= 0 && altiCfg.getAltiMinorVersion() > 4)) {
-                sendParamCommand("z," + altiCfg.getBluetoothName());
+            // Stop the main loop: if this is not acknowledged nothing has been changed
+            if (!sendCommand("m0;")) {
+                Log.w(TAG, "m0; not acknowledged: upload aborted");
+                return UploadResult.FAILED;
             }
 
-            if ("AltiServo".equals(altiName)) {
-                sendParamCommand("p,27," + altiCfg.getServoSwitch());
-                sendParamCommand("p,28," + altiCfg.getServo1OnPos());
-                sendParamCommand("p,29," + altiCfg.getServo2OnPos());
-                sendParamCommand("p,30," + altiCfg.getServo3OnPos());
-                sendParamCommand("p,31," + altiCfg.getServo4OnPos());
-                sendParamCommand("p,32," + altiCfg.getServo1OffPos());
-                sendParamCommand("p,33," + altiCfg.getServo2OffPos());
-                sendParamCommand("p,34," + altiCfg.getServo3OffPos());
-                sendParamCommand("p,35," + altiCfg.getServo4OffPos());
-                sendParamCommand("p,36," + altiCfg.getServoStayOn());
+            for (String command : buildParamCommands()) {
+                if (!sendParamCommand(command)) {
+                    Log.w(TAG, "Setting not acknowledged, upload aborted: " + command);
+                    return UploadResult.REFUSED;
+                }
             }
 
             // Write EEPROM command
-            myBT.setDataReady(false);
-            myBT.flush();
-            myBT.clearInput();
-            myBT.write("q;");
-            waitForStreamData(3000);
-            myBT.ReadResult(3000);
-
-            // Re-enable main loop
-            myBT.setDataReady(false);
-            myBT.flush();
-            myBT.clearInput();
-            myBT.write("m1;");
-            waitForStreamData(3000);
-            myBT.ReadResult(3000);
-            myBT.flush();
-
-            return true;
-        } catch (Exception e) {
+            if (!sendCommand("q;")) {
+                Log.w(TAG, "q; not acknowledged");
+                return UploadResult.REFUSED;
+            }
+            return UploadResult.SUCCESS;
+        } catch (RuntimeException e) {
             Log.e(TAG, "Error writing config", e);
-            return false;
+            return UploadResult.REFUSED;
+        } finally {
+            // Always re-enable the main loop of the altimeter, even after a failure
+            sendCommand("m1;");
+            myBT.flush();
         }
     }
 
-    private void sendParamCommand(String command) {
+    /**
+     * Builds the "p,index,value" / "z,name" commands in the exact order expected by the
+     * firmware (the checksum and the ';' terminator are added by sendParamCommand()).
+     */
+    private List<String> buildParamCommands() {
+        List<String> commands = new ArrayList<>();
+        commands.add("p,1," + altiCfg.getUnits());
+        commands.add("p,2," + altiCfg.getBeepingMode());
+        commands.add("p,3," + altiCfg.getOutput1());
+        commands.add("p,4," + altiCfg.getOutput2());
+        commands.add("p,5," + altiCfg.getOutput3());
+        commands.add("p,6," + altiCfg.getMainAltitude());
+        commands.add("p,7," + altiCfg.getSupersonicYesNo());
+        commands.add("p,8," + altiCfg.getOutput1Delay());
+        commands.add("p,9," + altiCfg.getOutput2Delay());
+        commands.add("p,10," + altiCfg.getOutput3Delay());
+        commands.add("p,11," + altiCfg.getBeepingFrequency());
+        commands.add("p,12," + altiCfg.getNbrOfMeasuresForApogee());
+        commands.add("p,13," + altiCfg.getEndRecordAltitude());
+        commands.add("p,14," + altiCfg.getTelemetryType());
+        commands.add("p,15," + altiCfg.getSupersonicDelay());
+        commands.add("p,16," + altiCfg.getConnectionSpeed());
+        commands.add("p,17," + altiCfg.getAltimeterResolution());
+        commands.add("p,18," + altiCfg.getEepromSize());
+        commands.add("p,19," + altiCfg.getBeepOnOff());
+        commands.add("p,20," + altiCfg.getOutput4());
+        commands.add("p,21," + altiCfg.getOutput4Delay());
+        commands.add("p,22," + altiCfg.getLiftOffAltitude());
+        commands.add("p,23," + altiCfg.getBatteryType());
+        commands.add("p,24," + altiCfg.getRecordingTimeout());
+        commands.add("p,25," + altiCfg.getAltiID());
+        commands.add("p,26," + altiCfg.getUseTelemetryPort());
+
+        String altiName = altiCfg.getAltimeterName();
+        if ((("AltiMultiESP32".equals(altiName) || "AltiMultiESP32_accel".equals(altiName)
+                || "AltiMultiESP32_accel_375".equals(altiName) || "AltiMultiESP32_accel_345".equals(altiName))
+                && altiCfg.getAltiMajorVersion() >= 2 && altiCfg.getAltiMinorVersion() > 0)
+                || ("TTGOBearAltimeter".equals(altiName) && altiCfg.getAltiMajorVersion() >= 0 && altiCfg.getAltiMinorVersion() > 4)) {
+            commands.add("z," + altiCfg.getBluetoothName());
+        }
+
+        if ("AltiServo".equals(altiName)) {
+            commands.add("p,27," + altiCfg.getServoSwitch());
+            commands.add("p,28," + altiCfg.getServo1OnPos());
+            commands.add("p,29," + altiCfg.getServo2OnPos());
+            commands.add("p,30," + altiCfg.getServo3OnPos());
+            commands.add("p,31," + altiCfg.getServo4OnPos());
+            commands.add("p,32," + altiCfg.getServo1OffPos());
+            commands.add("p,33," + altiCfg.getServo2OffPos());
+            commands.add("p,34," + altiCfg.getServo3OffPos());
+            commands.add("p,35," + altiCfg.getServo4OffPos());
+            commands.add("p,36," + altiCfg.getServoStayOn());
+        }
+        return commands;
+    }
+
+    /**
+     * Sends one setting with its checksum (frame format unchanged) and waits for its
+     * acknowledgement.
+     *
+     * @return true only if the altimeter answered "$OK;"
+     */
+    private boolean sendParamCommand(String command) {
         String stripped = command.replace("p", "").replace(",", "");
         String payload = command + "," + generateCheckSum(stripped) + ";";
+        return sendCommand(payload);
+    }
 
-        if (myBT.getConnected()) {
-            myBT.flush();
-            myBT.clearInput();
-            myBT.setDataReady(false);
-            myBT.write(payload);
-            myBT.flush();
+    /**
+     * Sends a command and waits (at most 3 s for the first byte, then 3 s for the answer)
+     * for the acknowledgement frame of the firmware.
+     *
+     * @return true only if the answer is "$OK;" ("$KO;", "$UNKNOWN;" or a timeout return false)
+     */
+    private boolean sendCommand(String command) {
+        if (!myBT.getConnected()) return false;
+        myBT.setDataReady(false);
+        myBT.flush();
+        myBT.clearInput();
+        myBT.write(command);
+        myBT.flush();
 
-            waitForStreamData(3000);
-            myBT.ReadResult(3000);
-        }
+        waitForStreamData(3000);
+        return "OK".equals(myBT.ReadResult(3000));
     }
 
     private void waitForStreamData(long timeoutMs) {

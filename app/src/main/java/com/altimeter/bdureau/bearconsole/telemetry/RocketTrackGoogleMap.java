@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.telemetry;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: RocketTrackGoogleMap
@@ -78,6 +78,8 @@ public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCall
 
     Button btnDismiss, butShareMap, butMapType, butAudio;
     private LocationBroadCastReceiver receiver = null;
+    // True while the phone position receiver is registered
+    private boolean receiverRegistered = false;
     private LatLng dest = new LatLng(rocketLatitude, rocketLongitude);
     private boolean recording = false;
     private TextToSpeech mTTS;
@@ -111,7 +113,7 @@ public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCall
     };
 
     private void setLatitudeValue(String value) {
-        if (value.matches("\\d+(?:\\.\\d+)?")) {
+        if (ConsoleApplication.isSignedNumber(value)) {
             float val = Float.parseFloat(value);
             Log.d(TAG, "latitude:" + value);
             if (val != 0.0f) {
@@ -122,13 +124,14 @@ public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCall
     }
 
     private void setLongitudeValue(String value) {
-        if (value.matches("\\d+(?:\\.\\d+)?")) {
+        if (ConsoleApplication.isSignedNumber(value)) {
             float val = Float.parseFloat(value);
             Log.d("track", "longitude:" + value);
             if (val != 0.0f) {
                 rocketLongitude = Float.parseFloat(value) / 100000;
                 myBT.getAppConf().setRocketLongitude( rocketLongitude);
-                myBT.getAppConf().SaveConfig();
+                // Not saved for every frame: at most every 10 s, and when the screen is paused
+                myBT.getAppConf().SaveConfigThrottled();
             }
         }
     }
@@ -313,31 +316,54 @@ public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCall
     }
 
 
+    /** Starts the phone position service (once) and registers its receiver. */
     private void startService() {
+        registerLocationReceiver();
+        if (locIntent == null) {
+            locIntent = new Intent(RocketTrackGoogleMap.this, LocationService.class);
+            // The position is shared with the other screens (see LocationService.acquire())
+            LocationService.acquire(this);
+        }
+    }
 
+    /**
+     * Registers the receiver of the phone position broadcast by {@link LocationService}.
+     * It stays registered while the screen is paused (screen locked while walking to the
+     * rocket) so that the distance and its voice announcement keep being updated; it is
+     * unregistered in onDestroy().
+     */
+    private void registerLocationReceiver() {
+        if (receiverRegistered) return;
         IntentFilter filter = new IntentFilter("ACT_LOC");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             registerReceiver(receiver, filter, RECEIVER_EXPORTED);
-            Log.d(TAG, "registerReceiver 1");
         } else {
             registerReceiver(receiver, filter);
-            Log.d(TAG, "registerReceiver 2");
         }
+        receiverRegistered = true;
+    }
 
-        locIntent = new Intent(RocketTrackGoogleMap.this, LocationService.class);
-        startService(locIntent);
+    /** Unregisters the phone position receiver if it is registered. */
+    private void unregisterLocationReceiver() {
+        if (!receiverRegistered) return;
+        try {
+            unregisterReceiver(receiver);
+        } catch (IllegalArgumentException e) {
+            Log.w(TAG, "Location receiver was not registered", e);
+        }
+        receiverRegistered = false;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (locIntent !=null)
-            stopService(locIntent);
-
-        if (receiver != null) {
-            unregisterReceiver(receiver);
-            receiver = null;
+        // Release the position: the GPS is stopped only when no other screen uses it
+        if (locIntent != null) {
+            LocationService.release(this);
+            locIntent = null;
         }
+
+        unregisterLocationReceiver();
         try {
             mTTS.shutdown();
         } catch (Exception e) {
@@ -357,7 +383,7 @@ public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCall
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 1:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startService();
                 } else {
                     Toast.makeText(this, getString(R.string.permission_need_to_be_granted), Toast.LENGTH_LONG).show();
@@ -378,15 +404,9 @@ public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCall
     @Override
     protected void onPause() {
         super.onPause();
-
-        if (receiver != null) {
-            try {
-                unregisterReceiver(receiver);
-                receiver = null;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        // Keep the last known rocket position if the application is closed
+        myBT.getAppConf().SaveConfig();
+        // The phone position receiver is kept registered (see registerLocationReceiver())
     }
 
     @Override
@@ -406,8 +426,11 @@ public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCall
             if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
-                double distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude,
-                        longitude, rocketLongitude);
+                // Distance computed in meters, displayed in the unit of the application settings
+                double distance = LocationUtils.metersToAppUnit(
+                        LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude,
+                                longitude, rocketLongitude),
+                        myBT.getAppConf().getUnits());
                 textViewdistance.setText(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
                 // Tell distance every 15 secondes
                 if ((distanceTime - lastSpeakTime) > 15000 ) {

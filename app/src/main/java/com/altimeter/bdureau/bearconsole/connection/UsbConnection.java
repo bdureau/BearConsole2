@@ -10,7 +10,8 @@ package com.altimeter.bdureau.bearconsole.connection;
  *  USB serial transport (USB OTG cable to the altimeter or to a radio modem), based on the
  *  felHR85 UsbSerial library. The library input stream is replaced by {@link SerialInputStream}
  *  because its available() method always returns 0, which the protocol parser relies on.
- *  Every method is safe to call when the port is closed.
+ *  Every method is safe to call when the port is closed. Disconnect() also closes the
+ *  UsbDeviceConnection, so that the device can be opened again after being plugged back.
  * ============================================================================
  */
 
@@ -45,6 +46,12 @@ public class UsbConnection {
     public boolean connect(UsbManager usbManager, UsbDevice device, int baudRate) {
         boolean connected = false;
         connection = usbManager.openDevice(device);
+        if (connection == null) {
+            // No permission, or the device was unplugged
+            Log.d(TAG, "USB device could not be opened");
+            setUSBConnected(false);
+            return false;
+        }
         serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
         if (serialPort != null) {
             if (serialPort.open()) {
@@ -61,6 +68,10 @@ public class UsbConnection {
             }
         } else {
             Log.d(TAG, "Device is not a supported USB serial chip");
+        }
+        if (!connected) {
+            // Do not keep the device opened when the serial port is not usable
+            closeDeviceConnection();
         }
         setUSBConnected(connected);
         return connected;
@@ -80,7 +91,24 @@ public class UsbConnection {
                 Log.w(TAG, "Error while closing the serial port", e);
             }
         }
+        serialPort = null;
+        // usbInputStream is kept: once closed it returns -1 / 0, never null for the callers
+        // Release the device: without this, opening it again could fail (device busy)
+        closeDeviceConnection();
         setUSBConnected(false);
+    }
+
+    /** Closes the UsbDeviceConnection opened by connect(), if any. */
+    private void closeDeviceConnection() {
+        UsbDeviceConnection conn = connection;
+        connection = null;
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (RuntimeException e) {
+                Log.w(TAG, "Error while closing the USB device", e);
+            }
+        }
     }
 
     public void write(String data) {
@@ -121,10 +149,19 @@ public class UsbConnection {
      * InputStream fed by the asynchronous read callback of the USB library.
      * Received bytes are stored in a bounded queue; available() returns the queue size.
      * After close(), read() returns -1 immediately and available() returns 0.
+     * The callback never blocks: when nobody reads (e.g. telemetry still streaming while no
+     * screen reads it) and the queue is full, the new bytes are dropped instead of blocking
+     * the reading thread of the USB library. The commands always clear the input before
+     * waiting for their answer, so these dropped bytes were never going to be used.
      */
     public static class SerialInputStream extends InputStream implements UsbSerialInterface.UsbReadCallback {
+        /** Queue size: about 5 s of data at 115200 bauds, much more than any burst. */
+        private static final int QUEUE_CAPACITY = 64 * 1024;
+
         protected final UsbSerialInterface device;
-        protected final ArrayBlockingQueue<Integer> data = new ArrayBlockingQueue<>(256);
+        protected final ArrayBlockingQueue<Integer> data = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
+        // Number of bytes dropped because the queue was full (diagnostic only)
+        private long droppedBytes = 0;
 
         protected volatile boolean is_open;
 
@@ -162,14 +199,14 @@ public class UsbConnection {
 
         @Override
         public void onReceivedData(byte[] new_data) {
-            if (!is_open) return;
+            if (!is_open || new_data == null) return;
             for (byte b : new_data) {
-                try {
-                    data.put(((int) b) & 0xff);
-                } catch (InterruptedException e) {
-                    // The callback runs on the library reading thread: do not propagate the
-                    // interruption to it; the remaining bytes of this chunk are dropped
-                    return;
+                // offer() never blocks the reading thread of the USB library
+                if (!data.offer(((int) b) & 0xff)) {
+                    droppedBytes++;
+                    if (droppedBytes == 1 || droppedBytes % 4096 == 0) {
+                        Log.w(TAG, "USB input queue full, bytes dropped: " + droppedBytes);
+                    }
                 }
             }
         }

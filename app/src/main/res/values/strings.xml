@@ -539,6 +539,8 @@
     <string name="config_uploading">Uploading configuration…</string>
     <string name="config_upload_success">Configuration updated successfully</string>
     <string name="config_upload_failed">Failed to write the altimeter configuration</string>
+    <string name="config_upload_refused_title">Configuration not saved</string>
+    <string name="config_upload_refused">The altimeter did not confirm every setting: the new configuration was NOT saved. Restart the altimeter before any flight, then upload the configuration again.</string>
     <string name="config_read_failed">Failed to retrieve the altimeter configuration</string>
     <string name="main_usb_cannot_connect">Cannot connect to the USB device</string>
     <string name="main_usb_permission_denied">USB permission not granted</string>
@@ -570,6 +572,12 @@
     <string name="flash_chip_not_initiated">The chip could not be initialized: %1$s</string>
     <string name="flash_file_not_found">File not found: %1$s</string>
     <string name="flash_done">Done</string>
+    <string name="flash_cancel_requested">Cancelling: the flashing stops after the current block…</string>
+    <string name="flash_cancelled_untouched">Flashing cancelled before writing: the firmware of the altimeter was not modified.</string>
+    <string name="flash_cancelled">Flashing cancelled: the altimeter no longer has a valid firmware. Flash it again before any use.</string>
+    <string name="flash_failed_untouched">Flashing failed before writing: the firmware of the altimeter was not modified.</string>
+    <string name="flash_failed">Flashing failed: some data was not acknowledged by the altimeter. Flash it again before any use.</string>
+    <string name="flash_result_title">Flashing</string>
     <!-- Sensor names and fixed texts: identical in every language -->
     <string name="accel_375x" translatable="false">Accel375x</string>
     <string name="accel_375y" translatable="false">Accel375y</string>
@@ -578,4 +586,7 @@
     <string name="accel_345y" translatable="false">Accel345y</string>
     <string name="accel_345z" translatable="false">Accel345z</string>
     <string name="about_copyright" translatable="false">Copyright (c) Boris du Reau 2016-2026</string>
+    <string name="location_channel_name">Rocket tracking</string>
+    <string name="location_notification_title">Tracking the rocket</string>
+    <string name="location_notification_text">The position of the phone is used to show the distance to the rocket.</string>
 </resources>

@@ -533,6 +533,8 @@
     <string name="config_uploading">Wysyłanie konfiguracji…</string>
     <string name="config_upload_success">Konfiguracja została zaktualizowana</string>
     <string name="config_upload_failed">Nie udało się zapisać konfiguracji wysokościomierza</string>
+    <string name="config_upload_refused_title">Konfiguracja nie została zapisana</string>
+    <string name="config_upload_refused">Wysokościomierz nie potwierdził wszystkich ustawień: nowa konfiguracja NIE została zapisana. Przed lotem uruchom ponownie wysokościomierz, a następnie wyślij konfigurację jeszcze raz.</string>
     <string name="config_read_failed">Nie udało się odczytać konfiguracji wysokościomierza</string>
     <string name="main_usb_cannot_connect">Nie można połączyć się z urządzeniem USB</string>
     <string name="main_usb_permission_denied">Nie przyznano uprawnień USB</string>
@@ -564,4 +566,13 @@
     <string name="flash_chip_not_initiated">Nie udało się zainicjować układu: %1$s</string>
     <string name="flash_file_not_found">Nie znaleziono pliku: %1$s</string>
     <string name="flash_done">Gotowe</string>
+    <string name="flash_cancel_requested">Anulowanie: wgrywanie zatrzyma się po bieżącym bloku…</string>
+    <string name="flash_cancelled_untouched">Wgrywanie anulowane przed zapisem: firmware wysokościomierza nie został zmieniony.</string>
+    <string name="flash_cancelled">Wgrywanie anulowane: wysokościomierz nie ma już poprawnego firmware. Wgraj go ponownie przed użyciem.</string>
+    <string name="flash_failed_untouched">Wgrywanie nie powiodło się przed zapisem: firmware wysokościomierza nie został zmieniony.</string>
+    <string name="flash_failed">Wgrywanie nie powiodło się: wysokościomierz nie potwierdził części danych. Wgraj go ponownie przed użyciem.</string>
+    <string name="flash_result_title">Wgrywanie</string>
+    <string name="location_channel_name">Śledzenie rakiety</string>
+    <string name="location_notification_title">Śledzenie rakiety w toku</string>
+    <string name="location_notification_text">Pozycja telefonu służy do wyświetlania odległości od rakiety.</string>
 </resources>

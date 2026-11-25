@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.Flight;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Flight Computer Management
  * Class: FlightListActivity
@@ -37,8 +37,6 @@ import android.widget.Toast;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
-import org.afree.data.xy.XYSeries;
-import org.afree.data.xy.XYSeriesCollection;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -196,7 +194,7 @@ public class FlightListActivity extends BaseActivity {
 
                 // Compute vertical speed and acceleration profiles using centered differences
                 for (String flight : flightNames) {
-                    computeVelocityAndAcceleration(flight);
+                    myflight.computeVelocityAndAcceleration(flight);
                 }
             }
             return null;
@@ -230,88 +228,6 @@ public class FlightListActivity extends BaseActivity {
             if (myflight == null && !canceled) {
                 msg(getResources().getString(R.string.flight_have_been_recorded));
             }
-        }
-    }
-
-    /**
-     * Numerically computes vertical velocity (m/s or ft/s) and vertical acceleration (m/s² or ft/s²)
-     * from altitude time-series using second-order centered finite differences.
-     * Preserves physical velocity sign (positive ascent, negative descent) and eliminates
-     * phase lag at peak velocity (burnout) and apogee.
-     *
-     * @param flight Unique identifier name of the target flight dataset
-     */
-    private void computeVelocityAndAcceleration(String flight) {
-        if (myflight == null) return;
-
-        XYSeriesCollection flightCollection = myflight.GetFlightData(flight);
-        if (flightCollection == null) return;
-
-        XYSeries altSeries = flightCollection.getSeries(getResources().getString(R.string.curve_altitude));
-        if (altSeries == null) return;
-
-        int nbrData = altSeries.getItemCount();
-        if (nbrData < 2) return;
-
-        double[] timeSec = new double[nbrData];
-        double[] altVal = new double[nbrData];
-        double[] speeds = new double[nbrData];
-
-        // Cache time in seconds and altitude values
-        for (int i = 0; i < nbrData; i++) {
-            timeSec[i] = altSeries.getX(i).doubleValue() / 1000.0; // Convert ms to seconds
-            altVal[i] = altSeries.getY(i).doubleValue();
-        }
-
-        // --- 1. VELOCITY COMPUTATION (Centered Differences) ---
-        for (int i = 0; i < nbrData; i++) {
-            double v = 0.0;
-            if (i == 0) {
-                // Forward difference for the initial sample boundary
-                double dt = timeSec[1] - timeSec[0];
-                if (dt > 0.0001) v = (altVal[1] - altVal[0]) / dt;
-            } else if (i == nbrData - 1) {
-                // Backward difference for the final sample boundary
-                double dt = timeSec[nbrData - 1] - timeSec[nbrData - 2];
-                if (dt > 0.0001) v = (altVal[nbrData - 1] - altVal[nbrData - 2]) / dt;
-            } else {
-                // Second-order central difference evaluated at the exact midpoint t[i]
-                double dt = timeSec[i + 1] - timeSec[i - 1];
-                if (dt > 0.0001) {
-                    v = (altVal[i + 1] - altVal[i - 1]) / dt;
-                } else {
-                    v = speeds[i - 1]; // Safeguard against zero dt
-                }
-            }
-            speeds[i] = v;
-
-            // Index 3 corresponds to curve_speed
-            myflight.AddToFlight((float) altSeries.getX(i).doubleValue(), (float) v, flight, 3);
-        }
-
-        // --- 2. VERTICAL ACCELERATION COMPUTATION (Derivative of Velocity) ---
-        for (int i = 0; i < nbrData; i++) {
-            double a = 0.0;
-            if (i == 0) {
-                // Forward difference at initial boundary
-                double dt = timeSec[1] - timeSec[0];
-                if (dt > 0.0001) a = (speeds[1] - speeds[0]) / dt;
-            } else if (i == nbrData - 1) {
-                // Backward difference at final boundary
-                double dt = timeSec[nbrData - 1] - timeSec[nbrData - 2];
-                if (dt > 0.0001) a = (speeds[nbrData - 1] - speeds[nbrData - 2]) / dt;
-            } else {
-                // Centered difference on the derived velocity profile
-                double dt = timeSec[i + 1] - timeSec[i - 1];
-                if (dt > 0.0001) {
-                    a = (speeds[i + 1] - speeds[i - 1]) / dt;
-                } else if (i > 0) {
-                    a = 0.0;
-                }
-            }
-
-            // Index 4 corresponds to curve_accel
-            myflight.AddToFlight((float) altSeries.getX(i).doubleValue(), (float) a, flight, 4);
         }
     }
 

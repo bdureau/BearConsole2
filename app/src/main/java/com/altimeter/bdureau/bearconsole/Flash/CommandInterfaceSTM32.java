@@ -27,6 +27,30 @@ public class CommandInterfaceSTM32 {
     UploadSTM32CallBack mUpCallback;
     Physicaloid mPhysicaloid;
 
+    /** writeMemory() result: every block was written and acknowledged. */
+    public static final int WRITE_OK = 1;
+    /** writeMemory() result: no data, or a block was not acknowledged by the bootloader. */
+    public static final int WRITE_FAILED = -1;
+    /** writeMemory() result: stopped by cancel() between two blocks. */
+    public static final int WRITE_CANCELLED = 0;
+
+    // Set from the UI thread by cancel(), read by the flashing thread between two blocks
+    private volatile boolean cancelRequested = false;
+
+    /**
+     * Requests the flashing to stop. writeMemory() finishes the current 256 byte block, then
+     * returns WRITE_CANCELLED. The STM32 system bootloader is in ROM, so the board can always
+     * be flashed again. The frames sent to the bootloader are not changed.
+     */
+    public void cancel() {
+        cancelRequested = true;
+    }
+
+    /** @return true once cancel() has been called */
+    public boolean isCancelRequested() {
+        return cancelRequested;
+    }
+
     CommandInterfaceSTM32(UploadSTM32CallBack UpCallback, Physicaloid mPhysi) {
         mUpCallback = UpCallback;
         mPhysicaloid = mPhysi;
@@ -130,8 +154,16 @@ public class CommandInterfaceSTM32 {
             retval =recv(buf, 32);
             if (retval > 0) {
                 for (int a=0; a <retval; a++) {
-                    got[i] = buf[a];
-                    i++;
+                    // Keep only the last got.length bytes: more than 10 bytes (repeated 0x1F,
+                    // or data sent by a running firmware) used to overflow this array and
+                    // crash the application
+                    if (i < got.length) {
+                        got[i] = buf[a];
+                        i++;
+                    } else {
+                        System.arraycopy(got, 1, got, 0, got.length - 1);
+                        got[got.length - 1] = buf[a];
+                    }
                 }
             }
             for (int j = 0; j <(i-1) ; j++ ) {
@@ -165,7 +197,9 @@ public class CommandInterfaceSTM32 {
         cmd[0]=0x00;
         if (cmdGeneric(cmd)==1) {
             recv(buf, 1);
-            int len =(int)buf[0];
+            // Length announced by the bootloader, limited to the buffer size (a wrong byte
+            // used to crash the application)
+            int len = Math.min(buf[0] & 0xFF, buf.length);
 
             recv(buf, 1);
             version = (int)buf[0];
@@ -199,7 +233,9 @@ public class CommandInterfaceSTM32 {
         cmd[0]=0x02;
         if (cmdGeneric(cmd)==1) {
             recv(buf, 1);
-            int len = (int)buf[0];
+            // Length announced by the bootloader, limited to the buffer size (a wrong byte
+            // used to crash the application)
+            int len = Math.min(buf[0] & 0xFF, buf.length - 1);
             recv(buf, len+1);
             id = (int)buf[0];
             _wait_for_ack("0x02 end",500);
@@ -269,10 +305,10 @@ public class CommandInterfaceSTM32 {
             }
 
             mPhysicaloid.write(new byte[]{ crc });
-            _wait_for_ack("0x31 programming failed " +
+            // The block is valid only if the bootloader acknowledges the programming (0x79)
+            return _wait_for_ack("0x31 programming failed " +
                     toHexStr(new byte[]{(byte) crc }, 1) + " lng: " +
                     toHexStr(new byte[]{(byte) lng }, 1),200);
-            return 1;
         }else{
             mUpCallback.onInfo("*** Write memory command failed"  + "\n");
             return -1;
@@ -338,6 +374,13 @@ public class CommandInterfaceSTM32 {
         return 1;
     }
 
+    /**
+     * Writes the firmware by blocks of 256 bytes (last block padded with 0xFF).
+     *
+     * @return WRITE_OK if every block was acknowledged, WRITE_FAILED if the file could not be
+     *         read or a block was not acknowledged (the writing goes on, as before, so that the
+     *         log shows every failing block), WRITE_CANCELLED if cancel() was called
+     */
     public int writeMemory(int addr, InputStream is) {
         int lng = -1;
         int tot = 0;
@@ -355,19 +398,30 @@ public class CommandInterfaceSTM32 {
             mUpCallback.onInfo("file not found: " +e.getMessage() + "\n");
         }
 
+        // Nothing to write: never send an empty / invalid block
+        if (data == null) return WRITE_FAILED;
+
         int offs = 0;
+        // Number of blocks not acknowledged by the bootloader
+        int failedBlocks = 0;
 
         tot = lng;
 
 
         while (lng > 256) {
+            if (cancelRequested) {
+                mUpCallback.onInfo("Flashing cancelled\n");
+                return WRITE_CANCELLED;
+            }
             byte buf[] = new byte[256];
             for (int i =0; i< 256; i++) {
                 buf[i]= data[(i+offs)];
             }
             int ret = cmdWriteMemory(addr, buf);
-            if(ret !=1)
+            if(ret !=1) {
+                failedBlocks++;
                 mUpCallback.onInfo("error writing to mem:" + lng + "\n");
+            }
 
             offs = offs + 256;
             addr = addr + 256;
@@ -382,7 +436,14 @@ public class CommandInterfaceSTM32 {
             buf2[i]= (byte)0xFF;
         }
 
-        cmdWriteMemory(addr, buf2);
-        return 1;
+        if (cancelRequested) {
+            mUpCallback.onInfo("Flashing cancelled\n");
+            return WRITE_CANCELLED;
+        }
+        if (cmdWriteMemory(addr, buf2) != 1) {
+            failedBlocks++;
+            mUpCallback.onInfo("error writing to mem: last block\n");
+        }
+        return failedBlocks == 0 ? WRITE_OK : WRITE_FAILED;
     }
 }

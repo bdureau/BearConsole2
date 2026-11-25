@@ -533,6 +533,8 @@
     <string name="config_uploading">Konfiguration wird übertragen…</string>
     <string name="config_upload_success">Konfiguration erfolgreich aktualisiert</string>
     <string name="config_upload_failed">Die Höhenmesser-Konfiguration konnte nicht geschrieben werden</string>
+    <string name="config_upload_refused_title">Konfiguration nicht gespeichert</string>
+    <string name="config_upload_refused">Der Höhenmesser hat nicht alle Einstellungen bestätigt: Die neue Konfiguration wurde NICHT gespeichert. Starten Sie den Höhenmesser vor jedem Flug neu und übertragen Sie die Konfiguration erneut.</string>
     <string name="config_read_failed">Die Höhenmesser-Konfiguration konnte nicht gelesen werden</string>
     <string name="main_usb_cannot_connect">Verbindung zum USB-Gerät nicht möglich</string>
     <string name="main_usb_permission_denied">USB-Berechtigung nicht erteilt</string>
@@ -564,4 +566,13 @@
     <string name="flash_chip_not_initiated">Der Chip konnte nicht initialisiert werden: %1$s</string>
     <string name="flash_file_not_found">Datei nicht gefunden: %1$s</string>
     <string name="flash_done">Fertig</string>
+    <string name="flash_cancel_requested">Abbruch: Das Flashen stoppt nach dem aktuellen Block…</string>
+    <string name="flash_cancelled_untouched">Flashen vor dem Schreiben abgebrochen: Die Firmware des Höhenmessers wurde nicht verändert.</string>
+    <string name="flash_cancelled">Flashen abgebrochen: Der Höhenmesser hat keine gültige Firmware mehr. Flashen Sie ihn vor jeder Verwendung erneut.</string>
+    <string name="flash_failed_untouched">Flashen vor dem Schreiben fehlgeschlagen: Die Firmware des Höhenmessers wurde nicht verändert.</string>
+    <string name="flash_failed">Flashen fehlgeschlagen: Einige Daten wurden vom Höhenmesser nicht bestätigt. Flashen Sie ihn vor jeder Verwendung erneut.</string>
+    <string name="flash_result_title">Flashen</string>
+    <string name="location_channel_name">Raketenverfolgung</string>
+    <string name="location_notification_title">Rakete wird verfolgt</string>
+    <string name="location_notification_text">Die Position des Telefons wird verwendet, um die Entfernung zur Rakete anzuzeigen.</string>
 </resources>

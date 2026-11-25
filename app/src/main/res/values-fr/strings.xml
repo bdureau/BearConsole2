@@ -533,6 +533,8 @@
     <string name="config_uploading">Envoi de la configuration…</string>
     <string name="config_upload_success">Configuration mise à jour</string>
     <string name="config_upload_failed">Échec de l\'écriture de la configuration de l\'altimètre</string>
+    <string name="config_upload_refused_title">Configuration non enregistrée</string>
+    <string name="config_upload_refused">L\'altimètre n\'a pas confirmé tous les réglages : la nouvelle configuration n\'a PAS été enregistrée. Redémarrez l\'altimètre avant tout vol, puis renvoyez la configuration.</string>
     <string name="config_read_failed">Échec de la lecture de la configuration de l\'altimètre</string>
     <string name="main_usb_cannot_connect">Connexion au périphérique USB impossible</string>
     <string name="main_usb_permission_denied">Autorisation USB refusée</string>
@@ -564,4 +566,13 @@
     <string name="flash_chip_not_initiated">La puce n\'a pas pu être initialisée : %1$s</string>
     <string name="flash_file_not_found">Fichier introuvable : %1$s</string>
     <string name="flash_done">Terminé</string>
+    <string name="flash_cancel_requested">Annulation : le flash s\'arrête après le bloc en cours…</string>
+    <string name="flash_cancelled_untouched">Flash annulé avant l\'écriture : le firmware de l\'altimètre n\'a pas été modifié.</string>
+    <string name="flash_cancelled">Flash annulé : l\'altimètre n\'a plus de firmware valide. Flashez-le de nouveau avant toute utilisation.</string>
+    <string name="flash_failed_untouched">Échec du flash avant l\'écriture : le firmware de l\'altimètre n\'a pas été modifié.</string>
+    <string name="flash_failed">Échec du flash : des données n\'ont pas été confirmées par l\'altimètre. Flashez-le de nouveau avant toute utilisation.</string>
+    <string name="flash_result_title">Flash</string>
+    <string name="location_channel_name">Suivi de la fusée</string>
+    <string name="location_notification_title">Suivi de la fusée en cours</string>
+    <string name="location_notification_text">La position du téléphone sert à afficher la distance jusqu\'à la fusée.</string>
 </resources>

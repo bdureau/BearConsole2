@@ -533,6 +533,8 @@
     <string name="config_uploading">A enviar a configuração…</string>
     <string name="config_upload_success">Configuração atualizada com sucesso</string>
     <string name="config_upload_failed">Falha ao escrever a configuração do altímetro</string>
+    <string name="config_upload_refused_title">Configuração não guardada</string>
+    <string name="config_upload_refused">O altímetro não confirmou todas as definições: a nova configuração NÃO foi guardada. Reinicie o altímetro antes de qualquer voo e envie a configuração novamente.</string>
     <string name="config_read_failed">Falha ao ler a configuração do altímetro</string>
     <string name="main_usb_cannot_connect">Não é possível ligar ao dispositivo USB</string>
     <string name="main_usb_permission_denied">Permissão USB recusada</string>
@@ -564,4 +566,13 @@
     <string name="flash_chip_not_initiated">Não foi possível inicializar o chip: %1$s</string>
     <string name="flash_file_not_found">Ficheiro não encontrado: %1$s</string>
     <string name="flash_done">Concluído</string>
+    <string name="flash_cancel_requested">A cancelar: a gravação para após o bloco atual…</string>
+    <string name="flash_cancelled_untouched">Gravação cancelada antes da escrita: o firmware do altímetro não foi alterado.</string>
+    <string name="flash_cancelled">Gravação cancelada: o altímetro já não tem um firmware válido. Grave-o novamente antes de qualquer utilização.</string>
+    <string name="flash_failed_untouched">A gravação falhou antes da escrita: o firmware do altímetro não foi alterado.</string>
+    <string name="flash_failed">A gravação falhou: alguns dados não foram confirmados pelo altímetro. Grave-o novamente antes de qualquer utilização.</string>
+    <string name="flash_result_title">Gravação</string>
+    <string name="location_channel_name">Seguimento do foguete</string>
+    <string name="location_notification_title">A seguir o foguete</string>
+    <string name="location_notification_text">A posição do telefone é usada para mostrar a distância até o foguete.</string>
 </resources>

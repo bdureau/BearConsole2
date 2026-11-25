@@ -29,14 +29,13 @@ android {
     }
     namespace 'com.altimeter.bdureau.bearconsole'
     buildToolsVersion '37.0.0'
-    ndkVersion '23.1.7779620'
     compileSdkMinor 2
 }
 
 dependencies {
-    implementation 'junit:junit:4.13.2'
+    // JUnit is only used by the local unit tests (src/test)
+    testImplementation 'junit:junit:4.13.2'
     implementation files('libs/afreechart-0.0.4.jar')
-    implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation files('libs/usbserial-6.1.0.aar') //special version of usbserial that work with Android 12
     //implementation 'com.github.felHR85:UsbSerial:6.1.0' //that does not work with Android 12
@@ -64,9 +63,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.2.2'//02/01
 
     implementation 'com.google.android.material:material:1.14.0'//07/09/25
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    // required to avoid crash on Android 12 API 31
-
+    // Recent WorkManager required to avoid a crash on Android 12 (API 31)
     implementation 'androidx.work:work-runtime:2.12.0'//07/09/25
     //for openmap
     implementation 'androidx.preference:preference:1.2.1'
