@@ -575,4 +575,6 @@
     <string name="location_channel_name">Отслеживание ракеты</string>
     <string name="location_notification_title">Идёт отслеживание ракеты</string>
     <string name="location_notification_text">Положение телефона используется для отображения расстояния до ракеты.</string>
+    <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
+    <string name="bt_not_enabled">Bluetooth должен быть включён, чтобы показать сопряжённые модули</string>
 </resources>

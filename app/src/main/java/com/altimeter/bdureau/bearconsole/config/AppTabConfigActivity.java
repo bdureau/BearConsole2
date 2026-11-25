@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.config;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: AppTabConfigActivity
@@ -17,14 +17,14 @@ package com.altimeter.bdureau.bearconsole.config;
  * ============================================================================
  */
 
-import androidx.annotation.Nullable;
+//import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
+//import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+//import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
@@ -49,8 +49,8 @@ import com.altimeter.bdureau.bearconsole.config.AppConfig.AppConfig1Fragment;
 import com.altimeter.bdureau.bearconsole.config.AppConfig.AppConfig2Fragment;
 import com.altimeter.bdureau.bearconsole.config.AppConfig.AppConfig3Fragment;
 
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 import java.util.Locale;
 
 public class AppTabConfigActivity extends BaseActivity {

@@ -575,4 +575,6 @@
     <string name="location_channel_name">Roket takibi</string>
     <string name="location_notification_title">Roket takip ediliyor</string>
     <string name="location_notification_text">Telefonun konumu rokete olan mesafeyi göstermek için kullanılır.</string>
+    <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
+    <string name="bt_not_enabled">Eşleştirilmiş modülleri listelemek için Bluetooth açık olmalıdır</string>
 </resources>

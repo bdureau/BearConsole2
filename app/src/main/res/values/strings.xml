@@ -589,4 +589,6 @@
     <string name="location_channel_name">Rocket tracking</string>
     <string name="location_notification_title">Tracking the rocket</string>
     <string name="location_notification_text">The position of the phone is used to show the distance to the rocket.</string>
+    <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
+    <string name="bt_not_enabled">Bluetooth must be switched on to list the paired modules</string>
 </resources>

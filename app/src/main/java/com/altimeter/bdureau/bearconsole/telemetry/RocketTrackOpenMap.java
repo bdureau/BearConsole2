@@ -83,7 +83,8 @@ public class RocketTrackOpenMap extends BaseActivity {
     private IMapController mapController  = null;
     // Background reading loop and command queue (never blocks the UI thread)
     private TelemetryReader reader;
-    private float rocketLatitude=48.8698f, rocketLongitude=2.2190f;
+    // Rocket position in decimal degrees (double: full GPS precision)
+    private double rocketLatitude = 48.8698, rocketLongitude = 2.2190;
     private TextView textViewdistance;
     Intent locIntent = null;
 
@@ -131,7 +132,7 @@ public class RocketTrackOpenMap extends BaseActivity {
             float val = Float.parseFloat(value);
             Log.d("track", "latitude:"+ value);
             if(val !=0.0f) {
-                rocketLatitude = Float.parseFloat(value) / 100000;
+                rocketLatitude = Double.parseDouble(value) / 100000.0;
                 myBT.getAppConf().setRocketLatitude(rocketLatitude);
 
             }
@@ -143,7 +144,7 @@ public class RocketTrackOpenMap extends BaseActivity {
             float val = Float.parseFloat(value);
             Log.d("track", "longitude:"+ value);
             if(val !=0.0f) {
-                rocketLongitude = Float.parseFloat(value) / 100000;
+                rocketLongitude = Double.parseDouble(value) / 100000.0;
                 myBT.getAppConf().setRocketLongitude( rocketLongitude);
                 // Not saved for every frame: at most every 10 s, and when the screen is paused
                 myBT.getAppConf().SaveConfigThrottled();

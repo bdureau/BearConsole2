@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.config.AltimeterConfig;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: AltiConfig3Fragment
@@ -205,10 +205,8 @@ public class AltiConfig3Fragment extends Fragment {
             txtServoSwitch.setVisibility(View.INVISIBLE);
         }
 
-        boolean supportsBluetoothName = (("AltiMultiESP32".equals(name) || "AltiMultiESP32_accel".equals(name)
-                || "AltiMultiESP32_accel_375".equals(name) || "AltiMultiESP32_accel_345".equals(name))
-                && lAltiCfg.getAltiMajorVersion() >= 2 && lAltiCfg.getAltiMinorVersion() > 0)
-                || ("TTGOBearAltimeter".equals(name) && lAltiCfg.getAltiMajorVersion() >= 0 && lAltiCfg.getAltiMinorVersion() > 4);
+        // Same rule as the frame decoder and the upload (single definition in AltiConfigData)
+        boolean supportsBluetoothName = lAltiCfg.supportsBluetoothName();
 
         if (supportsBluetoothName) {
             txtBluetoothName.setVisibility(View.VISIBLE);

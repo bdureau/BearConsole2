@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: Struct
@@ -14,7 +14,7 @@ package com.altimeter.bdureau.bearconsole.Flash;
  */
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+//import java.io.ByteArrayOutputStream;
 import java.lang.*;
 import java.nio.ByteOrder;
 import java.util.Arrays;

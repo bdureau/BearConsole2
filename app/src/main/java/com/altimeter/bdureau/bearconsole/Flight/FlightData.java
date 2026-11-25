@@ -26,7 +26,7 @@ import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,13 +56,47 @@ public class FlightData {
     }
 
     /**
-     * Returns a sorted list of all recorded flight names.
+     * Returns the list of all recorded flight names, sorted by flight number
+     * ("Flight 9" < "Flight 10" < "Flight 100"), see {@link #FLIGHT_NAME_ORDER}.
      */
     @NonNull
     public synchronized List<String> getAllFlightNames2() {
         List<String> flightNames = new ArrayList<>(flightsMap.keySet());
-        Collections.sort(flightNames);
+        flightNames.sort(FLIGHT_NAME_ORDER);
         return flightNames;
+    }
+
+    /**
+     * Orders flight names by the number at their end, then alphabetically.
+     * A plain alphabetical order puts "Flight 100" before "Flight 11" once there are more
+     * than 99 flights; names without a trailing number are kept in alphabetical order.
+     */
+    public static final Comparator<String> FLIGHT_NAME_ORDER = (a, b) -> {
+        long na = trailingNumber(a);
+        long nb = trailingNumber(b);
+        if (na >= 0 && nb >= 0 && na != nb) {
+            return Long.compare(na, nb);
+        }
+        return a.compareTo(b);
+    };
+
+    /** Number at the end of a name ("Flight 012" -> 12), or -1 if there is none. */
+    private static long trailingNumber(String name) {
+        int end = name.length();
+        int start = end;
+        while (start > 0 && Character.isDigit(name.charAt(start - 1))) start--;
+        if (start == end || end - start > 18) return -1;
+        return Long.parseLong(name.substring(start, end));
+    }
+
+    /**
+     * Removes a flight from the repository (e.g. a flight whose download was cancelled
+     * and whose data are therefore incomplete).
+     *
+     * @return true if the flight existed
+     */
+    public synchronized boolean removeFlight(@NonNull String flightName) {
+        return flightsMap.remove(flightName) != null;
     }
 
     /**
@@ -99,6 +133,25 @@ public class FlightData {
      * Creates the flight structure automatically if not yet present.
      */
     public synchronized void AddToFlight(float x, float y, @NonNull String flightName, int serieIndex) {
+        XYSeriesCollection flightData = flightsMap.get(flightName);
+
+        if (flightData == null) {
+            flightData = createFlight(flightName);
+            flightsMap.put(flightName, flightData);
+        }
+
+        if (serieIndex >= 0 && serieIndex < flightData.getSeriesCount()) {
+            flightData.getSeries(serieIndex).add(x, y);
+        } else {
+            Log.w(TAG, "Invalid series index: " + serieIndex + " for flight: " + flightName);
+        }
+    }
+
+    /**
+     * Same as {@link #AddToFlight(float, float, String, int)} with double precision values.
+     * Used for the GPS coordinates, which need more than the 7 significant digits of a float.
+     */
+    public synchronized void AddToFlight(double x, double y, @NonNull String flightName, int serieIndex) {
         XYSeriesCollection flightData = flightsMap.get(flightName);
 
         if (flightData == null) {

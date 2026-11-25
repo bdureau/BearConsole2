@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.connection;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: TestConnection
@@ -14,14 +14,14 @@ package com.altimeter.bdureau.bearconsole.connection;
  * ============================================================================
  */
 
-import androidx.appcompat.app.AppCompatDelegate;
+//import androidx.appcompat.app.AppCompatDelegate;
 
 
 import android.app.AlertDialog;
-import android.content.Context;
+//import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+//import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,7 +41,7 @@ import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
 
-import java.io.IOException;
+//import java.io.IOException;
 
 
 public class TestConnection extends BaseActivity {

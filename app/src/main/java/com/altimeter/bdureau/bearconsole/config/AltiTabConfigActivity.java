@@ -309,11 +309,8 @@ public class AltiTabConfigActivity extends BaseActivity {
             altiCfg.setAltiID(configPage3.getAltiID());
             altiCfg.setUseTelemetryPort(configPage3.getDropdownUseTelemetryPort());
 
-            String altiName = altiCfg.getAltimeterName();
-            if ((("AltiMultiESP32".equals(altiName) || "AltiMultiESP32_accel".equals(altiName)
-                    || "AltiMultiESP32_accel_375".equals(altiName) || "AltiMultiESP32_accel_345".equals(altiName))
-                    && altiCfg.getAltiMajorVersion() >= 2 && altiCfg.getAltiMinorVersion() > 0)
-                    || ("TTGOBearAltimeter".equals(altiName) && altiCfg.getAltiMajorVersion() >= 0 && altiCfg.getAltiMinorVersion() > 4)) {
+            // Rule shared with the frame decoder and the upload (AltiConfigData)
+            if (altiCfg.supportsBluetoothName()) {
                 altiCfg.setBluetoothName(configPage3.getBluetoothName());
             }
         }
@@ -491,10 +488,8 @@ public class AltiTabConfigActivity extends BaseActivity {
         commands.add("p,26," + altiCfg.getUseTelemetryPort());
 
         String altiName = altiCfg.getAltimeterName();
-        if ((("AltiMultiESP32".equals(altiName) || "AltiMultiESP32_accel".equals(altiName)
-                || "AltiMultiESP32_accel_375".equals(altiName) || "AltiMultiESP32_accel_345".equals(altiName))
-                && altiCfg.getAltiMajorVersion() >= 2 && altiCfg.getAltiMinorVersion() > 0)
-                || ("TTGOBearAltimeter".equals(altiName) && altiCfg.getAltiMajorVersion() >= 0 && altiCfg.getAltiMinorVersion() > 4)) {
+        // Bluetooth name only on the firmwares that store it (rule shared with the decoder)
+        if (altiCfg.supportsBluetoothName()) {
             commands.add("z," + altiCfg.getBluetoothName());
         }
 

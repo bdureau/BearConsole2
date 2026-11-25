@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.connection;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: BluetoothConnection
@@ -61,6 +61,10 @@ public class BluetoothConnection {
                     && ActivityCompat.checkSelfPermission(c, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
+            // A previous socket (failed or forgotten connection) must be released first:
+            // otherwise it keeps the RFCOMM channel and the new connection fails ("busy")
+            closeSocket();
+
             BluetoothDevice btDevice = myBluetooth.getRemoteDevice(address);
             setBtSocket(btDevice.createRfcommSocketToServiceRecord(myUUID));
 
@@ -73,10 +77,25 @@ public class BluetoothConnection {
 
         } catch (IOException | IllegalArgumentException | SecurityException e) {
             Log.w(TAG, "Bluetooth connection failed", e);
+            // Do not keep a half-opened socket
+            closeSocket();
             state = false;
             setBTConnected(false);
         }
         return state;
+    }
+
+    /** Closes the current socket, if any, and forgets it. */
+    private void closeSocket() {
+        BluetoothSocket socket = btSocket;
+        btSocket = null;
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                Log.w(TAG, "Error while closing the previous socket", e);
+            }
+        }
     }
 
     public void setBTConnected(boolean BtConnected) {
@@ -108,14 +127,9 @@ public class BluetoothConnection {
 
     /** Closes the socket; a blocked read on the other side then fails and returns. */
     public void Disconnect() {
-        BluetoothSocket socket = btSocket;
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                Log.w(TAG, "Error while closing the socket", e);
-            }
-        }
+        // The socket is also forgotten: the next connect() starts from a clean state and the
+        // stream accessors return null (callers then stop reading) instead of a closed stream
+        closeSocket();
         setBTConnected(false);
     }
 

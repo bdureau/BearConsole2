@@ -575,4 +575,6 @@
     <string name="location_channel_name">Raket volgen</string>
     <string name="location_notification_title">De raket wordt gevolgd</string>
     <string name="location_notification_text">De positie van de telefoon wordt gebruikt om de afstand tot de raket te tonen.</string>
+    <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
+    <string name="bt_not_enabled">Bluetooth moet ingeschakeld zijn om de gekoppelde modules te tonen</string>
 </resources>

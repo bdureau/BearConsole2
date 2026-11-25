@@ -250,7 +250,7 @@ public class MainScreenActivity extends BaseActivity {
         image_continuity = findViewById(R.id.image_continuity);
         image_reset = findViewById(R.id.image_reset);
         image_status = findViewById(R.id.image_status);
-        image_track = findViewById(R.id.image_status);
+        image_track = findViewById(R.id.image_track);
         image_flash = findViewById(R.id.image_flash);
         image_info = findViewById(R.id.image_info);
         image_connect = findViewById(R.id.image_connect);
@@ -878,6 +878,9 @@ public class MainScreenActivity extends BaseActivity {
                 myBT.setConnected(true);
                 // Trigger configuration reading on the background thread
                 loadConfigurationAsync();
+            } else if (!isFinishing() && !isDestroyed()) {
+                // Tell the user: module out of range, switched off, or not a SPP module
+                msg(getString(R.string.MS_msg3));
             }
             // Safely dismiss dialog to avoid View not attached exceptions
             if (alert != null && alert.isShowing() && !isFinishing() && !isDestroyed()) {

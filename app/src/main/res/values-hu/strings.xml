@@ -575,4 +575,6 @@
     <string name="location_channel_name">Rakétakövetés</string>
     <string name="location_notification_title">A rakéta követése folyamatban</string>
     <string name="location_notification_text">A telefon helyzetét a rakétától való távolság kijelzésére használjuk.</string>
+    <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
+    <string name="bt_not_enabled">A párosított modulok listázásához a Bluetooth-t be kell kapcsolni</string>
 </resources>

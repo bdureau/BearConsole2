@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.Flight.FlightView;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: FlightViewFcFragment

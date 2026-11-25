@@ -58,8 +58,10 @@ public class GlobalConfig {
     private boolean say_burnout_event = false;
     private boolean say_warning_event = false;
     private boolean say_liftoff_event = false;
-    private float rocketLatitude = 0.0f;
-    private float rocketLongitude = 0.0f;
+    // Last known rocket position (decimal degrees). Kept in double: a float only has
+    // 7 significant digits, i.e. up to ~1.7 m of error on a longitude above 128 degrees
+    private double rocketLatitude = 0.0;
+    private double rocketLongitude = 0.0;
 
     private int telemetryVoice = 0;
 
@@ -108,8 +110,8 @@ public class GlobalConfig {
         say_warning_event = false;
         say_liftoff_event = false;
         telemetryVoice = 0;
-        rocketLatitude = 0.0f;
-        rocketLongitude = 0.0f;
+        rocketLatitude = 0.0;
+        rocketLongitude = 0.0;
         allowManualRecording = true;
         useOpenMap = true;
     }
@@ -204,13 +206,10 @@ public class GlobalConfig {
             int telemetryVoice = appConfig.getInt("telemetryVoice", 0);
             setTelemetryVoice(telemetryVoice);
 
-            //rocketLatitude
-            float rocketLatitude = appConfig.getFloat("rocketLatitude", 0.0f);
-            setRocketLatitude(rocketLatitude);
-
-            //rocketLongitude
-            float rocketLongitude = appConfig.getFloat("rocketLongitude", 0.0f);
-            setRocketLongitude(rocketLongitude);
+            //rocketLatitude / rocketLongitude: stored as the bits of a double (full precision).
+            //Fall back on the float values saved by the previous versions of the application.
+            setRocketLatitude(readDouble(appConfig, "rocketLatitudeD", "rocketLatitude"));
+            setRocketLongitude(readDouble(appConfig, "rocketLongitudeD", "rocketLongitude"));
 
             //allowManualRecording
             boolean allowManualRecording = appConfig.getBoolean("allowManualRecording", false);
@@ -248,8 +247,8 @@ public class GlobalConfig {
         edit.putBoolean("say_warning_event", getWarning_event());
         edit.putBoolean("say_liftoff_event", getLiftOff_event());
         edit.putInt("telemetryVoice", getTelemetryVoice());
-        edit.putFloat("rocketLatitude", getRocketLatitude());
-        edit.putFloat("rocketLongitude", getRocketLongitude());
+        edit.putLong("rocketLatitudeD", Double.doubleToRawLongBits(getRocketLatitude()));
+        edit.putLong("rocketLongitudeD", Double.doubleToRawLongBits(getRocketLongitude()));
         edit.putBoolean("allowManualRecording", getManualRecording());
         edit.putBoolean("useOpenMap", getUseOpenMap());
         // apply(): the values are visible immediately to every reader of the preferences and
@@ -469,20 +468,39 @@ public class GlobalConfig {
         return telemetryVoice;
     }
 
-    public void setRocketLatitude(float value) {
+    public void setRocketLatitude(double value) {
         rocketLatitude = value;
     }
 
-    public float getRocketLatitude() {
+    public double getRocketLatitude() {
         return rocketLatitude;
     }
 
-    public void setRocketLongitude(float value) {
+    public void setRocketLongitude(double value) {
         rocketLongitude = value;
     }
 
-    public float getRocketLongitude() {
+    public double getRocketLongitude() {
         return rocketLongitude;
+    }
+
+    /**
+     * Reads a double saved with putLong(Double.doubleToRawLongBits()). If it was never saved
+     * in this format, the float saved under the legacy key is used (0 if none).
+     */
+    private static double readDouble(SharedPreferences prefs, String key, String legacyFloatKey) {
+        if (prefs.contains(key)) {
+            try {
+                return Double.longBitsToDouble(prefs.getLong(key, 0L));
+            } catch (ClassCastException e) {
+                // Unexpected type under this key: ignore it and use the legacy value
+            }
+        }
+        try {
+            return prefs.getFloat(legacyFloatKey, 0.0f);
+        } catch (ClassCastException e) {
+            return 0.0;
+        }
     }
 
     public void setManualRecording(boolean value) {
@@ -548,19 +566,27 @@ public class GlobalConfig {
         return myColor;
     }
 
-    public static class AltitudeUnit
-    {
-        public static int METERS = 0;
-        public static int FEET = 1;
+    /** Altitude unit of the application (value of getUnits()). Constants: never modified. */
+    public static final class AltitudeUnit {
+        public static final int METERS = 0;
+        public static final int FEET = 1;
+
+        private AltitudeUnit() {}
     }
-    public static class ConnectionType
-    {
-        public static int BT = 0;
-        public static int USB = 1;
+
+    /** Transport to the altimeter (value of getConnectionType()). */
+    public static final class ConnectionType {
+        public static final int BT = 0;
+        public static final int USB = 1;
+
+        private ConnectionType() {}
     }
-    public static class GraphLib
-    {
-        public static int AfreeChart =0;
-        public static int MPChart =1;
+
+    /** Charting library used by the telemetry screens (value of getGraphicsLibType()). */
+    public static final class GraphLib {
+        public static final int AfreeChart = 0;
+        public static final int MPChart = 1;
+
+        private GraphLib() {}
     }
 }

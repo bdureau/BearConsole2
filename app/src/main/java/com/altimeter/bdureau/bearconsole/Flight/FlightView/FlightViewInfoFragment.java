@@ -174,18 +174,13 @@ public class FlightViewInfoFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Number of curves exported to CSV / ZIP: every curve of the flight. The list of curves
+     * is built per altimeter model by FlightData.createFlight(), so it is always complete
+     * (a fixed number per model used to drop the GPS and accelerometer curves).
+     */
     private void determineNumberOfCurves() {
-        String altiName = myBT.getAltiConfigData().getAltimeterName();
-        if (altiName.equals("AltiGPS") || altiName.equals("AltiMultiESP32_accel")) {
-            numberOfCurves = 8;
-        } else if (altiName.equals("AltiMultiSTM32") || altiName.equals("AltiMultiESP32")) {
-            numberOfCurves = 6;
-        } else if (altiName.equals("AltiServo") || altiName.equals("AltiDuo") ||
-                altiName.equals("AltiMultiV2") || altiName.equals("AltiMulti")) {
-            numberOfCurves = 5;
-        } else {
-            numberOfCurves = allFlightData != null ? allFlightData.getSeriesCount() : 0;
-        }
+        numberOfCurves = allFlightData != null ? allFlightData.getSeriesCount() : 0;
     }
 
     /**
@@ -260,12 +255,15 @@ public class FlightViewInfoFragment extends Fragment {
         // Landing speed (regression over the last 30 m / 100 ft of the descent)
         landingSpeedValue.setText(format("%.1f " + speedUnit, stats.landingSpeed));
 
-        // Maximum acceleration in G. The curve is in altitude units per s^2: in feet it must
-        // be converted to meters (x 0.3048) before dividing by g.
-        XYSeries accel = (allFlightData != null) ? allFlightData.getSeries(getString(R.string.curve_accel)) : null;
-        if (accel != null && accel.getItemCount() > 0) {
-            double maxAccelMs2 = isMeters ? accel.getMaxY() : accel.getMaxY() * 0.3048;
-            maxAccelerationValue.setText(String.format(Locale.US, "%.1f G", maxAccelMs2 / 9.80665));
+        // Maximum acceleration in G, from sliding quadratic fits of the altitude curve
+        // (see FlightStatsCalculator). The maximum of the raw acceleration curve (altitude
+        // differentiated twice sample by sample) was dominated by the barometric noise.
+        // The value is in altitude units per s^2: in feet it is converted to meters
+        // (x 0.3048) before dividing by g.
+        if (!Double.isNaN(stats.maxAcceleration)) {
+            double maxAccelMs2 = isMeters ? stats.maxAcceleration : stats.maxAcceleration * 0.3048;
+            maxAccelerationValue.setText(String.format(Locale.US, "%.1f G",
+                    maxAccelMs2 / ConsoleApplication.STANDARD_GRAVITY));
         } else {
             maxAccelerationValue.setText(R.string.not_available);
         }
@@ -413,7 +411,8 @@ public class FlightViewInfoFragment extends Fragment {
             case 5: valHeader = "voltage"; break;
             case 6: valHeader = getString(R.string.curve_latitude); break;
             case 7: valHeader = getString(R.string.curve_longitude); break;
-            default: valHeader = "curve_" + curveIndex; break;
+            // Other curves (GPS details, accelerometers): their own series name
+            default: valHeader = data.getSeries(curveIndex).getKey().toString(); break;
         }
 
         String unit = (units != null && curveIndex < units.length) ? units[curveIndex] : "";
@@ -562,6 +561,15 @@ public class FlightViewInfoFragment extends Fragment {
             /** Main deployment time, counted from liftoff. */
             public double mainDeployTimeSec = Double.NaN;
             public double landingSpeed = Double.NaN;
+            /** Index of the burnout instant (peak of the ascent speed), -1 if unknown. */
+            public int burnoutIndex = -1;
+            /**
+             * Maximum vertical (kinematic) acceleration during the boost, in altitude units
+             * per s^2, from sliding quadratic fits of the altitude.
+             */
+            public double maxAcceleration = Double.NaN;
+            /** Instant of the maximum acceleration, counted from liftoff. */
+            public double maxAccelerationTimeSec = Double.NaN;
         }
 
         // Thresholds expressed in meters; converted when the altitudes are in feet
@@ -582,6 +590,14 @@ public class FlightViewInfoFragment extends Fragment {
         private static final int MIN_SEGMENT_SAMPLES = 8;
         /** The main descent rate must be at most this fraction of the drogue descent rate. */
         private static final double MAX_MAIN_TO_DROGUE_RATE_RATIO = 0.75;
+        /**
+         * Half width of the sliding quadratic fit used for the acceleration (total window
+         * 0.5 s). Wider windows lower the noise but flatten the short thrust peaks of model
+         * rocket motors; 0.5 s is a compromise for 10..50 Hz barometric recordings.
+         */
+        private static final double ACCEL_HALF_WINDOW_SEC = 0.25;
+        /** Minimum number of samples for a quadratic fit (3 coefficients + 2 to average noise). */
+        private static final int MIN_ACCEL_SAMPLES = 5;
         /** Minimum data required for the landing speed regression. */
         private static final int MIN_LANDING_SAMPLES = 5;
         private static final double MIN_LANDING_DURATION_SEC = 1.0;
@@ -664,6 +680,7 @@ public class FlightViewInfoFragment extends Fragment {
             // can be off by more than a second.
             s.apogeeIndex = computeAscent(s, liftoffT, highestIndex);
             s.timeToApogeeSec = t[s.apogeeIndex] - liftoffT;
+            computeMaxAcceleration(s, liftoffT);
 
             // Touchdown: first point back near the ground after apogee (median filtered so that
             // a single noisy sample does not end the flight early)
@@ -719,12 +736,83 @@ public class FlightViewInfoFragment extends Fragment {
             }
             s.maxVelocity = Double.isNaN(refinedV) ? maxV : refinedV;
             s.burnoutTimeSec = t[refinedIdx] - liftoffT;
+            s.burnoutIndex = refinedIdx;
 
             // Apogee: smoothed speed crossing zero, searched up to 3 s past the highest sample
             for (int i = burnoutIdx; i < n && t[i] <= t[highestIndex] + 3.0; i++) {
                 if (verticalSpeedAt(i, TIMING_HALF_WINDOW_SEC) <= 0) return i;
             }
             return highestIndex;
+        }
+
+        /**
+         * Maximum acceleration during the boost.
+         * The acceleration is the second derivative of a least-squares parabola fitted over
+         * +/-0.25 s around each sample (y = c0 + c1*u + c2*u^2, acceleration = 2*c2). The
+         * search goes from liftoff to burnout: the maximum of a rocket acceleration is during
+         * the thrust phase, and searching later would pick the pressure spikes of the
+         * ejection charges. Without a burnout instant, the search stops at apogee.
+         */
+        private void computeMaxAcceleration(FlightStats s, double liftoffT) {
+            int from = s.liftoffIndex;
+            int to = (s.burnoutIndex >= 0) ? s.burnoutIndex : s.apogeeIndex;
+            if (to <= from) return;
+            double best = Double.NEGATIVE_INFINITY;
+            int bestIdx = -1;
+            for (int i = from; i <= to; i++) {
+                double a = accelerationAt(i, ACCEL_HALF_WINDOW_SEC);
+                if (!Double.isNaN(a) && a > best) {
+                    best = a;
+                    bestIdx = i;
+                }
+            }
+            if (bestIdx >= 0 && best > 0) {
+                s.maxAcceleration = best;
+                s.maxAccelerationTimeSec = t[bestIdx] - liftoffT;
+            }
+        }
+
+        /**
+         * Vertical acceleration at sample i: twice the quadratic coefficient of a least-squares
+         * parabola fitted over +/- halfWindowSec (at least 2 samples on each side when possible).
+         * The time is centred on t[i] and scaled by the half span of the window (v in [-1, 1])
+         * so that the normal equations stay well conditioned whatever the absolute time of
+         * the sample and the sampling rate.
+         *
+         * @return the acceleration, or NaN if there are not enough samples
+         */
+        private double accelerationAt(int i, double halfWindowSec) {
+            int lo = i, hi = i;
+            while (lo > 0 && (t[i] - t[lo - 1] <= halfWindowSec || i - lo < 2)) lo--;
+            while (hi < n - 1 && (t[hi + 1] - t[i] <= halfWindowSec || hi - i < 2)) hi++;
+            int count = hi - lo + 1;
+            if (count < MIN_ACCEL_SAMPLES) return Double.NaN;
+
+            double h = Math.max(t[i] - t[lo], t[hi] - t[i]);
+            if (!(h > 0)) return Double.NaN;
+
+            // Sums of v^k and v^k * y with v = (t - t[i]) / h
+            double s0 = count, s1 = 0, s2 = 0, s3 = 0, s4 = 0, sy = 0, suy = 0, su2y = 0;
+            for (int k = lo; k <= hi; k++) {
+                double u = (t[k] - t[i]) / h;
+                double u2 = u * u;
+                s1 += u;
+                s2 += u2;
+                s3 += u2 * u;
+                s4 += u2 * u2;
+                sy += y[k];
+                suy += u * y[k];
+                su2y += u2 * y[k];
+            }
+            // Normal equations | s0 s1 s2 | |c0|   | sy   |
+            //                  | s1 s2 s3 | |c1| = | suy  |
+            //                  | s2 s3 s4 | |c2|   | su2y |
+            // c2 by Cramer's rule
+            double det = s0 * (s2 * s4 - s3 * s3) - s1 * (s1 * s4 - s3 * s2) + s2 * (s1 * s3 - s2 * s2);
+            if (Math.abs(det) < 1e-9) return Double.NaN;
+            double detC2 = s0 * (s2 * su2y - suy * s3) - s1 * (s1 * su2y - suy * s2) + sy * (s1 * s3 - s2 * s2);
+            // c2 is per v^2: back to time units with 1 / h^2
+            return 2.0 * (detC2 / det) / (h * h);
         }
 
         /**

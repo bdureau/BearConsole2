@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: FlashFirmware
@@ -19,7 +19,7 @@ package com.altimeter.bdureau.bearconsole.Flash;
  */
 
 import com.altimeter.bdureau.bearconsole.BaseActivity;
-import android.annotation.SuppressLint;
+//import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.util.Log;

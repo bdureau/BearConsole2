@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.config.ConfigModules;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: ConfigLoraE220
@@ -16,13 +16,13 @@ package com.altimeter.bdureau.bearconsole.config.ConfigModules;
 
 import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.app.AlertDialog;
-import android.content.Context;
+//import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+//import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+//import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +33,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+//import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;

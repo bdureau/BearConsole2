@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: FirmwareInfo

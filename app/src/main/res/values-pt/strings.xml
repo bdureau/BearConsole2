@@ -575,4 +575,6 @@
     <string name="location_channel_name">Seguimento do foguete</string>
     <string name="location_notification_title">A seguir o foguete</string>
     <string name="location_notification_text">A posição do telefone é usada para mostrar a distância até o foguete.</string>
+    <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
+    <string name="bt_not_enabled">O Bluetooth deve estar ligado para mostrar os módulos emparelhados</string>
 </resources>

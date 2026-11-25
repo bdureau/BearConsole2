@@ -79,6 +79,13 @@ import java.util.List;
 
 
 public class FlightViewTabActivity extends BaseActivity {
+    /**
+     * Unit of the measured accelerometer curves: the samples are converted from milli-g to
+     * m/s^2 when the flight is downloaded (ConsoleApplication.decodeFlightData), in every
+     * altitude unit (a sensor acceleration is not converted to ft/s^2).
+     */
+    private static final String ACCEL_UNIT = "(m/s\u00B2)";
+
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 10;
     private FlightData myflight = null;
     private ViewPager mViewPager;
@@ -246,24 +253,24 @@ public class FlightViewTabActivity extends BaseActivity {
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") ||
         myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter")) {
-            units[6] = "(m/secs)";
-            units[7] = "(m/secs)";
-            units[8] = "(m/secs)";
+            units[6] = ACCEL_UNIT;
+            units[7] = ACCEL_UNIT;
+            units[8] = ACCEL_UNIT;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter") ) {
-            units[5] = "(m/secs)";
-            units[6] = "(m/secs)";
-            units[7] = "(m/secs)";
+            units[5] = ACCEL_UNIT;
+            units[6] = ACCEL_UNIT;
+            units[7] = ACCEL_UNIT;
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
-            units[6] = "(m/secs)";
-            units[7] = "(m/secs)";
-            units[8] = "(m/secs)";
-            units[9] = "(m/secs)";
-            units[10] = "(m/secs)";
-            units[11] = "(m/secs)";
+            units[6] = ACCEL_UNIT;
+            units[7] = ACCEL_UNIT;
+            units[8] = ACCEL_UNIT;
+            units[9] = ACCEL_UNIT;
+            units[10] = ACCEL_UNIT;
+            units[11] = ACCEL_UNIT;
         }
 
 

@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.connection;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: SearchBluetooth
@@ -8,8 +8,10 @@ package com.altimeter.bdureau.bearconsole.connection;
  *
  * @description:
  *  Selection of the Bluetooth module of the altimeter among the devices paired with the phone.
- *  It requests the Bluetooth permissions (Android 12+), asks to enable Bluetooth if needed and
- *  stores the address and name of the chosen module in ConsoleApplication.
+ *  It requests the BLUETOOTH_CONNECT permission (Android 12+), then asks to enable Bluetooth
+ *  if needed, then lists the paired devices; each step resumes from the result of the previous
+ *  one (Activity Result API). The address and name of the chosen module are stored in
+ *  ConsoleApplication.
  * ============================================================================
  */
 
@@ -17,13 +19,13 @@ import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 
 import android.view.View;
@@ -55,103 +57,117 @@ public class SearchBluetooth extends BaseActivity {
     public static String EXTRA_ADDRESS = "device_address";
     ConsoleApplication myBT;
 
+    /**
+     * Android 12+: runtime permission needed to read the paired devices and to connect.
+     * Listing the paired devices does not need BLUETOOTH_SCAN (no discovery is done here).
+     */
+    private final ActivityResultLauncher<String> connectPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
+                if (granted) {
+                    // Permission now granted: continue (enable Bluetooth if needed, then list)
+                    ensureBluetoothEnabledThenList();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.permission_need_to_be_granted), Toast.LENGTH_LONG).show();
+                }
+            });
+
+    /** System dialog asking the user to switch Bluetooth on. */
+    private final ActivityResultLauncher<Intent> enableBluetoothLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (myBluetooth != null && myBluetooth.isEnabled()) {
+                    pairedDevicesList();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.bt_not_enabled), Toast.LENGTH_LONG).show();
+                }
+            });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setTitle(R.string.select_bluetooth_device);
-        //Check the local and force it if needed
         myBT = (ConsoleApplication) getApplication();
 
         setContentView(R.layout.activity_search_bluetooth);
 
-        //Calling widgets
-        btnPaired = (Button) findViewById(R.id.button);
-        btnDismiss = (Button) findViewById(R.id.butSearchBTDismiss);
-        devicelist = (ListView) findViewById(R.id.listView);
+        btnPaired = findViewById(R.id.button);
+        btnDismiss = findViewById(R.id.butSearchBTDismiss);
+        devicelist = findViewById(R.id.listView);
 
-        //if the device has bluetooth
+        // The buttons are always wired first, so that the screen can be left whatever
+        // happens with the permission or the Bluetooth state
+        btnPaired.setOnClickListener(v -> ensureBluetoothEnabledThenList());
+        btnDismiss.setOnClickListener(v -> finish());
+        devicelist.setOnItemClickListener(myListClickListener);
+
         myBluetooth = BluetoothAdapter.getDefaultAdapter();
-
         if (myBluetooth == null) {
-            //Show a message. that the device has no bluetooth adapter
-            //Bluetooth Device Not Available
+            // The phone has no Bluetooth adapter
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.BT_msg1), Toast.LENGTH_LONG).show();
-
-            //finish apk
             finish();
-        } else if (!myBluetooth.isEnabled()) {
-            //Ask to the user turn the bluetooth on
-            Intent turnBTon = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                // Android 12+: BLUETOOTH_CONNECT is a runtime permission, ask for it first
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-                {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
-                    return;
-                }
-                startActivityForResult(turnBTon, 1);
-                return;
-            }
+            return;
         }
 
-        btnPaired.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pairedDevicesList();
-            }
-        });
+        ensureBluetoothEnabledThenList();
+    }
 
-        btnDismiss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+    /** True if the app may use the Bluetooth API (always true before Android 12). */
+    private boolean hasConnectPermission() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.S
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * Sequence: permission (Android 12+) -> Bluetooth switched on -> list of paired devices.
+     * Each step that needs the user resumes the sequence from its result callback.
+     */
+    private void ensureBluetoothEnabledThenList() {
+        if (myBluetooth == null) return;
+        if (!hasConnectPermission()) {
+            connectPermissionLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT);
+            return;
+        }
+        if (!myBluetooth.isEnabled()) {
+            try {
+                enableBluetoothLauncher.launch(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE));
+            } catch (SecurityException e) {
+                Toast.makeText(getApplicationContext(),
+                        getString(R.string.permission_need_to_be_granted), Toast.LENGTH_LONG).show();
             }
-        });
+            return;
+        }
         pairedDevicesList();
     }
 
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-    }
+    /** Fills the list with the devices paired with the phone ("name\nMAC address"). */
     private void pairedDevicesList() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            {
-                ActivityCompat.requestPermissions(SearchBluetooth.this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, 2);
-                return;
-            }
+        if (!hasConnectPermission()) return;
+        ArrayList<String> list = new ArrayList<>();
+        try {
+            pairedDevices = myBluetooth.getBondedDevices();
+        } catch (SecurityException e) {
+            pairedDevices = null;
         }
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            // Android 12+: BLUETOOTH_CONNECT is a runtime permission, ask for it first
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            {
-                ActivityCompat.requestPermissions(SearchBluetooth.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
-                return;
-            }
-        }
-        pairedDevices = myBluetooth.getBondedDevices();
-        ArrayList list = new ArrayList();
 
-        if (pairedDevices.size()>0)
-        {
-            for(BluetoothDevice bt : pairedDevices)
-            {
-                list.add(bt.getName() + "\n" + bt.getAddress()); //Get the device's name and the address
+        if (pairedDevices != null && !pairedDevices.isEmpty()) {
+            for (BluetoothDevice bt : pairedDevices) {
+                String name;
+                try {
+                    name = bt.getName();
+                } catch (SecurityException e) {
+                    name = null;
+                }
+                list.add((name != null ? name : "?") + "\n" + bt.getAddress());
             }
-        }
-        else
-        {
-            //"No Paired Bluetooth Devices Found."
+        } else {
+            // No paired Bluetooth device found
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.BT_msg2), Toast.LENGTH_LONG).show();
         }
 
-        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, list);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         devicelist.setAdapter(adapter);
-        devicelist.setOnItemClickListener(myListClickListener); //Method called when the device from the list is clicked
-
     }
 
     private AdapterView.OnItemClickListener myListClickListener = new AdapterView.OnItemClickListener()

@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: CommandInterfaceESP32
@@ -25,12 +25,12 @@ import java.util.zip.Deflater;
 
 
 public class CommandInterfaceESP32 {
-    public static int ESP_FLASH_BLOCK = 0x400;
+    //public static int ESP_FLASH_BLOCK = 0x400;
     public String TAG = "CommandInterfaceESP32";
-    private static final int ESP_ROM_BAUD = 115200;
+    //private static final int ESP_ROM_BAUD = 115200;
     private static final int FLASH_WRITE_SIZE = 0x400;
-    private static final int STUBLOADER_FLASH_WRITE_SIZE = 0x4000;
-    private static final int FLASH_SECTOR_SIZE = 0x1000; // Flash sector size, minimum unit of erase.
+    //private static final int STUBLOADER_FLASH_WRITE_SIZE = 0x4000;
+    //private static final int FLASH_SECTOR_SIZE = 0x1000; // Flash sector size, minimum unit of erase.
 
     private static final int CHIP_DETECT_MAGIC_REG_ADDR = 0x40001000;
     public static final int ESP8266 = 0x8266;
@@ -41,62 +41,62 @@ public class CommandInterfaceESP32 {
     public static final int ESP32C2 = 0x32C2;
     public static final int ESP32C3 = 0x32C3;
     public static final int ESP32C6 = 0x32C6;
-    private static final int ESP32_DATAREGVALUE = 0x15122500;
-    private static final int ESP8266_DATAREGVALUE = 0x00062000;
-    private static final int ESP32S2_DATAREGVALUE = 0x500;
+    //private static final int ESP32_DATAREGVALUE = 0x15122500;
+    //private static final int ESP8266_DATAREGVALUE = 0x00062000;
+    //private static final int ESP32S2_DATAREGVALUE = 0x500;
 
-    private static final int BOOTLOADER_FLASH_OFFSET = 0x1000;
-    private static final int ESP_IMAGE_MAGIC = 0xe9;
+    //private static final int BOOTLOADER_FLASH_OFFSET = 0x1000;
+   // private static final int ESP_IMAGE_MAGIC = 0xe9;
 
     // Commands supported by ESP8266 ROM bootloader
     private static final int ESP_FLASH_BEGIN = 0x02;
     private static final int ESP_FLASH_DATA = 0x03;
-    private static final int ESP_FLASH_END = 0x04;
-    private static final int ESP_MEM_BEGIN = 0x05;
-    private static final int ESP_MEM_END = 0x06;
-    private static final int ESP_MEM_DATA = 0x07;
+    //private static final int ESP_FLASH_END = 0x04;
+    //private static final int ESP_MEM_BEGIN = 0x05;
+    //private static final int ESP_MEM_END = 0x06;
+    //private static final int ESP_MEM_DATA = 0x07;
     private static final int ESP_SYNC = 0x08;
-    private static final int ESP_WRITE_REG = 0x09;
+    //private static final int ESP_WRITE_REG = 0x09;
     private static final int ESP_READ_REG = 0x0A;
 
     // Some comands supported by ESP32 ROM bootloader (or -8266 w/ stub)
     private static final int ESP_SPI_SET_PARAMS = 0x0B; // 11
     private static final int ESP_SPI_ATTACH = 0x0D; // 13
-    private static final int ESP_READ_FLASH_SLOW = 0x0E; // 14 // ROM only, much slower than the stub flash read
+    //private static final int ESP_READ_FLASH_SLOW = 0x0E; // 14 // ROM only, much slower than the stub flash read
     private static final int ESP_CHANGE_BAUDRATE = 0x0F; // 15
     private static final int ESP_FLASH_DEFL_BEGIN = 0x10; // 16
     private static final int ESP_FLASH_DEFL_DATA = 0x11; // 17
-    private static final int ESP_FLASH_DEFL_END = 0x12; // 18
-    private static final int ESP_SPI_FLASH_MD5 = 0x13; // 19
+    //private static final int ESP_FLASH_DEFL_END = 0x12; // 18
+    //private static final int ESP_SPI_FLASH_MD5 = 0x13; // 19
 
     // Commands supported by ESP32-S2/S3/C3/C6 ROM bootloader only
-    private static final int ESP_GET_SECURITY_INFO = 0x14;
+    //private static final int ESP_GET_SECURITY_INFO = 0x14;
 
     // Some commands supported by stub only
-    private static final int ESP_ERASE_FLASH = 0xD0;
-    private static final int ESP_ERASE_REGION = 0xD1;
-    private static final int ESP_READ_FLASH = 0xD2;
-    private static final int ESP_RUN_USER_CODE = 0xD3;
+   // private static final int ESP_ERASE_FLASH = 0xD0;
+    //private static final int ESP_ERASE_REGION = 0xD1;
+    //private static final int ESP_READ_FLASH = 0xD2;
+    //private static final int ESP_RUN_USER_CODE = 0xD3;
 
     // Response code(s) sent by ROM
-    private static final int ROM_INVALID_RECV_MSG = 0x05;
+    //private static final int ROM_INVALID_RECV_MSG = 0x05;
 
     // Initial state for the checksum routine
     private static final byte ESP_CHECKSUM_MAGIC = (byte) 0xEF;
 
-    private static final int UART_DATE_REG_ADDR = 0x60000078;
+    //private static final int UART_DATE_REG_ADDR = 0x60000078;
 
-    private static final int USB_RAM_BLOCK = 0x800;
-    private static final int ESP_RAM_BLOCK = 0x1800;
+    //private static final int USB_RAM_BLOCK = 0x800;
+    //private static final int ESP_RAM_BLOCK = 0x1800;
 
     // Timeouts
-    private static final int DEFAULT_TIMEOUT = 3000;
-    private static final int CHIP_ERASE_TIMEOUT = 120000; // timeout for full chip erase in ms
-    private static final int MAX_TIMEOUT = CHIP_ERASE_TIMEOUT * 2; // longest any command can run in ms
-    private static final int SYNC_TIMEOUT = 100; // timeout for syncing with bootloader in ms
+    //private static final int DEFAULT_TIMEOUT = 3000;
+    //private static final int CHIP_ERASE_TIMEOUT = 120000; // timeout for full chip erase in ms
+    //private static final int MAX_TIMEOUT = CHIP_ERASE_TIMEOUT * 2; // longest any command can run in ms
+    //private static final int SYNC_TIMEOUT = 100; // timeout for syncing with bootloader in ms
     private static final int ERASE_REGION_TIMEOUT_PER_MB = 30000; // timeout (per megabyte) for erasing a region in ms
-    private static final int MEM_END_ROM_TIMEOUT = 500;
-    private static final int MD5_TIMEOUT_PER_MB = 8000;
+    //private static final int MEM_END_ROM_TIMEOUT = 500;
+    //private static final int MD5_TIMEOUT_PER_MB = 8000;
     private static int chip;
 
     private static boolean IS_STUB = false;
@@ -157,14 +157,14 @@ public class CommandInterfaceESP32 {
         for (int i = 0; i < 6; i++) {
             mUpCallback.onInfo("Sync attempt:"  + (i+1)+ "\n");
             if (sync() == 0) {
-
+                //do something
             } else {
                 syncSuccess = true;
                 mUpCallback.onInfo("Sync Success!!!"  + "\n");
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-
+                    //we have a pb
                 }
                 break;
             }
@@ -183,6 +183,7 @@ public class CommandInterfaceESP32 {
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
+            // we have an issue
         }
 
         // flush anything on the port

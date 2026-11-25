@@ -575,4 +575,6 @@
     <string name="location_channel_name">Tracciamento del razzo</string>
     <string name="location_notification_title">Tracciamento del razzo in corso</string>
     <string name="location_notification_text">La posizione del telefono viene usata per mostrare la distanza dal razzo.</string>
+    <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
+    <string name="bt_not_enabled">Il Bluetooth deve essere attivato per mostrare i moduli associati</string>
 </resources>

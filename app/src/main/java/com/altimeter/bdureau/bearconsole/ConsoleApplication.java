@@ -91,8 +91,11 @@ public class ConsoleApplication extends Application {
     public int NbrOfFlight = 0;
     // Flight number of the last "data" frame received (1-based)
     public int currentFlightNbr = 0;
-    // Time stamp of the beginning of the current read, used for the timeout
+    // Time stamp of the last activity of the current read (start of the read, then every
+    // complete frame received), used for the inactivity timeout
     public long lastReceived = 0;
+    // Time stamp of the beginning of the current read, used for the maximum duration
+    private long readStart = 0;
     // Last acknowledgement received (OK / KO / UNKNOWN)
     public volatile String commandRet = "";
     // Summary returned by the last connection check
@@ -443,6 +446,8 @@ public class ConsoleApplication extends Application {
      */
     public void initFlightData() {
         MyFlight = new FlightData(this, AltiCfg.getAltimeterName());
+        // No flight received yet in this download
+        currentFlightNbr = 0;
         if (AppConf.getUnits() == 0) {
             FEET_IN_METER = 1;
         } else {
@@ -457,6 +462,14 @@ public class ConsoleApplication extends Application {
      */
     public void setExit(boolean b) {
         this.exit = b;
+    }
+
+    /** Standard gravity, used to convert the accelerometer values (milli-g) to m/s^2. */
+    public static final double STANDARD_GRAVITY = 9.80665;
+
+    /** Converts an accelerometer value sent in thousandths of g to m/s^2. */
+    public static float milliGToMs2(int milliG) {
+        return (float) (milliG / 1000.0 * STANDARD_GRAVITY);
     }
 
     /** Checksum of a split sentence: every field except the last one, each followed by a comma. */
@@ -487,15 +500,33 @@ public class ConsoleApplication extends Application {
      * @param keepRunning optional condition; the read stops as soon as it returns false
      */
     public String ReadResult(long timeout, BooleanSupplier keepRunning) {
+        // Short reads (acknowledgements, configuration, telemetry slices): the timeout is a
+        // maximum duration, so a telemetry stream that keeps arriving cannot extend the wait
+        return ReadResult(timeout, timeout, keepRunning);
+    }
+
+    /**
+     * Long reads (download of recorded flights): the read only stops when the altimeter has
+     * been silent for idleTimeout, so that a long flight sent at a low serial speed is never
+     * cut after a fixed delay. maxDuration remains as a safety net against a link that keeps
+     * sending without ever ending the answer.
+     *
+     * @param idleTimeout maximum time without a complete frame, in milliseconds
+     * @param maxDuration maximum duration of the whole read, in milliseconds
+     * @param keepRunning optional condition; the read stops as soon as it returns false
+     */
+    public String ReadResult(long idleTimeout, long maxDuration, BooleanSupplier keepRunning) {
         synchronized (ioLock) {
             this.exit = false;
             StringBuilder rawData = new StringBuilder();
             String myMessage = "";
-            lastReceived = System.currentTimeMillis();
+            readStart = System.currentTimeMillis();
+            lastReceived = readStart;
+            final long timeout = idleTimeout;
             boolean done = false;
             try {
                 while (!done && !this.exit && (keepRunning == null || keepRunning.getAsBoolean())) {
-                    if ((System.currentTimeMillis() - lastReceived) > timeout)
+                    if (isReadExpired(timeout, maxDuration))
                         break;
 
                     InputStream in = getInputStream();
@@ -517,9 +548,11 @@ public class ConsoleApplication extends Application {
                         continue;
 
                     // A sentence starts: read it up to ';', with the same timeout and cancel rules
-                    String tempBuff = readSentenceBody(in, timeout, keepRunning);
+                    String tempBuff = readSentenceBody(in, timeout, maxDuration, keepRunning);
                     if (tempBuff == null)
                         break; // timeout, cancel or stream closed in the middle of a sentence
+                    // A complete frame was received: the altimeter is still talking
+                    lastReceived = System.currentTimeMillis();
                     if (tempBuff.isEmpty())
                         continue; // "$;" carries nothing
 
@@ -549,13 +582,14 @@ public class ConsoleApplication extends Application {
      *
      * @return the sentence content, or null on timeout, cancel request or closed stream
      */
-    private String readSentenceBody(InputStream in, long timeout, BooleanSupplier keepRunning)
+    private String readSentenceBody(InputStream in, long timeout, long maxDuration,
+                                    BooleanSupplier keepRunning)
             throws IOException, InterruptedException {
         StringBuilder sb = new StringBuilder();
         while (true) {
             if (this.exit || (keepRunning != null && !keepRunning.getAsBoolean()))
                 return null;
-            if ((System.currentTimeMillis() - lastReceived) > timeout)
+            if (isReadExpired(timeout, maxDuration))
                 return null;
             if (in.available() <= 0) {
                 Thread.sleep(POLL_INTERVAL_MS);
@@ -570,6 +604,15 @@ public class ConsoleApplication extends Application {
             if (ch != '\r' && ch != '\n')
                 sb.append(ch);
         }
+    }
+
+    /**
+     * True when the current read must stop: no complete frame for idleTimeout, or total
+     * duration above maxDuration.
+     */
+    private boolean isReadExpired(long idleTimeout, long maxDuration) {
+        long now = System.currentTimeMillis();
+        return (now - lastReceived) > idleTimeout || (now - readStart) > maxDuration;
     }
 
     /** Outcome of the decoding of one sentence. */
@@ -692,9 +735,11 @@ public class ConsoleApplication extends Application {
 
             case "KO":
             case "UNKNOWN":
+                // A refused or unknown command is a complete answer: stop waiting at once
+                // instead of waiting for the whole timeout (the caller sees "not OK")
                 setDataReady(true);
                 commandRet = s[0];
-                return new SentenceResult(myMessage, false);
+                return new SentenceResult(myMessage, true);
 
             default:
                 return new SentenceResult(myMessage, false);
@@ -746,10 +791,7 @@ public class ConsoleApplication extends Application {
         String flightName = "FlightXX";
         if (has(s, 1) && UNSIGNED_NUMBER.matcher(s[1]).matches()) {
             currentFlightNbr = parseIntSafe(s[1], 0) + 1;
-            if (currentFlightNbr < 10)
-                flightName = getResources().getString(R.string.flight_name) + " 0" + currentFlightNbr;
-            else
-                flightName = getResources().getString(R.string.flight_name) + " " + currentFlightNbr;
+            flightName = getFlightName(currentFlightNbr);
         }
 
         int time = uField(s, 2, 0);
@@ -768,12 +810,14 @@ public class ConsoleApplication extends Application {
                 MyFlight.AddToFlight(time, (float) uField(s, 6, 0) / 100, flightName, 5);
         }
 
-        // Accelerometer channels are signed (a deceleration is negative): read them with sField
-        // TTGO boards: one 3-axis accelerometer (thousandths)
+        // Accelerometer channels are signed (a deceleration is negative): read them with sField.
+        // The firmware sends thousandths of g (milli-g); they are stored in m/s^2
+        // (milli-g / 1000 * 9.80665), whatever the altitude unit of the application.
+        // TTGO boards: one 3-axis accelerometer
         if (isAltimeter("TTGOBearAltimeter", "TTGOMiniBearAltimeter")) {
             for (int i = 7; i <= 9; i++) {
                 if (has(s, i))
-                    MyFlight.AddToFlight(time, (float) sField(s, i, 0) / 1000f, flightName, i - 1);
+                    MyFlight.AddToFlight(time, milliGToMs2(sField(s, i, 0)), flightName, i - 1);
             }
         }
 
@@ -781,7 +825,7 @@ public class ConsoleApplication extends Application {
         if (isAltimeter("UltimateAltimeter")) {
             for (int i = 6; i <= 8; i++) {
                 if (has(s, i))
-                    MyFlight.AddToFlight(time, (float) sField(s, i, 0) / 1000f, flightName, i - 1);
+                    MyFlight.AddToFlight(time, milliGToMs2(sField(s, i, 0)), flightName, i - 1);
             }
         }
 
@@ -789,16 +833,18 @@ public class ConsoleApplication extends Application {
         if (isAltimeter("AltiMultiESP32_accel", "AltiMultiESP32_accel_375", "AltiMultiESP32_accel_345")) {
             for (int i = 7; i <= 12; i++) {
                 if (has(s, i))
-                    MyFlight.AddToFlight(time, (float) sField(s, i, 0) / 1000f, flightName, i - 1);
+                    MyFlight.AddToFlight(time, milliGToMs2(sField(s, i, 0)), flightName, i - 1);
             }
         }
 
         // GPS board: latitude / longitude (1e-5 degree), GPS altitude, satellites, speed, sea altitude
         if (isAltimeter("AltiGPS")) {
+            // Coordinates kept in double: a float only has 7 significant digits, which loses
+            // up to ~1.7 m of precision on a 5-decimal longitude above 128 degrees
             if (has(s, 7))
-                MyFlight.AddToFlight(time, (float) sField(s, 7, 0) / 100000, flightName, 6);
+                MyFlight.AddToFlight(time, sField(s, 7, 0) / 100000.0, flightName, 6);
             if (has(s, 8))
-                MyFlight.AddToFlight(time, (float) sField(s, 8, 0) / 100000, flightName, 7);
+                MyFlight.AddToFlight(time, sField(s, 8, 0) / 100000.0, flightName, 7);
             if (has(s, 9))
                 MyFlight.AddToFlight(time, (float) sField(s, 9, 0), flightName, 8);
             if (has(s, 10))
@@ -808,6 +854,18 @@ public class ConsoleApplication extends Application {
             if (has(s, 12))
                 MyFlight.AddToFlight(time, (float) sField(s, 12, 0), flightName, 11);
         }
+    }
+
+    /**
+     * Name under which a downloaded flight is stored ("Flight 01", "Flight 12", ...).
+     * Used by the decoder and by the screens that must find a flight from its number
+     * (e.g. to drop the flight being downloaded when the download is cancelled).
+     *
+     * @param flightNbr 1-based flight number (firmware index + 1)
+     */
+    public String getFlightName(int flightNbr) {
+        String prefix = getString(R.string.flight_name);
+        return (flightNbr < 10) ? prefix + " 0" + flightNbr : prefix + " " + flightNbr;
     }
 
     /** "alticonfig" frame: full configuration stored in the altimeter EEPROM. */
@@ -843,22 +901,14 @@ public class ConsoleApplication extends Application {
         if (has(s, 29)) AltiCfg.setUseTelemetryPort(uField(s, 29, 0));
 
         // Field 30: servo switch on AltiServo, Bluetooth name on recent ESP32 / TTGO firmwares.
-        // NOTE: the operator precedence of this condition is kept as in the previous version
-        // (the version test only applies to AltiMultiESP32_accel_345); see review item 13.
+        // The name and version (fields 8..10) are decoded above, so the version rule can be
+        // applied here. Same rule as the configuration screen and the upload.
         if (AltiCfg.getAltimeterName().equals("AltiServo")) {
             if (has(s, 30))
                 AltiCfg.setServoSwitch(uField(s, 30, 0));
-        } else {
-            if ((AltiCfg.getAltimeterName().equals("AltiMultiESP32") ||
-                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel") ||
-                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_375") ||
-                    AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel_345") &&
-                            (AltiCfg.getAltiMajorVersion() == 2 && AltiCfg.getAltiMinorVersion() > 0)) ||
-                    (AltiCfg.getAltimeterName().equals("TTGOBearAltimeter") &&
-                            (AltiCfg.getAltiMajorVersion() == 0 && AltiCfg.getAltiMinorVersion() > 4))) {
-                if (has(s, 30))
-                    AltiCfg.setBluetoothName(s[30]);
-            }
+        } else if (AltiCfg.supportsBluetoothName()) {
+            if (has(s, 30))
+                AltiCfg.setBluetoothName(s[30]);
         }
 
         // Servo positions (AltiServo only, -1 when not used)

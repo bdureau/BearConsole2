@@ -39,8 +39,6 @@ import com.altimeter.bdureau.bearconsole.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -48,9 +46,15 @@ import java.util.List;
 public class FlightRecoveryActivity extends BaseActivity {
     public static String SELECTED_FLIGHT = "MyFlight";
 
+    /** Silence after which the recovery is considered finished or lost (ms). */
+    private static final long DOWNLOAD_IDLE_TIMEOUT_MS = 10000;
+    /** Safety limit for the whole recovery (ms); the user can cancel before. */
+    private static final long DOWNLOAD_MAX_DURATION_MS = 30 * 60 * 1000;
+
     ListView flightList = null;
     ConsoleApplication myBT;
-    List<String> flightNames = null;
+    // Never null: an empty list is displayed when nothing could be recovered
+    List<String> flightNames = new ArrayList<>();
     private FlightData myflight = null;
     private AlertDialog alert;
     private long nbrOfSamples= 0;
@@ -106,7 +110,8 @@ public class FlightRecoveryActivity extends BaseActivity {
     {
         private AlertDialog.Builder builder = null;
 
-        private Boolean canceled = false;
+        // Written by the UI thread (Cancel button), read by the download thread
+        private volatile boolean canceled = false;
         private String myMessage = "";
         private int NbrOfFlight = 0;
 
@@ -156,7 +161,7 @@ public class FlightRecoveryActivity extends BaseActivity {
                 myBT.setDataReady(false);
                 myBT.initFlightData();
 
-                myMessage = myBT.ReadResult(60000);
+                myMessage = myBT.ReadResult(DOWNLOAD_IDLE_TIMEOUT_MS, DOWNLOAD_MAX_DURATION_MS, null);
 
                 if (myMessage.equals("start nbrOfFlight end")) {
                     NbrOfFlight = myBT.getNbrOfFlight();
@@ -171,38 +176,24 @@ public class FlightRecoveryActivity extends BaseActivity {
                         myBT.flush();
 
                         // Bounded wait for the first bytes of the answer (never blocks forever)
-                myBT.waitForData(10000);
-                        myMessage = "";
+                        myBT.waitForData(10000);
                         myBT.setDataReady(false);
 
-                        myMessage = myBT.ReadResult(60000);
+                        // Inactivity timeout: a long dump sent at a low speed is never cut
+                        myMessage = myBT.ReadResult(DOWNLOAD_IDLE_TIMEOUT_MS, DOWNLOAD_MAX_DURATION_MS, null);
 
-                        if (myMessage.equals("start end")) {
-
-                        }
-                        if (canceled) {
+                        if (canceled && (myMessage == null || !myMessage.endsWith("end"))) {
+                            // The dump was interrupted: only the flight being received when the
+                            // user cancelled is incomplete. Drop it from the repository.
                             Log.d("FlightList", "Canceled retrieval");
-                            //this will exit the for loop and stop asking fo new flight
+                            if (myBT.currentFlightNbr > 0) {
+                                myBT.getFlightData().removeFlight(myBT.getFlightName(myBT.currentFlightNbr));
+                            }
                         }
-
-
-                flightNames = new ArrayList<String>();
 
                 myflight = myBT.getFlightData();
-                Log.d("FlightList", "myflight.getAllFlightNames2()");
                 flightNames = myflight.getAllFlightNames2();
-                Log.d("FlightList", "flightNames.size():"+flightNames.size() );
-                Log.d("FlightList","flightNames:"+flightNames);
-                if (canceled) {
-                    Log.d("FlightList", "canceled2");
-                    //order the names in the collection
-                    Collections.sort(flightNames);
-                    // Remove the last flight which might have incomplete data. The list is empty
-                    // if the retrieval was cancelled before any flight was received.
-                    if (!flightNames.isEmpty()) {
-                        flightNames.remove(flightNames.size() - 1);
-                    }
-                }
+                Log.d("FlightList", "flightNames:" + flightNames);
 
 
                 // Speed and acceleration: same computation as the flight list screen (signed
@@ -220,24 +211,26 @@ public class FlightRecoveryActivity extends BaseActivity {
         {
             super.onPostExecute(result);
 
-            final ArrayAdapter adapter = new ArrayAdapter(FlightRecoveryActivity.this,
+            if (isFinishing() || isDestroyed()) return;
+
+            final ArrayAdapter<String> adapter = new ArrayAdapter<>(FlightRecoveryActivity.this,
                     android.R.layout.simple_list_item_1, flightNames);
-            adapter.sort(new Comparator<String>() {
-                public int compare(String object1, String object2) {
-                    return object1.compareTo(object2);
-                }
-            });
+            // Sorted by flight number ("Flight 9" before "Flight 10" and "Flight 100")
+            adapter.sort(FlightData.FLIGHT_NAME_ORDER);
 
             flightList = (ListView) findViewById(R.id.listViewFlightList);
             flightList.setAdapter(adapter);
             flightList.setOnItemClickListener(myListClickListener);
 
-            alert.dismiss();
+            if (alert != null && alert.isShowing()) {
+                alert.dismiss();
+            }
 
             if (canceled)
                 msg(getResources().getString(R.string.flight_retrieval_canceled));
 
-            if (myflight == null && !canceled)
+            // Nothing recovered (no flight recorded, or connection lost)
+            if (flightNames.isEmpty() && !canceled)
                 msg(getResources().getString(R.string.flight_have_been_recorded));
         }
     }

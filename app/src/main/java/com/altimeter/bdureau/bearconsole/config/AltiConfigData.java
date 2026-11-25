@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.config;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: AltiConfigData
@@ -356,4 +356,29 @@ public class AltiConfigData {
     //bluetoothName
     public void setBluetoothName(String value) { bluetoothName = value;}
     public String getBluetoothName() {return bluetoothName;}
+
+    /**
+     * True if the firmware stores a Bluetooth module name (field 30 of the "alticonfig" frame,
+     * written with the "z," command): AltiMultiESP32 family from version 2.1, and
+     * TTGOBearAltimeter from version 0.5.
+     * Single place for this rule, shared by the frame decoder, the configuration screen and
+     * the configuration upload, so that the three can never disagree.
+     */
+    public boolean supportsBluetoothName() {
+        String name = AltimeterName;
+        boolean esp32Family = "AltiMultiESP32".equals(name) || "AltiMultiESP32_accel".equals(name)
+                || "AltiMultiESP32_accel_375".equals(name) || "AltiMultiESP32_accel_345".equals(name);
+        if (esp32Family) {
+            return isVersionAtLeast(2, 1);
+        }
+        if ("TTGOBearAltimeter".equals(name)) {
+            return isVersionAtLeast(0, 5);
+        }
+        return false;
+    }
+
+    /** True if the firmware version (major.minor) is greater than or equal to the given one. */
+    public boolean isVersionAtLeast(int major, int minor) {
+        return majorVersion > major || (majorVersion == major && minorVersion >= minor);
+    }
 }

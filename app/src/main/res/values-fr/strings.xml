@@ -494,7 +494,7 @@
     <string name="recover_flight">Récupérer le vol</string>
     <string name="track_with_openmap">Track with OpenMap</string>
     <string name="track_with_googlemap">Track with GoogleMap</string>
-    <string name="flight_view">Flight</string>
+    <string name="flight_view">Vol</string>
     <string name="flash_altimeter_firmware">Flash altimeter firmware</string>
     <string name="config_lorae32_module">Config LoraE32 module</string>
     <string name="config_lorae220_module">Config LoraE220 module</string>
@@ -575,4 +575,6 @@
     <string name="location_channel_name">Suivi de la fusée</string>
     <string name="location_notification_title">Suivi de la fusée en cours</string>
     <string name="location_notification_text">La position du téléphone sert à afficher la distance jusqu\'à la fusée.</string>
+    <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
+    <string name="bt_not_enabled">Le Bluetooth doit être activé pour afficher les modules appairés</string>
 </resources>

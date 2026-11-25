@@ -97,8 +97,9 @@ public class TelemetryTabActivity extends BaseActivity {
     private GPSGoogleMapStatusFragment statusPage3 = null;
     private GPSOpenMapStatusFragment statusPage4 = null;
 
-    public float rocketLatitude = 48.8698f;
-    public float rocketLongitude = 2.2190f;
+    // Rocket position in decimal degrees (double: full GPS precision)
+    public double rocketLatitude = 48.8698;
+    public double rocketLongitude = 2.2190;
     private FlightData myflight = null; //used with afreeChart
 
     private ArrayList<Entry> yValues;
@@ -422,7 +423,7 @@ public class TelemetryTabActivity extends BaseActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String latitude = (String) msg.obj;
                         if (ConsoleApplication.isSignedNumber(latitude)) {
-                            float latitudeVal = Float.parseFloat(latitude) / 100000;
+                            double latitudeVal = Double.parseDouble(latitude) / 100000.0;
                             statusPage2.setLatitudeValue("" + latitudeVal);
                             setLatitudeValue(latitude);
                             rocketLatitude = latitudeVal;
@@ -434,7 +435,7 @@ public class TelemetryTabActivity extends BaseActivity {
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String longitude = (String) msg.obj;
                         if (ConsoleApplication.isSignedNumber(longitude)) {
-                            float longitudeVal = Float.parseFloat(longitude) / 100000;
+                            double longitudeVal = Double.parseDouble(longitude) / 100000.0;
                             statusPage2.setLongitudeValue("" + longitudeVal);
                             setLongitudeValue(longitude);
                             rocketLongitude = longitudeVal;
@@ -576,7 +577,7 @@ public class TelemetryTabActivity extends BaseActivity {
             Float val = Float.parseFloat(value);
             Log.d("track", "latitude:" + value);
             if (val != 0) {
-                rocketLatitude = Float.parseFloat(value) / 100000;
+                rocketLatitude = Double.parseDouble(value) / 100000.0;
                 myBT.getAppConf().setRocketLatitude(rocketLatitude);
             }
         }
@@ -587,7 +588,7 @@ public class TelemetryTabActivity extends BaseActivity {
             Double val = Double.parseDouble(value);
             Log.d("track", "longitude:" + value);
             if (val != 0) {
-                rocketLongitude = Float.parseFloat(value) / 100000;
+                rocketLongitude = Double.parseDouble(value) / 100000.0;
                 myBT.getAppConf().setRocketLongitude(rocketLongitude);
                 // Not saved for every frame: at most every 10 s, and when the screen is stopped
                 myBT.getAppConf().SaveConfigThrottled();

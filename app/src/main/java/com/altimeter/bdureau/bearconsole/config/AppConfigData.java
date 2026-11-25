@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.config;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: AppConfigData

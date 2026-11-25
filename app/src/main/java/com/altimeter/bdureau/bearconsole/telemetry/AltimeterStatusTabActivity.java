@@ -58,6 +58,7 @@ import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.BaseActivity;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import com.altimeter.bdureau.bearconsole.connection.TelemetryReader;
 import com.altimeter.bdureau.bearconsole.utils.TabPagerAdapter;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
@@ -93,8 +94,9 @@ public class AltimeterStatusTabActivity extends BaseActivity
     private GPSGoogleMapStatusFragment statusPage3 = null;
     private GPSOpenMapStatusFragment statusPage4 = null;
 
-    private float rocketLatitude = 48.8698f;
-    private float rocketLongitude = 2.2190f;
+    // Rocket position in decimal degrees (double: full GPS precision)
+    private double rocketLatitude = 48.8698;
+    private double rocketLongitude = 2.2190;
 
     private Button btnDismiss, btnRecording;
     private ConsoleApplication myBT;
@@ -115,6 +117,12 @@ public class AltimeterStatusTabActivity extends BaseActivity
     private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
+            // The telemetry frames may arrive before the pages are created (or after a
+            // re-creation, before they are bound again), and some pages do not exist for
+            // every altimeter: ignore the value instead of crashing on a null page.
+            if (!(msg.obj instanceof String) || pageFor(msg.what) == null) {
+                return;
+            }
             switch (msg.what) {
                 case 9:
                     // Value 9 contains the output 1 status
@@ -133,16 +141,22 @@ public class AltimeterStatusTabActivity extends BaseActivity
                     statusPage1.setOutput4Status((String) msg.obj);
                     break;
                 case 1:
-                    String myUnits;
-                    //Value 1 contains the current altitude
-                    if (myBT.getAppConf().getUnits() == 0)
-                        //Meters
-                        myUnits = getResources().getString(R.string.Meters_fview);
-                    else
-                        //Feet
-                        myUnits = getResources().getString(R.string.Feet_fview);
-                    if (statusPage1 != null)
-                        statusPage1.setAltitude((String) msg.obj + " " + myUnits);
+                    //Value 1 contains the current altitude, always sent in meters by the
+                    //firmware: convert it when the application displays feet (same rule as
+                    //the telemetry screen), so that the value matches its unit label
+                    if (ConsoleApplication.isSignedNumber((String) msg.obj)) {
+                        double altitudeMeters = Double.parseDouble((String) msg.obj);
+                        String myUnits;
+                        long altitude;
+                        if (myBT.getAppConf().getUnits() == GlobalConfig.AltitudeUnit.METERS) {
+                            myUnits = getResources().getString(R.string.Meters_fview);
+                            altitude = Math.round(altitudeMeters);
+                        } else {
+                            myUnits = getResources().getString(R.string.Feet_fview);
+                            altitude = Math.round(altitudeMeters * METERS_TO_FEET);
+                        }
+                        statusPage1.setAltitude(altitude + " " + myUnits);
+                    }
                     break;
                 case 13:
                     //Value 13 contains the battery voltage
@@ -172,7 +186,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String latitude = (String) msg.obj;
                         if (ConsoleApplication.isSignedNumber(latitude)) {
-                            float latitudeVal = Float.parseFloat(latitude) / 100000;
+                            double latitudeVal = Double.parseDouble(latitude) / 100000.0;
                             rocketLatitude = latitudeVal;
                             statusPage2.setLatitudeValue("" + latitudeVal);
                         }
@@ -183,7 +197,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                     if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
                         String longitude = (String) msg.obj;
                         if (ConsoleApplication.isSignedNumber(longitude)) {
-                            Float longitudeVal = Float.parseFloat(longitude) / 100000;
+                            double longitudeVal = Double.parseDouble(longitude) / 100000.0;
                             rocketLongitude = longitudeVal;
                             statusPage2.setLongitudeValue("" + longitudeVal);
                         }
@@ -303,7 +317,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
                             int accel375zVal = ConsoleApplication.parseIntSafe(accel375z, 0);
                             statusPage1ter.setAccel375z(String.format("%.2f", ((double) accel375zVal / (double) 1000)));
                             accel375[2] = ((double) accel375zVal / (double) 1000);
-                            statusPage5.setInputString(accel375);
+                            if (statusPage5 != null) statusPage5.setInputString(accel375);
                         }
                     }
                     //for the TTGOBearAltimeter it is an ADXL345
@@ -358,6 +372,20 @@ public class AltimeterStatusTabActivity extends BaseActivity
             }
         }
     };
+
+    /** Meters to feet conversion factor used for the displayed altitude. */
+    private static final double METERS_TO_FEET = 3.28084;
+
+    /**
+     * Page that displays a telemetry field (msg.what), or null if this page does not exist
+     * (not created yet, or not used for the connected altimeter).
+     */
+    private Fragment pageFor(int what) {
+        if (what == 1 || (what >= 9 && what <= 16)) return statusPage1;
+        if (what >= 18 && what <= 25) return statusPage2;
+        if (what >= 26 && what <= 31) return statusPage1ter;
+        return null;
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

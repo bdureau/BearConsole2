@@ -575,4 +575,6 @@
     <string name="location_channel_name">Raketenverfolgung</string>
     <string name="location_notification_title">Rakete wird verfolgt</string>
     <string name="location_notification_text">Die Position des Telefons wird verwendet, um die Entfernung zur Rakete anzuzeigen.</string>
+    <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
+    <string name="bt_not_enabled">Bluetooth muss eingeschaltet sein, um die gekoppelten Module anzuzeigen</string>
 </resources>

@@ -575,4 +575,6 @@
     <string name="location_channel_name">Seguimiento del cohete</string>
     <string name="location_notification_title">Siguiendo el cohete</string>
     <string name="location_notification_text">La posición del teléfono se usa para mostrar la distancia al cohete.</string>
+    <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
+    <string name="bt_not_enabled">El Bluetooth debe estar activado para mostrar los módulos vinculados</string>
 </resources>

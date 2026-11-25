@@ -575,4 +575,6 @@
     <string name="location_channel_name">Śledzenie rakiety</string>
     <string name="location_notification_title">Śledzenie rakiety w toku</string>
     <string name="location_notification_text">Pozycja telefonu służy do wyświetlania odległości od rakiety.</string>
+    <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
+    <string name="bt_not_enabled">Bluetooth musi być włączony, aby wyświetlić sparowane moduły</string>
 </resources>
