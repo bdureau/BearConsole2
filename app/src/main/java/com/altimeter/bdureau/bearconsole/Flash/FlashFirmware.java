@@ -519,9 +519,20 @@ public class FlashFirmware extends BaseActivity {
         tvAppend(tvRead, "\n" + getString(R.string.flash_cancel_requested) + "\n");
     }
 
-    /** Creates the "Flashing..." dialog whose Cancel button really stops the flashing. */
+    // Firmware and baud rate selected when the flashing started. They are read from the
+    // spinners on the UI thread (showFlashingDialog(), called by onPreExecute()) because the
+    // flashing thread must not touch Views (lint "Call must be from @UiThread").
+    private volatile String selectedFirmware = "";
+    private volatile int selectedBaudRate = 115200;
+
+    /**
+     * Creates the "Flashing..." dialog whose Cancel button really stops the flashing, and
+     * records the selected firmware and baud rate (UI thread).
+     */
     private void showFlashingDialog() {
         flashCancelRequested = false;
+        selectedFirmware = itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()];
+        selectedBaudRate = Integer.parseInt(itemsBaudRate[(int) dropdownBaudRate.getSelectedItemId()]);
         builder = new AlertDialog.Builder(FlashFirmware.this);
         //Flashing firmware...
         builder.setMessage(getResources().getString(R.string.msg10))
@@ -668,9 +679,9 @@ public class FlashFirmware extends BaseActivity {
             FlashResult result = FlashResult.FAILED_UNTOUCHED;
             try {
                 if (!recorverFirmware) {
-                    if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiMultiSTM32"))
+                    if (selectedFirmware.equals("AltiMultiSTM32"))
                         result = uploadSTM32(ASSET_FILE_NAME_ALTIMULTISTM32, mUploadSTM32Callback);
-                    if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiGPS"))
+                    if (selectedFirmware.equals("AltiGPS"))
                         result = uploadSTM32(ASSET_FILE_NAME_ALTIGPS, mUploadSTM32Callback);
                 } else {
                     result = uploadSTM32(ASSET_FILE_RESET_ALTISTM32, mUploadSTM32Callback);
@@ -714,7 +725,7 @@ public class FlashFirmware extends BaseActivity {
         // Cancel may have been pressed before the command interface existed
         if (flashCancelRequested) cmd.cancel();
 
-        cmd.open(Integer.parseInt(itemsBaudRate[(int) this.dropdownBaudRate.getSelectedItemId()]));
+        cmd.open(selectedBaudRate);
         int ret = cmd.initChip();
         if (ret == 1)
             dialogAppend(getString(R.string.chip_has_not_been_init) + ret);
@@ -820,53 +831,53 @@ public class FlashFirmware extends BaseActivity {
             FlashResult result;
             String firmwareFileName[] = new String[4];
             if (!recorverFirmware) {
-                if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32")) {
+                if (selectedFirmware.equals("AltiESP32")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_FILE4;
-                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32V2")) {
+                } else if (selectedFirmware.equals("AltiESP32V2")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32V2_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32V2_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32V2_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32V2_FILE4;
-                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_accelero")) {
+                } else if (selectedFirmware.equals("AltiESP32_accelero")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_accelero_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_accelero_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_accelero_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_accelero_FILE4;
-                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL345")) {
+                } else if (selectedFirmware.equals("AltiESP32_ADXL345")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE4;
-                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("AltiESP32_ADXL375")) {
+                } else if (selectedFirmware.equals("AltiESP32_ADXL375")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_ADXL375_FILE4;
-                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOAltimeter")) {
+                } else if (selectedFirmware.equals("TTGOAltimeter")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4;
                 }
-                else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOMiniAltimeter")) {
+                else if (selectedFirmware.equals("TTGOMiniAltimeter")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE4;
-                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("TTGOSimpleAltimeter")) {
+                } else if (selectedFirmware.equals("TTGOSimpleAltimeter")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_FILE4;
-                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeter")) {
+                } else if (selectedFirmware.equals("UltimateAltimeter")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3;
                     firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4;
-                } else if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("UltimateAltimeterNoSleep")) {
+                } else if (selectedFirmware.equals("UltimateAltimeterNoSleep")) {
                     firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE1;
                     firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE2;
                     firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE3;
@@ -988,7 +999,7 @@ public class FlashFirmware extends BaseActivity {
             else
                 tvAppend(tvRead, chip + "is an unknown Chip\n");
 
-            tvAppend(tvRead, itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()]);
+            tvAppend(tvRead, selectedFirmware);
 
             // Last point where the firmware of the board is still intact
             if (cmd.isCancelRequested()) {
