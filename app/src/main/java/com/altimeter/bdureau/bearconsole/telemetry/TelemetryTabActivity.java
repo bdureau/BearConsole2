@@ -27,7 +27,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
+//import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -35,7 +35,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import androidx.annotation.Nullable;
+//import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;

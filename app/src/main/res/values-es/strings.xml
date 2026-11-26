@@ -492,15 +492,15 @@
     <string name="do_you_want_to_connect_to_module">"¿Desea conectarse al módulo "</string>
     <string name="no">No</string>
     <string name="recover_flight">Recuperar vuelo</string>
-    <string name="track_with_openmap">Track with OpenMap</string>
-    <string name="track_with_googlemap">Track with GoogleMap</string>
-    <string name="flight_view">Flight</string>
-    <string name="flash_altimeter_firmware">Flash altimeter firmware</string>
-    <string name="config_lorae32_module">Config LoraE32 module</string>
-    <string name="config_lorae220_module">Config LoraE220 module</string>
-    <string name="config_bluetooth_module">Config bluetooth module</string>
-    <string name="config_3dr_modules">Config 3DR modules</string>
-    <string name="help_file">Help file</string>
+    <string name="track_with_openmap">Seguimiento con OpenMap</string>
+    <string name="track_with_googlemap">Seguimiento con GoogleMap</string>
+    <string name="flight_view">Vuelo</string>
+    <string name="flash_altimeter_firmware">Grabar firmware del altímetro</string>
+    <string name="config_lorae32_module">Configurar módulo LoraE32</string>
+    <string name="config_lorae220_module">Configurar módulo LoraE220</string>
+    <string name="config_bluetooth_module">Configurar módulo Bluetooth</string>
+    <string name="config_3dr_modules">Configurar módulos 3DR</string>
+    <string name="help_file">Archivo de ayuda</string>
 
     <!-- Strings added by the review fixes: output test confirmation, configuration
          validation, status screen, messages formerly hard-coded in the code and layouts -->

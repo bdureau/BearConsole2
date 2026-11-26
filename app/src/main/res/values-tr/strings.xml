@@ -153,7 +153,7 @@
 
     <!-- flight views screen -->
     <string name="Meters_fview">Metre</string>
-    <string name="Feet_fview">Feet</string>
+    <string name="Feet_fview">Fit</string>
     <string name="Altitude_time">İrtifa / Zaman</string>
     <string name="Time_fv">Zaman (ms)</string>
     <string name="Altitude">İrtifa</string>
@@ -192,7 +192,7 @@
     <string name="phone_french">Fransızca</string>
     <string name="phone_language">Telefon Dili</string>
     <string name="config_unit_meters">Metre</string>
-    <string name="config_unit_feet">Feet</string>
+    <string name="config_unit_feet">Fit</string>
 
     <string name="general_config">Genel</string>
     <string name="telemetry_config">Telemetri Ayarları</string>
@@ -492,15 +492,15 @@
     <string name="do_you_want_to_connect_to_module">"Şu modüle bağlanmak istiyor musunuz: "</string>
     <string name="no">Hayır</string>
     <string name="recover_flight">Uçuşu Kurtar</string>
-    <string name="track_with_openmap">Track with OpenMap</string>
-    <string name="track_with_googlemap">Track with GoogleMap</string>
-    <string name="flight_view">Flight</string>
-    <string name="flash_altimeter_firmware">Flash altimeter firmware</string>
-    <string name="config_lorae32_module">Config LoraE32 module</string>
-    <string name="config_lorae220_module">Config LoraE220 module</string>
-    <string name="config_bluetooth_module">Config bluetooth module</string>
-    <string name="config_3dr_modules">Config 3DR modules</string>
-    <string name="help_file">Help file</string>
+    <string name="track_with_openmap">OpenMap ile İzle</string>
+    <string name="track_with_googlemap">GoogleMap ile İzle</string>
+    <string name="flight_view">Uçuş</string>
+    <string name="flash_altimeter_firmware">Altimetre Yazılımını Yükle</string>
+    <string name="config_lorae32_module">LoraE32 Modülünü Yapılandır</string>
+    <string name="config_lorae220_module">LoraE220 Modülünü Yapılandır</string>
+    <string name="config_bluetooth_module">Bluetooth Modülünü Yapılandır</string>
+    <string name="config_3dr_modules">3DR Modüllerini Yapılandır</string>
+    <string name="help_file">Yardım Dosyası</string>
 
     <!-- Strings added by the review fixes: output test confirmation, configuration
          validation, status screen, messages formerly hard-coded in the code and layouts -->

@@ -323,7 +323,7 @@ public class ConsoleApplication extends Application {
         NbrOfFlight = value;
     }
 
-    /**
+    /*
      * Opens the Bluetooth link to the module selected in {@link #setAddress(String)} and checks
      * that an altimeter answers. Blocking: must be called from a background thread.
      */
