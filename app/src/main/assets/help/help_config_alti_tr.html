@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .param-item { margin-bottom: 12px; }
+        .param-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Altimetreyi Yapılandır</h1>
+
+<p>Altimetre yapılandırması, bağlı altimetre modeline bağlı olarak 4 farklı ekrana kadar yayılabilir. Bu ekranlar açıldığında uygulama altimetreye bağlanır ve yerleşik bellekte saklanan yapılandırmayı okur.</p>
+
+<div class="info-box">
+    <strong>Bağlantı Durumu:</strong> Parametreleri güncellemeden önce altimetrenin açık olduğundan ve Bluetooth veya USB ile bağlı olduğundan emin olun.
+</div>
+
+<h2>Altimetre Çıkışları</h2>
+<p>Her çıkış kanalı yapılandırılabilir ve olaya dayalı belirli bir işleve atanabilir:</p>
+<ul>
+    <li><strong>Kalkış:</strong> Kalkış anında hemen ateşlenir.</li>
+    <li><strong>Zamanlayıcı:</strong> Kalkıştan X milisaniye sonra ateşlenir.</li>
+    <li><strong>İrtifa:</strong> Belirtilen irtifa eşiğinde ateşlenir.</li>
+    <li><strong>Apoje:</strong> Algılanan apojede (en yüksek irtifa) ateşlenir.</li>
+    <li><strong>Ana:</strong> Ana paraşütle kurtarma için inişten X metre önce ateşlenir.</li>
+    <li><strong>İniş:</strong> Yere temas anında ateşlenir.</li>
+</ul>
+<p><em>Not: Her olay ayrıca milisaniye cinsinden ek bir gecikmeyle yapılandırılabilir.</em></p>
+
+<h2>Altimetre Ayarları (Sayfa 1)</h2>
+<div class="param-item">
+    <p><strong>Baud Hızı:</strong> İletişim portunun hızını ayarlar (yeniden başlatma gerekir).</p>
+</div>
+<div class="param-item">
+    <p><strong>Apoje Ölçümleri:</strong> Apojeyi doğrulamak için gereken ardışık alçalan örnek sayısı.</p>
+</div>
+<div class="param-item">
+    <p><strong>Altimetre Çözünürlüğü:</strong> Sensör örnekleme çözünürlüğü.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; DİKKAT</div>
+    <div>Çözünürlüğü değiştirmek toplam uçuş ölçümü sayısını azaltabilir. Ünite ana paraşüt açılışı için kullanılıyorsa çözünürlüğü düşürmeyin.</div>
+</div>
+<div class="param-item">
+    <p><strong>EEPROM Boyutu:</strong> Yerleşik flash/bellek kapasitesini tanımlar.</p>
+</div>
+<div class="param-item">
+    <p><strong>Bip AÇIK / KAPALI:</strong> Devre sürekliliği sesli uyarısını açar veya kapatır.</p>
+</div>
+<div class="param-item">
+    <p><strong>Kayıt Sonu İrtifası:</strong> Altında uçuş kaydının durduğu irtifa eşiği.</p>
+</div>
+<div class="param-item">
+    <p><strong>Sıcaklık Kaydı:</strong> Yerleşik sıcaklık kaydını etkinleştirir veya devre dışı bırakır.</p>
+</div>
+<div class="param-item">
+    <p><strong>Süpersonik Gecikme:</strong> Yüksek hızlı uçuşun ilk saniyelerinde şok dalgalarının neden olduğu barometrik basınç anormalliklerini yok sayar.</p>
+</div>
+<div class="param-item">
+    <p><strong>Kalkış İrtifası:</strong> Fırlatmanın gerçekleştiğini doğrulamak için irtifa eşiği.</p>
+</div>
+<div class="param-item">
+    <p><strong>Pil Türü:</strong> Düşük voltaj alarm eşiklerini yapılandırmak için pil kimyasını tanımlar.</p>
+</div>
+
+<h2>Altimetre Ayarları (Sayfa 2)</h2>
+<p>Ölçü birimlerini (Metrik/İngiliz), devre sürekliliği bip modlarını ve bip ton frekansını yapılandırmanıza olanak tanır.</p>
+
+<h2>Servo Yapılandırması (Sayfa 3)</h2>
+<p>Yalnızca şu kartlara bağlıyken kullanılabilir: <strong>AltiServo</strong>. Her servo için başlangıç, nötr ve açılmış konumları tanımlamanıza olanak tanır.</p>
+
+</body>
+</html>

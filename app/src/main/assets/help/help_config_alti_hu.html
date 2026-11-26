@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .param-item { margin-bottom: 12px; }
+        .param-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Magasságmérő konfigurálása</h1>
+
+<p>A magasságmérő konfigurációja a csatlakoztatott típustól függően legfeljebb 4 képernyőre oszlik. E képernyők megnyitásakor az alkalmazás csatlakozik a magasságmérőhöz, és beolvassa a beépített memóriában tárolt konfigurációt.</p>
+
+<div class="info-box">
+    <strong>Kapcsolat állapota:</strong> A paraméterek módosítása előtt győződjön meg arról, hogy a magasságmérő be van kapcsolva, és Bluetooth-on vagy USB-n csatlakozik.
+</div>
+
+<h2>A magasságmérő kimenetei</h2>
+<p>Minden kimeneti csatorna konfigurálható, és egy adott eseményhez kötött funkcióhoz rendelhető:</p>
+<ul>
+    <li><strong>Felszállás:</strong> Felszálláskor azonnal old.</li>
+    <li><strong>Időzítő:</strong> A felszállás után X ezredmásodperccel old.</li>
+    <li><strong>Magasság:</strong> A megadott magassági küszöbnél old.</li>
+    <li><strong>Csúcspont:</strong> Az érzékelt csúcspontnál (legnagyobb magasság) old.</li>
+    <li><strong>Főernyő:</strong> A földet érés előtt X méterrel old a főernyős visszanyeréshez.</li>
+    <li><strong>Landolás:</strong> Földet éréskor old.</li>
+</ul>
+<p><em>Megjegyzés: minden eseményhez ezredmásodpercben megadott további késleltetés is beállítható.</em></p>
+
+<h2>Magasságmérő beállításai (1. oldal)</h2>
+<div class="param-item">
+    <p><strong>Adatsebesség:</strong> A kommunikációs port sebességét állítja be (újraindítás szükséges).</p>
+</div>
+<div class="param-item">
+    <p><strong>Csúcspont-mérések:</strong> A csúcspont megerősítéséhez szükséges egymást követő csökkenő minták száma.</p>
+</div>
+<div class="param-item">
+    <p><strong>Magasságmérő felbontása:</strong> Az érzékelő mintavételi felbontása.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; FIGYELEM</div>
+    <div>A felbontás módosítása csökkentheti a rögzíthető repülési mérések számát. Ne csökkentse, ha az egységet a főernyő kioldására használja.</div>
+</div>
+<div class="param-item">
+    <p><strong>EEPROM mérete:</strong> A beépített flash/memória kapacitását adja meg.</p>
+</div>
+<div class="param-item">
+    <p><strong>Sípolás BE / KI:</strong> Be- vagy kikapcsolja a folytonosság hangjelzését.</p>
+</div>
+<div class="param-item">
+    <p><strong>Rögzítés végének magassága:</strong> Az a magassági küszöb, amely alatt a repülés rögzítése leáll.</p>
+</div>
+<div class="param-item">
+    <p><strong>Hőmérséklet rögzítése:</strong> Be- vagy kikapcsolja a beépített hőmérséklet rögzítését.</p>
+</div>
+<div class="param-item">
+    <p><strong>Szuperszonikus késleltetés:</strong> Figyelmen kívül hagyja a nagy sebességű repülés első másodperceiben a lökéshullámok okozta légnyomás-rendellenességeket.</p>
+</div>
+<div class="param-item">
+    <p><strong>Felszállási magasság:</strong> Az a magassági küszöb, amely megerősíti az indítást.</p>
+</div>
+<div class="param-item">
+    <p><strong>Akkumulátor típusa:</strong> Az akkumulátor kémiai típusát adja meg az alacsony feszültségű riasztások küszöbéhez.</p>
+</div>
+
+<h2>Magasságmérő beállításai (2. oldal)</h2>
+<p>Itt állíthatók be a mértékegységek (metrikus/angolszász), a folytonossági sípolás módjai és a sípolás hangmagassága.</p>
+
+<h2>Szervókonfiguráció (3. oldal)</h2>
+<p>Csak akkor érhető el, ha ilyen kártyához csatlakozik: <strong>AltiServo</strong>. Itt adható meg minden szervó kezdő, semleges és kioldott helyzete.</p>
+
+</body>
+</html>

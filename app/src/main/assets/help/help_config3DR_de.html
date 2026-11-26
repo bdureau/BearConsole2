@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Konfiguration des 3DR-Moduls</h1>
+
+<p>Für Telemetrie mit großer Reichweite müssen Sie Ihr Bluetooth-Modul durch ein 3DR-Telemetriemodul ersetzen.</p>
+
+<p><img src="file:///android_asset/help/images/3DR_module-small.png" alt="3DR-Modul"/></p>
+
+<div class="info-box">
+    <strong>Hinweis zur Stromversorgung:</strong> Der Akku Ihres Android-Geräts muss stark genug sein, um das 3DR-Modul zu versorgen. Verwenden Sie bei einem leistungsstarken Modul gegebenenfalls einen externen Akku.
+</div>
+
+<h2>Benötigte Hardware</h2>
+<ul>
+    <li>Ein USB-TTL-Seriell-Adapterkabel.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="TTL-Kabel"/>
+    </li>
+    <li>Ein USB-Adapter (USB-C oder Micro-USB, je nach Android-Gerät).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB-Adapter"/>
+    </li>
+    <li>Ein JST-Adapter und passende JST-Kabel.</li>
+</ul>
+
+<h2>Kompatibilität der Baudrate</h2>
+<p>Sie müssen das Modul so konfigurieren, dass es mit Ihrer Höhenmesserplatine funktioniert. Diese Module sind meist ab Werk auf 57600 Baud eingestellt. Ihre Höhenmesserplatine arbeitet jedoch standardmäßig mit 38400 Baud, daher müssen Sie sicherstellen, dass Sie mit der richtigen Geschwindigkeit verbinden.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ACHTUNG</div>
+    <div>Ziehen Sie das Modul während der Konfiguration nicht ab und trennen Sie es nicht, um eine Beschädigung des Speichers zu vermeiden.</div>
+</div>
+
+<h2>Konfigurationsschritte</h2>
+<ol>
+    <li class="step-item">
+        <strong>Konfiguration abrufen:</strong> Schließen Sie das Modul mit einem OTG-Kabel oder USB-Adapter an Ihr Android-Gerät an. Tippen Sie auf <strong>[Konfiguration abrufen]</strong>. Die App testet verschiedene Baudraten, bis eine Verbindung besteht, und lädt dann die Konfiguration des Moduls.
+    </li>
+    <li class="step-item">
+        <strong>Konfiguration speichern:</strong> Ändern Sie die gewünschten Parameter. Wählen Sie eine mit Ihrer Platine kompatible Baudrate (38400 Baud) und tippen Sie auf <strong>[Konfiguration speichern]</strong>. Tritt beim Speichern ein Fehler auf, wird der Vorgang sicher abgebrochen.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Modulpaare:</strong> 3DR-Module werden paarweise geliefert, daher müssen Sie genau diese Schritte für das Sender- und das Empfängermodul wiederholen.
+</div>
+
+</body>
+</html>

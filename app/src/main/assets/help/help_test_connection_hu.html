@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .metric-item { margin-bottom: 12px; }
+        .metric-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Kapcsolatteszt súgó</h1>
+
+<p>Ezzel a képernyővel tesztelheti a kapcsolat megbízhatóságát, különösen 3DR telemetriai moduloknál. Megmutatja, hány adatcsomag veszett el gyenge jelminőség vagy rossz kapcsolat miatt.</p>
+
+<div class="info-box">
+    <strong>Használati javaslat:</strong> Repülés előtt végezzen kapcsolatellenőrzést az indítóálláson, hogy a telemetriai rádió elegendő tartalékkal működjön.
+</div>
+
+<h2>Figyelt kapcsolati mutatók</h2>
+<div class="metric-item">
+    <p><strong>Elküldött / fogadott csomagok:</strong> Az aktív telemetriai kapcsolaton átküldött tesztadatkeretek teljes száma.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Elveszett csomagok:</strong> A rádiós zavar, rossz antennaállás vagy túl nagy távolság miatt elveszett vagy nyugtázatlan adatkeretek száma.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Csomagvesztési arány (%):</strong> Az elveszett csomagok aránya az összes átvitelhez képest. 2% alatti arány megbízható valós idejű telemetriát biztosít.</p>
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; FIGYELMEZTETÉS REPÜLÉS ELŐTT</div>
+    <div>Ne indítson, ha az indítóálláson jelentős a csomagvesztés. A nagy veszteség rádiós zavarra, rosszul beállított antennákra vagy az adó-vevő elégtelen tápellátására utal.</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .setting-item { margin-bottom: 12px; }
+        .setting-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Bear Console Uygulama Ayarları</h1>
+
+<p>Uygulama ayarları iki ayrı sekmede düzenlenmiştir: <strong>Genel</strong> ve <strong>Telemetri</strong>.</p>
+
+<h2>1. Genel Ayarlar</h2>
+<div class="setting-item">
+    <p><strong>Uygulama Dili:</strong> Seçilen dili gösterir (varsayılan olarak Android sistem dilinizi otomatik olarak izler).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Grafik Rengi:</strong> Uçuş eğrilerinin (irtifa, ivme, hız) çizgi rengini yapılandırır.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Uygulama Birimleri:</strong> Metrik (metre, m/s) ve İngiliz (feet, ft/s) birimleri arasında geçiş yapar.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Grafik Arka Plan Rengi:</strong> Grafik görünümünün arka plan rengini ayarlar. <em>Çizgi rengiyle yeterince kontrast oluşturduğundan emin olun!</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Yazı Boyutu:</strong> Grafiklerdeki ve konsol ekranlarındaki yazı boyutunu ayarlar.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Baud Hızı:</strong> Doğrudan USB OTG kablosu bağlantıları için iletişim hızını yapılandırır (altimetrenin seri baud hızıyla eşleşmelidir, genellikle 38400).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Bağlantı Türü:</strong> Şunlar arasında seçim yapar: <strong>Bluetooth</strong> (kısa menzil) veya <strong>USB</strong> (doğrudan kablo veya uzun menzilli LoRa/3DR telsiz alıcı-vericileri).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Grafik Kütüphanesi:</strong> Görüntüleme altyapıları arasında geçiş yapmanızı sağlar. <em>Not: Android 8.0 ve üzeri çalıştıran cihazlar, uygulamanın çökmesini önlemek için şu kütüphaneyi kullanmalıdır: <strong>MPAndroidChart</strong>.</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Çoklu Ana / Sürükleme Paraşütü:</strong> Birden fazla piroteknik çıkışın ana paraşüt veya sürükleme paraşütü açılış olayı olarak tanımlanmasını sağlar.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; USB YAPILANDIRMA UYARISI</div>
+    <div><strong>Tam USB Desteği:</strong> Yalnızca altimetre kartına USB-TTL kablosuyla doğrudan bağlıyken etkinleştirin. <strong>Devre dışı bırakın</strong>: kablosuz uzun menzilli telemetri modülleri (LoRa / 3DR) kullanırken EEPROM yapılandırmasının bozulmasını önlemek için.</div>
+</div>
+
+<h2>2. Telemetri Ayarları</h2>
+<div class="setting-item">
+    <p><strong>Sesli Olaylar:</strong> Hangi uçuş olaylarının gerçek zamanlı olarak sesli duyurulacağını seçer (ör. Kalkış, Apoje, Ana paraşüt açılışı, İrtifa).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Konuşma Sentezi Sesi:</strong> Duyurular için kullanılan Metinden Konuşmaya (TTS) sesini seçer.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Ses Testi:</strong> Dokunun: <strong>[Sesi Test Et]</strong> — ses seviyesini ve sentezlenmiş sesin netliğini kontrol edin.</p>
+</div>
+
+<h2>Değişiklikleri Kaydetme</h2>
+<p>Dokunun: <strong>[Kaydet]</strong> — yeni parametreleriniz uygulanır ve saklanır. Ayrıca ilgili menü seçenekleriyle değişiklikleri kaydetmeden çıkabilir veya fabrika ayarlarına sıfırlayabilirsiniz.</p>
+
+</body>
+</html>

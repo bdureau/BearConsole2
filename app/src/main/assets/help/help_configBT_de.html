@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Konfiguration des Bluetooth-Moduls</h1>
+
+<p>Damit sich Ihr Höhenmesser per Bluetooth mit Ihrem Android-Smartphone oder -Tablet verbinden kann, muss das Modul mit derselben Baudrate arbeiten wie die Höhenmesserplatine.</p>
+
+<p>Mit diesem Werkzeug können Sie kompatible Module konfigurieren, zum Beispiel <strong>HC-05, HC-06, JDY-30, JDY-31, SPP und AT-09</strong>.</p>
+
+<p><img src="file:///android_asset/help/images/bluetooth_module.jpg" alt="Bluetooth-Modul"/></p>
+
+<h2>Benötigte Hardware</h2>
+<ul>
+    <li>Ein USB-TTL-Seriell-Adapterkabel.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="TTL-Kabel"/>
+    </li>
+    <li>Ein OTG-USB-Adapter (USB-C oder Micro-USB, je nach Android-Gerät).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB-Adapter"/>
+    </li>
+    <li>Ein JST-Adapter und passende JST-Verbindungskabel.</li>
+</ul>
+
+<h2>Abgleich der Baudrate</h2>
+<p>Die meisten handelsüblichen Bluetooth-Module sind ab Werk eingestellt auf <strong>9600 Baud</strong>. Der Flugcomputer des Höhenmessers kommuniziert jedoch standardmäßig mit <strong>38400 Baud</strong>. Sie müssen Ihr Modul auf diese Geschwindigkeit einstellen.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ACHTUNG</div>
+    <div>Trennen Sie Modul oder Kabel nicht während des Lese- oder Schreibvorgangs, um eine Beschädigung der Firmware oder der Register zu vermeiden.</div>
+</div>
+
+<h2>Modulkonfiguration abrufen</h2>
+<ol>
+    <li class="step-item">
+        <strong>Hardware-Anschluss:</strong> Verbinden Sie das Bluetooth-Modul über das TTL-Kabel und den USB-OTG-Adapter mit Ihrem Android-Gerät.
+    </li>
+    <li class="step-item">
+        <strong>Modultyp auswählen:</strong> Wählen Sie Ihren Modultyp im Auswahlmenü. Wenn Sie unsicher sind, wählen Sie <em>HC-05</em>, <em>HC-06</em>oder <em>Unbekannt</em>. Funktioniert kein Profil, wenden Sie sich mit gut erkennbaren Fotos und der Typenbezeichnung Ihres Moduls an den Support.
+    </li>
+    <li class="step-item">
+        <strong>Parameter lesen:</strong> Tippen Sie auf <strong>[Konfiguration abrufen]</strong>. Die App versucht zuerst eine Verbindung mit <strong>38400 Baud</strong>. Erfolgt keine Antwort, probiert sie die übrigen Standard-Baudraten durch, bis eine Synchronisation gelingt.
+    </li>
+    <li class="step-item">
+        <strong>Einstellungen prüfen:</strong> Nach dem Verbinden werden die aktuellen Einstellungen (Name, Baudrate, PIN) automatisch geladen.
+    </li>
+</ol>
+
+<h2>Konfiguration speichern</h2>
+<ol>
+    <li class="step-item">
+        <strong>Parameter ändern:</strong> Passen Sie die Parameter nach Bedarf an (Modulname, PIN und Baudrate). Achten Sie darauf, dass die gewählte Baudrate zu Ihrer Höhenmesserplatine passt (meist <strong>38400 Baud</strong>).
+    </li>
+    <li class="step-item">
+        <strong>Parameter schreiben:</strong> Tippen Sie auf <strong>[Konfiguration speichern]</strong>. Die Konfigurationsbefehle werden in das Modul geschrieben. Wird ein Befehlsfehler erkannt, wird der Vorgang sicher angehalten.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Hinweis:</strong> Wiederholen Sie diesen Konfigurationsvorgang einzeln für jedes weitere Bluetooth-Modul, das Sie verwenden möchten.
+</div>
+
+</body>
+</html>

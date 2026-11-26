@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .hardware-item { margin-bottom: 12px; }
+        .step-item { margin-bottom: 10px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Wgraj oprogramowanie</h1>
+
+<p>Najpierw musisz wybrać oprogramowanie. Zależy ono od modelu wysokościomierza, który chcesz zaprogramować.</p>
+<p>Następnie zdecyduj, czy wgrać bezpośrednio oprogramowanie robocze, czy najpierw użyć oprogramowania ratunkowego.</p>
+
+<div class="info-box">
+    <strong>Oprogramowanie ratunkowe:</strong> Użyj oprogramowania ratunkowego, jeśli konfiguracja jest uszkodzona i wysokościomierz nie może się już połączyć. Po wgraniu oprogramowania ratunkowego trzeba ponownie wgrać oprogramowanie robocze.
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; OSTRZEŻENIE</div>
+    <div>Wgranie niewłaściwego oprogramowania sprawi, że wysokościomierz w ogóle nie będzie działał lub będzie działał inaczej, niż oczekujesz.</div>
+</div>
+
+<h2>Potrzebny sprzęt</h2>
+<ul>
+    <li>Kabel szeregowy USB–TTL do podłączenia telefonu/tabletu.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Kabel USB TTL"/>
+    </li>
+    <li>Adapter USB OTG (USB-C lub Micro-USB, zależnie od urządzenia z Androidem).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adapter USB"/>
+    </li>
+    <li>Pasujące kable połączeniowe JST.</li>
+</ul>
+
+<h2>Obsługiwane wysokościomierze</h2>
+<p>Uważnie obejrzyj poniższe zdjęcia, aby rozpoznać swój sprzęt:</p>
+
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (wersja duża)</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiV2</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMultiV2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiSTM32 lub AltiGPS</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMultiSTM32 / AltiGPS"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiESP32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMultiESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
+
+<h2>Instrukcja programowania mikrokontrolera</h2>
+<p>Możesz też spróbować automatycznie wykryć oprogramowanie.</p>
+
+<h3>1. Wysokościomierze z ATmega328 (np. AltiDuo, AltiServo, AltiMulti, AltiMultiV2)</h3>
+<ul>
+    <li>Podłącz kabel USB TTL do wysokościomierza.</li>
+    <li>Wybierz właściwe oprogramowanie lub wykryj je automatycznie.</li>
+    <li>Naciśnij i zwolnij przycisk <strong>reset</strong> na wysokościomierzu, a następnie dotknij przycisku <strong>[Wgraj oprogramowanie]</strong>.</li>
+</ul>
+<p><img src="file:///android_asset/help/images/alti-reset.jpg" alt="Przycisk reset ATmega328"/></p>
+
+<h3>2. Wysokościomierze z STM32 (np. AltiMultiSTM32, AltiGPS)</h3>
+<ul>
+    <li>Podłącz kabel USB TTL.</li>
+    <li>Wybierz właściwe oprogramowanie lub wykryj je automatycznie.</li>
+    <li>Przestaw zworkę <strong>BOOT0</strong> w prawo (pozycja programowania):</li>
+</ul>
+<p><img src="file:///android_asset/help/images/stm32-prog2-small.jpg" alt="STM32 BOOT0 w prawo"/></p>
+<ul>
+    <li>Naciśnij przycisk <strong>reset</strong> na płytce.</li>
+    <li>Dotknij <strong>[Wgraj oprogramowanie]</strong>.</li>
+    <li>Oprogramowanie powinno się teraz wgrywać. Po zakończeniu przestaw zworkę <strong>BOOT0</strong> z powrotem w lewo (pozycja pracy):</li>
+</ul>
+<p><img src="file:///android_asset/help/images/stm32-prog1-small.jpg" alt="STM32 BOOT0 w lewo"/></p>
+<ul>
+    <li>Naciśnij przycisk <strong>reset</strong>, aby ponownie uruchomić wysokościomierz w trybie normalnym.</li>
+</ul>
+
+<h3>3. Wysokościomierze z ESP32 (np. AltiMultiESP32 i warianty AltiMultiESP32Accel)</h3>
+<ul>
+    <li>Podłącz kabel.</li>
+    <li>Wybierz właściwe oprogramowanie lub wykryj je automatycznie.</li>
+    <li>Na płytce naciśnij i przytrzymaj przycisk <strong>BOOT</strong>.</li>
+    <li>Naciśnij przycisk <strong>RESET</strong> i zwolnij go, nadal przytrzymując przycisk BOOT.</li>
+    <li>Zwolnij przycisk <strong>BOOT</strong>:</li>
+</ul>
+<p><img src="file:///android_asset/help/images/esp32-altimulti-button-small.jpg" alt="Przyciski ESP32"/></p>
+<ul>
+    <li>Dotknij <strong>[Wgraj oprogramowanie]</strong>.</li>
+    <li>Oprogramowanie powinno się teraz wgrać (w razie niepowodzenia spróbuj ponownie). Po zakończeniu naciśnij przycisk <strong>reset</strong>.</li>
+</ul>
+
+<h3>4. TTGO BearAltimeter</h3>
+<ul>
+    <li>Podłącz bezpośrednio kabel USB-C.</li>
+    <li>Wybierz oprogramowanie TTGO BearAltimeter.</li>
+    <li>Dotknij <strong>[Wgraj oprogramowanie]</strong>. Po zakończeniu naciśnij przycisk <strong>reset</strong>.</li>
+</ul>
+
+<h3>5. TTGO Mini, Simple Altimeter &amp; TS-ESP32-S3</h3>
+<ul>
+    <li>Podłącz kabel USB-C.</li>
+    <li>Naciśnij i przytrzymaj przycisk <strong>BOOT</strong> na płytce.</li>
+    <li>Naciśnij i zwolnij przycisk <strong>RESET</strong>, nadal przytrzymując przycisk BOOT.</li>
+    <li>Zwolnij przycisk <strong>BOOT</strong> i wybierz właściwy model wysokościomierza.</li>
+    <li>Dotknij <strong>[Wgraj oprogramowanie]</strong>. Po zakończeniu naciśnij przycisk <strong>reset</strong>.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; WAŻNA UWAGA</div>
+    <div>Nigdy nie odłączaj kabla podczas programowania. Spowoduje to uszkodzenie obrazu oprogramowania i konieczność ponownego wgrania od początku.</div>
+</div>
+
+</body>
+</html>

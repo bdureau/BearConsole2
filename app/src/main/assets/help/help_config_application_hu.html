@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .setting-item { margin-bottom: 12px; }
+        .setting-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Bear Console alkalmazásbeállítások</h1>
+
+<p>Az alkalmazás beállításai két külön lapra vannak osztva: <strong>Általános</strong> és <strong>Telemetria</strong>.</p>
+
+<h2>1. Általános beállítások</h2>
+<div class="setting-item">
+    <p><strong>Alkalmazás nyelve:</strong> A kiválasztott nyelvet mutatja (alapértelmezés szerint automatikusan követi az Android rendszer nyelvét).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Grafikon színe:</strong> A repülési görbék (magasság, gyorsulás, sebesség) vonalszínét állítja be.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Alkalmazás mértékegységei:</strong> Váltás a metrikus (méter, m/s) és az angolszász (láb, ft/s) mértékegységek között.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Grafikon háttérszíne:</strong> A diagramnézet háttérszínét állítja be. <em>Ügyeljen arra, hogy kellően elüssön a vonal színétől!</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Betűméret:</strong> A grafikonok és a konzol szövegméretét állítja be.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Adatsebesség:</strong> A közvetlen USB OTG kábeles kapcsolat kommunikációs sebességét állítja be (meg kell egyeznie a magasságmérő soros adatsebességével, általában 38400).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Kapcsolat típusa:</strong> Választás a következők között: <strong>Bluetooth</strong> (kis hatótávolság) vagy <strong>USB</strong> (közvetlen kábel vagy nagy hatótávolságú LoRa/3DR rádiós adó-vevők).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Grafikus könyvtár:</strong> Váltani lehet a megjelenítő motorok között. <em>Megjegyzés: Android 8.0 vagy újabb rendszeren az alkalmazás összeomlásának elkerülése érdekében ezt a könyvtárat kell használni: <strong>MPAndroidChart</strong>.</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Több főernyő / fékezőernyő:</strong> Lehetővé teszi, hogy több pirotechnikai kimenetet is főernyő- vagy fékezőernyő-kioldásként adjon meg.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; USB-KONFIGURÁCIÓS FIGYELMEZTETÉS</div>
+    <div><strong>Teljes USB-támogatás:</strong> Csak akkor kapcsolja be, ha USB-TTL kábellel közvetlenül a magasságmérő kártyához csatlakozik. <strong>Tartsa kikapcsolva</strong> vezeték nélküli, nagy hatótávolságú telemetriai modulok (LoRa / 3DR) használatakor, hogy elkerülje az EEPROM-konfiguráció sérülését.</div>
+</div>
+
+<h2>2. Telemetria beállítások</h2>
+<div class="setting-item">
+    <p><strong>Hangos események:</strong> Kiválasztja, mely repülési eseményeket mondja be az alkalmazás valós időben (pl. felszállás, csúcspont, főernyő nyitása, magasság).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Beszédszintézis hangja:</strong> Kiválasztja a bemondásokhoz használt szövegfelolvasó (TTS) hangot.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Hangteszt:</strong> Koppintson erre: <strong>[Hang tesztelése]</strong> — így ellenőrizheti a hangerőt és a szintetizált hang érthetőségét.</p>
+</div>
+
+<h2>Módosítások mentése</h2>
+<p>Koppintson erre: <strong>[Mentés]</strong> — az új paraméterek alkalmazásra és mentésre kerülnek. A megfelelő menüpontokkal mentés nélkül is kiléphet, vagy visszaállíthatja a gyári beállításokat.</p>
+
+</body>
+</html>

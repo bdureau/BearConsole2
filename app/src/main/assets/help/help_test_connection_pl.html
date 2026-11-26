@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .metric-item { margin-bottom: 12px; }
+        .metric-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Pomoc testu połączenia</h1>
+
+<p>Ten ekran pozwala sprawdzić niezawodność połączenia, zwłaszcza z modułami telemetrycznymi 3DR. Pokazuje liczbę pakietów danych utraconych z powodu słabego sygnału lub złego połączenia.</p>
+
+<div class="info-box">
+    <strong>Zalecenie:</strong> Przed lotem sprawdź łącze na wyrzutni, aby mieć pewność, że radio telemetrii pracuje z wystarczającym zapasem.
+</div>
+
+<h2>Monitorowane parametry połączenia</h2>
+<div class="metric-item">
+    <p><strong>Pakiety wysłane / odebrane:</strong> Łączna liczba testowych ramek danych przesłanych przez aktywne łącze telemetrii.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Utracone pakiety:</strong> Liczba utraconych lub niepotwierdzonych ramek danych z powodu zakłóceń radiowych, źle ustawionych anten lub zbyt dużej odległości.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Wskaźnik utraty pakietów (%):</strong> Odsetek utraconych pakietów względem wszystkich transmisji. Wartość poniżej 2% zapewnia niezawodną telemetrię w czasie rzeczywistym.</p>
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; OSTRZEŻENIE PRZED LOTEM</div>
+    <div>Nie startuj, jeśli na wyrzutni występuje znaczna utrata pakietów. Duża utrata wskazuje na zakłócenia radiowe, źle ustawione anteny lub niewystarczające zasilanie modułu radiowego.</div>
+</div>
+
+</body>
+</html>

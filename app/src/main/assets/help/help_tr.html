@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .btn-entry { margin-bottom: 14px; }
+        .btn-entry strong { color: #0277BD; }
+        .hardware-item { margin-bottom: 12px; }
+        img { vertical-align: middle; margin: 4px 6px 4px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Bear Altimetre Konsolu Yardım Dosyası</h1>
+
+<p>Bu, Android Bear Altimetre konsolunu kullanmak için hızlı bir yardım dosyasıdır. Android konsolu, sahadayken altimetrenizi yeniden yapılandırmanın çok pratik bir yoludur.</p>
+
+<div class="info-box">
+    <strong>Not:</strong> Yardım her ekranda bağlama duyarlıdır; o anda kullanılan ekrana özel yardımı gösterir.
+</div>
+
+<h2>İlk Kurulum &amp; Bluetooth Eşleştirme</h2>
+<ol>
+    <li><strong>Yazılım Doğrulaması:</strong> Altimetrenizin uyumlu olduğundan emin olun (yani doğru yazılım yüklenmiş olmalı).</li>
+    <li><strong>Modül Bağlantısı:</strong> Bluetooth modülünün altimetreye doğru şekilde bağlandığından emin olun.</li>
+    <li><strong>Sistem Eşleştirmesi:</strong> Android cihazınızın ayarlarını açın, Bluetooth yapılandırmasına gidin ve HC-05, HC-06 veya HC-07 Bluetooth modülünü arayın. Modül bulunduğunda eşleştirme PIN kodunu girin; varsayılan kod <strong>1234</strong> şeklindedir.</li>
+</ol>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; DİKKAT</div>
+    <div>Doğru altimetreyi yapılandırdığınızdan emin olmak için telefonunuzda eşleştirilen her Bluetooth cihazına açıkça ayırt edilebilir bir ad verin.</div>
+</div>
+
+<ol start="4">
+    <li><strong>Açma:</strong> Altimetreyi açın ve devre sürekliliğini onaylayan bip sesini bekleyin.</li>
+    <li><strong>Bağlantı:</strong> Android cihazınızda BearConsole uygulamasını başlatın, eşleştirilmiş cihazlara dokunun ve modülünüzü (HC-05 veya HC-06) seçin. Konsol altimetreye bağlanmayı deneyecektir.</li>
+</ol>
+
+<p>Bağlandıktan sonra konsolu altimetrenizi yapılandırmak veya kaydedilmiş uçuş verilerini indirmek için kullanabilirsiniz. Bağlantı kurulamazsa altimetrenin açık olduğunu ve doğru Bluetooth adaptörünün seçildiğini kontrol edin.</p>
+
+<h2>Altimetre Konsolunun Kullanımı</h2>
+
+<h3>Altimetre Ana Ekranı</h3>
+<p>Ana ekranda birkaç işlem kartı bulunur:</p>
+
+<div class="btn-entry">
+    <p><strong>[Altimetre Ayarları]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Altimeters Settings75x92.png" alt="Altimetre Ayarları"/>
+        Altimetrenin mevcut ayarlarını okur ve bunları değiştirmenize olanak tanır.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Uçuşlar]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flights75x92.png" alt="Uçuşlar"/>
+        EEPROM/Flash bellekte kayıtlı tüm uçuşları okur ve bunları etkileşimli eğriler olarak çizer.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Telemetri]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Telemetry75x91.png" alt="Telemetri"/>
+        Uçuş bilgisayarından gerçek zamanlı telemetri akışına erişir.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Devre Sürekliliği Açık/Kapalı]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Continuity on-off75x93.png" alt="Devre Sürekliliği Açık/Kapalı"/>
+        Devre sürekliliği sesli uyarısını açar veya kapatır.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Ayarları Sıfırla]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Reset settings75x92.png" alt="Ayarları Sıfırla"/>
+        Altimetre yapılandırmasını fabrika ayarlarına döndürür. Ayrıca kayıtlı tüm uçuşları veya yalnızca son uçuş kaydını silmenize olanak tanır.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Durum]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Status75x90.png" alt="Durum"/>
+        Ateşleme kanallarının sürekliliğini, bellek kullanımını, sensörlerin durumunu ve mevcut irtifayı gösteren tanılama ekranını açar.</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Yazılımı Yükle]</strong></p>
+    <p><img src="file:///android_asset/help/images/console Flash firmware75x92.png" alt="Yazılımı Yükle"/>
+        Yeni yazılım sürümlerini doğrudan USB OTG kablosuyla yüklemenizi sağlar (ATmega328, STM32 ve ESP32 platformları için kullanılabilir).</p>
+</div>
+
+<div class="btn-entry">
+    <p><strong>[Bağlan / Bağlantıyı Kes]</strong></p>
+    <p>
+        <img src="file:///android_asset/help/images/console connect75x93.png" alt="Bağlan"/>
+        <img src="file:///android_asset/help/images/console Disconnect75x91.png" alt="Bağlantıyı Kes"/>
+    </p>
+    <p>Altimetreyle seri bağlantıyı kurar veya sonlandırır.</p>
+</div>
+
+<h3>Altimetre Ana Ekranı Menüsü</h3>
+<p>Seçenekler menüsünden bu yardım kılavuzuna, sürüm ayrıntılarını içeren "Hakkında" ekranına, uygulama teması tercihlerine ve 3DR telsiz, Bluetooth ve LoRa telemetri alıcı-vericilerinin yapılandırma panellerine erişebilirsiniz.</p>
+
+<h3>Desteklenen Altimetreler</h3>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (ATmega328 içeren tam boy sürüm)</p>
+    <p>Bu, orijinal AltiDuo'dur (ilk altimetrem); bu uygulamayla altimetrenin tamamen yapılandırılmasını sağlayan özel bir yazılıma sahiptir. Seri porta takılan bir Bluetooth modülü kullanır.</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V1</strong></p>
+    <p>Bu, uçuşu bir EEPROM'a kaydeden 3 çıkışlı bir altimetredir. Seri porta takılan bir Bluetooth modülü kullanır.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti V1"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti V2</strong></p>
+    <p>Bu, AltiMulti'nin geliştirilmiş bir sürümüdür. Seri porta takılan bir Bluetooth modülü kullanır.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMulti V2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p>Piroteknik çıkışlar yerine servoları sürmenizi sağlar. Seri porta takılan bir Bluetooth modülü kullanır. Servoları ve altimetreyi bu uygulamayla yapılandırabilirsiniz.</p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti STM32</strong></p>
+    <P>Bu, STM32 yongası kullanan AltiMulti'nin 3. sürümüdür. 4 piroteknik çıkışı vardır, uçuşu kaydedebilir ve ek cihazlar bağlamak için ilave bir seri porta sahiptir.</P>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMulti STM32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiGPS</strong></p>
+    <P>Bu, seri porta takılan bir GPS'i çalıştırmak için farklı bir yazılımla AltiMultiV3 kartını kullanır.
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32</strong></p>
+    <p>Bu, ESP32 yongası kullanan AltiMulti'nin 4. sürümüdür. 3 piroteknik çıkışı vardır ve uçuşu kaydeder. Harici Bluetooth gerekmez, yonganın üzerinde bir tane bulunur.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMulti ESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p>Bu, AltiMulti ESP32 ile aynıdır ancak kart üzerinde 2 ivmeölçer bulunur (accel 345 ve 375).</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p>Bu, AltiMulti ESP32 ile aynıdır ancak kart üzerinde 1 adet accel 345 bulunur.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p>Bu, AltiMulti ESP32 ile aynıdır ancak kart üzerinde 1 adet accel 375 bulunur.</p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p>Bu, ekranı olan Lilygo kartıdır. Hava basıncı sensörü + ivmeölçer ve uçuşu kaydetmek için bir EEPROM içeren ek bir alt kart eklenir. Karta Bluetooth ile bağlanabilirsiniz.
+    </p>
+    <p><img src="file:///android_asset/help/images/ttgo316x165small.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO T QT mini BearAltimeter</strong></p>
+    <p>Bu, en küçük altimetre kartıdır; barometrik sensör için bir alt kartı da vardır. Not: Bluetooth ile bağlanamaz; altimetreye bağlanmak, onu yapılandırmak veya uçuşları okumak için bir USB kablosu gerekir.</p>
+    <p><img src="file:///android_asset/help/images/lilygo314x185.jpg" alt="TTGO T QT mini BearAltimeter"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TS-ESP32-S3 BearAltimeter</strong></p>
+    <p>Bu küçük kart kutudan çıktığı gibi her şeye sahiptir. Kart üzerinde bir basınç sensörü + ivmeölçer bulunur. Uçuş, kartın belleğine kaydedilir. Yazılımı listeden yüklemeniz yeterlidir. Not: Bluetooth ile bağlanamaz; altimetreye bağlanmak, onu yapılandırmak veya uçuşları okumak için bir USB kablosu gerekir.</p>
+    <p><img src="file:///android_asset/help/images/ultimateSmall311x139.jpg" alt="TS-ESP32-S3 BearAltimeter"/></p>
+</div>
+
+</body>
+</html>

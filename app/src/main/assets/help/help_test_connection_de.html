@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .metric-item { margin-bottom: 12px; }
+        .metric-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Hilfe zum Verbindungstest</h1>
+
+<p>Mit diesem Bildschirm können Sie die Zuverlässigkeit der Verbindung testen, insbesondere mit 3DR-Telemetriemodulen. Er zeigt die Anzahl der Datenpakete, die wegen schlechter Signalqualität oder einer schlechten Verbindung verloren gehen.</p>
+
+<div class="info-box">
+    <strong>Empfehlung:</strong> Prüfen Sie die Verbindung vor dem Flug auf der Startrampe, um sicherzustellen, dass Ihr Telemetriefunk mit ausreichender Reserve arbeitet.
+</div>
+
+<h2>Überwachte Verbindungswerte</h2>
+<div class="metric-item">
+    <p><strong>Gesendete / empfangene Pakete:</strong> Gesamtzahl der über die aktive Telemetrieverbindung übertragenen Testdatenrahmen.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Verlorene Pakete:</strong> Anzahl der verlorenen oder unbestätigten Datenrahmen durch Funkstörungen, falsch ausgerichtete Antennen oder zu große Entfernung.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Paketverlustrate (%):</strong> Anteil der verlorenen Pakete an allen Übertragungen. Eine Rate unter 2 % gewährleistet eine zuverlässige Echtzeittelemetrie.</p>
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; WARNUNG VOR DEM FLUG</div>
+    <div>Starten Sie nicht, wenn auf der Rampe ein erheblicher Paketverlust auftritt. Ein hoher Verlust deutet auf Funkstörungen, falsch ausgerichtete Antennen oder eine unzureichende Stromversorgung des Funkmoduls hin.</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Konfiguration des eByte-LoRa-E220-Moduls</h1>
+
+<p>Für Telemetrie mit großer Reichweite müssen Sie Ihr Bluetooth-Modul durch ein Langstrecken-Telemetriemodul wie das LoRa E220 ersetzen.</p>
+
+<h3>Erfolgreich getestete Module</h3>
+<ul>
+    <li>E220-400T30D</li>
+    <li>E220-400T30S</li>
+    <li>E220-900T30D</li>
+    <li>E220-900T30S</li>
+    <li>E220-400T22D</li>
+    <li>E220-900T22S</li>
+</ul>
+
+<p>
+    <img src="file:///android_asset/help/images/E220-900T22S.jpg" alt="LoRa-E220-SMD-Modul"/>
+    <img src="file:///android_asset/help/images/E220-900T30D.jpg" alt="LoRa-E220-DIP-Modul"/>
+</p>
+
+<div class="info-box">
+    <strong>Hinweis zur Stromversorgung:</strong> Der Akku Ihres Android-Geräts muss stark genug sein, um das LoRa-Modul zu versorgen. Verwenden Sie bei einem leistungsstarken Modul (z. B. 30 dBm / 1 W) gegebenenfalls einen externen Akku oder einen USB-Hub mit eigener Stromversorgung.
+</div>
+
+<h2>Benötigte Hardware</h2>
+<ul>
+    <li>Ein USB-TTL-Seriell-Adapterkabel.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="TTL-Kabel"/>
+    </li>
+    <li>Ein USB-Adapter (USB-C oder Micro-USB, je nach Android-Gerät).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB-Adapter"/>
+    </li>
+    <li>Ein JST-Adapter und passende JST-Verbindungskabel.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; KRITISCH: HARDWARE-JUMPER (M0 / M1)</div>
+    <div>Um in den Konfigurationsmodus zu gelangen, müssen Sie <strong>beide Jumper</strong> setzen (M0 und M1 auf HIGH). Achten Sie vor dem Einsatz im Flug darauf, <strong>beide Jumper zu entfernen</strong>, um den Konfigurationsmodus zu verlassen und zur normalen Übertragung zurückzukehren.</div>
+</div>
+
+<h2>Abgleich der Baudrate</h2>
+<p>Sie müssen das Modul so konfigurieren, dass es mit Ihrer Höhenmesserplatine funktioniert. Diese Module sind meist ab Werk auf 57600 Baud eingestellt. Ihre Höhenmesserplatine arbeitet jedoch standardmäßig mit 38400 Baud, daher müssen Sie sicherstellen, dass Sie mit der richtigen Betriebsgeschwindigkeit verbinden.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ACHTUNG</div>
+    <div>Ziehen Sie das Modul während der Konfiguration nicht ab und trennen Sie es nicht.</div>
+</div>
+
+<h2>Konfigurationsschritte</h2>
+<ol>
+    <li class="step-item">
+        <strong>Hardware vorbereiten:</strong> Setzen Sie beide Jumper auf das Modul. Verbinden Sie das Modul über das USB-TTL-Kabel und den OTG-Adapter mit Ihrem Android-Gerät.
+    </li>
+    <li class="step-item">
+        <strong>Konfiguration abrufen:</strong> Tippen Sie auf <strong>[Konfiguration abrufen]</strong>. Die App versucht, sich mit 9600 Baud mit dem Modul zu verbinden, und lädt dann die Modulkonfiguration, damit Sie sie bearbeiten können.
+    </li>
+    <li class="step-item">
+        <strong>Konfiguration speichern:</strong> Ändern Sie die gewünschten Parameter. Wählen Sie eine mit Ihrer Platine kompatible Baudrate (standardmäßig 38400). Kanäle und Luft-Datenraten müssen bei Sender und Empfänger identisch sein. Wenn Sie einen Verschlüsselungsschlüssel festlegen, prüfen Sie, dass er bei beiden übereinstimmt. Tippen Sie auf <strong>[Konfiguration speichern]</strong>, um die Konfiguration zu schreiben. Tritt ein Fehler auf, wird das Speichern abgebrochen.
+    </li>
+    <li class="step-item">
+        <strong>Rückkehr in den Normalmodus:</strong> Ziehen Sie das Modul ab und denken Sie daran, <strong>beide Jumper zu entfernen</strong>, bevor Sie es in die Rakete oder die Bodenstation einbauen.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Modulpaar:</strong> LoRa-Module werden paarweise geliefert, daher müssen Sie denselben Konfigurationsvorgang für Sender und Empfänger wiederholen.<br/>
+    <em>Hinweis: LoRa-Telemetriemodule funktionieren derzeit nicht mit ESP32-Platinen.</em>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .setting-item { margin-bottom: 12px; }
+        .setting-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Definições da aplicação Bear Console</h1>
+
+<p>As definições da aplicação estão organizadas em dois separadores: <strong>Geral</strong> e <strong>Telemetria</strong>.</p>
+
+<h2>1. Definições gerais</h2>
+<div class="setting-item">
+    <p><strong>Idioma da aplicação:</strong> Mostra o idioma selecionado (por omissão, segue automaticamente o idioma do sistema Android).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Cor do gráfico:</strong> Define a cor da linha das curvas de voo (altitude, aceleração, velocidade).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Unidades da aplicação:</strong> Alterna entre unidades métricas (metros, m/s) e imperiais (pés, ft/s).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Cor de fundo do gráfico:</strong> Define a cor de fundo da vista do gráfico. <em>Garanta um contraste suficiente com a cor da linha!</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Tamanho da letra:</strong> Ajusta o tamanho do texto nos gráficos e nos ecrãs da consola.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Velocidade (baud):</strong> Define a velocidade de comunicação para ligações diretas por cabo USB OTG (tem de corresponder à velocidade série do altímetro, normalmente 38400).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Tipo de ligação:</strong> Permite escolher entre <strong>Bluetooth</strong> (curto alcance) ou <strong>USB</strong> (cabo direto ou transcetores rádio LoRa/3DR de longo alcance).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Biblioteca gráfica:</strong> Permite alternar entre motores de apresentação. <em>Nota: os dispositivos com Android 8.0 ou superior têm de usar a biblioteca <strong>MPAndroidChart</strong> para evitar falhas da aplicação.</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Vários principais / drogue:</strong> Permite definir mais do que uma saída pirotécnica como abertura do paraquedas principal ou do drogue.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; AVISO DE CONFIGURAÇÃO USB</div>
+    <div><strong>Suporte USB completo:</strong> Ative apenas quando estiver ligado diretamente à placa do altímetro com um cabo USB-TTL. <strong>Mantenha desativado</strong> ao usar módulos de telemetria sem fios de longo alcance (LoRa / 3DR), para evitar corromper a configuração da EEPROM.</div>
+</div>
+
+<h2>2. Definições de telemetria</h2>
+<div class="setting-item">
+    <p><strong>Eventos sonoros:</strong> Seleciona os eventos de voo anunciados por voz em tempo real (p. ex. descolagem, apogeu, abertura do principal, altitude).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Voz da síntese de fala:</strong> Seleciona a voz de síntese de fala (TTS) usada nos anúncios.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Teste de voz:</strong> Toque em <strong>[Testar voz]</strong> para verificar o volume e a clareza da voz sintetizada.</p>
+</div>
+
+<h2>Guardar as alterações</h2>
+<p>Toque em <strong>[Salvar]</strong> para aplicar e guardar os novos parâmetros. Também pode sair sem guardar ou repor as predefinições de fábrica através das opções de menu correspondentes.</p>
+
+</body>
+</html>

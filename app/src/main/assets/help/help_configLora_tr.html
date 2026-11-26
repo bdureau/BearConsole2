@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>eByte LoRa E220 Modülü Yapılandırması</h1>
+
+<p>Uzun menzilli telemetri yapmak için Bluetooth modülünüzü LoRa E220 gibi uzun menzilli bir telemetri modülüyle değiştirmeniz gerekir.</p>
+
+<h3>Başarıyla Test Edilen Modüller</h3>
+<ul>
+    <li>E220-400T30D</li>
+    <li>E220-400T30S</li>
+    <li>E220-900T30D</li>
+    <li>E220-900T30S</li>
+    <li>E220-400T22D</li>
+    <li>E220-900T22S</li>
+</ul>
+
+<p>
+    <img src="file:///android_asset/help/images/E220-900T22S.jpg" alt="LoRa E220 SMD modülü"/>
+    <img src="file:///android_asset/help/images/E220-900T30D.jpg" alt="LoRa E220 DIP modülü"/>
+</p>
+
+<div class="info-box">
+    <strong>Güç Notu:</strong> Android cihazınızın pilinin LoRa modülünü besleyecek kadar güçlü olması gerektiğini unutmayın. Güçlü bir modülünüz varsa (30dBm / 1W modeller gibi) harici bir pil veya beslemeli bir USB hub kullanmayı düşünün.
+</div>
+
+<h2>Gerekli Donanım</h2>
+<ul>
+    <li>Bir USB-TTL seri adaptör kablosu.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="TTL kablosu"/>
+    </li>
+    <li>Bir USB adaptörü (Android cihazınıza göre USB-C veya Micro-USB).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB adaptörü"/>
+    </li>
+    <li>Bir JST adaptörü ve uygun JST bağlantı kabloları.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; KRİTİK: DONANIM JUMPERLARI (M0 / M1)</div>
+    <div>Yapılandırma moduna girmek için şunları takmanız gerekir: <strong>her iki jumper</strong> (M0 ve M1 HIGH konumunda). Uçuşta kullanmadan önce şunu yaptığınızdan emin olun: <strong>her iki jumperı çıkarın</strong>; böylece yapılandırma modundan çıkılır ve normal iletime dönülür.</div>
+</div>
+
+<h2>Baud Hızı Uyumu</h2>
+<p>Modülü altimetre kartınızla çalışacak şekilde yapılandırmanız gerekir. Bu modüller genellikle 57600 baud'da çalışacak şekilde ayarlı gelir. Ancak altimetre kartınız varsayılan olarak 38400 baud'da çalışır, bu nedenle doğru çalışma hızında bağlandığınızdan emin olmalısınız.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; DİKKAT</div>
+    <div>Yapılandırma adımları sırasında modülü çıkarmadığınızdan veya bağlantısını kesmediğinizden emin olun.</div>
+</div>
+
+<h2>Yapılandırma Adımları</h2>
+<ol>
+    <li class="step-item">
+        <strong>Donanım Kurulumu:</strong> Her iki jumperı modüle takın. Modülü USB-TTL kablosu ve OTG adaptörüyle Android cihazınıza bağlayın.
+    </li>
+    <li class="step-item">
+        <strong>Yapılandırmayı Okuma:</strong> Dokunun: <strong>[Yapılandırmayı Al]</strong>. Bu işlem modüle 9600 baud ile bağlanmayı dener. Ardından düzenleyebilmeniz için modülün yapılandırmasını yükler.
+    </li>
+    <li class="step-item">
+        <strong>Yapılandırmayı Kaydetme:</strong> Değiştirmek istediğiniz parametreleri değiştirin. Kartınızla uyumlu bir baud hızı seçtiğinizden emin olun (varsayılan 38400). Kanalların ve hava hızlarının verici ile alıcıda aynı olduğundan emin olun. Bir şifreleme anahtarı belirlerseniz her ikisinde de aynı olduğunu doğrulayın. Dokunun: <strong>[Yapılandırmayı Kaydet]</strong> ile yapılandırmayı yazın. Bir hata oluşursa kaydetme işlemi iptal edilir.
+    </li>
+    <li class="step-item">
+        <strong>Normal Moda Dönüş:</strong> Modülü çıkarın ve <strong>her iki jumperı çıkarın</strong>; ardından rokete veya yer istasyonuna takın.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Çift Kurulum:</strong> LoRa modülleri çift olarak gelir; bu nedenle aynı yapılandırma prosedürünü hem verici hem de alıcı için tekrarlamanız gerekir.<br/>
+    <em>Not: LoRa telemetri modülleri şu anda ESP32 kartlarıyla çalışmamaktadır.</em>
+</div>
+
+</body>
+</html>

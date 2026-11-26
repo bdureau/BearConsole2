@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .param-item { margin-bottom: 12px; }
+        .param-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Configurar o altímetro</h1>
+
+<p>A configuração do altímetro pode ocupar até 4 ecrãs, conforme o modelo ligado. Ao abrir estes ecrãs, a aplicação liga-se ao altímetro e lê a configuração guardada na memória interna.</p>
+
+<div class="info-box">
+    <strong>Estado da ligação:</strong> Antes de alterar parâmetros, certifique-se de que o altímetro está ligado e conectado por Bluetooth ou USB.
+</div>
+
+<h2>Saídas do altímetro</h2>
+<p>Cada canal de saída pode ser configurado e atribuído a uma função específica acionada por um evento:</p>
+<ul>
+    <li><strong>Descolagem:</strong> Dispara imediatamente na descolagem.</li>
+    <li><strong>Temporizador:</strong> Dispara X milissegundos após a descolagem.</li>
+    <li><strong>Altitude:</strong> Dispara no limiar de altitude indicado.</li>
+    <li><strong>Apogeu:</strong> Dispara no apogeu detetado (altitude máxima).</li>
+    <li><strong>Principal:</strong> Dispara X metros antes da aterragem para a recuperação com o paraquedas principal.</li>
+    <li><strong>Aterragem:</strong> Dispara ao tocar no solo.</li>
+</ul>
+<p><em>Nota: cada evento também pode ser configurado com um atraso adicional em milissegundos.</em></p>
+
+<h2>Definições do altímetro (página 1)</h2>
+<div class="param-item">
+    <p><strong>Velocidade (baud):</strong> Define a velocidade da porta de comunicação (requer reinício).</p>
+</div>
+<div class="param-item">
+    <p><strong>Medidas de apogeu:</strong> Número de amostras descendentes consecutivas necessárias para confirmar o apogeu.</p>
+</div>
+<div class="param-item">
+    <p><strong>Resolução do altímetro:</strong> Resolução de amostragem do sensor.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; ATENÇÃO</div>
+    <div>Alterar a resolução pode reduzir o número total de medidas do voo. Não a reduza se a unidade comandar a abertura do paraquedas principal.</div>
+</div>
+<div class="param-item">
+    <p><strong>Tamanho da EEPROM:</strong> Define a capacidade da memória flash interna.</p>
+</div>
+<div class="param-item">
+    <p><strong>Sinal sonoro LIGADO / DESLIGADO:</strong> Liga ou desliga o sinal sonoro de continuidade.</p>
+</div>
+<div class="param-item">
+    <p><strong>Altitude de fim de gravação:</strong> Limiar de altitude abaixo do qual a gravação do voo termina.</p>
+</div>
+<div class="param-item">
+    <p><strong>Gravar temperatura:</strong> Ativa ou desativa a gravação da temperatura interna.</p>
+</div>
+<div class="param-item">
+    <p><strong>Atraso supersónico:</strong> Ignora as anomalias de pressão causadas pelas ondas de choque nos primeiros segundos de um voo rápido.</p>
+</div>
+<div class="param-item">
+    <p><strong>Altitude de descolagem:</strong> Limiar de altitude que confirma que o lançamento ocorreu.</p>
+</div>
+<div class="param-item">
+    <p><strong>Tipo de bateria:</strong> Define a química da bateria para configurar os limiares de alarme de tensão baixa.</p>
+</div>
+
+<h2>Definições do altímetro (página 2)</h2>
+<p>Permite configurar as unidades de medida (métricas/imperiais), os modos do sinal de continuidade e a frequência do sinal sonoro.</p>
+
+<h2>Configuração dos servos (página 3)</h2>
+<p>Disponível apenas com placas <strong>AltiServo</strong>. Permite definir as posições inicial, neutra e de abertura de cada servo.</p>
+
+</body>
+</html>

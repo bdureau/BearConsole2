@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .metric-item { margin-bottom: 12px; }
+        .metric-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Ajuda do teste de ligação</h1>
+
+<p>Este ecrã permite testar a fiabilidade da ligação, em especial com os módulos de telemetria 3DR. Mostra o número de pacotes de dados perdidos devido a fraca qualidade do sinal ou a uma má ligação.</p>
+
+<div class="info-box">
+    <strong>Recomendação:</strong> Verifique a ligação na rampa antes do voo, para garantir que o rádio de telemetria funciona com uma margem suficiente.
+</div>
+
+<h2>Indicadores de ligação monitorizados</h2>
+<div class="metric-item">
+    <p><strong>Pacotes enviados / recebidos:</strong> Número total de tramas de teste transmitidas pela ligação de telemetria ativa.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Pacotes perdidos:</strong> Número de tramas perdidas ou não confirmadas devido a interferências de RF, antenas mal alinhadas ou distância excessiva.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Taxa de perda de pacotes (%):</strong> Percentagem de pacotes perdidos em relação ao total de transmissões. Uma taxa inferior a 2% garante uma telemetria fiável em tempo real.</p>
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; AVISO ANTES DO VOO</div>
+    <div>Não lance o foguete se ocorrer uma perda de pacotes significativa na rampa. Uma perda elevada indica interferências de RF, antenas mal alinhadas ou alimentação insuficiente do transcetor.</div>
+</div>
+
+</body>
+</html>

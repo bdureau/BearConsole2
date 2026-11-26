@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .setting-item { margin-bottom: 12px; }
+        .setting-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Ustawienia aplikacji Bear Console</h1>
+
+<p>Ustawienia aplikacji są podzielone na dwie karty: <strong>Ogólne</strong> i <strong>Telemetria</strong>.</p>
+
+<h2>1. Ustawienia ogólne</h2>
+<div class="setting-item">
+    <p><strong>Język aplikacji:</strong> Pokazuje wybrany język (domyślnie automatycznie odpowiada językowi systemu Android).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Kolor wykresu:</strong> Ustawia kolor linii krzywych lotu (wysokość, przyspieszenie, prędkość).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Jednostki aplikacji:</strong> Przełącza między jednostkami metrycznymi (metry, m/s) i imperialnymi (stopy, ft/s).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Kolor tła wykresu:</strong> Ustawia kolor tła widoku wykresu. <em>Zadbaj o wystarczający kontrast z kolorem linii!</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Rozmiar czcionki:</strong> Dostosowuje rozmiar tekstu na wykresach i ekranach konsoli.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Prędkość transmisji:</strong> Ustawia prędkość komunikacji przy bezpośrednim połączeniu kablem USB OTG (musi odpowiadać prędkości portu szeregowego wysokościomierza, zwykle 38400).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Typ połączenia:</strong> Wybór między <strong>Bluetooth</strong> (krótki zasięg) a <strong>USB</strong> (kabel bezpośredni lub radiowe moduły LoRa/3DR dalekiego zasięgu).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Biblioteka graficzna:</strong> Pozwala przełączać silniki wyświetlania. <em>Uwaga: na urządzeniach z Androidem 8.0 lub nowszym trzeba używać biblioteki <strong>MPAndroidChart</strong>, aby uniknąć awarii aplikacji.</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Wiele spadochronów głównych / hamujących:</strong> Pozwala przypisać więcej niż jedno wyjście pirotechniczne do otwarcia spadochronu głównego lub hamującego.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; OSTRZEŻENIE DOTYCZĄCE USB</div>
+    <div><strong>Pełna obsługa USB:</strong> Włączaj tylko przy bezpośrednim połączeniu z płytką wysokościomierza kablem USB-TTL. <strong>Pozostaw wyłączone</strong> przy korzystaniu z bezprzewodowych modułów telemetrii dalekiego zasięgu (LoRa / 3DR), aby nie uszkodzić konfiguracji w EEPROM.</div>
+</div>
+
+<h2>2. Ustawienia telemetrii</h2>
+<div class="setting-item">
+    <p><strong>Zdarzenia dźwiękowe:</strong> Wybiera, które zdarzenia lotu są zapowiadane głosowo w czasie rzeczywistym (np. start, apogeum, otwarcie głównego, wysokość).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Głos syntezy mowy:</strong> Wybiera głos syntezy mowy (TTS) używany do komunikatów.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Test głosu:</strong> Dotknij <strong>[Testuj głos]</strong>, aby sprawdzić głośność i wyrazistość syntezowanego głosu.</p>
+</div>
+
+<h2>Zapisywanie zmian</h2>
+<p>Dotknij <strong>[Zapisz]</strong>, aby zastosować i zachować nowe parametry. Możesz też wyjść bez zapisywania lub przywrócić ustawienia fabryczne za pomocą odpowiednich opcji menu.</p>
+
+</body>
+</html>

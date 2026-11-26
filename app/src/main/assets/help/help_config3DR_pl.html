@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Konfiguracja modułu 3DR</h1>
+
+<p>Aby korzystać z telemetrii dalekiego zasięgu, musisz zastąpić moduł Bluetooth modułem telemetrycznym 3DR.</p>
+
+<p><img src="file:///android_asset/help/images/3DR_module-small.png" alt="Moduł 3DR"/></p>
+
+<div class="info-box">
+    <strong>Uwaga dotycząca zasilania:</strong> Bateria urządzenia z Androidem musi być wystarczająco mocna, aby zasilić moduł 3DR. Przy module dużej mocy rozważ użycie zewnętrznej baterii.
+</div>
+
+<h2>Potrzebny sprzęt</h2>
+<ul>
+    <li>Kabel adaptera szeregowego USB–TTL.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Kabel TTL"/>
+    </li>
+    <li>Adapter USB (USB-C lub Micro-USB, zależnie od urządzenia z Androidem).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adapter USB"/>
+    </li>
+    <li>Adapter JST i pasujące kable JST.</li>
+</ul>
+
+<h2>Zgodność prędkości transmisji</h2>
+<p>Musisz skonfigurować moduł tak, aby współpracował z płytką wysokościomierza. Moduły te zwykle są fabrycznie ustawione na 57600 bodów. Płytka wysokościomierza domyślnie pracuje jednak z prędkością 38400 bodów, więc upewnij się, że łączysz się z właściwą prędkością.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; OSTRZEŻENIE</div>
+    <div>Nie odłączaj modułu podczas konfiguracji, aby nie uszkodzić pamięci.</div>
+</div>
+
+<h2>Kroki konfiguracji</h2>
+<ol>
+    <li class="step-item">
+        <strong>Odczyt konfiguracji:</strong> Podłącz moduł do urządzenia z Androidem kablem OTG lub adapterem USB. Dotknij <strong>[Pobierz konfigurację]</strong>. Aplikacja będzie próbować różnych prędkości transmisji aż do połączenia, a następnie wczyta konfigurację modułu.
+    </li>
+    <li class="step-item">
+        <strong>Zapis konfiguracji:</strong> Zmień wybrane parametry. Wybierz prędkość transmisji zgodną z płytką (38400 bodów) i dotknij <strong>[Zapisz konfigurację]</strong>. Jeśli podczas zapisu wystąpi błąd, proces zostanie bezpiecznie przerwany.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Moduły w parach:</strong> Moduły 3DR są sprzedawane w parach, więc te same kroki musisz powtórzyć dla modułu nadajnika i odbiornika.
+</div>
+
+</body>
+</html>

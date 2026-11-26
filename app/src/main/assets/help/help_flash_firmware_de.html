@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .hardware-item { margin-bottom: 12px; }
+        .step-item { margin-bottom: 10px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Firmware flashen</h1>
+
+<p>Zuerst müssen Sie die Firmware auswählen. Die Firmware hängt vom Höhenmessermodell ab, das Sie flashen möchten.</p>
+<p>Entscheiden Sie dann, ob Sie direkt die Betriebsfirmware flashen oder zuerst eine Wiederherstellungsfirmware verwenden.</p>
+
+<div class="info-box">
+    <strong>Wiederherstellungsfirmware:</strong> Verwenden Sie eine Wiederherstellungsfirmware, wenn die Konfiguration beschädigt ist und sich der Höhenmesser nicht mehr verbinden kann. Nach dem Laden einer Wiederherstellungsfirmware müssen Sie die Betriebsfirmware erneut flashen.
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ACHTUNG</div>
+    <div>Das Flashen der falschen Firmware führt dazu, dass der Höhenmesser gar nicht oder nicht wie erwartet funktioniert.</div>
+</div>
+
+<h2>Benötigte Hardware</h2>
+<ul>
+    <li>Ein USB-TTL-Seriellkabel zum Anschluss an Ihr Telefon/Tablet.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="USB-TTL-Kabel"/>
+    </li>
+    <li>Ein USB-OTG-Adapter (USB-C oder Micro-USB, je nach Android-Gerät).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB-Adapter"/>
+    </li>
+    <li>Passende JST-Verbindungskabel.</li>
+</ul>
+
+<h2>Unterstützte Höhenmesser</h2>
+<p>Bitte sehen Sie sich die folgenden Bilder genau an, um Ihre Hardware zu bestimmen:</p>
+
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (große Ausführung)</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiV2</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMultiV2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiSTM32 oder AltiGPS</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMultiSTM32 / AltiGPS"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiESP32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMultiESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
+
+<h2>Anleitung zum Flashen des Mikrocontrollers</h2>
+<p>Alternativ können Sie versuchen, die Firmware automatisch zu erkennen.</p>
+
+<h3>1. Höhenmesser mit ATmega328 (z. B. AltiDuo, AltiServo, AltiMulti, AltiMultiV2)</h3>
+<ul>
+    <li>Schließen Sie das USB-TTL-Kabel an den Höhenmesser an.</li>
+    <li>Wählen Sie die richtige Firmware oder lassen Sie sie automatisch erkennen.</li>
+    <li>Drücken Sie kurz die Taste <strong>reset</strong> am Höhenmesser und tippen Sie dann auf <strong>[Firmware flashen]</strong>.</li>
+</ul>
+<p><img src="file:///android_asset/help/images/alti-reset.jpg" alt="Reset-Taste des ATmega328"/></p>
+
+<h3>2. Höhenmesser mit STM32 (z. B. AltiMultiSTM32, AltiGPS)</h3>
+<ul>
+    <li>Schließen Sie das USB-TTL-Kabel an.</li>
+    <li>Wählen Sie die richtige Firmware oder lassen Sie sie automatisch erkennen.</li>
+    <li>Setzen Sie den Jumper <strong>BOOT0</strong> nach rechts (Programmierposition):</li>
+</ul>
+<p><img src="file:///android_asset/help/images/stm32-prog2-small.jpg" alt="STM32 BOOT0 rechts"/></p>
+<ul>
+    <li>Drücken Sie die Taste <strong>reset</strong> auf der Platine.</li>
+    <li>Tippen Sie auf <strong>[Firmware flashen]</strong>.</li>
+    <li>Die Firmware sollte jetzt geladen werden. Setzen Sie danach den Jumper <strong>BOOT0</strong> wieder nach links (Betriebsposition):</li>
+</ul>
+<p><img src="file:///android_asset/help/images/stm32-prog1-small.jpg" alt="STM32 BOOT0 links"/></p>
+<ul>
+    <li>Drücken Sie die Taste <strong>reset</strong>, um den Höhenmesser im Normalmodus neu zu starten.</li>
+</ul>
+
+<h3>3. Höhenmesser mit ESP32 (z. B. AltiMultiESP32 und die AltiMultiESP32Accel-Varianten)</h3>
+<ul>
+    <li>Schließen Sie das Kabel an.</li>
+    <li>Wählen Sie die richtige Firmware oder lassen Sie sie automatisch erkennen.</li>
+    <li>Drücken und halten Sie auf der Platine die Taste <strong>BOOT</strong>.</li>
+    <li>Drücken Sie die Taste <strong>RESET</strong> und lassen Sie sie los, während Sie die BOOT-Taste weiter gedrückt halten.</li>
+    <li>Lassen Sie die Taste <strong>BOOT</strong> los:</li>
+</ul>
+<p><img src="file:///android_asset/help/images/esp32-altimulti-button-small.jpg" alt="ESP32-Tasten"/></p>
+<ul>
+    <li>Tippen Sie auf <strong>[Firmware flashen]</strong>.</li>
+    <li>Die Firmware sollte jetzt geladen werden (bei einem Fehler erneut versuchen). Drücken Sie danach die Taste <strong>reset</strong>.</li>
+</ul>
+
+<h3>4. TTGO BearAltimeter</h3>
+<ul>
+    <li>Schließen Sie das USB-C-Kabel direkt an.</li>
+    <li>Wählen Sie die Firmware TTGO BearAltimeter.</li>
+    <li>Tippen Sie auf <strong>[Firmware flashen]</strong>. Drücken Sie danach die Taste <strong>reset</strong>.</li>
+</ul>
+
+<h3>5. TTGO Mini, Simple Altimeter &amp; TS-ESP32-S3</h3>
+<ul>
+    <li>Schließen Sie das USB-C-Kabel an.</li>
+    <li>Drücken und halten Sie die Taste <strong>BOOT</strong> auf der Platine.</li>
+    <li>Drücken Sie kurz die Taste <strong>RESET</strong>, während Sie die BOOT-Taste weiter gedrückt halten.</li>
+    <li>Lassen Sie die Taste <strong>BOOT</strong> los und wählen Sie das richtige Höhenmessermodell.</li>
+    <li>Tippen Sie auf <strong>[Firmware flashen]</strong>. Drücken Sie danach die Taste <strong>reset</strong>.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; WICHTIGER HINWEIS</div>
+    <div>Trennen Sie das Kabel niemals während des Flashens. Andernfalls wird das Firmware-Abbild beschädigt und muss vollständig neu geflasht werden.</div>
+</div>
+
+</body>
+</html>

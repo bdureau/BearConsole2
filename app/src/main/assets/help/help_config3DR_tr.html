@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>3DR Modülü Yapılandırması</h1>
+
+<p>Uzun menzilli telemetri yapmak için Bluetooth modülünüzü bir 3DR telemetri modülüyle değiştirmeniz gerekir.</p>
+
+<p><img src="file:///android_asset/help/images/3DR_module-small.png" alt="3DR modülü"/></p>
+
+<div class="info-box">
+    <strong>Güç Notu:</strong> Android cihazınızın pilinin 3DR modülünü besleyecek kadar güçlü olması gerektiğini unutmayın. Güçlü bir modülünüz varsa harici bir pil kullanmayı düşünün.
+</div>
+
+<h2>Gerekli Donanım</h2>
+<ul>
+    <li>Bir USB-TTL seri adaptör kablosu.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="TTL kablosu"/>
+    </li>
+    <li>Bir USB adaptörü (Android cihazınıza göre USB-C veya Micro-USB).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB adaptörü"/>
+    </li>
+    <li>Bir JST adaptörü ve uygun JST kabloları.</li>
+</ul>
+
+<h2>Baud Hızı Uyumluluğu</h2>
+<p>Modülü altimetre kartınızla çalışacak şekilde yapılandırmanız gerekir. Bu modüller genellikle 57600 baud'da çalışacak şekilde ayarlı gelir. Ancak altimetre kartınız varsayılan olarak 38400 baud'da çalışır, bu nedenle doğru hızda bağlandığınızdan emin olmalısınız.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; DİKKAT</div>
+    <div>Bellek bozulmasını önlemek için yapılandırma adımları sırasında modülü çıkarmadığınızdan veya bağlantısını kesmediğinizden emin olun.</div>
+</div>
+
+<h2>Yapılandırma Adımları</h2>
+<ol>
+    <li class="step-item">
+        <strong>Yapılandırmayı Okuma:</strong> Modülü bir OTG kablosu veya USB adaptörüyle Android cihazınıza takın. Şuna dokunun: <strong>[Yapılandırmayı Al]</strong>. Uygulama bağlanana kadar çeşitli baud hızlarını dener, ardından modülün yapılandırmasını yükler.
+    </li>
+    <li class="step-item">
+        <strong>Yapılandırmayı Kaydetme:</strong> Değiştirmek istediğiniz parametreleri değiştirin. Kartınızla uyumlu bir baud hızı (38400 baud) seçtiğinizden emin olun ve şuna dokunun: <strong>[Yapılandırmayı Kaydet]</strong>. Kaydetme sırasında bir hata oluşursa işlem güvenli bir şekilde iptal edilir.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Çift Modüller:</strong> 3DR modülleri çift olarak gelir; bu nedenle aynı adımları hem verici hem de alıcı modül için tekrarlamalısınız.
+</div>
+
+</body>
+</html>

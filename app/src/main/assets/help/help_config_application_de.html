@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .setting-item { margin-bottom: 12px; }
+        .setting-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Einstellungen der App Bear Console</h1>
+
+<p>Die Einstellungen der App sind auf zwei Registerkarten verteilt: <strong>Allgemein</strong> und <strong>Telemetrie</strong>.</p>
+
+<h2>1. Allgemeine Einstellungen</h2>
+<div class="setting-item">
+    <p><strong>Sprache der App:</strong> Zeigt die gewählte Sprache an (standardmäßig folgt sie automatisch der Systemsprache von Android).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Diagrammfarbe:</strong> Legt die Linienfarbe der Flugkurven fest (Höhe, Beschleunigung, Geschwindigkeit).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Einheiten der App:</strong> Wechselt zwischen metrischen (Meter, m/s) und imperialen (Fuß, ft/s) Einheiten.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Diagramm-Hintergrundfarbe:</strong> Legt die Hintergrundfarbe der Diagrammansicht fest. <em>Achten Sie auf einen ausreichenden Kontrast zur Linienfarbe!</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Schriftgröße:</strong> Passt die Textgröße in Diagrammen und Konsolenanzeigen an.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Baudrate:</strong> Legt die Kommunikationsgeschwindigkeit für direkte USB-OTG-Kabelverbindungen fest (muss der seriellen Baudrate des Höhenmessers entsprechen, meist 38400).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Verbindungsart:</strong> Auswahl zwischen <strong>Bluetooth</strong> (kurze Reichweite) oder <strong>USB</strong> (direktes Kabel oder LoRa/3DR-Funkmodule mit großer Reichweite).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Grafikbibliothek:</strong> Ermöglicht den Wechsel zwischen Darstellungs-Engines. <em>Hinweis: Geräte mit Android 8.0 oder neuer müssen die Bibliothek <strong>MPAndroidChart</strong> verwenden, um Abstürze der App zu vermeiden.</em></p>
+</div>
+<div class="setting-item">
+    <p><strong>Mehrere Haupt-/Bremsschirme:</strong> Ermöglicht es, mehr als einen pyrotechnischen Ausgang als Auslösung von Haupt- oder Bremsschirm festzulegen.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; WARNUNG ZUR USB-KONFIGURATION</div>
+    <div><strong>Volle USB-Unterstützung:</strong> Nur aktivieren, wenn die Höhenmesserplatine direkt über ein USB-TTL-Kabel angeschlossen ist. <strong>Deaktiviert lassen</strong>, wenn Sie drahtlose Langstrecken-Telemetriemodule (LoRa / 3DR) verwenden, um eine Beschädigung der EEPROM-Konfiguration zu vermeiden.</div>
+</div>
+
+<h2>2. Telemetrie-Einstellungen</h2>
+<div class="setting-item">
+    <p><strong>Akustische Ereignisse:</strong> Wählt aus, welche Flugereignisse in Echtzeit angesagt werden (z. B. Abheben, Gipfelpunkt, Hauptschirm, Höhe).</p>
+</div>
+<div class="setting-item">
+    <p><strong>Stimme der Sprachausgabe:</strong> Wählt die Text-to-Speech-Stimme (TTS) für die Ansagen aus.</p>
+</div>
+<div class="setting-item">
+    <p><strong>Stimmtest:</strong> Tippen Sie auf <strong>[Sprache testen]</strong>, um Lautstärke und Verständlichkeit der synthetischen Stimme zu prüfen.</p>
+</div>
+
+<h2>Änderungen speichern</h2>
+<p>Tippen Sie auf <strong>[Speichern]</strong>, um Ihre neuen Parameter zu übernehmen und zu speichern. Über die entsprechenden Menüpunkte können Sie auch ohne Speichern beenden oder auf die Werkseinstellungen zurücksetzen.</p>
+
+</body>
+</html>

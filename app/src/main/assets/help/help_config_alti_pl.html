@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .param-item { margin-bottom: 12px; }
+        .param-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Konfiguracja wysokościomierza</h1>
+
+<p>Konfiguracja wysokościomierza może obejmować do 4 ekranów, zależnie od podłączonego modelu. Po otwarciu tych ekranów aplikacja łączy się z wysokościomierzem i odczytuje konfigurację zapisaną w jego pamięci.</p>
+
+<div class="info-box">
+    <strong>Stan połączenia:</strong> Przed zmianą parametrów upewnij się, że wysokościomierz jest włączony i połączony przez Bluetooth lub USB.
+</div>
+
+<h2>Wyjścia wysokościomierza</h2>
+<p>Każdy kanał wyjściowy można skonfigurować i przypisać do określonej funkcji wyzwalanej zdarzeniem:</p>
+<ul>
+    <li><strong>Start:</strong> Odpala natychmiast przy starcie.</li>
+    <li><strong>Zegar:</strong> Odpala X milisekund po starcie.</li>
+    <li><strong>Wysokość:</strong> Odpala po osiągnięciu zadanego progu wysokości.</li>
+    <li><strong>Apogeum:</strong> Odpala w wykrytym apogeum (maksymalna wysokość).</li>
+    <li><strong>Główny:</strong> Odpala X metrów przed lądowaniem, aby otworzyć spadochron główny.</li>
+    <li><strong>Lądowanie:</strong> Odpala w momencie przyziemienia.</li>
+</ul>
+<p><em>Uwaga: dla każdego zdarzenia można też ustawić dodatkowe opóźnienie w milisekundach.</em></p>
+
+<h2>Ustawienia wysokościomierza (strona 1)</h2>
+<div class="param-item">
+    <p><strong>Prędkość transmisji:</strong> Ustawia prędkość portu komunikacyjnego (wymaga ponownego uruchomienia).</p>
+</div>
+<div class="param-item">
+    <p><strong>Pomiary apogeum:</strong> Liczba kolejnych malejących próbek potrzebnych do potwierdzenia apogeum.</p>
+</div>
+<div class="param-item">
+    <p><strong>Rozdzielczość wysokościomierza:</strong> Rozdzielczość próbkowania czujnika.</p>
+</div>
+<div class="warning-box">
+    <div class="warning-title">&#9888; OSTRZEŻENIE</div>
+    <div>Zmiana rozdzielczości może zmniejszyć łączną liczbę pomiarów lotu. Nie obniżaj jej, jeśli urządzenie otwiera spadochron główny.</div>
+</div>
+<div class="param-item">
+    <p><strong>Rozmiar EEPROM:</strong> Określa pojemność wbudowanej pamięci flash.</p>
+</div>
+<div class="param-item">
+    <p><strong>Sygnał dźwiękowy WŁ. / WYŁ.:</strong> Włącza lub wyłącza dźwiękowy sygnał ciągłości.</p>
+</div>
+<div class="param-item">
+    <p><strong>Wysokość końca zapisu:</strong> Próg wysokości, poniżej którego zapis lotu się kończy.</p>
+</div>
+<div class="param-item">
+    <p><strong>Zapis temperatury:</strong> Włącza lub wyłącza zapis temperatury z czujnika pokładowego.</p>
+</div>
+<div class="param-item">
+    <p><strong>Opóźnienie naddźwiękowe:</strong> Ignoruje anomalie ciśnienia wywołane falami uderzeniowymi w pierwszych sekundach szybkiego lotu.</p>
+</div>
+<div class="param-item">
+    <p><strong>Wysokość startu:</strong> Próg wysokości potwierdzający, że start nastąpił.</p>
+</div>
+<div class="param-item">
+    <p><strong>Typ baterii:</strong> Określa rodzaj ogniw, aby ustawić progi alarmu niskiego napięcia.</p>
+</div>
+
+<h2>Ustawienia wysokościomierza (strona 2)</h2>
+<p>Pozwala ustawić jednostki miary (metryczne/imperialne), tryby sygnału ciągłości i częstotliwość dźwięku.</p>
+
+<h2>Konfiguracja serw (strona 3)</h2>
+<p>Dostępne tylko po połączeniu z płytkami <strong>AltiServo</strong>. Pozwala określić pozycję początkową, neutralną i wyzwoloną każdego serwa.</p>
+
+</body>
+</html>

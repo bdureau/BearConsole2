@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Bluetooth Modülü Yapılandırması</h1>
+
+<p>Altimetrenizi Bluetooth ile Android akıllı telefonunuza veya tabletinize bağlamak için modülün altimetre kartıyla aynı iletişim baud hızında çalışması gerekir.</p>
+
+<p>Bu araç, aşağıdaki gibi uyumlu modülleri yapılandırmanıza olanak tanır: <strong>HC-05, HC-06, JDY-30, JDY-31, SPP ve AT-09</strong>.</p>
+
+<p><img src="file:///android_asset/help/images/bluetooth_module.jpg" alt="Bluetooth modülü"/></p>
+
+<h2>Gerekli Donanım</h2>
+<ul>
+    <li>Bir USB-TTL seri adaptör kablosu.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="TTL kablosu"/>
+    </li>
+    <li>Bir OTG USB adaptörü (Android cihazınıza göre USB-C veya Micro-USB).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB adaptörü"/>
+    </li>
+    <li>Bir JST adaptörü ve uygun JST bağlantı kabloları.</li>
+</ul>
+
+<h2>Baud Hızı Uyumu</h2>
+<p>Ticari Bluetooth modüllerinin çoğu şu hızda önceden yapılandırılmış olarak gelir: <strong>9600 baud</strong>. Ancak altimetre uçuş bilgisayarı varsayılan olarak şu hızda iletişim kurar: <strong>38400 baud</strong>. Modülünüzü bu hıza uyacak şekilde yapılandırmalısınız.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; DİKKAT</div>
+    <div>Yazılımın veya kayıtların bozulmasını önlemek için okuma ya da yazma sırasında modülün veya kablonun bağlantısını kesmeyin.</div>
+</div>
+
+<h2>Modül Yapılandırmasını Okuma</h2>
+<ol>
+    <li class="step-item">
+        <strong>Donanım Bağlantısı:</strong> Bluetooth modülünü TTL kablosu ve USB-OTG adaptörüyle Android cihazınıza bağlayın.
+    </li>
+    <li class="step-item">
+        <strong>Modül Türünü Seçin:</strong> Açılır menüden modül türünüzü seçin. Emin değilseniz şunlardan birini seçin: <em>HC-05</em>, <em>HC-06</em>veya <em>Bilinmeyen</em>. Hiçbir profil çalışmazsa modülünüzün net fotoğrafları ve referanslarıyla destek ekibine başvurun.
+    </li>
+    <li class="step-item">
+        <strong>Parametreleri Okuyun:</strong> Dokunun: <strong>[Yapılandırmayı Al]</strong>. Uygulama önce şu hızda iletişim kurmayı dener: <strong>38400 baud</strong>. Yanıt alınamazsa senkronizasyon sağlanana kadar diğer standart baud hızlarını tarar.
+    </li>
+    <li class="step-item">
+        <strong>Ayarları Gözden Geçirin:</strong> Bağlantı kurulduktan sonra mevcut ayarlar (Ad, Baud Hızı, PIN) otomatik olarak yüklenir.
+    </li>
+</ol>
+
+<h2>Yapılandırmayı Kaydetme</h2>
+<ol>
+    <li class="step-item">
+        <strong>Parametreleri Değiştirin:</strong> Parametreleri gerektiği gibi ayarlayın (Modül Adı, PIN ve Baud Hızı). Seçilen baud hızının altimetre kartınızla eşleştiğinden emin olun (genellikle <strong>38400 baud</strong>).
+    </li>
+    <li class="step-item">
+        <strong>Parametreleri Yazın:</strong> Dokunun: <strong>[Yapılandırmayı Kaydet]</strong>. Yapılandırma komutları modüle yazılır. Bir komut hatası algılanırsa işlem güvenli bir şekilde durdurulur.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Not:</strong> Kullanmayı planladığınız diğer her Bluetooth modülü için bu yapılandırma prosedürünü ayrı ayrı tekrarlayın.
+</div>
+
+</body>
+</html>

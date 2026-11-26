@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Configuração do módulo Bluetooth</h1>
+
+<p>Para ligar o altímetro ao smartphone ou tablet Android por Bluetooth, o módulo tem de funcionar à mesma velocidade de comunicação que a placa do altímetro.</p>
+
+<p>Esta ferramenta permite configurar módulos compatíveis, como <strong>HC-05, HC-06, JDY-30, JDY-31, SPP e AT-09</strong>.</p>
+
+<p><img src="file:///android_asset/help/images/bluetooth_module.jpg" alt="Módulo Bluetooth"/></p>
+
+<h2>Material necessário</h2>
+<ul>
+    <li>Um cabo adaptador série USB-TTL.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Cabo TTL"/>
+    </li>
+    <li>Um adaptador USB OTG (USB-C ou Micro-USB, conforme o dispositivo Android).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adaptador USB"/>
+    </li>
+    <li>Um adaptador JST e cabos de ligação JST compatíveis.</li>
+</ul>
+
+<h2>Alinhamento da velocidade (baud)</h2>
+<p>A maioria dos módulos Bluetooth comerciais vem pré-configurada a <strong>9600 baud</strong>. No entanto, o computador de voo do altímetro comunica por omissão a <strong>38400 baud</strong>. Tem de configurar o módulo para esta velocidade.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ATENÇÃO</div>
+    <div>Não desligue o módulo nem o cabo durante a leitura ou a escrita, para evitar corromper o firmware ou os registos.</div>
+</div>
+
+<h2>Ler a configuração do módulo</h2>
+<ol>
+    <li class="step-item">
+        <strong>Ligação do hardware:</strong> Ligue o módulo Bluetooth ao dispositivo Android com o cabo TTL e o adaptador USB-OTG.
+    </li>
+    <li class="step-item">
+        <strong>Selecionar o tipo de módulo:</strong> Selecione o tipo de módulo no menu pendente. Em caso de dúvida, selecione <em>HC-05</em>, <em>HC-06</em>ou <em>Desconhecido</em>. Se nenhum perfil funcionar, contacte o suporte com fotografias nítidas e as referências do módulo.
+    </li>
+    <li class="step-item">
+        <strong>Ler os parâmetros:</strong> Toque em <strong>[Recuperar cfg]</strong>. A aplicação tenta primeiro comunicar a <strong>38400 baud</strong>. Se não houver resposta, percorre as outras velocidades padrão até conseguir a sincronização.
+    </li>
+    <li class="step-item">
+        <strong>Verificar as definições:</strong> Após a ligação, as definições atuais (nome, velocidade, PIN) são carregadas automaticamente.
+    </li>
+</ol>
+
+<h2>Guardar a configuração</h2>
+<ol>
+    <li class="step-item">
+        <strong>Alterar os parâmetros:</strong> Ajuste os parâmetros conforme necessário (nome do módulo, PIN e velocidade). Certifique-se de que a velocidade escolhida corresponde à da placa do altímetro (normalmente <strong>38400 baud</strong>).
+    </li>
+    <li class="step-item">
+        <strong>Escrever os parâmetros:</strong> Toque em <strong>[Salvar Cfg]</strong>. Os comandos de configuração são escritos no módulo. Se for detetado um erro de comando, o processo é interrompido em segurança.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Nota:</strong> Repita este procedimento de configuração individualmente para cada módulo Bluetooth adicional que pretenda utilizar.
+</div>
+
+</body>
+</html>

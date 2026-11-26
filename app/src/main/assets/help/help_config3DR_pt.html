@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Configuração do módulo 3DR</h1>
+
+<p>Para fazer telemetria de longo alcance, terá de substituir o módulo Bluetooth por um módulo de telemetria 3DR.</p>
+
+<p><img src="file:///android_asset/help/images/3DR_module-small.png" alt="Módulo 3DR"/></p>
+
+<div class="info-box">
+    <strong>Nota sobre a alimentação:</strong> A bateria do dispositivo Android tem de ser suficientemente forte para alimentar o módulo 3DR. Se tiver um módulo potente, considere usar uma bateria externa.
+</div>
+
+<h2>Material necessário</h2>
+<ul>
+    <li>Um cabo adaptador série USB-TTL.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Cabo TTL"/>
+    </li>
+    <li>Um adaptador USB (USB-C ou Micro-USB, conforme o dispositivo Android).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adaptador USB"/>
+    </li>
+    <li>Um adaptador JST e cabos JST compatíveis.</li>
+</ul>
+
+<h2>Compatibilidade da velocidade (baud)</h2>
+<p>Terá de configurar o módulo para que funcione com a placa do altímetro. Estes módulos vêm normalmente configurados para 57600 baud. No entanto, a placa do altímetro funciona por omissão a 38400 baud, por isso certifique-se de que se liga à velocidade correta.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; ATENÇÃO</div>
+    <div>Não desligue nem retire o módulo durante a configuração, para evitar corromper a memória.</div>
+</div>
+
+<h2>Passos da configuração</h2>
+<ol>
+    <li class="step-item">
+        <strong>Ler a configuração:</strong> Ligue o módulo ao dispositivo Android com um cabo OTG ou um adaptador USB. Toque em <strong>[Recuperar cfg]</strong>. A aplicação testa várias velocidades até conseguir ligar-se e depois carrega a configuração do módulo.
+    </li>
+    <li class="step-item">
+        <strong>Guardar a configuração:</strong> Altere os parâmetros que pretende modificar. Selecione uma velocidade compatível com a sua placa (38400 baud) e toque em <strong>[Salvar Cfg]</strong>. Se ocorrer um erro durante a gravação, o processo é interrompido em segurança.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Módulos em par:</strong> Os módulos 3DR são vendidos aos pares, por isso deve repetir exatamente estes passos para o módulo emissor e para o recetor.
+</div>
+
+</body>
+</html>

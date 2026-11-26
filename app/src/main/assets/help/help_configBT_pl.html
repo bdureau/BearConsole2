@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .step-item { margin-bottom: 12px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Konfiguracja modułu Bluetooth</h1>
+
+<p>Aby połączyć wysokościomierz ze smartfonem lub tabletem z Androidem przez Bluetooth, moduł musi pracować z tą samą prędkością transmisji co płytka wysokościomierza.</p>
+
+<p>To narzędzie pozwala skonfigurować zgodne moduły, takie jak <strong>HC-05, HC-06, JDY-30, JDY-31, SPP i AT-09</strong>.</p>
+
+<p><img src="file:///android_asset/help/images/bluetooth_module.jpg" alt="Moduł Bluetooth"/></p>
+
+<h2>Potrzebny sprzęt</h2>
+<ul>
+    <li>Kabel adaptera szeregowego USB–TTL.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Kabel TTL"/>
+    </li>
+    <li>Adapter USB OTG (USB-C lub Micro-USB, zależnie od urządzenia z Androidem).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adapter USB"/>
+    </li>
+    <li>Adapter JST i pasujące kable połączeniowe JST.</li>
+</ul>
+
+<h2>Dopasowanie prędkości transmisji</h2>
+<p>Większość dostępnych w sprzedaży modułów Bluetooth jest fabrycznie ustawiona na <strong>9600 bodów</strong>. Komputer pokładowy wysokościomierza komunikuje się jednak domyślnie z prędkością <strong>38400 bodów</strong>. Musisz ustawić moduł na tę prędkość.</p>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; OSTRZEŻENIE</div>
+    <div>Nie odłączaj modułu ani kabla podczas odczytu lub zapisu, aby nie uszkodzić oprogramowania ani rejestrów.</div>
+</div>
+
+<h2>Odczyt konfiguracji modułu</h2>
+<ol>
+    <li class="step-item">
+        <strong>Podłączenie sprzętu:</strong> Podłącz moduł Bluetooth do urządzenia z Androidem za pomocą kabla TTL i adaptera USB-OTG.
+    </li>
+    <li class="step-item">
+        <strong>Wybór typu modułu:</strong> Wybierz typ modułu z listy rozwijanej. W razie wątpliwości wybierz <em>HC-05</em>, <em>HC-06</em>lub <em>Nieznany</em>. Jeśli żaden profil nie działa, skontaktuj się z pomocą techniczną, przesyłając wyraźne zdjęcia i oznaczenia modułu.
+    </li>
+    <li class="step-item">
+        <strong>Odczyt parametrów:</strong> Dotknij <strong>[Pobierz konfigurację]</strong>. Aplikacja najpierw spróbuje komunikacji z prędkością <strong>38400 bodów</strong>. Jeśli nie otrzyma odpowiedzi, sprawdzi kolejne standardowe prędkości, aż do uzyskania synchronizacji.
+    </li>
+    <li class="step-item">
+        <strong>Sprawdzenie ustawień:</strong> Po połączeniu bieżące ustawienia (nazwa, prędkość transmisji, PIN) wczytają się automatycznie.
+    </li>
+</ol>
+
+<h2>Zapis konfiguracji</h2>
+<ol>
+    <li class="step-item">
+        <strong>Zmiana parametrów:</strong> Dostosuj parametry (nazwa modułu, PIN i prędkość transmisji). Upewnij się, że wybrana prędkość odpowiada płytce wysokościomierza (zwykle <strong>38400 bodów</strong>).
+    </li>
+    <li class="step-item">
+        <strong>Zapis parametrów:</strong> Dotknij <strong>[Zapisz konfigurację]</strong>. Polecenia konfiguracyjne zostaną zapisane w module. W razie wykrycia błędu polecenia proces zostanie bezpiecznie zatrzymany.
+    </li>
+</ol>
+
+<div class="info-box">
+    <strong>Uwaga:</strong> Powtórz tę procedurę konfiguracji osobno dla każdego kolejnego modułu Bluetooth, którego zamierzasz używać.
+</div>
+
+</body>
+</html>

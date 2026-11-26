@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .metric-item { margin-bottom: 12px; }
+        .metric-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Bağlantı Testi Yardım Dosyası</h1>
+
+<p>Bu ekran, özellikle 3DR telemetri modülleriyle bağlantı güvenilirliğini test etmenizi sağlar. Zayıf sinyal kalitesi veya kötü bağlantı nedeniyle kaybolan veri paketlerinin sayısını gösterir.</p>
+
+<div class="info-box">
+    <strong>Kullanım Önerisi:</strong> Telemetri telsizinizin yeterli bağlantı payıyla çalıştığından emin olmak için uçuştan önce rampada bir bağlantı kontrolü yapın.
+</div>
+
+<h2>İzlenen Bağlantı Ölçümleri</h2>
+<div class="metric-item">
+    <p><strong>Gönderilen / Alınan Paketler:</strong> Etkin telemetri bağlantısı üzerinden iletilen toplam test veri çerçevesi sayısı.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Kaybolan Paketler:</strong> RF parazit, anten hizasızlığı veya aşırı menzil nedeniyle kaybolan ya da onaylanmayan veri çerçevelerinin sayısı.</p>
+</div>
+<div class="metric-item">
+    <p><strong>Paket Kaybı Oranı (%):</strong> Kaybolan paketlerin toplam iletimlere oranı. %2'nin altındaki bir oran güvenilir gerçek zamanlı telemetri sağlar.</p>
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; UÇUŞ ÖNCESİ UYARI</div>
+    <div>Rampada önemli paket kaybı oluyorsa fırlatmayın. Yüksek kayıp RF parazitini, hizasız antenleri veya alıcı-vericiye yetersiz gücü gösterir.</div>
+</div>
+
+</body>
+</html>

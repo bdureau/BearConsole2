@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        h3 { font-size: 1.05em; color: #37474F; margin-top: 14px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .hardware-item { margin-bottom: 12px; }
+        .step-item { margin-bottom: 10px; }
+        .step-item strong { color: #0277BD; }
+        img { vertical-align: middle; margin: 6px 0; max-width: 100%; height: auto; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Firmware írása</h1>
+
+<p>Először ki kell választania a firmware-t. A firmware attól függ, melyik magasságmérő típust szeretné felprogramozni.</p>
+<p>Ezután döntse el, hogy közvetlenül az üzemi firmware-t tölti fel, vagy előbb egy helyreállító firmware-t használ.</p>
+
+<div class="info-box">
+    <strong>Helyreállító firmware:</strong> Használjon helyreállító firmware-t, ha a konfiguráció sérült, és a magasságmérő már nem tud csatlakozni. A helyreállító firmware betöltése után újra fel kell töltenie az üzemi firmware-t.
+</div>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; FIGYELEM</div>
+    <div>Rossz firmware feltöltése esetén a magasságmérő egyáltalán nem fog működni, vagy nem a várt módon viselkedik.</div>
+</div>
+
+<h2>Szükséges eszközök</h2>
+<ul>
+    <li>USB–TTL soros kábel a telefonhoz/táblagéphez való csatlakozáshoz.<br/>
+        <img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="USB TTL kábel"/>
+    </li>
+    <li>Egy USB OTG adapter (Android eszközétől függően USB-C vagy Micro-USB).<br/>
+        <img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB adapter"/>
+    </li>
+    <li>Hozzá illő JST csatlakozókábelek.</li>
+</ul>
+
+<h2>Támogatott magasságmérők</h2>
+<p>A hardver azonosításához figyelmesen nézze meg az alábbi képeket:</p>
+
+<div class="hardware-item">
+    <p>&bull; <strong>AltiDuo</strong> (nagy változat)</p>
+    <p><img src="file:///android_asset/help/images/altiDuo-small.jpg" alt="AltiDuo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiServo</strong></p>
+    <p><img src="file:///android_asset/help/images/altiServo-small.jpg" alt="AltiServo"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV1-small.jpg" alt="AltiMulti"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiV2</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiV2-small.jpg" alt="AltiMultiV2"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiSTM32 vagy AltiGPS</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiSTM32-small.jpg" alt="AltiMultiSTM32 / AltiGPS"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMultiESP32</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-small.jpg" alt="AltiMultiESP32"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-accelero-small.jpg" alt="AltiMulti ESP32 accel"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 345</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL345-small.jpg" alt="AltiMulti ESP32 accel 345"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>AltiMulti ESP32 accel 375</strong></p>
+    <p><img src="file:///android_asset/help/images/altiMultiESP32-ADXL375-small.jpg" alt="AltiMulti ESP32 accel 375"/></p>
+</div>
+<div class="hardware-item">
+    <p>&bull; <strong>TTGO BearAltimeter</strong></p>
+    <p><img src="file:///android_asset/help/images/TTGOAltimeterSplashScreen315x160.jpg" alt="TTGO BearAltimeter"/></p>
+</div>
+
+<h2>Mikrovezérlő programozási útmutató</h2>
+<p>Megpróbálhatja a firmware automatikus felismerését is.</p>
+
+<h3>1. ATmega328 alapú magasságmérők (pl. AltiDuo, AltiServo, AltiMulti, AltiMultiV2)</h3>
+<ul>
+    <li>Csatlakoztassa az USB TTL kábelt a magasságmérőhöz.</li>
+    <li>Válassza ki a megfelelő firmware-t, vagy ismertesse fel automatikusan.</li>
+    <li>Nyomja meg és engedje fel ezt a gombot: <strong>reset</strong> (a magasságmérőn), majd koppintson erre: <strong>[Firmware írása]</strong>.</li>
+</ul>
+<p><img src="file:///android_asset/help/images/alti-reset.jpg" alt="ATmega328 reset gomb"/></p>
+
+<h3>2. STM32 alapú magasságmérők (pl. AltiMultiSTM32, AltiGPS)</h3>
+<ul>
+    <li>Csatlakoztassa az USB TTL kábelt.</li>
+    <li>Válassza ki a megfelelő firmware-t, vagy ismertesse fel automatikusan.</li>
+    <li>Tegye át a következő jumpert jobbra (programozási helyzet): <strong>BOOT0</strong>:</li>
+</ul>
+<p><img src="file:///android_asset/help/images/stm32-prog2-small.jpg" alt="STM32 BOOT0 jobbra"/></p>
+<ul>
+    <li>Nyomja meg ezt a gombot: <strong>reset</strong> (a kártyán).</li>
+    <li>Koppintson erre: <strong>[Firmware írása]</strong>.</li>
+    <li>A firmware most töltődik. Ha elkészült, tegye vissza a következő jumpert balra (üzemi helyzet): <strong>BOOT0</strong>:</li>
+</ul>
+<p><img src="file:///android_asset/help/images/stm32-prog1-small.jpg" alt="STM32 BOOT0 balra"/></p>
+<ul>
+    <li>Nyomja meg ezt a gombot: <strong>reset</strong> — a magasságmérő normál módban újraindul.</li>
+</ul>
+
+<h3>3. ESP32 alapú magasságmérők (pl. AltiMultiESP32, AltiMultiESP32Accel változatok)</h3>
+<ul>
+    <li>Csatlakoztassa a kábelt.</li>
+    <li>Válassza ki a megfelelő firmware-t, vagy ismertesse fel automatikusan.</li>
+    <li>A kártyán nyomja meg és tartsa lenyomva ezt a gombot: <strong>BOOT</strong>.</li>
+    <li>Nyomja meg ezt a gombot: <strong>RESET</strong> — majd engedje fel, miközben továbbra is nyomva tartja a BOOT gombot.</li>
+    <li>Engedje fel ezt a gombot: <strong>BOOT</strong>.</li>
+</ul>
+<p><img src="file:///android_asset/help/images/esp32-altimulti-button-small.jpg" alt="ESP32 gombok"/></p>
+<ul>
+    <li>Koppintson erre: <strong>[Firmware írása]</strong>.</li>
+    <li>A firmware-nek most be kell töltődnie (ha nem sikerül, próbálja újra). Ha elkészült, nyomja meg ezt a gombot: <strong>reset</strong>.</li>
+</ul>
+
+<h3>4. TTGO BearAltimeter</h3>
+<ul>
+    <li>Csatlakoztassa közvetlenül az USB-C kábelt.</li>
+    <li>Válassza a TTGO BearAltimeter firmware-t.</li>
+    <li>Koppintson erre: <strong>[Firmware írása]</strong>. Ha elkészült, nyomja meg ezt a gombot: <strong>reset</strong>.</li>
+</ul>
+
+<h3>5. TTGO Mini, Simple Altimeter &amp; TS-ESP32-S3</h3>
+<ul>
+    <li>Csatlakoztassa az USB-C kábelt.</li>
+    <li>Nyomja meg és tartsa lenyomva ezt a gombot: <strong>BOOT</strong> (a kártyán).</li>
+    <li>Nyomja meg és engedje fel ezt a gombot: <strong>RESET</strong> — közben továbbra is tartsa nyomva a BOOT gombot.</li>
+    <li>Engedje fel ezt a gombot: <strong>BOOT</strong> — majd válassza ki a megfelelő magasságmérő típust.</li>
+    <li>Koppintson erre: <strong>[Firmware írása]</strong>. Ha elkészült, nyomja meg ezt a gombot: <strong>reset</strong>.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; FONTOS MEGJEGYZÉS</div>
+    <div>Programozás közben soha ne húzza ki a kábelt. Ez tönkreteszi a firmware-képet, és teljes újraprogramozást tesz szükségessé.</div>
+</div>
+
+</body>
+</html>

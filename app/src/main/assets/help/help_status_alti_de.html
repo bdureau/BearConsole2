@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 12px; color: #212121; }
+        h1 { font-size: 1.4em; color: #1976D2; border-bottom: 2px solid #1976D2; padding-bottom: 6px; }
+        h2 { font-size: 1.2em; color: #0D47A1; margin-top: 18px; }
+        .warning-box { background-color: #FFEBEE; border-left: 4px solid #D32F2F; padding: 10px; margin: 12px 0; }
+        .warning-title { color: #D32F2F; font-weight: bold; margin-bottom: 4px; }
+        .info-box { background-color: #E3F2FD; border-left: 4px solid #1976D2; padding: 10px; margin: 12px 0; }
+        .status-item { margin-bottom: 12px; }
+        .status-item strong { color: #0277BD; }
+        ul, ol { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Status des Höhenmessers</h1>
+
+<p>Dieser Bereich bietet mehrere Diagnosebildschirme, um Betriebszustand und Status Ihres Höhenmessers zu prüfen.</p>
+
+<h2>Verfügbare Informationen &amp; Werkzeuge</h2>
+<ul>
+    <li><strong>Telemetrie &amp; Diagnose des Höhenmessers:</strong> Zeigt Hardwareinformationen wie Höhenmessertyp, Firmwareversion, Durchgang der Auslösekanäle, aktuelle Akkuspannung und Echtzeithöhe.</li>
+    <li><strong>Test der Ausgänge &amp; Aktoren:</strong> Ermöglicht das manuelle Testen der pyrotechnischen Auslöseausgänge oder der Servopositionierung.</li>
+    <li><strong>GPS-Koordinaten (AltiGPS):</strong> Bei Flugcomputern mit GPS zeigt eine zusätzliche Anzeige detaillierte Koordinaten, Richtung und die Entfernung zwischen Ihrem Mobilgerät und der Rakete.</li>
+    <li><strong>Live-Kartenverfolgung (AltiGPS):</strong> Zeigt eine interaktive Satellitenkarte mit den Echtzeitpositionen Ihres Telefons und der Rakete für die Bergung nach dem Flug.</li>
+</ul>
+
+<div class="warning-box">
+    <div class="warning-title">&#9888; KRITISCHER SICHERHEITSHINWEIS</div>
+    <div>Verwenden Sie die Ausgangstest-Funktion äußerst vorsichtig. Stellen Sie bei Tests am Boden immer sicher, dass <strong>keine pyrotechnischen Ladungen oder Anzünder an der Platine angeschlossen sind</strong>.</div>
+</div>
+
+</body>
+</html>
