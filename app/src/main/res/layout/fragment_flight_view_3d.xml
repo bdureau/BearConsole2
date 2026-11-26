@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    3D flight tab of the AltiGPS (FlightView3DFragment).
+    Top: the OpenGL scene (Flight3DView) with, above it, the event labels (Flight3DLabelOverlay)
+    and the information boxes (flight summary on the left, replay values on the right).
+    Bottom: color legend of the flight phases, replay controls (play / pause and time slider)
+    and display options (vertical lines, map, top view).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightView3DFragment">
+
+    <!-- 3D scene and the views drawn over it -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.altimeter.bdureau.bearconsole.Flight.FlightView.Flight3DView
+            android:id="@+id/flight3dView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Labels of the events, positioned by the renderer after each frame -->
+        <com.altimeter.bdureau.bearconsole.Flight.FlightView.Flight3DLabelOverlay
+            android:id="@+id/flight3dLabels"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Flight summary: apogee, drift (distance and direction), duration -->
+        <TextView
+            android:id="@+id/flight3dStats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_margin="8dp"
+            android:background="@drawable/flight3d_chip_background"
+            android:padding="6dp"
+            android:textColor="#263238"
+            android:textSize="12sp" />
+
+        <!-- Values at the replay instant: time, height, vertical speed -->
+        <TextView
+            android:id="@+id/flight3dLive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="8dp"
+            android:background="@drawable/flight3d_chip_background"
+            android:gravity="end"
+            android:padding="6dp"
+            android:textColor="#263238"
+            android:textSize="12sp" />
+
+        <!-- Gestures reminder, and map status -->
+        <TextView
+            android:id="@+id/flight3dHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="8dp"
+            android:background="@drawable/flight3d_chip_background"
+            android:padding="4dp"
+            android:textColor="#546E7A"
+            android:textSize="11sp" />
+
+        <!-- Shown instead of the scene when the flight has no usable GPS position -->
+        <TextView
+            android:id="@+id/flight3dNoGps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="24dp"
+            android:gravity="center"
+            android:text="@string/flight3d_no_gps"
+            android:textSize="16sp"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <!-- Color legend of the flight phases (built in code with colored bullets) -->
+    <TextView
+        android:id="@+id/flight3dLegend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:textSize="12sp" />
+
+    <!-- Replay: play / pause and time slider (from the pad to the landing) -->
+    <LinearLayout
+        android:id="@+id/flight3dReplayBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp">
+
+        <ImageButton
+            android:id="@+id/flight3dPlay"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/flight3d_play"
+            android:src="@android:drawable/ic_media_play" />
+
+        <SeekBar
+            android:id="@+id/flight3dSeek"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="1000" />
+    </LinearLayout>
+
+    <!-- Display options -->
+    <LinearLayout
+        android:id="@+id/flight3dOptionsBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp">
+
+        <ToggleButton
+            android:id="@+id/flight3dDrops"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:textOff="@string/flight3d_drop_lines"
+            android:textOn="@string/flight3d_drop_lines"
+            android:textSize="12sp" />
+
+        <ToggleButton
+            android:id="@+id/flight3dMap"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:textOff="@string/flight3d_map"
+            android:textOn="@string/flight3d_map"
+            android:textSize="12sp" />
+
+        <ToggleButton
+            android:id="@+id/flight3dTop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:textOff="@string/flight3d_top_view"
+            android:textOn="@string/flight3d_top_view"
+            android:textSize="12sp" />
+    </LinearLayout>
+</LinearLayout>

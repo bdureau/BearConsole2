@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Background of the information boxes drawn over the 3D flight view (FlightView3DFragment):
+    nearly opaque white with rounded corners, readable over the map and the sky.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#E6FFFFFF" />
+    <corners android:radius="8dp" />
+</shape>
