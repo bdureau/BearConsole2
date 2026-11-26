@@ -577,4 +577,39 @@
     <string name="location_notification_text">De positie van de telefoon wordt gebruikt om de afstand tot de raket te tonen.</string>
     <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
     <string name="bt_not_enabled">Bluetooth moet ingeschakeld zijn om de gekoppelde modules te tonen</string>
+    <!-- 3D flight view of the AltiGPS (FlightView3DFragment) -->
+    <string name="flight3d_no_gps">Geen bruikbare GPS-positie in deze vlucht: de 3D-weergave heeft minstens twee GPS-punten nodig.</string>
+    <string name="flight3d_hint">Slepen: draaien · Knijpen: zoomen · Twee vingers: verschuiven · Dubbeltikken: beginweergave</string>
+    <string name="flight3d_map_unavailable">Kaart niet beschikbaar (offline): raster getoond</string>
+    <string name="flight3d_play">Vlucht afspelen</string>
+    <string name="flight3d_drop_lines">Loodlijnen</string>
+    <string name="flight3d_map">Kaart</string>
+    <string name="flight3d_top_view">Bovenaanzicht</string>
+    <string name="flight3d_pad">Lanceerplaats</string>
+    <string name="flight3d_apogee">Apogeum</string>
+    <string name="flight3d_main">Hoofdparachute</string>
+    <string name="flight3d_landing">Landing</string>
+    <string name="flight3d_north">N</string>
+    <string name="flight3d_stats" formatted="true">Apogeum %1$s\nDrift %2$s %3$s\nDuur %4$s s</string>
+    <string name="flight3d_live" formatted="true">T+%1$s s\nHoogte %2$s\nVz %3$s %4$s/s</string>
+    <string name="flight3d_phase_boost">Stuwfase</string>
+    <string name="flight3d_phase_coast">Vrije vlucht</string>
+    <string name="flight3d_phase_drogue">Remparachute</string>
+    <string name="flight3d_phase_main">Hoofdparachute</string>
+    <string name="flight3d_gps_points">GPS-punten</string>
+    <!-- Directions N, NE, E, SE, S, SW, W, NW (drift of the rocket) -->
+    <string-array name="flight3d_compass">
+        <item>N</item>
+        <item>NO</item>
+        <item>O</item>
+        <item>ZO</item>
+        <item>Z</item>
+        <item>ZW</item>
+        <item>W</item>
+        <item>NW</item>
+    </string-array>
+    <!-- Connection dialog: why the Bluetooth connection of an ATmega328 altimeter can be long -->
+    <string name="bt_connect_wait_beeps">Een hoogtemeter die zijn hoogte piept, antwoordt pas na de piepjes: de verbinding kan tot een minuut duren.</string>
+    <!-- Sentence spoken by the "test voice" button of the settings -->
+    <string name="tts_test_phrase">De Bearaltimeter-hoogtemeters zijn de beste</string>
 </resources>

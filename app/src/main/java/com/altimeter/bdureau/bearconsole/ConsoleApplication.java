@@ -53,6 +53,8 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
+
+import com.altimeter.bdureau.bearconsole.config.AppLanguage;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -129,25 +131,34 @@ public class ConsoleApplication extends Application {
 
     /**
      * Returns a context whose resources use the language selected in the application settings.
+     * The language is also set as Locale.getDefault(), used by the help pages and the speech.
      *
      * @param context     base context
-     * @param appLanguage 0 = phone language, 1 = force English
+     * @param appLanguage setting value: 0 = phone language (English if the application is
+     *                    not translated in it), 1.. = forced language (see AppLanguage)
      */
     public static Context updateBaseContextLocale(Context context, int appLanguage) {
-        Locale locale;
-        if (appLanguage == 1) {
-            locale = Locale.ENGLISH;
-        } else {
-            // Language of the phone, read from the system configuration. Locale.getDefault()
-            // cannot be used here: once English has been forced it returns English, and the
-            // phone language could not be restored without restarting the application.
-            locale = Resources.getSystem().getConfiguration().getLocales().get(0);
-        }
+        Locale locale = AppLanguage.resolveLocale(appLanguage);
         Locale.setDefault(locale);
 
         Configuration config = new Configuration(context.getResources().getConfiguration());
         config.setLocale(locale);
         return context.createConfigurationContext(config);
+    }
+
+    /**
+     * Applies a new language setting to the application context itself (texts built by the
+     * application object, such as the flight names), without restarting the application.
+     * The screens are re-created by BaseActivity.
+     */
+    @SuppressWarnings("deprecation")
+    public void applyLanguage(int appLanguage) {
+        Locale locale = AppLanguage.resolveLocale(appLanguage);
+        Locale.setDefault(locale);
+        Resources res = getBaseContext().getResources();
+        Configuration config = new Configuration(res.getConfiguration());
+        config.setLocale(locale);
+        res.updateConfiguration(config, res.getDisplayMetrics());
     }
 
     @Override
@@ -326,7 +337,10 @@ public class ConsoleApplication extends Application {
             }
             state = BTCon.connect(address, getApplicationContext());
             setConnectionType("bluetooth");
-            if (!isConnectionValid()) {
+            // Long wait: an ATmega328 altimeter (AltiMulti, AltiMultiV2, AltiServo, AltiDuo)
+            // does not read its serial port while it beeps the last altitude (see
+            // isConnectionValid(long)). No check at all if the socket could not be opened.
+            if (!state || !isConnectionValid(BT_CONNECTION_CHECK_TIMEOUT_MS)) {
                 Disconnect();
                 state = false;
             }
@@ -356,12 +370,37 @@ public class ConsoleApplication extends Application {
         return state;
     }
 
+    /** Answer delay accepted for the "h;" handshake over USB (each of the 3 attempts). */
+    private static final long USB_CONNECTION_CHECK_TIMEOUT_MS = 3000;
     /**
-     * Sends the "h;" handshake and waits (at most 3 s) for the "OK" answer of the firmware.
-     * Telemetry streaming is then switched off with "y0;".
+     * Answer delay accepted for the "h;" handshake over Bluetooth. The ATmega328 firmwares
+     * (RocketFlightLogger for AltiMulti / AltiMultiV2, AltiServo, AltiDuo) beep the last apogee
+     * and main altitudes every 10 s with blocking delays (1.5 s per long beep, 5 s pause after
+     * each altitude): the altimeter can stay deaf for 15 s on the bench and for more than 45 s
+     * after a 500 m flight. The command stays in the UART buffer and is answered when the
+     * beeping ends, so the application must wait that long. The user can cancel.
      */
+    public static final long BT_CONNECTION_CHECK_TIMEOUT_MS = 60000;
+
+    /** Handshake with the USB delay (see {@link #isConnectionValid(long)}). */
     public boolean isConnectionValid() {
-        boolean valid;
+        return isConnectionValid(USB_CONNECTION_CHECK_TIMEOUT_MS);
+    }
+
+    /**
+     * Sends the "h;" handshake and waits for the "OK" answer of the firmware, then switches
+     * the telemetry stream off with "y0;".
+     *
+     * "h;" is sent twice and the "$UNKNOWN;" / "$KO;" answers are ignored here: the first
+     * command can be corrupted by a byte received when the Bluetooth link opens (the ATmega
+     * firmwares keep every byte except '\n' in the command), the second one is then answered
+     * "OK". The wait ends as soon as "OK" arrives, on timeout, on cancel (setExit) or when
+     * the link is closed.
+     *
+     * @param maxWaitMs maximum time to wait for the "OK" answer
+     */
+    public boolean isConnectionValid(long maxWaitMs) {
+        boolean valid = false;
         setDataReady(false);
         flush();
         clearInput();
@@ -371,19 +410,41 @@ public class ConsoleApplication extends Application {
         clearInput();
         write("h;");
 
-        // Bounded wait: an altimeter that does not answer must not block the caller forever
-        waitForData(3000);
-
-        String myMessage = ReadResult(3000);
-
+        String myMessage = "";
+        long deadline = System.currentTimeMillis() + maxWaitMs;
+        while (true) {
+            long remaining = deadline - System.currentTimeMillis();
+            if (remaining <= 0) break;
+            myMessage = ReadResult(remaining);
+            if ("OK".equals(myMessage)) {
+                valid = true;
+                break;
+            }
+            // Cancelled by the user (setExit), or link closed: stop waiting
+            if (this.exit || !isLinkOpen()) break;
+            try {
+                // ReadResult returned early (refused command): short pause before reading again
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
         lastReadResult = myMessage;
-        valid = myMessage.equals("OK");
 
         flush();
         clearInput();
         write("y0;");
 
         return valid;
+    }
+
+    /** True while the transport (Bluetooth socket or USB port) is open. */
+    private boolean isLinkOpen() {
+        if (myTypeOfConnection.equals("bluetooth")) {
+            return BTCon.getBTConnected() && BTCon.getInputStream() != null;
+        }
+        return getInputStream() != null;
     }
 
     /**

@@ -577,4 +577,39 @@
     <string name="location_notification_text">Положение телефона используется для отображения расстояния до ракеты.</string>
     <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
     <string name="bt_not_enabled">Bluetooth должен быть включён, чтобы показать сопряжённые модули</string>
+    <!-- 3D flight view of the AltiGPS (FlightView3DFragment) -->
+    <string name="flight3d_no_gps">В этом полёте нет пригодных GPS-координат: для 3D-вида нужно не менее двух точек GPS.</string>
+    <string name="flight3d_hint">Перетаскивание: вращение · Щипок: масштаб · Два пальца: сдвиг · Двойное касание: исходный вид</string>
+    <string name="flight3d_map_unavailable">Карта недоступна (нет сети): показана сетка</string>
+    <string name="flight3d_play">Воспроизвести полёт</string>
+    <string name="flight3d_drop_lines">Вертикали</string>
+    <string name="flight3d_map">Карта</string>
+    <string name="flight3d_top_view">Вид сверху</string>
+    <string name="flight3d_pad">Старт</string>
+    <string name="flight3d_apogee">Апогей</string>
+    <string name="flight3d_main">Основной</string>
+    <string name="flight3d_landing">Посадка</string>
+    <string name="flight3d_north">С</string>
+    <string name="flight3d_stats" formatted="true">Апогей %1$s\nСнос %2$s %3$s\nДлительность %4$s с</string>
+    <string name="flight3d_live" formatted="true">T+%1$s с\nВысота %2$s\nVz %3$s %4$s/с</string>
+    <string name="flight3d_phase_boost">Разгон</string>
+    <string name="flight3d_phase_coast">Пассивный полёт</string>
+    <string name="flight3d_phase_drogue">Тормозной</string>
+    <string name="flight3d_phase_main">Основной</string>
+    <string name="flight3d_gps_points">Точки GPS</string>
+    <!-- Directions N, NE, E, SE, S, SW, W, NW (drift of the rocket) -->
+    <string-array name="flight3d_compass">
+        <item>С</item>
+        <item>СВ</item>
+        <item>В</item>
+        <item>ЮВ</item>
+        <item>Ю</item>
+        <item>ЮЗ</item>
+        <item>З</item>
+        <item>СЗ</item>
+    </string-array>
+    <!-- Connection dialog: why the Bluetooth connection of an ATmega328 altimeter can be long -->
+    <string name="bt_connect_wait_beeps">Высотомер, который пищит высоту, отвечает только после окончания сигналов: подключение может занять до минуты.</string>
+    <!-- Sentence spoken by the "test voice" button of the settings -->
+    <string name="tts_test_phrase">Высотомеры Bearaltimeter самые лучшие</string>
 </resources>

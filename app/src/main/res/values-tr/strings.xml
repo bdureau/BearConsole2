@@ -577,4 +577,39 @@
     <string name="location_notification_text">Telefonun konumu rokete olan mesafeyi göstermek için kullanılır.</string>
     <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
     <string name="bt_not_enabled">Eşleştirilmiş modülleri listelemek için Bluetooth açık olmalıdır</string>
+    <!-- 3D flight view of the AltiGPS (FlightView3DFragment) -->
+    <string name="flight3d_no_gps">Bu uçuşta kullanılabilir GPS konumu yok: 3D görünüm en az iki GPS noktası gerektirir.</string>
+    <string name="flight3d_hint">Sürükle: döndür · Kıstır: yakınlaştır · İki parmak: kaydır · Çift dokunma: başlangıç görünümü</string>
+    <string name="flight3d_map_unavailable">Harita kullanılamıyor (çevrimdışı): ızgara gösteriliyor</string>
+    <string name="flight3d_play">Uçuşu oynat</string>
+    <string name="flight3d_drop_lines">Dikey çizgiler</string>
+    <string name="flight3d_map">Harita</string>
+    <string name="flight3d_top_view">Üstten görünüm</string>
+    <string name="flight3d_pad">Rampa</string>
+    <string name="flight3d_apogee">Apoje</string>
+    <string name="flight3d_main">Ana paraşüt</string>
+    <string name="flight3d_landing">İniş</string>
+    <string name="flight3d_north">K</string>
+    <string name="flight3d_stats" formatted="true">Apoje %1$s\nSürüklenme %2$s %3$s\nSüre %4$s s</string>
+    <string name="flight3d_live" formatted="true">T+%1$s s\nYükseklik %2$s\nVz %3$s %4$s/s</string>
+    <string name="flight3d_phase_boost">İtki</string>
+    <string name="flight3d_phase_coast">Balistik</string>
+    <string name="flight3d_phase_drogue">Sürükleme paraşütü</string>
+    <string name="flight3d_phase_main">Ana paraşüt</string>
+    <string name="flight3d_gps_points">GPS noktaları</string>
+    <!-- Directions N, NE, E, SE, S, SW, W, NW (drift of the rocket) -->
+    <string-array name="flight3d_compass">
+        <item>K</item>
+        <item>KD</item>
+        <item>D</item>
+        <item>GD</item>
+        <item>G</item>
+        <item>GB</item>
+        <item>B</item>
+        <item>KB</item>
+    </string-array>
+    <!-- Connection dialog: why the Bluetooth connection of an ATmega328 altimeter can be long -->
+    <string name="bt_connect_wait_beeps">İrtifasını bipleyen bir altimetre ancak bipler bitince yanıt verir: bağlantı bir dakikaya kadar sürebilir.</string>
+    <!-- Sentence spoken by the "test voice" button of the settings -->
+    <string name="tts_test_phrase">Bearaltimeter altimetreleri en iyisidir</string>
 </resources>

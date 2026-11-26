@@ -13,7 +13,8 @@ package com.altimeter.bdureau.bearconsole.Flight;
  *    - FlightViewInfoFragment: flight statistics (apogee, max speed, descent rates...) and
  *      CSV / ZIP export;
  *    - FlightViewInfoAccelFragment: accelerometer maxima (accelerometer boards);
- *    - FlightViewGoogleMapFragment or FlightViewOpenMapFragment: GPS trajectory (AltiGPS).
+ *    - FlightViewGoogleMapFragment or FlightViewOpenMapFragment: GPS trajectory (AltiGPS);
+ *    - FlightView3DFragment: trajectory in 3D above the launch field (AltiGPS).
  *  Each tab can be shared as a screenshot. The flight data live in memory in the application
  *  object; the fragments read them back through the getters of this activity when they are
  *  re-created by the system.
@@ -40,6 +41,7 @@ import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewGoogleMapFr
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewInfoFragment;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewMpFragment;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewOpenMapFragment;
+import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightView3DFragment;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
@@ -101,6 +103,8 @@ public class FlightViewTabActivity extends BaseActivity {
     private FlightViewInfoAccelFragment flightPage2bis = null;
     private FlightViewGoogleMapFragment flightPage3 = null;
     private FlightViewOpenMapFragment flightPage4 = null;
+    // 3D view of the trajectory (AltiGPS only)
+    private FlightView3DFragment flightPage5 = null;
 
     //buttons
     private Button btnDismiss,  butSelectCurves;
@@ -282,6 +286,13 @@ public class FlightViewTabActivity extends BaseActivity {
             checkedItems[0] = true;
         }
         setupViewPager(mViewPager);
+        // After a re-creation the pager restores its tab without calling onPageSelected():
+        // apply the buttons and dots of the tab really displayed
+        mViewPager.post(() -> {
+            int current = mViewPager.getCurrentItem();
+            agregaIndicateDots(current, adapter.getCount());
+            updateBottomButtons(current);
+        });
 
 
         btnDismiss.setOnClickListener(new View.OnClickListener() {
@@ -440,6 +451,10 @@ public class FlightViewTabActivity extends BaseActivity {
                         FlightName);
                 adapter.addFragment(flightPage4);
             }
+            // Last tab: trajectory in 3D (barometric height + GPS position). The fragment
+            // reads the flight from this activity (getAllFlightData()).
+            flightPage5 = new FlightView3DFragment();
+            adapter.addFragment(flightPage5);
         }
 
         linearDots=findViewById(R.id.idFlightLinearDots);
@@ -473,18 +488,26 @@ public class FlightViewTabActivity extends BaseActivity {
         @Override
         public void onPageSelected(int i) {
             agregaIndicateDots(i, adapter.getCount());
-
-            if(i ==0) {
-                butSelectCurves.setVisibility(View.VISIBLE);
-            } else {
-                butSelectCurves.setVisibility(View.INVISIBLE);
-            }
+            updateBottomButtons(i);
         }
 
         @Override
         public void onPageScrollStateChanged(int i) {
         }
     };
+
+    /**
+     * Shows the buttons drawn over the tabs according to the displayed tab:
+     *  - Select curves: only on the curves tab (first tab);
+     *  - Dismiss: hidden on the 3D tab, where it would cover the display options of the
+     *    scene (the system Back button still closes the screen).
+     */
+    private void updateBottomButtons(int position) {
+        butSelectCurves.setVisibility(position == 0 ? View.VISIBLE : View.INVISIBLE);
+        boolean is3dTab = adapter != null && position >= 0 && position < adapter.getCount()
+                && adapter.getItem(position) instanceof FlightView3DFragment;
+        btnDismiss.setVisibility(is3dTab ? View.GONE : View.VISIBLE);
+    }
 
     /**
      * Called by the adapter when the ViewPager displays a fragment re-created by the system
@@ -497,6 +520,7 @@ public class FlightViewTabActivity extends BaseActivity {
         else if (fragment instanceof FlightViewInfoAccelFragment) flightPage2bis = (FlightViewInfoAccelFragment) fragment;
         else if (fragment instanceof FlightViewGoogleMapFragment) flightPage3 = (FlightViewGoogleMapFragment) fragment;
         else if (fragment instanceof FlightViewOpenMapFragment) flightPage4 = (FlightViewOpenMapFragment) fragment;
+        else if (fragment instanceof FlightView3DFragment) flightPage5 = (FlightView3DFragment) fragment;
     }
 
     // ---- Data shared with the tab fragments (used when they are re-created) ----

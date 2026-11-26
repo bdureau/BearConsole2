@@ -577,4 +577,39 @@
     <string name="location_notification_text">A telefon helyzetét a rakétától való távolság kijelzésére használjuk.</string>
     <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
     <string name="bt_not_enabled">A párosított modulok listázásához a Bluetooth-t be kell kapcsolni</string>
+    <!-- 3D flight view of the AltiGPS (FlightView3DFragment) -->
+    <string name="flight3d_no_gps">Ebben a repülésben nincs használható GPS-pozíció: a 3D nézethez legalább két GPS-pont kell.</string>
+    <string name="flight3d_hint">Húzás: forgatás · Csippentés: nagyítás · Két ujj: mozgatás · Dupla koppintás: kezdőnézet</string>
+    <string name="flight3d_map_unavailable">A térkép nem érhető el (offline): rács látható</string>
+    <string name="flight3d_play">Repülés lejátszása</string>
+    <string name="flight3d_drop_lines">Függőlegesek</string>
+    <string name="flight3d_map">Térkép</string>
+    <string name="flight3d_top_view">Felülnézet</string>
+    <string name="flight3d_pad">Indítóállás</string>
+    <string name="flight3d_apogee">Csúcspont</string>
+    <string name="flight3d_main">Főernyő</string>
+    <string name="flight3d_landing">Landolás</string>
+    <string name="flight3d_north">É</string>
+    <string name="flight3d_stats" formatted="true">Csúcspont %1$s\nSodródás %2$s %3$s\nIdőtartam %4$s s</string>
+    <string name="flight3d_live" formatted="true">T+%1$s s\nMagasság %2$s\nVz %3$s %4$s/s</string>
+    <string name="flight3d_phase_boost">Hajtás</string>
+    <string name="flight3d_phase_coast">Ballisztikus</string>
+    <string name="flight3d_phase_drogue">Fékezőernyő</string>
+    <string name="flight3d_phase_main">Főernyő</string>
+    <string name="flight3d_gps_points">GPS-pontok</string>
+    <!-- Directions N, NE, E, SE, S, SW, W, NW (drift of the rocket) -->
+    <string-array name="flight3d_compass">
+        <item>É</item>
+        <item>ÉK</item>
+        <item>K</item>
+        <item>DK</item>
+        <item>D</item>
+        <item>DNy</item>
+        <item>Ny</item>
+        <item>ÉNy</item>
+    </string-array>
+    <!-- Connection dialog: why the Bluetooth connection of an ATmega328 altimeter can be long -->
+    <string name="bt_connect_wait_beeps">A magasságát sípoló magasságmérő csak a sípolás végén válaszol: a kapcsolódás akár egy percig is tarthat.</string>
+    <!-- Sentence spoken by the "test voice" button of the settings -->
+    <string name="tts_test_phrase">A Bearaltimeter magasságmérők a legjobbak</string>
 </resources>

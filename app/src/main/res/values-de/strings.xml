@@ -577,4 +577,39 @@
     <string name="location_notification_text">Die Position des Telefons wird verwendet, um die Entfernung zur Rakete anzuzeigen.</string>
     <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
     <string name="bt_not_enabled">Bluetooth muss eingeschaltet sein, um die gekoppelten Module anzuzeigen</string>
+    <!-- 3D flight view of the AltiGPS (FlightView3DFragment) -->
+    <string name="flight3d_no_gps">Keine verwertbare GPS-Position in diesem Flug: Die 3D-Ansicht braucht mindestens zwei GPS-Punkte.</string>
+    <string name="flight3d_hint">Ziehen: drehen · Spreizen: zoomen · Zwei Finger: verschieben · Doppeltippen: zurücksetzen</string>
+    <string name="flight3d_map_unavailable">Karte nicht verfügbar (offline): Raster angezeigt</string>
+    <string name="flight3d_play">Flug abspielen</string>
+    <string name="flight3d_drop_lines">Lotlinien</string>
+    <string name="flight3d_map">Karte</string>
+    <string name="flight3d_top_view">Draufsicht</string>
+    <string name="flight3d_pad">Startrampe</string>
+    <string name="flight3d_apogee">Gipfelhöhe</string>
+    <string name="flight3d_main">Hauptschirm</string>
+    <string name="flight3d_landing">Landung</string>
+    <string name="flight3d_north">N</string>
+    <string name="flight3d_stats" formatted="true">Gipfelhöhe %1$s\nAbdrift %2$s %3$s\nDauer %4$s s</string>
+    <string name="flight3d_live" formatted="true">T+%1$s s\nHöhe %2$s\nVz %3$s %4$s/s</string>
+    <string name="flight3d_phase_boost">Antrieb</string>
+    <string name="flight3d_phase_coast">Freiflug</string>
+    <string name="flight3d_phase_drogue">Bremsschirm</string>
+    <string name="flight3d_phase_main">Hauptschirm</string>
+    <string name="flight3d_gps_points">GPS-Punkte</string>
+    <!-- Directions N, NE, E, SE, S, SW, W, NW (drift of the rocket) -->
+    <string-array name="flight3d_compass">
+        <item>N</item>
+        <item>NO</item>
+        <item>O</item>
+        <item>SO</item>
+        <item>S</item>
+        <item>SW</item>
+        <item>W</item>
+        <item>NW</item>
+    </string-array>
+    <!-- Connection dialog: why the Bluetooth connection of an ATmega328 altimeter can be long -->
+    <string name="bt_connect_wait_beeps">Ein Höhenmesser, der seine Höhe piepst, antwortet erst nach den Pieptönen: Die Verbindung kann bis zu einer Minute dauern.</string>
+    <!-- Sentence spoken by the "test voice" button of the settings -->
+    <string name="tts_test_phrase">Bearaltimeter-Höhenmesser sind die besten</string>
 </resources>

@@ -851,7 +851,10 @@ public class MainScreenActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainScreenActivity.this);
-            builder.setMessage(getResources().getString(R.string.MS_msg1) + "\n" + myBT.getModuleName())
+            // The hint explains a long wait: an ATmega328 altimeter answers only after its
+            // altitude beeps (see ConsoleApplication.BT_CONNECTION_CHECK_TIMEOUT_MS)
+            builder.setMessage(getResources().getString(R.string.MS_msg1) + "\n" + myBT.getModuleName()
+                    + "\n\n" + getResources().getString(R.string.bt_connect_wait_beeps))
                     .setTitle(getResources().getString(R.string.MS_msg2))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.main_screen_actity), (dialog, id) -> {

@@ -591,4 +591,39 @@
     <string name="location_notification_text">The position of the phone is used to show the distance to the rocket.</string>
     <!-- Bluetooth selection screen: the user refused to switch Bluetooth on -->
     <string name="bt_not_enabled">Bluetooth must be switched on to list the paired modules</string>
+    <!-- 3D flight view of the AltiGPS (FlightView3DFragment) -->
+    <string name="flight3d_no_gps">No usable GPS position in this flight: the 3D view needs at least two GPS fixes.</string>
+    <string name="flight3d_hint">Drag: rotate · Pinch: zoom · Two fingers: move · Double tap: reset</string>
+    <string name="flight3d_map_unavailable">Map not available (offline): grid shown</string>
+    <string name="flight3d_play">Play the flight</string>
+    <string name="flight3d_drop_lines">Vertical lines</string>
+    <string name="flight3d_map">Map</string>
+    <string name="flight3d_top_view">Top view</string>
+    <string name="flight3d_pad">Pad</string>
+    <string name="flight3d_apogee">Apogee</string>
+    <string name="flight3d_main">Main</string>
+    <string name="flight3d_landing">Landing</string>
+    <string name="flight3d_north">N</string>
+    <string name="flight3d_stats" formatted="true">Apogee %1$s\nDrift %2$s %3$s\nDuration %4$s s</string>
+    <string name="flight3d_live" formatted="true">T+%1$s s\nHeight %2$s\nVz %3$s %4$s/s</string>
+    <string name="flight3d_phase_boost">Boost</string>
+    <string name="flight3d_phase_coast">Coast</string>
+    <string name="flight3d_phase_drogue">Drogue</string>
+    <string name="flight3d_phase_main">Main</string>
+    <string name="flight3d_gps_points">GPS points</string>
+    <!-- Directions N, NE, E, SE, S, SW, W, NW (drift of the rocket) -->
+    <string-array name="flight3d_compass">
+        <item>N</item>
+        <item>NE</item>
+        <item>E</item>
+        <item>SE</item>
+        <item>S</item>
+        <item>SW</item>
+        <item>W</item>
+        <item>NW</item>
+    </string-array>
+    <!-- Connection dialog: why the Bluetooth connection of an ATmega328 altimeter can be long -->
+    <string name="bt_connect_wait_beeps">An altimeter that is beeping its altitude answers only at the end of the beeps: the connection can take up to one minute.</string>
+    <!-- Sentence spoken by the "test voice" button of the settings -->
+    <string name="tts_test_phrase">Bearaltimeter altimeters are the best</string>
 </resources>

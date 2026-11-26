@@ -65,17 +65,16 @@ public class HelpActivity extends BaseActivity {
     }
 
     /**
-     * Chooses the help page to display: the translation in the phone language if it exists
-     * (and English is not forced in the settings), otherwise the English page.
+     * Chooses the help page to display: the translation in the language of the application
+     * if it exists, otherwise the English page.
      *
      * @param baseName name of the page without language suffix and extension
      * @return asset path of the page
      */
     private String selectHelpPage(String baseName) {
         String english = HELP_ASSET_DIR + baseName + ".html";
-        if (myBT.getAppConf().getApplicationLanguage() != 0) {
-            return english; // English forced in the application settings
-        }
+        // Language of the application (phone language with English fallback, or the language
+        // forced in the settings): set as default locale by AppLanguage / BaseActivity
         String language = Locale.getDefault().getLanguage();
         String localized = HELP_ASSET_DIR + baseName + "_" + language + ".html";
         return (!"en".equals(language) && assetExists(localized)) ? localized : english;

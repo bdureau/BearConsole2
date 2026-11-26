@@ -10,7 +10,9 @@ package com.altimeter.bdureau.bearconsole;
  *  Common parent of every screen of the application. It centralizes two behaviors that
  *  used to be copied (or missing) in each activity:
  *    - Language: the base context is localized before inflation, using the language chosen
- *      in the application settings (phone language or forced English).
+ *      in the application settings (see AppLanguage: phone language with English fallback,
+ *      or any translated language). When the setting is changed, each screen is re-created
+ *      in the new language as soon as it comes back to the foreground.
  *    - Edge-to-edge: from Android 15 (API 35) apps targeting the latest SDK are drawn behind
  *      the status bar, the action bar, the navigation bar and the display cutout. The content
  *      view is padded so that no button or text is hidden:
@@ -43,13 +45,32 @@ public abstract class BaseActivity extends AppCompatActivity {
     private View paddedContent;
     private ViewTreeObserver.OnGlobalLayoutListener layoutListener;
 
+    // Language setting applied to this screen (AppLanguage setting value)
+    private int appliedLanguage;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         // Read the language directly from the preferences: the application object may not be
         // fully initialized yet when the first activity is attached
-        SharedPreferences prefs = newBase.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
-        int lang = prefs.getInt("AppLanguage", 0);
-        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, lang));
+        appliedLanguage = readLanguageSetting(newBase);
+        super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, appliedLanguage));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // The language was changed in the settings while this screen was in the background:
+        // re-create it so that every text is in the new language (the connection to the
+        // altimeter is kept by the application object)
+        if (readLanguageSetting(this) != appliedLanguage) {
+            recreate();
+        }
+    }
+
+    /** Language setting saved by the settings screen (AppLanguage setting value). */
+    private static int readLanguageSetting(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("BearConsoleCfg", MODE_PRIVATE);
+        return prefs.getInt("AppLanguage", 0);
     }
 
     /**

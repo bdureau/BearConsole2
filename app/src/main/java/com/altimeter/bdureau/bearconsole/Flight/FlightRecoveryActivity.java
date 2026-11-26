@@ -46,8 +46,12 @@ import java.util.List;
 public class FlightRecoveryActivity extends BaseActivity {
     public static String SELECTED_FLIGHT = "MyFlight";
 
-    /** Silence after which the recovery is considered finished or lost (ms). */
-    private static final long DOWNLOAD_IDLE_TIMEOUT_MS = 10000;
+    /**
+     * Silence after which a download is considered finished or lost (ms). 60 s, not less:
+     * an ATmega328 altimeter does not read its serial port while it beeps the last altitudes
+     * (up to ~45 s after a high flight), so the first answer can come that late.
+     */
+    private static final long DOWNLOAD_IDLE_TIMEOUT_MS = 60000;
     /** Safety limit for the whole recovery (ms); the user can cancel before. */
     private static final long DOWNLOAD_MAX_DURATION_MS = 30 * 60 * 1000;
 

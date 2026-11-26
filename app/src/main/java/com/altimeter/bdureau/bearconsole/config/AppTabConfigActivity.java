@@ -119,17 +119,8 @@ public class AppTabConfigActivity extends BaseActivity {
                 if (status == TextToSpeech.SUCCESS) {
                     int result = 0;
 
-                    // equals(): "==" compares the String references, not their content,
-                    // so the French and Dutch voices were never selected
-                    String language = Locale.getDefault().getLanguage();
-                    if ("en".equals(language))
-                        result = mTTS.setLanguage(Locale.ENGLISH);
-                    else if ("fr".equals(language))
-                        result = mTTS.setLanguage(Locale.FRENCH);
-                    else if ("nl".equals(language))
-                        result = mTTS.setLanguage(new Locale("nl_NL"));
-                    else
-                        result = mTTS.setLanguage(Locale.ENGLISH);
+                    // Voice in the language of the application (English if not available)
+                    result = AppLanguage.applyToTextToSpeech(mTTS);
                     try {
                         String[] itemsVoices;
                         String items = "";
@@ -163,8 +154,15 @@ public class AppTabConfigActivity extends BaseActivity {
     }
 
     private void SaveConfig() {
+        boolean languageChanged = false;
         if(appConfigPage1.isViewCreated()) {
-            myBT.getAppConf().setApplicationLanguage(appConfigPage1.getAppLanguage());
+            int newLanguage = appConfigPage1.getAppLanguage();
+            if (newLanguage != myBT.getAppConf().getApplicationLanguage()) {
+                // New language: applied to the application object at once; every screen is
+                // re-created in this language when it comes back (BaseActivity.onResume)
+                languageChanged = true;
+            }
+            myBT.getAppConf().setApplicationLanguage(newLanguage);
             myBT.getAppConf().setGraphColor(appConfigPage1.getGraphColor());
             myBT.getAppConf().setUnits(appConfigPage1.getAppUnit());
             myBT.getAppConf().setGraphBackColor(appConfigPage1.getGraphBackColor());
@@ -200,6 +198,9 @@ public class AppTabConfigActivity extends BaseActivity {
             myBT.getAppConf().setUseOpenMap(appConfigPage3.getUseOpenMap());
         }
         myBT.getAppConf().SaveConfig();
+        if (languageChanged) {
+            myBT.applyLanguage(myBT.getAppConf().getApplicationLanguage());
+        }
         invalidateOptionsMenu();
         finish();
     }

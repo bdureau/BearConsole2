@@ -64,6 +64,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.altimeter.bdureau.bearconsole.config.AppLanguage;
+
 public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCallback {
     private SupportMapFragment mapFragment;
     private static final String TAG = "RocketTrackGoogleMapWin";
@@ -220,24 +222,9 @@ public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCall
                 if (status == TextToSpeech.SUCCESS) {
                     int result = 0;
 
-                    if (Locale.getDefault().getLanguage().equals("en"))
-                        result = mTTS.setLanguage(Locale.ENGLISH);
-                    else if (Locale.getDefault().getLanguage().equals("fr"))
-                        result = mTTS.setLanguage(Locale.FRENCH);
-                    else if (Locale.getDefault().getLanguage().equals("tr"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("nl"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("es"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("it"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("hu"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("ru"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else
-                        result = mTTS.setLanguage(Locale.ENGLISH);
+                    // Voice in the language of the application (English if not available,
+                    // or if the application is not translated in the phone language)
+                    result = AppLanguage.applyToTextToSpeech(mTTS);
 
                     Log.d("Voice", myBT.getAppConf().getTelemetryVoice() + "");
 
