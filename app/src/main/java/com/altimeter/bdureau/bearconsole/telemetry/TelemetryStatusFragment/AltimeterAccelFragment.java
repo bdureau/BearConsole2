@@ -7,11 +7,12 @@ package com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment;
  * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
  * @description:
- *  Status screen tab of the accelerometer boards: live values (m/s^2, as sent by the
- *  firmware in thousandths of m/s^2) of the ADXL375 (high g) and ADXL345 (low g)
- *  accelerometers on the three axes, and the accelerometer calibration.
- *  The calibration is done by the firmware (command "j;", RocketFlightLogger 2.5 and later,
- *  see AccelCalibrationSession): the board is put on its 6 faces; on each face it must stay
+ *  Status screen tab of the accelerometer boards: live values (m/s^2) of the ADXL375 (high g)
+ *  and ADXL345 (low g) accelerometers on the three axes (ESP32 accelerometer boards), or of
+ *  the single low g sensor of the TTGOBearAltimeter (ADXL345) and of the UltimateAltimeter
+ *  (QMI8658), see AccelBoards; and the accelerometer calibration done by the firmware.
+ *  The calibration is done by the firmware (command "j;": RocketFlightLogger 2.5, TTGO Bear
+ *  0.6, UltimateAltimeter 0.7, see AccelCalibrationSession): the board is put on its 6 faces; on each face it must stay
  *  still until the short beep, then it is turned. This fragment shows the progress reported
  *  by the firmware (face to put up when the order is imposed, faces already measured), a Stop
  *  button, and the result (calibration values or reason of the failure).
@@ -37,6 +38,7 @@ import androidx.fragment.app.Fragment;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.connection.AccelCalibrationSession;
+import com.altimeter.bdureau.bearconsole.utils.AccelBoards;
 
 import java.util.Locale;
 
@@ -116,6 +118,12 @@ public class AltimeterAccelFragment extends Fragment implements AccelCalibration
 
         Button butCalibrate = view.findViewById(R.id.butCalibrateAccel);
         butCalibrate.setOnClickListener(v -> confirmStart());
+
+        // Only the sensors of this board; the calibration only for the firmwares that do it
+        String model = lBT.getAltiConfigData().getAltimeterName();
+        AccelBoards.configureAccelRows(view, model);
+        view.findViewById(R.id.layoutAccelCalibration).setVisibility(
+                AccelBoards.supportsFirmwareCalibration(model) ? View.VISIBLE : View.GONE);
 
         ViewCreated = true;
         return view;

@@ -95,9 +95,9 @@ public class FlashFirmware extends BaseActivity {
 
     //ESP32 accelero
     private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE1 = "firmwares/ESP32_accelero/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE2 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.5_ESP32V2.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE3 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.5_ESP32V2.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE4 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.5_ESP32V2.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE2 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.5.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE3 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.5.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_accelero_FILE4 = "firmwares/ESP32_accelero/RocketFlightLoggerV2.5.ino.partitions.bin";
     //ESP32 ADXL345
     private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE1 = "firmwares/ESP32_ADXL345/boot_app0.bin";
     private static final String ASSET_FILE_NAME_ALTIESP32_ADXL345_FILE2 = "firmwares/ESP32_ADXL345/RocketFlightLoggerV2.5_ESP32V2.ino.bootloader.bin";
@@ -111,9 +111,9 @@ public class FlashFirmware extends BaseActivity {
 
     //TTGO BearAltimeter
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE1 = "firmwares/TTGO/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE2 = "firmwares/TTGO/TTGOBearAltimeter0.5.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3 = "firmwares/TTGO/TTGOBearAltimeter0.5.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4 = "firmwares/TTGO/TTGOBearAltimeter0.5.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE2 = "firmwares/TTGO/TTGOBearAltimeter0.6.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE3 = "firmwares/TTGO/TTGOBearAltimeter0.6.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_FILE4 = "firmwares/TTGO/TTGOBearAltimeter0.6.ino.partitions.bin";
 
     //LILYGO T-QT Mini BearAltimeter
     private static final String ASSET_FILE_NAME_ALTIESP32_TTGO_TQ_MINI_FILE1 = "firmwares/TTGO_T-QT_Mini/boot_app0.bin";
@@ -134,9 +134,9 @@ public class FlashFirmware extends BaseActivity {
     private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.5.nosleep.partitions.bin";
 
     private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE1 = "firmwares/UltimateAltimeter/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.5.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.5.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.5.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.7.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.7.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.7.ino.partitions.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";

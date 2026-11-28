@@ -622,9 +622,9 @@
     <string name="accel_calibration_title">Gyorsulásmérők kalibrálása</string>
     <string name="accel_calibrate">Kalibrálás</string>
     <string name="accel_calibration_start">Indítás</string>
-    <string name="accel_calibration_help">A kalibrálást a magasságmérő végzi (2.5-ös vagy újabb firmware). A panelt mind a 6 oldalára fel kell tenni (X, Y és Z felfelé és lefelé). Minden oldalon tartsa mozdulatlanul a rövid sípszóig, majd fordítsa egy másik oldalára. Egy hosszú sípszó befejezi a kalibrálást, 5 rövid hibát jelez. Legfeljebb 2 perc; maradjon ezen a képernyőn, és a kalibrálás alatt ne küldjön semmit.</string>
+    <string name="accel_calibration_help">A kalibrálást a magasságmérő végzi (kalibrálást tartalmazó firmware: RocketFlightLogger 2.5, TTGO Bear 0.6, UltimateAltimeter 0.7). A panelt mind a 6 oldalára fel kell tenni (X, Y és Z felfelé és lefelé). Minden oldalon tartsa mozdulatlanul, amíg az oldal be nem kerül a pipák közé ebben az ablakban (rövid sípszó vagy üzenet az Ultimate képernyőjén), majd fordítsa egy másik oldalára. Legfeljebb 2 perc; maradjon ezen a képernyőn, és a kalibrálás alatt ne küldjön semmit.</string>
     <string name="accel_calibration_waiting">Várakozás a magasságmérőre…</string>
-    <string name="accel_calibration_any_order">Tegye a panelt minden oldalára, tetszőleges sorrendben. Tartsa mozdulatlanul a rövid sípszóig, majd fordítsa meg.</string>
+    <string name="accel_calibration_any_order">Tegye a panelt minden oldalára, tetszőleges sorrendben. Tartsa mozdulatlanul, amíg az oldal lent be nem pipálódik, majd fordítsa meg.</string>
     <string name="accel_calibration_fixed_order">Tegye a panelt az oldalaira a kért sorrendben. Tartsa mozdulatlanul a rövid sípszóig, majd fordítsa meg.</string>
     <string name="accel_calibration_next_face">%1$d/6. oldal: tegye a panelt így: %2$s, mozdulatlanul a sípszóig.</string>
     <string name="accel_calibration_stop">Leállítás</string>
@@ -632,7 +632,7 @@
     <string name="accel_calibration_saved_msg">A kalibrálás elmentve a magasságmérőben. A mostantól érkező értékek kalibráltak.</string>
     <string name="accel_calibration_failed_msg">A kalibrálás sikertelen: az előző kalibrálás megmarad.</string>
     <string name="accel_calibration_stopped_msg">Kalibrálás leállítva: az előző kalibrálás megmarad.</string>
-    <string name="accel_calibration_not_supported">A magasságmérő nem válaszolt a kalibrálási parancsra: 2.5-ös vagy újabb firmware szükséges gyorsulásmérős panelen.</string>
+    <string name="accel_calibration_not_supported">A magasságmérő nem válaszolt a kalibrálási parancsra: a firmware-e még nem ismeri, frissítse a firmware-t.</string>
     <string name="accel_calibration_no_answer">Nincs válasz a magasságmérőtől: ellenőrizze a kapcsolatot.</string>
     <string name="accel_face_x_up">X felfelé</string>
     <string name="accel_face_x_down">X lefelé</string>
@@ -645,4 +645,18 @@
     <string name="attitude_tilt">Dőlés</string>
     <string name="attitude_total_accel">Összes</string>
     <string name="attitude_moving">A rakéta mozog</string>
+    <!-- Bluetooth link lost (ConsoleApplication) -->
+    <string name="bt_link_lost">A kapcsolat megszakadt a magasságmérővel (a modul ki van kapcsolva vagy hatótávon kívül van)</string>
+    <!-- Flight replay tab (FlightViewReplayFragment) -->
+    <string name="replay_note">A magasságmérő csak a gyorsulásmérőt rögzíti: a repülés közbeni helyzet és orsózás nem mérhető, a rakéta függőlegesen van rajzolva.</string>
+    <string name="replay_no_data">Ebben a repülésben nincs magassági adat.</string>
+    <string name="replay_phase_pad">Az indítóállványon</string>
+    <string name="replay_phase_boost">Hajtott repülés</string>
+    <string name="replay_phase_coast">Szabad repülés</string>
+    <string name="replay_phase_drogue">Süllyedés fékező ernyővel</string>
+    <string name="replay_phase_main">Süllyedés főernyővel</string>
+    <string name="replay_phase_landed">Leszállt</string>
+    <string name="replay_altitude">Mag.</string>
+    <string name="replay_speed">Sebesség</string>
+    <string name="replay_accel">Gyors.</string>
 </resources>

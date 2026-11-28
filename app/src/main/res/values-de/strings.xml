@@ -622,9 +622,9 @@
     <string name="accel_calibration_title">Beschleunigungssensor-Kalibrierung</string>
     <string name="accel_calibrate">Kalibrieren</string>
     <string name="accel_calibration_start">Starten</string>
-    <string name="accel_calibration_help">Die Kalibrierung erfolgt durch den Höhenmesser (Firmware 2.5 oder neuer). Die Platine wird auf jede ihrer 6 Seiten gelegt (X, Y und Z nach oben und nach unten). Halten Sie sie auf jeder Seite bis zum kurzen Piepton ruhig und drehen Sie sie dann auf eine andere Seite. Ein langer Piepton beendet die Kalibrierung, 5 kurze bedeuten einen Fehler. Höchstens 2 Minuten; bleiben Sie auf diesem Bildschirm und senden Sie während der Kalibrierung nichts.</string>
+    <string name="accel_calibration_help">Die Kalibrierung erfolgt durch den Höhenmesser (Firmware mit Kalibrierung: RocketFlightLogger 2.5, TTGO Bear 0.6, UltimateAltimeter 0.7). Die Platine wird auf jede ihrer 6 Seiten gelegt (X, Y und Z nach oben und nach unten). Halten Sie sie auf jeder Seite ruhig, bis die Seite in diesem Fenster abgehakt ist (kurzer Piepton oder Meldung auf dem Bildschirm des Ultimate), und drehen Sie sie dann auf eine andere Seite. Höchstens 2 Minuten; bleiben Sie auf diesem Bildschirm und senden Sie während der Kalibrierung nichts.</string>
     <string name="accel_calibration_waiting">Warten auf den Höhenmesser…</string>
-    <string name="accel_calibration_any_order">Legen Sie die Platine in beliebiger Reihenfolge auf jede Seite. Bis zum kurzen Piepton ruhig halten, dann drehen.</string>
+    <string name="accel_calibration_any_order">Legen Sie die Platine in beliebiger Reihenfolge auf jede Seite. Ruhig halten, bis die Seite unten abgehakt ist, dann drehen.</string>
     <string name="accel_calibration_fixed_order">Legen Sie die Platine in der verlangten Reihenfolge auf die Seiten. Bis zum kurzen Piepton ruhig halten, dann drehen.</string>
     <string name="accel_calibration_next_face">Seite %1$d/6: Platine %2$s legen, bis zum Piepton ruhig halten.</string>
     <string name="accel_calibration_stop">Stoppen</string>
@@ -632,7 +632,7 @@
     <string name="accel_calibration_saved_msg">Kalibrierung im Höhenmesser gespeichert. Die ab jetzt empfangenen Werte sind kalibriert.</string>
     <string name="accel_calibration_failed_msg">Kalibrierung fehlgeschlagen: die vorherige Kalibrierung bleibt erhalten.</string>
     <string name="accel_calibration_stopped_msg">Kalibrierung gestoppt: die vorherige Kalibrierung bleibt erhalten.</string>
-    <string name="accel_calibration_not_supported">Der Höhenmesser hat nicht auf den Kalibrierbefehl geantwortet: Firmware 2.5 oder neuer auf einer Platine mit Beschleunigungssensor nötig.</string>
+    <string name="accel_calibration_not_supported">Der Höhenmesser hat nicht auf den Kalibrierbefehl geantwortet: seine Firmware kennt ihn noch nicht, bitte die Firmware aktualisieren.</string>
     <string name="accel_calibration_no_answer">Keine Antwort vom Höhenmesser: Verbindung prüfen.</string>
     <string name="accel_face_x_up">X nach oben</string>
     <string name="accel_face_x_down">X nach unten</string>
@@ -645,4 +645,18 @@
     <string name="attitude_tilt">Neigung</string>
     <string name="attitude_total_accel">Gesamt</string>
     <string name="attitude_moving">Rakete bewegt sich</string>
+    <!-- Bluetooth link lost (ConsoleApplication) -->
+    <string name="bt_link_lost">Verbindung zum Höhenmesser verloren (Modul ausgeschaltet oder außer Reichweite)</string>
+    <!-- Flight replay tab (FlightViewReplayFragment) -->
+    <string name="replay_note">Der Höhenmesser zeichnet nur den Beschleunigungssensor auf: Lage und Rollen im Flug werden nicht gemessen, die Rakete wird senkrecht gezeichnet.</string>
+    <string name="replay_no_data">Keine Höhendaten in diesem Flug.</string>
+    <string name="replay_phase_pad">Auf der Startrampe</string>
+    <string name="replay_phase_boost">Antriebsphase</string>
+    <string name="replay_phase_coast">Freiflug</string>
+    <string name="replay_phase_drogue">Abstieg am Bremsschirm</string>
+    <string name="replay_phase_main">Abstieg am Hauptschirm</string>
+    <string name="replay_phase_landed">Gelandet</string>
+    <string name="replay_altitude">Höhe</string>
+    <string name="replay_speed">Geschw.</string>
+    <string name="replay_accel">Beschl.</string>
 </resources>

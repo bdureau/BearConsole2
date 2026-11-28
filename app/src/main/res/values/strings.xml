@@ -636,9 +636,9 @@
     <string name="accel_calibration_title">Accelerometer calibration</string>
     <string name="accel_calibrate">Calibrate</string>
     <string name="accel_calibration_start">Start</string>
-    <string name="accel_calibration_help">The calibration is done by the altimeter (firmware 2.5 or later). The board is put on each of its 6 faces (X, Y and Z up and down). On each face keep it still until the short beep, then turn it onto another face. A long beep ends the calibration, 5 short beeps mean it failed. 2 minutes maximum; stay on this screen and do not send anything during the calibration.</string>
+    <string name="accel_calibration_help">The calibration is done by the altimeter (firmware with the calibration: RocketFlightLogger 2.5, TTGO Bear 0.6, UltimateAltimeter 0.7). The board is put on each of its 6 faces (X, Y and Z up and down). On each face keep it still until the face is checked in this window (short beep, or message on the screen of the Ultimate altimeter), then turn it onto another face. 2 minutes maximum; stay on this screen and do not send anything during the calibration.</string>
     <string name="accel_calibration_waiting">Waiting for the altimeter…</string>
-    <string name="accel_calibration_any_order">Put the board on each face, in any order. Keep it still until the short beep, then turn it.</string>
+    <string name="accel_calibration_any_order">Put the board on each face, in any order. Keep it still until the face is checked below, then turn it.</string>
     <string name="accel_calibration_fixed_order">Put the board on the faces in the order asked. Keep it still until the short beep, then turn it.</string>
     <string name="accel_calibration_next_face">Face %1$d/6: put the board %2$s, keep it still until the beep.</string>
     <string name="accel_calibration_stop">Stop</string>
@@ -646,7 +646,7 @@
     <string name="accel_calibration_saved_msg">Calibration saved in the altimeter. The values received from now on are calibrated.</string>
     <string name="accel_calibration_failed_msg">Calibration failed: the previous calibration is kept.</string>
     <string name="accel_calibration_stopped_msg">Calibration stopped: the previous calibration is kept.</string>
-    <string name="accel_calibration_not_supported">The altimeter did not answer the calibration command: it needs the firmware 2.5 or later on an accelerometer board.</string>
+    <string name="accel_calibration_not_supported">The altimeter did not answer the calibration command: its firmware does not have it yet, update the firmware.</string>
     <string name="accel_calibration_no_answer">No answer from the altimeter: check the connection.</string>
     <string name="accel_face_x_up">X up</string>
     <string name="accel_face_x_down">X down</string>
@@ -659,4 +659,18 @@
     <string name="attitude_tilt">Tilt</string>
     <string name="attitude_total_accel">Total</string>
     <string name="attitude_moving">Rocket moving</string>
+    <!-- Bluetooth link lost (ConsoleApplication) -->
+    <string name="bt_link_lost">Connection with the altimeter lost (module switched off or out of range)</string>
+    <!-- Flight replay tab (FlightViewReplayFragment) -->
+    <string name="replay_note">The altimeter records an accelerometer only: the attitude and the roll in flight are not measured, the rocket is drawn vertical.</string>
+    <string name="replay_no_data">No altitude data in this flight.</string>
+    <string name="replay_phase_pad">On the pad</string>
+    <string name="replay_phase_boost">Powered flight</string>
+    <string name="replay_phase_coast">Coasting</string>
+    <string name="replay_phase_drogue">Descent under drogue</string>
+    <string name="replay_phase_main">Descent under main</string>
+    <string name="replay_phase_landed">Landed</string>
+    <string name="replay_altitude">Alt.</string>
+    <string name="replay_speed">Speed</string>
+    <string name="replay_accel">Accel.</string>
 </resources>

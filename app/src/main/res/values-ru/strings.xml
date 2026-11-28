@@ -622,9 +622,9 @@
     <string name="accel_calibration_title">Калибровка акселерометров</string>
     <string name="accel_calibrate">Калибровать</string>
     <string name="accel_calibration_start">Начать</string>
-    <string name="accel_calibration_help">Калибровку выполняет высотомер (прошивка 2.5 или новее). Плату кладут на каждую из 6 граней (X, Y и Z вверх и вниз). На каждой грани держите её неподвижно до короткого сигнала, затем переверните на другую грань. Длинный сигнал завершает калибровку, 5 коротких означают ошибку. Не более 2 минут; оставайтесь на этом экране и ничего не отправляйте во время калибровки.</string>
+    <string name="accel_calibration_help">Калибровку выполняет высотомер (прошивка с калибровкой: RocketFlightLogger 2.5, TTGO Bear 0.6, UltimateAltimeter 0.7). Плату кладут на каждую из 6 граней (X, Y и Z вверх и вниз). На каждой грани держите её неподвижно, пока грань не будет отмечена в этом окне (короткий сигнал или сообщение на экране Ultimate), затем переверните на другую грань. Не более 2 минут; оставайтесь на этом экране и ничего не отправляйте во время калибровки.</string>
     <string name="accel_calibration_waiting">Ожидание высотомера…</string>
-    <string name="accel_calibration_any_order">Кладите плату на каждую грань в любом порядке. Держите её неподвижно до короткого сигнала, затем переворачивайте.</string>
+    <string name="accel_calibration_any_order">Кладите плату на каждую грань в любом порядке. Держите её неподвижно, пока грань не будет отмечена ниже, затем переворачивайте.</string>
     <string name="accel_calibration_fixed_order">Кладите плату на грани в требуемом порядке. Держите её неподвижно до короткого сигнала, затем переворачивайте.</string>
     <string name="accel_calibration_next_face">Грань %1$d/6: положите плату так: %2$s, неподвижно до сигнала.</string>
     <string name="accel_calibration_stop">Остановить</string>
@@ -632,7 +632,7 @@
     <string name="accel_calibration_saved_msg">Калибровка сохранена в высотомере. Получаемые теперь значения откалиброваны.</string>
     <string name="accel_calibration_failed_msg">Калибровка не удалась: сохранена предыдущая калибровка.</string>
     <string name="accel_calibration_stopped_msg">Калибровка остановлена: сохранена предыдущая калибровка.</string>
-    <string name="accel_calibration_not_supported">Высотомер не ответил на команду калибровки: нужна прошивка 2.5 или новее на плате с акселерометром.</string>
+    <string name="accel_calibration_not_supported">Высотомер не ответил на команду калибровки: в его прошивке её ещё нет, обновите прошивку.</string>
     <string name="accel_calibration_no_answer">Нет ответа от высотомера: проверьте соединение.</string>
     <string name="accel_face_x_up">X вверх</string>
     <string name="accel_face_x_down">X вниз</string>
@@ -645,4 +645,18 @@
     <string name="attitude_tilt">Наклон</string>
     <string name="attitude_total_accel">Всего</string>
     <string name="attitude_moving">Ракета движется</string>
+    <!-- Bluetooth link lost (ConsoleApplication) -->
+    <string name="bt_link_lost">Связь с высотомером потеряна (модуль выключен или вне зоны действия)</string>
+    <!-- Flight replay tab (FlightViewReplayFragment) -->
+    <string name="replay_note">Высотомер записывает только акселерометр: ориентация и вращение в полёте не измеряются, ракета нарисована вертикально.</string>
+    <string name="replay_no_data">В этом полёте нет данных высоты.</string>
+    <string name="replay_phase_pad">На стартовом столе</string>
+    <string name="replay_phase_boost">Активный участок</string>
+    <string name="replay_phase_coast">Пассивный полёт</string>
+    <string name="replay_phase_drogue">Спуск на тормозном парашюте</string>
+    <string name="replay_phase_main">Спуск на основном парашюте</string>
+    <string name="replay_phase_landed">Приземлилась</string>
+    <string name="replay_altitude">Выс.</string>
+    <string name="replay_speed">Скор.</string>
+    <string name="replay_accel">Ускор.</string>
 </resources>

@@ -622,9 +622,9 @@
     <string name="accel_calibration_title">Calibração dos acelerómetros</string>
     <string name="accel_calibrate">Calibrar</string>
     <string name="accel_calibration_start">Iniciar</string>
-    <string name="accel_calibration_help">A calibração é feita pelo altímetro (firmware 2.5 ou posterior). A placa é colocada sobre cada uma das suas 6 faces (X, Y e Z para cima e para baixo). Em cada face mantenha-a imóvel até ao apito curto e depois vire-a para outra face. Um apito longo termina a calibração, 5 apitos curtos indicam uma falha. 2 minutos no máximo; fique neste ecrã e não envie nada durante a calibração.</string>
+    <string name="accel_calibration_help">A calibração é feita pelo altímetro (firmware com calibração: RocketFlightLogger 2.5, TTGO Bear 0.6, UltimateAltimeter 0.7). A placa é colocada sobre cada uma das suas 6 faces (X, Y e Z para cima e para baixo). Em cada face mantenha-a imóvel até a face ficar assinalada nesta janela (apito curto ou mensagem no ecrã do Ultimate) e depois vire-a para outra face. 2 minutos no máximo; fique neste ecrã e não envie nada durante a calibração.</string>
     <string name="accel_calibration_waiting">A aguardar o altímetro…</string>
-    <string name="accel_calibration_any_order">Coloque a placa sobre cada face, por qualquer ordem. Mantenha-a imóvel até ao apito curto e depois vire-a.</string>
+    <string name="accel_calibration_any_order">Coloque a placa sobre cada face, por qualquer ordem. Mantenha-a imóvel até a face ficar assinalada abaixo e depois vire-a.</string>
     <string name="accel_calibration_fixed_order">Coloque a placa sobre as faces pela ordem pedida. Mantenha-a imóvel até ao apito curto e depois vire-a.</string>
     <string name="accel_calibration_next_face">Face %1$d/6: coloque a placa com %2$s, imóvel até ao apito.</string>
     <string name="accel_calibration_stop">Parar</string>
@@ -632,7 +632,7 @@
     <string name="accel_calibration_saved_msg">Calibração guardada no altímetro. Os valores recebidos a partir de agora estão calibrados.</string>
     <string name="accel_calibration_failed_msg">A calibração falhou: a calibração anterior é mantida.</string>
     <string name="accel_calibration_stopped_msg">Calibração parada: a calibração anterior é mantida.</string>
-    <string name="accel_calibration_not_supported">O altímetro não respondeu ao comando de calibração: é necessário o firmware 2.5 ou posterior numa placa com acelerómetro.</string>
+    <string name="accel_calibration_not_supported">O altímetro não respondeu ao comando de calibração: o seu firmware ainda não o tem, atualize o firmware.</string>
     <string name="accel_calibration_no_answer">Sem resposta do altímetro: verifique a ligação.</string>
     <string name="accel_face_x_up">X para cima</string>
     <string name="accel_face_x_down">X para baixo</string>
@@ -645,4 +645,18 @@
     <string name="attitude_tilt">Inclinação</string>
     <string name="attitude_total_accel">Total</string>
     <string name="attitude_moving">Foguete em movimento</string>
+    <!-- Bluetooth link lost (ConsoleApplication) -->
+    <string name="bt_link_lost">Ligação ao altímetro perdida (módulo desligado ou fora de alcance)</string>
+    <!-- Flight replay tab (FlightViewReplayFragment) -->
+    <string name="replay_note">O altímetro só regista o acelerómetro: a atitude e o rolamento em voo não são medidos, o foguete é desenhado na vertical.</string>
+    <string name="replay_no_data">Sem dados de altitude neste voo.</string>
+    <string name="replay_phase_pad">Na rampa</string>
+    <string name="replay_phase_boost">Voo propulsionado</string>
+    <string name="replay_phase_coast">Voo balístico</string>
+    <string name="replay_phase_drogue">Descida com drogue</string>
+    <string name="replay_phase_main">Descida com paraquedas principal</string>
+    <string name="replay_phase_landed">Aterrado</string>
+    <string name="replay_altitude">Alt.</string>
+    <string name="replay_speed">Veloc.</string>
+    <string name="replay_accel">Acel.</string>
 </resources>

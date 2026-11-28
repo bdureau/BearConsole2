@@ -29,7 +29,11 @@ package com.altimeter.bdureau.bearconsole;
 
 import android.Manifest;
 import android.app.Application;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -38,15 +42,21 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.content.IntentCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
 import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import com.altimeter.bdureau.bearconsole.connection.BluetoothConnection;
 import com.altimeter.bdureau.bearconsole.connection.UsbConnection;
+import com.altimeter.bdureau.bearconsole.utils.AccelBoards;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -235,6 +245,58 @@ public class ConsoleApplication extends Application {
         UsbCon = new UsbConnection();
 
         myTypeOfConnection = AppConf.getConnectionTypeValue();
+
+        // Detection of a lost Bluetooth link (module switched off, out of range, battery)
+        BTCon.setLinkLostListener(this::onBluetoothLinkLost);
+        ContextCompat.registerReceiver(this, bluetoothLinkWatcher,
+                new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED),
+                ContextCompat.RECEIVER_NOT_EXPORTED);
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // Lost Bluetooth link
+    // ---------------------------------------------------------------------------------------
+
+    /** Time of the last link loss (ms), observed by the main screen to refresh its buttons. */
+    private final MutableLiveData<Long> linkLostEvent = new MutableLiveData<>();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    /** Event posted each time the Bluetooth link is found lost (value = time in ms). */
+    public LiveData<Long> getLinkLostEvent() {
+        return linkLostEvent;
+    }
+
+    /**
+     * Android reports the end of the Bluetooth link with the module (system broadcast, also
+     * received with RECEIVER_NOT_EXPORTED). Before, the loss was never detected: write errors
+     * were only logged and getConnected() stayed true, so the screens kept showing "Disconnect"
+     * and waited for data that never came.
+     */
+    private final BroadcastReceiver bluetoothLinkWatcher = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(intent.getAction())) return;
+            BluetoothDevice device = IntentCompat.getParcelableExtra(intent,
+                    BluetoothDevice.EXTRA_DEVICE, BluetoothDevice.class);
+            // Another Bluetooth device of the phone (headset, watch...): not our link
+            if (device != null && address != null && !address.equalsIgnoreCase(device.getAddress()))
+                return;
+            onBluetoothLinkLost();
+        }
+    };
+
+    /**
+     * The Bluetooth link is broken: close it (the reads in progress stop, getConnected()
+     * returns false), tell the user and notify the main screen. Nothing is done when the
+     * link was already closed (Disconnect button), so a normal disconnection is silent.
+     */
+    private void onBluetoothLinkLost() {
+        if (!"bluetooth".equals(myTypeOfConnection) || !BTCon.getBTConnected()) return;
+        Log.w(TAG, "Bluetooth link lost");
+        exit = true;
+        BTCon.Disconnect();
+        linkLostEvent.postValue(System.currentTimeMillis());
+        mainHandler.post(() -> Toast.makeText(this, R.string.bt_link_lost, Toast.LENGTH_LONG).show());
     }
 
     public String getConnectionType() {
@@ -872,8 +934,8 @@ public class ConsoleApplication extends Application {
             }
         }
 
-        // TTGO board: fields 18..20 -> messages 26..28
-        if (isAltimeter("TTGOBearAltimeter")) {
+        // TTGO and Ultimate boards: one 3-axis accelerometer, fields 18..20 -> messages 26..28
+        if (isAltimeter("TTGOBearAltimeter", "UltimateAltimeter")) {
             for (int i = 18; i <= 20; i++) {
                 sendTelemetryField(handler, s, i, i + 8);
             }
@@ -929,11 +991,13 @@ public class ConsoleApplication extends Application {
             }
         }
 
-        // Ultimate altimeter: one 3-axis accelerometer in fields 6..8 (no battery channel)
+        // Ultimate altimeter: one 3-axis accelerometer (QMI8658) in fields 6..8 (no battery
+        // channel). Its firmware sends thousandths of g, not of m/s^2 (see AccelBoards).
         if (isAltimeter("UltimateAltimeter")) {
             for (int i = 6; i <= 8; i++) {
                 if (has(s, i))
-                    MyFlight.AddToFlight(time, accelToMs2(sField(s, i, 0)), flightName, i - 1);
+                    MyFlight.AddToFlight(time, AccelBoards.toMs2("UltimateAltimeter",
+                            sField(s, i, 0)), flightName, i - 1);
             }
         }
 

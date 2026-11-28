@@ -39,6 +39,24 @@ public class BluetoothConnection {
     private BluetoothAdapter myBluetooth = null;
     private volatile BluetoothSocket btSocket = null;
     private volatile boolean isBtConnected = false;
+    // Called when a write fails on an opened link (module switched off or out of range)
+    private volatile Runnable linkLostListener = null;
+
+    /**
+     * Listener called when the link is found broken by a failed write. Android also reports
+     * the loss with ACTION_ACL_DISCONNECTED (see ConsoleApplication), but only after the
+     * Bluetooth supervision timeout: a failed write is often the first sign.
+     */
+    public void setLinkLostListener(Runnable listener) {
+        linkLostListener = listener;
+    }
+
+    private void notifyLinkLost() {
+        Runnable listener = linkLostListener;
+        if (isBtConnected && listener != null) {
+            listener.run();
+        }
+    }
 
     /**
      * Opens the RFCOMM link to the module. Blocking call (several seconds when the module
@@ -140,6 +158,8 @@ public class BluetoothConnection {
             socket.getOutputStream().write(data.getBytes());
         } catch (IOException e) {
             Log.w(TAG, "Write failed", e);
+            // "Broken pipe": the module is gone, the link must not be reported as connected
+            notifyLinkLost();
         }
     }
 
@@ -150,6 +170,7 @@ public class BluetoothConnection {
             socket.getOutputStream().flush();
         } catch (IOException e) {
             Log.w(TAG, "Flush failed", e);
+            notifyLinkLost();
         }
     }
 

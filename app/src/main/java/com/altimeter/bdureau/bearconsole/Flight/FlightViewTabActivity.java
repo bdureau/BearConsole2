@@ -37,9 +37,11 @@ import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewInfoFragmen
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewMpFragment;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewOpenMapFragment;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightView3DFragment;
+import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewReplayFragment;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.utils.AccelBoards;
 import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewInfoAccelFragment;
@@ -416,9 +418,9 @@ public class FlightViewTabActivity extends BaseActivity {
 
         adapter.addFragment(flightPage2);
 
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
+        // Accelerometer maxima for every board recording accelerations (ESP32 accelerometer
+        // boards, TTGO boards, UltimateAltimeter)
+        if (AccelBoards.hasFlightAccel(myBT.getAltiConfigData().getAltimeterName())) {
             flightPage2bis = new FlightViewInfoAccelFragment(myflight,
                     allFlightData,
                     myBT,
@@ -426,6 +428,10 @@ public class FlightViewTabActivity extends BaseActivity {
                     FlightName);
 
             adapter.addFragment(flightPage2bis);
+
+            // 3D replay of the flight (rocket moving along the altitude). The fragment reads
+            // the flight from this activity (getAllFlightData()).
+            adapter.addFragment(new FlightViewReplayFragment());
         }
 
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
@@ -490,13 +496,14 @@ public class FlightViewTabActivity extends BaseActivity {
     /**
      * Shows the buttons drawn over the tabs according to the displayed tab:
      *  - Select curves: only on the curves tab (first tab);
-     *  - Dismiss: hidden on the 3D tab, where it would cover the display options of the
-     *    scene (the system Back button still closes the screen).
+     *  - Dismiss: hidden on the 3D and replay tabs, where it would cover the display options
+     *    or the replay bar (the system Back button still closes the screen).
      */
     private void updateBottomButtons(int position) {
         butSelectCurves.setVisibility(position == 0 ? View.VISIBLE : View.INVISIBLE);
         boolean is3dTab = adapter != null && position >= 0 && position < adapter.getCount()
-                && adapter.getItem(position) instanceof FlightView3DFragment;
+                && (adapter.getItem(position) instanceof FlightView3DFragment
+                || adapter.getItem(position) instanceof FlightViewReplayFragment);
         btnDismiss.setVisibility(is3dTab ? View.GONE : View.VISIBLE);
     }
 

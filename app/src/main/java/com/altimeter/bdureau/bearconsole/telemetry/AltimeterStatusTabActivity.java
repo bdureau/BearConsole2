@@ -59,6 +59,7 @@ import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import com.altimeter.bdureau.bearconsole.connection.TelemetryReader;
 import com.altimeter.bdureau.bearconsole.connection.AccelCalibrationSession;
+import com.altimeter.bdureau.bearconsole.utils.AccelBoards;
 import com.altimeter.bdureau.bearconsole.utils.TabPagerAdapter;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
@@ -107,6 +108,8 @@ public class AltimeterStatusTabActivity extends BaseActivity
     private final int[][] accelMilli = new int[2][3];
     // true once a complete X Y Z sample of the sensor has been received
     private final boolean[] accelReceived = new boolean[2];
+    // true when an axis of the sample being received was missing (Ultimate: -1)
+    private final boolean[] accelSampleMissing = new boolean[2];
     // true while the altimeter calibrates its accelerometers (telemetry stream stopped)
     private boolean calibrating = false;
     private AccelCalibrationSession calibration = null;
@@ -284,7 +287,9 @@ public class AltimeterStatusTabActivity extends BaseActivity
      * One accelerometer axis received in a telemetry frame (msg.what 26..31, thousandths of m/s^2:
      * the firmware sends 1000 x the acceleration in m/s^2, 9807 for 1 g).
      *  - ESP32 accelerometer boards: 26..28 = ADXL375 X Y Z, 29..31 = ADXL345 X Y Z;
-     *  - TTGOBearAltimeter: 26..28 = ADXL345 X Y Z.
+     *  - TTGOBearAltimeter: 26..28 = ADXL345 X Y Z;
+     *  - UltimateAltimeter: 26..28 = QMI8658 X Y Z, sent in thousandths of g (converted here,
+     *    see AccelBoards); -1 on the three axes when the IMU had no new sample.
      * When the Z axis (last field of a sensor in the frame) arrives, the complete sample is
      * given to the 3D rocket view.
      */
@@ -292,20 +297,27 @@ public class AltimeterStatusTabActivity extends BaseActivity
         if (!ConsoleApplication.isSignedNumber(value)) return;
         String name = myBT.getAltiConfigData().getAltimeterName();
         int sensor, axis;
-        if (name.equals("AltiMultiESP32_accel") || name.equals("AltiMultiESP32_accel_345")
-                || name.equals("AltiMultiESP32_accel_375")) {
+        if (AccelBoards.isEsp32Accel(name)) {
             sensor = (what <= 28) ? AltimeterAccelFragment.SENSOR_375 : AltimeterAccelFragment.SENSOR_345;
             axis = (what - 26) % 3;
-        } else if (name.equals("TTGOBearAltimeter") && what <= 28) {
+        } else if (AccelBoards.hasLiveAccel(name) && what <= 28) {
+            // Single low g sensor (TTGO: ADXL345, Ultimate: QMI8658)
             sensor = AltimeterAccelFragment.SENSOR_345;
             axis = what - 26;
         } else {
             return;
         }
-        int milli = ConsoleApplication.parseIntSafe(value, 0);
+        int raw = ConsoleApplication.parseIntSafe(value, 0);
+        if (axis == 0) accelSampleMissing[sensor] = false;
+        if (AccelBoards.sendsMilliG(name) && raw == -1) {
+            // "No new sample" marker of the Ultimate firmware: keep the last values
+            accelSampleMissing[sensor] = true;
+            return;
+        }
+        int milli = AccelBoards.toMilliMs2(name, raw);
         accelMilli[sensor][axis] = milli;
         statusPage1ter.setAccelValue(sensor, axis, milli);
-        if (axis == 2) {
+        if (axis == 2 && !accelSampleMissing[sensor]) {
             accelReceived[sensor] = true;
             updateAttitude();
         }
@@ -614,18 +626,13 @@ public class AltimeterStatusTabActivity extends BaseActivity
 
 
         adapter.addFragment(statusPage1);
-        if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
+        // Accelerometer values and 3D rocket for every board sending live accelerations
+        // (ESP32 accelerometer boards, TTGOBearAltimeter, UltimateAltimeter)
+        if (AccelBoards.hasLiveAccel(myBT.getAltiConfigData().getAltimeterName())) {
             statusPage1ter = new AltimeterAccelFragment(myBT);
             adapter.addFragment(statusPage1ter);
             statusPage5 = new RocketViewFragment();
             adapter.addFragment(statusPage5);
-        }
-
-        if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
-            statusPage1ter = new AltimeterAccelFragment(myBT);
-            adapter.addFragment(statusPage1ter);
         }
         if (!myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter") &&
                 !myBT.getAltiConfigData().getAltimeterName().equals("TTGOMiniBearAltimeter") &&

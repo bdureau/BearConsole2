@@ -622,9 +622,9 @@
     <string name="accel_calibration_title">Calibrazione degli accelerometri</string>
     <string name="accel_calibrate">Calibra</string>
     <string name="accel_calibration_start">Avvia</string>
-    <string name="accel_calibration_help">La calibrazione è eseguita dall\'altimetro (firmware 2.5 o successivo). La scheda viene appoggiata su ciascuna delle sue 6 facce (X, Y e Z verso l\'alto e verso il basso). Su ogni faccia tenerla ferma fino al bip breve, poi girarla su un\'altra faccia. Un bip lungo termina la calibrazione, 5 bip brevi indicano un errore. Massimo 2 minuti; restare su questa schermata e non inviare nulla durante la calibrazione.</string>
+    <string name="accel_calibration_help">La calibrazione è eseguita dall\'altimetro (firmware con calibrazione: RocketFlightLogger 2.5, TTGO Bear 0.6, UltimateAltimeter 0.7). La scheda viene appoggiata su ciascuna delle sue 6 facce (X, Y e Z verso l\'alto e verso il basso). Su ogni faccia tenerla ferma finché la faccia non è spuntata in questa finestra (bip breve o messaggio sullo schermo dell\'Ultimate), poi girarla su un\'altra faccia. Massimo 2 minuti; restare su questa schermata e non inviare nulla durante la calibrazione.</string>
     <string name="accel_calibration_waiting">In attesa dell\'altimetro…</string>
-    <string name="accel_calibration_any_order">Appoggiare la scheda su ogni faccia, in qualsiasi ordine. Tenerla ferma fino al bip breve, poi girarla.</string>
+    <string name="accel_calibration_any_order">Appoggiare la scheda su ogni faccia, in qualsiasi ordine. Tenerla ferma finché la faccia non è spuntata qui sotto, poi girarla.</string>
     <string name="accel_calibration_fixed_order">Appoggiare la scheda sulle facce nell\'ordine richiesto. Tenerla ferma fino al bip breve, poi girarla.</string>
     <string name="accel_calibration_next_face">Faccia %1$d/6: mettere la scheda con %2$s, ferma fino al bip.</string>
     <string name="accel_calibration_stop">Ferma</string>
@@ -632,7 +632,7 @@
     <string name="accel_calibration_saved_msg">Calibrazione salvata nell\'altimetro. I valori ricevuti da ora sono calibrati.</string>
     <string name="accel_calibration_failed_msg">Calibrazione fallita: viene mantenuta la calibrazione precedente.</string>
     <string name="accel_calibration_stopped_msg">Calibrazione interrotta: viene mantenuta la calibrazione precedente.</string>
-    <string name="accel_calibration_not_supported">L\'altimetro non ha risposto al comando di calibrazione: serve il firmware 2.5 o successivo su una scheda con accelerometro.</string>
+    <string name="accel_calibration_not_supported">L\'altimetro non ha risposto al comando di calibrazione: il suo firmware non lo ha ancora, aggiornare il firmware.</string>
     <string name="accel_calibration_no_answer">Nessuna risposta dall\'altimetro: controllare la connessione.</string>
     <string name="accel_face_x_up">X verso l\'alto</string>
     <string name="accel_face_x_down">X verso il basso</string>
@@ -645,4 +645,18 @@
     <string name="attitude_tilt">Inclinazione</string>
     <string name="attitude_total_accel">Totale</string>
     <string name="attitude_moving">Razzo in movimento</string>
+    <!-- Bluetooth link lost (ConsoleApplication) -->
+    <string name="bt_link_lost">Connessione con l\'altimetro persa (modulo spento o fuori portata)</string>
+    <!-- Flight replay tab (FlightViewReplayFragment) -->
+    <string name="replay_note">L\'altimetro registra solo l\'accelerometro: assetto e rollio in volo non sono misurati, il razzo è disegnato verticale.</string>
+    <string name="replay_no_data">Nessun dato di altitudine in questo volo.</string>
+    <string name="replay_phase_pad">Sulla rampa</string>
+    <string name="replay_phase_boost">Volo propulso</string>
+    <string name="replay_phase_coast">Volo balistico</string>
+    <string name="replay_phase_drogue">Discesa con drogue</string>
+    <string name="replay_phase_main">Discesa con paracadute principale</string>
+    <string name="replay_phase_landed">Atterrato</string>
+    <string name="replay_altitude">Alt.</string>
+    <string name="replay_speed">Veloc.</string>
+    <string name="replay_accel">Accel.</string>
 </resources>

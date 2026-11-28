@@ -20,8 +20,12 @@ package com.altimeter.bdureau.bearconsole.utils;
  *  perpendicular to the body and the total acceleration; when the acceleration is far from
  *  1 g (rocket moving) the attitude is not meaningful and the HUD says so.
  *  The quaternion / Euler inputs of the gimbal console are kept (setInputString()).
+ *  The body is checkered red and white (Tintin's moon rocket, generated texture) with one
+ *  white fin, so that a rotation around the long axis is clearly seen.
+ *  The sketch is created with the size of the view that shows it (Rocket(width, height)):
+ *  the scene and the HUD are scaled to it, nothing is cropped.
  *  Needs the processing-core.jar library and the CourierNew36.vlw font of the assets
- *  (pattern.png is optional: a checkerboard texture is generated when it is missing).
+ *  (pattern.png is no longer used).
  * ============================================================================
  */
 
@@ -58,6 +62,19 @@ public class Rocket extends PApplet {
             labelWaiting = "Waiting";
     private volatile boolean hasAccelData = false;
 
+    // ---------------------------------------------------------------------------------
+    // Flight replay mode (trajectory)
+    // ---------------------------------------------------------------------------------
+    /** Flight phases of the replay (setReplayState()). */
+    public static final int PHASE_PAD = 0, PHASE_BOOST = 1, PHASE_COAST = 2, PHASE_DROGUE = 3,
+            PHASE_MAIN = 4, PHASE_LANDED = 5;
+    private volatile boolean replayMode = false;
+    private volatile float replayAltFrac = 0;     // altitude / maximum altitude (0..1)
+    private volatile float replayPeakFrac = 0;    // highest altitude reached so far (0..1)
+    private volatile int replayPhase = PHASE_PAD;
+    private volatile String[] replayScale = {"0", "", "", "", ""}; // labels of the 5 graduations
+    private volatile String hudL1 = "", hudR1 = "", hudL2 = "", hudR2 = "", hudL3 = "";
+
     /** Smoothing coefficient of the displayed direction at each frame (0..1). */
     private static final float SMOOTHING = 0.15f;
     /** Camera: the view looks slightly down on the pad and from the side. */
@@ -67,9 +84,14 @@ public class Rocket extends PApplet {
     private PFont font;
     private PImage img;
 
-    // Viewport dimensions (same as the gimbal console)
-    private final int VIEW_SIZE_X = 1200;
-    private final int VIEW_SIZE_Y = 1200;
+    /**
+     * Size of the sketch. It must be the size of the view that shows it: a larger sketch is
+     * cropped by the view (the right column of the HUD was cut on the status screen). The
+     * scene and the HUD are designed for 1200 x 1200 and scaled to the real size (ui()).
+     */
+    private final int viewSizeX;
+    private final int viewSizeY;
+    private static final float DESIGN_SIZE = 1200f;
 
     // Fuselage geometry
     private final float BODY_RADIUS = 50.0f;
@@ -77,9 +99,30 @@ public class Rocket extends PApplet {
     private final float CONE_HEIGHT = 150.0f;       // Base at Z = -250, apex at Z = -400
     private final float NOZZLE_HEIGHT = 50.0f;      // Extends from Z = +250 to Z = +300
 
+    /** Sketch of 1200 x 1200 pixels (gimbal console size). */
+    public Rocket() {
+        this(1200, 1200);
+    }
+
+    /**
+     * Sketch of the size of the view that shows it.
+     *
+     * @param width  width of the view (pixels)
+     * @param height height of the view (pixels)
+     */
+    public Rocket(int width, int height) {
+        viewSizeX = Math.max(200, width);
+        viewSizeY = Math.max(200, height);
+    }
+
     @Override
     public void settings() {
-        size(VIEW_SIZE_X, VIEW_SIZE_Y, P3D);
+        size(viewSizeX, viewSizeY, P3D);
+    }
+
+    /** Scale of the scene and the HUD, designed for a 1200 x 1200 sketch. */
+    private float ui() {
+        return min(width, height) / DESIGN_SIZE;
     }
 
     @Override
@@ -91,25 +134,24 @@ public class Rocket extends PApplet {
         } catch (Exception e) {
             font = null;
         }
-        try {
-            img = loadImage("pattern.png");
-        } catch (Exception e) {
-            img = null;
-        }
-        if (img == null) {
-            img = generateCheckerboardTexture(256, 256, 8);
-        }
+        // Red and white checkered body (Tintin's moon rocket): 4 quarters around the body,
+        // so that a rotation around the long axis is clearly seen
+        img = generateBandTexture(256, 384, 4, 6);
     }
 
-    /** High-contrast checkerboard texture used when pattern.png is missing. */
-    private PImage generateCheckerboardTexture(int w, int h, int tiles) {
+    /**
+     * Checkered texture of the body: "columns" quarters around the body (90 degrees each with
+     * 4) and "rows" bands along it, alternately red and white.
+     */
+    private PImage generateBandTexture(int w, int h, int columns, int rows) {
         PImage tex = createImage(w, h, RGB);
         tex.loadPixels();
-        int tileSize = w / tiles;
+        int red = color(205, 32, 38), white = color(242, 242, 245);
         for (int y = 0; y < h; y++) {
+            int row = y * rows / h;
             for (int x = 0; x < w; x++) {
-                boolean isWhite = ((x / tileSize) + (y / tileSize)) % 2 == 0;
-                tex.pixels[y * w + x] = isWhite ? color(245, 245, 248) : color(20, 22, 26);
+                int col = x * columns / w;
+                tex.pixels[y * w + x] = ((row + col) % 2 == 0) ? red : white;
             }
         }
         tex.updatePixels();
@@ -150,6 +192,31 @@ public class Rocket extends PApplet {
         axisNameC = nameC;
         hasAccelData = true;
         accelMode = true;
+    }
+
+    /**
+     * Flight replay: the rocket stands vertical (an accelerometer alone cannot measure the
+     * attitude in flight, see FlightViewReplayFragment) and moves along a graduated altitude
+     * scale. The texts are formatted by the fragment (units, language).
+     *
+     * @param altFrac   altitude / maximum altitude of the flight (0..1)
+     * @param peakFrac  highest altitude reached so far / maximum altitude (0..1)
+     * @param phase     PHASE_PAD .. PHASE_LANDED (flame, parachutes)
+     * @param scale     labels of the graduations 0, 1/4, 1/2, 3/4 and 1 of the maximum altitude
+     * @param l1 r1 l2 r2 l3 HUD texts: left / right of lines 1 and 2, line 3 (phase)
+     */
+    public void setReplayState(float altFrac, float peakFrac, int phase, String[] scale,
+                               String l1, String r1, String l2, String r2, String l3) {
+        replayAltFrac = constrain(altFrac, 0, 1);
+        replayPeakFrac = constrain(peakFrac, 0, 1);
+        replayPhase = phase;
+        if (scale != null && scale.length == 5) replayScale = scale;
+        hudL1 = l1;
+        hudR1 = r1;
+        hudL2 = l2;
+        hudR2 = r2;
+        hudL3 = l3;
+        replayMode = true;
     }
 
     /** Localized texts of the accelerometer HUD. */
@@ -213,6 +280,11 @@ public class Rocket extends PApplet {
         directionalLight(255, 255, 255, 0.5f, 0.8f, -1.0f);
         lightSpecular(180, 180, 200);
 
+        if (replayMode) {
+            drawReplayScene();
+            drawReplayHUD();
+            return;
+        }
         if (accelMode) {
             drawAccelScene();
             drawAccelHUD();
@@ -223,7 +295,8 @@ public class Rocket extends PApplet {
             quaternionToEuler(q, Euler);
         }
         pushMatrix();
-        translate(width / 2.0f, height / 2.0f + 40, 0);
+        translate(width / 2.0f, height / 2.0f + 40 * ui(), 0);
+        scale(ui());
         rotateZ(-Euler[2]);
         rotateX(-Euler[1] - radians(correct));
         rotateY(-Euler[0]);
@@ -248,10 +321,11 @@ public class Rocket extends PApplet {
         float dx = shownX / n, dy = shownY / n, dz = shownZ / n;
 
         pushMatrix();
-        translate(width / 2.0f, height * 0.80f, 0);
+        // Pad low in the view, under the HUD; scene scaled to the size of the view
+        translate(width / 2.0f, height * 0.86f, 0);
         rotateX(-radians(VIEW_ELEVATION_DEG));
         rotateY(radians(VIEW_AZIMUTH_DEG));
-        scale(0.95f);
+        scale(0.95f * ui());
 
         // Ground ring and board axes (on the horizontal plane)
         pushMatrix();
@@ -292,6 +366,164 @@ public class Rocket extends PApplet {
         translate(0, 0, -(BODY_HEIGHT / 2.0f + NOZZLE_HEIGHT));
         drawRocketBody();
         popMatrix();
+    }
+
+    /** Top of the scene under the replay HUD (pixels). */
+    private float replayTop() {
+        return (16 + 200 + 40) * max(ui(), 0.55f);
+    }
+
+    /**
+     * Replay scene: ground ring, graduated altitude scale on the left with the peak reached,
+     * and the rocket (vertical, checkered) at its altitude; flame during the boost, small
+     * parachute after the apogee, large one after the main deployment.
+     */
+    private void drawReplayScene() {
+        float u = ui();
+        float groundY = height * 0.93f;
+        float topY = replayTop();
+        float avail = groundY - topY;
+        // Rocket length (700 design units) about 22 % of the scene height
+        float s = min(0.30f * u, avail * 0.22f / 700f);
+        float rocketLen = 700 * s;
+        // Room kept above the nose for the drogue parachute at the apogee (170 x 2.3 units)
+        float travel = max(1, avail - rocketLen - 400 * s);
+        float baseY = groundY - replayAltFrac * travel;
+
+        // Altitude scale
+        float scaleX = width * 0.13f;
+        stroke(0, 180, 255, 120);
+        strokeWeight(max(1, 2 * u));
+        line(scaleX, groundY, scaleX, groundY - travel);
+        if (font != null) textFont(font);
+        textSize(max(14, 26 * u));
+        textAlign(LEFT, CENTER);
+        String[] labels = replayScale;
+        for (int i = 0; i <= 4; i++) {
+            float y = groundY - travel * i / 4f;
+            stroke(0, 180, 255, 120);
+            line(scaleX - 10 * u, y, scaleX + 10 * u, y);
+            fill(150, 200, 230);
+            text(labels[i], scaleX + 16 * u, y);
+        }
+        // Peak reached so far
+        float peakY = groundY - replayPeakFrac * travel;
+        stroke(239, 83, 80, 200);
+        line(scaleX - 18 * u, peakY, width * 0.92f, peakY);
+        // Track of the rocket since the start
+        stroke(255, 255, 255, 60);
+        strokeWeight(max(1, 6 * s));
+        line(width / 2.0f, groundY, width / 2.0f, peakY);
+
+        // Ground
+        pushMatrix();
+        translate(width / 2.0f, groundY, 0);
+        rotateX(HALF_PI * 0.82f);
+        noFill();
+        stroke(0, 180, 255, 90);
+        strokeWeight(max(1, 2 * u));
+        ellipse(0, 0, 560 * u, 560 * u);
+        ellipse(0, 0, 300 * u, 300 * u);
+        popMatrix();
+
+        // Rocket at its altitude, seen slightly from above and from the side
+        pushMatrix();
+        translate(width / 2.0f, baseY, 0);
+        rotateY(radians(VIEW_AZIMUTH_DEG));
+        scale(s);
+        if (replayPhase == PHASE_DROGUE || replayPhase == PHASE_MAIN) {
+            drawParachute(replayPhase == PHASE_MAIN ? 300 : 170);
+        }
+        rotateX(-HALF_PI);
+        translate(0, 0, -(BODY_HEIGHT / 2.0f + NOZZLE_HEIGHT));
+        drawRocketBody();
+        if (replayPhase == PHASE_BOOST) {
+            drawFlame();
+        }
+        popMatrix();
+    }
+
+    /** Motor flame under the nozzle (local frame of the rocket body, +Z = aft). */
+    private void drawFlame() {
+        pushMatrix();
+        translate(0, 0, BODY_HEIGHT / 2.0f + NOZZLE_HEIGHT);
+        noStroke();
+        float len = 160 + 40 * sin(frameCount * 0.6f);
+        fill(255, 170, 40, 220);
+        beginShape(TRIANGLE_FAN);
+        vertex(0, 0, len);
+        for (int i = 0; i <= 16; i++) {
+            float a = TWO_PI * i / 16;
+            vertex(cos(a) * 28, sin(a) * 28, 0);
+        }
+        endShape();
+        fill(255, 240, 160, 230);
+        beginShape(TRIANGLE_FAN);
+        vertex(0, 0, len * 0.55f);
+        for (int i = 0; i <= 16; i++) {
+            float a = TWO_PI * i / 16;
+            vertex(cos(a) * 16, sin(a) * 16, 0);
+        }
+        endShape();
+        popMatrix();
+    }
+
+    /**
+     * Parachute above the nose (screen frame: up = -y), with its shroud lines.
+     *
+     * @param radius radius of the canopy (design units)
+     */
+    private void drawParachute(float radius) {
+        float noseY = -(CONE_HEIGHT + BODY_HEIGHT + NOZZLE_HEIGHT);   // nose tip above the pad
+        float canopyY = noseY - radius * 1.6f;
+        // Shroud lines from the nose to the rim of the canopy
+        stroke(220);
+        strokeWeight(3);
+        for (int i = 0; i < 8; i++) {
+            float a = TWO_PI * i / 8;
+            line(0, noseY, 0, cos(a) * radius, canopyY, sin(a) * radius);
+        }
+        // Canopy: half sphere, alternately orange and white gores
+        noStroke();
+        int gores = 12, rings = 6;
+        for (int g = 0; g < gores; g++) {
+            float a0 = TWO_PI * g / gores, a1 = TWO_PI * (g + 1) / gores;
+            fill(g % 2 == 0 ? color(255, 120, 30) : color(245));
+            beginShape(QUAD_STRIP);
+            for (int r = 0; r <= rings; r++) {
+                float phi = HALF_PI * r / rings;      // 0 = rim, PI/2 = top
+                float rr = radius * cos(phi), y = canopyY - radius * 0.7f * sin(phi);
+                vertex(cos(a0) * rr, y, sin(a0) * rr);
+                vertex(cos(a1) * rr, y, sin(a1) * rr);
+            }
+            endShape();
+        }
+    }
+
+    /** HUD of the replay: 2 lines of values and the flight phase. */
+    private void drawReplayHUD() {
+        hint(DISABLE_DEPTH_TEST);
+        camera();
+        if (font != null) textFont(font);
+        float u = max(ui(), 0.55f);
+        float margin = 16 * u, pad = 20 * u;
+        textSize(30 * u);
+        noStroke();
+        fill(10, 14, 20, 215);
+        rect(margin, margin, width - 2 * margin, 200 * u, 12 * u);
+        textAlign(LEFT, CENTER);
+        fill(0, 215, 255);
+        text(hudL1, margin + pad, margin + 36 * u);
+        fill(255);
+        text(hudL2, margin + pad, margin + 98 * u);
+        textAlign(RIGHT, CENTER);
+        fill(255);
+        text(hudR1, width - margin - pad, margin + 36 * u);
+        text(hudR2, width - margin - pad, margin + 98 * u);
+        textAlign(LEFT, CENTER);
+        fill(255, 190, 60);
+        text(hudL3, margin + pad, margin + 160 * u);
+        hint(ENABLE_DEPTH_TEST);
     }
 
     /** Fuselage, nose cone, nozzle and fins along local Z (nose towards -Z). */
@@ -349,6 +581,8 @@ public class Rocket extends PApplet {
         stroke(20, 22, 28);
         strokeWeight(1.2f);
         for (int i = 0; i < 4; i++) {
+            // One white fin: second reference of the rotation around the long axis
+            fill(i == 0 ? color(242, 242, 245) : color(225, 45, 35));
             pushMatrix();
             rotateZ(HALF_PI * i);
             beginShape();
@@ -397,34 +631,40 @@ public class Rocket extends PApplet {
         endShape(CLOSE);
     }
 
-    /** HUD of the accelerometer mode: tilt, angle on each axis and total acceleration. */
+    /**
+     * HUD of the accelerometer mode: tilt, angle on each axis and total acceleration. Sizes
+     * follow the size of the view, the right column is aligned on the real right edge.
+     */
     private void drawAccelHUD() {
         hint(DISABLE_DEPTH_TEST);
         camera();
         if (font != null) textFont(font);
-        textSize(32);
+        float u = max(ui(), 0.55f);
+        float margin = 16 * u, pad = 20 * u;
+        float line1 = margin + 38 * u, line2 = margin + 102 * u;
+        textSize(32 * u);
         noStroke();
         fill(10, 14, 20, 215);
-        rect(16, 16, width - 32, 140, 12);
+        rect(margin, margin, width - 2 * margin, 140 * u, 12 * u);
 
         textAlign(LEFT, CENTER);
         if (!hasAccelData) {
             fill(0, 215, 255);
-            text(labelWaiting, 36, 86);
+            text(labelWaiting, margin + pad, margin + 70 * u);
         } else {
             // Tilt colored green < 5 deg, orange < 15 deg, red above
             if (!attitudeValid) fill(150);
             else if (tiltDeg < 5) fill(76, 175, 80);
             else if (tiltDeg < 15) fill(255, 167, 38);
             else fill(239, 83, 80);
-            text(attitudeValid ? String.format("%s %.1f°", labelTilt, tiltDeg) : labelMoving, 36, 54);
+            text(attitudeValid ? String.format("%s %.1f°", labelTilt, tiltDeg) : labelMoving, margin + pad, line1);
             fill(0, 215, 255);
-            text(String.format("%s %.2f g", labelTotal, totalG), 36, 118);
+            text(String.format("%s %.2f g", labelTotal, totalG), margin + pad, line2);
 
             fill(255);
             textAlign(RIGHT, CENTER);
-            text(String.format("%s: %+.1f°", axisNameB, angleB), width - 60, 54);
-            text(String.format("%s: %+.1f°", axisNameC, angleC), width - 60, 118);
+            text(String.format("%s: %+.1f°", axisNameB, angleB), width - margin - pad, line1);
+            text(String.format("%s: %+.1f°", axisNameC, angleC), width - margin - pad, line2);
         }
         hint(ENABLE_DEPTH_TEST);
     }
@@ -434,18 +674,19 @@ public class Rocket extends PApplet {
         hint(DISABLE_DEPTH_TEST);
         camera();
         if (font != null) textFont(font);
-        textSize(32);
+        float u = max(ui(), 0.55f);
+        textSize(32 * u);
         noStroke();
         fill(10, 14, 20, 215);
-        rect(16, 16, width - 32, 140, 12);
+        rect(16 * u, 16 * u, width - 32 * u, 140 * u, 12 * u);
         fill(0, 215, 255);
         textAlign(LEFT, CENTER);
-        text(String.format("T+ %.2f s", currentTime / 1000.0f), 36, 86);
+        text(String.format("T+ %.2f s", currentTime / 1000.0f), 36 * u, 86 * u);
         fill(255);
         textAlign(RIGHT, CENTER);
-        text(String.format("X: %+.1f°", degrees(Euler[0])), width - 140, 44);
-        text(String.format("Y: %+.1f°", degrees(Euler[1])), width - 140, 86);
-        text(String.format("Z: %+.1f°", degrees(Euler[2])), width - 140, 128);
+        text(String.format("X: %+.1f°", degrees(Euler[0])), width - 36 * u, 44 * u);
+        text(String.format("Y: %+.1f°", degrees(Euler[1])), width - 36 * u, 86 * u);
+        text(String.format("Z: %+.1f°", degrees(Euler[2])), width - 36 * u, 128 * u);
         hint(ENABLE_DEPTH_TEST);
     }
 

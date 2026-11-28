@@ -622,9 +622,9 @@
     <string name="accel_calibration_title">Kalibracja akcelerometrów</string>
     <string name="accel_calibrate">Kalibruj</string>
     <string name="accel_calibration_start">Start</string>
-    <string name="accel_calibration_help">Kalibrację wykonuje wysokościomierz (firmware 2.5 lub nowszy). Płytkę kładzie się na każdej z jej 6 stron (X, Y i Z w górę i w dół). Na każdej stronie trzymaj ją nieruchomo do krótkiego sygnału, potem obróć na inną stronę. Długi sygnał kończy kalibrację, 5 krótkich oznacza błąd. Maksymalnie 2 minuty; pozostań na tym ekranie i nic nie wysyłaj podczas kalibracji.</string>
+    <string name="accel_calibration_help">Kalibrację wykonuje wysokościomierz (firmware z kalibracją: RocketFlightLogger 2.5, TTGO Bear 0.6, UltimateAltimeter 0.7). Płytkę kładzie się na każdej z jej 6 stron (X, Y i Z w górę i w dół). Na każdej stronie trzymaj ją nieruchomo, aż strona zostanie zaznaczona w tym oknie (krótki sygnał lub komunikat na ekranie Ultimate), potem obróć na inną stronę. Maksymalnie 2 minuty; pozostań na tym ekranie i nic nie wysyłaj podczas kalibracji.</string>
     <string name="accel_calibration_waiting">Oczekiwanie na wysokościomierz…</string>
-    <string name="accel_calibration_any_order">Połóż płytkę na każdej stronie, w dowolnej kolejności. Trzymaj ją nieruchomo do krótkiego sygnału, potem obróć.</string>
+    <string name="accel_calibration_any_order">Połóż płytkę na każdej stronie, w dowolnej kolejności. Trzymaj ją nieruchomo, aż strona zostanie zaznaczona poniżej, potem obróć.</string>
     <string name="accel_calibration_fixed_order">Połóż płytkę na stronach w wymaganej kolejności. Trzymaj ją nieruchomo do krótkiego sygnału, potem obróć.</string>
     <string name="accel_calibration_next_face">Strona %1$d/6: połóż płytkę %2$s, nieruchomo do sygnału.</string>
     <string name="accel_calibration_stop">Zatrzymaj</string>
@@ -632,7 +632,7 @@
     <string name="accel_calibration_saved_msg">Kalibracja zapisana w wysokościomierzu. Odbierane teraz wartości są skalibrowane.</string>
     <string name="accel_calibration_failed_msg">Kalibracja nie powiodła się: zachowano poprzednią kalibrację.</string>
     <string name="accel_calibration_stopped_msg">Kalibracja zatrzymana: zachowano poprzednią kalibrację.</string>
-    <string name="accel_calibration_not_supported">Wysokościomierz nie odpowiedział na polecenie kalibracji: wymagany firmware 2.5 lub nowszy na płytce z akcelerometrem.</string>
+    <string name="accel_calibration_not_supported">Wysokościomierz nie odpowiedział na polecenie kalibracji: jego firmware jeszcze go nie ma, zaktualizuj firmware.</string>
     <string name="accel_calibration_no_answer">Brak odpowiedzi wysokościomierza: sprawdź połączenie.</string>
     <string name="accel_face_x_up">X w górę</string>
     <string name="accel_face_x_down">X w dół</string>
@@ -645,4 +645,18 @@
     <string name="attitude_tilt">Odchylenie</string>
     <string name="attitude_total_accel">Razem</string>
     <string name="attitude_moving">Rakieta w ruchu</string>
+    <!-- Bluetooth link lost (ConsoleApplication) -->
+    <string name="bt_link_lost">Utracono połączenie z wysokościomierzem (moduł wyłączony lub poza zasięgiem)</string>
+    <!-- Flight replay tab (FlightViewReplayFragment) -->
+    <string name="replay_note">Wysokościomierz rejestruje tylko akcelerometr: położenie i obrót w locie nie są mierzone, rakieta jest rysowana pionowo.</string>
+    <string name="replay_no_data">Brak danych wysokości w tym locie.</string>
+    <string name="replay_phase_pad">Na wyrzutni</string>
+    <string name="replay_phase_boost">Lot napędzany</string>
+    <string name="replay_phase_coast">Lot balistyczny</string>
+    <string name="replay_phase_drogue">Opadanie na spadochronie hamującym</string>
+    <string name="replay_phase_main">Opadanie na spadochronie głównym</string>
+    <string name="replay_phase_landed">Wylądowała</string>
+    <string name="replay_altitude">Wys.</string>
+    <string name="replay_speed">Prędk.</string>
+    <string name="replay_accel">Przysp.</string>
 </resources>

@@ -622,9 +622,9 @@
     <string name="accel_calibration_title">Kalibratie van de versnellingsmeters</string>
     <string name="accel_calibrate">Kalibreren</string>
     <string name="accel_calibration_start">Starten</string>
-    <string name="accel_calibration_help">De kalibratie wordt door de hoogtemeter gedaan (firmware 2.5 of nieuwer). De print wordt op elk van zijn 6 zijden gelegd (X, Y en Z omhoog en omlaag). Houd hem op elke zijde stil tot de korte piep en draai hem dan op een andere zijde. Een lange piep beëindigt de kalibratie, 5 korte piepjes betekenen een fout. Maximaal 2 minuten; blijf op dit scherm en verstuur niets tijdens de kalibratie.</string>
+    <string name="accel_calibration_help">De kalibratie wordt door de hoogtemeter gedaan (firmware met kalibratie: RocketFlightLogger 2.5, TTGO Bear 0.6, UltimateAltimeter 0.7). De print wordt op elk van zijn 6 zijden gelegd (X, Y en Z omhoog en omlaag). Houd hem op elke zijde stil tot de zijde in dit venster is afgevinkt (korte piep of melding op het scherm van de Ultimate) en draai hem dan op een andere zijde. Maximaal 2 minuten; blijf op dit scherm en verstuur niets tijdens de kalibratie.</string>
     <string name="accel_calibration_waiting">Wachten op de hoogtemeter…</string>
-    <string name="accel_calibration_any_order">Leg de print op elke zijde, in willekeurige volgorde. Houd hem stil tot de korte piep en draai hem dan.</string>
+    <string name="accel_calibration_any_order">Leg de print op elke zijde, in willekeurige volgorde. Houd hem stil tot de zijde hieronder is afgevinkt en draai hem dan.</string>
     <string name="accel_calibration_fixed_order">Leg de print op de zijden in de gevraagde volgorde. Houd hem stil tot de korte piep en draai hem dan.</string>
     <string name="accel_calibration_next_face">Zijde %1$d/6: leg de print met %2$s, stil tot de piep.</string>
     <string name="accel_calibration_stop">Stoppen</string>
@@ -632,7 +632,7 @@
     <string name="accel_calibration_saved_msg">Kalibratie opgeslagen in de hoogtemeter. De waarden die nu binnenkomen zijn gekalibreerd.</string>
     <string name="accel_calibration_failed_msg">Kalibratie mislukt: de vorige kalibratie blijft behouden.</string>
     <string name="accel_calibration_stopped_msg">Kalibratie gestopt: de vorige kalibratie blijft behouden.</string>
-    <string name="accel_calibration_not_supported">De hoogtemeter antwoordde niet op het kalibratiecommando: firmware 2.5 of nieuwer nodig op een print met versnellingsmeter.</string>
+    <string name="accel_calibration_not_supported">De hoogtemeter antwoordde niet op het kalibratiecommando: zijn firmware heeft het nog niet, werk de firmware bij.</string>
     <string name="accel_calibration_no_answer">Geen antwoord van de hoogtemeter: controleer de verbinding.</string>
     <string name="accel_face_x_up">X omhoog</string>
     <string name="accel_face_x_down">X omlaag</string>
@@ -645,4 +645,18 @@
     <string name="attitude_tilt">Helling</string>
     <string name="attitude_total_accel">Totaal</string>
     <string name="attitude_moving">Raket beweegt</string>
+    <!-- Bluetooth link lost (ConsoleApplication) -->
+    <string name="bt_link_lost">Verbinding met de hoogtemeter verbroken (module uitgeschakeld of buiten bereik)</string>
+    <!-- Flight replay tab (FlightViewReplayFragment) -->
+    <string name="replay_note">De hoogtemeter registreert alleen de versnellingsmeter: stand en rol tijdens de vlucht worden niet gemeten, de raket wordt verticaal getekend.</string>
+    <string name="replay_no_data">Geen hoogtegegevens in deze vlucht.</string>
+    <string name="replay_phase_pad">Op het lanceerplatform</string>
+    <string name="replay_phase_boost">Aangedreven vlucht</string>
+    <string name="replay_phase_coast">Uitrollen</string>
+    <string name="replay_phase_drogue">Daling aan drogue</string>
+    <string name="replay_phase_main">Daling aan hoofdparachute</string>
+    <string name="replay_phase_landed">Geland</string>
+    <string name="replay_altitude">Hoogte</string>
+    <string name="replay_speed">Snelh.</string>
+    <string name="replay_accel">Versn.</string>
 </resources>

@@ -7,8 +7,10 @@ package com.altimeter.bdureau.bearconsole.connection;
  * Author: Boris du Reau (boris.dureau@neuf.fr)
  *
  * @description:
- *  Drives the accelerometer calibration of the RocketFlightLogger firmware (version 2.5 and
- *  later, accelerometer boards), command "j;" (accelero.cpp, accelCalibrate()):
+ *  Drives the accelerometer calibration done by the firmware, command "j;": RocketFlightLogger
+ *  2.5 and later on the accelerometer boards (accelero.cpp, accelCalibrate()), TTGOBearAltimeter
+ *  0.6 and UltimateAltimeter 0.7 with the calibration (accelcal.cpp, same messages, one
+ *  sensor, faces in any order; the Ultimate has no buzzer and shows the progress on its screen):
  *    - the board is put on its 6 faces (X up, X down, Y up, Y down, Z up, Z down). With an
  *      ADXL345 the faces can be done in any order (the face is detected); with an ADXL375
  *      alone the order is imposed: Z up, Z down, X up, X down, Y up, Y down;

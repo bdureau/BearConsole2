@@ -263,6 +263,10 @@ public class MainScreenActivity extends BaseActivity {
         text_info = findViewById(R.id.text_info);
         text_connect = findViewById(R.id.text_connect);
 
+        // A lost Bluetooth link (module switched off, out of range) is reported by the
+        // application while this screen is displayed: the buttons are refreshed at once
+        myBT.getLinkLostEvent().observe(this, time -> refreshConnectionState());
+
         // Initialize UI state depending on existing active connection
         if (myBT.getConnected()) {
             loadConfigurationAsync();
@@ -563,6 +567,26 @@ public class MainScreenActivity extends BaseActivity {
     private void disconnectUnsupported(String message) {
         msg(message);
         Disconnect();
+        DisableUI();
+        setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
+        text_connect.setText(getResources().getString(R.string.connect));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // The link may have been closed or lost while another screen was displayed
+        refreshConnectionState();
+    }
+
+    /**
+     * Puts the screen back in the "not connected" state when the link is no longer open:
+     * Connect button, altimeter cards disabled, firmware flashing card enabled. Nothing is
+     * changed while the link is open (the cards were set from the altimeter configuration),
+     * so it can be called at any time (onResume, link lost event).
+     */
+    private void refreshConnectionState() {
+        if (myBT.getConnected()) return;
         DisableUI();
         setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
         text_connect.setText(getResources().getString(R.string.connect));

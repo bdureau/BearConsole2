@@ -622,9 +622,9 @@
     <string name="accel_calibration_title">Calibration des accéléromètres</string>
     <string name="accel_calibrate">Calibrer</string>
     <string name="accel_calibration_start">Démarrer</string>
-    <string name="accel_calibration_help">La calibration est faite par l\'altimètre (firmware 2.5 ou plus récent). La carte est posée sur chacune de ses 6 faces (X, Y et Z vers le haut puis vers le bas). Sur chaque face, gardez-la immobile jusqu\'au bip court, puis retournez-la sur une autre face. Un bip long termine la calibration, 5 bips courts indiquent un échec. 2 minutes maximum ; restez sur cet écran et n\'envoyez rien pendant la calibration.</string>
+    <string name="accel_calibration_help">La calibration est faite par l\'altimètre (firmware avec la calibration : RocketFlightLogger 2.5, TTGO Bear 0.6, UltimateAltimeter 0.7). La carte est posée sur chacune de ses 6 faces (X, Y et Z vers le haut puis vers le bas). Sur chaque face, gardez-la immobile jusqu\'à ce que la face soit cochée dans cette fenêtre (bip court, ou message sur l\'écran de l\'Ultimate), puis retournez-la sur une autre face. 2 minutes maximum ; restez sur cet écran et n\'envoyez rien pendant la calibration.</string>
     <string name="accel_calibration_waiting">En attente de l\'altimètre…</string>
-    <string name="accel_calibration_any_order">Posez la carte sur chaque face, dans n\'importe quel ordre. Gardez-la immobile jusqu\'au bip court, puis retournez-la.</string>
+    <string name="accel_calibration_any_order">Posez la carte sur chaque face, dans n\'importe quel ordre. Gardez-la immobile jusqu\'à ce que la face soit cochée ci-dessous, puis retournez-la.</string>
     <string name="accel_calibration_fixed_order">Posez la carte sur les faces dans l\'ordre demandé. Gardez-la immobile jusqu\'au bip court, puis retournez-la.</string>
     <string name="accel_calibration_next_face">Face %1$d/6 : posez la carte %2$s, immobile jusqu\'au bip.</string>
     <string name="accel_calibration_stop">Arrêter</string>
@@ -632,7 +632,7 @@
     <string name="accel_calibration_saved_msg">Calibration enregistrée dans l\'altimètre. Les valeurs reçues désormais sont calibrées.</string>
     <string name="accel_calibration_failed_msg">Échec de la calibration : la calibration précédente est conservée.</string>
     <string name="accel_calibration_stopped_msg">Calibration arrêtée : la calibration précédente est conservée.</string>
-    <string name="accel_calibration_not_supported">L\'altimètre n\'a pas répondu à la commande de calibration : il faut le firmware 2.5 ou plus récent sur une carte avec accéléromètre.</string>
+    <string name="accel_calibration_not_supported">L\'altimètre n\'a pas répondu à la commande de calibration : son firmware ne l\'a pas encore, mettez le firmware à jour.</string>
     <string name="accel_calibration_no_answer">Pas de réponse de l\'altimètre : vérifiez la connexion.</string>
     <string name="accel_face_x_up">X vers le haut</string>
     <string name="accel_face_x_down">X vers le bas</string>
@@ -645,4 +645,18 @@
     <string name="attitude_tilt">Inclinaison</string>
     <string name="attitude_total_accel">Total</string>
     <string name="attitude_moving">Fusée en mouvement</string>
+    <!-- Bluetooth link lost (ConsoleApplication) -->
+    <string name="bt_link_lost">Connexion avec l\'altimètre perdue (module éteint ou hors de portée)</string>
+    <!-- Flight replay tab (FlightViewReplayFragment) -->
+    <string name="replay_note">L\'altimètre n\'enregistre que l\'accéléromètre : l\'attitude et le roulis en vol ne sont pas mesurés, la fusée est dessinée verticale.</string>
+    <string name="replay_no_data">Pas de données d\'altitude dans ce vol.</string>
+    <string name="replay_phase_pad">Sur le pas de tir</string>
+    <string name="replay_phase_boost">Propulsion</string>
+    <string name="replay_phase_coast">Vol balistique</string>
+    <string name="replay_phase_drogue">Descente sous drogue</string>
+    <string name="replay_phase_main">Descente sous parachute principal</string>
+    <string name="replay_phase_landed">Atterrie</string>
+    <string name="replay_altitude">Alt.</string>
+    <string name="replay_speed">Vitesse</string>
+    <string name="replay_accel">Accél.</string>
 </resources>

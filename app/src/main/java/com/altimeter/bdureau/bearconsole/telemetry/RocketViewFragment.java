@@ -54,6 +54,8 @@ public class RocketViewFragment extends Fragment {
 
     // Long axis of the rocket in the board frame (0 = X, 1 = Y, 2 = Z), -1 = not detected yet
     private int upAxis = -1;
+    // Last sample received before the sketch was created
+    private double[] pendingG = null;
     private int upSign = 1;
 
     /** Required by the framework to re-create the fragment (configuration change, process restore). */
@@ -70,13 +72,34 @@ public class RocketViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_altimeter_status_part3, container, false);
 
-        myRocket = new Rocket();
+        // The sketch is created with the size of its container, known once it is laid out:
+        // a fixed 1200 x 1200 sketch was cropped by the view (HUD values cut on the right)
+        View host = view.findViewById(R.id.container);
+        host.post(() -> createSketch(host.getWidth(), host.getHeight()));
+        ViewCreated = true;
+        return view;
+    }
+
+    /** Creates the Processing sketch with the size of its container. */
+    private void createSketch(int width, int height) {
+        if (!isAdded() || myRocket != null || width <= 0 || height <= 0) return;
+        myRocket = new Rocket(width, height);
         myRocket.setAccelLabels(getString(R.string.attitude_tilt), getString(R.string.attitude_total_accel),
                 getString(R.string.attitude_moving), getString(R.string.attitude_waiting));
         fragment = new PFragment(myRocket);
         getChildFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
-        ViewCreated = true;
-        return view;
+        // Sample received while the view was being laid out
+        if (pendingG != null) {
+            double[] g = pendingG;
+            pendingG = null;
+            setAcceleration(g);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ViewCreated = false;
     }
 
     @Override
@@ -125,7 +148,12 @@ public class RocketViewFragment extends Fragment {
      * @param g acceleration on the board X, Y and Z axes, in g
      */
     public void setAcceleration(double[] g) {
-        if (myRocket == null || view == null) return;
+        if (view == null) return;
+        if (myRocket == null) {
+            // The sketch is not created yet: keep the last sample for it
+            pendingG = g.clone();
+            return;
+        }
         double m = Math.sqrt(g[0] * g[0] + g[1] * g[1] + g[2] * g[2]);
         boolean valid = m > MIN_VALID_G && m < MAX_VALID_G;
 

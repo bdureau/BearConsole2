@@ -622,9 +622,9 @@
     <string name="accel_calibration_title">İvmeölçer kalibrasyonu</string>
     <string name="accel_calibrate">Kalibre et</string>
     <string name="accel_calibration_start">Başlat</string>
-    <string name="accel_calibration_help">Kalibrasyonu altimetre yapar (firmware 2.5 veya sonrası). Kart 6 yüzünün her birine konur (X, Y ve Z yukarı ve aşağı). Her yüzde kısa bip sesine kadar sabit tutun, sonra başka bir yüze çevirin. Uzun bip kalibrasyonu bitirir, 5 kısa bip başarısızlık demektir. En fazla 2 dakika; bu ekranda kalın ve kalibrasyon sırasında hiçbir şey göndermeyin.</string>
+    <string name="accel_calibration_help">Kalibrasyonu altimetre yapar (kalibrasyonlu firmware: RocketFlightLogger 2.5, TTGO Bear 0.6, UltimateAltimeter 0.7). Kart 6 yüzünün her birine konur (X, Y ve Z yukarı ve aşağı). Her yüzde, yüz bu pencerede işaretlenene kadar (kısa bip veya Ultimate ekranında mesaj) sabit tutun, sonra başka bir yüze çevirin. En fazla 2 dakika; bu ekranda kalın ve kalibrasyon sırasında hiçbir şey göndermeyin.</string>
     <string name="accel_calibration_waiting">Altimetre bekleniyor…</string>
-    <string name="accel_calibration_any_order">Kartı her yüzüne, istediğiniz sırayla koyun. Kısa bip sesine kadar sabit tutun, sonra çevirin.</string>
+    <string name="accel_calibration_any_order">Kartı her yüzüne, istediğiniz sırayla koyun. Yüz aşağıda işaretlenene kadar sabit tutun, sonra çevirin.</string>
     <string name="accel_calibration_fixed_order">Kartı yüzlerine istenen sırayla koyun. Kısa bip sesine kadar sabit tutun, sonra çevirin.</string>
     <string name="accel_calibration_next_face">Yüz %1$d/6: kartı %2$s konumuna koyun, bip sesine kadar sabit tutun.</string>
     <string name="accel_calibration_stop">Durdur</string>
@@ -632,7 +632,7 @@
     <string name="accel_calibration_saved_msg">Kalibrasyon altimetreye kaydedildi. Bundan sonra alınan değerler kalibre edilmiştir.</string>
     <string name="accel_calibration_failed_msg">Kalibrasyon başarısız: önceki kalibrasyon korunuyor.</string>
     <string name="accel_calibration_stopped_msg">Kalibrasyon durduruldu: önceki kalibrasyon korunuyor.</string>
-    <string name="accel_calibration_not_supported">Altimetre kalibrasyon komutuna yanıt vermedi: ivmeölçerli bir kartta firmware 2.5 veya sonrası gerekir.</string>
+    <string name="accel_calibration_not_supported">Altimetre kalibrasyon komutuna yanıt vermedi: firmware\'i henüz bu komutu içermiyor, firmware\'i güncelleyin.</string>
     <string name="accel_calibration_no_answer">Altimetreden yanıt yok: bağlantıyı kontrol edin.</string>
     <string name="accel_face_x_up">X yukarı</string>
     <string name="accel_face_x_down">X aşağı</string>
@@ -645,4 +645,18 @@
     <string name="attitude_tilt">Eğim</string>
     <string name="attitude_total_accel">Toplam</string>
     <string name="attitude_moving">Roket hareket ediyor</string>
+    <!-- Bluetooth link lost (ConsoleApplication) -->
+    <string name="bt_link_lost">Altimetre ile bağlantı kesildi (modül kapalı veya menzil dışında)</string>
+    <!-- Flight replay tab (FlightViewReplayFragment) -->
+    <string name="replay_note">Altimetre yalnızca ivmeölçeri kaydeder: uçuştaki duruş ve yuvarlanma ölçülmez, roket dikey çizilir.</string>
+    <string name="replay_no_data">Bu uçuşta irtifa verisi yok.</string>
+    <string name="replay_phase_pad">Rampada</string>
+    <string name="replay_phase_boost">Motorlu uçuş</string>
+    <string name="replay_phase_coast">Serbest uçuş</string>
+    <string name="replay_phase_drogue">Sürükleme paraşütüyle iniş</string>
+    <string name="replay_phase_main">Ana paraşütle iniş</string>
+    <string name="replay_phase_landed">İndi</string>
+    <string name="replay_altitude">İrt.</string>
+    <string name="replay_speed">Hız</string>
+    <string name="replay_accel">İvme</string>
 </resources>
