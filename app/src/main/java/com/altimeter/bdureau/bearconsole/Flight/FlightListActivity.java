@@ -16,10 +16,8 @@ package com.altimeter.bdureau.bearconsole.Flight;
 
 import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,12 +31,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

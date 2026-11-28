@@ -10,12 +10,16 @@ package com.altimeter.bdureau.bearconsole.Flight.FlightView;
  *  First tab of the flight view when the AFreeChart library is used (Android 7): draws the
  *  curves selected by the user (altitude, temperature, pressure, speed, acceleration, battery,
  *  GPS...) of the displayed flight, each with its own axis and unit.
+ *  The flight events (burnout, apogee, main deployment, landing) detected on the
+ *  altitude curve (see FlightEvents) are drawn as labelled vertical dashed markers on the
+ *  time axis. They can be hidden from the menu of the flight screen (setShowEvents()).
  * ============================================================================
  */
 
 import androidx.annotation.NonNull;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,15 +33,22 @@ import androidx.fragment.app.Fragment;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.R;
+import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import org.afree.chart.AFreeChart;
 import org.afree.chart.ChartFactory;
 import org.afree.chart.axis.NumberAxis;
 import org.afree.chart.axis.ValueAxis;
 import org.afree.chart.plot.PlotOrientation;
+import org.afree.chart.plot.ValueMarker;
 import org.afree.chart.plot.XYPlot;
 import org.afree.data.xy.XYSeriesCollection;
 import org.afree.graphics.SolidColor;
 import org.afree.graphics.geom.Font;
+import org.afree.ui.Layer;
+import org.afree.ui.RectangleAnchor;
+import org.afree.ui.TextAnchor;
+
+import java.util.List;
 
 
 public class FlightViewFcFragment extends Fragment {
@@ -51,6 +62,11 @@ public class FlightViewFcFragment extends Fragment {
     private String units[] = null;
     String curvesNames[];
     boolean checkedItems[];
+
+    // Flight events drawn on the curves (computed once per flight, see FlightEvents)
+    private boolean showEvents = true;
+    private List<FlightEvents.Event> events = null;
+    private XYSeriesCollection eventsSource = null;
     static int colors[] = {Color.RED, Color.BLUE, Color.BLACK,
             Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW, Color.RED,
             Color.BLUE, Color.BLACK,
@@ -101,6 +117,13 @@ public class FlightViewFcFragment extends Fragment {
 
     public void setCheckedItems(boolean[] checkedItems) {
         this.checkedItems = checkedItems;
+    }
+
+    /**
+     * Shows or hides the flight events. The caller redraws the curves with drawAllCurves().
+     */
+    public void setShowEvents(boolean show) {
+        this.showEvents = show;
     }
 
     @Nullable
@@ -200,5 +223,44 @@ public class FlightViewFcFragment extends Fragment {
             }
         }
         plot.setDataset(0, flightData);
+        addFlightEvents(allFlightData);
+    }
+
+    /**
+     * Draws the flight events as dashed vertical markers of the domain (time) axis, in the
+     * foreground so that the labels stay readable. The X values of the series are the raw
+     * milliseconds of the recording, so the markers are placed at the event time in ms.
+     * The labels alternate between two heights so that close events do not overlap.
+     */
+    private void addFlightEvents(XYSeriesCollection flightData) {
+        plot.clearDomainMarkers();
+        if (!showEvents || flightData == null || flightData.getSeriesCount() == 0) {
+            return;
+        }
+        boolean isMeters = myBT.getAppConf().getUnits() == GlobalConfig.AltitudeUnit.METERS;
+        if (events == null || eventsSource != flightData) {
+            events = FlightEvents.compute(flightData.getSeries(0), isMeters);
+            eventsSource = flightData;
+        }
+        String altUnit = isMeters ? "m" : "ft";
+        Font labelFont = new Font("Dialog", Typeface.NORMAL, Math.max(10, fontSize - 4));
+        for (int i = 0; i < events.size(); i++) {
+            FlightEvents.Event ev = events.get(i);
+            ValueMarker marker = new ValueMarker(ev.timeMs);
+            marker.setPaintType(new SolidColor(ev.type.color));
+            marker.setStroke(2f);
+            marker.setEffect(new DashPathEffect(new float[]{12f, 8f}, 0f));
+            marker.setLabel(ev.label(requireContext(), altUnit));
+            marker.setLabelFont(labelFont);
+            marker.setLabelPaintType(new SolidColor(ev.type.color));
+            if (i % 2 == 0) {
+                marker.setLabelAnchor(RectangleAnchor.TOP_RIGHT);
+                marker.setLabelTextAnchor(TextAnchor.TOP_LEFT);
+            } else {
+                marker.setLabelAnchor(RectangleAnchor.BOTTOM_RIGHT);
+                marker.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
+            }
+            plot.addDomainMarker(marker, Layer.FOREGROUND);
+        }
     }
 }

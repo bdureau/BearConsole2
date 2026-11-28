@@ -626,4 +626,37 @@
     <string name="bt_connect_wait_beeps">An altimeter that is beeping its altitude answers only at the end of the beeps: the connection can take up to one minute.</string>
     <!-- Sentence spoken by the "test voice" button of the settings -->
     <string name="tts_test_phrase">Bearaltimeter altimeters are the best</string>
+    <!-- Flight curves: menu item and names of the flight events drawn on the curves -->
+    <string name="curve_show_events">Flight events</string>
+    <string name="curve_event_burnout">Burnout</string>
+    <string name="curve_event_apogee">Apogee</string>
+    <string name="curve_event_main">Main</string>
+    <string name="curve_event_landing">Landing</string>
+    <!-- Status screen: accelerometer calibration done by the altimeter ("j;", AltimeterAccelFragment) -->
+    <string name="accel_calibration_title">Accelerometer calibration</string>
+    <string name="accel_calibrate">Calibrate</string>
+    <string name="accel_calibration_start">Start</string>
+    <string name="accel_calibration_help">The calibration is done by the altimeter (firmware 2.5 or later). The board is put on each of its 6 faces (X, Y and Z up and down). On each face keep it still until the short beep, then turn it onto another face. A long beep ends the calibration, 5 short beeps mean it failed. 2 minutes maximum; stay on this screen and do not send anything during the calibration.</string>
+    <string name="accel_calibration_waiting">Waiting for the altimeter…</string>
+    <string name="accel_calibration_any_order">Put the board on each face, in any order. Keep it still until the short beep, then turn it.</string>
+    <string name="accel_calibration_fixed_order">Put the board on the faces in the order asked. Keep it still until the short beep, then turn it.</string>
+    <string name="accel_calibration_next_face">Face %1$d/6: put the board %2$s, keep it still until the beep.</string>
+    <string name="accel_calibration_stop">Stop</string>
+    <string name="accel_calibration_stopping">Stopping…</string>
+    <string name="accel_calibration_saved_msg">Calibration saved in the altimeter. The values received from now on are calibrated.</string>
+    <string name="accel_calibration_failed_msg">Calibration failed: the previous calibration is kept.</string>
+    <string name="accel_calibration_stopped_msg">Calibration stopped: the previous calibration is kept.</string>
+    <string name="accel_calibration_not_supported">The altimeter did not answer the calibration command: it needs the firmware 2.5 or later on an accelerometer board.</string>
+    <string name="accel_calibration_no_answer">No answer from the altimeter: check the connection.</string>
+    <string name="accel_face_x_up">X up</string>
+    <string name="accel_face_x_down">X down</string>
+    <string name="accel_face_y_up">Y up</string>
+    <string name="accel_face_y_down">Y down</string>
+    <string name="accel_face_z_up">Z up</string>
+    <string name="accel_face_z_down">Z down</string>
+    <!-- Status screen: HUD of the 3D rocket attitude (utils.Rocket) -->
+    <string name="attitude_waiting">Waiting for accelerometer values…</string>
+    <string name="attitude_tilt">Tilt</string>
+    <string name="attitude_total_accel">Total</string>
+    <string name="attitude_moving">Rocket moving</string>
 </resources>

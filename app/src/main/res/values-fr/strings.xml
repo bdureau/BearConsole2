@@ -612,4 +612,37 @@
     <string name="bt_connect_wait_beeps">Un altimètre qui bipe son altitude ne répond qu\'à la fin des bips : la connexion peut prendre jusqu\'à une minute.</string>
     <!-- Sentence spoken by the "test voice" button of the settings -->
     <string name="tts_test_phrase">Les altimètres Bearaltimeter sont les meilleurs</string>
+    <!-- Flight curves: menu item and names of the flight events drawn on the curves -->
+    <string name="curve_show_events">Événements du vol</string>
+    <string name="curve_event_burnout">Fin de combustion</string>
+    <string name="curve_event_apogee">Apogée</string>
+    <string name="curve_event_main">Principal</string>
+    <string name="curve_event_landing">Atterrissage</string>
+    <!-- Status screen: accelerometer calibration done by the altimeter ("j;", AltimeterAccelFragment) -->
+    <string name="accel_calibration_title">Calibration des accéléromètres</string>
+    <string name="accel_calibrate">Calibrer</string>
+    <string name="accel_calibration_start">Démarrer</string>
+    <string name="accel_calibration_help">La calibration est faite par l\'altimètre (firmware 2.5 ou plus récent). La carte est posée sur chacune de ses 6 faces (X, Y et Z vers le haut puis vers le bas). Sur chaque face, gardez-la immobile jusqu\'au bip court, puis retournez-la sur une autre face. Un bip long termine la calibration, 5 bips courts indiquent un échec. 2 minutes maximum ; restez sur cet écran et n\'envoyez rien pendant la calibration.</string>
+    <string name="accel_calibration_waiting">En attente de l\'altimètre…</string>
+    <string name="accel_calibration_any_order">Posez la carte sur chaque face, dans n\'importe quel ordre. Gardez-la immobile jusqu\'au bip court, puis retournez-la.</string>
+    <string name="accel_calibration_fixed_order">Posez la carte sur les faces dans l\'ordre demandé. Gardez-la immobile jusqu\'au bip court, puis retournez-la.</string>
+    <string name="accel_calibration_next_face">Face %1$d/6 : posez la carte %2$s, immobile jusqu\'au bip.</string>
+    <string name="accel_calibration_stop">Arrêter</string>
+    <string name="accel_calibration_stopping">Arrêt en cours…</string>
+    <string name="accel_calibration_saved_msg">Calibration enregistrée dans l\'altimètre. Les valeurs reçues désormais sont calibrées.</string>
+    <string name="accel_calibration_failed_msg">Échec de la calibration : la calibration précédente est conservée.</string>
+    <string name="accel_calibration_stopped_msg">Calibration arrêtée : la calibration précédente est conservée.</string>
+    <string name="accel_calibration_not_supported">L\'altimètre n\'a pas répondu à la commande de calibration : il faut le firmware 2.5 ou plus récent sur une carte avec accéléromètre.</string>
+    <string name="accel_calibration_no_answer">Pas de réponse de l\'altimètre : vérifiez la connexion.</string>
+    <string name="accel_face_x_up">X vers le haut</string>
+    <string name="accel_face_x_down">X vers le bas</string>
+    <string name="accel_face_y_up">Y vers le haut</string>
+    <string name="accel_face_y_down">Y vers le bas</string>
+    <string name="accel_face_z_up">Z vers le haut</string>
+    <string name="accel_face_z_down">Z vers le bas</string>
+    <!-- Status screen: HUD of the 3D rocket attitude (utils.Rocket) -->
+    <string name="attitude_waiting">En attente des accéléromètres…</string>
+    <string name="attitude_tilt">Inclinaison</string>
+    <string name="attitude_total_accel">Total</string>
+    <string name="attitude_moving">Fusée en mouvement</string>
 </resources>

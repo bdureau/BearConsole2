@@ -17,24 +17,19 @@ package com.altimeter.bdureau.bearconsole.telemetry;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
@@ -47,13 +42,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
 import com.altimeter.bdureau.bearconsole.BaseActivity;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.connection.TelemetryReader;
-import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.LocationService;
 import com.altimeter.bdureau.bearconsole.LocationUtils;
 import com.altimeter.bdureau.bearconsole.R;
@@ -329,7 +322,6 @@ public class RocketTrackOpenMap extends BaseActivity {
         reader.start("y1;");
     }
 
-
     /** Starts the phone position service (once) and registers its receiver. */
     private void startService() {
         registerLocationReceiver();
@@ -348,12 +340,9 @@ public class RocketTrackOpenMap extends BaseActivity {
      */
     private void registerLocationReceiver() {
         if (receiverRegistered) return;
-        IntentFilter filter = new IntentFilter("ACT_LOC");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
-        } else {
-            registerReceiver(receiver, filter);
-        }
+        // Private broadcast of this application only (RECEIVER_NOT_EXPORTED): mandatory
+        // flag since Android 14, and no other application can send fake positions
+        LocationService.registerPositionReceiver(this, receiver);
         receiverRegistered = true;
     }
 
@@ -458,7 +447,7 @@ public class RocketTrackOpenMap extends BaseActivity {
             Log.d ("coordinate",intent.getAction());
             distanceTime = System.currentTimeMillis();
             dest = new GeoPoint(rocketLatitude, rocketLongitude);
-            if(intent.getAction().equals("ACT_LOC")) {
+            if (LocationService.ACTION_LOCATION.equals(intent.getAction())) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
                 // Distance computed in meters, displayed in the unit of the application settings

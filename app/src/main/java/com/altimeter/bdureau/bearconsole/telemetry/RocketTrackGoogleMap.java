@@ -19,8 +19,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
@@ -303,7 +301,6 @@ public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCall
         reader.start("y1;");
     }
 
-
     /** Starts the phone position service (once) and registers its receiver. */
     private void startService() {
         registerLocationReceiver();
@@ -322,12 +319,9 @@ public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCall
      */
     private void registerLocationReceiver() {
         if (receiverRegistered) return;
-        IntentFilter filter = new IntentFilter("ACT_LOC");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
-        } else {
-            registerReceiver(receiver, filter);
-        }
+        // Private broadcast of this application only (RECEIVER_NOT_EXPORTED): mandatory
+        // flag since Android 14, and no other application can send fake positions
+        LocationService.registerPositionReceiver(this, receiver);
         receiverRegistered = true;
     }
 
@@ -411,7 +405,7 @@ public class RocketTrackGoogleMap extends BaseActivity implements OnMapReadyCall
         public void onReceive(Context context, Intent intent) {
             Log.d("coordinate", intent.getAction());
             distanceTime = System.currentTimeMillis();
-            if (intent.getAction().equals("ACT_LOC")) {
+            if (LocationService.ACTION_LOCATION.equals(intent.getAction())) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
                 // Distance computed in meters, displayed in the unit of the application settings

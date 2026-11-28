@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Accelerometer tab of the status screen (AltimeterAccelFragment) for the accelerometer
+    boards: live values of the ADXL375 / ADXL345 axes (rows shared with the flight view,
+    fragment_telemetry_mp_tab2), then the accelerometer calibration card: how the calibration
+    done by the altimeter works ("j;" command, board turned at the end of each beep) and the
+    Calibrate button.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Live values of the three axes of each accelerometer -->
+        <include
+            layout="@layout/fragment_telemetry_mp_tab2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Calibration card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:text="@string/accel_calibration_title"
+                android:textSize="16sp" />
+
+            <!-- How the calibration done by the altimeter works -->
+            <TextView
+                android:id="@+id/txtCalibrationHelp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/accel_calibration_help" />
+
+            <Button
+                android:id="@+id/butCalibrateAccel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/accel_calibrate" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

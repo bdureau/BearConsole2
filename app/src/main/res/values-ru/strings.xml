@@ -612,4 +612,37 @@
     <string name="bt_connect_wait_beeps">Высотомер, который пищит высоту, отвечает только после окончания сигналов: подключение может занять до минуты.</string>
     <!-- Sentence spoken by the "test voice" button of the settings -->
     <string name="tts_test_phrase">Высотомеры Bearaltimeter самые лучшие</string>
+    <!-- Flight curves: menu item and names of the flight events drawn on the curves -->
+    <string name="curve_show_events">События полёта</string>
+    <string name="curve_event_burnout">Конец работы двигателя</string>
+    <string name="curve_event_apogee">Апогей</string>
+    <string name="curve_event_main">Основной</string>
+    <string name="curve_event_landing">Приземление</string>
+    <!-- Status screen: accelerometer calibration done by the altimeter ("j;", AltimeterAccelFragment) -->
+    <string name="accel_calibration_title">Калибровка акселерометров</string>
+    <string name="accel_calibrate">Калибровать</string>
+    <string name="accel_calibration_start">Начать</string>
+    <string name="accel_calibration_help">Калибровку выполняет высотомер (прошивка 2.5 или новее). Плату кладут на каждую из 6 граней (X, Y и Z вверх и вниз). На каждой грани держите её неподвижно до короткого сигнала, затем переверните на другую грань. Длинный сигнал завершает калибровку, 5 коротких означают ошибку. Не более 2 минут; оставайтесь на этом экране и ничего не отправляйте во время калибровки.</string>
+    <string name="accel_calibration_waiting">Ожидание высотомера…</string>
+    <string name="accel_calibration_any_order">Кладите плату на каждую грань в любом порядке. Держите её неподвижно до короткого сигнала, затем переворачивайте.</string>
+    <string name="accel_calibration_fixed_order">Кладите плату на грани в требуемом порядке. Держите её неподвижно до короткого сигнала, затем переворачивайте.</string>
+    <string name="accel_calibration_next_face">Грань %1$d/6: положите плату так: %2$s, неподвижно до сигнала.</string>
+    <string name="accel_calibration_stop">Остановить</string>
+    <string name="accel_calibration_stopping">Остановка…</string>
+    <string name="accel_calibration_saved_msg">Калибровка сохранена в высотомере. Получаемые теперь значения откалиброваны.</string>
+    <string name="accel_calibration_failed_msg">Калибровка не удалась: сохранена предыдущая калибровка.</string>
+    <string name="accel_calibration_stopped_msg">Калибровка остановлена: сохранена предыдущая калибровка.</string>
+    <string name="accel_calibration_not_supported">Высотомер не ответил на команду калибровки: нужна прошивка 2.5 или новее на плате с акселерометром.</string>
+    <string name="accel_calibration_no_answer">Нет ответа от высотомера: проверьте соединение.</string>
+    <string name="accel_face_x_up">X вверх</string>
+    <string name="accel_face_x_down">X вниз</string>
+    <string name="accel_face_y_up">Y вверх</string>
+    <string name="accel_face_y_down">Y вниз</string>
+    <string name="accel_face_z_up">Z вверх</string>
+    <string name="accel_face_z_down">Z вниз</string>
+    <!-- Status screen: HUD of the 3D rocket attitude (utils.Rocket) -->
+    <string name="attitude_waiting">Ожидание акселерометров…</string>
+    <string name="attitude_tilt">Наклон</string>
+    <string name="attitude_total_accel">Всего</string>
+    <string name="attitude_moving">Ракета движется</string>
 </resources>

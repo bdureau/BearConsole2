@@ -11,7 +11,9 @@ package com.altimeter.bdureau.bearconsole.telemetry;
  *  radio. The altimeter streams "telemetry" frames decoded by ConsoleApplication and forwarded
  *  to the handler of this activity. Tabs (depending on the board):
  *    - AltimeterInfoFragment: outputs continuity, altitude, battery, temperature, EEPROM;
- *    - AltimeterAccelFragment / RocketViewFragment: accelerometer values and 3D attitude;
+ *    - AltimeterAccelFragment / RocketViewFragment: accelerometer values, the accelerometer
+ *      calibration done by the firmware ("j;"), and the live 3D attitude of the rocket
+ *      (Processing sketch of the gimbal console) that follows the accelerometers;
  *    - AltimeterOutputFragment: pyro / servo output test, each firing confirmed by the user;
  *    - GPSStatusFragment and a map fragment (Google Maps or OpenStreetMap) for the AltiGPS.
  *  On the AltiGPS a manual recording can be started / stopped; leaving the screen while
@@ -27,8 +29,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -37,11 +37,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import androidx.annotation.Nullable;
 import androidx.activity.OnBackPressedCallback;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -60,6 +58,7 @@ import com.altimeter.bdureau.bearconsole.BaseActivity;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import com.altimeter.bdureau.bearconsole.connection.TelemetryReader;
+import com.altimeter.bdureau.bearconsole.connection.AccelCalibrationSession;
 import com.altimeter.bdureau.bearconsole.utils.TabPagerAdapter;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
@@ -74,11 +73,10 @@ import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSOp
 import com.altimeter.bdureau.bearconsole.telemetry.TelemetryStatusFragment.GPSStatusFragment;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AltimeterStatusTabActivity extends BaseActivity
-        implements AltimeterOutputFragment.OutputCommandSender {
+        implements AltimeterOutputFragment.OutputCommandSender,
+        AltimeterAccelFragment.CalibrationListener {
     public String TAG = "AltimeterStatusTabActivity";
     private ViewPager mViewPager;
 
@@ -104,8 +102,14 @@ public class AltimeterStatusTabActivity extends BaseActivity
     private TelemetryReader reader;
     private boolean recording = false;
     Intent locIntent = null;
-    private double accel375[] = {0.0, 0.0, 0.0};
-    private double accel345[] = {0.0, 0.0, 0.0};
+    // Last accelerometer values in thousandths of m/s^2 (unit of the firmware),
+    // [sensor][axis] (AltimeterAccelFragment.SENSOR_*)
+    private final int[][] accelMilli = new int[2][3];
+    // true once a complete X Y Z sample of the sensor has been received
+    private final boolean[] accelReceived = new boolean[2];
+    // true while the altimeter calibrates its accelerometers (telemetry stream stopped)
+    private boolean calibrating = false;
+    private AccelCalibrationSession calibration = null;
     //Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSION_STORAGE = {
@@ -264,114 +268,124 @@ public class AltimeterStatusTabActivity extends BaseActivity
                     }
                     break;
                 case 26:
-                    //Value 26 contains Accel375X
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
-                        String accel375x = (String) msg.obj;
-                        if (ConsoleApplication.isSignedNumber(accel375x)) {
-                            int accel375xVal = ConsoleApplication.parseIntSafe(accel375x, 0);
-                            statusPage1ter.setAccel375x(String.format("%.2f", ((double) accel375xVal / (double) 1000)));
-                            accel375[0] = ((double) accel375xVal / (double) 1000);
-                        }
-                    }
-                    //for the TTGOBearAltimeter it is an ADXL345
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
-                        String accel345x = (String) msg.obj;
-                        if (ConsoleApplication.isSignedNumber(accel345x)) {
-                            int accel345xVal = ConsoleApplication.parseIntSafe(accel345x, 0);
-                            statusPage1ter.setAccel345x(String.format("%.2f", ((double) accel345xVal / (double) 1000)));
-                            accel345[0] = ((double) accel345xVal / (double) 1000);
-                        }
-                    }
-                    break;
                 case 27:
-                    //Value 27 contains Accel375Y
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
-                        String accel375y = (String) msg.obj;
-                        if (ConsoleApplication.isSignedNumber(accel375y)) {
-                            int accel375yVal = ConsoleApplication.parseIntSafe(accel375y, 0);
-                            statusPage1ter.setAccel375y(String.format("%.2f", ((double) accel375yVal / (double) 1000)));
-                            accel375[1] = ((double) accel375yVal / (double) 1000);
-                        }
-                    }
-                    //for the TTGOBearAltimeter it is an ADXL345
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
-                        String accel345y = (String) msg.obj;
-                        if (ConsoleApplication.isSignedNumber(accel345y)) {
-                            int accel345yVal = ConsoleApplication.parseIntSafe(accel345y, 0);
-                            statusPage1ter.setAccel345y(String.format("%.2f", ((double) accel345yVal / (double) 1000)));
-                            accel345[1] = ((double) accel345yVal / (double) 1000);
-                        }
-                    }
-                    break;
                 case 28:
-                    //Value 28 contains Accel375Z
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
-                        String accel375z = (String) msg.obj;
-                        if (ConsoleApplication.isSignedNumber(accel375z)) {
-                            int accel375zVal = ConsoleApplication.parseIntSafe(accel375z, 0);
-                            statusPage1ter.setAccel375z(String.format("%.2f", ((double) accel375zVal / (double) 1000)));
-                            accel375[2] = ((double) accel375zVal / (double) 1000);
-                            if (statusPage5 != null) statusPage5.setInputString(accel375);
-                        }
-                    }
-                    //for the TTGOBearAltimeter it is an ADXL345
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("TTGOBearAltimeter")) {
-                        String accel345z = (String) msg.obj;
-                        if (ConsoleApplication.isSignedNumber(accel345z)) {
-                            int accel345zVal = ConsoleApplication.parseIntSafe(accel345z, 0);
-                            statusPage1ter.setAccel345z(String.format("%.2f", ((double) accel345zVal / (double) 1000)));
-                            accel345[2] = ((double) accel345zVal / (double) 1000);
-                        }
-                    }
-                    break;
                 case 29:
-                    //Value 29 contains Accel345X
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
-                        String accel345x = (String) msg.obj;
-                        if (ConsoleApplication.isSignedNumber(accel345x)) {
-                            int accel345xVal = ConsoleApplication.parseIntSafe(accel345x, 0);
-                            statusPage1ter.setAccel345x(String.format("%.2f", ((double) accel345xVal / (double) 1000)));
-                            accel345[0] = ((double) accel345xVal / (double) 1000);
-                        }
-                    }
-                    break;
                 case 30:
-                    //Value 30 contains Accel345Y
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
-                        String accel345y = (String) msg.obj;
-                        if (ConsoleApplication.isSignedNumber(accel345y)) {
-                            int accel345yVal = ConsoleApplication.parseIntSafe(accel345y, 0);
-                            statusPage1ter.setAccel345y(String.format("%.2f", ((double) accel345yVal / (double) 1000)));
-                            accel345[1] = ((double) accel345yVal / (double) 1000);
-                        }
-                    }
-                    break;
                 case 31:
-                    //Value 31 contains Accel345z
-                    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345") ||
-                            myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_375")) {
-                        String accel345z = (String) msg.obj;
-                        if (ConsoleApplication.isSignedNumber(accel345z)) {
-                            int accel345zVal = ConsoleApplication.parseIntSafe(accel345z, 0);
-                            statusPage1ter.setAccel345z(String.format("%.2f", ((double) accel345zVal / (double) 1000)));
-                            accel345[2] = ((double) accel345zVal / (double) 1000);
-                        }
-                    }
+                    // Values 26..31 contain the accelerometer axes (thousandths of m/s^2)
+                    onAccelField(msg.what, (String) msg.obj);
                     break;
             }
         }
     };
+
+    /**
+     * One accelerometer axis received in a telemetry frame (msg.what 26..31, thousandths of m/s^2:
+     * the firmware sends 1000 x the acceleration in m/s^2, 9807 for 1 g).
+     *  - ESP32 accelerometer boards: 26..28 = ADXL375 X Y Z, 29..31 = ADXL345 X Y Z;
+     *  - TTGOBearAltimeter: 26..28 = ADXL345 X Y Z.
+     * When the Z axis (last field of a sensor in the frame) arrives, the complete sample is
+     * given to the 3D rocket view.
+     */
+    private void onAccelField(int what, String value) {
+        if (!ConsoleApplication.isSignedNumber(value)) return;
+        String name = myBT.getAltiConfigData().getAltimeterName();
+        int sensor, axis;
+        if (name.equals("AltiMultiESP32_accel") || name.equals("AltiMultiESP32_accel_345")
+                || name.equals("AltiMultiESP32_accel_375")) {
+            sensor = (what <= 28) ? AltimeterAccelFragment.SENSOR_375 : AltimeterAccelFragment.SENSOR_345;
+            axis = (what - 26) % 3;
+        } else if (name.equals("TTGOBearAltimeter") && what <= 28) {
+            sensor = AltimeterAccelFragment.SENSOR_345;
+            axis = what - 26;
+        } else {
+            return;
+        }
+        int milli = ConsoleApplication.parseIntSafe(value, 0);
+        accelMilli[sensor][axis] = milli;
+        statusPage1ter.setAccelValue(sensor, axis, milli);
+        if (axis == 2) {
+            accelReceived[sensor] = true;
+            updateAttitude();
+        }
+    }
+
+    /**
+     * Gives the 3D view the vector (in g) of the low g ADXL345 (finer resolution) when it
+     * sends values, otherwise the one of the ADXL375.
+     */
+    private void updateAttitude() {
+        if (statusPage5 == null) return;
+        int sensor = AltimeterAccelFragment.SENSOR_345;
+        int[] v = accelMilli[sensor];
+        boolean has345 = accelReceived[sensor]
+                && (Math.abs(v[0]) + Math.abs(v[1]) + Math.abs(v[2])) > 1000;
+        if (!has345) sensor = AltimeterAccelFragment.SENSOR_375;
+        if (!accelReceived[sensor]) return;
+        double[] g = new double[3];
+        for (int a = 0; a < 3; a++) {
+            // thousandths of m/s^2 -> g
+            g[a] = accelMilli[sensor][a] / 1000.0 / ConsoleApplication.STANDARD_GRAVITY;
+        }
+        statusPage5.setAcceleration(g);
+    }
+
+    /**
+     * Accelerometer calibration done by the firmware ("j;", see AccelCalibrationSession).
+     * The telemetry reading loop is stopped first: during the calibration nothing else may
+     * be sent (any character stops it) and the session reads the text sent by the firmware.
+     * The session is queued on the I/O executor after the stop, so the two never read together.
+     */
+    @Override
+    public void startAccelCalibration(AccelCalibrationSession.Listener ui) {
+        if (calibration != null && calibration.isRunning()) return;
+        calibrating = true;
+        reader.stop(false);
+        calibration = new AccelCalibrationSession(myBT, new AccelCalibrationSession.Listener() {
+            @Override
+            public void onCalibrationStarted(boolean anyOrder) {
+                ui.onCalibrationStarted(anyOrder);
+            }
+
+            @Override
+            public void onNextFace(int face, int number) {
+                ui.onNextFace(face, number);
+            }
+
+            @Override
+            public void onFaceDone(int face, int count) {
+                ui.onFaceDone(face, count);
+            }
+
+            @Override
+            public void onCalibrationFinished(AccelCalibrationSession.Result result, String details) {
+                endAccelCalibration();
+                ui.onCalibrationFinished(result, details);
+            }
+        });
+        calibration.start();
+    }
+
+    @Override
+    public void cancelAccelCalibration() {
+        if (calibration != null) calibration.cancel();
+    }
+
+    /**
+     * The calibration has ended: restart the stream (the values are now calibrated by the
+     * firmware) and detect the rocket axis again.
+     */
+    private void endAccelCalibration() {
+        if (!calibrating) return;
+        calibrating = false;
+        accelReceived[0] = false;
+        accelReceived[1] = false;
+        if (statusPage5 != null) statusPage5.resetAxis();
+        if (!isFinishing() && !isDestroyed() && myBT.getConnected()) {
+            reader.start("y1;");
+        }
+    }
 
     /** Meters to feet conversion factor used for the displayed altitude. */
     private static final double METERS_TO_FEET = 3.28084;
@@ -534,6 +548,11 @@ public class AltimeterStatusTabActivity extends BaseActivity
 
     @Override
     public void onDestroy() {
+        // A calibration in progress is stopped (one character is enough for the firmware)
+        if (calibration != null) {
+            calibration.release();
+            calibration = null;
+        }
         // Safety: switch off any output left on by the output test tab. Done before
         // super.onDestroy(), while the fragment and the command queue are still alive.
         if (statusPage1bis != null) {
@@ -576,7 +595,8 @@ public class AltimeterStatusTabActivity extends BaseActivity
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
-        if (myBT.getConnected() && !reader.isRunning()) {
+        // Not during an accelerometer calibration: the stream is restarted when it ends
+        if (myBT.getConnected() && !reader.isRunning() && !calibrating) {
             reader.start("y1;");
         }
     }
@@ -683,7 +703,7 @@ public class AltimeterStatusTabActivity extends BaseActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("coordinate", intent.getAction());
-            if (intent.getAction().equals("ACT_LOC")) {
+            if (LocationService.ACTION_LOCATION.equals(intent.getAction())) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
 
@@ -718,12 +738,9 @@ public class AltimeterStatusTabActivity extends BaseActivity
 
     private void startService() {
 
-        IntentFilter filter = new IntentFilter("ACT_LOC");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
-        } else {
-            registerReceiver(receiver, filter);
-        }
+        // Private broadcast of this application only (RECEIVER_NOT_EXPORTED): mandatory
+        // flag since Android 14, and no other application can send fake positions
+        LocationService.registerPositionReceiver(this, receiver);
 
         // The position is shared with the other screens (see LocationService.acquire()):
         // acquire it only once for this screen

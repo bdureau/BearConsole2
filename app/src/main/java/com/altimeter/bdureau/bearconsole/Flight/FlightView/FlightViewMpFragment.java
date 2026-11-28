@@ -14,6 +14,10 @@ package com.altimeter.bdureau.bearconsole.Flight.FlightView;
  *    - Disabling expensive per-point circle and value rendering during display.
  *    - Handling adaptive time units (ms, seconds, minutes) with time scaling factors.
  *    - Providing a zero-argument default constructor for safe Fragment recreation.
+ *  The flight events (burnout, apogee, main deployment, landing) detected on the
+ *  altitude curve (see FlightEvents) are drawn as labelled vertical dashed lines, and as
+ *  colored dots on the altitude curve when it is displayed. They can be hidden from the
+ *  menu of the flight screen (setShowEvents()).
  * ============================================================================
  */
 
@@ -33,7 +37,9 @@ import com.altimeter.bdureau.bearconsole.Flight.FlightViewTabActivity;
 import com.altimeter.bdureau.bearconsole.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
+import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -45,6 +51,7 @@ import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FlightViewMpFragment extends Fragment {
     private LineChart mChart;
@@ -60,6 +67,11 @@ public class FlightViewMpFragment extends Fragment {
     private String[] units = null;
     private String[] curvesNames = null;
     private boolean[] checkedItems = null;
+
+    // Flight events drawn on the curves (computed once per flight, see FlightEvents)
+    private boolean showEvents = true;
+    private List<FlightEvents.Event> events = null;
+    private XYSeriesCollection eventsSource = null;
 
     // Palette used for styling distinct telemetry curves
     private static final int[] COLORS = {
@@ -120,6 +132,13 @@ public class FlightViewMpFragment extends Fragment {
      */
     public void setCheckedItems(boolean[] checkedItems) {
         this.checkedItems = checkedItems;
+    }
+
+    /**
+     * Shows or hides the flight events. The caller redraws the curves with drawAllCurves().
+     */
+    public void setShowEvents(boolean show) {
+        this.showEvents = show;
     }
 
     @Nullable
@@ -246,6 +265,9 @@ public class FlightViewMpFragment extends Fragment {
             }
         }
 
+        // Flight events: vertical lines on the time axis, dots on the altitude curve
+        addFlightEvents(allFlightData, dataSets, timeFactor);
+
         // Bind data or clear if no curves are selected
         if (!dataSets.isEmpty()) {
             LineData data = new LineData(dataSets);
@@ -262,6 +284,69 @@ public class FlightViewMpFragment extends Fragment {
 
         // Request direct view invalidation/redraw
         mChart.invalidate();
+    }
+
+    /**
+     * Draws the flight events: one labelled dashed vertical line per event (limit lines of the
+     * X axis, drawn behind the curves) and, when the altitude curve (series 0) is displayed,
+     * a dot of the event color on that curve. The labels alternate between the top and the
+     * bottom of the chart so that close events (burnout and apogee of a short flight) do not overlap.
+     */
+    private void addFlightEvents(XYSeriesCollection flightData, ArrayList<ILineDataSet> dataSets,
+                                 float timeFactor) {
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.removeAllLimitLines();
+        if (!showEvents || myBT == null || myBT.getAppConf() == null) {
+            return;
+        }
+        boolean isMeters = myBT.getAppConf().getUnits() == GlobalConfig.AltitudeUnit.METERS;
+        if (events == null || eventsSource != flightData) {
+            events = FlightEvents.compute(flightData.getSeries(0), isMeters);
+            eventsSource = flightData;
+        }
+        if (events.isEmpty()) {
+            return;
+        }
+
+        String altUnit = isMeters ? "m" : "ft";
+        float textSize = Math.max(8f, fontSize - 4f);
+        ArrayList<Entry> dots = new ArrayList<>(events.size());
+        ArrayList<Integer> dotColors = new ArrayList<>(events.size());
+        for (int i = 0; i < events.size(); i++) {
+            FlightEvents.Event ev = events.get(i);
+            float x = (float) (ev.timeMs * timeFactor);
+            LimitLine line = new LimitLine(x, ev.label(requireContext(), altUnit));
+            line.setLineColor(ev.type.color);
+            line.setLineWidth(1.2f);
+            line.enableDashedLine(12f, 8f, 0f);
+            line.setTextColor(ev.type.color);
+            line.setTextSize(textSize);
+            line.setLabelPosition((i % 2 == 0) ? LimitLine.LimitLabelPosition.RIGHT_TOP
+                    : LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+            xAxis.addLimitLine(line);
+
+            dots.add(new Entry(x, (float) ev.altitude));
+            dotColors.add(ev.type.color);
+        }
+        xAxis.setDrawLimitLinesBehindData(true);
+
+        // Dots only make sense on the altitude curve: same Y scale
+        boolean altitudeShown = checkedItems != null && checkedItems.length > 0 && checkedItems[0];
+        if (altitudeShown) {
+            LineDataSet eventSet = new LineDataSet(dots, "");
+            eventSet.setColor(Color.TRANSPARENT);
+            eventSet.setLineWidth(0f);
+            eventSet.setCircleColors(dotColors);
+            eventSet.setCircleRadius(5f);
+            eventSet.setCircleHoleRadius(2.5f);
+            eventSet.setCircleHoleColor(Color.WHITE);
+            eventSet.setDrawCircleHole(true);
+            eventSet.setDrawValues(false);
+            eventSet.setHighlightEnabled(false);
+            // No legend entry for the dots: the lines carry the event names
+            eventSet.setForm(Legend.LegendForm.NONE);
+            dataSets.add(eventSet);
+        }
     }
 
     @Override

@@ -612,4 +612,37 @@
     <string name="bt_connect_wait_beeps">İrtifasını bipleyen bir altimetre ancak bipler bitince yanıt verir: bağlantı bir dakikaya kadar sürebilir.</string>
     <!-- Sentence spoken by the "test voice" button of the settings -->
     <string name="tts_test_phrase">Bearaltimeter altimetreleri en iyisidir</string>
+    <!-- Flight curves: menu item and names of the flight events drawn on the curves -->
+    <string name="curve_show_events">Uçuş olayları</string>
+    <string name="curve_event_burnout">Yanma sonu</string>
+    <string name="curve_event_apogee">Apoje</string>
+    <string name="curve_event_main">Ana paraşüt</string>
+    <string name="curve_event_landing">İniş</string>
+    <!-- Status screen: accelerometer calibration done by the altimeter ("j;", AltimeterAccelFragment) -->
+    <string name="accel_calibration_title">İvmeölçer kalibrasyonu</string>
+    <string name="accel_calibrate">Kalibre et</string>
+    <string name="accel_calibration_start">Başlat</string>
+    <string name="accel_calibration_help">Kalibrasyonu altimetre yapar (firmware 2.5 veya sonrası). Kart 6 yüzünün her birine konur (X, Y ve Z yukarı ve aşağı). Her yüzde kısa bip sesine kadar sabit tutun, sonra başka bir yüze çevirin. Uzun bip kalibrasyonu bitirir, 5 kısa bip başarısızlık demektir. En fazla 2 dakika; bu ekranda kalın ve kalibrasyon sırasında hiçbir şey göndermeyin.</string>
+    <string name="accel_calibration_waiting">Altimetre bekleniyor…</string>
+    <string name="accel_calibration_any_order">Kartı her yüzüne, istediğiniz sırayla koyun. Kısa bip sesine kadar sabit tutun, sonra çevirin.</string>
+    <string name="accel_calibration_fixed_order">Kartı yüzlerine istenen sırayla koyun. Kısa bip sesine kadar sabit tutun, sonra çevirin.</string>
+    <string name="accel_calibration_next_face">Yüz %1$d/6: kartı %2$s konumuna koyun, bip sesine kadar sabit tutun.</string>
+    <string name="accel_calibration_stop">Durdur</string>
+    <string name="accel_calibration_stopping">Durduruluyor…</string>
+    <string name="accel_calibration_saved_msg">Kalibrasyon altimetreye kaydedildi. Bundan sonra alınan değerler kalibre edilmiştir.</string>
+    <string name="accel_calibration_failed_msg">Kalibrasyon başarısız: önceki kalibrasyon korunuyor.</string>
+    <string name="accel_calibration_stopped_msg">Kalibrasyon durduruldu: önceki kalibrasyon korunuyor.</string>
+    <string name="accel_calibration_not_supported">Altimetre kalibrasyon komutuna yanıt vermedi: ivmeölçerli bir kartta firmware 2.5 veya sonrası gerekir.</string>
+    <string name="accel_calibration_no_answer">Altimetreden yanıt yok: bağlantıyı kontrol edin.</string>
+    <string name="accel_face_x_up">X yukarı</string>
+    <string name="accel_face_x_down">X aşağı</string>
+    <string name="accel_face_y_up">Y yukarı</string>
+    <string name="accel_face_y_down">Y aşağı</string>
+    <string name="accel_face_z_up">Z yukarı</string>
+    <string name="accel_face_z_down">Z aşağı</string>
+    <!-- Status screen: HUD of the 3D rocket attitude (utils.Rocket) -->
+    <string name="attitude_waiting">İvmeölçerler bekleniyor…</string>
+    <string name="attitude_tilt">Eğim</string>
+    <string name="attitude_total_accel">Toplam</string>
+    <string name="attitude_moving">Roket hareket ediyor</string>
 </resources>

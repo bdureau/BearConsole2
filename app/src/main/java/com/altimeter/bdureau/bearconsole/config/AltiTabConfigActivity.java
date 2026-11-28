@@ -23,9 +23,7 @@ package com.altimeter.bdureau.bearconsole.config;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-//import android.content.Context;
 import android.content.Intent;
-//import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -38,8 +36,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import androidx.annotation.NonNull;
-//import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -60,7 +56,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-//import java.util.concurrent.Executors;
 
 public class AltiTabConfigActivity extends BaseActivity {
     private static final String TAG = "AltiTabConfigActivity";

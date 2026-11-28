@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: BaseActivity
@@ -13,6 +13,10 @@ package com.altimeter.bdureau.bearconsole;
  *      in the application settings (see AppLanguage: phone language with English fallback,
  *      or any translated language). When the setting is changed, each screen is re-created
  *      in the new language as soon as it comes back to the foreground.
+ *      The title of the action bar comes from the android:label of the manifest, which the
+ *      system resolves with the phone language, not with the language of the application:
+ *      it is read again in onCreate() through the localized context (e.g. "Flight" and not
+ *      "Vol" when English is chosen on a French phone).
  *    - Edge-to-edge: from Android 15 (API 35) apps targeting the latest SDK are drawn behind
  *      the status bar, the action bar, the navigation bar and the display cutout. The content
  *      view is padded so that no button or text is hidden:
@@ -27,6 +31,10 @@ package com.altimeter.bdureau.bearconsole;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -54,6 +62,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         // fully initialized yet when the first activity is attached
         appliedLanguage = readLanguageSetting(newBase);
         super.attachBaseContext(ConsoleApplication.updateBaseContextLocale(newBase, appliedLanguage));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Title in the language of the application (a screen can still call setTitle() after)
+        try {
+            ActivityInfo info = getPackageManager().getActivityInfo(getComponentName(), 0);
+            int labelRes = info.labelRes != 0 ? info.labelRes : getApplicationInfo().labelRes;
+            if (labelRes != 0) {
+                setTitle(labelRes);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.w("BaseActivity", "Activity label not found", e);
+        }
     }
 
     @Override

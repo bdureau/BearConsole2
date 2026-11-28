@@ -525,12 +525,16 @@ public class ConsoleApplication extends Application {
         this.exit = b;
     }
 
-    /** Standard gravity, used to convert the accelerometer values (milli-g) to m/s^2. */
+    /** Standard gravity (m/s^2), used to express an acceleration in g. */
     public static final double STANDARD_GRAVITY = 9.80665;
 
-    /** Converts an accelerometer value sent in thousandths of g to m/s^2. */
-    public static float milliGToMs2(int milliG) {
-        return (float) (milliG / 1000.0 * STANDARD_GRAVITY);
+    /**
+     * Converts an accelerometer value sent by the firmware to m/s^2. The firmware sends
+     * thousandths of m/s^2 (the m/s^2 of the Adafruit sensor events, or of the calibrated
+     * values of the 2.5 firmware, multiplied by 1000), not thousandths of g.
+     */
+    public static float accelToMs2(int milliMs2) {
+        return (float) (milliMs2 / 1000.0);
     }
 
     /** Checksum of a split sentence: every field except the last one, each followed by a comma. */
@@ -634,6 +638,49 @@ public class ConsoleApplication extends Application {
             }
             lastData = rawData.toString();
             return myMessage;
+        }
+    }
+
+    /**
+     * Reads one text line sent by the altimeter (up to '\n', CR dropped). Used by the
+     * accelerometer calibration ("j;" command), during which the firmware sends plain text
+     * messages instead of "$...;" frames.
+     *
+     * @param idleTimeoutMs maximum time without any received character
+     * @param keepRunning   optional condition; the read stops as soon as it returns false
+     * @return the line, or null on timeout, cancel request, error or closed stream
+     */
+    public String readLine(long idleTimeoutMs, BooleanSupplier keepRunning) {
+        synchronized (ioLock) {
+            StringBuilder sb = new StringBuilder();
+            long last = System.currentTimeMillis();
+            try {
+                while (keepRunning == null || keepRunning.getAsBoolean()) {
+                    InputStream in = getInputStream();
+                    if (in == null)
+                        return null;
+                    if (in.available() <= 0) {
+                        if (System.currentTimeMillis() - last > idleTimeoutMs)
+                            return null;
+                        Thread.sleep(POLL_INTERVAL_MS);
+                        continue;
+                    }
+                    int b = in.read();
+                    if (b < 0)
+                        return null;
+                    last = System.currentTimeMillis();
+                    char ch = (char) b;
+                    if (ch == '\n')
+                        return sb.toString();
+                    if (ch != '\r')
+                        sb.append(ch);
+                }
+            } catch (IOException e) {
+                Log.w(TAG, "readLine: stream error", e);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            return null;
         }
     }
 
@@ -872,13 +919,13 @@ public class ConsoleApplication extends Application {
         }
 
         // Accelerometer channels are signed (a deceleration is negative): read them with sField.
-        // The firmware sends thousandths of g (milli-g); they are stored in m/s^2
-        // (milli-g / 1000 * 9.80665), whatever the altitude unit of the application.
+        // The firmware sends thousandths of m/s^2; they are stored in m/s^2 (value / 1000),
+        // whatever the altitude unit of the application.
         // TTGO boards: one 3-axis accelerometer
         if (isAltimeter("TTGOBearAltimeter", "TTGOMiniBearAltimeter")) {
             for (int i = 7; i <= 9; i++) {
                 if (has(s, i))
-                    MyFlight.AddToFlight(time, milliGToMs2(sField(s, i, 0)), flightName, i - 1);
+                    MyFlight.AddToFlight(time, accelToMs2(sField(s, i, 0)), flightName, i - 1);
             }
         }
 
@@ -886,7 +933,7 @@ public class ConsoleApplication extends Application {
         if (isAltimeter("UltimateAltimeter")) {
             for (int i = 6; i <= 8; i++) {
                 if (has(s, i))
-                    MyFlight.AddToFlight(time, milliGToMs2(sField(s, i, 0)), flightName, i - 1);
+                    MyFlight.AddToFlight(time, accelToMs2(sField(s, i, 0)), flightName, i - 1);
             }
         }
 
@@ -894,7 +941,7 @@ public class ConsoleApplication extends Application {
         if (isAltimeter("AltiMultiESP32_accel", "AltiMultiESP32_accel_375", "AltiMultiESP32_accel_345")) {
             for (int i = 7; i <= 12; i++) {
                 if (has(s, i))
-                    MyFlight.AddToFlight(time, milliGToMs2(sField(s, i, 0)), flightName, i - 1);
+                    MyFlight.AddToFlight(time, accelToMs2(sField(s, i, 0)), flightName, i - 1);
             }
         }
 

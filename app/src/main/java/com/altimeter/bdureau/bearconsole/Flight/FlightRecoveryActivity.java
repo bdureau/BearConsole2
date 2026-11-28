@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -36,12 +35,8 @@ import android.widget.Toast;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 public class FlightRecoveryActivity extends BaseActivity {
     public static String SELECTED_FLIGHT = "MyFlight";

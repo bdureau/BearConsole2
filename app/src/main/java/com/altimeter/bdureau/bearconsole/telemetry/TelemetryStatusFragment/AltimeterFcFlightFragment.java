@@ -27,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
-import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.ChartView;
 import com.altimeter.bdureau.bearconsole.R;
 
@@ -40,7 +39,6 @@ import org.afree.chart.plot.XYPlot;
 import org.afree.data.xy.XYSeriesCollection;
 import org.afree.graphics.SolidColor;
 import org.afree.graphics.geom.Font;
-
 
 public class AltimeterFcFlightFragment extends Fragment {
     private boolean ViewCreated = false;
@@ -104,7 +102,6 @@ public class AltimeterFcFlightFragment extends Fragment {
             return false;
     }
 
-
     public void setLiftOffChecked(boolean flag) {
         if(ViewCreated) {
             cbLiftOff.setEnabled(true);
@@ -113,18 +110,15 @@ public class AltimeterFcFlightFragment extends Fragment {
         }
     }
 
-
     public void setCurrentAltitude (String altitude) {
         if(ViewCreated)
             this.txtCurrentAltitude.setText(altitude);
     }
 
-
     public void setLiftOffTime(String time){
         if(ViewCreated)
             this.txtLiftOffTime.setText(time);
     }
-
 
     public void setApogeeChecked(boolean flag) {
         if(ViewCreated) {
@@ -148,7 +142,6 @@ public class AltimeterFcFlightFragment extends Fragment {
         if(ViewCreated)
             this.txtMainChuteTime.setText(value);
     }
-
 
     public void setMainChuteChecked(boolean flag ) {
         if(ViewCreated) {

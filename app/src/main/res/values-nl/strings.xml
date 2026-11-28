@@ -612,4 +612,37 @@
     <string name="bt_connect_wait_beeps">Een hoogtemeter die zijn hoogte piept, antwoordt pas na de piepjes: de verbinding kan tot een minuut duren.</string>
     <!-- Sentence spoken by the "test voice" button of the settings -->
     <string name="tts_test_phrase">De Bearaltimeter-hoogtemeters zijn de beste</string>
+    <!-- Flight curves: menu item and names of the flight events drawn on the curves -->
+    <string name="curve_show_events">Vluchtgebeurtenissen</string>
+    <string name="curve_event_burnout">Einde verbranding</string>
+    <string name="curve_event_apogee">Apogeum</string>
+    <string name="curve_event_main">Hoofdparachute</string>
+    <string name="curve_event_landing">Landing</string>
+    <!-- Status screen: accelerometer calibration done by the altimeter ("j;", AltimeterAccelFragment) -->
+    <string name="accel_calibration_title">Kalibratie van de versnellingsmeters</string>
+    <string name="accel_calibrate">Kalibreren</string>
+    <string name="accel_calibration_start">Starten</string>
+    <string name="accel_calibration_help">De kalibratie wordt door de hoogtemeter gedaan (firmware 2.5 of nieuwer). De print wordt op elk van zijn 6 zijden gelegd (X, Y en Z omhoog en omlaag). Houd hem op elke zijde stil tot de korte piep en draai hem dan op een andere zijde. Een lange piep beëindigt de kalibratie, 5 korte piepjes betekenen een fout. Maximaal 2 minuten; blijf op dit scherm en verstuur niets tijdens de kalibratie.</string>
+    <string name="accel_calibration_waiting">Wachten op de hoogtemeter…</string>
+    <string name="accel_calibration_any_order">Leg de print op elke zijde, in willekeurige volgorde. Houd hem stil tot de korte piep en draai hem dan.</string>
+    <string name="accel_calibration_fixed_order">Leg de print op de zijden in de gevraagde volgorde. Houd hem stil tot de korte piep en draai hem dan.</string>
+    <string name="accel_calibration_next_face">Zijde %1$d/6: leg de print met %2$s, stil tot de piep.</string>
+    <string name="accel_calibration_stop">Stoppen</string>
+    <string name="accel_calibration_stopping">Bezig met stoppen…</string>
+    <string name="accel_calibration_saved_msg">Kalibratie opgeslagen in de hoogtemeter. De waarden die nu binnenkomen zijn gekalibreerd.</string>
+    <string name="accel_calibration_failed_msg">Kalibratie mislukt: de vorige kalibratie blijft behouden.</string>
+    <string name="accel_calibration_stopped_msg">Kalibratie gestopt: de vorige kalibratie blijft behouden.</string>
+    <string name="accel_calibration_not_supported">De hoogtemeter antwoordde niet op het kalibratiecommando: firmware 2.5 of nieuwer nodig op een print met versnellingsmeter.</string>
+    <string name="accel_calibration_no_answer">Geen antwoord van de hoogtemeter: controleer de verbinding.</string>
+    <string name="accel_face_x_up">X omhoog</string>
+    <string name="accel_face_x_down">X omlaag</string>
+    <string name="accel_face_y_up">Y omhoog</string>
+    <string name="accel_face_y_down">Y omlaag</string>
+    <string name="accel_face_z_up">Z omhoog</string>
+    <string name="accel_face_z_down">Z omlaag</string>
+    <!-- Status screen: HUD of the 3D rocket attitude (utils.Rocket) -->
+    <string name="attitude_waiting">Wachten op de versnellingsmeters…</string>
+    <string name="attitude_tilt">Helling</string>
+    <string name="attitude_total_accel">Totaal</string>
+    <string name="attitude_moving">Raket beweegt</string>
 </resources>

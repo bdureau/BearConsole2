@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.config;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: AppLanguage
@@ -32,12 +32,12 @@ import java.util.Locale;
 
 public final class AppLanguage {
 
-    /** Setting value: follow the phone (English if the phone language is not translated). */
+    /* Setting value: follow the phone (English if the phone language is not translated). */
     public static final int PHONE = 0;
-    /** Setting value of English (also the former "force English" value). */
-    public static final int ENGLISH = 1;
+    /* Setting value of English (also the former "force English" value). */
+    //public static final int ENGLISH = 1;
 
-    /**
+    /*
      * Language codes, in the order of the setting values (index 0 = phone language).
      * Each code has a res/values-xx folder, except English which is res/values.
      */
@@ -62,12 +62,8 @@ public final class AppLanguage {
         return items;
     }
 
-    /** Number of possible setting values. */
-    public static int getSettingCount() {
-        return LANGUAGES.length;
-    }
 
-    /** True if the application is translated in this language (ISO 639 code). */
+    /* True if the application is translated in this language (ISO 639 code). */
     public static boolean isSupported(String language) {
         if (language == null) return false;
         for (int i = 1; i < LANGUAGES.length; i++) {

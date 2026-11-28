@@ -12,8 +12,6 @@ package com.altimeter.bdureau.bearconsole.Help;
  */
 
 import com.altimeter.bdureau.bearconsole.BaseActivity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import com.altimeter.bdureau.bearconsole.BuildConfig;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
-
 
 public class AboutActivity extends BaseActivity {
 

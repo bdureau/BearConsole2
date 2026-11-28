@@ -9,7 +9,10 @@ package com.altimeter.bdureau.bearconsole;
  * @description:
  *  Service providing the position of the phone (fused location provider, every 5 seconds)
  *  to the telemetry, status and tracking screens, so that the distance and bearing to the
- *  rocket can be displayed. Each new position is broadcast with the action "ACT_LOC".
+ *  rocket can be displayed. Each new position is broadcast with the action ACTION_LOCATION
+ *  ("ACT_LOC"). The broadcast is private to the application: it is sent with the package of
+ *  the application and received by receivers registered with RECEIVER_NOT_EXPORTED (see
+ *  registerPositionReceiver()), as required since Android 14 for runtime receivers.
  *
  *  Several screens can use the position at the same time (e.g. a tracking map opened from
  *  the status screen): they call acquire() / release() instead of startService() /
@@ -26,8 +29,10 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.location.Location;
@@ -41,6 +46,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -51,6 +57,9 @@ import com.google.android.gms.location.Priority;
 
 public class LocationService extends Service {
     private static final String TAG = "LocationService";
+
+    /** Action of the broadcast carrying a new phone position (extras "latitude", "longitude"). */
+    public static final String ACTION_LOCATION = "ACT_LOC";
 
     /** Interval between two positions of the phone, in milliseconds. */
     private static final long LOCATION_INTERVAL_MS = 5000;
@@ -92,6 +101,21 @@ public class LocationService extends Service {
         }
     }
 
+    /**
+     * Registers a receiver of the phone positions broadcast by this service.
+     * The receiver is not exported (ContextCompat.RECEIVER_NOT_EXPORTED): Android 14 (API 34)
+     * and later refuse a runtime receiver registered without RECEIVER_EXPORTED or
+     * RECEIVER_NOT_EXPORTED for a non-system broadcast, and a private receiver also prevents
+     * another application from injecting fake positions. ContextCompat applies the flag on
+     * every Android version supported by the application.
+     * The caller must unregister it with Context.unregisterReceiver().
+     */
+    public static void registerPositionReceiver(@NonNull Context context,
+                                                @NonNull BroadcastReceiver receiver) {
+        ContextCompat.registerReceiver(context, receiver, new IntentFilter(ACTION_LOCATION),
+                ContextCompat.RECEIVER_NOT_EXPORTED);
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -111,7 +135,9 @@ public class LocationService extends Service {
                 // The result can be empty: never broadcast a position that does not exist
                 if (location == null) return;
 
-                Intent intent = new Intent("ACT_LOC");
+                // Explicit package: the broadcast is only delivered inside this application
+                Intent intent = new Intent(ACTION_LOCATION);
+                intent.setPackage(getPackageName());
                 intent.putExtra("latitude", location.getLatitude());
                 intent.putExtra("longitude", location.getLongitude());
                 Log.d(TAG, "latitude:" + location.getLatitude());

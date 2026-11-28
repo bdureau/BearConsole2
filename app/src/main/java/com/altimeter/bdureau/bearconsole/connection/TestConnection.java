@@ -14,14 +14,9 @@ package com.altimeter.bdureau.bearconsole.connection;
  * ============================================================================
  */
 
-//import androidx.appcompat.app.AppCompatDelegate;
-
-
 import android.app.AlertDialog;
-//import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-//import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,10 +34,6 @@ import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
-
-
-//import java.io.IOException;
-
 
 public class TestConnection extends BaseActivity {
 
@@ -191,7 +182,6 @@ public class TestConnection extends BaseActivity {
 
 
     }
-
 
     public void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();

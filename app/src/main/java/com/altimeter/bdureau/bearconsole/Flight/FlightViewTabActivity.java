@@ -23,14 +23,9 @@ package com.altimeter.bdureau.bearconsole.Flight;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import com.altimeter.bdureau.bearconsole.BaseActivity;
@@ -49,16 +44,12 @@ import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
 import com.altimeter.bdureau.bearconsole.Flight.FlightView.FlightViewInfoAccelFragment;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Environment;
 import android.text.Html;
-import android.text.format.DateFormat;
 import android.util.Log;
 
 import android.view.Menu;
@@ -71,19 +62,12 @@ import android.widget.Toast;
 
 import org.afree.data.xy.XYSeriesCollection;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
 
 public class FlightViewTabActivity extends BaseActivity {
     /**
-     * Unit of the measured accelerometer curves: the samples are converted from milli-g to
-     * m/s^2 when the flight is downloaded (ConsoleApplication.decodeFlightData), in every
+     * Unit of the measured accelerometer curves: the samples (thousandths of m/s^2) are
+     * converted to m/s^2 when the flight is downloaded (ConsoleApplication.decodeFlightData), in every
      * altitude unit (a sensor acceleration is not converted to ft/s^2).
      */
     private static final String ACCEL_UNIT = "(m/s\u00B2)";
@@ -115,6 +99,8 @@ public class FlightViewTabActivity extends BaseActivity {
     private String curvesNames[] = null;
     private String currentCurvesNames[] = null;
     private boolean[] checkedItems = null;
+    // Flight events (burnout, apogee, main, landing) drawn on the curves
+    private boolean showEvents = true;
     private XYSeriesCollection allFlightData = null;
 
     private String FlightName = null;
@@ -144,6 +130,7 @@ public class FlightViewTabActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         outState.putStringArray("CURRENT_CURVES_NAMES_KEY", currentCurvesNames);
         outState.putBooleanArray("CHECKED_ITEMS_KEY", checkedItems);
+        outState.putBoolean("SHOW_EVENTS_KEY", showEvents);
     }
 
     @Override
@@ -151,6 +138,7 @@ public class FlightViewTabActivity extends BaseActivity {
         super.onRestoreInstanceState(savedInstanceState);
         currentCurvesNames = savedInstanceState.getStringArray("CURRENT_CURVES_NAMES_KEY");
         checkedItems = savedInstanceState.getBooleanArray("CHECKED_ITEMS_KEY");
+        showEvents = savedInstanceState.getBoolean("SHOW_EVENTS_KEY", true);
     }
 
     @Override
@@ -164,6 +152,7 @@ public class FlightViewTabActivity extends BaseActivity {
         if (savedInstanceState != null) {
             currentCurvesNames = savedInstanceState.getStringArray("CURRENT_CURVES_NAMES_KEY");
             checkedItems = savedInstanceState.getBooleanArray("CHECKED_ITEMS_KEY");
+            showEvents = savedInstanceState.getBoolean("SHOW_EVENTS_KEY", true);
         }
 
         //get the connection pointer
@@ -407,6 +396,7 @@ public class FlightViewTabActivity extends BaseActivity {
                     curvesNames,
                     checkedItems,
                     units);
+            flightPage1bis.setShowEvents(showEvents);
             adapter.addFragment(flightPage1bis);
         } else {
             flightPage1 = new FlightViewMpFragment(allFlightData,
@@ -414,6 +404,7 @@ public class FlightViewTabActivity extends BaseActivity {
                     curvesNames,
                     checkedItems,
                     units);
+            flightPage1.setShowEvents(showEvents);
             adapter.addFragment(flightPage1);
         }
 
@@ -514,8 +505,13 @@ public class FlightViewTabActivity extends BaseActivity {
      * (activity re-creation): the references used by this activity are re-bound to it.
      */
     private void onTabRestored(int position, Fragment fragment) {
-        if (fragment instanceof FlightViewMpFragment) flightPage1 = (FlightViewMpFragment) fragment;
-        else if (fragment instanceof FlightViewFcFragment) flightPage1bis = (FlightViewFcFragment) fragment;
+        if (fragment instanceof FlightViewMpFragment) {
+            flightPage1 = (FlightViewMpFragment) fragment;
+            flightPage1.setShowEvents(showEvents);
+        } else if (fragment instanceof FlightViewFcFragment) {
+            flightPage1bis = (FlightViewFcFragment) fragment;
+            flightPage1bis.setShowEvents(showEvents);
+        }
         else if (fragment instanceof FlightViewInfoFragment) flightPage2 = (FlightViewInfoFragment) fragment;
         else if (fragment instanceof FlightViewInfoAccelFragment) flightPage2bis = (FlightViewInfoAccelFragment) fragment;
         else if (fragment instanceof FlightViewGoogleMapFragment) flightPage3 = (FlightViewGoogleMapFragment) fragment;
@@ -559,7 +555,23 @@ public class FlightViewTabActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_flights, menu);
+        MenuItem eventsItem = menu.findItem(R.id.action_flight_events);
+        if (eventsItem != null) eventsItem.setChecked(showEvents);
         return true;
+    }
+
+    /**
+     * Shows or hides the flight events on the curves tab and redraws the curves.
+     */
+    private void applyShowEvents() {
+        if (flightPage1 != null) {
+            flightPage1.setShowEvents(showEvents);
+            if (flightPage1.getView() != null) flightPage1.drawAllCurves(allFlightData);
+        }
+        if (flightPage1bis != null) {
+            flightPage1bis.setShowEvents(showEvents);
+            if (flightPage1bis.getView() != null) flightPage1bis.drawAllCurves(allFlightData);
+        }
     }
 
     @Override
@@ -569,6 +581,13 @@ public class FlightViewTabActivity extends BaseActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        //show / hide the flight events on the curves
+        if (id == R.id.action_flight_events) {
+            showEvents = !item.isChecked();
+            item.setChecked(showEvents);
+            applyShowEvents();
+            return true;
+        }
         //share screen
         if (id == R.id.action_share) {
             ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this);

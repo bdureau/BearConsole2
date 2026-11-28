@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: ResetSettingsActivity
@@ -14,15 +14,11 @@ package com.altimeter.bdureau.bearconsole;
  */
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 
-
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
 
 public class ResetSettingsActivity extends BaseActivity {
 

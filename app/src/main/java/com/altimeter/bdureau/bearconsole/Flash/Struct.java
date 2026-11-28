@@ -14,8 +14,6 @@ package com.altimeter.bdureau.bearconsole.Flash;
  */
 
 import java.io.ByteArrayInputStream;
-//import java.io.ByteArrayOutputStream;
-import java.lang.*;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 
@@ -136,7 +134,6 @@ public class Struct {
         return bx;
     }
 
-
     public byte[] pack_single_data(char fmt, long val){
         byte[] bx;
         switch (fmt){
@@ -169,7 +166,6 @@ public class Struct {
 
         return bx;
     }
-
 
     public byte[] pack(String fmt, long val) throws Exception{
         if(fmt.length()>2){

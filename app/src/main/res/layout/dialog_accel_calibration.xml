@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Content of the dialog shown while the altimeter calibrates its accelerometers
+    (AltimeterAccelFragment, AccelCalibrationSession): what to do now, the 6 faces of the board
+    with the ones already measured, and the number of faces done.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- What the user must do now (any order, or the next face imposed by the firmware) -->
+    <TextView
+        android:id="@+id/txtCalibInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/accel_calibration_waiting"
+        android:textSize="16sp" />
+
+    <!-- The 6 faces, measured ones checked -->
+    <TextView
+        android:id="@+id/txtCalibFaces"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="monospace"
+        android:textSize="15sp" />
+
+    <!-- Faces done out of 6 -->
+    <ProgressBar
+        android:id="@+id/progressCalibFaces"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:max="6" />
+</LinearLayout>

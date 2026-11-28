@@ -106,8 +106,8 @@ public class BluetoothConnection {
         return isBtConnected;
     }
 
-    public void setBtSocket(BluetoothSocket mybtSocket) {
-        btSocket = mybtSocket;
+    public void setBtSocket(BluetoothSocket myBTSocket) {
+        btSocket = myBTSocket;
     }
 
     public BluetoothSocket getBtSocket() {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Accelerometer tab (AltimeterAccelFragment live values, FlightViewInfoAccelFragment flight
-    maxima): label / value rows for the three axes of the ADXL375 (high g) and ADXL345 (low g)
+    Accelerometer rows (flight maxima of FlightViewInfoAccelFragment; also included by
+    fragment_altimeter_status_accel for the live calibrated values of AltimeterAccelFragment):
+    label / value rows for the three axes of the ADXL375 (high g) and ADXL345 (low g)
     accelerometers.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

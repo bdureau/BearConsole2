@@ -612,4 +612,37 @@
     <string name="bt_connect_wait_beeps">A magasságát sípoló magasságmérő csak a sípolás végén válaszol: a kapcsolódás akár egy percig is tarthat.</string>
     <!-- Sentence spoken by the "test voice" button of the settings -->
     <string name="tts_test_phrase">A Bearaltimeter magasságmérők a legjobbak</string>
+    <!-- Flight curves: menu item and names of the flight events drawn on the curves -->
+    <string name="curve_show_events">Repülési események</string>
+    <string name="curve_event_burnout">Égés vége</string>
+    <string name="curve_event_apogee">Csúcspont</string>
+    <string name="curve_event_main">Fő ernyő</string>
+    <string name="curve_event_landing">Leszállás</string>
+    <!-- Status screen: accelerometer calibration done by the altimeter ("j;", AltimeterAccelFragment) -->
+    <string name="accel_calibration_title">Gyorsulásmérők kalibrálása</string>
+    <string name="accel_calibrate">Kalibrálás</string>
+    <string name="accel_calibration_start">Indítás</string>
+    <string name="accel_calibration_help">A kalibrálást a magasságmérő végzi (2.5-ös vagy újabb firmware). A panelt mind a 6 oldalára fel kell tenni (X, Y és Z felfelé és lefelé). Minden oldalon tartsa mozdulatlanul a rövid sípszóig, majd fordítsa egy másik oldalára. Egy hosszú sípszó befejezi a kalibrálást, 5 rövid hibát jelez. Legfeljebb 2 perc; maradjon ezen a képernyőn, és a kalibrálás alatt ne küldjön semmit.</string>
+    <string name="accel_calibration_waiting">Várakozás a magasságmérőre…</string>
+    <string name="accel_calibration_any_order">Tegye a panelt minden oldalára, tetszőleges sorrendben. Tartsa mozdulatlanul a rövid sípszóig, majd fordítsa meg.</string>
+    <string name="accel_calibration_fixed_order">Tegye a panelt az oldalaira a kért sorrendben. Tartsa mozdulatlanul a rövid sípszóig, majd fordítsa meg.</string>
+    <string name="accel_calibration_next_face">%1$d/6. oldal: tegye a panelt így: %2$s, mozdulatlanul a sípszóig.</string>
+    <string name="accel_calibration_stop">Leállítás</string>
+    <string name="accel_calibration_stopping">Leállítás folyamatban…</string>
+    <string name="accel_calibration_saved_msg">A kalibrálás elmentve a magasságmérőben. A mostantól érkező értékek kalibráltak.</string>
+    <string name="accel_calibration_failed_msg">A kalibrálás sikertelen: az előző kalibrálás megmarad.</string>
+    <string name="accel_calibration_stopped_msg">Kalibrálás leállítva: az előző kalibrálás megmarad.</string>
+    <string name="accel_calibration_not_supported">A magasságmérő nem válaszolt a kalibrálási parancsra: 2.5-ös vagy újabb firmware szükséges gyorsulásmérős panelen.</string>
+    <string name="accel_calibration_no_answer">Nincs válasz a magasságmérőtől: ellenőrizze a kapcsolatot.</string>
+    <string name="accel_face_x_up">X felfelé</string>
+    <string name="accel_face_x_down">X lefelé</string>
+    <string name="accel_face_y_up">Y felfelé</string>
+    <string name="accel_face_y_down">Y lefelé</string>
+    <string name="accel_face_z_up">Z felfelé</string>
+    <string name="accel_face_z_down">Z lefelé</string>
+    <!-- Status screen: HUD of the 3D rocket attitude (utils.Rocket) -->
+    <string name="attitude_waiting">Várakozás a gyorsulásmérőkre…</string>
+    <string name="attitude_tilt">Dőlés</string>
+    <string name="attitude_total_accel">Összes</string>
+    <string name="attitude_moving">A rakéta mozog</string>
 </resources>

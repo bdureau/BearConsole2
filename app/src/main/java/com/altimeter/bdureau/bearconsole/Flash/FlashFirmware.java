@@ -19,7 +19,6 @@ package com.altimeter.bdureau.bearconsole.Flash;
  */
 
 import com.altimeter.bdureau.bearconsole.BaseActivity;
-//import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.util.Log;
@@ -27,7 +26,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
-
 
 import android.os.Bundle;
 
@@ -43,7 +41,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
@@ -63,7 +60,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static com.physicaloid.misc.Misc.toHexStr;
-
 
 public class FlashFirmware extends BaseActivity {
     Physicaloid mPhysicaloid;
@@ -161,7 +157,6 @@ public class FlashFirmware extends BaseActivity {
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -314,7 +309,6 @@ public class FlashFirmware extends BaseActivity {
         alert = builder.create();
         alert.show();
     }
-
 
     @Override
     protected void onDestroy() {
@@ -652,7 +646,6 @@ public class FlashFirmware extends BaseActivity {
             }
         }
     }
-
 
     /**
      * Last safety net of a flashing task: an unexpected exception in the worker thread used to

@@ -219,7 +219,7 @@ public class GlobalConfig {
             boolean useOpenMap = appConfig.getBoolean("useOpenMap", false);
             setUseOpenMap(useOpenMap);
         } catch (Exception e) {
-
+            //need to add something
         }
     }
 

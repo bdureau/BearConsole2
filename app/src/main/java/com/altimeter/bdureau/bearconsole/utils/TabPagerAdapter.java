@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.utils;
 
-/**
+/*
  * ============================================================================
  * Project: BearConsole - Model Rocketry Altimeter Management System
  * Class: TabPagerAdapter

@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Action bar menu of the flight analysis screen: share a screenshot of the current tab, Help
-    and About.
+    Action bar menu of the flight analysis screen: show / hide the flight events on the curves
+    (checkable item), share a screenshot of the current tab, Help and About.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Flight events (burnout, apogee, main, landing) drawn on the curves -->
+    <item
+        android:id="@+id/action_flight_events"
+        android:orderInCategory="90"
+        android:checkable="true"
+        android:checked="true"
+        android:title="@string/curve_show_events"
+        />
 
     <item
         android:id="@+id/action_share"

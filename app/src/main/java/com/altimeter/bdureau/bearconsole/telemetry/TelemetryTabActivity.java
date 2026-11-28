@@ -26,8 +26,6 @@ import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.IntentFilter;
-//import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -35,7 +33,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-//import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -62,7 +59,6 @@ import java.util.Locale;
 import com.altimeter.bdureau.bearconsole.config.AppLanguage;
 
 import android.content.Intent;
-
 
 import com.altimeter.bdureau.bearconsole.BaseActivity;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
@@ -871,7 +867,7 @@ public class TelemetryTabActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("coordinate", intent.getAction());
-            if (intent.getAction().equals("ACT_LOC")) {
+            if (LocationService.ACTION_LOCATION.equals(intent.getAction())) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
                 Log.d("coordinate", "latitude is:" + latitude + " longitude is: " + longitude);
@@ -896,12 +892,9 @@ public class TelemetryTabActivity extends BaseActivity {
 
     private void startService() {
 
-        IntentFilter filter = new IntentFilter("ACT_LOC");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
-        } else {
-            registerReceiver(receiver, filter);
-        }
+        // Private broadcast of this application only (RECEIVER_NOT_EXPORTED): mandatory
+        // flag since Android 14, and no other application can send fake positions
+        LocationService.registerPositionReceiver(this, receiver);
 
         // The position is shared with the other screens (see LocationService.acquire()):
         // acquire it only once for this screen

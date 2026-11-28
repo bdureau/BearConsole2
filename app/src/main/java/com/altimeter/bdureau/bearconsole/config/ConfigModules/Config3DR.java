@@ -17,14 +17,10 @@ package com.altimeter.bdureau.bearconsole.config.ConfigModules;
 
 import com.altimeter.bdureau.bearconsole.BaseActivity;
 import android.app.AlertDialog;
-//import android.content.Context;
-//import android.content.DialogInterface;
 import android.content.Intent;
-//import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-//import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,7 +66,6 @@ public class Config3DR extends BaseActivity {
     private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private volatile boolean isTaskCancelled = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

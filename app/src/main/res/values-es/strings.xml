@@ -612,4 +612,37 @@
     <string name="bt_connect_wait_beeps">Un altímetro que está pitando su altitud solo responde al final de los pitidos: la conexión puede tardar hasta un minuto.</string>
     <!-- Sentence spoken by the "test voice" button of the settings -->
     <string name="tts_test_phrase">Los altímetros Bearaltimeter son los mejores</string>
+    <!-- Flight curves: menu item and names of the flight events drawn on the curves -->
+    <string name="curve_show_events">Eventos del vuelo</string>
+    <string name="curve_event_burnout">Fin de combustión</string>
+    <string name="curve_event_apogee">Apogeo</string>
+    <string name="curve_event_main">Principal</string>
+    <string name="curve_event_landing">Aterrizaje</string>
+    <!-- Status screen: accelerometer calibration done by the altimeter ("j;", AltimeterAccelFragment) -->
+    <string name="accel_calibration_title">Calibración de los acelerómetros</string>
+    <string name="accel_calibrate">Calibrar</string>
+    <string name="accel_calibration_start">Iniciar</string>
+    <string name="accel_calibration_help">La calibración la realiza el altímetro (firmware 2.5 o posterior). La placa se coloca sobre cada una de sus 6 caras (X, Y y Z hacia arriba y hacia abajo). En cada cara manténgala inmóvil hasta el pitido corto y luego gírela sobre otra cara. Un pitido largo termina la calibración, 5 pitidos cortos indican un fallo. 2 minutos como máximo; permanezca en esta pantalla y no envíe nada durante la calibración.</string>
+    <string name="accel_calibration_waiting">Esperando al altímetro…</string>
+    <string name="accel_calibration_any_order">Coloque la placa sobre cada cara, en cualquier orden. Manténgala inmóvil hasta el pitido corto y luego gírela.</string>
+    <string name="accel_calibration_fixed_order">Coloque la placa sobre las caras en el orden pedido. Manténgala inmóvil hasta el pitido corto y luego gírela.</string>
+    <string name="accel_calibration_next_face">Cara %1$d/6: coloque la placa con %2$s, inmóvil hasta el pitido.</string>
+    <string name="accel_calibration_stop">Detener</string>
+    <string name="accel_calibration_stopping">Deteniendo…</string>
+    <string name="accel_calibration_saved_msg">Calibración guardada en el altímetro. Los valores recibidos a partir de ahora están calibrados.</string>
+    <string name="accel_calibration_failed_msg">La calibración falló: se conserva la calibración anterior.</string>
+    <string name="accel_calibration_stopped_msg">Calibración detenida: se conserva la calibración anterior.</string>
+    <string name="accel_calibration_not_supported">El altímetro no respondió al comando de calibración: necesita el firmware 2.5 o posterior en una placa con acelerómetro.</string>
+    <string name="accel_calibration_no_answer">Sin respuesta del altímetro: compruebe la conexión.</string>
+    <string name="accel_face_x_up">X hacia arriba</string>
+    <string name="accel_face_x_down">X hacia abajo</string>
+    <string name="accel_face_y_up">Y hacia arriba</string>
+    <string name="accel_face_y_down">Y hacia abajo</string>
+    <string name="accel_face_z_up">Z hacia arriba</string>
+    <string name="accel_face_z_down">Z hacia abajo</string>
+    <!-- Status screen: HUD of the 3D rocket attitude (utils.Rocket) -->
+    <string name="attitude_waiting">Esperando los acelerómetros…</string>
+    <string name="attitude_tilt">Inclinación</string>
+    <string name="attitude_total_accel">Total</string>
+    <string name="attitude_moving">Cohete en movimiento</string>
 </resources>
