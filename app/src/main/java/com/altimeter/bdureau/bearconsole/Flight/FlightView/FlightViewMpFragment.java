@@ -46,6 +46,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
@@ -60,6 +62,13 @@ public class FlightViewMpFragment extends Fragment {
 
     private int graphBackColor;
     private int fontSize;
+
+    /**
+     * Text size (dp) of the time unit label ("time (s)") written under the X axis, and of the
+     * flight event labels, slightly larger so that they stay readable without hiding the curves.
+     */
+    private static final float TIME_LABEL_TEXT_DP = 9f;
+    private static final float EVENT_LABEL_TEXT_DP = 10.5f;
     private int axisColor;
     private int labelColor;
     private int nbrColor;
@@ -276,13 +285,35 @@ public class FlightViewMpFragment extends Fragment {
             mChart.clear();
         }
 
-        // Update chart description label
+        // Time unit label ("time (s)"): MPAndroidChart draws the description in the bottom
+        // right corner of the plot area, where it is hidden by the curves and the event labels.
+        // It is moved under the numbers of the X axis, in an extra space reserved above the
+        // legend.
         Description desc = new Description();
         desc.setText(graphTimeUnits);
         desc.setTextColor(labelColor);
+        desc.setTextSize(TIME_LABEL_TEXT_DP);
         mChart.setDescription(desc);
+        mChart.setExtraBottomOffset(TIME_LABEL_TEXT_DP + 4f);
+        mChart.notifyDataSetChanged();
+        // The position needs the computed offsets of the chart: done once it is laid out
+        mChart.post(this::placeTimeLabel);
 
         // Request direct view invalidation/redraw
+        mChart.invalidate();
+    }
+
+    /**
+     * Puts the time unit label right aligned on the right edge of the plot area, just under
+     * the numbers of the X axis (its position is the baseline of the text, in pixels).
+     */
+    private void placeTimeLabel() {
+        if (mChart == null || mChart.getDescription() == null) return;
+        ViewPortHandler vp = mChart.getViewPortHandler();
+        XAxis xAxis = mChart.getXAxis();
+        float baseline = vp.contentBottom() + xAxis.getYOffset() + xAxis.mLabelRotatedHeight
+                + Utils.convertDpToPixel(TIME_LABEL_TEXT_DP + 3f);
+        mChart.getDescription().setPosition(vp.contentRight(), baseline);
         mChart.invalidate();
     }
 
@@ -309,7 +340,12 @@ public class FlightViewMpFragment extends Fragment {
         }
 
         String altUnit = isMeters ? "m" : "ft";
-        float textSize = Math.max(8f, fontSize - 4f);
+        // Time range of the curves: the labels of the events in the right part of the chart
+        // are written on the left of their line, otherwise they would be cut by the edge
+        XYSeries alt = flightData.getSeries(0);
+        float xFirst = (float) (alt.getMinX() * timeFactor);
+        float xLast = (float) (alt.getMaxX() * timeFactor);
+        float xMiddle = xFirst + 0.6f * (xLast - xFirst);
         ArrayList<Entry> dots = new ArrayList<>(events.size());
         ArrayList<Integer> dotColors = new ArrayList<>(events.size());
         for (int i = 0; i < events.size(); i++) {
@@ -320,9 +356,12 @@ public class FlightViewMpFragment extends Fragment {
             line.setLineWidth(1.2f);
             line.enableDashedLine(12f, 8f, 0f);
             line.setTextColor(ev.type.color);
-            line.setTextSize(textSize);
-            line.setLabelPosition((i % 2 == 0) ? LimitLine.LimitLabelPosition.RIGHT_TOP
-                    : LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+            line.setTextSize(EVENT_LABEL_TEXT_DP);
+            boolean onLeft = x > xMiddle;
+            boolean top = (i % 2 == 0);
+            line.setLabelPosition(onLeft
+                    ? (top ? LimitLine.LimitLabelPosition.LEFT_TOP : LimitLine.LimitLabelPosition.LEFT_BOTTOM)
+                    : (top ? LimitLine.LimitLabelPosition.RIGHT_TOP : LimitLine.LimitLabelPosition.RIGHT_BOTTOM));
             xAxis.addLimitLine(line);
 
             dots.add(new Entry(x, (float) ev.altitude));

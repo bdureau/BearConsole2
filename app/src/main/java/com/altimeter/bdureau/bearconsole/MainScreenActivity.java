@@ -459,7 +459,8 @@ public class MainScreenActivity extends BaseActivity {
      */
     private void applyConfigToUI(boolean success) {
         if (!success || myBT.getAltiConfigData() == null) {
-            msg(getString(R.string.unsuported_firmware_msg));
+            // No valid configuration answer: firmware not supported (or not an altimeter)
+            disconnectUnsupported(getString(R.string.unsuported_firmware_msg));
             return;
         }
 
@@ -545,12 +546,26 @@ public class MainScreenActivity extends BaseActivity {
                 msg(getResources().getString(R.string.MS_msg4));
             }
         } else {
-            msg(getString(R.string.unsuported_firmware_msg) + ": " + altiName);
-            myBT.Disconnect();
+            disconnectUnsupported(getString(R.string.unsuported_firmware_msg) + ": " + altiName);
         }
 
         // Refresh options menu items state
         invalidateOptionsMenu();
+    }
+
+    /**
+     * The connected altimeter runs a firmware that the application does not support: the link
+     * is closed and the screen goes back to the "not connected" state, as with the Disconnect
+     * button: the connect button shows "Connect" again (it showed "Disconnect" although the
+     * link was closed), the altimeter cards are disabled and the firmware flashing card is
+     * enabled, so that a supported firmware can be flashed.
+     */
+    private void disconnectUnsupported(String message) {
+        msg(message);
+        Disconnect();
+        DisableUI();
+        setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
+        text_connect.setText(getResources().getString(R.string.connect));
     }
 
     /**
@@ -888,7 +903,7 @@ public class MainScreenActivity extends BaseActivity {
         }
     }
 
-    /**
+    /*
      * Helper mapping table to verify if the altimeter firmware version is compatible
      * with the current Android BearConsole release.
      */
@@ -903,10 +918,10 @@ public class MainScreenActivity extends BaseActivity {
             Add("AltiServo", "1.6,1.7");
             Add("AltiGPS", "1.7,1.8");
             Add("AltiDuo", "1.9");
-            Add("AltiMultiESP32", "1.28,2.0,2.1,2.2,2.3,2.4");
-            Add("AltiMultiESP32_accel", "2.0,2.1,2.2,2.3,2.4");
-            Add("AltiMultiESP32_accel_375", "2.0,2.1,2.2,2.3,2.4");
-            Add("AltiMultiESP32_accel_345", "2.0,2.1,2.2,2.3,2.4");
+            Add("AltiMultiESP32", "1.28,2.0,2.1,2.2,2.3,2.4,2.5");
+            Add("AltiMultiESP32_accel", "2.0,2.1,2.2,2.3,2.4,2.5");
+            Add("AltiMultiESP32_accel_375", "2.0,2.1,2.2,2.3,2.4,2.5");
+            Add("AltiMultiESP32_accel_345", "2.0,2.1,2.2,2.3,2.4,2.5");
             Add("TTGOBearAltimeter", "0.4,0.5,0.6");
             Add("TTGOMiniBearAltimeter", "0.2,0.3");
             Add("UltimateAltimeter", "0.4,0.5,0.6,0.7");

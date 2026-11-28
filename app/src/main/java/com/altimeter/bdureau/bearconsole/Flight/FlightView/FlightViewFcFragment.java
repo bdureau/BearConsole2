@@ -41,6 +41,7 @@ import org.afree.chart.axis.ValueAxis;
 import org.afree.chart.plot.PlotOrientation;
 import org.afree.chart.plot.ValueMarker;
 import org.afree.chart.plot.XYPlot;
+import org.afree.data.xy.XYSeries;
 import org.afree.data.xy.XYSeriesCollection;
 import org.afree.graphics.SolidColor;
 import org.afree.graphics.geom.Font;
@@ -244,6 +245,10 @@ public class FlightViewFcFragment extends Fragment {
         }
         String altUnit = isMeters ? "m" : "ft";
         Font labelFont = new Font("Dialog", Typeface.NORMAL, Math.max(10, fontSize - 4));
+        // Labels of the events in the right part of the chart are written on the left of
+        // their line, otherwise they would be cut by the edge of the chart
+        XYSeries alt = flightData.getSeries(0);
+        double xMiddle = alt.getMinX() + 0.6 * (alt.getMaxX() - alt.getMinX());
         for (int i = 0; i < events.size(); i++) {
             FlightEvents.Event ev = events.get(i);
             ValueMarker marker = new ValueMarker(ev.timeMs);
@@ -253,12 +258,14 @@ public class FlightViewFcFragment extends Fragment {
             marker.setLabel(ev.label(requireContext(), altUnit));
             marker.setLabelFont(labelFont);
             marker.setLabelPaintType(new SolidColor(ev.type.color));
-            if (i % 2 == 0) {
-                marker.setLabelAnchor(RectangleAnchor.TOP_RIGHT);
-                marker.setLabelTextAnchor(TextAnchor.TOP_LEFT);
+            boolean onLeft = ev.timeMs > xMiddle;
+            boolean top = (i % 2 == 0);
+            if (top) {
+                marker.setLabelAnchor(onLeft ? RectangleAnchor.TOP_LEFT : RectangleAnchor.TOP_RIGHT);
+                marker.setLabelTextAnchor(onLeft ? TextAnchor.TOP_RIGHT : TextAnchor.TOP_LEFT);
             } else {
-                marker.setLabelAnchor(RectangleAnchor.BOTTOM_RIGHT);
-                marker.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
+                marker.setLabelAnchor(onLeft ? RectangleAnchor.BOTTOM_LEFT : RectangleAnchor.BOTTOM_RIGHT);
+                marker.setLabelTextAnchor(onLeft ? TextAnchor.BOTTOM_RIGHT : TextAnchor.BOTTOM_LEFT);
             }
             plot.addDomainMarker(marker, Layer.FOREGROUND);
         }

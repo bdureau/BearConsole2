@@ -123,7 +123,8 @@ public class AltiTabConfigActivity extends BaseActivity {
     }
 
     private void retrieveConfigAsync() {
-        showProgress(getString(R.string.msg7));
+        // "Retrieving altimeter config..." (msg7 is the message of the flight download)
+        showProgress(getString(R.string.msg5));
 
         ioExecutor.execute(() -> {
             boolean success = false;
