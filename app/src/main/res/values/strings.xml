@@ -673,4 +673,17 @@
     <string name="replay_altitude">Alt.</string>
     <string name="replay_speed">Speed</string>
     <string name="replay_accel">Accel.</string>
+    <string name="replay_note_gyro">The UltimateAltimeter 0.8 records its gyroscope: the rocket is drawn with the attitude integrated on board (tilt and roll; the drift of the gyroscope grows with time).</string>
+    <string name="replay_tilt">Tilt</string>
+    <string name="replay_roll">Roll</string>
+    <string name="config_unsaved_title">Unsaved changes</string>
+    <string name="app_config_unsaved_msg">The application settings were changed but not saved. Do you want to save them before leaving?</string>
+    <string name="alti_config_unsaved_msg">The altimeter configuration was changed but not uploaded to the altimeter. Do you want to upload it before leaving?</string>
+    <string name="config_unsaved_save">Save</string>
+    <string name="config_unsaved_upload">Upload</string>
+    <string name="config_unsaved_discard">Leave without saving</string>
+    <string name="config_unsaved_stay">Stay</string>
+    <string name="config_default_title">Restore the default settings</string>
+    <string name="app_config_default_msg">Every application setting (language, units, graph colors, connection, voice announcements, map) will be replaced by its default value. The values are stored only when you press Save. Continue?</string>
+    <string name="config_default_confirm">Restore</string>
 </resources>

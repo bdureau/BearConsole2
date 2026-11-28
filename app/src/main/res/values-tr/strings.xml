@@ -659,4 +659,17 @@
     <string name="replay_altitude">İrt.</string>
     <string name="replay_speed">Hız</string>
     <string name="replay_accel">İvme</string>
+    <string name="replay_note_gyro">UltimateAltimeter 0.8 jiroskopunu kaydeder: roket, kartta hesaplanan duruşla çizilir (eğim ve yuvarlanma; jiroskop kayması zamanla artar).</string>
+    <string name="replay_tilt">Eğim</string>
+    <string name="replay_roll">Yuvarlanma</string>
+    <string name="config_unsaved_title">Kaydedilmemiş değişiklikler</string>
+    <string name="app_config_unsaved_msg">Uygulama ayarları değiştirildi ancak kaydedilmedi. Çıkmadan önce kaydetmek ister misiniz?</string>
+    <string name="alti_config_unsaved_msg">Altimetre yapılandırması değiştirildi ancak altimetreye gönderilmedi. Çıkmadan önce göndermek ister misiniz?</string>
+    <string name="config_unsaved_save">Kaydet</string>
+    <string name="config_unsaved_upload">Gönder</string>
+    <string name="config_unsaved_discard">Kaydetmeden çık</string>
+    <string name="config_unsaved_stay">Kal</string>
+    <string name="config_default_title">Varsayılan ayarları geri yükle</string>
+    <string name="app_config_default_msg">Tüm uygulama ayarları (dil, birimler, grafik renkleri, bağlantı, sesli duyurular, harita) varsayılan değerleriyle değiştirilecek. Yalnızca Kaydet\'e basıldığında saklanır. Devam edilsin mi?</string>
+    <string name="config_default_confirm">Geri yükle</string>
 </resources>

@@ -659,4 +659,17 @@
     <string name="replay_altitude">Mag.</string>
     <string name="replay_speed">Sebesség</string>
     <string name="replay_accel">Gyors.</string>
+    <string name="replay_note_gyro">Az UltimateAltimeter 0.8 rögzíti a giroszkópot: a rakéta a fedélzeten integrált helyzettel jelenik meg (dőlés és orsózás; a giroszkóp sodródása idővel nő).</string>
+    <string name="replay_tilt">Dőlés</string>
+    <string name="replay_roll">Orsózás</string>
+    <string name="config_unsaved_title">Nem mentett módosítások</string>
+    <string name="app_config_unsaved_msg">Az alkalmazás beállításai megváltoztak, de nincsenek mentve. Menti őket kilépés előtt?</string>
+    <string name="alti_config_unsaved_msg">A magasságmérő konfigurációja megváltozott, de nem lett elküldve a magasságmérőnek. Elküldi kilépés előtt?</string>
+    <string name="config_unsaved_save">Mentés</string>
+    <string name="config_unsaved_upload">Küldés</string>
+    <string name="config_unsaved_discard">Kilépés mentés nélkül</string>
+    <string name="config_unsaved_stay">Maradok</string>
+    <string name="config_default_title">Alapértelmezett beállítások visszaállítása</string>
+    <string name="app_config_default_msg">Az alkalmazás minden beállítása (nyelv, mértékegységek, görbeszínek, kapcsolat, hangbemondás, térkép) az alapértelmezett értékre áll vissza. Csak a Mentés gombbal kerülnek tárolásra. Folytatja?</string>
+    <string name="config_default_confirm">Visszaállítás</string>
 </resources>

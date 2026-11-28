@@ -948,7 +948,8 @@ public class MainScreenActivity extends BaseActivity {
             Add("AltiMultiESP32_accel_345", "2.0,2.1,2.2,2.3,2.4,2.5");
             Add("TTGOBearAltimeter", "0.4,0.5,0.6");
             Add("TTGOMiniBearAltimeter", "0.2,0.3");
-            Add("UltimateAltimeter", "0.4,0.5,0.6,0.7");
+            // 0.8: gyroscope and attitude recorded (3D replay with the rotations)
+            Add("UltimateAltimeter", "0.4,0.5,0.6,0.7,0.8");
         }
 
         public void Add(String altiName, String verList) {

@@ -659,4 +659,17 @@
     <string name="replay_altitude">Alt.</string>
     <string name="replay_speed">Veloc.</string>
     <string name="replay_accel">Accel.</string>
+    <string name="replay_note_gyro">L\'UltimateAltimeter 0.8 registra il giroscopio: il razzo è disegnato con l\'assetto integrato a bordo (inclinazione e rollio; la deriva del giroscopio cresce col tempo).</string>
+    <string name="replay_tilt">Incl.</string>
+    <string name="replay_roll">Rollio</string>
+    <string name="config_unsaved_title">Modifiche non salvate</string>
+    <string name="app_config_unsaved_msg">Le impostazioni dell\'applicazione sono state modificate ma non salvate. Salvarle prima di uscire?</string>
+    <string name="alti_config_unsaved_msg">La configurazione dell\'altimetro è stata modificata ma non inviata all\'altimetro. Inviarla prima di uscire?</string>
+    <string name="config_unsaved_save">Salva</string>
+    <string name="config_unsaved_upload">Invia</string>
+    <string name="config_unsaved_discard">Esci senza salvare</string>
+    <string name="config_unsaved_stay">Resta</string>
+    <string name="config_default_title">Ripristina la configurazione predefinita</string>
+    <string name="app_config_default_msg">Tutte le impostazioni dell\'applicazione (lingua, unità, colori delle curve, connessione, annunci vocali, mappa) saranno sostituite dal loro valore predefinito. Saranno memorizzate solo premendo Salva. Continuare?</string>
+    <string name="config_default_confirm">Ripristina</string>
 </resources>

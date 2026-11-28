@@ -40,6 +40,10 @@ public class FlightData {
 
     // Flight repository: flightName -> XYSeriesCollection
     private final Map<String, XYSeriesCollection> flightsMap;
+    // Attitude of the flights recorded with a gyroscope (UltimateAltimeter 0.8):
+    // flightName -> 4 series "q0".."q3" (quaternion body -> world, Z up) against the time.
+    // Kept apart from the curves: a quaternion component is not a curve to plot.
+    private final Map<String, XYSeriesCollection> attitudeMap = new HashMap<>();
 
     public FlightData(@NonNull Context current, @NonNull String name) {
         // Use ApplicationContext to prevent leaking UI components
@@ -96,6 +100,7 @@ public class FlightData {
      * @return true if the flight existed
      */
     public synchronized boolean removeFlight(@NonNull String flightName) {
+        attitudeMap.remove(flightName);
         return flightsMap.remove(flightName) != null;
     }
 
@@ -104,6 +109,33 @@ public class FlightData {
      */
     public synchronized void ClearFlight() {
         flightsMap.clear();
+        attitudeMap.clear();
+    }
+
+    /**
+     * Adds one attitude sample (quaternion w, x, y, z, body -> world) to a flight.
+     */
+    public synchronized void addAttitude(double timeMs, float q0, float q1, float q2, float q3,
+                                         @NonNull String flightName) {
+        XYSeriesCollection att = attitudeMap.get(flightName);
+        if (att == null) {
+            att = new XYSeriesCollection();
+            att.addSeries(new XYSeries("q0"));
+            att.addSeries(new XYSeries("q1"));
+            att.addSeries(new XYSeries("q2"));
+            att.addSeries(new XYSeries("q3"));
+            attitudeMap.put(flightName, att);
+        }
+        att.getSeries(0).add(timeMs, q0);
+        att.getSeries(1).add(timeMs, q1);
+        att.getSeries(2).add(timeMs, q2);
+        att.getSeries(3).add(timeMs, q3);
+    }
+
+    /** Attitude of the flight (4 series q0..q3), or null if it was not recorded. */
+    @Nullable
+    public synchronized XYSeriesCollection getAttitude(@NonNull String flightName) {
+        return attitudeMap.get(flightName);
     }
 
     /**
@@ -298,6 +330,10 @@ public class FlightData {
             collection.addSeries(new XYSeries("accelX"));
             collection.addSeries(new XYSeries("accelY"));
             collection.addSeries(new XYSeries("accelZ"));
+            // Gyroscope rates (dps), firmware 0.8 and later
+            collection.addSeries(new XYSeries("gyroX"));
+            collection.addSeries(new XYSeries("gyroY"));
+            collection.addSeries(new XYSeries("gyroZ"));
         }
 
         if (altimeterName.equals("TTGOBearAltimeter") || altimeterName.equals("TTGOMiniBearAltimeter")) {

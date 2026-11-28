@@ -999,6 +999,18 @@ public class ConsoleApplication extends Application {
                     MyFlight.AddToFlight(time, AccelBoards.toMs2("UltimateAltimeter",
                             sField(s, i, 0)), flightName, i - 1);
             }
+            // Firmware 0.8: gyroscope rates in fields 9..11 (dps x 10) -> curves 8..10 (dps),
+            // attitude quaternion in fields 12..15 (x 10000) -> attitude of the flight
+            // (FlightData.addAttitude(), used by the 3D replay, not a curve)
+            for (int i = 9; i <= 11; i++) {
+                if (has(s, i))
+                    MyFlight.AddToFlight(time, sField(s, i, 0) / 10.0f, flightName, i - 1);
+            }
+            if (has(s, 12) && has(s, 13) && has(s, 14) && has(s, 15)) {
+                MyFlight.addAttitude(time, sField(s, 12, 10000) / 10000.0f,
+                        sField(s, 13, 0) / 10000.0f, sField(s, 14, 0) / 10000.0f,
+                        sField(s, 15, 0) / 10000.0f, flightName);
+            }
         }
 
         // ESP32 accelerometer boards: two 3-axis accelerometers in fields 7..12

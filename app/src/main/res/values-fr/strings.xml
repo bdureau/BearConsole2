@@ -659,4 +659,17 @@
     <string name="replay_altitude">Alt.</string>
     <string name="replay_speed">Vitesse</string>
     <string name="replay_accel">Accél.</string>
+    <string name="replay_note_gyro">L\'UltimateAltimeter 0.8 enregistre son gyroscope : la fusée est dessinée avec l\'attitude intégrée à bord (inclinaison et roulis ; la dérive du gyroscope augmente avec le temps).</string>
+    <string name="replay_tilt">Incl.</string>
+    <string name="replay_roll">Roulis</string>
+    <string name="config_unsaved_title">Modifications non enregistrées</string>
+    <string name="app_config_unsaved_msg">Les préférences de l\'application ont été modifiées mais pas enregistrées. Voulez-vous les enregistrer avant de quitter ?</string>
+    <string name="alti_config_unsaved_msg">La configuration de l\'altimètre a été modifiée mais n\'a pas été envoyée à l\'altimètre. Voulez-vous l\'envoyer avant de quitter ?</string>
+    <string name="config_unsaved_save">Enregistrer</string>
+    <string name="config_unsaved_upload">Envoyer</string>
+    <string name="config_unsaved_discard">Quitter sans enregistrer</string>
+    <string name="config_unsaved_stay">Rester</string>
+    <string name="config_default_title">Restaurer la configuration par défaut</string>
+    <string name="app_config_default_msg">Toutes les préférences de l\'application (langue, unités, couleurs des courbes, connexion, annonces vocales, carte) vont être remplacées par leur valeur par défaut. Elles ne seront enregistrées qu\'en appuyant sur Enregistrer. Continuer ?</string>
+    <string name="config_default_confirm">Restaurer</string>
 </resources>

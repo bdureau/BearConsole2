@@ -205,6 +205,12 @@ public class FlightViewTabActivity extends BaseActivity {
             return;
         }
 
+        // UltimateAltimeter 0.8: the 3 gyroscope curves exist only if the flight recorded them
+        if (myBT.getAltiConfigData().getAltimeterName().equals("UltimateAltimeter")
+                && allFlightData.getSeriesCount() >= 11
+                && allFlightData.getSeries(8).getItemCount() > 0) {
+            numberOfCurves = 11;
+        }
         Log.d("numberOfCurves", "numberOfCurves:" + allFlightData.getSeries().size());
         curvesNames = new String[numberOfCurves];
         units = new String[numberOfCurves];
@@ -256,6 +262,12 @@ public class FlightViewTabActivity extends BaseActivity {
             units[5] = ACCEL_UNIT;
             units[6] = ACCEL_UNIT;
             units[7] = ACCEL_UNIT;
+            // gyroscope rates (firmware 0.8)
+            if (units.length > 10) {
+                units[8] = "(°/s)";
+                units[9] = "(°/s)";
+                units[10] = "(°/s)";
+            }
         }
         if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")||
                 myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel_345")||
@@ -531,6 +543,11 @@ public class FlightViewTabActivity extends BaseActivity {
     /** All the curves of the displayed flight. */
     public XYSeriesCollection getAllFlightData() {
         return allFlightData;
+    }
+
+    /** Attitude (quaternion series q0..q3) of the displayed flight, null without gyroscope. */
+    public XYSeriesCollection getAttitudeData() {
+        return (myflight != null && FlightName != null) ? myflight.getAttitude(FlightName) : null;
     }
 
     /** Repository holding every downloaded flight. */

@@ -659,4 +659,17 @@
     <string name="replay_altitude">Wys.</string>
     <string name="replay_speed">Prędk.</string>
     <string name="replay_accel">Przysp.</string>
+    <string name="replay_note_gyro">UltimateAltimeter 0.8 zapisuje żyroskop: rakieta jest rysowana z orientacją całkowaną na pokładzie (pochylenie i przechylenie; dryf żyroskopu rośnie z czasem).</string>
+    <string name="replay_tilt">Pochyl.</string>
+    <string name="replay_roll">Przechył</string>
+    <string name="config_unsaved_title">Niezapisane zmiany</string>
+    <string name="app_config_unsaved_msg">Ustawienia aplikacji zostały zmienione, ale nie zapisane. Zapisać je przed wyjściem?</string>
+    <string name="alti_config_unsaved_msg">Konfiguracja wysokościomierza została zmieniona, ale nie wysłana do wysokościomierza. Wysłać ją przed wyjściem?</string>
+    <string name="config_unsaved_save">Zapisz</string>
+    <string name="config_unsaved_upload">Wyślij</string>
+    <string name="config_unsaved_discard">Wyjdź bez zapisywania</string>
+    <string name="config_unsaved_stay">Zostań</string>
+    <string name="config_default_title">Przywróć ustawienia domyślne</string>
+    <string name="app_config_default_msg">Wszystkie ustawienia aplikacji (język, jednostki, kolory wykresów, połączenie, komunikaty głosowe, mapa) zostaną zastąpione wartościami domyślnymi. Zostaną zapisane dopiero po naciśnięciu Zapisz. Kontynuować?</string>
+    <string name="config_default_confirm">Przywróć</string>
 </resources>

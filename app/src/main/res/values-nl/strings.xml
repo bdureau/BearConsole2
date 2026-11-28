@@ -659,4 +659,17 @@
     <string name="replay_altitude">Hoogte</string>
     <string name="replay_speed">Snelh.</string>
     <string name="replay_accel">Versn.</string>
+    <string name="replay_note_gyro">De UltimateAltimeter 0.8 registreert zijn gyroscoop: de raket wordt getekend met de aan boord geïntegreerde stand (helling en rol; de drift van de gyroscoop neemt toe met de tijd).</string>
+    <string name="replay_tilt">Helling</string>
+    <string name="replay_roll">Rol</string>
+    <string name="config_unsaved_title">Niet-opgeslagen wijzigingen</string>
+    <string name="app_config_unsaved_msg">De app-instellingen zijn gewijzigd maar niet opgeslagen. Wilt u ze opslaan voordat u afsluit?</string>
+    <string name="alti_config_unsaved_msg">De configuratie van de hoogtemeter is gewijzigd maar niet naar de hoogtemeter verzonden. Wilt u ze verzenden voordat u afsluit?</string>
+    <string name="config_unsaved_save">Opslaan</string>
+    <string name="config_unsaved_upload">Verzenden</string>
+    <string name="config_unsaved_discard">Afsluiten zonder opslaan</string>
+    <string name="config_unsaved_stay">Blijven</string>
+    <string name="config_default_title">Standaardinstellingen herstellen</string>
+    <string name="app_config_default_msg">Alle app-instellingen (taal, eenheden, kleuren van de curves, verbinding, gesproken meldingen, kaart) worden vervangen door hun standaardwaarde. Ze worden pas opgeslagen met Opslaan. Doorgaan?</string>
+    <string name="config_default_confirm">Herstellen</string>
 </resources>

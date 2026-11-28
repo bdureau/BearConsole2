@@ -659,4 +659,17 @@
     <string name="replay_altitude">Höhe</string>
     <string name="replay_speed">Geschw.</string>
     <string name="replay_accel">Beschl.</string>
+    <string name="replay_note_gyro">Der UltimateAltimeter 0.8 zeichnet sein Gyroskop auf: Die Rakete wird mit der an Bord integrierten Lage dargestellt (Neigung und Rollen; die Drift des Gyroskops nimmt mit der Zeit zu).</string>
+    <string name="replay_tilt">Neig.</string>
+    <string name="replay_roll">Rollen</string>
+    <string name="config_unsaved_title">Nicht gespeicherte Änderungen</string>
+    <string name="app_config_unsaved_msg">Die App-Einstellungen wurden geändert, aber nicht gespeichert. Vor dem Verlassen speichern?</string>
+    <string name="alti_config_unsaved_msg">Die Höhenmesser-Konfiguration wurde geändert, aber nicht an den Höhenmesser gesendet. Vor dem Verlassen senden?</string>
+    <string name="config_unsaved_save">Speichern</string>
+    <string name="config_unsaved_upload">Senden</string>
+    <string name="config_unsaved_discard">Ohne Speichern verlassen</string>
+    <string name="config_unsaved_stay">Bleiben</string>
+    <string name="config_default_title">Standardeinstellungen wiederherstellen</string>
+    <string name="app_config_default_msg">Alle App-Einstellungen (Sprache, Einheiten, Kurvenfarben, Verbindung, Sprachansagen, Karte) werden durch ihren Standardwert ersetzt. Sie werden erst mit Speichern gespeichert. Fortfahren?</string>
+    <string name="config_default_confirm">Wiederherstellen</string>
 </resources>

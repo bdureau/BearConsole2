@@ -12,11 +12,16 @@ package com.altimeter.bdureau.bearconsole.config;
  *      graph library, multiple drogue / main outputs, full USB support;
  *    - AppConfig2Fragment: voice announcements during telemetry and the voice used;
  *    - AppConfig3Fragment: map provider, map type and color, manual GPS recording.
- *  "Save" writes the values to the shared preferences; "Default" restores the defaults.
+ *  "Save" writes the values to the shared preferences; "Default" restores the defaults in
+ *  the fields after a warning and a confirmation (they are stored only by "Save").
+ *  Leaving the screen ("Dismiss" or the back key) with unsaved changes asks what to do:
+ *  save, leave without saving, or stay (changes detected by utils.ConfigChangeTracker).
  *  The text to speech engine is started only to list the voices available on the phone.
  * ============================================================================
  */
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -42,6 +47,7 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.ShareHandler;
+import com.altimeter.bdureau.bearconsole.utils.ConfigChangeTracker;
 import com.altimeter.bdureau.bearconsole.config.AppConfig.AppConfig1Fragment;
 import com.altimeter.bdureau.bearconsole.config.AppConfig.AppConfig2Fragment;
 import com.altimeter.bdureau.bearconsole.config.AppConfig.AppConfig3Fragment;
@@ -59,6 +65,8 @@ public class AppTabConfigActivity extends BaseActivity {
     private AppConfig3Fragment appConfigPage3 = null;
 
     private AppConfigData appConfigData = null;
+    // Unsaved changes of the fields, checked before leaving the screen
+    private final ConfigChangeTracker changeTracker = new ConfigChangeTracker();
 
     private ConsoleApplication myBT;
 
@@ -71,6 +79,8 @@ public class AppTabConfigActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        // Before the tabs are created (or re-created by the system): their fields are tracked
+        changeTracker.attach(this);
         setTitle(R.string.titre_application_pref);
         //get the Connection Application pointer
         myBT = (ConsoleApplication) getApplication();
@@ -87,7 +97,15 @@ public class AppTabConfigActivity extends BaseActivity {
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();      //exit the application configuration activity
+                //exit the application configuration activity, after a confirmation if needed
+                confirmLeave();
+            }
+        });
+        // The back key asks the same confirmation as "Dismiss"
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                confirmLeave();
             }
         });
 
@@ -104,8 +122,8 @@ public class AppTabConfigActivity extends BaseActivity {
         bdtDefault.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //restore the application default configuration
-                RestoreToDefault();
+                //restore the application default configuration, after a warning
+                confirmRestoreToDefault();
             }
         });
         mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -132,6 +150,8 @@ public class AppTabConfigActivity extends BaseActivity {
                         itemsVoices = items.split(",");
 
                         appConfigPage2.setVoices(itemsVoices);
+                        // The voice selected by program is not a change of the user
+                        changeTracker.resetReference(appConfigPage2);
                         if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                             Log.e("TTS", "Language not supported");
                         } else {
@@ -150,6 +170,12 @@ public class AppTabConfigActivity extends BaseActivity {
 
     private void SaveConfig() {
         boolean languageChanged = false;
+        // Checked before anything is changed: a refused save leaves the configuration intact
+        if (appConfigPage1.isViewCreated()
+                && appConfigPage1.getGraphColor() == appConfigPage1.getGraphBackColor()) {
+            msg(getString(R.string.app_config_same_colors));
+            return;
+        }
         if(appConfigPage1.isViewCreated()) {
             int newLanguage = appConfigPage1.getAppLanguage();
             if (newLanguage != myBT.getAppConf().getApplicationLanguage()) {
@@ -167,10 +193,6 @@ public class AppTabConfigActivity extends BaseActivity {
             myBT.getAppConf().setGraphicsLibType(appConfigPage1.getGraphicsLibType());
             myBT.getAppConf().setAllowMultipleDrogueMain(appConfigPage1.getAllowMainDrogue());
             myBT.getAppConf().setFullUSBSupport(appConfigPage1.getFullUSBSupport());
-            if(appConfigPage1.getGraphColor() == appConfigPage1.getGraphBackColor()){
-                msg(getString(R.string.app_config_same_colors));
-                return;
-            }
         }
         //page2
         if(appConfigPage2.isViewCreated()) {
@@ -196,8 +218,46 @@ public class AppTabConfigActivity extends BaseActivity {
         if (languageChanged) {
             myBT.applyLanguage(myBT.getAppConf().getApplicationLanguage());
         }
+        changeTracker.resetReference();
         invalidateOptionsMenu();
         finish();
+    }
+
+    /**
+     * Leaves the screen: at once if nothing was changed, otherwise after asking whether the
+     * changes must be saved, discarded, or the user stays on the screen.
+     */
+    private void confirmLeave() {
+        if (!changeTracker.isModified()) {
+            finish();
+            return;
+        }
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.config_unsaved_title)
+                .setMessage(R.string.app_config_unsaved_msg)
+                .setPositiveButton(R.string.config_unsaved_save, (d, w) -> SaveConfig())
+                .setNegativeButton(R.string.config_unsaved_discard, (d, w) -> {
+                    // "Default" changes the configuration in memory: reload the stored one
+                    myBT.getAppConf().ReadConfig();
+                    finish();
+                })
+                .setNeutralButton(R.string.config_unsaved_stay, (d, w) -> d.dismiss())
+                .show();
+    }
+
+    /** Warns that every setting is replaced by its default value, then restores them. */
+    private void confirmRestoreToDefault() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.config_default_title)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage(R.string.app_config_default_msg)
+                .setPositiveButton(R.string.config_default_confirm, (d, w) -> {
+                    RestoreToDefault();
+                    // Not stored yet: leaving the screen now asks for a confirmation
+                    changeTracker.markModified();
+                })
+                .setNegativeButton(R.string.No, (d, w) -> d.dismiss())
+                .show();
     }
 
     private void RestoreToDefault() {
@@ -251,6 +311,8 @@ public class AppTabConfigActivity extends BaseActivity {
 
         linearDots = findViewById(R.id.idAppConfigLinearDots);
         agregaIndicateDots(0, adapter.getCount());
+        // Every tab keeps its view: its fields are read by "Save" and by the unsaved changes check
+        viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(viewListener);

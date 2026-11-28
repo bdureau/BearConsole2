@@ -18,6 +18,9 @@ package com.altimeter.bdureau.bearconsole.config;
  *  value is flagged on its field and nothing is sent. The parameters are then written one by
  *  one ("p,<index>,<value>,<checksum>;") and saved with "q;", on the shared I/O executor of
  *  the application, never on the UI thread.
+ *  Leaving the screen ("Dismiss" or the back key) with changes that were not uploaded asks
+ *  what to do: upload them, leave without uploading, or stay (changes detected by
+ *  utils.ConfigChangeTracker).
  * ============================================================================
  */
 
@@ -36,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -47,6 +51,7 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 import com.altimeter.bdureau.bearconsole.ShareHandler;
+import com.altimeter.bdureau.bearconsole.utils.ConfigChangeTracker;
 import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltiConfig1Fragment;
 import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltiConfig2Fragment;
 import com.altimeter.bdureau.bearconsole.config.AltimeterConfig.AltiConfig3Fragment;
@@ -78,10 +83,14 @@ public class AltiTabConfigActivity extends BaseActivity {
     // Shared, ordered background executor of the application for the serial communication
     private ExecutorService ioExecutor;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    // Changes of the fields not uploaded yet, checked before leaving the screen
+    private final ConfigChangeTracker changeTracker = new ConfigChangeTracker();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Before the tabs are created (or re-created by the system): their fields are tracked
+        changeTracker.attach(this);
         setTitle(R.string.altimeter_config);
         myBT = (ConsoleApplication) getApplication();
         ioExecutor = myBT.getIoExecutor();
@@ -91,11 +100,36 @@ public class AltiTabConfigActivity extends BaseActivity {
         Button btnDismiss = findViewById(R.id.butDismiss);
         Button btnUpload = findViewById(R.id.butUpload);
 
-        btnDismiss.setOnClickListener(v -> finish());
+        btnDismiss.setOnClickListener(v -> confirmLeave());
         btnUpload.setOnClickListener(v -> validateAndSendConfig());
+        // The back key asks the same confirmation as "Dismiss"
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                confirmLeave();
+            }
+        });
 
         // Asynchronous config read on launch
         retrieveConfigAsync();
+    }
+
+    /**
+     * Leaves the screen: at once if nothing was changed, otherwise after asking whether the
+     * changes must be uploaded to the altimeter, discarded, or the user stays on the screen.
+     */
+    private void confirmLeave() {
+        if (adapter == null || !changeTracker.isModified()) {
+            finish();
+            return;
+        }
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.config_unsaved_title)
+                .setMessage(R.string.alti_config_unsaved_msg)
+                .setPositiveButton(R.string.config_unsaved_upload, (d, w) -> validateAndSendConfig())
+                .setNegativeButton(R.string.config_unsaved_discard, (d, w) -> finish())
+                .setNeutralButton(R.string.config_unsaved_stay, (d, w) -> d.dismiss())
+                .show();
     }
 
     public AltiConfigData getAltiConfigData() {
@@ -214,6 +248,9 @@ public class AltiTabConfigActivity extends BaseActivity {
 
         linearDots = findViewById(R.id.idAltiConfigLinearDots);
         agregaIndicateDots(0, adapter.getCount());
+        // Every tab keeps its view: its fields are read by the upload and by the unsaved
+        // changes check (a destroyed view would not be uploaded)
+        viewPager.setOffscreenPageLimit(Math.max(1, adapter.getCount() - 1));
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(viewListener);
     }

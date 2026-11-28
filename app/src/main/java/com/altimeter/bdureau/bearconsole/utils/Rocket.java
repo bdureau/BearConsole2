@@ -73,7 +73,10 @@ public class Rocket extends PApplet {
     private volatile float replayPeakFrac = 0;    // highest altitude reached so far (0..1)
     private volatile int replayPhase = PHASE_PAD;
     private volatile String[] replayScale = {"0", "", "", "", ""}; // labels of the 5 graduations
-    private volatile String hudL1 = "", hudR1 = "", hudL2 = "", hudR2 = "", hudL3 = "";
+    private volatile String hudL1 = "", hudR1 = "", hudL2 = "", hudR2 = "", hudL3 = "", hudR3 = "";
+    // Measured attitude of the rocket (UltimateAltimeter 0.8): rotation of the upright rocket
+    // in the Processing frame, row-major 3x3; null = drawn vertical (no gyroscope)
+    private volatile float[] replayAttitude = null;
 
     /** Smoothing coefficient of the displayed direction at each frame (0..1). */
     private static final float SMOOTHING = 0.15f;
@@ -217,6 +220,18 @@ public class Rocket extends PApplet {
         hudR2 = r2;
         hudL3 = l3;
         replayMode = true;
+    }
+
+    /**
+     * Measured attitude for the replay of a flight recorded with a gyroscope.
+     *
+     * @param m   rotation of the upright rocket (nose up) in the Processing frame (x right,
+     *            y down, z towards the viewer), row-major 3x3; null to draw it vertical
+     * @param r3  HUD text of line 3, right (tilt and roll)
+     */
+    public void setReplayAttitude(float[] m, String r3) {
+        replayAttitude = (m != null && m.length == 9) ? m.clone() : null;
+        hudR3 = r3 == null ? "" : r3;
     }
 
     /** Localized texts of the accelerometer HUD. */
@@ -431,8 +446,24 @@ public class Rocket extends PApplet {
         translate(width / 2.0f, baseY, 0);
         rotateY(radians(VIEW_AZIMUTH_DEG));
         scale(s);
+        float[] m = replayAttitude;
+        // Nose tip of the upright rocket: (0, -700, 0); where the attitude puts it
+        float noseLen = CONE_HEIGHT + BODY_HEIGHT + NOZZLE_HEIGHT;
+        float nx = 0, ny = -noseLen, nz = 0;
+        if (m != null) {
+            nx = -noseLen * m[1];
+            ny = -noseLen * m[4];
+            nz = -noseLen * m[7];
+        }
         if (replayPhase == PHASE_DROGUE || replayPhase == PHASE_MAIN) {
-            drawParachute(replayPhase == PHASE_MAIN ? 300 : 170);
+            drawParachute(replayPhase == PHASE_MAIN ? 300 : 170, nx, ny, nz);
+        }
+        if (m != null) {
+            // measured attitude (gyroscope), the rocket turns around its base
+            applyMatrix(m[0], m[1], m[2], 0,
+                    m[3], m[4], m[5], 0,
+                    m[6], m[7], m[8], 0,
+                    0, 0, 0, 1);
         }
         rotateX(-HALF_PI);
         translate(0, 0, -(BODY_HEIGHT / 2.0f + NOZZLE_HEIGHT));
@@ -472,17 +503,20 @@ public class Rocket extends PApplet {
      * Parachute above the nose (screen frame: up = -y), with its shroud lines.
      *
      * @param radius radius of the canopy (design units)
+     * @param ax     attachment point (nose tip), screen frame of the rocket base
      */
-    private void drawParachute(float radius) {
-        float noseY = -(CONE_HEIGHT + BODY_HEIGHT + NOZZLE_HEIGHT);   // nose tip above the pad
-        float canopyY = noseY - radius * 1.6f;
+    private void drawParachute(float radius, float ax, float ay, float az) {
+        // The canopy stays above the highest point of the rocket
+        float canopyY = min(ay, 0) - radius * 1.6f;
         // Shroud lines from the nose to the rim of the canopy
         stroke(220);
         strokeWeight(3);
         for (int i = 0; i < 8; i++) {
             float a = TWO_PI * i / 8;
-            line(0, noseY, 0, cos(a) * radius, canopyY, sin(a) * radius);
+            line(ax, ay, az, ax + cos(a) * radius, canopyY, az + sin(a) * radius);
         }
+        pushMatrix();
+        translate(ax, 0, az);
         // Canopy: half sphere, alternately orange and white gores
         noStroke();
         int gores = 12, rings = 6;
@@ -498,6 +532,7 @@ public class Rocket extends PApplet {
             }
             endShape();
         }
+        popMatrix();
     }
 
     /** HUD of the replay: 2 lines of values and the flight phase. */
@@ -523,6 +558,9 @@ public class Rocket extends PApplet {
         textAlign(LEFT, CENTER);
         fill(255, 190, 60);
         text(hudL3, margin + pad, margin + 160 * u);
+        textAlign(RIGHT, CENTER);
+        fill(255);
+        text(hudR3, width - margin - pad, margin + 160 * u);
         hint(ENABLE_DEPTH_TEST);
     }
 

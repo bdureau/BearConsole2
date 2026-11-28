@@ -659,4 +659,17 @@
     <string name="replay_altitude">Выс.</string>
     <string name="replay_speed">Скор.</string>
     <string name="replay_accel">Ускор.</string>
+    <string name="replay_note_gyro">UltimateAltimeter 0.8 записывает гироскоп: ракета показана с ориентацией, вычисленной на борту (наклон и крен; дрейф гироскопа растёт со временем).</string>
+    <string name="replay_tilt">Наклон</string>
+    <string name="replay_roll">Крен</string>
+    <string name="config_unsaved_title">Несохранённые изменения</string>
+    <string name="app_config_unsaved_msg">Настройки приложения изменены, но не сохранены. Сохранить их перед выходом?</string>
+    <string name="alti_config_unsaved_msg">Конфигурация альтиметра изменена, но не отправлена в альтиметр. Отправить её перед выходом?</string>
+    <string name="config_unsaved_save">Сохранить</string>
+    <string name="config_unsaved_upload">Отправить</string>
+    <string name="config_unsaved_discard">Выйти без сохранения</string>
+    <string name="config_unsaved_stay">Остаться</string>
+    <string name="config_default_title">Восстановить настройки по умолчанию</string>
+    <string name="app_config_default_msg">Все настройки приложения (язык, единицы, цвета графиков, подключение, голосовые сообщения, карта) будут заменены значениями по умолчанию. Они будут сохранены только после нажатия «Сохранить». Продолжить?</string>
+    <string name="config_default_confirm">Восстановить</string>
 </resources>

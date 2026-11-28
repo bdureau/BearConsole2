@@ -659,4 +659,17 @@
     <string name="replay_altitude">Alt.</string>
     <string name="replay_speed">Veloc.</string>
     <string name="replay_accel">Acel.</string>
+    <string name="replay_note_gyro">El UltimateAltimeter 0.8 registra su giroscopio: el cohete se dibuja con la actitud integrada a bordo (inclinación y alabeo; la deriva del giroscopio aumenta con el tiempo).</string>
+    <string name="replay_tilt">Incl.</string>
+    <string name="replay_roll">Alabeo</string>
+    <string name="config_unsaved_title">Cambios no guardados</string>
+    <string name="app_config_unsaved_msg">Los ajustes de la aplicación se han cambiado pero no se han guardado. ¿Desea guardarlos antes de salir?</string>
+    <string name="alti_config_unsaved_msg">La configuración del altímetro se ha cambiado pero no se ha enviado al altímetro. ¿Desea enviarla antes de salir?</string>
+    <string name="config_unsaved_save">Guardar</string>
+    <string name="config_unsaved_upload">Enviar</string>
+    <string name="config_unsaved_discard">Salir sin guardar</string>
+    <string name="config_unsaved_stay">Quedarse</string>
+    <string name="config_default_title">Restaurar la configuración predeterminada</string>
+    <string name="app_config_default_msg">Todos los ajustes de la aplicación (idioma, unidades, colores de las curvas, conexión, anuncios de voz, mapa) se sustituirán por su valor predeterminado. Solo se guardarán al pulsar Guardar. ¿Continuar?</string>
+    <string name="config_default_confirm">Restaurar</string>
 </resources>

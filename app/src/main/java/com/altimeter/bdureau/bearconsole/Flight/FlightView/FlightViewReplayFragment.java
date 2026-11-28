@@ -19,11 +19,15 @@ package com.altimeter.bdureau.bearconsole.Flight.FlightView;
  *     acceleration measured by the accelerometer (norm of the 3 axes, in g; the high g ADXL375
  *     is used when the low g sensor is near its 16 g limit).
  *   - Replay bar: play / pause, time slider, speed x1 / x2 / x5 / x10.
- *  Physics: these altimeters record an accelerometer only, no gyroscope. In flight the
+ *  Physics: most of these altimeters record an accelerometer only, no gyroscope. In flight the
  *  accelerometer measures the thrust then the drag, both along the body: it gives no
  *  attitude and no roll, so the rocket is drawn vertical, without invented rotation (a note
- *  says so under the scene). The checkered body and the white fin are there for the status
- *  screen, where the tilt on the pad is measured.
+ *  says so under the scene).
+ *  The UltimateAltimeter 0.8 also records its gyroscope and the attitude it integrates on
+ *  board (quaternion body -> world, FlightData.getAttitude()). The rocket is then drawn with
+ *  this measured attitude: tilt, heading and roll (the checkered body and the white fin
+ *  show the roll), and the HUD gives the tilt and the roll rate. The long axis of the board
+ *  is the body axis closest to the vertical on the first sample (rocket on the pad).
  *  The fragment takes its data from the host FlightViewTabActivity (no data given by a
  *  constructor), so it is re-created correctly by the framework.
  * ============================================================================
@@ -82,6 +86,11 @@ public class FlightViewReplayFragment extends Fragment {
             landingMs = Double.NaN;
     private double maxAltitude = 1;
     private String[] scaleLabels;
+    // Measured attitude (UltimateAltimeter 0.8), null without gyroscope
+    private XYSeries[] quat;                 // q0..q3 against the time
+    private XYSeries rollRate;               // gyroscope rate around the long axis (dps)
+    private int longAxis = 2;                // body axis of the rocket (0 X, 1 Y, 2 Z)
+    private int longSign = 1;                // +1 if this axis points to the nose
 
     // Replay
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -123,6 +132,7 @@ public class FlightViewReplayFragment extends Fragment {
             view.findViewById(R.id.replayBar).setVisibility(View.GONE);
             return view;
         }
+        if (quat != null) note.setText(R.string.replay_note_gyro);
         timeMs = startMs;
 
         seekBar.setMax(SEEK_MAX);
@@ -180,6 +190,7 @@ public class FlightViewReplayFragment extends Fragment {
         lowG = findAxes(data, "accel345x", "accel345y", "accel345z");
         if (lowG == null) lowG = findAxes(data, "accelX", "accelY", "accelZ");
         highG = findAxes(data, "accel375x", "accel375y", "accel375z");
+        loadAttitude(data);
 
         int n = altitude.getItemCount();
         startMs = altitude.getX(0).doubleValue();
@@ -211,6 +222,88 @@ public class FlightViewReplayFragment extends Fragment {
             scaleLabels[i] = String.format(Locale.US, "%.0f %s", maxAltitude * i / 4, altUnit());
         }
         return true;
+    }
+
+    /** Reads the attitude recorded with a gyroscope, if any, and finds the long axis. */
+    private void loadAttitude(XYSeriesCollection data) {
+        quat = null;
+        XYSeriesCollection att = ((FlightViewTabActivity) requireActivity()).getAttitudeData();
+        if (att == null || att.getSeriesCount() < 4 || att.getSeries(0).getItemCount() < 2) return;
+        quat = new XYSeries[]{att.getSeries(0), att.getSeries(1), att.getSeries(2), att.getSeries(3)};
+        // Vertical expressed in the body frame on the first sample: third row of R(q)
+        float[] r = rotation(quatAt(quat[0].getX(0).doubleValue()));
+        float[] up = {r[6], r[7], r[8]};
+        longAxis = 0;
+        for (int i = 1; i < 3; i++) {
+            if (Math.abs(up[i]) > Math.abs(up[longAxis])) longAxis = i;
+        }
+        longSign = up[longAxis] >= 0 ? 1 : -1;
+        rollRate = find(data, new String[]{"gyroX", "gyroY", "gyroZ"}[longAxis]);
+        if (rollRate != null && rollRate.getItemCount() == 0) rollRate = null;
+    }
+
+    /** Quaternion (w, x, y, z) at t: normalized linear interpolation of the samples. */
+    private float[] quatAt(double t) {
+        int i = indexAt(quat[0], t);
+        float[] a = sampleQuat(i);
+        if (i + 1 < quat[0].getItemCount()) {
+            double t0 = quat[0].getX(i).doubleValue(), t1 = quat[0].getX(i + 1).doubleValue();
+            if (t1 > t0 && t > t0) {
+                float f = (float) Math.min(1, (t - t0) / (t1 - t0));
+                float[] b = sampleQuat(i + 1);
+                // shortest path: q and -q are the same rotation
+                float dot = a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
+                float sgn = dot < 0 ? -1 : 1;
+                for (int k = 0; k < 4; k++) a[k] = a[k] + f * (sgn * b[k] - a[k]);
+            }
+        }
+        float n = (float) Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2] + a[3] * a[3]);
+        if (n < 1e-6f) return new float[]{1, 0, 0, 0};
+        for (int k = 0; k < 4; k++) a[k] /= n;
+        return a;
+    }
+
+    private float[] sampleQuat(int i) {
+        return new float[]{quat[0].getY(i).floatValue(), quat[1].getY(i).floatValue(),
+                quat[2].getY(i).floatValue(), quat[3].getY(i).floatValue()};
+    }
+
+    /** Rotation matrix (row-major 3x3) of a unit quaternion (w, x, y, z), body -> world. */
+    private static float[] rotation(float[] q) {
+        float w = q[0], x = q[1], y = q[2], z = q[3];
+        return new float[]{
+                1 - 2 * (y * y + z * z), 2 * (x * y - w * z), 2 * (x * z + w * y),
+                2 * (x * y + w * z), 1 - 2 * (x * x + z * z), 2 * (y * z - w * x),
+                2 * (x * z - w * y), 2 * (y * z + w * x), 1 - 2 * (x * x + y * y)};
+    }
+
+    /**
+     * Rotation of the upright rocket in the Processing frame for the attitude q.
+     * Model frame (world axes, Z up, rocket upright): its Z is the long body axis (towards the
+     * nose), its X and Y the two other body axes, in a right-handed order. The rotation in the
+     * world is W = R(q) B^T (B: body -> model), and in the Processing frame P W P with
+     * P: world (x, y, z) -> Processing (x, -z, -y).
+     */
+    private float[] sketchAttitude(float[] q) {
+        float[] r = rotation(q);
+        int k = longAxis, k1 = (k + 1) % 3, k2 = (k + 2) % 3;
+        // columns of W: images of the model X, Y, Z axes = body axes k1, s*k2, s*k
+        float[] w = new float[9];
+        for (int row = 0; row < 3; row++) {
+            w[row * 3] = r[row * 3 + k1];
+            w[row * 3 + 1] = longSign * r[row * 3 + k2];
+            w[row * 3 + 2] = longSign * r[row * 3 + k];
+        }
+        // P W P: index map 0 -> 0, 1 -> 2 (sign -), 2 -> 1 (sign -)
+        int[] map = {0, 2, 1};
+        float[] sg = {1, -1, -1};
+        float[] m = new float[9];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                m[i * 3 + j] = sg[i] * sg[j] * w[map[i] * 3 + map[j]];
+            }
+        }
+        return m;
     }
 
     @Nullable
@@ -318,6 +411,18 @@ public class FlightViewReplayFragment extends Fragment {
         String r2 = Double.isNaN(g) ? ""
                 : String.format(Locale.US, "%s %.1f g", getString(R.string.replay_accel), g);
 
+        if (quat != null) {
+            float[] q = quatAt(timeMs);
+            float[] m = sketchAttitude(q);
+            // tilt: angle between the nose and the vertical (m[4] = -nose.y in Processing)
+            double tilt = Math.toDegrees(Math.acos(Math.max(-1, Math.min(1, m[4]))));
+            String r3 = String.format(Locale.US, "%s %.0f°", getString(R.string.replay_tilt), tilt);
+            if (rollRate != null) {
+                r3 += String.format(Locale.US, "  %s %+.0f°/s", getString(R.string.replay_roll),
+                        longSign * valueAt(rollRate, timeMs));
+            }
+            sketch.setReplayAttitude(m, r3);
+        }
         sketch.setReplayState((float) (Math.max(0, alt) / maxAltitude), (float) (peak / maxAltitude),
                 phase, scaleLabels, l1, r1, l2, r2, phaseLabel(phase));
     }
