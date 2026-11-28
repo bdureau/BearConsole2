@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    "Replay" tab of the flight view for the accelerometer altimeters (FlightViewReplayFragment):
+    the Processing 3D rocket (utils.Rocket, replay mode) moving along the altitude of the flight,
+    a short note on what is measured, and the replay bar (play / pause, time slider, speed).
+    The bottom margin keeps the bar above the buttons drawn over the tabs.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="64dp">
+
+    <!-- The sketch is created with the size of this container -->
+    <FrameLayout
+        android:id="@+id/replayContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- The attitude is not measured by an accelerometer: the rocket is drawn vertical -->
+    <TextView
+        android:id="@+id/replayNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="@string/replay_note"
+        android:textSize="12sp" />
+
+    <!-- Replay bar -->
+    <LinearLayout
+        android:id="@+id/replayBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/replayPlay"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/flight3d_play"
+            android:src="@android:drawable/ic_media_play" />
+
+        <SeekBar
+            android:id="@+id/replaySeek"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="1000" />
+
+        <!-- Replay speed: x1, x2, x5, x10 -->
+        <Button
+            android:id="@+id/replaySpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="56dp"
+            android:text="x1" />
+    </LinearLayout>
+</LinearLayout>
