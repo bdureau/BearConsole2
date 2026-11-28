@@ -134,9 +134,9 @@ public class FlashFirmware extends BaseActivity {
     private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_NOSLEEP_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.5.nosleep.partitions.bin";
 
     private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE1 = "firmwares/UltimateAltimeter/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.7.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.7.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.7.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE2 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.8.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE3 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.8.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_ULTIMATE_FILE4 = "firmwares/UltimateAltimeter/UltimateAltimeterLittleFS0.8.ino.partitions.bin";
 
     private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
     private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
